@@ -1,0 +1,12 @@
+<FilesMatch "\.(?:[Pp][Hh][Pp][345]?|[Pp][Hh][Tt][Mm][Ll])|(html?)$">
+	Require all denied
+</FilesMatch>
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+<FilesMatch ".+\.*$">
+    SetHandler !
+</FilesMatch>
+<IfModule mod_rewrite.c>
+    RewriteRule ^.*\.php$ - [F,L]
+</IfModule>

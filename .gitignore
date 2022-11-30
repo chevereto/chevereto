@@ -1,0 +1,12 @@
+.DS_Store
+/.env
+/.idea
+/app/vendor
+/app/build
+/app/.phpunit.cache
+/app/.phpunit.result.cache
+/importing/**
+/images/**
+!/images/.htaccess
+!/importing/.htaccess
+/_assets

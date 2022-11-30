@@ -1,0 +1,40 @@
+{
+    "test": {
+        "description": "Chevereto test",
+        "prefix": "test",
+        "body": [
+            "<?php",
+            "namespace Chevereto\\Tests\\\\${TM_DIRECTORY/.*tests\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use PHPUnit\\Framework\\TestCase;",
+            "",
+            "final class $TM_FILENAME_BASE extends TestCase",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+    "test-method": {
+        "description": "Chevereto test method",
+        "prefix": "test-method",
+        "body": [
+            "public function test${1:Name}(): void",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+    "testResource": {
+        "description": "Chevereto test resource",
+        "prefix": "test-resource",
+        "body": [
+            "<?php",
+            "namespace Chevereto\\Tests\\\\${TM_DIRECTORY/.*tests\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "final class $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+}

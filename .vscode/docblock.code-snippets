@@ -1,0 +1,62 @@
+{
+    "docblock-instance": {
+        "description": "Insert a docblock instance",
+        "prefix": "docblock-instance",
+        "body": [
+            "/**",
+            " * Provides access to the ${1:name} instance.",
+            " */"
+        ]
+    },
+    "docblock-immutable": {
+        "description": "Insert a docblock immutable",
+        "prefix": "docblock-immutable",
+        "body": [
+            "/**",
+            " * Return an instance with the specified ${1:name}.",
+            " *",
+            " * This method MUST retain the state of the current instance, and return",
+            " * an instance that contains the specified ${1:name}.",
+            " */"
+        ]
+    },
+    "docblock-boolean": {
+        "description": "Insert a docblock boolean",
+        "prefix": "docblock-boolean",
+        "body": [
+            "/**",
+            " * Indicates whether the instance has ${1:name}.",
+            " */"
+        ]
+    },
+    "docblock-interface": {
+        "description": "Insert a docblock interface",
+        "prefix": "docblock-interface",
+        "body": [
+            "/**",
+            " * Describes the component in charge of ${1:doing}.",
+            " */"
+        ]
+    },
+    "coverage-ignore": {
+        "description": "Insert a code coverage ignore tag",
+        "prefix": "cov-ignore",
+        "body": [
+            "@codeCoverageIgnore"
+        ]
+    },
+    "coverage-ignore-start": {
+        "description": "Insert a code coverage ignore start tag",
+        "prefix": "cov-ignore-start",
+        "body": [
+            "@codeCoverageIgnoreStart"
+        ]
+    },
+    "coverage-ignore-end": {
+        "description": "Insert a code coverage ignore end tag",
+        "prefix": "cov-ignore-end",
+        "body": [
+            "@codeCoverageIgnoreEnd"
+        ]
+    },
+}

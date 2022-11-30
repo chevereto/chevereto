@@ -1,0 +1,34 @@
+{
+    "with-method": {
+        "description": "Chevereto with method",
+        "prefix": "with",
+        "body": [
+            "private ${2|int,string,bool,array,object,resource|} \\$${3:argument};",
+            "",
+            "public function with${1:Name}(${2|int,string,bool,array,object,resource|} \\$${3:argument}): ${4:self}",
+            "{",
+            "\t\\$new = clone \\$this;",
+            "\t\\$new->${3:argument} = \\$${3:argument};",
+            "",
+            "\treturn \\$new;",
+            "}"
+        ]
+    },
+    "exception": {
+        "description": "Chevereto exception",
+        "prefix": "exception",
+        "body": [
+            "<?php",
+            "namespace Chevereto\\Exceptions\\\\${TM_DIRECTORY/.*Exceptions\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use Chevereto\\Exceptions\\Core\\Exception;",
+            "",
+            "/**",
+            " * Exception thrown when ${1:description}.",
+            " */",
+            "final class $TM_FILENAME_BASE extends Exception",
+            "{",
+            "}"
+        ]
+    },
+}

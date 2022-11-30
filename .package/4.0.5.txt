@@ -1,0 +1,11 @@
+Chevereto 4.0.5 (2022-11-30)
+
+✅ Added more environment variables
+✅ Renamed dashboard/settings/api to dashboard/settings/guest-api
+✅ Renamed website modes (community, personal)
+🐞 Fixed bug with Exif metadata removal
+🐞 Fixed bug with single image redirect
+🐞 Fixed bug with selectable items on iPad
+🐞 Fixed bug with login page
+🐞 Fixed bug with missing timestamp on upload
+🐞 Fixed bug with ModerateContent

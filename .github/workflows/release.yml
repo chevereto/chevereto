@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ["8.1"]
+    env:
+      tools: composer
+      ini-values: default_charset='UTF-8'
+      key: cache-1633608016315
+    name: Release on PHP ${{ matrix.php-versions }} ${{ matrix.operating-system }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          ini-values: ${{ env.ini-values }}
+          tools: ${{ env.tools }}
+        env:
+          fail-fast: true
+      - name: Validate composer
+        run: composer validate
+        working-directory: app
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        working-directory: app
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Build dependencies
+        run: composer install --no-progress --ignore-platform-reqs
+        working-directory: app
+      - name: Build Chevereto
+        run: |
+          app/bin/legacy -C langs
+          app/bin/legacy -C htaccess-checksum
+          app/bin/legacy -C htaccess-enforce
+      - name: Packaging
+        run: |
+          rm -rf .git .gitignore .github .ecs .vscode
+          rm -rf README.md chevereto.svg rector.php
+          rm -rf app/tests app/phpunit*.xml
+          rm -rf app/.editions app/bin/edition
+          mkdir importing/{parse-users,parse-albums,no-parse}
+          mv .package ..
+          ls -la ../.package
+      - name: Archive lite
+        uses: thedoctor0/zip-release@master
+        with:
+          directory: "."
+          type: "zip"
+          filename: "${{ github.ref_name}}-lite.zip"
+          exclusions: "/*app/vendor/*"
+      - name: Archive release
+        uses: thedoctor0/zip-release@master
+        with:
+          directory: "."
+          type: "zip"
+          filename: "${{ github.ref_name}}.zip"
+          exclusions: "${{ github.ref_name}}-lite.zip"
+      - name: Upload artifacts
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          removeArtifacts: true
+          bodyFile: "../.package/${{ github.ref_name}}.txt"
+          artifacts: >
+            ../.package/${{ github.ref_name}}.txt,
+            ${{ github.ref_name}}.zip,
+            ${{ github.ref_name}}-lite.zip
+          token: ${{ secrets.GITHUB_TOKEN }}

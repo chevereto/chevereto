@@ -1,0 +1,12 @@
+{
+    "runOnSave.commands": [
+        {
+            "match": "\\.php$",
+            "runIn": "backend",
+            "command": "cd ${workspaceFolder} && app/vendor/bin/ecs --config='.ecs/ecs.php' check ${file} --fix",
+            "workingDirectoryAsCWD": true,
+            "runningStatusMessage": "ECS ${fileBasename}",
+            "finishStatusMessage": "${fileBasename} OK"
+        },
+    ]
+}

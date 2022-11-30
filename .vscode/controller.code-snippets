@@ -1,0 +1,38 @@
+{
+    "controller-workflow": {
+        "description": "Create a ControllerWorkflow",
+        "prefix": "controller-workflow",
+        "body": [
+            "<?php",
+            "",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use Chevere\\Parameter\\ObjectParameter;",
+            "use Chevere\\Parameter\\Parameters;",
+            "use Chevere\\Parameter\\StringParameter;",
+            "use Chevere\\Parameter\\Interfaces\\ParametersInterface;",
+            "use Chevereto\\\\Controller\\ControllerWorkflow;",
+            "",
+            "final class $TM_FILENAME_BASE extends ControllerWorkflow",
+            "{",
+            "\tpublic function getDescription(): string",
+            "\t{",
+            "\t\treturn '${1:description}';",
+            "\t}",
+            "",
+            "\tpublic function getParameters(): ParametersInterface",
+            "\t{",
+            "\t\treturn new Parameters(",
+            "\t\t\t${2:parameter}: new StringParameter(),",
+            "\t\t);",
+            "\t}",
+            "\tpublic function getResponseParameters(): ParametersInterface",
+            "\t{",
+            "\t\treturn new Parameters(",
+            "\t\t\t${3:key}: new ObjectParameter(${4:'className'}),",
+            "\t\t);",
+            "\t}",
+            "}"
+        ]
+    },
+}

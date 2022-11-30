@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    colors="true"
+    verbose="true"
+    stderr="true"
+    cacheResult="false"
+    failOnRisky="true"
+    failOnWarning="true"
+    testdox="false"
+    processIsolation="true">
+    <php>
+        <const name="PHPUNIT_CHEVERETO_TESTSUITE" value="true"/>
+    </php>
+    <testsuites>
+        <testsuite name="Chevereto integration tests">
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+    <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true" ignoreDeprecatedCodeUnits="true">
+        <include>
+            <directory suffix=".php">src/</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">src/Components/Legacy/</directory>
+            <directory suffix=".php">src/Components/Legacy/**/</directory>
+            <directory suffix="workflow.php">src/</directory>
+        </exclude>
+        <report>
+            <clover outputFile="build/coverage/clover.xml"/>
+            <html outputDirectory="build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
+</phpunit>

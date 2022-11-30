@@ -1,0 +1,46 @@
+{
+    "interface": {
+        "description": "Create a interface",
+        "prefix": "interface",
+        "body": [
+            "<?php",
+            "",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "/**",
+            " * Describes the component in charge of ${1:doing}.",
+            " */",
+            "interface $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+    "class": {
+        "description": "Create a class",
+        "prefix": "class",
+        "body": [
+            "<?php",
+            "",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "final class $TM_FILENAME_BASE",
+            "{",
+            "\t${0}",
+            "}"
+        ]
+    },
+    "trait": {
+        "description": "Create a trait",
+        "prefix": "trait",
+        "body": [
+            "<?php",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "trait $TM_FILENAME_BASE",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+}

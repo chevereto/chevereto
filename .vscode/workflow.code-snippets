@@ -1,0 +1,35 @@
+{
+    "action": {
+        "description": "Create a Workflow",
+        "prefix": "workflow-return",
+        "body": [
+            "<?php",
+            "",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use function Chevere\\Components\\Workflow\\step;",
+            "use function Chevere\\Components\\Workflow\\workflow;",
+            "use Chevere\\Workflow\\Interfaces\\WorkflowInterface;",
+            "use Chevereto\\Workflow\\Components\\BaseWorkflow;",
+            "",
+            "final class $TM_FILENAME_BASE extends BaseWorkflow",
+            "{",
+            "\tpublic function getWorkflow(): WorkflowInterface",
+            "\t{",
+            "\t\treturn workflow(",
+            "\t\t\tstep: step(",
+            "\t\t\t\t'ActionName',",
+            "\t\t\t\t${2:parameter}: '\\${${3:variable}}',",
+            "\t\t\t)",
+            "\t\t);",
+            "\t}",
+            "}"
+        ]
+    }
+}
+
+
+
+
+{
+    {

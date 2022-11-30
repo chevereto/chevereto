@@ -1,0 +1,37 @@
+{
+    "action": {
+        "description": "Create an action",
+        "prefix": "action",
+        "body": [
+            "<?php",
+            "",
+            "namespace Chevereto\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use Chevere\\Action\\Action;",
+            "use function Chevere\\Components\\Parameter\\parameters;",
+            "use Chevere\\Parameter\\Interfaces\\ArgumentsInterface;",
+            "use Chevere\\Parameter\\Interfaces\\ParametersInterface;",
+            "use Chevere\\Response\\Interfaces\\ResponseInterface;",
+            "",
+            "final class $TM_FILENAME_BASE extends Action",
+            "{",
+            "",
+            "\tpublic function getParameters(): ParametersInterface",
+            "\t{",
+            "\t\treturn ${2:parameters()};",
+            "\t}",
+            "",
+            "\tpublic function getResponseParameters(): ParametersInterface",
+            "\t{",
+            "\t\treturn parameters();",
+            "\t}",
+            "",
+            "\tpublic function run(ArgumentsInterface \\$arguments): ResponseInterface",
+            "\t{",
+            "\t\t$0",
+            "\t\treturn \\$this->getResponse(key: 'value',);",
+            "\t}",
+            "}"
+        ]
+    }
+}
