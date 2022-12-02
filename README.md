@@ -21,7 +21,7 @@ We provide several layers of documentation covering all aspects of our software.
 
 * Software [v4-docs.chevereto.com](https://v4-docs.chevereto.com)
 * Admin [v4-admin.chevereto.com](https://v4-admin.chevereto.com)
-* User [v4-user.chevereto.com](https://v4-admin.chevereto.com)
+* User [v4-user.chevereto.com](https://v4-user.chevereto.com)
 
 ## License
 
