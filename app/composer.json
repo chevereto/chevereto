@@ -14,6 +14,9 @@
         "vendor-dir": "vendor",
         "allow-plugins": {
             "composer/package-versions-deprecated": true
+        },
+        "platform": {
+            "php": "8.0.26"
         }
     },
     "require": {
@@ -29,14 +32,14 @@
         "mobiledetect/mobiledetectlib": "^2.8",
         "mlocati/ip-lib": "^1.17",
         "composer/ca-bundle": "^1.2",
-        "chevere/chevere": "^1.0",
-        "chevere/throwable-handler": "^0.8",
-        "chevere/xr": "^0.6",
-        "chevere/xr-server": "^0.6",
-        "chevere/workflow": "^0.6.x-dev",
+        "chevere/chevere": "^2.0",
+        "chevere/throwable-handler": "^0.9",
+        "chevere/xr": "^0.7",
+        "chevere/xr-server": "^0.7",
+        "chevere/workflow": "^0.7.0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-qrcode": "^3.0",
-        "chevere/cache": "^0.3",
+        "chevere/cache": "^0.4",
         "phpseclib/bcmath_compat": "^2.0",
         "chillerlan/php-qrcode": "^4.3",
         "firebase/php-jwt": "^6.3",

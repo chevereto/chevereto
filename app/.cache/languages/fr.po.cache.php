@@ -13,7 +13,7 @@ $translation_header = array (
 );
 $translation_plural = array (
   'nplurals' => 2,
-  'function' => '($n != 1)',
+  'function' => '($n > 1)',
 );
 $translation_table = [
 	"Invalid email" => [
