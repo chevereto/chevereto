@@ -53,7 +53,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build dependencies
-        run: composer install --no-progress --ignore-platform-reqs
+        run: composer install --no-progress
         working-directory: app
       - name: Build Chevereto
         run: |

@@ -65,7 +65,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
-        run: composer install --no-progress --ignore-platform-reqs
+        run: composer install --no-progress
         working-directory: app
       - name: Run tests with phpunit
         run: app/vendor/bin/phpunit -c app/phpunit-report.xml --coverage-clover=app/build/coverage/clover.xml
