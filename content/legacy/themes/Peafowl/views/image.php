@@ -39,7 +39,7 @@ if (!defined('ACCESS') || !ACCESS) {
         ?>
         <div id="image-viewer-loader" data-size="<?php echo Handler::var('image')['size']; ?>"><?php if (Handler::var('image')['is_animated']) {
             ?><span class="btn-icon icon fas fa-play-circle"></span><?php
-        } ?><span class="btn-text"><?php
+        } ?><span><?php
             switch (true) {
                 case Handler::var('image')['is_animated']:
                     _se('Play GIF');
@@ -65,7 +65,6 @@ if (!defined('ACCESS') || !ACCESS) {
     }
     ?>
 </div>
-<?php show_theme_inline_code('snippets/image.js'); ?>
 <?php
 show_banner('image_after_image-viewer', !Handler::var('image')['nsfw']);
 ?>
@@ -93,6 +92,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
 <?php
 }
 ?>
+<?php show_theme_inline_code('snippets/image.js'); ?>
 <div class="content-width margin-top-10">
     <div class="header header-content margin-bottom-10 margin-top-10">
         <div class="header-content-left">
@@ -104,14 +104,16 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                     <div class="user-image default-user-image"><span class="icon fas fa-user-circle"></span></div>
                 </div>
 <?php } ?>
-
+                <div class="breadcrum-item" data-contains="cta-album">
+                    <?php echo Handler::var('image')['album']['cta_html'] ?? ''; ?>
+                </div>
             </div>
         </div>
         <div class="header-content-right breaks-ui">
         <?php
                     if (Handler::cond('owner') || Handler::cond('content_manager')) {
                         ?>
-                    <a data-action="edit" title="E" class="btn btn-small default" data-modal="edit"><span class="icon fas fa-edit"></span><span class="phone-hide margin-left-5"><?php _se('Edit'); ?></span></a>
+                    <a data-action="edit" title="<?php _se('Edit'); ?> (E)" class="btn btn-small default" data-modal="edit"><span class="icon fas fa-edit"></span></a>
                 <?php
                 if (!Handler::var('image')['is_approved'] && Handler::cond('content_manager')) { ?>
                     <a class="btn btn-small default" data-confirm="<?php _se("Do you really want to approve this image? The image will go public if you approve it."); ?>" data-submit-fn="CHV.fn.submit_resource_approve" data-ajax-deferred="CHV.fn.complete_resource_approve" data-ajax-url="<?php echo get_base_url('json'); ?>"><span class="icon fas fa-check-double"></span><span class="phone-hide margin-left-5"><?php _se('Approve'); ?></span></a>
@@ -119,38 +121,38 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 }
                         if (Handler::cond('allowed_to_delete_content')) {
                             ?>
-                    <a data-action="delete" title="Del" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this image? This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url('json'); ?>"><span class="icon fas fa-trash-alt"></span><span class="phone-hide margin-left-5"><?php _se('Delete'); ?></span></a>
+                    <a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %s? This can't be undone.", _s('image')); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url('json'); ?>"><span class="icon fas fa-trash-alt"></span></a>
             <?php
                         }
                     }
             ?>
             <?php if (getSetting('theme_download_button')) {
                 ?>
-                <a data-action="download" href="<?php echo Handler::var('image')['url']; ?>" download="<?php echo Handler::var('image')['filename']; ?>" class="btn btn-small default btn-download" rel="tooltip" title="<?php _se('Download'); ?>"><span class="btn-icon fas fa-download"></span></a>
+                <a data-action="download" href="<?php echo Handler::var('image')['url']; ?>" download="<?php echo Handler::var('image')['filename']; ?>" class="btn btn-small default btn-download" title="<?php _se('Download'); ?>"><span class="btn-icon fas fa-download"></span></a>
             <?php
             } ?>
             <?php if (isset(Handler::var('image')['album']['id']) && (Handler::cond('owner') || Handler::cond('content_manager'))) {
                 ?>
-                <a class="btn-album-cover" data-album-id="<?php echo Handler::var('image')['album']['id_encoded']; ?>" data-id="<?php echo Handler::var('image')['id_encoded']; ?>" data-cover="<?php echo (int) Handler::cond('album_cover'); ?>" title="H">
-                    <span data-action="album-cover" class="btn btn-small default btn-album-is-cover" rel="tooltip" title="<?php _se('This is the album cover'); ?>"><span class="btn-icon fas fa-check-square"></span><span class="btn-text phone-hide"><?php _se('Cover'); ?></span></span>
-                    <span data-action="album-cover" class="btn btn-small default btn-album-not-cover"><span class="btn-icon far fa-square"></span><span class="btn-text phone-hide"><?php _se('Cover'); ?></span></span>
+                <a class="btn-album-cover" data-album-id="<?php echo Handler::var('image')['album']['id_encoded']; ?>" data-id="<?php echo Handler::var('image')['id_encoded']; ?>" data-cover="<?php echo (int) Handler::cond('album_cover'); ?>" title="<?php _se('Cover'); ?> (H)">
+                    <span data-action="album-cover" class="btn btn-small default btn-album-is-cover" rel="tooltip" title="<?php _se('This is the album cover'); ?>"><span class="btn-icon fas fa-check-square"></span></span>
+                    <span data-action="album-cover" class="btn btn-small default btn-album-not-cover"><span class="btn-icon far fa-square"></span></span>
                 </a>
+            <?php
+            } ?>
+            <?php if (getSetting('theme_show_social_share')) {
+                ?>
+                <a class="btn btn-small default" data-action="share" title="<?php _se('Share'); ?> (S)"><span class="btn-icon fas fa-share-alt"></span></a>
             <?php
             } ?>
             <?php if (getSetting('enable_likes')) {
                 ?>
-                <a class="btn-like" title="L" data-type="image" data-id="<?php echo Handler::var('image')['id_encoded']; ?>" data-liked="<?php echo (int) (Handler::var('image')['liked'] ?? false); ?>">
+                <a class="btn-like" title="<?php _se('Like'); ?> (L)" data-type="image" data-id="<?php echo Handler::var('image')['id_encoded']; ?>" data-liked="<?php echo (int) (Handler::var('image')['liked'] ?? false); ?>">
                     <span data-action="like" class="btn btn-small default btn-liked" rel="tooltip" title="<?php _se('You like this'); ?>"><span class="btn-icon fas fa-heart"></span><span class="btn-text" data-text="likes-count"><?php echo (int) (Handler::var('image')['likes'] ?? false); ?></span></span>
                     <span data-action="like" class="btn btn-small default btn-unliked"><span class="btn-icon far fa-heart"></span><span class="btn-text" data-text="likes-count"><?php echo (int) (Handler::var('image')['likes'] ?? false); ?></span></span>
                 </a>
             <?php
             }
             ?>
-            <?php if (getSetting('theme_show_social_share')) {
-                ?>
-                <a class="btn btn-small default" data-action="share" title="S"><span class="btn-icon fas fa-share-alt"></span><span class="btn-text phone-hide"><?php _se('Share'); ?></span></a>
-            <?php
-            } ?>
         </div>
     </div>
     <?php
@@ -196,7 +198,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
         if (isset(Handler::var('image')['album']['id']) && (Handler::var('image')['album']['privacy'] !== 'private_but_link' || Handler::cond('owner') || Handler::cond('content_manager'))) {
             $album_link = '<a href="' . Handler::var('image')['album']['url'] . '"' . (Handler::var('image')['album']['name'] !== Handler::var('image')['album']['name_truncated'] ? (' title="' . Handler::var('image')['album']['name_html'] . '"') : null) . '><i class="fas fa-images margin-right-5"></i>' . Handler::var('image')['album']['name_truncated_html'] . '</a>';
             if (isset($category_link)) {
-                echo _s('Added to %a and categorized in %c', ['%a' => $album_link, '%c' => $category_link]);
+                echo _s('Added to %a under %s %c', ['%a' => $album_link, '%s' => $category_link, '%c' => _s('category')]);
             } else {
                 echo _s('Added to %s', $album_link);
             }
@@ -357,7 +359,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
 if (Handler::cond('owner') || Handler::cond('content_manager')) {
         ?>
     <div data-modal="form-modal" class="hidden" data-submit-fn="CHV.fn.submit_image_edit" data-before-fn="CHV.fn.before_image_edit" data-ajax-deferred="CHV.fn.complete_image_edit" data-ajax-url="<?php echo get_base_url('json'); ?>">
-        <span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit'); ?></span>
+        <span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit %s', _s('image')); ?></span>
         <div class="modal-form">
             <?php
             include_theme_file('snippets/form_image'); ?>

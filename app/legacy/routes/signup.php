@@ -195,9 +195,7 @@ return function (Handler $handler) {
                         ];
                         $mail['subject'] = _s('Confirmation required at %s', getSettings()['website_name']);
                         $mail['message'] = get_email_body_str('mails/account-confirm');
-                        if (send_mail($POST['email'], $mail['subject'], $mail['message'])) {
-                            $is_process_done = true;
-                        }
+                        send_mail($POST['email'], $mail['subject'], $mail['message']);
                     } else {
                         $user = User::getSingle($inserted_user, 'id');
                         $logged_user = Login::login($user['id']);
@@ -207,9 +205,7 @@ return function (Handler $handler) {
                             global $theme_mail;
                             $theme_mail = [
                                 'user' => $logged_user,
-                                'link' => $logged_user['url']
                             ];
-
                             $mail['subject'] = _s('Welcome to %s', getSetting('website_name'));
                             $mail['message'] = get_email_body_str('mails/account-welcome');
                             send_mail($logged_user['email'], $mail['subject'], $mail['message']);

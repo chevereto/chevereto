@@ -5,6 +5,6 @@
 	</div>
 </div>
 <div class="list-item-image-tools --bottom --right">
-    %tpl_list_item/item_share%
     %tpl_list_item/item_like%
+    %tpl_list_item/item_share%
 </div>

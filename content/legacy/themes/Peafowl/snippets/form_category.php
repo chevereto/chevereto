@@ -14,7 +14,7 @@ if (!defined('ACCESS') || !ACCESS) {
         $categories = Handler::var('categories');
         array_unshift($categories, [
             'id' => null,
-            'name' => _s('Select category'),
+            'name' => _s('Select %s', _s('category')),
             'url_key' => null,
             'url' => null
         ]);

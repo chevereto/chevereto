@@ -1248,7 +1248,7 @@ function unaccent_string(string $string): string
     return $string;
 }
 
-function safe_html(mixed $var, int $flag = ENT_QUOTES): string|array|null
+function safe_html(mixed $var, int $flag = ENT_QUOTES, array $skip = []): string|array|null
 {
     if (!is_array($var)) {
         return $var === null
@@ -1257,8 +1257,13 @@ function safe_html(mixed $var, int $flag = ENT_QUOTES): string|array|null
     }
     $safe_array = [];
     foreach ($var as $k => $v) {
+        if (in_array($k, $skip, true)) {
+            $safe_array[$k] = $v;
+
+            continue;
+        }
         $safe_array[$k] = is_array($v)
-            ? safe_html($v)
+            ? safe_html($v, $flag, $skip)
             : (
                 $v === null
                     ? null

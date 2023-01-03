@@ -100,7 +100,6 @@ if (!defined('ACCESS') || !ACCESS) {
             $open_graph_extend = [
                 'type' => 'profile',
                 'title' => Handler::var('user')['name'],
-                // 'description'	=> sprintf(is_user_images() ? _s("%s's Images") : _s("%s's Albums"), _var('user')["name_short"]),
                 'image' => isset(Handler::var('user')['avatar']) ? Handler::var('user')['avatar']['url'] : '',
             ];
 

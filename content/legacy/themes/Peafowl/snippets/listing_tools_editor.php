@@ -40,8 +40,8 @@ foreach ($tabs as $tab) {
 					<?php
                         if (in_array(get_route_name(), ['user', 'album']) and (array_key_exists('tools_available', $tab) ? in_array('album', $tab['tools_available']) : true)) {
                             ?>
-					<li class="with-icon"><a data-action="create-album"><span class="btn-icon fas fa-images"></span><?php _se('Create album'); ?><kbd>A</kbd></a></li>
-					<li class="with-icon"><a data-action="move"><span class="btn-icon fas fa-exchange-alt"></span><?php _se('Move to album'); ?><kbd>M</kbd></a></li>
+					<li class="with-icon"><a data-action="create-album"><span class="btn-icon fas fa-images"></span><?php _se('Create %s', _s('album')); ?><kbd>A</kbd></a></li>
+					<li class="with-icon"><a data-action="move"><span class="btn-icon fas fa-exchange-alt"></span><?php _se('Move to %s', _s('album')); ?><kbd>M</kbd></a></li>
 					<?php
                         } ?>
                     <?php
@@ -50,7 +50,7 @@ foreach ($tabs as $tab) {
 					<?php
                         if ((array_key_exists('tools_available', $tab) ? in_array('category', $tab['tools_available']) : true) and Handler::var('categories')) {
                             ?>
-					<li class="with-icon"><a data-action="assign-category"><span class="btn-icon fas fa-columns"></span><?php _se('Assign category'); ?><kbd>C</kbd></a></li>
+					<li class="with-icon"><a data-action="assign-category"><span class="btn-icon fas fa-columns"></span><?php _se('Assign %s', _s('category')); ?><kbd>C</kbd></a></li>
 					<?php
                         } ?>
 					<?php

@@ -10,7 +10,7 @@ if (!defined('ACCESS') || !ACCESS) {
 } ?>
 <?php echo include_theme_file('mails/header'); ?>
 
-<?php _se('We received a request to change the email of your <a href="%u">%n</a> account at %w.', ['%u' => get_global('theme_mail')['user']['url'], '%n' => get_global('theme_mail')['user']['name'], '%w' => getSetting('website_name')]); ?>
+<?php _se('We received a request to change the email of your <a href="%u">%n</a> account at %w.', ['%u' => get_global('theme_mail')['user']['public_url'], '%n' => get_global('theme_mail')['user']['name'], '%w' => getSetting('website_name')]); ?>
 <br><br>
 <?php _se('To complete the process you must <a href="%s">activate your email</a>.', get_global('theme_mail')['link']); ?>
 <br><br>

@@ -55,6 +55,10 @@ class L10n
 
     protected static string $forced_locale = '';
 
+    protected static array $override = [];
+
+    protected static array $overridePlural = [];
+
     public static function cacheFilesystemLocales(): array
     {
         $directory = new DirectoryIterator(PATH_APP_LANGUAGES);
@@ -84,7 +88,7 @@ class L10n
             return [];
         }
 
-        return $file->raw();
+        return $file->get();
     }
 
     public static function bindEnabled()
@@ -236,14 +240,42 @@ class L10n
         self::$translation_table = self::$gettext->translation_table;
     }
 
+    public static function setOverride(string $key, string $msg): void
+    {
+        self::$override[$key] = $msg;
+        self::$override[mb_strtolower($key)] = mb_strtolower($msg);
+    }
+
+    public static function setPluralOverride(
+        string $key,
+        string $msg,
+        string $msg_plural,
+    ): void {
+        self::$overridePlural[$key] = [$msg, $msg_plural];
+        self::$overridePlural[mb_strtolower($key)] = [mb_strtolower($msg), mb_strtolower($msg_plural)];
+    }
+
     public static function gettext(string $msg): string
     {
-        return self::getGettext()->gettext($msg) ?? $msg;
+        return self::$override[$msg]
+          ?? self::getGettext()->gettext($msg)
+          ?? $msg;
     }
 
     public static function ngettext(string $msg, string $msg_plural, int $count): string
     {
-        return self::getGettext()->ngettext($msg, $msg_plural, $count) ?? $msg;
+        $overrideMsg = self::$overridePlural[$msg] ?? null;
+        if ($overrideMsg !== null) {
+            $msg = $overrideMsg[0];
+            $msg_plural = $overrideMsg[1];
+            $translated = $count == 1 ? $msg : $msg_plural;
+            $index_id = self::getGettext()->getPluralKey($count);
+
+            return $overrideMsg[$index_id] ?? $translated;
+        }
+
+        return self::getGettext()->ngettext($msg, $msg_plural, $count)
+          ?? $msg;
     }
 
     public static function setStatic(string $var, mixed $value): void

@@ -562,7 +562,7 @@ class Listing
         if ($db->rowCount() > $this->limit) {
             array_pop($this->output);
         }
-        $this->output = safe_html($this->output);
+        $this->output = safe_html(var: $this->output, skip: ['album_cta']);
         $this->count = count($this->output);
         $this->nsfw = false;
         $this->output_assoc = [];

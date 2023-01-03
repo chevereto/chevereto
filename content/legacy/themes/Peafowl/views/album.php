@@ -35,18 +35,21 @@ if (!defined('ACCESS') || !ACCESS) {
                 <?php
                 }
                 ?>
+                <div class="breadcrum-item" data-contains="cta-album">
+                <?php echo Handler::var('album')['cta_html']; ?>
+                </div>
 			</div>
 		</div>
 		<div class="header-content-right breaks-ui">
         <?php
                 if (Handler::cond('owner') || Handler::cond('content_manager')) {
                     ?>
-                    <a data-action="edit" title="E" class="btn btn-small default" data-modal="edit"><span class="icon fas fa-edit"></span><span class="phone-hide margin-left-5"><?php _se('Edit'); ?></span></a>
-                    <a data-action="sub-album" title="J" class="btn btn-small default" data-modal="edit" data-target="new-sub-album"><span class="icon fas fa-level-down-alt"></span><span class="phone-hide margin-left-5"><?php _se('Sub album'); ?></span></a>
+                    <a data-action="edit" title="<?php _se('Edit'); ?> (E)" class="btn btn-small default" data-modal="edit"><span class="icon fas fa-edit"></span></a>
+                    <a data-action="sub-album" title="<?php _se('Sub album'); ?> (J)" class="btn btn-small default" data-modal="edit" data-target="new-sub-album"><span class="icon fas fa-level-down-alt"></span></a>
 					<?php
                     if (Handler::cond('allowed_to_delete_content')) {
                         ?>
-							<a data-action="delete" title="Del" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this album and all of its images? This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span><span class="phone-hide margin-left-5"><?php _se('Delete'); ?></span></a>
+							<a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %a and all of its %i? This can't be undone.", ['%a' => _s('album'), '%i' => _s('images')]); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span></a>
 					<?php
                     } ?>
 				<?php
@@ -56,29 +59,29 @@ if (!defined('ACCESS') || !ACCESS) {
             if (Handler::cond('owner')) {
                 if (getSetting('upload_gui') == 'js' && getSetting('homepage_style') !== 'route_upload') {
                     $createAlbumTag = 'button';
-                    $createAlbumAttr = 'data-trigger="anywhere-upload-input" data-action="upload-to-album" title="P"';
+                    $createAlbumAttr = 'data-trigger="anywhere-upload-input" data-action="upload-to-album" title="' . _s('Upload to album') . ' (P)"';
                 } else {
                     $createAlbumTag = 'a';
                     $createAlbumAttr = 'href="' . get_base_url(sprintf('upload/?toAlbum=%s', Handler::var('album')['id_encoded'])) . '"';
                 } ?>
-				<<?php echo $createAlbumTag; ?> class="btn btn-small default" <?php echo $createAlbumAttr; ?>><span class="btn-icon fas fa-cloud-upload-alt"></span><span class="btn-text phone-hide"><?php _se('Upload to album'); ?></span></<?php echo $createAlbumTag; ?>>
+				<<?php echo $createAlbumTag; ?> class="btn btn-small default" <?php echo $createAlbumAttr; ?>><span class="btn-icon fas fa-cloud-upload-alt"></span></<?php echo $createAlbumTag; ?>>
+			<?php
+            }
+            ?>
+            <?php
+            if (getSetting('theme_show_social_share')) {
+                ?>
+				<a class="btn btn-small default" data-action="share" title="<?php _se('Share'); ?> (S)"><span class="btn-icon fas fa-share-alt"></span></a>
 			<?php
             }
             ?>
             <?php
             if (getSetting('enable_likes')) {
                 ?>
-				<a title="L" class="btn-like" data-type="album" data-id="<?php echo Handler::var('album')['id_encoded']; ?>" data-liked="<?php echo (int) (Handler::var('album')['liked'] ?? '0'); ?>">
+				<a title="<?php _se('Like'); ?> (L)" class="btn-like" data-type="album" data-id="<?php echo Handler::var('album')['id_encoded']; ?>" data-liked="<?php echo (int) (Handler::var('album')['liked'] ?? '0'); ?>">
 					<span data-action="like" class="btn btn-small default btn-liked" rel="tooltip" title="<?php _se("You like this"); ?>"><span class="btn-icon fas fa-heart"></span><span class="btn-text" data-text="likes-count"><?php echo Handler::var('album')['likes']; ?></span></span>
-					<span class="btn btn-small default btn-unliked"><span data-action="like" class="btn-icon far fa-heart"></span><span class="btn-text" data-text="likes-count"><?php echo Handler::var('album')['likes']; ?></span></span>
+					<span class="btn btn-small default btn-unliked" data-action="like"><span class="btn-icon far fa-heart"></span><span class="btn-text" data-text="likes-count"><?php echo Handler::var('album')['likes']; ?></span></span>
 				</a>
-			<?php
-            }
-            ?>
-			<?php
-            if (getSetting('theme_show_social_share')) {
-                ?>
-				<a class="btn btn-small default" data-action="share" title="S"><span class="btn-icon fas fa-share-alt"></span><span class="btn-text phone-hide"><?php _se('Share'); ?></span></a>
 			<?php
             }
             ?>
@@ -132,7 +135,7 @@ if (!defined('ACCESS') || !ACCESS) {
 						<div class="content-listing-loading"></div>
 						<div id="embed-codes" class="input-label margin-bottom-0 margin-top-0 soft-hidden">
 							<label for="album-embed-toggle"><?php _se('Embed codes'); ?></label>
-							<div class="c7 margin-bottom-10">
+							<div class="c8 margin-bottom-10">
 								<select name="album-embed-toggle" id="album-embed-toggle" class="text-input" data-combo="album-embed-toggle-combo">
 									<?php
                                     foreach (get_global('embed_share_tpl') as $key => $value) {
@@ -175,13 +178,19 @@ if (!defined('ACCESS') || !ACCESS) {
 		</div>
 	</div>
 </div>
-
+<?php if (Handler::cond('content_manager')) { ?>
+<script>
+    $(function() {
+        CHV.fn.ctaForm.enable = <?php echo Handler::var('album')['cta_enable']; ?>;
+        CHV.fn.ctaForm.array = <?php echo Handler::var('album')['cta']; ?>;
+    });
+</script>
+<?php
+            } ?>
 <?php
 if (Handler::cond('content_manager') || Handler::cond('owner')) {
-                ?>
-    <?php include_theme_file('snippets/modal_edit_album'); ?>
-    <?php include_theme_file('snippets/modal_create_sub_album'); ?>
-<?php
+                include_theme_file('snippets/modal_edit_album');
+                include_theme_file('snippets/modal_create_sub_album');
             }
 ?>
 <?php if (Handler::cond('content_manager') and isset(request()["deleted"])) { ?>

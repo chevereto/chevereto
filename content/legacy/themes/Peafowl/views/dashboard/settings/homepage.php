@@ -41,7 +41,7 @@ echo read_the_docs_settings('homepage', _s('Homepage')); ?>
                 <?php if (count(Settings::get('homepage_cover_images')) > 1) {
                 ?>
                     <div class="margin-top-10 margin-bottom-10">
-                        <a class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this image? This can't be undone."); ?>" href="<?php echo get_base_url('dashboard/settings/homepage?action=delete-cover&cover=' . $cover_index); ?>"><i class="fas fa-trash-alt margin-right-5"></i><?php _se('Delete %s', $coverName); ?></a>
+                        <a class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete? This can't be undone."); ?>" href="<?php echo get_base_url('dashboard/settings/homepage?action=delete-cover&cover=' . $cover_index); ?>"><i class="fas fa-trash-alt margin-right-5"></i><?php _se('Delete %s', $coverName); ?></a>
                     </div>
                 <?php
             } ?>

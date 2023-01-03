@@ -51,6 +51,31 @@ class Settings
         'xr_key',
     ];
 
+    public const SEMANTICS = [
+        [
+            'semantics_album' => 'Album',
+            'semantics_albums' => 'Albums',
+        ],
+        [
+            'semantics_image' => 'Image',
+            'semantics_images' => 'Images',
+        ],
+        [
+            'semantics_user' => 'User',
+            'semantics_users' => 'Users',
+        ],
+        [
+            'semantics_category' => 'Category',
+            'semantics_categories' => 'Categories',
+        ],
+        [
+            'semantics_explore' => 'Explore',
+        ],
+        [
+            'semantics_discovery' => 'Discovery',
+        ],
+    ];
+
     public function __construct()
     {
         $settings = [];

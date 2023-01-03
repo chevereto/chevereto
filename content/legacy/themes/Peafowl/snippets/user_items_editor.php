@@ -11,7 +11,7 @@ if (!defined('ACCESS') || !ACCESS) {
 global $modal_dealing_with, $disable_album_toggle;
 $user_items_editor = Handler::var('user_items_editor') ?? false;
 $modal_dealing_with = $user_items_editor["type"] ?? 'none';
-
+$modal_dealing_with_type = $modal_dealing_with == 'images' ? 'image' : 'album';
 if (!in_array($modal_dealing_with, ["images", "albums"])) {
     $modal_dealing_with = "images";
 }
@@ -21,7 +21,7 @@ if ($user_items_editor !== false) {
     <span class="modal-box-title">
 	<?php
         echo '<i class="fas fa-edit"></i> ';
-    _se('Edit');
+    _se('Edit %s', _s($modal_dealing_with_type));
     if ($modal_dealing_with != 'images') {
         $disable_album_toggle = true;
     } ?>
@@ -29,17 +29,14 @@ if ($user_items_editor !== false) {
     <div class="image-preview"></div>
     <div class="modal-form">
 		<?php
-            include_theme_file('snippets/form_' . ($modal_dealing_with == 'images' ? 'image' : 'album')); ?>
+            include_theme_file('snippets/form_' . $modal_dealing_with_type); ?>
     </div>
 </div>
 
 <div data-modal="form-create-album" class="hidden">
-	<span class="modal-box-title"><i class="far fa-images"></i> <?php _se('Create album'); ?></span>
+	<span class="modal-box-title"><i class="far fa-images"></i> <?php _se('Create %s', _s('album')); ?></span>
     <div class="image-preview"></div>
     <div class="modal-form">
-		<div id="move-existing-album" data-view="switchable" class="c7 input-label soft-hidden">
-			<?php include_theme_file("snippets/form_move_existing_album"); ?>
-		</div>
 		<div id="move-new-album" data-content="form-new-album" data-view="switchable">
         	<?php
                 include_theme_file("snippets/form_album"); ?>
@@ -48,30 +45,23 @@ if ($user_items_editor !== false) {
 </div>
 
 <div data-modal="form-move-single" class="hidden">
-	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to album'); ?></span>
+	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _s('album')); ?></span>
     <div class="image-preview"></div>
 	<div class="modal-form">
-		<div id="move-existing-album" data-view="switchable" class="c7 input-label">
+		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
 			<?php include_theme_file("snippets/form_move_existing_album"); ?>
-		</div>
-		<div id="move-new-album" data-content="form-new-album" data-view="switchable" class="soft-hidden">
-			<?php
-                $disable_album_toggle = false;
-    include_theme_file("snippets/form_album"); ?>
 		</div>
 	</div>
 </div>
 
 <div data-modal="form-move-multiple" class="hidden">
-	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to album'); ?></span>
+	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _s('album')); ?></span>
     <div class="image-preview"></div>
 	<div class="modal-form">
-		<div id="move-existing-album" data-view="switchable" class="c7 input-label">
+		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
 			<?php include_theme_file("snippets/form_move_existing_album"); ?>
 		</div>
-		<div id="move-new-album" data-content="form-new-album" data-view="switchable" class="soft-hidden">
-			<?php include_theme_file("snippets/form_album"); ?>
-		</div>
+
 	</div>
 </div>
 
@@ -79,10 +69,10 @@ if ($user_items_editor !== false) {
 } // full editor?>
 
 <div data-modal="form-assign-category" class="hidden">
-	<span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Assign category'); ?></span>
+	<span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Assign %s', _s('category')); ?></span>
 	<?php if (Handler::var('categories')) { ?>
     <div class="image-preview"></div>
-	<p><?php _se('All the selected images will be assigned to this category.'); ?></p>
+	<p><?php _se('All the selected images will be assigned to this %s.', _s('category')); ?></p>
 	<div class="input-label c8">
 		<?php include_theme_file('snippets/form_category'); ?>
 	</div>

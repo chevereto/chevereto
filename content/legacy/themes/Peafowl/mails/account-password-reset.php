@@ -9,7 +9,7 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 echo include_theme_file('mails/header');
 
-_se('We received a request to reset the password for your <a href="%u">%n</a> account.', ['%u' => get_global('theme_mail')['user']['url'], '%n' => get_global('theme_mail')['user']['name']]); ?>
+_se('We received a request to reset the password for your <a href="%u">%n</a> account.', ['%u' => get_global('theme_mail')['user']['public_url'], '%n' => get_global('theme_mail')['user']['name']]); ?>
 <br><br>
 <?php _se('To reset your password <a href="%s">follow this link</a>.', get_global('theme_mail')['link']); ?>
 <br><br>

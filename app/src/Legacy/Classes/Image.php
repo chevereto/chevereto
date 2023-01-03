@@ -718,7 +718,7 @@ class Image
             if ($do_dupe_check && self::isDuplicatedUpload($image_upload['uploaded']['fileinfo']['md5'])) {
                 throw new Exception(_s('Duplicated upload'), 102);
             }
-            $image_ratio = $image_upload['uploaded']['fileinfo']['width'] / $image_upload['uploaded']['fileinfo']['height'];
+            $image_ratio = $image_upload['uploaded']['fileinfo']['ratio'];
             $must_resize = false;
             $image_max_size_cfg = [
                 'width' => Settings::get('upload_max_image_width') ?: $image_upload['uploaded']['fileinfo']['width'],
@@ -1044,7 +1044,7 @@ class Image
                 $album = isset(session()[$session_handle])
                     ? Album::getSingle(decodeID(session()[$session_handle]))
                     : null;
-                if (!empty($album) || !in_array($album['privacy'], $privacyTargets)) {
+                if (!empty($album) || !in_array($album['privacy'] ?? '', $privacyTargets)) {
                     $inserted_album = Album::insert([
                         'name' => _s('Private upload') . ' ' . datetime('Y-m-d'),
                         'user_id' => $user['id'],

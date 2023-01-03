@@ -58,6 +58,12 @@ class Gettext
 
     private $is_cached = false;
 
+    private array $options;
+
+    private string $parse_method;
+
+    private string $cache_file;
+
     public function __construct($options = [])
     {
         $this->options = array_merge(static::$default_options, (array)$options);
@@ -105,18 +111,14 @@ class Gettext
         if (!$this->parsed) {
             $this->parseFile();
         }
-
         if ($this->mustFixQuotes()) {
             $msg = $this->fixQuotes($msg, 'escape');
         }
-
         $translated = $msg;
-
         if (array_key_exists($msg, $this->translation_table)) {
             $translated = $this->translation_table[$msg][0] ?? null;
             $translated = !empty($translated) ? $translated : $msg;
         }
-
         if ($this->mustFixQuotes()) {
             $translated = $this->fixQuotes($translated, 'unescape');
         }
@@ -144,28 +146,30 @@ class Gettext
         if (!$this->parsed) {
             $this->parseFile();
         }
-
         if ($this->mustFixQuotes()) {
             $msg = $this->fixQuotes($msg, 'escape');
             $msg_plural = $this->fixQuotes($msg_plural, 'escape');
         }
-
         $translated = $count == 1 ? $msg : $msg_plural; // Failover
-
         if (array_key_exists($msg, $this->translation_table)) {
-            $plural_index = $this->getPluralIndex($count);
-            $index_id = $plural_index !== false ? $plural_index : ($count - 1);
+            $index_id = $this->getPluralKey($count);
             $table = $this->translation_table[$msg];
             if (array_key_exists($index_id, $table)) {
                 $translated = $table[$index_id];
             }
         }
-
         if ($this->mustFixQuotes()) {
             $translated = $this->fixQuotes($translated, 'unescape');
         }
 
         return $translated;
+    }
+
+    public function getPluralKey(int $count): int
+    {
+        $plural_index = $this->getPluralIndex($count);
+
+        return $plural_index !== false ? $plural_index : ($count - 1);
     }
 
     /**

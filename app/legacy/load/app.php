@@ -9,5 +9,5 @@
  * file that was distributed with this source code.
  */
 
-const APP_VERSION = '4.0.5';
+const APP_VERSION = '4.0.6';
 const APP_VERSION_AKA = 'macanudo';

@@ -238,7 +238,7 @@ return function (Handler $handler) {
     ], $getParams);
     foreach ($tabsSubAlbum as $array) {
         if ($array['label'] == 'AZ') {
-            $array['label'] = _s('Sub albums');
+            $array['label'] = _s('Sub %s', _s('albums'));
             $array['id'] = 'tab-sub';
             $array['url'] = $album['url'] . '/sub';
             $tabs[] = $array;

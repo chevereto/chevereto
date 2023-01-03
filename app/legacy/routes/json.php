@@ -411,6 +411,9 @@ return function (Handler $handler) {
                     'storage' => ['name', 'bucket', 'region', 'url', 'server', 'capacity', 'is_https', 'is_active', 'api_id', 'key', 'secret', 'account_id', 'account_name'],
                     'ip_ban' => ['ip', 'expires', 'message'],
                 ];
+                if (Handler::cond('content_manager')) {
+                    array_push($allowed_to_edit['album'], 'cta_enable', 'cta');
+                }
                 $allowed_to_edit['images'] = $allowed_to_edit['image'];
                 $allowed_to_edit['albums'] = $allowed_to_edit['album'];
                 if ($editing['new_album']) {

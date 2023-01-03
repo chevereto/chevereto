@@ -12,18 +12,18 @@ if (!defined('ACCESS') || !ACCESS) {
 	<?php
         $label = 'form-album-name';
     ?>
-    <label for="<?php echo $label; ?>"><?php _se('Album name'); ?></label>
-    <input type="text" name="<?php echo $label; ?>" class="text-input" value="" placeholder="<?php _se('Album name'); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
+    <label for="<?php echo $label; ?>"><?php _se('Name'); ?></label>
+    <input type="text" name="<?php echo $label; ?>" class="text-input" value="" placeholder="<?php _se('Unnamed %s', _s('album')); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
 </div>
 <div class="input-label">
-	<label for="form-album-description"><?php _se('Album description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-	<textarea id="form-album-description" name="form-album-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this album'); ?>"></textarea>
+	<label for="form-album-description"><?php _se('Description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
+	<textarea id="form-album-description" name="form-album-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _s('album')); ?>"></textarea>
 </div>
 <?php if (getSetting('website_privacy_mode') == 'public' or (getSetting('website_privacy_mode') == 'private' and getSetting('website_content_privacy_mode') == 'default')) {
         ?>
 <div class="input-label overflow-auto">
-    <div class="c7 grid-columns">
-		<label for="form-privacy"><?php _se('Album privacy'); ?></label>
+    <div class="c8 grid-columns">
+		<label for="form-privacy"><?php _se('Privacy'); ?></label>
 		<select name="form-privacy" id="form-privacy" class="text-input" data-combo="form-privacy-combo" rel="template-tooltip" data-tiptip="right" data-title="<?php _se('Who can view this content'); ?>">
 			<?php
                 $permissions = [
@@ -44,8 +44,8 @@ if (!defined('ACCESS') || !ACCESS) {
 <div id="form-privacy-combo">
 	<div data-combo-value="password" class="switch-combo soft-hidden">
 		<div class="input-label overflow-auto">
-			<div class="c7 grid-columns">
-				<label for="form-album-password"><?php _se('Album password'); ?></label>
+			<div class="c8 grid-columns">
+				<label for="form-album-password"><?php _se('Password'); ?></label>
 				<input type="text" name="form-album-password" class="text-input" value="" placeholder="<?php _se('Set password'); ?>">
 			</div>
 		</div>

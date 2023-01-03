@@ -29,7 +29,9 @@ use function Chevereto\Legacy\send_mail;
 use function Chevereto\Legacy\time_elapsed_string;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
+use function Emoji\detect_emoji;
 use Exception;
+use Throwable;
 
 class Album
 {
@@ -180,7 +182,7 @@ class Album
             );
         }
         if (!isset($values['name'])) {
-            $values['name'] = _s('Untitled') . ' ' . datetime();
+            $values['name'] = _s('Unnamed') . ' ' . datetime();
         }
         $privacyOpts = ['public', 'password', 'private_but_link'];
         if (Login::isLoggedUser()) {
@@ -383,7 +385,7 @@ class Album
             ? encodeID((int) $album['id'])
             : null;
         if (!isset($album['name']) && isset($user['id'])) {
-            $album['name'] = _s("%s's images", $user['username']);
+            $album['name'] = User::getStreamName($user['username']);
         }
         if (!isset($album['id'])) {
             $album['url'] = $user !== [] ? User::getUrl($user['username']) : null;
@@ -456,6 +458,38 @@ class Album
         $album['date_fixed_peer'] = Login::isLoggedUser()
             ? datetimegmt_convert_tz($album['date_gmt'], Login::getUser()['timezone'])
             : $album['date_gmt'];
+        $ctaArray = [];
+        if ($album['cta_enable'] ?? false) {
+            try {
+                $ctaArray = json_decode($album['cta'] ?? '', true) ?? [];
+                foreach ($ctaArray as &$v) {
+                    $icon = $v['icon'];
+                    $iconClass = '';
+                    $emoji = detect_emoji($v['icon']);
+                    if ($emoji === []) {
+                        $icon = '';
+                        if (preg_match('/\s/', $v['icon']) === 1) {
+                            $iconClass = $v['icon'];
+                        } else {
+                            $iconClass = 'fas fa-' . $v['icon'];
+                        }
+                    }
+                    $v['iconClass'] = $iconClass;
+                    $v['emoji'] = $icon;
+                }
+            } catch (Throwable) {
+                $ctaArray = [];
+            }
+        }
+        $album['cta_array'] = $ctaArray;
+        $album['cta_array_json'] = json_encode($album['cta_array']);
+        $album['cta_html'] = '';
+        foreach ($album['cta_array'] as $button) {
+            $album['cta_html'] .= <<<STRING
+            <a class="btn btn-cta btn-small animate" title="{$button['label']}" href="{$button['href']}"><span class="btn-icon {$button['iconClass']}">{$button['emoji']}</span><span class="btn-text">{$button['label']}</span></a>
+            STRING;
+        }
+        $album['cta'] = $album['cta'] ?? '[]';
     }
 
     public static function formatArray(array $dbrow, bool $safe = false): array

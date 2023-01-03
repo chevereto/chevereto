@@ -76,12 +76,8 @@ function get_theme_file_url($file, $options = [])
 function get_static_url($filepath, $options = [])
 {
     $options = array_merge(['versionize' => true], $options);
-    $return = absolute_to_url(
-        $filepath,
-        URL_APP_PUBLIC === URL_APP_PUBLIC_STATIC
-            ? Config::host()->hostnamePath()
-            : URL_APP_PUBLIC_STATIC
-    );
+    $url = getLocalUrl();
+    $return = absolute_to_url($filepath, $url);
     if ($options['versionize']) {
         $return = versionize_src($return);
     }
@@ -559,6 +555,11 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
         foreach (['avatar', 'url', 'username', 'name_short_html'] as $k) {
             $object['user'][$k] = $item['user'][$k] ?? '';
         }
+    }
+    if (isset($item['album'])) {
+        $object['album'] = [
+            'cta_html' => $item['album']['cta_html'] ?? '',
+        ];
     }
     $replacements['DATA_OBJECT'] = "data-object='" . rawurlencode(json_encode(G\array_utf8encode($object))) . "'";
     if ($stock_tpl == 'IMAGE') {

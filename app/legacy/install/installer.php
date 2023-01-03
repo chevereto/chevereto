@@ -576,6 +576,18 @@ $settings_updates = [
             SPAM,
     ],
     '4.0.5' => null,
+    '4.0.6' => [
+        'semantics_album' => '',
+        'semantics_albums' => '',
+        'semantics_image' => '',
+        'semantics_images' => '',
+        'semantics_user' => '',
+        'semantics_users' => '',
+        'semantics_explore' => '',
+        'semantics_discovery' => '',
+        'semantics_category' => '',
+        'semantics_categories' => '',
+    ],
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -1792,6 +1804,20 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         setting_default = ''
                     WHERE setting_name = 'auto_delete_guest_uploads';
                     SQL,
+            ],
+            '4.0.6' => [
+                'albums' => [
+                    'album_cta_enable' => [
+                        'op' => 'ADD',
+                        'type' => 'tinyint(1)',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                    'album_cta' => [
+                        'op' => 'ADD',
+                        'type' => 'longtext',
+                        'prop' => null,
+                    ],
+                ]
             ],
         ];
         $sql_update = [];

@@ -11,16 +11,13 @@ if (!defined('ACCESS') || !ACCESS) {
 
 <div class="input-label">
 	<label for="form-image-title"><?php _se('Title'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-	<input type="text" id="form-image-title" name="form-image-title" class="text-input" value="<?php echo Handler::hasVar('image_safe_html') ? Handler::var('image_safe_html')["title"] : ''; ?>" placeholder="<?php _se('Untitled image'); ?>" maxlength="<?php echo getSetting('image_title_max_length'); ?>">
+	<input type="text" id="form-image-title" name="form-image-title" class="text-input" value="<?php echo Handler::hasVar('image_safe_html') ? Handler::var('image_safe_html')["title"] : ''; ?>" placeholder="<?php _se('Untitled %s', _s('image')); ?>" maxlength="<?php echo getSetting('image_title_max_length'); ?>">
 </div>
 <?php
     if (!Handler::hasVar('image') || isset(Handler::var('image')['user'])) {
         ?>
-<div id="move-existing-album" data-view="switchable" class="c7 input-label">
+<div id="move-existing-album" data-view="switchable" class="c8 input-label">
     <?php include_theme_file("snippets/form_move_existing_album"); ?>
-</div>
-<div id="move-new-album" data-content="form-new-album" data-view="switchable" class="soft-hidden">
-    <?php include_theme_file("snippets/form_album"); ?>
 </div>
 <?php
     }
@@ -43,5 +40,5 @@ if (!Handler::cond('allowed_nsfw_flagging')) {
 ?>><span class="no-select"><i class="fas fa-flag"></i> <?php _se('Flag not safe'); ?></span></label></span></div>
 <div class="input-label">
     <label for="form-image-description"><?php _se('Description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-    <textarea id="form-image-description" name="form-image-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this image'); ?>"><?php echo Handler::var('image_safe_html')["description"] ?? ''; ?></textarea>
+    <textarea id="form-image-description" name="form-image-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _s('image')); ?>"><?php echo Handler::var('image_safe_html')["description"] ?? ''; ?></textarea>
 </div>

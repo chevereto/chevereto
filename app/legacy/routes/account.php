@@ -346,7 +346,6 @@ return function (Handler $handler) {
                     global $theme_mail;
                     $theme_mail = [
                         'user' => $logged_user,
-                        'link' => $logged_user['url'],
                     ];
                     $mail['subject'] = _s('Welcome to %s', getSettings()['website_name']);
                     $mail['message'] = get_email_body_str('mails/account-welcome');

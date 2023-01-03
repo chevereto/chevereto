@@ -122,14 +122,14 @@ ul>li {
 
 .highlight {
     background: rgba(255, 255, 255, .5);
-    border-left: 4px solid #8e44ad;
+    border-inline-start: 4px solid #8e44ad;
 }
 
 .alert {
     position: relative;
     background: rgba(241, 196, 15, .3);
-    border-left: 4px solid #f1c40f;
-    padding-right: 2em;
+    border-inline-start: 4px solid #f1c40f;
+    padding-inline-end: 2em;
 }
 
 .alert pre {
@@ -157,7 +157,7 @@ ul>li {
 .alert-close {
     cursor: pointer;
     position: absolute;
-    right: 1em;
+    inset-inline-end: 1em;
     top: 1em;
     width: 1em;
     height: 1em;
@@ -171,7 +171,7 @@ ul>li {
 .alert-close:before,
 .alert-close:after {
     position: absolute;
-    left: 7.5px;
+    inset-inline-start: 7.5px;
     content: ' ';
     height: 16px;
     width: 2px;
@@ -198,7 +198,7 @@ input {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    padding-left: 0;
+    padding-inline-start: 0;
     transition: border-width 1s linear;
 }
 
@@ -227,8 +227,8 @@ button,
     display: inline-block;
     font-size: 0.83em;
     font-weight: bold;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-inline-end: 15px;
+    padding-inline-start: 15px;
     line-height: 0.83em;
     outline: 0;
     cursor: pointer;
@@ -335,7 +335,7 @@ code {
     font-size: 32px;
     position: absolute;
     top: 20px;
-    right: 20px;
+    inset-inline-end: 20px;
     margin: 0;
     opacity: 0;
 }
@@ -491,7 +491,7 @@ body.body--installing .flex-box .loader {
 
     .flex-box+.flex-box {
         margin-top: 20px;
-        margin-left: 0;
+        margin-inline-start: 0;
     }
 }
 
@@ -579,7 +579,7 @@ body.body--installing .flex-box .loader {
 
 .input-warning {
     position: absolute;
-    right: 0;
+    inset-inline-end: 0;
     top: 0;
     font-size: 80%;
 }
@@ -594,7 +594,7 @@ body.body--installing .flex-box .loader {
 
 .input-password .input-password-strength {
     position: absolute;
-    right: 0;
+    inset-inline-end: 0;
     top: 50%;
     margin-top: 5px;
 }

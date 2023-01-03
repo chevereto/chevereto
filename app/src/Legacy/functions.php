@@ -17,7 +17,6 @@ use function Chevere\Message\message;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Throwable\Exceptions\RuntimeException;
-use function Chevere\Type\typeArray;
 use function Chevere\Writer\streamFor;
 use Chevere\Writer\StreamWriter;
 use function Chevere\Writer\writers;
@@ -612,12 +611,22 @@ function decryptString(string $string): string|bool
     return sessionCrypt($string, false);
 }
 
+function getLocalUrl(): string
+{
+    $url = Config::host()->hostnamePath();
+    if (defined('URL_APP_PUBLIC_STATIC')) {
+        $url = URL_APP_PUBLIC === URL_APP_PUBLIC_STATIC
+            ? Config::host()->hostnamePath()
+            : URL_APP_PUBLIC_STATIC;
+    }
+
+    return $url;
+}
+
 function get_content_url(string $sub): string
 {
     $dirname = dirname($sub);
-    $local = URL_APP_PUBLIC_STATIC === URL_APP_PUBLIC
-        ? Config::host()->hostnamePath()
-        : URL_APP_PUBLIC_STATIC;
+    $local = getLocalUrl();
     $url = AssetStorage::getStorage()['url'] ?? $local;
     if (basename($dirname) == 'default') {
         $url = $local;
@@ -752,7 +761,7 @@ function upload_to_content_images(array $source, string $what): void
             default:
                 throw new Exception('Unknown errors', 602);
         }
-        $file_contents = @file_get_contents($source['tmp_name']);
+        $file_contents = file_get_contents($source['tmp_name']);
         if (!$file_contents) {
             throw new Exception("Can't read uploaded file content", 600);
         }
@@ -976,7 +985,7 @@ function loaderHandler(
     $envFile = filePhpForPath(PATH_APP . 'env.php');
     if ($envFile->file()->exists()) {
         $filePhpReturn = new FilePhpReturn($envFile);
-        $env = $filePhpReturn->variableTyped(typeArray());
+        $env = $filePhpReturn->getArray();
     }
     $envVar = array_merge($envDefault, $env, $_env);
     if ($envVar['CHEVERETO_CONTEXT'] === 'saas') {
@@ -1078,6 +1087,23 @@ function loaderHandler(
         defaultLanguage: Settings::get('default_language'),
         autoLanguage: Settings::get('auto_language'),
     );
+    foreach (Settings::SEMANTICS as $messages) {
+        $aux = 0;
+        foreach ($messages as $key => $message) {
+            $aux++;
+            $value = Settings::get($key);
+            if ($value === null) {
+                continue;
+            }
+            L10n::setOverride($message, $value);
+            if (isset($message[1]) && $aux == 1) {
+                $singular = $value;
+            }
+            if (isset($message[1]) && $aux == 2) {
+                L10n::setPluralOverride($message, $singular, $value);
+            }
+        }
+    }
 
     try {
         $xrArguments = array_filter([
@@ -1254,4 +1280,34 @@ function assertNotStopWords(string ...$message): void
             code: 400
         );
     }
+}
+
+/**
+ * Increases or decreases the brightness of a color by a percentage of the current brightness.
+ *
+ * @param   string  $hexCode        Supported formats: `#FFF`, `#FFFFFF`, `FFF`, `FFFFFF`
+ * @param   float   $adjustPercent  A number between -1 and 1. E.g. 0.3 = 30% lighter; -0.4 = 40% darker.
+ *
+ * @return  string
+ *
+ * @author  maliayas
+ */
+function adjustBrightness(string $hexCode, float $adjustPercent)
+{
+    $hexCode = ltrim($hexCode, '#');
+
+    if (strlen($hexCode) == 3) {
+        $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
+    }
+
+    $hexCode = array_map('hexdec', str_split($hexCode, 2));
+
+    foreach ($hexCode as &$color) {
+        $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
+        $adjustAmount = ceil($adjustableLimit * $adjustPercent);
+
+        $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
+    }
+
+    return '#' . implode($hexCode);
 }

@@ -109,8 +109,8 @@ if (Login::isLoggedUser()) {
                                     }
                                     echo strtr($uploaded_message, [
                                         '%s' => '<a data-link="upload-target">' . $iconUser . '<span data-text="upload-target"></span></a>',
-                                        '%c' => '<a data-modal="form" data-target="form-uploaded-create-album">' . $iconAlbum . _s('create a new album') . '</a>',
-                                        '%m' => '<a data-modal="form" data-target="form-uploaded-move-album">' . $iconMove . _s('move it to an existing album') . '</a>',
+                                        '%c' => '<a data-modal="form" data-target="form-uploaded-create-album">' . $iconAlbum . _s('create new %s', _s('album')) . '</a>',
+                                        '%m' => '<a data-modal="form" data-target="form-uploaded-move-album">' . $iconMove . _s('move it to an existing %s', _s('album')) . '</a>',
                                     ]);
                                 ?>
 								</div>
@@ -120,7 +120,7 @@ if (Login::isLoggedUser()) {
 							<?php
                                 $uploaded_message = _s('You can %c with the content just uploaded.') . ' ' . _s('You must %s or %l to save this content into your account.');
                                 echo strtr($uploaded_message, [
-                                    '%c' => '<a data-modal="form" data-target="form-uploaded-create-album">' . $iconAlbum . _s('create a new album') . '</a>',
+                                    '%c' => '<a data-modal="form" data-target="form-uploaded-create-album">' . $iconAlbum . _s('create new %s', _s('album')) . '</a>',
                                     '%s' => '<a href="' . get_base_url("signup") . '">' . $iconSignup . _s('create an account') . '</a>',
                                     '%l' => '<a href="' . get_base_url("login") . '">' . $iconSignin . _s('sign in') . '</a>'
                                 ]);
@@ -172,7 +172,7 @@ if (Login::isLoggedUser()) {
 					<div class="input-label upload-input-col center-box text-align-left">
 						<label for="upload-category-id"><?php _se('Category'); ?></label>
 						<select name="upload-category-id" id="upload-category-id" class="text-input">
-							<option value><?php _se('Select category'); ?></option>
+							<option value><?php _se('Select %s', _s('category')); ?></option>
 							<?php
                                 foreach (Handler::var('categories') as $category) {
                                     ?>
@@ -243,7 +243,7 @@ if (Login::isLoggedUser()) {
                     <?php
                         } ?>
 					<label for="uploaded-embed-toggle"><?php _se('Embed codes'); ?></label>
-					<div class="c7 margin-bottom-10">
+					<div class="c8 margin-bottom-10">
 						<select name="uploaded-embed-toggle" id="uploaded-embed-toggle" class="text-input" data-combo="uploaded-embed-toggle-combo">
                             <?php
                                 $tpl = Handler::cond('moderate_uploads') ? 'embed_unapproved_tpl' : 'embed_upload_tpl';
@@ -295,7 +295,7 @@ if (Login::isLoggedUser()) {
 			</li>
 		</div>
 		<div id="anywhere-upload-edit-item">
-			<span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit'); ?></span>
+			<span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit %s', _s('upload')); ?></span>
 			<div class="modal-form">
 				<div class="image-preview"></div>
 				<div class="input-label">
@@ -371,7 +371,7 @@ if (Login::isLoggedUser()) {
                 } ?>
 				<div class="input-label">
 					<label for="form-description"><?php _se('Description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-					<textarea id="form-description" name="form-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this image'); ?>"></textarea>
+					<textarea id="form-description" name="form-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _s('image')); ?>"></textarea>
 				</div>
 			</div>
 		</div>
@@ -393,7 +393,7 @@ if (Login::isLoggedUser()) {
         ];
     ?>
 	<div data-modal="form-uploaded-create-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
-		<span class="modal-box-title"><i class="fas fa-images"></i> <?php _se('Create album'); ?></span>
+		<span class="modal-box-title"><i class="fas fa-images"></i> <?php _se('Create %s', _s('album')); ?></span>
 		<p><?php
             _se('The uploaded content will be moved to this newly created album.');
             echo ' ';
@@ -423,7 +423,7 @@ if (Login::isLoggedUser()) {
         if (Login::isLoggedUser()) {
             ?>
 	<div data-modal="form-uploaded-move-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
-		<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to album'); ?></span>
+		<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _s('album')); ?></span>
 		<p><?php _se('Select an existing album to move the uploaded content.'); ?></p>
 		<div class="modal-form">
 			<div name="move-existing-album" id="move-existing-album" data-view="switchable" class="c7 input-label">

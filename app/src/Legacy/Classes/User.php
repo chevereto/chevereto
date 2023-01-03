@@ -177,7 +177,7 @@ class User
             return [
                 'album_id' => null,
                 'album_id_encoded' => null,
-                'album_name' => _s("%s's images", $user['username']),
+                'album_name' => self::getStreamName($user['username']),
                 'album_user_id' => $user['id'],
                 'album_privacy' => 'public',
                 'album_url' => $user['url']
@@ -185,6 +185,11 @@ class User
         }
 
         return null;
+    }
+
+    public static function getStreamName(string $username): string
+    {
+        return _s("%s by %u", ['%s' => _s('Images'), '%u' => $username]);
     }
 
     public static function getUrl(array|string $handle)
@@ -257,7 +262,7 @@ class User
                 $table['%' . $k] = $values[$k] ?? '';
             }
             $table['%edit'] = '<a href="' . get_public_url('dashboard/user/' . $user_id) . '">edit</a>';
-            $table['%user'] = '<a href="' . self::getUrl($values['username']) . '">' . $values['username'] . '</a>';
+            $table['%user'] = '<a href="' . get_public_url(self::getUrl($values['username'])) . '">' . $values['username'] . '</a>';
             $table['%configure'] = '<a href="' . get_public_url('dashboard/settings/users') . '">dashboard/settings/users</a>';
             system_notification_email([
                 'subject' => sprintf('New user signup %s', $values['username']),
@@ -308,7 +313,7 @@ class User
         /** @var array $uploaded */
         $uploaded = $image_upload['uploaded'];
         if ($type == 'avatar') {
-            $max_res = ['width' => 500, 'height' => 500];
+            $max_res = ['width' => 500, 'height' => 500, 'fitted' => true];
             $must_resize = $uploaded['fileinfo']['width'] > $max_res['width']
                 || $uploaded['fileinfo']['height'] > $max_res['height'];
         } else {
@@ -529,6 +534,7 @@ class User
         $user['image_count_display'] = isset($user['image_count']) ? abbreviate_number($user['image_count']) : 0;
         $user['album_count_display'] = isset($user['album_count']) ? abbreviate_number($user['album_count']) : 0;
         $user['url'] = self::getUrl($user);
+        $user['public_url'] = get_public_url($user['url']);
         $user['url_albums'] = self::getUrlAlbums($user['url']);
         $user['url_liked'] = $user['url'] . '/liked';
         $user['url_following'] = $user['url'] . '/following';

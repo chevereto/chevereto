@@ -104,11 +104,11 @@ return function (Handler $handler) {
     $user_routes = [];
     $user_views = [
         'images' => [
-            'title' => _s("Images by %s"),
+            'title' => _s("%a by %s", ['%a' => _s('Images')]),
             'title_short' => _s("Images"),
         ],
         'albums' => [
-            'title' => _s("Albums by %s"),
+            'title' => _s("%a by %s", ['%a' => _s('Albums')]),
             'title_short' => _s("Albums"),
         ],
         'search' => [
@@ -206,7 +206,7 @@ return function (Handler $handler) {
         if ($v['current']) {
             $current_view = $k;
             if ($current_view !== 'images') {
-                $base_user_url .= $k;
+                $base_user_url .= "/$k";
             }
         }
     }
@@ -245,14 +245,14 @@ return function (Handler $handler) {
                 [
                     'icon' => 'fas fa-image',
                     'type' => 'images',
-                    'label' => _n('Image', 'Images', 2),
+                    'label' => _s('Images'),
                     'id' => 'list-user-images',
                     'current' => $currentKey === 0,
                 ],
                 [
                     'icon' => 'fas fa-images',
                     'type' => 'albums',
-                    'label' => _n('Album', 'Albums', 2),
+                    'label' => _s('Albums'),
                     'id' => 'list-user-albums',
                     'current' => $currentKey === 1,
                 ]

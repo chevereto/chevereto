@@ -25,7 +25,7 @@ function follow_sub_header(): bool
     return in_array(Handler::var('dashboard'), ['settings', 'images', 'albums', 'users']);
 } ?>
 <?php include_theme_header(); ?>
-<div class="top-sub-bar top-sub-bar--1<?php if (!follow_sub_header()) { ?> follow-scroll<?php } ?> margin-bottom-5 margin-top-5">
+<div class="top-sub-bar top-sub-bar--1<?php if (!follow_sub_header()) { ?> follow-scroll<?php } ?>">
     <div class="content-width">
         <div class="header header-tabs no-select">
             <h1 class="header-title">
@@ -37,7 +37,7 @@ function follow_sub_header(): bool
     </div>
 </div>
 <?php if (follow_sub_header()) { ?>
-<div class="top-sub-bar top-sub-bar--2 follow-scroll margin-bottom-5 margin-top-5">
+<div class="top-sub-bar top-sub-bar--2 follow-scroll">
     <div class="content-width">
         <?php
         switch (Handler::var('dashboard')) {

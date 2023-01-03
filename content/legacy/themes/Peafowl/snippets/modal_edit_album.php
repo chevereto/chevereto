@@ -7,9 +7,9 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
 
-<div id="form-modal" class="hidden" data-before-fn="CHV.fn.before_album_edit" data-submit-fn="CHV.fn.submit_album_edit" data-ajax-deferred="CHV.fn.complete_album_edit" data-ajax-url="<?php echo get_base_url("json"); ?>">
-    <h1><?php _se('Edit'); ?></h1>
+<div id="form-modal" class="hidden" data-load-fn="CHV.fn.albumEdit.load" data-before-fn="CHV.fn.albumEdit.before" data-submit-fn="CHV.fn.albumEdit.submit" data-ajax-deferred="CHV.fn.albumEdit.complete" data-ajax-url="<?php echo get_base_url("json"); ?>">
+    <span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit %s', _s('album')); ?></span>
     <div class="modal-form">
-        <?php include_theme_file('snippets/form_album'); ?>
+        <?php include_theme_file('snippets/form_album', ['album-root' => true]); ?>
     </div>
 </div>

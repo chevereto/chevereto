@@ -37,7 +37,7 @@ if (!defined('ACCESS') || !ACCESS) {
                     ?> hidden<?php
                 } ?>">
                 <span class="btn btn-capsule"><span class="btn-icon fas fa-camera"></span><span class="btn-text"><?php _se('Change background'); ?></span></span>
-                <div class="pop-box anchor-right arrow-box arrow-box-top">
+                <div class="pop-box anchor-right arrow-box arrow-box-top margin-top-10">
                     <div class="pop-box-inner pop-box-menu">
                         <ul>
                             <li class="with-icon"><a data-trigger="user-background-upload"><span class="btn-icon fas fa-camera"></span> <?php _se('Upload new image'); ?></a></li>
@@ -60,7 +60,7 @@ if (!defined('ACCESS') || !ACCESS) {
 	<?php show_banner('user_after_top', Handler::var('listing')->sfw()); ?>
 	<div id="top-user" class="top-user<?php echo !isset(Handler::var('user')["background"]) ? ' no-background' : ''; ?>">
 		<div class="top-user-credentials">
-			<a href="<?php echo Handler::var('user')["url"]; ?>">
+			<a class="top-user-avatar" href="<?php echo Handler::var('user')["url"]; ?>">
 				<?php
                     if (isset(Handler::var('user')["avatar"])) {
                         ?>
@@ -130,7 +130,7 @@ if (!defined('ACCESS') || !ACCESS) {
 		</div>
 		<div class="header-content-right phone-float-none">
 			<div class="text-align-right">
-				<a class="number-figures" href="<?php echo Handler::var('user')["url"]; ?>"><i class="icon far fa-image"></i> <b data-text="image-count"><?php echo Handler::var('user')["image_count"]; ?></b> <span data-text="image-label" data-label-single="<?php _ne('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('user')['image_count']); ?></span></a>
+				<a class="number-figures" href="<?php echo Handler::var('user')["url"]; ?>"><i class="icon far fa-image"></i> <b data-text="image-count"><?php echo Handler::var('user')["image_count"]; ?></b> <span data-text="image-label" data-label-single="<?php _se('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('user')['image_count']); ?></span></a>
 				<a class="number-figures" href="<?php echo Handler::var('user')["url_albums"]; ?>"><i class="icon far fa-images"></i> <b data-text="album-count"><?php echo Handler::var('user')["album_count"]; ?></b> <span data-text="album-label" data-label-single="<?php _ne('album', 'albums', 1); ?>" data-label-plural="<?php _ne('album', 'albums', 2); ?>"><?php _ne('album', 'albums', Handler::var('user')['album_count']); ?></span></a>
 				<?php if (getSetting('enable_likes') && Handler::var('user')['is_private'] == 0) {
                 ?>
@@ -151,7 +151,7 @@ if (!defined('ACCESS') || !ACCESS) {
                 if (Handler::cond('owner')) {
                     ?>
 			<div class="text-align-right">
-				<button data-action="create-album" title="A" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span><span class="btn-text"><?php _se('Create new album'); ?></span></button>
+				<button data-action="create-album" title="A" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span><span class="btn-text"><?php _se('Create new %s', _s('album')); ?></span></button>
 				<?php include_theme_file('snippets/modal_create_album.php'); ?>
 			</div>
 			<?php

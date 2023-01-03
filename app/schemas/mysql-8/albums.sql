@@ -15,6 +15,8 @@ CREATE TABLE `%table_prefix%albums` (
   `album_views` bigint(32) NOT NULL DEFAULT '0',
   `album_cover_id` bigint(32) DEFAULT NULL,
   `album_parent_id` bigint(32) DEFAULT NULL,
+  `album_cta_enable` tinyint(1) NOT NULL DEFAULT '0',
+  `album_cta` longtext,
   PRIMARY KEY (`album_id`),
   KEY `album_name` (`album_name`),
   KEY `album_user_id` (`album_user_id`),
@@ -22,5 +24,8 @@ CREATE TABLE `%table_prefix%albums` (
   KEY `album_privacy` (`album_privacy`),
   KEY `album_image_count` (`album_image_count`),
   KEY `album_creation_ip` (`album_creation_ip`),
+  KEY `album_likes` (`album_likes`),
+  KEY `album_views` (`album_views`),
+  KEY `album_parent_id` (`album_parent_id`),
   FULLTEXT KEY `searchindex` (`album_name`,`album_description`)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8mb4;

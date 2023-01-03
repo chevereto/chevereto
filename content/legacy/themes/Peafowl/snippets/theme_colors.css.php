@@ -1,4 +1,6 @@
 <?php
+
+use function Chevereto\Legacy\adjustBrightness;
 use function Chevereto\Legacy\G\is_valid_hex_color;
 use function Chevereto\Legacy\getSetting;
 
@@ -6,13 +8,6 @@ use function Chevereto\Legacy\getSetting;
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
-<?php
-    $default_color = '#00A7DA';
-    $color = getSetting('theme_main_color');
-    if (!is_string($color) || !is_valid_hex_color($color)) {
-        $color = $default_color;
-    }
-?>
 <style>
 .palette-dark:root{
     --alertAccent: hsl(48, 89%, 50%);
@@ -21,12 +16,8 @@ if (!defined('ACCESS') || !ACCESS) {
     --bodyBackground: hsl(245, 9%, 18%);
     --bodyEmpty: hsl(245, 10%, 22%);
     --bodySeparator: var(--bodyEmpty);
-    --bodyText: hsl(0, 0%, 80%);
+    --bodyText: hsl(245, 5%, 80%);
     --bodyTextSubtle: hsl(245, 5%, 45%);
-    --buttonAccentBackground: hsl(245, 10%, 10%);
-    --buttonAccentHoverBackground: hsl(245, 10%, 5%);
-    --buttonAccentHoverText: var(--bodyText);
-    --buttonAccentText: var(--bodyText);
     --buttonDefaultBackground: var(--bodyEmpty);
     --buttonDefaultHoverBackground: hsl(245, 5%, 10%);
     --buttonDefaultHoverText: var(--colorAccent);
@@ -36,7 +27,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --inputText: var(--bodyText);
     --menuBackground: hsla(245, 10%, 8%, 80%);
     --menuItemHoverBackground: var(--colorAccent);
-    --menuItemHoverText: #FFF;
+    --menuItemHoverText: hsl(245, 5%, 100%);
     --menuItemText: var(--bodyText);
     --menuSeparator: var(--bodyBackground);
     --menuText: var(--bodyText);
@@ -46,8 +37,6 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarText: var(--bodyText);
     --viewerBackground: hsl(245, 5%, 12%);
 }
-/*     --topBarBackground: hsl(150, 25%, 70%);
- */
 .palette-lush:root{
     --alertAccent: hsl(48, 89%, 50%);
     --alertBackground: hsl(52, 100%, 90%);
@@ -85,7 +74,6 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarBackground: var(--bodyBackground);
     --topBarText: var(--bodyText);
     --listItemText: var(--bodyBackground);
-    /* --viewerBackground: hsl(150, 25%, 85%); */
 }
 .palette-graffiti:root {
     --alertAccent: hsl(48, 89%, 50%);
@@ -159,7 +147,6 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarBackground: var(--bodyBackground);
     --topBarText: var(--bodyText);
     --listItemText: var(--bodyBackground);
-    /* --viewerBackground: hsl(15, 100%, 96%); */
 }
 .palette-cheers:root{
     --alertAccent: hsl(48, 89%, 50%);
@@ -198,7 +185,6 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarBackground: var(--bodyBackground); /* hsl(42, 100%, 70%) */
     --topBarText: var(--bodyText);
     --listItemText: var(--bodyBackground);
-    /* --viewerBackground: hsl(42, 80%, 85%); */
 }
 .palette-imgur:root {
     --alertAccent: var(--colorAccent);
@@ -309,3 +295,17 @@ if (!defined('ACCESS') || !ACCESS) {
     --viewerBackground: linear-gradient(180deg, rgba(26,28,35,1) 0%, rgba(11,13,18,1) 100%);
 }
 </style>
+<?php
+    // $color = getSetting('theme_main_color');
+    // if ($color !== null && is_valid_hex_color($color)) {
+    //     $colorStrong = adjustBrightness($color, -0.1);
+    //     echo <<<STYLE
+    //     <style>
+    //     :root {
+    //         --colorAccent: {$color};
+    //         --colorAccentStrong: {$colorStrong};
+    //     }
+    //     </style>
+    //     STYLE;
+    // }
+?>

@@ -11,9 +11,6 @@ if (!defined('ACCESS') || !ACCESS) {
     var divLoading = document.createElement("div");
     var panelThumbs = document.querySelector('.panel-thumbs');
     var panelThumbList = document.querySelectorAll('.panel-thumb-list > li');
-    divLoading.id = "image-viewer-loading";
-    divLoading.className = "soft-hidden";
-    document.getElementById("image-viewer").appendChild(divLoading);
 	image_viewer_full_fix = function() {
 		var viewer = document.getElementById("image-viewer"),
             container = document.getElementById("image-viewer-container"),
@@ -41,6 +38,7 @@ if (!defined('ACCESS') || !ACCESS) {
         if (panelThumbList.length > 0) {
             canvas.height -= panelThumbs.offsetHeight;
         }
+        canvas.height -= 60;
         if(1/ratio < 2) {
             container.style.height = canvas.height + "px";
         }

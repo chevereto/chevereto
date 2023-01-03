@@ -25,7 +25,7 @@ if (!defined('ACCESS') || !ACCESS) {
 	<span class="modal-box-title"><i class="fas fa-code"></i> <?php _se('Embed codes'); ?></span>
     <div class="image-preview"></div>
 	<div class="input-label margin-bottom-0">
-		<div class="c7 margin-bottom-10">
+		<div class="c8 margin-bottom-10">
 			<select name="form-embed-toggle" id="form-embed-toggle" class="text-input" data-combo="form-embed-toggle-combo">
 				<?php
                     foreach (get_global('embed_share_tpl') as $key => $value) {

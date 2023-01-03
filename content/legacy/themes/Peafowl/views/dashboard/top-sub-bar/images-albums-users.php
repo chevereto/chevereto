@@ -23,11 +23,11 @@ Handler::setVar('tabs', Handler::var('sub_tabs'));
         ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
-                <a class="btn btn-small default" data-modal="form" data-target="modal-add-user"><i class="fas fa-user-plus margin-right-5"></i><?php _se('Add user'); ?></a>
+                <a class="btn btn-small default" data-modal="form" data-target="modal-add-user"><i class="fas fa-user-plus margin-right-5"></i><?php _se('Create %s', _s('user')); ?></a>
             </div>
         </div>
         <div data-modal="modal-add-user" class="hidden" data-submit-fn="CHV.fn.user.add.submit" data-ajax-deferred="CHV.fn.user.add.complete">
-            <span class="modal-box-title"><i class="fas fa-user-plus"></i> <?php _se('Add user'); ?></span>
+            <span class="modal-box-title"><i class="fas fa-user-plus"></i> <?php _se('Create %s', _s('user')); ?></span>
             <div class="modal-form">
                 <div class="input-label c8">
                     <label for="form-role"><?php _se('Role'); ?></label>

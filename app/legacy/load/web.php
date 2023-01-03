@@ -193,7 +193,15 @@ $hook_before = function (Handler $handler) {
     }
     $handler::setVar('langLinks', $langLinks);
     if ($handler::cond('show_consent_screen')) {
-        $handler::setVar('consent_accept_url', get_current_url() . (parse_url(get_current_url(), PHP_URL_QUERY) ? '&' : '/?') . 'agree-consent');
+        $hasQs = parse_url(get_current_url(), PHP_URL_QUERY) !== null;
+        $consent_accept_url = get_current_url()
+            . ($hasQs ? '&' : '/?')
+            . 'agree-consent';
+        $consent_accept_url = '/' . ltrim($consent_accept_url, '/');
+        $handler::setVar(
+            'consent_accept_url',
+            $consent_accept_url
+        );
     }
     if (!Login::getUser()) {
         if (getSetting('captcha') && $failed_access_requests['day'] >= getSetting('captcha_threshold')) {

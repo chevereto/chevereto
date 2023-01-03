@@ -16,7 +16,10 @@ if (Handler::var('category') !== null && isset(Handler::var('category')['name'])
     ?>
 <div class="content-width">
     <div class="header margin-top-20 margin-bottom-10">
-        <h1 class="header-title" rel="tooltip" data-tipTip="right" title="ID:<?php echo Handler::var('category')['id']; ?>"><i class="fas fa-columns color-accent"></i> <strong><?php _se('%s category', '<em><b>' . Handler::var('category')['name'] . '</b></em>'); ?></strong></h1>
+        <h1 class="header-title" rel="tooltip" data-tipTip="right" title="ID:<?php echo Handler::var('category')['id']; ?>"><i class="fas fa-columns color-accent"></i> <strong><?php _se('%s %c', [
+            '%s' => '<em><b>' . Handler::var('category')['name'] . '</b></em>',
+            '%c' => _s('category')
+        ]); ?></strong></h1>
     </div>
     <div><?php echo safe_html(Handler::var('category')['description']); ?></div>
 </div>

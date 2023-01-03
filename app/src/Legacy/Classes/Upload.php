@@ -265,8 +265,8 @@ class Upload
         $this->source = [
             'filename' => $this->source_filename, // file.ext
             'name' => $this->source_name, // file
-            'image_exif' => $this->source_image_exif, // exif-reader
-            'fileinfo' => get_image_fileinfo($this->downstream), // fileinfo array
+            'image_exif' => $this->source_image_exif,
+            'fileinfo' => get_image_fileinfo($this->downstream),
         ];
         if (stream_resolve_include_path($this->downstream) == false) {
             throw new Exception('Concurrency: Downstream gone, aborting operation', 666);
@@ -292,13 +292,16 @@ class Upload
             } catch (Throwable $e) {
             }
         }
-        $fileinfo = get_image_fileinfo($this->uploaded_file);
-        $fileinfo['is_360'] = $is_360;
+        $fileInfo = get_image_fileinfo($this->uploaded_file);
+        if ($fileInfo === []) {
+            throw new Exception("Can't get uploaded info", 610);
+        }
+        $fileInfo['is_360'] = $is_360;
         $this->uploaded = [
             'file' => $this->uploaded_file,
             'filename' => get_filename($this->uploaded_file),
             'name' => get_basename_without_extension($this->uploaded_file),
-            'fileinfo' => $fileinfo,
+            'fileinfo' => $fileInfo,
         ];
     }
 
@@ -462,7 +465,7 @@ class Upload
             throw new Exception("Can't fetch target upload source (downstream)", 600);
         }
         $this->source_image_fileinfo = get_image_fileinfo($this->downstream);
-        if (!$this->source_image_fileinfo) {
+        if ($this->source_image_fileinfo === []) {
             throw new Exception("Can't get target upload source info", 610);
         }
         if ($this->source_image_fileinfo['width'] == '' || $this->source_image_fileinfo['height'] == '') {
@@ -560,7 +563,7 @@ class Upload
             }
         }
         if ($is_flood) {
-            if (getSetting('flood_uploads_notify') && !session()['flood_uploads_notify'][$flood_by]) {
+            if (getSetting('flood_uploads_notify') && !(session()['flood_uploads_notify'][$flood_by] ?? false)) {
                 try {
                     $logged_user = Login::getUser();
                     $message = strtr('Flooding IP <a href="' . get_public_url('search/images/?q=ip:%ip') . '">%ip</a>', ['%ip' => get_client_ip()]) . '<br>';
@@ -574,7 +577,7 @@ class Upload
                     $message .= 'Week: ' . $flood_db['day'] . '<br>';
                     $message .= 'Month: ' . $flood_db['week'] . '<br>';
                     system_notification_email(['subject' => 'Flood report IP ' . get_client_ip(), 'message' => $message]);
-                    $addValues = session()['flood_uploads_notify'];
+                    $addValues = session()['flood_uploads_notify'] ?? [];
                     $addValues[$flood_by] = true;
                     sessionVar()->put('flood_uploads_notify', $addValues);
                 } catch (Exception $e) {

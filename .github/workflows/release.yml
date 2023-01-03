@@ -42,7 +42,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Build dependencies
-        run: composer install --no-progress --ignore-platform-reqs
+        run: composer install --no-progress
         working-directory: app
       - name: Build Chevereto
         run: |

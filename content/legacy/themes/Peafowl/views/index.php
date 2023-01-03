@@ -1,6 +1,7 @@
 <?php
 
 use Chevereto\Legacy\Classes\Settings;
+use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\include_theme_file;
@@ -46,7 +47,7 @@ if ($hasPrev == false) { ?>
         <div class="header header-tabs">
             <h2 class="header-title"><strong><?php
                 echo isset($home_user)
-                    ? _s("%s's Images", $home_user['name_short'])
+                    ? User::getStreamName($home_user['name_short'])
                     : ('<span class="' . Handler::var('list')['icon'] . '"></span><span class="phone-hide margin-left-5">' . Handler::var('list')['label']); ?></span></strong></h1>
             <?php include_theme_file("snippets/tabs"); ?>
             <?php

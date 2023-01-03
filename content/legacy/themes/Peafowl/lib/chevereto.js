@@ -2253,7 +2253,6 @@ $(function () {
         var $this = $(this);
         if ($this.data("XHR")) return;
         $this.data("XHR", true);
-
         var $object = $(this).is("[data-liked]") ?
             $(this) :
             $(this).closest("[data-liked]");
@@ -2293,15 +2292,11 @@ $(function () {
             if (isSingle && typeof response.content !== typeof undefined) {
                 $("[data-text=likes-count]").html(response.content.likes);
             }
-            $targets.attr("data-liked", liked ? 0 : 1); // Toggle indicator
+            $targets.closest("[data-liked]").attr("data-liked", liked ? 0 : 1);
         });
     });
 
     $(document).on("click", "[data-action=album-cover]", function () {
-        // if (!PF.fn.is_user_logged()) {
-        //     window.location.href = CHV.obj.vars.urls.login;
-        //     return;
-        // }
         var $this = $(this);
         if ($this.data("XHR")) return;
         $this.data("XHR", true);
@@ -2462,12 +2457,10 @@ $(function () {
     $(document).on("click", "[data-action=top-bar-notifications]", function (e) {
         var _this = this;
         var $this = $(this);
-
         var $container = $(".top-bar-notifications-container", $this);
         var $list = $(".top-bar-notifications-list", $this);
         var $ul = $("ul", $list);
         var $loading = $(".loading", $container);
-
         if ($this.data("XHR")) {
             return;
         } else {
@@ -2477,7 +2470,6 @@ $(function () {
                 message: PF.fn._s("loading"),
             });
         }
-
         $.ajax({
             type: "POST",
             data: {
@@ -2802,6 +2794,44 @@ $(function () {
             }
         );
     }
+
+    $(document).on("change keyup", CHV.fn.ctaForm.selectors.rows + " input[name^='cta-']", function() {
+        CHV.fn.ctaForm.update($(this));
+    });
+
+    $(document).on("click", CHV.fn.ctaForm.selectors.rows + " [data-action=cta-add]", function () {
+        CHV.fn.ctaForm.insert($(this));
+    });
+
+    $(document).on("click", CHV.fn.ctaForm.selectors.rows + " [data-action=cta-remove]", function () {
+        CHV.fn.ctaForm.remove($(this));
+        if(CHV.fn.ctaForm.array.length == 0) {
+            $(CHV.fn.ctaForm.selectors.root + " " + CHV.fn.ctaForm.selectors.enable).prop("checked", false).trigger("change");
+        }
+
+    });
+    $(document).on("change", CHV.fn.ctaForm.selectors.root + " " + CHV.fn.ctaForm.selectors.enable, function() {
+        let $combo = $(CHV.fn.ctaForm.selectors.combo, CHV.fn.ctaForm.selectors.root);
+        let checked = $(this).is(":checked");
+        $combo.toggleClass("soft-hidden", !checked);
+        if(checked) {
+            if(CHV.fn.ctaForm.array.length == 0) {
+                CHV.fn.ctaForm.add();
+            }
+            CHV.fn.ctaForm.render();
+        }
+        CHV.fn.ctaForm.setEnable(checked ? 1 : 0);
+    });
+
+    $(document).on("change keyup", CHV.fn.ctaForm.selectors.root + " input[name^='cta-icon_']", function() {
+        let $row = CHV.fn.ctaForm.getRow($(this));
+        let $icon = $row.find("label[for^='cta-icon_'] [data-content=icon]");
+        $icon.removeClass();
+        let iconClass = CHV.fn.ctaForm.getIconClass($(this).val());
+        $icon.addClass(iconClass);
+    });
+
+
 });
 
 if (typeof CHV == "undefined") {
@@ -2809,13 +2839,128 @@ if (typeof CHV == "undefined") {
         obj: {},
         fn: {},
         str: {},
-    };
+    }
 }
 
 if (window.opener) {
     CHV.obj.opener = {
         uploadPlugin: {},
-    };
+    }
+}
+
+CHV.fn.ctaButtons = {
+    selectors: {
+        container: "[data-contains=cta-album]",
+    },
+    render: function(html="") {
+        $(this.selectors.container).each(function() {
+            $(this).html(html);
+        });
+    }
+}
+CHV.fn.ctaForm = {
+    enable: 0,
+    array: [],
+    selectors: {
+        root: "#cta-form",
+        rows: "#cta-rows",
+        enable: "#cta-enable",
+        template: "#cta-row-template",
+        combo: "#cta-combo",
+        row: ".cta-row"
+    },
+    update: function($atElement) {
+        let pos = this.getPos($atElement);
+        let key = $atElement.attr("name").match(/cta-(.*)?_\d+/)[1]
+        this.array[pos-1][key] = $atElement.val();
+    },
+    add: function(label="", icon="", href="") {
+        this.array.push(this.getRowObject(label, icon, href));
+        this.render();
+    },
+    insert: function($atElement) {
+        let pos = this.getPos($atElement);
+        this.array.splice(pos, 0, this.getRowObject());
+        this.render();
+    },
+    remove: function($atElement) {
+        let pos = this.getPos($atElement);
+        this.array.splice(pos-1, 1);
+        this.render();
+    },
+    getRowObject: function(label="", icon="", href="") {
+        return {
+            "label": label,
+            "icon": icon,
+            "href": href
+        }
+    },
+    getIconClass: function(icon) {
+        if(!/\s/g.test(icon)) {
+            return "fa-solid fa-" + icon;
+        }
+
+        return icon;
+    },
+    getRow: function($element) {
+        return $element.closest(this.selectors.row);
+    },
+    getPos: function($element) {
+        return this.getRow($element).data("pos");
+    },
+    getTemplateHtml: function() {
+        return $(this.selectors.template).html();
+    },
+    getRowHtml: function(pos, data) {
+        return this.getTemplateHtml()
+            .replaceAll(/%pos%/g, pos)
+            .replaceAll(/%label%/g, data.label)
+            .replaceAll(/%href%/g, data.href)
+            .replaceAll(/%icon%/g, data.icon)
+            .replaceAll(
+                /%iconClass%/g,
+                this.getIconClass(data.icon)
+            );
+    },
+    render: function() {
+        let $ctaForm = $(this.selectors.root);
+        let $ctaRows = $ctaForm.find(this.selectors.rows);
+        let $this = this;
+        this.destroy();
+        $.each(this.array, function(index, data) {
+            $ctaRows.append($this.getRowHtml(index+1, data));
+        });
+        this.setEnable(this.enable);
+        $ctaRows.sortable({
+            cursor: "grabbing",
+            axis: "y",
+            update: function() {
+                let array = [];
+                $(this).find($this.selectors.row).each(function() {
+                    let pos = $this.getPos($(this));
+                    array.push($this.array[pos-1]);
+                });
+                $this.array = array;
+                $this.render();
+            }
+        });
+    },
+    setEnable: function(integer) {
+        let $ctaRows = $(this.selectors.rows, this.selectors.root);
+        this.enable = integer;
+        let enable = this.enable === 1;
+        $('input[data-required]', $ctaRows).each(function() {
+            $(this).attr("required", enable);
+        });
+    },
+    destroy: function() {
+        let $ctaForm = $(this.selectors.root);
+        let $ctaRows = $ctaForm.find(this.selectors.rows);
+        try {
+            $ctaRows.sortable("destroy");
+        } catch(e) {}
+        $ctaRows.empty();
+    }
 }
 
 CHV.fn.album = {
@@ -2843,7 +2988,7 @@ CHV.fn.album = {
                 $embed_codes.removeClass("soft-hidden");
             }
         });
-    }
+    },
 }
 
 CHV.fn.modal = {
@@ -2910,6 +3055,7 @@ CHV.fn.listingViewer = {
         "KeyF": "flag",
         "KeyE": "edit",
         "KeyM": "move",
+        "KeyA": "create-album",
         "KeyO": "approve",
         "Delete": "delete",
         "Escape": "close",
@@ -2920,6 +3066,7 @@ CHV.fn.listingViewer = {
     keymap: {
         select: [".", PF.fn._s("Toggle select")],
         like: ["L", PF.fn._s("Like")],
+        "create-album": ["A", PF.fn._s("Create album")],
         flag: ["F", PF.fn._s("Toggle flag")],
         edit: ["E", PF.fn._s("Edit")],
         move: ["M", PF.fn._s("Album")],
@@ -2935,13 +3082,9 @@ CHV.fn.listingViewer = {
     $item: null,
     show: function () {
         var paramsHidden = PF.fn.deparam(this.$item.closest(PF.obj.listing.selectors.content_listing_visible).data("params-hidden"));
-        var cover = paramsHidden && "is_animated" in paramsHidden ?
-            paramsHidden.is_animated :
-            0;
         this.getEl("root")
             .removeClass(this.selectors.rootHide.substring(1))
-            .addClass(this.selectors.rootShow.substring(1))
-            .attr("data-cover", cover);
+            .addClass(this.selectors.rootShow.substring(1));
         $("body").addClass(this.selectors.bodyShown.substring(1));
         var hammertime = new Hammer($(CHV.fn.listingViewer.selectors.root).get(0), {
             direction: Hammer.DIRECTION_VERTICAL,
@@ -3035,24 +3178,11 @@ CHV.fn.listingViewer = {
         }
         var $tools = this.getItem().find(".list-item-image-tools[data-action='list-tools']");
         this.getEl("tools").append($tools.html());
-        var flagAdded = false;
-        $.each($tools.find("[data-action]"), function (i, v) {
-            var action = $(this).attr("data-action");
-            var keymap = _this.keymap[action];
-            if (typeof keymap == typeof undefined || (action === 'flag' && flagAdded)) {
-                return false;
-            }
-            $(
-                '<div class="viewer-kb-key" data-key="' + keymap[0] + '"><kbd>' +
-                keymap[0] +
-                "</kbd><span>" +
-                PF.fn._s(keymap[1]) +
-                "</span></div>"
-            ).appendTo(_this.getEl("inputMap"));
-            if (action === "flag") {
-                flagAdded = true;
-            }
+        let $this = this;
+        this.getEl("tools").find(".list-tool[data-action]").each(function() {
+            $(this).attr("title", $(this).attr("title") + " ("+$this.keymap[$(this).attr("data-action")][0]+")");
         });
+        console.log('aaaa')
         this.placeholderSizing();
         this.trickyLoad();
     },
@@ -3066,6 +3196,7 @@ CHV.fn.listingViewer = {
         var object = this.getObject(true);
         var template = this.getEl("template").html();
         var matches = template.match(/%(\S+)%/g);
+        console.log(object)
         if (matches) {
             $.each(matches, function (i, v) {
                 var handle = v.slice(1, -1).split(".");
@@ -4819,64 +4950,72 @@ CHV.fn.complete_image_edit = {
     },
 };
 
-// Album edit
-CHV.fn.before_album_edit = function (e) {
-    var modal_source = "[data-before-fn='CHV.fn.before_album_edit']";
-    $("[data-action=album-switch]", modal_source).remove();
-};
-CHV.fn.submit_album_edit = function () {
-    var $modal = $(PF.obj.modal.selectors.root);
+CHV.fn.albumEdit = {
+    before: function () {
+        var modal_source = "[data-before-fn='CHV.fn.albumEdit.before']";
+        $("[data-action=album-switch]", modal_source).remove();
+        var $enableCta = $(CHV.fn.ctaForm.selectors.enable, modal_source);
+        CHV.fn.ctaForm.destroy();
+        if(CHV.fn.ctaForm.enable) {
+            $enableCta.prop("checked", true).trigger("change");
+        }
+    },
+    load: function() {
+        var $enableCta = $(CHV.fn.ctaForm.selectors.enable, PF.obj.modal.selectors.root);
+        if($enableCta.is(":checked")) {
+            $enableCta.prop("checked", true).trigger("change");
+        }
+    },
+    submit: function() {
+        var $modal = $(PF.obj.modal.selectors.root);
+        if (!$("[name=form-album-name]", $modal).val()) {
+            PF.fn.growl.call(PF.fn._s("You must enter the album name."));
+            $("[name=form-album-name]", $modal).highlight();
+            return false;
+        }
+        PF.obj.modal.form_data = {
+            action: "edit",
+            edit: "album",
+            editing: {
+                id: CHV.obj.resource.id,
+                name: $("[name=form-album-name]", $modal).val(),
+                privacy: $("[name=form-privacy]", $modal).val(),
+                description: $("[name=form-album-description]", $modal).val(),
+                cta_enable: + CHV.fn.ctaForm.enable,
+                cta: JSON.stringify(CHV.fn.ctaForm.array),
+            },
+        };
+        if (PF.obj.modal.form_data.editing.privacy == "password") {
+            PF.obj.modal.form_data.editing.password = $(
+                "[name=form-album-password]",
+                $modal
+            ).val();
+        }
 
-    if (!$("[name=form-album-name]", $modal).val()) {
-        PF.fn.growl.call(PF.fn._s("You must enter the album name."));
-        $("[name=form-album-name]", $modal).highlight();
-        return false;
-    }
-
-    PF.obj.modal.form_data = {
-        action: "edit",
-        edit: "album",
-        editing: {
-            id: CHV.obj.resource.id,
-            name: $("[name=form-album-name]", $modal).val(),
-            privacy: $("[name=form-privacy]", $modal).val(),
-            description: $("[name=form-album-description]", $modal).val(),
-        },
-    };
-    if (PF.obj.modal.form_data.editing.privacy == "password") {
-        PF.obj.modal.form_data.editing.password = $(
-            "[name=form-album-password]",
-            $modal
-        ).val();
-    }
-
-    return true;
-};
-CHV.fn.complete_album_edit = {
-    success: function (XHR) {
-        var album = XHR.responseJSON.album;
-
-        $("[data-text=album-name]").html(PF.fn.htmlEncode(album.name));
-        $("[data-text=album-description]").html(
-            PF.fn.htmlEncode(album.description)
-        );
-        CHV.fn.resource_privacy_toggle(album.privacy);
-
-        var stock = CHV.obj.resource.type;
-        CHV.obj.resource.type = null;
-        CHV.fn.list_editor.updateItem($(PF.obj.listing.selectors.list_item, PF.obj.listing.selectors.content_listing_visible), XHR.responseJSON);
-        CHV.obj.resource.type = stock;
-
-        $("[data-modal]").each(function () {
-            $("option[value=" + album.id_encoded + "]", this).text(
-                album.name +
-                (album.privacy !== "public" ? " (" + PF.fn._s("private") + ")" : "")
+        return true;
+    },
+    complete: {
+        success: function (XHR) {
+            var album = XHR.responseJSON.album;
+            $("[data-text=album-name]").html(PF.fn.htmlEncode(album.name));
+            $("[data-text=album-description]").html(
+                PF.fn.htmlEncode(album.description)
             );
-        });
-
-        CHV.fn.common.updateDoctitle(album.name);
-
-        PF.fn.growl.expirable(PF.fn._s("Album edited successfully."));
+            CHV.fn.resource_privacy_toggle(album.privacy);
+            var stock = CHV.obj.resource.type;
+            CHV.obj.resource.type = null;
+            CHV.fn.list_editor.updateItem($(PF.obj.listing.selectors.list_item, PF.obj.listing.selectors.content_listing_visible), XHR.responseJSON);
+            CHV.obj.resource.type = stock;
+            $("[data-modal]").each(function () {
+                $("option[value=" + album.id_encoded + "]", this).text(
+                    album.name +
+                    (album.privacy !== "public" ? " (" + PF.fn._s("private") + ")" : "")
+                );
+            });
+            CHV.fn.common.updateDoctitle(album.name);
+            CHV.fn.ctaButtons.render(album.cta_html);
+            PF.fn.growl.expirable(PF.fn._s("Album edited successfully."));
+        },
     },
 };
 

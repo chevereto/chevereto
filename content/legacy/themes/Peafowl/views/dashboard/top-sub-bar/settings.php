@@ -44,11 +44,11 @@ if (!defined('ACCESS') || !ACCESS) {
     <?php if (Handler::var('settings')['key'] == 'categories') { ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
-                <a class="btn btn-small default" data-modal="form" data-target="modal-add-category"><i class="fas fa-plus"></i><span class="margin-left-5 phone-hide"><?php _se('Add'); ?></span></a>
+                <a class="btn btn-small default" data-modal="form" data-target="modal-add-category"><i class="fas fa-plus"></i><span class="margin-left-5 phone-hide"><?php _se('Create'); ?></span></a>
             </div>
         </div>
         <div data-modal="modal-add-category" class="hidden" data-submit-fn="CHV.fn.category.add.submit" data-before-fn="CHV.fn.category.add.before" data-ajax-deferred="CHV.fn.category.add.complete">
-            <span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Add category'); ?></span>
+            <span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Create %s', _s('category')); ?></span>
             <div class="modal-form">
                 <?php include_theme_file('snippets/form_category_edit'); ?>
             </div>

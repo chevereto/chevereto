@@ -677,8 +677,12 @@ $(function () {
             return;
         }
         var submit = event.key === 'Enter' && (event.ctrlKey || event.metaKey);
-        var $inputEnabledEnter = $this.is(":input.search, textarea") || $this.closest(".input-with-button").exists();
-        if(!$inputEnabledEnter && $this.is(":input") && event.key === 'Enter' && !submit) {
+        if($this.is("textarea") && !submit) {
+            e.stopPropagation();
+            return;
+        }
+        var $inputEnabledEnter = $this.is(":input.search") || $this.closest(".input-with-button").exists();
+        if(!$inputEnabledEnter && $this.is(":input, textarea") && event.key === 'Enter' && !submit) {
             e.stopPropagation();
             e.preventDefault();
             return;
@@ -841,6 +845,7 @@ $(function () {
             $pop_btn = $(this);
             $pop_box = $(".pop-box", $pop_btn);
             $pop_btn.addClass("opened");
+            var marginBox = parseInt($pop_box.css("margin-right"));
 
             $(".pop-box-inner", $pop_box).css("max-height", "");
 
@@ -863,14 +868,11 @@ $(function () {
                 $(".pop-box-header", $pop_box).remove();
                 $pop_box.css({ bottom: "" });
             }
-            if (
-                $pop_box.hasClass("anchor-center") &&
-                typeof $pop_box.data("guidstr") == typeof undefined
-            ) {
+            if ($pop_box.hasClass("anchor-center")) {
                 if (!PF.fn.isDevice(devices)) {
-                    $pop_box.css("margin-left", -($pop_box.width() / 2));
+                    $pop_box.css("marginInlineStart", -($pop_box.outerWidth() / 2));
                 } else {
-                    $pop_box.css("margin-left", "");
+                    $pop_box.css("marginInlineStart", "");
                 }
             }
 
@@ -905,55 +907,32 @@ $(function () {
 
             var callback = function ($pop_box) {
                 if (!$pop_box.is(":visible")) {
-                    var guidstr = $pop_box.attr("data-guidstr");
                     $pop_box
-                        .css("marginLeft", "")
-                        .removeClass(guidstr)
+                        .css("marginInlineStart", "")
                         .removeAttr("data-guidstr")
                         .closest(".pop-btn")
                         .removeClass("opened");
-                    if (typeof guidstr !== typeof undefined) {
-                        $("style#" + guidstr).remove();
-                    }
                 } else {
                     if (!PF.fn.isDevice(devices)) {
-                        var posMargin = $pop_box.css("marginLeft");
+                        var posMargin = $pop_box.css("marginInlineStart");
                         if (typeof posMargin !== typeof undefined) {
                             posMargin = parseFloat(posMargin);
-                            $pop_box.css("marginLeft", "");
+                            $pop_box.css("marginInlineStart", "");
                         }
                         var cutoff = $pop_box.getWindowCutoff();
-                        if (
-                            cutoff &&
-                            (cutoff.left || cutoff.right) &&
-                            cutoff.right < posMargin
-                        ) {
-                            var guidstr = "guid-" + PF.fn.guid();
+                        if (cutoff && cutoff.right && cutoff.right < posMargin) {
                             $pop_box
-                                .css("marginLeft", cutoff.right + "px")
-                                .addClass(guidstr)
-                                .attr("data-guidstr", guidstr);
-                            var posArrow =
-                                $this.outerWidth() / 2 +
-                                $this.offset().left -
-                                $pop_box.offset().left;
-                            var selectors = [];
-                            $.each(["top", "bottom"], function (i, v) {
-                                $.each(["after", "before"], function (ii, vv) {
-                                    selectors.push("." + guidstr + ".arrow-box-" + v + ":" + vv);
-                                });
-                            });
-                            $(
-                                '<style id="' +
-                                guidstr +
-                                '">' +
-                                selectors.join() +
-                                " { left: " +
-                                posArrow +
-                                "px; }</style>"
-                            ).appendTo("head");
+                                .css("marginInlineStart", cutoff.right + "px");
                         } else {
-                            $pop_box.css("marginLeft", posMargin + "px");
+                            $pop_box.css("marginInlineStart", posMargin + "px");
+                            cutoff = $pop_box.getWindowCutoff();
+                            if(cutoff && cutoff.left) {
+                                let marginFix = -(Math.abs(posMargin) + Math.abs(cutoff.left) + marginBox/2);
+                                $pop_box.css(
+                                    "marginInlineStart",
+                                    marginFix + "px"
+                                );
+                            }
                         }
                         $(".antiscroll-wrap:not(.jsly):visible", $pop_box)
                             .addClass("jsly")
@@ -4272,9 +4251,9 @@ PF.fn.loading = {
             $(".loading-indicator", $target.css("textAlign", "center")).css({
                 position: options.position,
                 top: "50%",
-                left: "50%",
+                insetInlineStart: "50%",
                 marginTop: -(PF.fn.loading.spin[options.size].blocksize / 2),
-                marginLeft: -(PF.fn.loading.spin[options.size].blocksize / 2)
+                marginInlineStart: -(PF.fn.loading.spin[options.size].blocksize / 2)
             });
         }
         if (options.valign == "center") {
@@ -4287,7 +4266,7 @@ PF.fn.loading = {
 
         $(".spinner", $target).css({
             top: PF.fn.loading.spin[options.size].blocksize / 2 + "px",
-            left: PF.fn.loading.spin[options.size].blocksize / 2 + "px"
+            insetInlineStart: PF.fn.loading.spin[options.size].blocksize / 2 + "px"
         });
     },
     fullscreen: function () {

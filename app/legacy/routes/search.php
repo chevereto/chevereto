@@ -106,15 +106,15 @@ return function (Handler $handler) {
     $meta_description = '';
     switch ($search->type) {
         case 'images':
-            $meta_description = _s('Image search results for %s');
+            $meta_description = _s('%t search results for %s', ['%t' => _s('Image')]);
 
         break;
         case 'albums':
-            $meta_description = _s('Album search results for %s');
+            $meta_description = _s('%t search results for %s', ['%t' => _s('Album')]);
 
         break;
         case 'users':
-            $meta_description = _s('User search results for %s');
+            $meta_description = _s('%t search results for %s', ['%t' => _s('User')]);
 
         break;
     }
