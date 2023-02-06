@@ -76,8 +76,8 @@ class Stat
             if (($count + 1) > $maxLimit) {
                 throw new OverflowException(
                     message('Max %t reached (limit %s)')
-                        ->withStrtr('%t', $type)
-                        ->withStrtr('%s', strval($maxLimit)),
+                        ->withTranslate('%t', $type)
+                        ->withTranslate('%s', strval($maxLimit)),
                     999
                 );
             }

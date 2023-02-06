@@ -11,7 +11,6 @@
 
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\Login;
-use function Chevereto\Legacy\G\get_public_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\include_theme_file;
 use function Chevereto\Legacy\get_checkbox_html;
@@ -90,11 +89,7 @@ if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
         <?php
             if (getSetting('website_mode') == 'community') {
                 ?>
-            <div class="input-below"><?php echo get_public_url(
-                    getSetting('root_route') === 'user'
-                        ? ''
-                        : getSetting('route_user')
-                ) . '/'; ?><span data-text="username"><?php echo Handler::var('user')["username"]; ?></span></div>
+            <div class="input-below"><?php echo Handler::var('user')['public_url']; ?></div>
         <?php
             } ?>
     </div>

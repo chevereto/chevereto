@@ -27,7 +27,7 @@ final class Key implements KeyInterface
         if (strlen($this->key) !== EncryptionInterface::KEY_LENGTH) {
             throw new InvalidArgumentException(
                 message('Requires a key size of %s')
-                    ->withStrtr('%s', strval(EncryptionInterface::KEY_LENGTH))
+                    ->withTranslate('%s', strval(EncryptionInterface::KEY_LENGTH))
             );
         }
     }

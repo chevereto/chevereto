@@ -25,7 +25,7 @@ function assertNonce(string $nonce): void
     if (!isValidNonce($nonce)) {
         throw new InvalidArgumentException(
             message('Requires a nonce size of %s')
-                ->withStrtr('%s', strval(EncryptionInterface::NONCE_LENGTH))
+                ->withTranslate('%s', strval(EncryptionInterface::NONCE_LENGTH))
         );
     }
 }

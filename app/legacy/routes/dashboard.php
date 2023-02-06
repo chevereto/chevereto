@@ -727,13 +727,13 @@ return function (Handler $handler) {
                                 ]
                             ],
                             'album' => [
-                                'label' => _s('Album page'),
+                                'label' => _s('%s page', _s('Album')),
                                 'placements' => [
                                     'banner_album_before_header' => [
-                                        'label' => _s('Before header (album page)')
+                                        'label' => _s('Before header (%s page)', _s('Album'))
                                     ],
                                     'banner_album_after_header' => [
-                                        'label' => _s('After header (album page)')
+                                        'label' => _s('After header (%s page)', _s('Album'))
                                     ]
                                 ]
                             ],
@@ -749,10 +749,10 @@ return function (Handler $handler) {
                                 ]
                             ],
                             'explore' => [
-                                'label' => _s('Explore page'),
+                                'label' => _s('%s page', _s('Explore')),
                                 'placements' => [
                                     'banner_explore_after_top' => [
-                                        'label' => _s('After top (explore page)')
+                                        'label' => _s('After top (%s page)', _s('Explore'))
                                     ]
                                 ]
                             ]
@@ -782,7 +782,12 @@ return function (Handler $handler) {
                     $POST['theme_home_uids'] = implode(',', array_keys(array_flip(explode(',', trim(preg_replace(['/\s+/', '/,+/'], ['', ','], $POST['theme_home_uids']), ',')))));
                 }
                 if (isset($POST['website_mode']) && $POST['website_mode'] == 'personal') {
-                    $POST['website_mode_personal_routing'] = get_regex_match(getSetting('routing_regex'), $POST['website_mode_personal_routing'], '#', 1);
+                    $POST['website_mode_personal_routing'] = get_regex_match(
+                        getSetting('routing_regex'),
+                        $POST['website_mode_personal_routing'],
+                        '#',
+                        1
+                    );
 
                     if (!check_value($POST['website_mode_personal_routing'])) {
                         $POST['website_mode_personal_routing'] = '/';
@@ -1142,7 +1147,12 @@ return function (Handler $handler) {
                 if (isset($POST['homepage_style']) && $POST['homepage_style'] !== 'route_explore' && $POST['homepage_cta_fn'] == 'cta-link' && !is_url($POST['homepage_cta_fn_extra'])) {
                     if (!empty($POST['homepage_cta_fn_extra'])) {
                         $POST['homepage_cta_fn_extra'] = rtrim(sanitize_relative_path($POST['homepage_cta_fn_extra']), '/');
-                        $POST['homepage_cta_fn_extra'] = get_regex_match(getSetting('routing_regex_path'), '#', $POST['homepage_cta_fn_extra'], 1);
+                        $POST['homepage_cta_fn_extra'] = get_regex_match(
+                            getSetting('routing_regex_path'),
+                            $POST['homepage_cta_fn_extra'],
+                            '#',
+                            1
+                        );
                     } else {
                         $validations['homepage_cta_fn_extra'] = [
                             'validate' => false,

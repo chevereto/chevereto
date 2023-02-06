@@ -3182,7 +3182,6 @@ CHV.fn.listingViewer = {
         this.getEl("tools").find(".list-tool[data-action]").each(function() {
             $(this).attr("title", $(this).attr("title") + " ("+$this.keymap[$(this).attr("data-action")][0]+")");
         });
-        console.log('aaaa')
         this.placeholderSizing();
         this.trickyLoad();
     },
@@ -3208,6 +3207,7 @@ CHV.fn.listingViewer = {
                     }
                 });
                 var regex = new RegExp(v, "g");
+                value = typeof value == typeof undefined ? "" : value;
                 template = template.replace(regex, value);
             });
         }
@@ -3540,16 +3540,15 @@ CHV.fn.uploader = {
                 })
                 .removeClass("followed-scroll")
                 .addClass("overflow-hidden top-bar-box-shadow-none");
-
-            $("#top-bar").data({
-                stock_classes: $("#top-bar").attr("class"),
-            });
-
+            $("#top-bar")
+                .data({
+                    stock_classes: $("#top-bar").attr("class"),
+                })
+                .addClass("scroll-up");
             $(".current[data-nav]", ".top-bar").each(function () {
                 if ($(this).is("[data-action=top-bar-menu-full]")) return;
                 $(this).removeClass("current").attr("data-current", 1);
             });
-
             if (PF.fn.isDevice("mobile")) {
                 var $upload_heading = $(
                     ".upload-box-heading",
@@ -3566,6 +3565,7 @@ CHV.fn.uploader = {
                 }, animation.time);
             });
         } else {
+            $("#top-bar")[0].className = $("#top-bar").data('stock_classes');
             $("[data-nav][data-current=1]", ".top-bar").each(function () {
                 $(this).addClass("current");
             });
@@ -5014,7 +5014,7 @@ CHV.fn.albumEdit = {
             });
             CHV.fn.common.updateDoctitle(album.name);
             CHV.fn.ctaButtons.render(album.cta_html);
-            PF.fn.growl.expirable(PF.fn._s("Album edited successfully."));
+            PF.fn.growl.expirable(PF.fn._s("The content has been edited."));
         },
     },
 };
@@ -5106,10 +5106,9 @@ CHV.fn.category = {
                         PF.fn.htmlEncode(v)
                     );
                 });
-
                 $("[data-link=category-url]").attr("href", category.url);
-
                 CHV.obj.categories[category.id] = category;
+                PF.fn.growl.expirable(PF.fn._s("The content has been edited."))
             },
         },
     },
@@ -5735,7 +5734,7 @@ CHV.fn.user = {
         complete: {
             success: function (XHR) {
                 var response = XHR.responseJSON;
-                PF.fn.growl.expirable(PF.fn._s("User added successfully."));
+                PF.fn.growl.expirable(PF.fn._s("%s added successfully.", PF.fn._s("User")));
             },
             error: function (XHR) {
                 var response = XHR.responseJSON;

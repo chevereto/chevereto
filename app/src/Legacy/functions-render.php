@@ -11,6 +11,8 @@
 
 namespace Chevereto\Legacy;
 
+use function Chevere\Message\message;
+use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\Login;
@@ -39,7 +41,6 @@ use function Chevereto\Legacy\G\url_to_relative;
 use function Chevereto\Vars\cookie;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\server;
-use LogicException;
 
 function get_email_body_str($file)
 {
@@ -154,7 +155,7 @@ function get_captcha_component($id = 'g-recaptcha')
     return match (getSetting('captcha_api')) {
         '2', 'hcaptcha' => ['captcha_html', strtr('<div id="%id" data-recaptcha-element class="captcha"></div>', ['%id' => $id])],
         '3' => ['recaptcha_invisible_html', get_captcha_invisible_html()],
-        default => throw new LogicException('Invalid captcha API'),
+        default => throw new LogicException(message('Invalid captcha API')),
     };
 }
 function get_captcha_invisible_html()
@@ -362,6 +363,7 @@ function include_peafowl_foot()
                             .value = token;
                     });
             JS,
+            default => throw new LogicException(message('Invalid captcha API')),
         };
         $echo[] = strtr('<script>
 		captchaCallback = function() {
@@ -381,6 +383,7 @@ function include_peafowl_foot()
             '2' => '<script defer src="https://www.recaptcha.net/recaptcha/api.js?onload=captchaCallback&render=explicit"></script>',
             'hcaptcha' => '<script defer src="https://js.hcaptcha.com/1/api.js?onload=captchaCallback&render=explicit"></script>',
             '3' => '<script defer src="https://www.recaptcha.net/recaptcha/api.js?onload=captchaCallback&render=' . getSetting('captcha_sitekey') . '"></script>',
+            default => throw new LogicException(message('Invalid captcha API')),
         };
     }
     if (method_exists(Settings::class, 'getChevereto')) {
@@ -960,27 +963,29 @@ function show_banner($banner, $sfw = true)
         echo '<div id="' . $banner . '" class="ad-banner">' . $banner_code . '</div>';
     }
 }
-function showComments()
+function getComments(): string
 {
     $html = '';
     switch (getSetting('comments_api')) {
         case 'js':
-            $html = getSetting('comment_code');
+            $html = strval(getSetting('comment_code'));
 
             break;
         case 'disqus':
             $disqus_secret = getSetting('disqus_secret_key');
             $disqus_public = getSetting('disqus_public_key');
             if (!empty($disqus_secret) && !empty($disqus_public)) {
+                $data = [];
                 $logged_user = Login::getUser();
-                $data = [
-                    'id' => $logged_user['id_encoded'],
-                    'username' => $logged_user['name'],
-                    'email' => $logged_user['email'],
-                    'avatar' => $logged_user['avatar']['url'],
-                    'url' => $logged_user['url'],
-                ];
-
+                if ($logged_user !== []) {
+                    $data = [
+                        'id' => $logged_user['id_encoded'],
+                        'username' => $logged_user['name'],
+                        'email' => $logged_user['email'],
+                        'avatar' => $logged_user['avatar']['url'],
+                        'url' => $logged_user['url'],
+                    ];
+                }
                 $message = base64_encode(json_encode($data));
                 $timestamp = time();
                 $hmac = dsq_hmacsha1($message . ' ' . $timestamp, $disqus_secret);
@@ -1015,7 +1020,8 @@ var disqus_config = function () {
 
             break;
     }
-    echo $html;
+
+    return $html;
 }
 
 function getThemeLogo(): string

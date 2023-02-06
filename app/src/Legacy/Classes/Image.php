@@ -1044,6 +1044,7 @@ class Image
                 $album = isset(session()[$session_handle])
                     ? Album::getSingle(decodeID(session()[$session_handle]))
                     : null;
+                // @phpstan-ignore-next-line
                 if (!empty($album) || !in_array($album['privacy'] ?? '', $privacyTargets)) {
                     $inserted_album = Album::insert([
                         'name' => _s('Private upload') . ' ' . datetime('Y-m-d'),
@@ -1053,6 +1054,7 @@ class Image
                     sessionVar()->put($session_handle, $inserted_album);
                     $image_insert_values['album_id'] = $inserted_album;
                 } else {
+                    // @phpstan-ignore-next-line
                     $image_insert_values['album_id'] = $album['id'];
                 }
             }
@@ -1148,6 +1150,7 @@ class Image
             && $values['nsfw'] == 0
             && Settings::get('moderatecontent_flag_nsfw')
             && is_object($image_upload['moderation'])
+            && property_exists($image_upload['moderation'], 'rating_letter')
         ) {
             switch ($image_upload['moderation']->rating_letter) {
                 case 'a':

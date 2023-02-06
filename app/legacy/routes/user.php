@@ -199,7 +199,7 @@ return function (Handler $handler) {
     $handler::setCond('show_follow_button', $show_follow_button);
     $base_user_url = $user['url'];
     $type = 'images';
-    $current_view = 'images';
+    $current_view = $type;
     $tools = false;
     foreach ($user_views as $k => $v) {
         $handler::setCond('user_' . $k, (bool) $v['current']);

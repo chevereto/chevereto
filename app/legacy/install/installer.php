@@ -484,7 +484,7 @@ $settings_updates = [
     ],
     '3.14.1' => null,
     '3.15.0' => [
-        'hostname' => null,
+        // 'hostname' => null,
         'theme_show_embed_content_for' => 'all', // none,users,all
     ],
     '3.15.1' => null,
@@ -588,6 +588,7 @@ $settings_updates = [
         'semantics_category' => '',
         'semantics_categories' => '',
     ],
+    '4.0.7' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -822,8 +823,8 @@ if (isset($installed_version) && empty($paramsCheck)) {
         if (!array_key_exists(APP_VERSION, $settings_updates)) {
             throw new LogicException(
                 message: message('Outdated installation files. Re-upload %folder% folder with the one from %version%')
-                    ->withStrtr('%folder%', 'app/legacy/install')
-                    ->withStrtr('%version%', APP_VERSION)
+                    ->withTranslate('%folder%', 'app/legacy/install')
+                    ->withTranslate('%version%', APP_VERSION)
             );
         }
         $schema = [];
@@ -2020,8 +2021,8 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                     $updateMessageWrap
                     MESSAGE
                 )
-                    ->withStrtr('%query%', $sql_update)
-                    ->withStrtr('%error%', $e->getMessage())
+                    ->withTranslate('%query%', $sql_update)
+                    ->withTranslate('%error%', $e->getMessage())
             );
         }
         if ($updated) {

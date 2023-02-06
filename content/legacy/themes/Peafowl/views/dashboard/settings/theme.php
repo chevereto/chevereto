@@ -81,6 +81,7 @@ foreach (array_keys($palettes->get()) as $id) {
     [
                     'embeds' => _s('Embed codes'),
                     'about' => _s('About'),
+                    'comments' => _s('Comments'),
                     'info' => _s('Info'),
                 ],
     Settings::get('image_first_tab')
@@ -118,54 +119,6 @@ foreach (array_keys($palettes->get()) as $id) {
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_nsfw_upload_checkbox')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show a checkbox to indicate not safe content upload.'); ?></div>
-</div>
-<hr class="line-separator">
-<div class="input-label">
-    <label for="comments_api"><?php _se('Comments API'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="comments_api" id="comments_api" class="text-input" data-combo="comments_api-combo">
-        <?php
-                echo get_select_options_html([
-                    'disqus' => 'Disqus',
-                    'js' => 'JavaScript/HTML',
-                ], Handler::var('safe_post') ? Handler::var('safe_post')['comments_api'] : Settings::get('comments_api')); ?>
-    </select></div>
-    <div class="input-below"><?php _se('Disqus API works with %s.', '<a rel="external" href="https://help.disqus.com/customer/portal/articles/236206" target="_blank">Single Sign-On</a> (SSO)'); ?></div>
-</div>
-<div id="comments_api-combo">
-    <div data-combo-value="disqus" class="switch-combo<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['comments_api'] : Settings::get('comments_api')) !== 'disqus') {
-                    echo ' soft-hidden';
-                } ?>">
-        <div class="c9 phablet-c1">
-            <div class="input-label">
-                <label for="disqus_shortname"><?php _se('Disqus shortname'); ?></label>
-                <input type="text" name="disqus_shortname" id="disqus_shortname" class="text-input" value="<?php echo Handler::var('safe_post')['disqus_shortname'] ?? Settings::get('disqus_shortname'); ?>">
-                <div class="input-warning red-warning"><?php echo Handler::var('input_errors')['disqus_shortname'] ?? ''; ?></div>
-            </div>
-            <div class="input-label">
-                <label for="disqus_secret_key"><?php _se('%s secret key', 'Disqus'); ?></label>
-                <input type="text" name="disqus_secret_key" id="disqus_secret_key" class="text-input" value="<?php echo Handler::var('safe_post')['disqus_secret_key'] ?? Settings::get('disqus_secret_key'); ?>">
-                <div class="input-warning red-warning"><?php echo Handler::var('input_errors')['disqus_secret_key'] ?? ''; ?></div>
-            </div>
-            <div class="input-label">
-                <label for="disqus_public_key"><?php _se('%s public key', 'Disqus'); ?></label>
-                <input type="text" name="disqus_public_key" id="disqus_public_key" class="text-input" value="<?php echo Handler::var('safe_post')['disqus_public_key'] ?? Settings::get('disqus_public_key'); ?>">
-                <div class="input-warning red-warning"><?php echo Handler::var('input_errors')['disqus_public_key'] ?? ''; ?></div>
-            </div>
-        </div>
-    </div>
-    <div data-combo-value="js" class="switch-combo<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['comments_api'] : Settings::get('comments_api')) !== 'js') {
-                    echo ' soft-hidden';
-                } ?>">
-        <div class="input-label">
-            <label for="comment_code"><?php _se('Comment code'); ?></label>
-            <div class="c12 phablet-c1"><textarea type="text" name="comment_code" id="comment_code" class="text-input r4" value="" placeholder="<?php _se('Disqus, Facebook or anything you want. It will be used in image view.'); ?>"><?php echo Settings::get('comment_code'); ?></textarea></div>
-        </div>
-    </div>
-</div>
-<hr class="line-separator">
-<div class="input-label">
-    <label for="analytics_code"><?php _se('Analytics code'); ?></label>
-    <div class="c12 phablet-c1"><textarea type="text" name="analytics_code" id="analytics_code" class="text-input r4" value="" placeholder="<?php _se('Google Analytics or anything you want. It will be added to the theme footer.'); ?>"><?php echo Settings::get('analytics_code'); ?></textarea></div>
 </div>
 <hr class="line-separator">
 <div class="input-label">

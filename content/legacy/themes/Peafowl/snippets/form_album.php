@@ -16,8 +16,7 @@ if (!defined('ACCESS') || !ACCESS) {
     <label for="<?php echo $label; ?>"><?php _se('Name'); ?></label>
     <input type="text" name="<?php echo $label; ?>" id="<?php echo $label; ?>" class="text-input" value="<?php echo $album["name"] ?? null; ?>" placeholder="<?php _se('Unnamed %s', _s('album')); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
 </div>
-<?php if ($GLOBALS['theme_include_args']['album-root'] ?? false) {
-        ?>
+<?php if (Handler::cond('content_manager') && ($GLOBALS['theme_include_args']['album-root'] ?? false)) { ?>
 <div id="cta-form">
     <div class="input-label">
         <label><?php _se('Call to action'); ?></label>

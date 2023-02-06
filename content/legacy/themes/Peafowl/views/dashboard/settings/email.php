@@ -46,7 +46,7 @@ echo read_the_docs_settings('email', _s('Email')); ?>
 <div id="mail-combo">
     <?php
                 if (isset($GLOBALS['SMTPDebug'])) {
-                    echo '<p class="highlight">' . nl2br($GLOBALS['SMTPDebug'] ?? '') . '</p>';
+                    echo '<p class="highlight">' . nl2br($GLOBALS['SMTPDebug']) . '</p>';
                 } ?>
     <div data-combo-value="smtp" class="switch-combo c9 phablet-c1<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode')) !== 'smtp') {
                     echo ' soft-hidden';

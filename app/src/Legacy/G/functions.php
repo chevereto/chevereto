@@ -94,7 +94,7 @@ function check_value(mixed $anything): bool
     // @phpstan-ignore-next-line
     if ((!empty($anything) && isset($anything))
         || $anything == '0'
-        || (is_countable($anything) && count($anything) > 0)) {
+        || (is_countable($anything) && count($anything) > 0)) { // @phpstan-ignore-line
         return true;
     }
 
@@ -919,7 +919,7 @@ function parse_user_agent(?string $u_agent = null): array
         $browser = 'Midori';
         $version = $result['version'][$key];
     } elseif ($browser == 'AppleWebKit') {
-        if (($platform == 'Android' && !($key = 0))) {
+        if (($platform == 'Android')) {
             $browser = 'Android Browser';
         } elseif ($platform == 'BlackBerry' || $platform == 'PlayBook') {
             $browser = 'BlackBerry Browser';
@@ -1248,12 +1248,12 @@ function unaccent_string(string $string): string
     return $string;
 }
 
-function safe_html(mixed $var, int $flag = ENT_QUOTES, array $skip = []): string|array|null
+function safe_html(mixed $var, int $flag = ENT_QUOTES | ENT_HTML5, array $skip = []): string|array|null
 {
     if (!is_array($var)) {
         return $var === null
             ? null
-            : htmlspecialchars((string) $var, $flag, 'UTF-8');
+            : htmlspecialchars((string) $var, $flag, 'UTF-8', false);
     }
     $safe_array = [];
     foreach ($var as $k => $v) {
@@ -1267,7 +1267,7 @@ function safe_html(mixed $var, int $flag = ENT_QUOTES, array $skip = []): string
             : (
                 $v === null
                     ? null
-                    : htmlspecialchars((string) $v, $flag, 'UTF-8')
+                    : safe_html($v, $flag, $skip)
             );
     }
 
@@ -1554,7 +1554,8 @@ function get_regex_match(
     string $delimiter = '/',
     ?int $key = null
 ): mixed {
-    preg_match($delimiter . $regex . $delimiter, $subject, $matches);
+    $pattern = $delimiter . $regex . $delimiter;
+    preg_match($pattern, $subject, $matches);
     if (array_key_exists($key, $matches)) {
         return $matches[$key];
     } else {

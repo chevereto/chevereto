@@ -12,7 +12,7 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 echo read_the_docs_settings('categories', _s('Categories')); ?>
 <?php if (!getSetting('website_explore_page')) { ?>
-    <div class="growl static"><?php _se("Categories won't work when the explorer feature is turned off. To revert this setting go to %s.", ['%s' => '<a href="' . get_base_url('dashboard/settings/website') . '">' . _s('Dashboard > Settings > Website') . '</a>']); ?></div>
+    <div class="input-label growl static font-size-small margin-top-20"><i class="fa-solid fa-triangle-exclamation"></i> <?php _se("%s won't work when the explorer feature is turned off.", _s('Categories')); ?> <?php _se('To revert this setting go to %s.', '<a href="' . get_base_url('dashboard/settings/website') . '">' . _s('Dashboard > Settings > Website') . '</a>'); ?></div>
 <?php
 } ?>
 <script>

@@ -15,7 +15,6 @@ use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\encodeID;
-use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\html_to_bbcode;
@@ -24,6 +23,7 @@ use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\get_share_links;
+use function Chevereto\Legacy\getComments;
 use function Chevereto\Legacy\getIdFromURLComponent;
 use function Chevereto\Legacy\getIpButtonsArray;
 use function Chevereto\Legacy\getSetting;
@@ -154,6 +154,15 @@ return function (Handler $handler) {
         'id' => 'tab-about',
         'current' => true,
     ];
+    $comments = getComments();
+    if ($comments !== '') {
+        $tabs[] = [
+            'icon' => 'fas fa-comments',
+            'label' => _s('Comments'),
+            'id' => 'tab-comments',
+        ];
+    }
+    $handler::setVar('comments', $comments);
     if (isShowEmbedContent()) {
         $tabs[] = [
             'icon' => 'fas fa-code',
@@ -170,16 +179,6 @@ return function (Handler $handler) {
             ];
         }
         $bannedIp = IpBan::getSingle(['ip' => $image['uploader_ip']]);
-        $buttonSearchIp = '';
-        $buttonBanIp = '';
-        $ipBanNotice = '';
-        if ((bool) env()['CHEVERETO_ENABLE_USERS']) {
-            $buttonSearchIp = '<a class="btn btn-small default" href="' . get_base_url('search/images/?q=ip:%1$s') . '"><i class="fas fa-search"></i> ' . _s('Search') . '</a>';
-        }
-        if ((bool) env()['CHEVERETO_ENABLE_IP_BANS']) {
-            $buttonBanIp = ($bannedIp === [] ? ('<a class="btn btn-small default" data-modal="form" data-args="%IP" data-target="modal-add-ip_ban" data-options=\'{"forced": true}\' data-content="ban_ip"><i class="fas fa-ban"></i> ' . _s('Ban') . '</a>') : '');
-            $ipBanNotice = '<span class="btn btn-small default disabled' . ($bannedIp !== [] ? '' : ' hidden') . '" data-content="banned_ip"><i class="fas fa-ban"></i> ' . _s('Banned') . '</span>';
-        }
         $image_admin_list_values = [
             [
                 'label' => _s('Image ID'),
@@ -207,6 +206,9 @@ return function (Handler $handler) {
     if (!isShowEmbedContent() && $firstTabSetting == 'embeds') {
         $firstTabSetting = 'about';
     }
+    if ($comments === '' && $firstTabSetting == 'comments') {
+        $firstTabSetting = 'about';
+    }
     $firstTab = 'tab-' . $firstTabSetting;
     $currentTab = [];
     $currentTabId = '';
@@ -228,7 +230,9 @@ return function (Handler $handler) {
         if (isset($currentKey)) {
             unset($tabs[$currentKey]);
         }
-        array_unshift($tabs, $currentTab);
+        if ($currentTab !== []) {
+            array_unshift($tabs, $currentTab);
+        }
     }
     $handler::setVar('current_tab', str_replace_first('tab-', '', $currentTabId));
     $handler::setCond('owner', $is_owner);

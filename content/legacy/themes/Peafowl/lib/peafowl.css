@@ -2123,7 +2123,6 @@ body.landing .top-btn-text {
 }
 
 .top-bar-notifications-list li {
-    font-size: 0.93em;
     display: block;
     text-decoration: none;
     padding: 10px;
@@ -2338,7 +2337,8 @@ body.landing .top-btn-text {
     inset-inline-end: auto;
 }
 
-.tone-light.top-bar .top-btn-number.on, .top-btn-number.on, .top-btn-number.on:hover, .opened .top-btn-number.on, .tone-light.ios .top-bar .top-btn-number.on {
+.tone-light.top-bar .top-btn-number.on, .top-btn-number.on, .top-btn-number.on:hover, .opened .top-btn-number.on, .tone-light.ios .top-bar .top-btn-number.on,
+.top-bar .top-btn-text:hover .top-btn-number.on {
     background: #d90000;
     color: #fff;
 }

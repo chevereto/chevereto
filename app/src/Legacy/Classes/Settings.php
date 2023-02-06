@@ -407,7 +407,12 @@ class Settings
                 if (is_null($settings['website_mode_personal_routing']) || $settings['website_mode_personal_routing'] == '/') {
                     $settings['website_mode_personal_routing'] = '/';
                 } else {
-                    $settings['website_mode_personal_routing'] = get_regex_match($settings['routing_regex'], $settings['website_mode_personal_routing'], '#', 1);
+                    $settings['website_mode_personal_routing'] = get_regex_match(
+                        $settings['routing_regex'],
+                        $settings['website_mode_personal_routing'],
+                        '#',
+                        1
+                    );
                 }
             }
             if (!is_integer($settings['website_mode_personal_uid'])) {
@@ -424,7 +429,12 @@ class Settings
             $settings['homepage_cta_fn'] = 'cta-upload';
         }
         if ($settings['homepage_cta_fn'] == 'cta-link' && !is_url($settings['homepage_cta_fn_extra'])) {
-            $settings['homepage_cta_fn_extra'] = get_regex_match($settings['routing_regex_path'], $settings['homepage_cta_fn_extra'], '#', 1);
+            $settings['homepage_cta_fn_extra'] = get_regex_match(
+                $settings['routing_regex_path'],
+                $settings['homepage_cta_fn_extra'],
+                '#',
+                1
+            );
         }
         if (!is_null($settings['languages_disable'])) {
             $languages_disable = (array) explode(',', $settings['languages_disable']);

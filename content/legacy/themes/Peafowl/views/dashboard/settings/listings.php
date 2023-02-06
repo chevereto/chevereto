@@ -49,7 +49,7 @@ echo read_the_docs_settings('listings', _s('Listings')); ?>
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <label for="explore_albums_min_image_count"><?php _se('Album listing images requirement'); ?> (<?php echo _se('explore'); ?>)</label>
+    <label for="explore_albums_min_image_count"><?php _se('%s listing images requirement', _s('Album')); ?> (<?php echo _se('explore'); ?>)</label>
     <div class="c2"><input type="number" min="1" name="explore_albums_min_image_count" id="explore_albums_min_image_count" class="text-input" value="<?php echo Settings::get('explore_albums_min_image_count'); ?>" placeholder="<?php echo Settings::getDefault('explore_albums_min_image_count'); ?>" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['explore_albums_min_image_count'] ?? ''; ?></div>
     <div class="input-below"><?php _se('Sets the minimum image count needed to show albums in explore.'); ?></div>

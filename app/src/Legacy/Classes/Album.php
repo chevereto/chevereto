@@ -195,7 +195,7 @@ class Album
         if (empty($values['creation_ip'])) {
             $values['creation_ip'] = get_client_ip();
         }
-        assertNotStopWords($values['name'] ?? '', $values['description'] ?? '');
+        assertNotStopWords($values['name'] ?? '', $values['description'] ?? ''); // @phpstan-ignore-line
         $album_array = [
             'name' => $values['name'],
             'user_id' => $values['user_id'],
@@ -343,6 +343,7 @@ class Album
             ];
             DB::increment('users', $user_updated_counts, ['id' => $user_id]);
         }
+        DB::delete('notifications', ['content_type' => 'album', 'type_id' => $id]);
         Stat::track([
             'action' => 'delete',
             'table' => 'albums',

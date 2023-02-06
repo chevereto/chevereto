@@ -245,7 +245,7 @@ return function (Handler $handler) {
         (getSetting('homepage_cta_fn') == 'cta-upload' && !getSetting('guest_uploads'))
             ? 'data-login-needed="true"'
             : '',
-        'class="btn btn-big accent">'
+        'class="btn btn-big accent ' . getSetting('homepage_cta_color') . '">'
         . (getSetting('homepage_cta_html')
             ?: '<i class="fas fa-cloud-upload-alt"></i><span class="btn-text">'
                 . _s('Start uploading') . '</span>')

@@ -1,0 +1,21 @@
+Chevereto 4.0.7 (2023-02-06)
+
+- 🐞 Fixed bug in Anywhere Uploader
+- 🐞 Fixed bug in Bulk Importer
+- 🐞 Fixed bug in Installer
+- 🐞 Fixed bug with call to action buttons editing
+- 🐞 Fixed bug with CDN website setting
+- 🐞 Fixed bug with Disqus
+- 🐞 Fixed bug with endless scrolling a password protected album
+- 🐞 Fixed bug with listing viewer display
+- 🐞 Fixed bug with ModerateContent
+- 🐞 Fixed bug with Notifications
+- 🐞 Fixed bug with translation display
+- 🐞 Fixed bug with type error at JSON route
+- 🐞 Fixed bug with wrong semantic (Album) at uploader
+- 🐞 Fixed bug with wrong semantic at dashboard stats
+- 🐞 Fixed bug with wrong semantic on growl notifications
+- 💅 Added comments tab on images
+- 💅 Added user avatar as favicon image
+- 💅 Improved HTML 5 encoding
+- 💅 Moved Twitter account settings to External Services

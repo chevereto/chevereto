@@ -1,5 +1,6 @@
 <?php
 
+use Chevereto\Legacy\Classes\Login;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_current_url;
@@ -39,9 +40,13 @@ if (!defined('ACCESS') || !ACCESS) {
 } ?>
     <title><?php echo Handler::var('safe_html_doctitle'); ?></title>
     <?php include_peafowl_head(); ?>
-    <link rel="shortcut icon" href="<?php echo get_system_image_url(getSetting('favicon_image')); ?>">
-    <link rel="icon" type="image/png" href="<?php echo get_system_image_url(getSetting('favicon_image')); ?>" sizes="192x192">
-    <link rel="apple-touch-icon" href="<?php echo get_system_image_url(getSetting('favicon_image')); ?>" sizes="180x180">
+    <link rel="shortcut icon" href="<?php
+        $loggedUserAvatar = Login::getUser()['avatar']['url'] ?? null;
+        $icon = $loggedUserAvatar ?? get_system_image_url(getSetting('favicon_image'));
+        echo $icon;
+    ?>">
+    <link rel="icon" type="image/png" href="<?php echo $icon; ?>" sizes="192x192">
+    <link rel="apple-touch-icon" href="<?php echo $icon; ?>" sizes="180x180">
     <?php if (is_route('image') && Handler::var('image') !== null && Handler::var('image')['is_360']) { ?>
     <link rel="stylesheet" href="<?php echo get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'js/pannellum.css'); ?>">
     <script type="text/javascript" src="<?php echo get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'js/pannellum.js'); ?>"></script>

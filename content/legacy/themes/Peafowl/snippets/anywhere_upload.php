@@ -152,7 +152,7 @@ if (Login::isLoggedUser()) {
 						<select name="upload-album-id" id="upload-album-id" class="text-input">
 						<?php
                             $user_album_options_html = [];
-                            foreach ($user_albums ?? [] as $album) {
+                            foreach ($user_albums as $album) {
                                 $user_album_options_html[] = strtr('<option value="%id"%selected>%name</option>', [
                                             '%selected' => (Handler::var('album') !== [] && isset(Handler::var('album')['id_encoded']) && Handler::var('album')['id_encoded'] == $album['id_encoded']) ? ' selected' : '',
                                             '%id' => $album['id_encoded'],

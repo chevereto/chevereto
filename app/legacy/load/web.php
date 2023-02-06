@@ -71,7 +71,8 @@ $hook_before = function (Handler $handler) {
     } else {
         Login::tryLogin();
     }
-    $user_lang = cookie()['USER_SELECTED_LANG'] ?? getSetting('default_language');
+    $user_cookie_lang = cookie()['USER_SELECTED_LANG'] ?? null;
+    $user_lang = $user_cookie_lang ?? getSetting('default_language');
     if (Login::isLoggedUser()) {
         $user_lang = Login::getUser()['language'];
         if (Login::getUser()['status'] === 'banned') {
@@ -89,7 +90,7 @@ $hook_before = function (Handler $handler) {
     }
     new L10n(
         $user_lang,
-        Login::isLoggedUser()
+        (Login::isLoggedUser() || $user_cookie_lang !== null)
             ? false
             : getSetting('auto_language')
     );

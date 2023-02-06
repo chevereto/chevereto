@@ -392,6 +392,7 @@ function captcha_check(): object
     $endpoint = match (getSetting('captcha_api')) {
         '2' => 'https://www.recaptcha.net/recaptcha/api/siteverify',
         'hcaptcha' => 'https://hcaptcha.com/siteverify',
+        default => throw new LogicException(message('Invalid captcha API')),
     };
     $params = [
         'secret' => getSetting('captcha_secret'),
@@ -617,7 +618,7 @@ function getLocalUrl(): string
     if (defined('URL_APP_PUBLIC_STATIC')) {
         $url = URL_APP_PUBLIC === URL_APP_PUBLIC_STATIC
             ? Config::host()->hostnamePath()
-            : URL_APP_PUBLIC_STATIC;
+            : URL_APP_PUBLIC_STATIC; // @phpstan-ignore-line
     }
 
     return $url;
@@ -1089,6 +1090,7 @@ function loaderHandler(
     );
     foreach (Settings::SEMANTICS as $messages) {
         $aux = 0;
+        $singularKey = null;
         foreach ($messages as $key => $message) {
             $aux++;
             $value = Settings::get($key);
@@ -1096,11 +1098,12 @@ function loaderHandler(
                 continue;
             }
             L10n::setOverride($message, $value);
-            if (isset($message[1]) && $aux == 1) {
+            if (count($messages) == 2 && $aux == 1) {
+                $singularKey = $message;
                 $singular = $value;
             }
-            if (isset($message[1]) && $aux == 2) {
-                L10n::setPluralOverride($message, $singular, $value);
+            if (isset($singularKey, $singular)) {
+                L10n::setPluralOverride($singularKey, $singular, $value);
             }
         }
     }
@@ -1119,7 +1122,10 @@ function loaderHandler(
     $uploadImageFolder = Settings::get('chevereto_version_installed') !== null
             ? Settings::get('upload_image_path')
             : 'images';
-    define('URL_APP_PUBLIC_STATIC', Settings::get('cdn_url') ?? URL_APP_PUBLIC);
+    $urlAppPublicStatic = Settings::get('cdn')
+        ? Settings::get('cdn_url') ?? URL_APP_PUBLIC
+        : URL_APP_PUBLIC;
+    define('URL_APP_PUBLIC_STATIC', $urlAppPublicStatic);
     define('PATH_PUBLIC_LEGACY_THEME', PATH_PUBLIC_CONTENT_LEGACY_THEMES . (Settings::get('theme') ?? 'Peafowl') . '/');
     define('URL_APP_THEME', absolute_to_url(PATH_PUBLIC_LEGACY_THEME, URL_APP_PUBLIC_STATIC));
     define('CHV_PATH_IMAGES', PATH_PUBLIC . '' . $uploadImageFolder . '/');
@@ -1247,7 +1253,7 @@ function getPreCodeHtml(string $body): string
 
 function isStopWords(string ...$message): bool
 {
-    if (!(bool) env()['CHEVERETO_ENABLE_STOPWORDS']) {
+    if (!(bool) env()['CHEVERETO_ENABLE_STOPWORDS'] || !defined('STOP_WORDS')) {
         return false;
     }
     foreach ($message as $subject) {
@@ -1295,18 +1301,15 @@ function assertNotStopWords(string ...$message): void
 function adjustBrightness(string $hexCode, float $adjustPercent)
 {
     $hexCode = ltrim($hexCode, '#');
-
     if (strlen($hexCode) == 3) {
         $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
     }
-
     $hexCode = array_map('hexdec', str_split($hexCode, 2));
-
     foreach ($hexCode as &$color) {
         $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
         $adjustAmount = ceil($adjustableLimit * $adjustPercent);
 
-        $color = str_pad(dechex($color + $adjustAmount), 2, '0', STR_PAD_LEFT);
+        $color = str_pad(dechex(intval($color + $adjustAmount)), 2, '0', STR_PAD_LEFT);
     }
 
     return '#' . implode($hexCode);

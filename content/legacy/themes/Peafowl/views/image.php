@@ -11,7 +11,6 @@ use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\isShowEmbedContent;
 use function Chevereto\Legacy\show_banner;
 use function Chevereto\Legacy\show_theme_inline_code;
-use function Chevereto\Legacy\showComments;
 use function Chevereto\Legacy\time_elapsed_string;
 
 // @phpstan-ignore-next-line
@@ -173,9 +172,6 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
             <a data-text="image-title" href="<?php echo Handler::var('image')['path_viewer']; ?>"><?php echo nl2br(Handler::var('image_safe_html')['title'] ?? ''); ?></a>
         </h1>
     <?php } ?>
-        <div class="header-content-right phone-margin-bottom-20">
-            <div class="number-figures display-inline-block"><?php echo Handler::var('image')['views']; ?> <span><?php echo Handler::var('image')['views_label']; ?></span></div>
-        </div>
     </div>
     <p class="description-meta margin-bottom-10">
         <span class="icon far fa-eye-slash <?php if (!isset(Handler::var('image')['album']) or Handler::var('image')['album']['privacy'] == 'public') {
@@ -210,6 +206,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 _se('Uploaded %s', $time_elapsed_string);
             }
         }
+        echo ' — ' . Handler::var('image')['views'] . ' ' . Handler::var('image')['views_label'];
     if (Handler::var('image')['expiration_date_gmt'] ?? false) { ?>
     <span class="user-select-none" rel="tooltip" data-tipTip="top" title="<?php _se('This content will be removed on %s', Handler::var('image')['expiration_date_gmt'] . ' UTC'); ?>" data-text="image-expiration"><i class="fas fa-bomb"></i> <?php echo _s('Expires'); ?></span>
     <?php
@@ -264,13 +261,13 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                             $image_admin_list_values = Handler::var('image_admin_list_values');
                     if (isset(Handler::var('image')['album']['id'])) {
                         $album_values = [
-                                    'label' => _s('Album ID'),
+                                    'label' => _s('%s ID', _s('Album')),
                                     'content' => Handler::var('image')['album']['id'] . ' (' . Handler::var('image')['album']['id_encoded'] . ')',
                                 ];
                         $image_admin_list_values = array_slice($image_admin_list_values, 0, 1, true) +
                                     [
                                         'album' => [
-                                            'label' => _s('Album ID'),
+                                            'label' => _s('%s ID', _s('Album')),
                                             'content' => Handler::var('image')['album']['id'] . ' (' . Handler::var('image')['album']['id_encoded'] . ')',
                                         ],
                                     ] +
@@ -292,14 +289,6 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 <?php
                 }
                 ?>
-                <?php
-                if (Handler::var('image')['is_approved']) {
-                    show_banner('content_before_comments', !Handler::var('image')['nsfw']);
-                }
-                ?>
-                <div class="comments">
-                    <?php showComments(); ?>
-                </div>
             </div>
             <div class="c15 phablet-c1 fluid-column grid-columns margin-left-10 phablet-margin-left-0">
                 <?php
@@ -309,8 +298,18 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 ?>
             </div>
         </div>
+        <div id="tab-comments" class="tabbed-content<?php echo Handler::var('current_tab') == 'comments' ? ' visible' : ''; ?>">
+            <?php
+            if (Handler::var('image')['is_approved']) {
+                show_banner('content_before_comments', !Handler::var('image')['nsfw']);
+            }
+            ?>
+            <div class="comments c16 phone-c1 phablet-c1 grid-columns margin-right-10">
+                <?php echo Handler::var('comments'); ?>
+            </div>
+        </div>
         <?php if (isShowEmbedContent()) {
-                    ?>
+                ?>
             <div id="tab-embeds" class="tabbed-content<?php echo Handler::var('current_tab') == 'embeds' ? ' visible' : ''; ?>">
                 <div class="c24 margin-left-auto margin-right-auto">
                     <div class="margin-bottom-30 growl static text-align-center clear-both" data-content="privacy-private"><?php echo Handler::var('image')['album']['privacy_notes'] ?? ''; ?></div>
@@ -338,7 +337,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 </div>
             </div>
         <?php
-                } ?>
+            } ?>
         <?php
         if (Handler::cond('admin')) {
             ?>
