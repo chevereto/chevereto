@@ -15,8 +15,8 @@ if (!defined('ACCESS') || !ACCESS) {
         <div class="text-content">
             <p>This is an example page for your Chevereto site.</p>
 			<h2>Creating and editing pages</h2>
-			<p>To learn how add or modify a page go to our <a rel="external" href="https://v4-admin.chevereto.com/dashboard/pages.html" target="_blank">Pages documentation</a>.</p>
-			<p><a href="https://v4-admin.chevereto.com/dashboard/pages.html" class="btn btn-small default" target="_blank"><span class="btn-icon fas fa-book"></span> Documentation</a></p>
+			<p>To learn how add or modify a page go to our <a rel="external" href="https://v4-admin.chevereto.com/settings/pages.html" target="_blank">Pages documentation</a>.</p>
+			<p><a href="https://v4-admin.chevereto.com/settings/pages.html" class="btn btn-small default" target="_blank"><span class="btn-icon fas fa-book"></span> Documentation</a></p>
 		</div>
 	</div>
 </div>
