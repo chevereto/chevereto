@@ -13,6 +13,20 @@
         'base' => 'bg',
         'short_name' => 'BG (BG)',
     ],
+    'bs-BA' => [
+        'code' => 'bs-BA',
+        'dir' => 'ltr',
+        'name' => 'Bosanski',
+        'base' => 'bs',
+        'short_name' => 'BS (BA)',
+    ],
+    'ca' => [
+        'code' => 'ca',
+        'dir' => 'ltr',
+        'name' => 'Сatalà',
+        'base' => 'ca',
+        'short_name' => 'CA',
+    ],
     'cs' => [
         'code' => 'cs',
         'dir' => 'ltr',
@@ -33,6 +47,13 @@
         'name' => 'Deutsch',
         'base' => 'de',
         'short_name' => 'DE',
+    ],
+    'de-DE' => [
+        'code' => 'de-DE',
+        'dir' => 'ltr',
+        'name' => 'Deutsch (Deutschland)',
+        'base' => 'de',
+        'short_name' => 'DE (DE)',
     ],
     'el' => [
         'code' => 'el',
@@ -173,6 +194,13 @@
         'name' => 'Português (Brasil)',
         'base' => 'pt',
         'short_name' => 'PT (BR)',
+    ],
+    'ro' => [
+        'code' => 'ro',
+        'dir' => 'ltr',
+        'name' => 'Română',
+        'base' => 'ro',
+        'short_name' => 'RO',
     ],
     'ru' => [
         'code' => 'ru',

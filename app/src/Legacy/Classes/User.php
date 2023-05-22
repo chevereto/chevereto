@@ -189,7 +189,7 @@ class User
 
     public static function getStreamName(string $username): string
     {
-        return _s("%s by %u", ['%s' => _s('Images'), '%u' => $username]);
+        return _s("%t by %s", ['%t' => _s('Images'), '%s' => $username]);
     }
 
     public static function getUrl(array|string $handle)

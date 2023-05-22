@@ -8,7 +8,7 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
 <?php $user_items_editor = get_global('user_items_editor') ?: Handler::var('user_items_editor'); ?>
-<label for="form-album-id"><?php echo !isset($user_items_editor['album']) ? _s('Album') : _n('Album', 'Albums', 1); ?></label>
+<label for="form-album-id"><?php _ne('Album', 'Albums', 1); ?></label>
 <select name="form-album-id" id="form-album-id" class="text-input">
 	<?php
             foreach ($user_items_editor['user_albums'] ?? [] as $album) {

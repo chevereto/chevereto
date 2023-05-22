@@ -883,9 +883,10 @@ $(function () {
     });
 
 
-    $(document).on("click", "[data-action=share]", function (
-        e
-    ) {
+    $(document).on("click", "[data-action=share]", function (e) {
+        if($(PF.obj.modal.selectors.box).exists()) {
+            return;
+        }
         var $list_item;
         if ($('.viewer:visible').exists()) {
             $list_item = $(PF.obj.listing.selectors.list_item + '[data-id=' + $('.viewer').attr('data-id') + ']', '.content-listing').first();
@@ -3050,31 +3051,33 @@ CHV.fn.listingViewer = {
         inputMap: ".viewer-kb-input",
     },
     keys: {
-        "Period": "select",
-        "KeyL": "like",
-        "KeyF": "flag",
-        "KeyE": "edit",
-        "KeyM": "move",
-        "KeyA": "create-album",
-        "KeyO": "approve",
-        "Delete": "delete",
-        "Escape": "close",
         "ArrowLeft": "prev",
         "ArrowRight": "next",
+        "Delete": "delete",
+        "Escape": "close",
+        "KeyA": "create-album",
+        "KeyE": "edit",
+        "KeyF": "flag",
+        "KeyL": "like",
+        "KeyM": "move",
+        "KeyO": "approve",
+        "KeyS": "share",
         "KeyW": "zoom",
+        "Period": "select",
     },
     keymap: {
-        select: [".", PF.fn._s("Toggle select")],
-        like: ["L", PF.fn._s("Like")],
         "create-album": ["A", PF.fn._s("Create album")],
-        flag: ["F", PF.fn._s("Toggle flag")],
-        edit: ["E", PF.fn._s("Edit")],
-        move: ["M", PF.fn._s("Album")],
         approve: ["O", PF.fn._s("Approve")],
-        delete: ["Del", PF.fn._s("Delete")],
         close: ["Esc", PF.fn._s("Close")],
-        prev: ["◄", PF.fn._s("Previous")],
+        delete: ["Del", PF.fn._s("Delete")],
+        edit: ["E", PF.fn._s("Edit")],
+        flag: ["F", PF.fn._s("Toggle flag")],
+        like: ["L", PF.fn._s("Like")],
+        move: ["M", PF.fn._n("Move")],
         next: ["►", PF.fn._s("Next")],
+        prev: ["◄", PF.fn._s("Previous")],
+        select: [".", PF.fn._s("Toggle select")],
+        share: ["S", PF.fn._s("Share")],
         zoom: ["W", PF.fn._s("Zoom")],
     },
     loading: null,
@@ -5734,7 +5737,7 @@ CHV.fn.user = {
         complete: {
             success: function (XHR) {
                 var response = XHR.responseJSON;
-                PF.fn.growl.expirable(PF.fn._s("%s added successfully.", PF.fn._s("User")));
+                PF.fn.growl.expirable(PF.fn._s("%s added successfully.", PF.fn._n("User", "Users", 1)));
             },
             error: function (XHR) {
                 var response = XHR.responseJSON;

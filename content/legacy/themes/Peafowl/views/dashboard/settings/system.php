@@ -63,7 +63,7 @@ echo read_the_docs_settings('system', _s('System')); ?>
         <?php
                 echo get_select_options_html([0 => _s('Disabled'), 1 => _s('Enabled')], Settings::get('maintenance')); ?>
     </select></div>
-    <div class="input-below"><?php _se("When enabled the website will show a maintenance message. This setting doesn't affect administrators."); ?></div>
+    <div class="input-below"><?php _se("When enabled the website will show a maintenance message."); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
 </div>
 <hr class="line-separator">
 <div class="input-label">
@@ -78,7 +78,7 @@ echo read_the_docs_settings('system', _s('System')); ?>
         <?php
                 echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('debug_errors')); ?>
     </select></div>
-    <div class="input-below"><?php _se('Enable this if you want to debug errors. This setting only applies to administrators.'); ?></div>
+    <div class="input-below"><?php _se('Enable this if you want to debug errors.'); ?> <?php _se('This feature is available only for administrators.'); ?></div>
 </div>
 <div class="input-label">
     <label for="debug_level"><?php _se('Debug level'); ?></label>

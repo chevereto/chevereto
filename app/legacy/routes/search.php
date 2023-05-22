@@ -56,7 +56,7 @@ return function (Handler $handler) {
         return;
     }
     $search = new Search();
-    $search->q = request()['q'] ?? null;
+    $search->q = request()['q'] ?? '';
     $search->type = $handler->request()[0];
     $search->request = request();
     $search->requester = Login::getUser();
@@ -100,21 +100,21 @@ return function (Handler $handler) {
         'params' => ['q' => $safe_html_search['q'], 'page' => '1'],
         'params_remove_keys' => ['sort'],
     ], $getParams);
-    foreach ($tabs as $k => &$v) {
+    foreach ($tabs as &$v) {
         $v['current'] = $v['type'] == $search->type;
     }
     $meta_description = '';
     switch ($search->type) {
         case 'images':
-            $meta_description = _s('%t search results for %s', ['%t' => _s('Image')]);
+            $meta_description = _s('%t search results for %s', ['%t' => _n('Image', 'Images', 1)]);
 
         break;
         case 'albums':
-            $meta_description = _s('%t search results for %s', ['%t' => _s('Album')]);
+            $meta_description = _s('%t search results for %s', ['%t' => _n('Album', 'Albums', 1)]);
 
         break;
         case 'users':
-            $meta_description = _s('%t search results for %s', ['%t' => _s('User')]);
+            $meta_description = _s('%t search results for %s', ['%t' => _n('User', 'Users', 1)]);
 
         break;
     }

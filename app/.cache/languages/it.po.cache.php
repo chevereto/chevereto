@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2021-06-07 13:29+0000',
-  'PO-Revision-Date' => '2021-06-07 13:29+0000',
+  'POT-Creation-Date' => '2023-05-22 15:49+0000',
+  'PO-Revision-Date' => '2023-05-22 15:49+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'it',
@@ -16,343 +16,17 @@ $translation_plural = array (
   'function' => '($n != 1)',
 );
 $translation_table = [
-	"Invalid email" => [
-		0 => "Indirizzo email non valido",
+	"You have been forbidden to use this website." => [
+		0 => "Non sei autorizzato ad utilizzare questo sito web.",
 	],
-	"Invalid username" => [
-		0 => "Nome utente non valido",
+	"Moderate" => [
+		0 => "Moderare",
 	],
-	"Invalid password" => [
-		0 => "Password non valida",
+	"View all my images" => [
+		0 => "Visualizza tutte le mie immagini",
 	],
-	"Installed version is v%s" => [
-		0 => "Versione installata è v%s",
-	],
-	"Can't connect to %s" => [
-		0 => "Impossibile connettersi a  %s",
-	],
-	"Last available release is v%s" => [
-		0 => "Ultima release disponibile è v%s",
-	],
-	"Update needed, proceeding to download" => [
-		0 => "Aggiornamento necessario, procedere  scaricare",
-	],
-	"No update needed" => [
-		0 => "Nessun aggiornamento necessario",
-	],
-	"System files already up to date" => [
-		0 => " file di sistema già aggiornato",
-	],
-	"Starting v%s download" => [
-		0 => "Avviamento v%s download",
-	],
-	"Downloaded v%s, proceeding to extraction" => [
-		0 => "Scaricato v%s, di procedere alla estrazione",
-	],
-	"Attempting to extract v%s" => [
-		0 => "Il tentativo di estrarre  v%s",
-	],
-	"Extraction completed" => [
-		0 => "estrazione completata",
-	],
-	"Proceding to install the update" => [
-		0 => "Di procedere per installare l'aggiornamento",
-	],
-	"Update failed" => [
-		0 => "Aggiornamento non riuscito",
-	],
-	"Update in progress" => [
-		0 => "Aggiornamento in corso...",
-	],
-	"Missing %s file" => [
-		0 => "File %s non trovato",
-	],
-	"Invalid license info" => [
-		0 => "Info licenza non valida",
-	],
-	"Can't save file" => [
-		0 => "Impossibile salvare il file",
-	],
-	"Can't extract %s" => [
-		0 => "Impossibile estrarre %s",
-	],
-	"Can't create %s directory - %e" => [
-		0 => "Impossibile creare la cartella %s - %e",
-	],
-	"Can't update %s file - %e" => [
-		0 => "Impossibile aggiornare il file %s - %e",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "Per proseguire verifica gli errori di compilazione.",
-	],
-	"Note: This content is private but anyone with the link will be able to see this." => [
-		0 => "Nota: questo contenuto è privato, ma accessibile da chiunque abbia il link diretto.",
-	],
-	"Note: This content is password protected. Remember to pass the content password to share." => [
-		0 => "Nota: questo contenuto è protetto da password. Ricorda di comunicarla per consentire l'accesso.",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "Nota: questo contenuto è privato. Per condividerlo imposta la privacy a livello \"pubblico\".",
-	],
-	"You must enter the album name." => [
-		0 => "È necessario immettere il nome dell'album.",
-	],
-	"Confirm" => [
-		0 => "Confermare",
-	],
-	"The content has been approved." => [
-		0 => "Il contenuto è stato approvato.",
-	],
-	"Select existing album" => [
-		0 => "Seleziona album esistente",
-	],
-	"An error occurred. Please try again later." => [
-		0 => "Si è verificato un errore. Riprova più tardi.",
-	],
-	"Please select a valid image file type." => [
-		0 => "Si prega di selezionare un tipo di file immagine valido.",
-	],
-	"Please select a picture of at most %s size." => [
-		0 => "Si prega di selezionare un'immagine di al massimo  %s dimensioni.",
-	],
-	"Profile image updated." => [
-		0 => "Immagine profilo aggiornato.",
-	],
-	"Profile background image updated." => [
-		0 => "Immagine di sfondo del profilo aggiornata.",
-	],
-	"Profile background image deleted." => [
-		0 => "Immagine di sfondo del profilo cancellata.",
-	],
-	"Error deleting profile background image." => [
-		0 => "Errore nella cancellazione dell'immagine di sfondo del profilo.",
-	],
-	"Passwords don't match" => [
-		0 => "Le password non corrispondono",
-	],
-	"Update available v%s" => [
-		0 => "Aggiornamento disponibile v%s",
-	],
-	"There is an update available for your system. You can automatic download and install this update or go to %s to proceed to download the file." => [
-		0 => "Vi è disponibile un aggiornamento per il sistema. È possibile scaricare automaticamente e installare questo aggiornamento o andare al %s per procedere per scaricare il file.",
-	],
-	"The release notes for this update are:" => [
-		0 => "Note di rilascio per questo aggiornamento:",
-	],
-	"system requirements" => [
-		0 => "requisiti di sistema",
-	],
-	"I confirm that this server meets the %s for this update" => [
-		0 => "Confermo che questo server soddisfa  %s per questo aggiornamento ",
-	],
-	"Update now" => [
-		0 => "Aggiorna ora",
-	],
-	"This website is running latest %s version" => [
-		0 => "Questo sito web è in esecuzione la versione più recente di %s",
-	],
-	"Please review the system requirements before proceeding" => [
-		0 => "Si prega di rivedere i requisiti di sistema prima di procedere",
-	],
-	"loading" => [
-		0 => "Caricamento",
-	],
-	"Toggle select" => [
-		0 => "Attiva/disattiva selezione",
-	],
-	"Like" => [
-		0 => "Mi piace",
-	],
-	"Toggle flag" => [
-		0 => "Attiva/disattiva flag",
-	],
-	"Edit" => [
-		0 => "Modifica",
-	],
-	"Album" => [
-		0 => "Album",
-		1 => "Album",
-	],
-	"Approve" => [
-		0 => "Approvare",
-	],
-	"Delete" => [
-		0 => "Cancella",
-	],
-	"Close" => [
-		0 => "Chiudi",
-	],
-	"Previous" => [
-		0 => "Precedente",
-	],
-	"Next" => [
-		0 => "Prossimo",
-	],
-	"Clipboard image" => [
-		0 => "Appunti immagine",
-	],
-	"File too big." => [
-		0 => "File troppo grande.",
-	],
-	"Invalid or unsupported file format." => [
-		0 => "formato di file non valido o non supportato",
-	],
-	"Some files couldn't be added" => [
-		0 => "Alcuni file non possono essere aggiunti",
-	],
-	"image" => [
-		0 => "Immagine",
-		1 => "Immagini",
-	],
-	"%s's Albums" => [
-		0 => "Album di %s",
-	],
-	"Image edited successfully." => [
-		0 => "Immagine modificata con successo.",
-	],
-	"private" => [
-		0 => "privato",
-	],
-	"Album edited successfully." => [
-		0 => "Album modificato con successo.",
-	],
-	"Invalid URL key." => [
-		0 => "Chiave URL non valida.",
-	],
-	"Category URL key already being used." => [
-		0 => "Categoria chiave URL già utilizzata.",
-	],
-	"Category successfully deleted." => [
-		0 => "Categoria eliminata correttamente.",
-	],
-	"Category %s added." => [
-		0 => "Categoria %s aggiunta.",
-	],
-	"Invalid expiration date." => [
-		0 => "Data di scadenza invalida.",
-	],
-	"IP %s already banned." => [
-		0 => "IP %s è già stato vietato.",
-	],
-	"IP %s banned." => [
-		0 => "IP %s bannato.",
-	],
-	"IP ban successfully deleted." => [
-		0 => "IP è stato correttamente cancellato.",
-	],
-	"Please fill all the required fields." => [
-		0 => "Si prega di compilare tutti i campi obbligatori.",
-	],
-	"Invalid storage capacity value. Make sure to use a valid format." => [
-		0 => "Valore di capacità di memoria non valido. Assicurarsi di utilizzare un formato valido.",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "Lo spazio di archiviazione non può essere inferiore a quello attualmente in uso (%s).",
-	],
-	"Invalid URL." => [
-		0 => "URL non valido",
-	],
-	"Storage successfully edited." => [
-		0 => "Archiviazione modificato con successo.",
-	],
-	"User added successfully." => [
-		0 => "Utente aggiunto con successo.",
-	],
-	"The content has been deleted." => [
-		0 => "Il contenuto è stato cancellato.",
-	],
-	"The content has been moved." => [
-		0 => "Il contenuto è stato spostato.",
-	],
-	"Select" => [
-		0 => "Seleziona",
-	],
-	"Unselect" => [
-		0 => "Non hai selezionato",
-	],
-	"The content has been edited." => [
-		0 => "Il contenuto è stato modificato.",
-	],
-	"Import ID %s removed" => [
-		0 => "L'ID importazione %s rimosso",
-	],
-	"Spam detected" => [
-		0 => "Spam rilevato",
-	],
-	"album" => [
-		0 => "album",
-		1 => "album",
-	],
-	"Flooding detected. You can only upload %limit% %content% per %time%" => [
-		0 => "Inondazione rilevata. Puoi caricare solo il  %limit% %content% per %time%",
-	],
-	"Untitled" => [
-		0 => "Senza titolo",
-	],
-	"%s's images" => [
-		0 => "Immagini di %s",
-	],
-	"Private" => [
-		0 => "Privato",
-	],
-	"Public" => [
-		0 => "Pubblico",
-	],
-	"Me" => [
-		0 => "Me",
-	],
-	"Link" => [
-		0 => "Link",
-	],
-	"Password" => [
-		0 => "Password",
-	],
-	"view" => [
-		0 => "visualizzazione",
-		1 => "visualizzazioni",
-	],
-	"After %n %t" => [
-		0 => "Dopo %n %t",
-	],
-	"minute" => [
-		0 => "minuto",
-		1 => "minuti",
-	],
-	"hour" => [
-		0 => "ora",
-		1 => "ore",
-	],
-	"day" => [
-		0 => "giorno",
-		1 => "giorni",
-	],
-	"week" => [
-		0 => "settimana",
-		1 => "settimane",
-	],
-	"month" => [
-		0 => "mese",
-		1 => "mesi",
-	],
-	"year" => [
-		0 => "anno",
-		1 => "anni",
-	],
-	"Don't autodelete" => [
-		0 => "Non cancellare automaticamente",
-	],
-	"Can't open %s for writing" => [
-		0 => "Impossibile aprire %s in scrittura",
-	],
-	"Duplicated upload" => [
-		0 => "Contenuto duplicato",
-	],
-	"Private upload" => [
-		0 => "Caricamento privato",
-	],
-	"like" => [
-		0 => "Mi piace",
-		1 => "Gli piace",
+	"Feel free to browse and discover all my shared images and albums." => [
+		0 => "Divertiti a sfogliare e scoprire tutte le mie immagini ed i miei album condivisi!",
 	],
 	"Recent" => [
 		0 => "Recente",
@@ -360,116 +34,29 @@ $translation_table = [
 	"Trending" => [
 		0 => "Argomenti",
 	],
-	"Top users" => [
-		0 => "Utenti top",
-	],
-	"Most recent" => [
-		0 => "Più nuove",
-	],
-	"Oldest" => [
-		0 => "Più vecchie",
-	],
-	"Most viewed" => [
-		0 => "Più viste",
-	],
 	"Popular" => [
 		0 => "Popolare",
-	],
-	"Most liked" => [
-		0 => "Più piaciute",
-	],
-	"Explore" => [
-		0 => "Esplora",
 	],
 	"Animated" => [
 		0 => "Animato",
 	],
-	"Search" => [
-		0 => "Cerca",
+	"Request denied" => [
+		0 => "Richiesta rifiutata",
 	],
-	"People" => [
-		0 => "Persone",
+	"terms" => [
+		0 => "condizioni",
 	],
-	"Image" => [
-		0 => "Immagine",
-		1 => "Immagini",
+	"privacy policy" => [
+		0 => "politica sulla riservatezza",
 	],
-	"User" => [
-		0 => "Utente",
-		1 => "Utenti",
+	"I agree to the %terms_link and %privacy_link" => [
+		0 => "Accetto i termini %terms_link e %privacy_link",
 	],
-	"adult" => [
-		0 => "adulto",
+	"That page doesn't exist" => [
+		0 => "La pagina non esiste",
 	],
-	"teen" => [
-		0 => "adolescente",
-	],
-	"Content of type %s is forbidden" => [
-		0 => "Il contenuto di tipo %s è vietato",
-	],
-	"Can't create %s destination dir" => [
-		0 => "Impossibile creare la cartella di destinazione %s",
-	],
-	"Internal" => [
-		0 => "Interno",
-	],
-	"Unlimited" => [
-		0 => "Illimitato",
-	],
-	"used" => [
-		0 => "usato",
-	],
-	"Private profile" => [
-		0 => "Profilo privato",
-	],
-	"second" => [
-		0 => "secondo",
-		1 => "secondi",
-	],
-	"%s ago" => [
-		0 => "%s fa",
-	],
-	"moments ago" => [
-		0 => "poco fa",
-	],
-	"Dashboard" => [
-		0 => "Pannello di controllo",
-	],
-	"There is an update available for your system. Go to %s to download and install this update." => [
-		0 => "Aggiornamento di sistema disponibile: vai qui %s per scaricarlo ed installarlo.",
-	],
-	"System database is outdated. You need to run the <a href=\"%s\">update</a> tool." => [
-		0 => "È necessario eseguire lo strumento di <a href=\"%s\">aggiornamento</a> del database di sistema.",
-	],
-	"Website is in maintenance mode. To revert this setting go to <a href=\"%s\">Dashboard > Settings</a>." => [
-		0 => "Sito web in modalità manutenzione. Per annullare questa impostazione vai al menu <a href=\"%s\"> Cruscotto > Impostazioni </a>.",
-	],
-	"You should disable PHP error reporting for production enviroment. Go to <a href='%s'>System settings</a> to revert this setting." => [
-		0 => "Si consiglia di disattivare il rapporto errori PHP in ambienti di produzione. Vai a <a href='%s'> Impostazioni di sistema </a> per annullare questa impostazione.",
-	],
-	"You haven't changed the default email settings. Go to <a href='%s'>Email settings</a> to fix this." => [
-		0 => "Le impostazioni email predefinite non sono state modificate. Vai a <a href='%s'>  Impostazioni email </a> per gestirle.",
-	],
-	"There is an update available for your Chevereto based website." => [
-		0 => "Aggiornamento disponibile per il tuo sito web di Chevereto.",
-	],
-	"admin dashboard" => [
-		0 => "Pannello di controllo amministratore",
-	],
-	"You can apply this update directly from your %a or download it from %s and then manually install it." => [
-		0 => "Puoi applicare questo aggiornamento direttamente dal tuo %a, oppure scaricarlo dal %s  ed installarlo manualmente.",
-	],
-	"view on %s" => [
-		0 => "visualizza su %s",
-	],
-	"cookie policy" => [
-		0 => "politica dei cookie",
-	],
-	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
-		0 => "Utilizziamo i nostri cookie propri e di terze parti per migliorare la tua esperienza di navigazione e i nostri servizi. Se continui a utilizzare il nostro sito Web, comprendi che accetti questo %cookie_policy_link.",
-	],
-	"I understand" => [
-		0 => "Capisco",
+	"Page %s" => [
+		0 => "Pagina %s",
 	],
 	"Forgot password?" => [
 		0 => "Password dimenticata?",
@@ -483,6 +70,9 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "Aggiungi il tuo indirizzo email",
 	],
+	"Awaiting confirmation" => [
+		0 => "In attesa di conferma",
+	],
 	"Email changed" => [
 		0 => "Indirizzo email modificato",
 	],
@@ -494,9 +84,6 @@ $translation_table = [
 	],
 	"User doesn't have an email." => [
 		0 => "L'utente non dispone di indirizzo email.",
-	],
-	"Request denied" => [
-		0 => "Richiesta rifiutata",
 	],
 	"Account needs to be activated to use this feature" => [
 		0 => "Per utilizzare questa funzionalità è necessaria l'attivazione dell'account",
@@ -519,8 +106,20 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "Benvenuti in %s",
 	],
+	"Invalid password" => [
+		0 => "Password non valida",
+	],
+	"Passwords don't match" => [
+		0 => "Le password non corrispondono",
+	],
+	"Invalid email" => [
+		0 => "Indirizzo email non valido",
+	],
 	"Email already being used" => [
 		0 => "Indirizzo email già utilizzato",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "Per proseguire verifica gli errori di compilazione.",
 	],
 	"Password required" => [
 		0 => "Password obbligatoria",
@@ -528,14 +127,12 @@ $translation_table = [
 	"Embed codes" => [
 		0 => "Condivisione",
 	],
-	"Sub albums" => [
-		0 => "Sotto album",
-	],
-	"Info" => [
-		0 => "Info",
-	],
 	"%a album hosted in %w" => [
 		0 => "Album %a ospitato in %w",
+	],
+	"image" => [
+		0 => "Immagine",
+		1 => "Immagini",
 	],
 	"Stats" => [
 		0 => "Statistiche",
@@ -543,93 +140,25 @@ $translation_table = [
 	"Images" => [
 		0 => "Immagini",
 	],
-	"Albums" => [
+	"Album" => [
 		0 => "Album",
+		1 => "Album",
 	],
-	"Users" => [
-		0 => "Utenti",
-	],
-	"Settings" => [
-		0 => "Impostazioni",
+	"User" => [
+		0 => "Utente",
+		1 => "Utenti",
 	],
 	"Bulk importer" => [
 		0 => "Massa Importatore",
 	],
-	"install update" => [
-		0 => "installa l'aggiornamento",
-	],
-	"check for updates" => [
-		0 => "controlla aggiornamenti",
-	],
-	"Contributing" => [
-		0 => "Contribuire",
-	],
-	"Support" => [
-		0 => "Supporto",
-	],
-	"Bug tracking" => [
-		0 => "Segnalazione bug",
-	],
-	"Documentation" => [
-		0 => "Documentazione",
-	],
-	"PHP version" => [
-		0 => "Versione PHP",
-	],
-	"Server" => [
-		0 => "Server",
-	],
-	"MySQL version" => [
-		0 => "Versione MySQL",
-	],
-	"MySQL server info" => [
-		0 => "Info server MySQL",
-	],
-	"Graphics Library" => [
-		0 => "Libreria grafica",
-	],
-	"File uploads" => [
-		0 => "File caricati",
-	],
-	"Enabled" => [
-		0 => "Abilitato",
-	],
-	"Disabled" => [
-		0 => "Disabilitato",
-	],
-	"Max. upload file size" => [
-		0 => "Max. dimensione del file di caricamento",
-	],
-	"Max. post size" => [
-		0 => "Max. valore POST",
-	],
-	"Max. execution time" => [
-		0 => "Max. tempo di esecuzione",
-	],
-	"%d second" => [
-		0 => "%d secondo",
-		1 => "%d secondi",
-	],
-	"Memory limit" => [
-		0 => "Limite memoria",
-	],
-	"Rebuild stats" => [
-		0 => "Ricostruisci le statistiche",
-	],
-	"Connecting IP" => [
-		0 => "Connessione IP",
-	],
-	"Not your IP?" => [
-		0 => "Non è il tuo IP?",
+	"Settings" => [
+		0 => "Impostazioni",
 	],
 	"Website" => [
 		0 => "Sito web",
 	],
 	"Content" => [
 		0 => "Contenuto",
-	],
-	"Pages" => [
-		0 => "Pagine",
 	],
 	"Listings" => [
 		0 => "Gallerie",
@@ -640,50 +169,108 @@ $translation_table = [
 	"Categories" => [
 		0 => "Categorie",
 	],
+	"Theme" => [
+		0 => "Tema",
+	],
+	"System" => [
+		0 => "Sistema",
+	],
+	"Languages" => [
+		0 => "Localizzazione",
+	],
+	"Email" => [
+		0 => "Indirizzo email",
+	],
+	"Tools" => [
+		0 => "Strumenti",
+	],
+	"External storage" => [
+		0 => "Archiviazione esterna",
+	],
+	"Pages" => [
+		0 => "Pagine",
+	],
+	"Routing" => [
+		0 => "Percorsi",
+	],
+	"External services" => [
+		0 => "Servizi esterni",
+	],
+	"Upload plugin" => [
+		0 => "Caricare plugin",
+	],
 	"Consent screen" => [
 		0 => "Pagina di consenso",
 	],
 	"Flood protection" => [
 		0 => "Protezione da flood",
 	],
-	"Theme" => [
-		0 => "Tema",
-	],
-	"Homepage" => [
-		0 => "Homepage",
-	],
 	"Banners" => [
 		0 => "Pubblicità",
-	],
-	"System" => [
-		0 => "Sistema",
-	],
-	"Routing" => [
-		0 => "Percorsi",
-	],
-	"Languages" => [
-		0 => "Localizzazione",
-	],
-	"External storage" => [
-		0 => "Archiviazione esterna",
-	],
-	"Email" => [
-		0 => "Indirizzo email",
-	],
-	"Social networks" => [
-		0 => "Social network",
-	],
-	"External services" => [
-		0 => "Servizi esterni",
 	],
 	"IP bans" => [
 		0 => "Blocco IP",
 	],
-	"Additional settings" => [
-		0 => "Altre impostazioni",
+	"Watermarks" => [
+		0 => "Filigrana",
 	],
-	"Tools" => [
-		0 => "Strumenti",
+	"Documentation" => [
+		0 => "Documentazione",
+	],
+	"Support" => [
+		0 => "Supporto",
+	],
+	"Releases" => [
+		0 => "Rilasci",
+	],
+	"Community" => [
+		0 => "Comunità",
+	],
+	"install update" => [
+		0 => "installa l'aggiornamento",
+	],
+	"Max. upload file size" => [
+		0 => "Max. dimensione del file di caricamento",
+	],
+	"Graphics Library" => [
+		0 => "Libreria grafica",
+	],
+	"Rebuild stats" => [
+		0 => "Ricostruisci le statistiche",
+	],
+	"Connecting IP" => [
+		0 => "Connessione IP",
+	],
+	"Not your IP?" => [
+		0 => "Non è il tuo IP?",
+	],
+	"PHP version" => [
+		0 => "Versione PHP",
+	],
+	"MySQL version" => [
+		0 => "Versione MySQL",
+	],
+	"MySQL server info" => [
+		0 => "Info server MySQL",
+	],
+	"File uploads" => [
+		0 => "File caricati",
+	],
+	"Enabled" => [
+		0 => "Abilitato",
+	],
+	"Disabled" => [
+		0 => "Disabilitato",
+	],
+	"Max. execution time" => [
+		0 => "Max. tempo di esecuzione",
+	],
+	"%d second" => [
+		0 => "%d secondo",
+		1 => "%d secondi",
+	],
+	"Memory limit" => [
+		0 => "Limite memoria",
 	],
 	"Can't delete all homepage cover images" => [
 		0 => "Impossibile cancellare tutte le immagini di copertina della homepage",
@@ -714,9 +301,6 @@ $translation_table = [
 	],
 	"The page has been deleted." => [
 		0 => "La pagina è stata cancellata.",
-	],
-	"homepage" => [
-		0 => "homepage",
 	],
 	"Before main title (%s)" => [
 		0 => "Prima del titolo principale (%s)",
@@ -766,15 +350,6 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "Piè di pagina (pagina immagine)",
 	],
-	"Album page" => [
-		0 => "Pagina album",
-	],
-	"Before header (album page)" => [
-		0 => "Prima dell'intestazione (pagina album)",
-	],
-	"After header (album page)" => [
-		0 => "Dopo l'intestazione (pagina album)",
-	],
 	"User profile page" => [
 		0 => "Pagina profilo utente",
 	],
@@ -784,14 +359,8 @@ $translation_table = [
 	"Before listing (user profile)" => [
 		0 => "Prima della galleria (profilo utente)",
 	],
-	"Explore page" => [
-		0 => "Pagina \"Esplora\"",
-	],
-	"After top (explore page)" => [
-		0 => "Dopo il top (pagina \"Esplora\")",
-	],
-	"NSFW" => [
-		0 => "NSFW",
+	"Explore" => [
+		0 => "Esplora",
 	],
 	"Invalid website name" => [
 		0 => "Nome sito web non valido",
@@ -831,15 +400,6 @@ $translation_table = [
 	],
 	"Invalid value" => [
 		0 => "Valore non valido",
-	],
-	"Invalid theme tone" => [
-		0 => "Tonalità tema non valida",
-	],
-	"Invalid theme main color" => [
-		0 => "Colore principale del tema non valido",
-	],
-	"Invalid theme top bar button color" => [
-		0 => "Colore pulsante top bar del tema non valido",
 	],
 	"Invalid theme image listing size" => [
 		0 => "Dimensione galleria immagini del tema non valida",
@@ -922,6 +482,9 @@ $translation_table = [
 	"Invalid URL" => [
 		0 => "URL non valido",
 	],
+	"Invalid key" => [
+		0 => "Chiave non valida",
+	],
 	"Routes can't be the same" => [
 		0 => "I percorsi non possono essere uguali",
 	],
@@ -949,9 +512,6 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "Username SMTP non valido",
 	],
-	"Invalid key" => [
-		0 => "Chiave non valida",
-	],
 	"This URL key is already being used by another page (ID %s)" => [
 		0 => "Questa chiave URL è già utilizzata da un'altra pagina (ID %s)",
 	],
@@ -961,6 +521,9 @@ $translation_table = [
 	"Can't save page contents: %s." => [
 		0 => "Impossibile salvare il contenuto della pagina: %s.",
 	],
+	"Dashboard" => [
+		0 => "Pannello di controllo",
+	],
 	"Following" => [
 		0 => "Seguire",
 	],
@@ -969,15 +532,6 @@ $translation_table = [
 	],
 	"Image ID" => [
 		0 => "ID immagine",
-	],
-	"Uploader IP" => [
-		0 => "IP uploader",
-	],
-	"Ban IP" => [
-		0 => "Blocca IP",
-	],
-	"IP already banned" => [
-		0 => "IP già bloccato",
 	],
 	"Upload date" => [
 		0 => "Caricato il",
@@ -1018,14 +572,27 @@ $translation_table = [
 	"Thumbnail image (linked)" => [
 		0 => "Immagine in miniatura (con link)",
 	],
+	"Start uploading" => [
+		0 => "Inizia il caricamento",
+	],
 	"Login needed" => [
 		0 => "Autenticazione obbligatoria",
+	],
+	"Image" => [
+		0 => "Immagine",
+		1 => "Immagini",
+	],
+	"Category" => [
+		0 => "Categoria",
 	],
 	"IP address already banned" => [
 		0 => "Indirizzo IP già bloccato",
 	],
 	"Missing values" => [
 		0 => "Valori mancanti",
+	],
+	"Invalid username" => [
+		0 => "Nome utente non valido",
 	],
 	"Invalid role" => [
 		0 => "Ruolo non valido",
@@ -1054,15 +621,6 @@ $translation_table = [
 	"Downloading %s data" => [
 		0 => "Download di dati %s",
 	],
-	"User %s followed" => [
-		0 => "Utente %s seguito",
-	],
-	"User %s unfollowed" => [
-		0 => "Utente %s non seguito più",
-	],
-	"Album cover altered" => [
-		0 => "Copertina dell'album alterata",
-	],
 	"Content liked" => [
 		0 => "Contenuto piaciuto",
 	],
@@ -1084,32 +642,14 @@ $translation_table = [
 	"Sign in" => [
 		0 => "Accedi",
 	],
-	"Moderate" => [
-		0 => "Moderare",
-	],
 	"Upload images" => [
 		0 => "Carica immagini",
 	],
-	"Upload plugin" => [
-		0 => "Caricare plugin",
-	],
-	"Image search results for %s" => [
-		0 => "Risultati della ricerca immagine per %s",
-	],
-	"Album search results for %s" => [
-		0 => "Risultati della ricerca album per %s",
-	],
-	"User search results for %s" => [
-		0 => "Risultati della ricerca utente per %s",
-	],
-	"Account" => [
-		0 => "Account",
+	"Search" => [
+		0 => "Cerca",
 	],
 	"Profile" => [
 		0 => "Profilo",
-	],
-	"Linked accounts" => [
-		0 => "Account collegati",
 	],
 	"Powered by" => [
 		0 => "Offerto da",
@@ -1125,6 +665,9 @@ $translation_table = [
 	],
 	"Invalid website" => [
 		0 => "Sito web non valido",
+	],
+	"Spam detected" => [
+		0 => "Spam rilevato",
 	],
 	"Wrong password" => [
 		0 => "Password errata",
@@ -1147,6 +690,15 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "Impostazioni per %s",
 	],
+	"Delete user" => [
+		0 => "Cancella utente",
+	],
+	"User ID" => [
+		0 => "ID utente",
+	],
+	"Register date" => [
+		0 => "Data registrazione",
+	],
 	"You must agree to the terms and privacy policy" => [
 		0 => "Devi accettare i termini e l'informativa sulla privacy",
 	],
@@ -1159,11 +711,8 @@ $translation_table = [
 	"Upload" => [
 		0 => "Carica",
 	],
-	"%s's Images" => [
-		0 => "Immagini di %s",
-	],
-	"Results for" => [
-		0 => "Risultati per",
+	"Albums" => [
+		0 => "Album",
 	],
 	"Liked by %s" => [
 		0 => "Piaciuto a %s",
@@ -1180,11 +729,150 @@ $translation_table = [
 	"%n (%u) on %w" => [
 		0 => "%n (%u) su %w",
 	],
+	"album" => [
+		0 => "album",
+		1 => "album",
+	],
+	"Flooding detected. You can only upload %limit% %content% per %time%" => [
+		0 => "Inondazione rilevata. Puoi caricare solo il  %limit% %content% per %time%",
+	],
+	"Note: This content is private but anyone with the link will be able to see this." => [
+		0 => "Nota: questo contenuto è privato, ma accessibile da chiunque abbia il link diretto.",
+	],
+	"Note: This content is password protected. Remember to pass the content password to share." => [
+		0 => "Nota: questo contenuto è protetto da password. Ricorda di comunicarla per consentire l'accesso.",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "Nota: questo contenuto è privato. Per condividerlo imposta la privacy a livello \"pubblico\".",
+	],
+	"Private" => [
+		0 => "Privato",
+	],
+	"Public" => [
+		0 => "Pubblico",
+	],
+	"After %n %t" => [
+		0 => "Dopo %n %t",
+	],
+	"minute" => [
+		0 => "minuto",
+		1 => "minuti",
+	],
+	"hour" => [
+		0 => "ora",
+		1 => "ore",
+	],
+	"day" => [
+		0 => "giorno",
+		1 => "giorni",
+	],
+	"week" => [
+		0 => "settimana",
+		1 => "settimane",
+	],
+	"month" => [
+		0 => "mese",
+		1 => "mesi",
+	],
+	"year" => [
+		0 => "anno",
+		1 => "anni",
+	],
+	"Don't autodelete" => [
+		0 => "Non cancellare automaticamente",
+	],
+	"Can't open %s for writing" => [
+		0 => "Impossibile aprire %s in scrittura",
+	],
+	"Duplicated upload" => [
+		0 => "Contenuto duplicato",
+	],
+	"Private upload" => [
+		0 => "Caricamento privato",
+	],
+	"view" => [
+		0 => "visualizzazione",
+		1 => "visualizzazioni",
+	],
+	"like" => [
+		0 => "Mi piace",
+		1 => "Gli piace",
+	],
+	"Most recent" => [
+		0 => "Più nuove",
+	],
+	"Oldest" => [
+		0 => "Più vecchie",
+	],
+	"Most viewed" => [
+		0 => "Più viste",
+	],
+	"Most liked" => [
+		0 => "Più piaciute",
+	],
+	"People" => [
+		0 => "Persone",
+	],
+	"adult" => [
+		0 => "adulto",
+	],
+	"teen" => [
+		0 => "adolescente",
+	],
+	"Content of type %s is forbidden" => [
+		0 => "Il contenuto di tipo %s è vietato",
+	],
+	"Can't create %s destination dir" => [
+		0 => "Impossibile creare la cartella di destinazione %s",
+	],
+	"Internal" => [
+		0 => "Interno",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "Lo spazio di archiviazione non può essere inferiore a quello attualmente in uso (%s).",
+	],
+	"Unlimited" => [
+		0 => "Illimitato",
+	],
+	"used" => [
+		0 => "usato",
+	],
+	"Private profile" => [
+		0 => "Profilo privato",
+	],
+	"Share" => [
+		0 => "Condividi",
+	],
+	"view on %s" => [
+		0 => "visualizza su %s",
+	],
+	"cookie policy" => [
+		0 => "politica dei cookie",
+	],
+	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
+		0 => "Utilizziamo i nostri cookie propri e di terze parti per migliorare la tua esperienza di navigazione e i nostri servizi. Se continui a utilizzare il nostro sito Web, comprendi che accetti questo %cookie_policy_link.",
+	],
+	"I understand" => [
+		0 => "Capisco",
+	],
+	"second" => [
+		0 => "secondo",
+		1 => "secondi",
+	],
+	"%s ago" => [
+		0 => "%s fa",
+	],
+	"moments ago" => [
+		0 => "poco fa",
+	],
 	"Discovery" => [
 		0 => "Scoperta",
 	],
 	"Random" => [
 		0 => "Casuale",
+	],
+	"Close" => [
+		0 => "Chiudi",
 	],
 	"Advanced search" => [
 		0 => "Ricerca avanzata",
@@ -1195,17 +883,197 @@ $translation_table = [
 	"Notifications" => [
 		0 => "Notifiche",
 	],
+	"loading" => [
+		0 => "Caricamento",
+	],
 	"You don't have notifications" => [
 		0 => "Non hai nuove notifiche",
 	],
 	"My Profile" => [
 		0 => "Il mio profilo",
 	],
-	"Lights" => [
-		0 => "Luci",
+	"Administrator" => [
+		0 => "Amministratore",
 	],
 	"Sign out" => [
 		0 => "Disconnessione",
+	],
+	"You must enter the album name." => [
+		0 => "È necessario immettere il nome dell'album.",
+	],
+	"Confirm" => [
+		0 => "Confermare",
+	],
+	"The content has been approved." => [
+		0 => "Il contenuto è stato approvato.",
+	],
+	"Select existing album" => [
+		0 => "Seleziona album esistente",
+	],
+	"An error occurred. Please try again later." => [
+		0 => "Si è verificato un errore. Riprova più tardi.",
+	],
+	"Please select a valid image file type." => [
+		0 => "Si prega di selezionare un tipo di file immagine valido.",
+	],
+	"Please select a picture of at most %s size." => [
+		0 => "Si prega di selezionare un'immagine di al massimo  %s dimensioni.",
+	],
+	"Profile image updated." => [
+		0 => "Immagine profilo aggiornato.",
+	],
+	"Profile background image updated." => [
+		0 => "Immagine di sfondo del profilo aggiornata.",
+	],
+	"Profile background image deleted." => [
+		0 => "Immagine di sfondo del profilo cancellata.",
+	],
+	"Error deleting profile background image." => [
+		0 => "Errore nella cancellazione dell'immagine di sfondo del profilo.",
+	],
+	"Update available v%s" => [
+		0 => "Aggiornamento disponibile v%s",
+	],
+	"This website is running latest %s version" => [
+		0 => "Questo sito web è in esecuzione la versione più recente di %s",
+	],
+	"Please review the system requirements before proceeding" => [
+		0 => "Si prega di rivedere i requisiti di sistema prima di procedere",
+	],
+	"Toggle select" => [
+		0 => "Attiva/disattiva selezione",
+	],
+	"Like" => [
+		0 => "Mi piace",
+	],
+	"Create album" => [
+		0 => "Crea album",
+	],
+	"Toggle flag" => [
+		0 => "Attiva/disattiva flag",
+	],
+	"Edit" => [
+		0 => "Modifica",
+	],
+	"Approve" => [
+		0 => "Approvare",
+	],
+	"Delete" => [
+		0 => "Cancella",
+	],
+	"Previous" => [
+		0 => "Precedente",
+	],
+	"Next" => [
+		0 => "Prossimo",
+	],
+	"File too big." => [
+		0 => "File troppo grande.",
+	],
+	"Invalid or unsupported file format." => [
+		0 => "formato di file non valido o non supportato",
+	],
+	"Some files couldn't be added" => [
+		0 => "Alcuni file non possono essere aggiunti",
+	],
+	"%s's Albums" => [
+		0 => "Album di %s",
+	],
+	"Image edited successfully." => [
+		0 => "Immagine modificata con successo.",
+	],
+	"private" => [
+		0 => "privato",
+	],
+	"The content has been edited." => [
+		0 => "Il contenuto è stato modificato.",
+	],
+	"Invalid URL key." => [
+		0 => "Chiave URL non valida.",
+	],
+	"Category URL key already being used." => [
+		0 => "Categoria chiave URL già utilizzata.",
+	],
+	"Category successfully deleted." => [
+		0 => "Categoria eliminata correttamente.",
+	],
+	"Category %s added." => [
+		0 => "Categoria %s aggiunta.",
+	],
+	"Invalid expiration date." => [
+		0 => "Data di scadenza invalida.",
+	],
+	"IP %s already banned." => [
+		0 => "IP %s è già stato vietato.",
+	],
+	"IP %s banned." => [
+		0 => "IP %s bannato.",
+	],
+	"IP ban successfully deleted." => [
+		0 => "IP è stato correttamente cancellato.",
+	],
+	"Please fill all the required fields." => [
+		0 => "Si prega di compilare tutti i campi obbligatori.",
+	],
+	"Invalid storage capacity value. Make sure to use a valid format." => [
+		0 => "Valore di capacità di memoria non valido. Assicurarsi di utilizzare un formato valido.",
+	],
+	"Invalid URL." => [
+		0 => "URL non valido",
+	],
+	"Storage successfully edited." => [
+		0 => "Archiviazione modificato con successo.",
+	],
+	"The content has been deleted." => [
+		0 => "Il contenuto è stato cancellato.",
+	],
+	"The content has been moved." => [
+		0 => "Il contenuto è stato spostato.",
+	],
+	"Select" => [
+		0 => "Seleziona",
+	],
+	"Unselect" => [
+		0 => "Non hai selezionato",
+	],
+	"Import ID %s removed" => [
+		0 => "L'ID importazione %s rimosso",
+	],
+	"All the changes that you have made will be lost if you continue." => [
+		0 => "Tutte le modifiche apportate andranno perse se si continua.",
+	],
+	"Save changes" => [
+		0 => "Salva cambiamenti",
+	],
+	"Submit" => [
+		0 => "Invia",
+	],
+	"Changes saved successfully." => [
+		0 => "Modifiche salvate con successo.",
+	],
+	"Go back to form" => [
+		0 => "Torna al form",
+	],
+	"or" => [
+		0 => "oppure",
+	],
+	"continue anyway" => [
+		0 => "Continua comunque",
+	],
+	"cancel" => [
+		0 => "Annulla ",
+	],
+	"Saving" => [
+		0 => "Salvataggio",
+	],
+	"Sending" => [
+		0 => "Invio",
+	],
+	"Confirm action" => [
+		0 => "Conferma",
+	],
+	"information" => [
+		0 => "informazioni",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "Abbiamo ricevuto una richiesta di modifica indirizzo email del tuo account <a href=\"%u\">%n</a> a %w.",
@@ -1255,14 +1123,23 @@ $translation_table = [
 	"Select the images to upload" => [
 		0 => "Seleziona le immagini da caricare",
 	],
+	"You can also %i or %u." => [
+		0 => "È inoltre possibile %i o %u.",
+	],
+	"You can also %s." => [
+		0 => "Puoi anche %s.",
+	],
 	"browse from your computer" => [
 		0 => "navigare dal computer",
 	],
 	"add image URLs" => [
 		0 => "aggiungi URL  immagini",
 	],
-	"You can also %i or %u." => [
-		0 => "È inoltre possibile %i o %u.",
+	"You can also %i, %c or %u." => [
+		0 => "Puoi anche %i, %c o %u.",
+	],
+	"You can also %i or %c." => [
+		0 => "Puoi anche %i o %c.",
 	],
 	"browse from your device" => [
 		0 => "esplorare dal tuo dispositivo",
@@ -1270,26 +1147,8 @@ $translation_table = [
 	"take a picture" => [
 		0 => "Fai una foto",
 	],
-	"You can also %i, %c or %u." => [
-		0 => "Puoi anche %i, %c o %u.",
-	],
-	"Edit or resize any image by clicking the image preview" => [
-		0 => "Modificare o ridimensionare un immagine cliccando l'immagine di anteprima",
-	],
-	"Edit any image by touching the image preview" => [
-		0 => "Modifica qualsiasi immagine toccando l'anteprima dell'immagine",
-	],
-	"your computer" => [
-		0 => "il tuo computer",
-	],
-	"You can add more images from %i or %u." => [
-		0 => "È possibile aggiungere altre immagini %i o %u.",
-	],
-	"your device" => [
-		0 => "il tuo dispositivo",
-	],
-	"You can add more images from %i, %c or %u." => [
-		0 => "È possibile aggiungere altre immagini %i, %c o %u.",
+	"Register to get %s" => [
+		0 => "Registrati per ottenere %s",
 	],
 	"Uploading %q %o" => [
 		0 => "Caricamento %q %o",
@@ -1312,12 +1171,6 @@ $translation_table = [
 	"You can %c with the content just uploaded." => [
 		0 => "È possibile %c con il contenuto appena caricato.",
 	],
-	"create a new album" => [
-		0 => "creare un nuovo album",
-	],
-	"move it to an existing album" => [
-		0 => "spostarlo in un album esistente",
-	],
 	"You must %s or %l to save this content into your account." => [
 		0 => "Devi %s o %l per salvare questo contenuto nel tuo account.",
 	],
@@ -1330,14 +1183,11 @@ $translation_table = [
 	"No %s have been uploaded" => [
 		0 => "Nessun %s sono state caricate",
 	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "La tua richiesta non è stata elaborata a causa di alcuni errori.",
+	"Sign up" => [
+		0 => "Registrazione",
 	],
-	"Category" => [
-		0 => "Categoria",
-	],
-	"Select category" => [
-		0 => "Seleziona la categoria",
+	"%s to be able to customize or disable image auto delete." => [
+		0 => "%s Per poter personalizzare o disattivare l'eliminazione automatica delle immagini.",
 	],
 	"Mark this if the upload is not family safe" => [
 		0 => "Seleziona la spunta se il contenuto non è adatto a tutti",
@@ -1348,17 +1198,8 @@ $translation_table = [
 	"Uploading" => [
 		0 => "Caricamento in corso...",
 	],
-	"or" => [
-		0 => "oppure",
-	],
-	"cancel" => [
-		0 => "Annulla ",
-	],
 	"cancel remaining" => [
 		0 => "Annulla il caricamento",
-	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "Attenzione: non è stato possibile caricare alcune immagini.",
 	],
 	"learn more" => [
 		0 => "Scopri di più",
@@ -1366,14 +1207,8 @@ $translation_table = [
 	"Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information." => [
 		0 => "Controlla il <a data-modal=\"simple\" data-target=\"failed-upload-result\">rapporto di errore</a> per ulteriori informazioni.",
 	],
-	"Register to get %s" => [
-		0 => "Registrati per ottenere %s",
-	],
 	"reset" => [
 		0 => "azzerare",
-	],
-	"close" => [
-		0 => "chiudi",
 	],
 	"Note" => [
 		0 => "Nota",
@@ -1389,6 +1224,9 @@ $translation_table = [
 	],
 	"Remove" => [
 		0 => "Rimuovi",
+	],
+	"upload" => [
+		0 => "caricare",
 	],
 	"Title" => [
 		0 => "Titolo",
@@ -1408,15 +1246,6 @@ $translation_table = [
 	"Note: Animated GIF images won't be resized." => [
 		0 => "Nota: le immagini GIF animate non saranno ridimensionate.",
 	],
-	"Auto delete image" => [
-		0 => "Cancellazione automatica immagine",
-	],
-	"Sign up" => [
-		0 => "Registrazione",
-	],
-	"%s to be able to customize or disable image auto delete." => [
-		0 => "%s Per poter personalizzare o disattivare l'eliminazione automatica delle immagini.",
-	],
 	"Mark this if the image is not family safe" => [
 		0 => "Seleziona la spunta se l'immagine non è adatta a tutti",
 	],
@@ -1426,35 +1255,17 @@ $translation_table = [
 	"Description" => [
 		0 => "Descrizione",
 	],
-	"Brief description of this image" => [
-		0 => "Descrizione sintetica dell'immagine",
-	],
 	"Add image URLs" => [
 		0 => "Aggiungi link di immagini",
 	],
 	"Add the image URLs here" => [
 		0 => "Aggiungi qui i link di immagini",
 	],
-	"Create album" => [
-		0 => "Crea album",
-	],
 	"The uploaded content will be moved to this newly created album." => [
 		0 => "Il contenuto caricato verrà spostato in questo album appena creato.",
 	],
-	"existing album" => [
-		0 => "album esistente",
-	],
-	"You can also move the content to an %a." => [
-		0 => "Puoi anche spostare il contenuto in un %a.",
-	],
 	"You must %s or %l if you want to edit this album later on." => [
 		0 => "Devi %s o  l se desideri modificare questo album in seguito.",
-	],
-	"Move to album" => [
-		0 => "Sposta nell'album",
-	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "Seleziona un album esistente in cui spostare le immagini caricate. Puoi anche <a class=\"modal-switch\" data-switch=\"move-new-album\">creare un nuovo album</a> e spostarvi il contenuto.",
 	],
 	"Error report" => [
 		0 => "Rapporto d'errore",
@@ -1462,8 +1273,8 @@ $translation_table = [
 	"Links" => [
 		0 => "Link utili",
 	],
-	"Viewer links" => [
-		0 => "Link di visualizzazione",
+	"Direct" => [
+		0 => "Diretto",
 	],
 	"HTML Codes" => [
 		0 => "Codici HTML",
@@ -1507,6 +1318,9 @@ $translation_table = [
 	"Markdown thumbnail linked" => [
 		0 => "Immagine in miniatura con link",
 	],
+	"Viewer links" => [
+		0 => "Link di visualizzazione",
+	],
 	"All these words" => [
 		0 => "Tutte queste parole chiave",
 	],
@@ -1531,20 +1345,8 @@ $translation_table = [
 	"IP address" => [
 		0 => "Indirizzo IP",
 	],
-	"Album name" => [
-		0 => "Nome album",
-	],
-	"move to existing album" => [
-		0 => "sposta in un album esistente",
-	],
-	"Album description" => [
-		0 => "Descrizione album",
-	],
-	"Brief description of this album" => [
-		0 => "Descrizione sintetica di questo album",
-	],
-	"Album privacy" => [
-		0 => "Privacy album",
+	"Name" => [
+		0 => "Nome",
 	],
 	"Who can view this content" => [
 		0 => "Chi può visualizzare questo contenuto",
@@ -1558,29 +1360,11 @@ $translation_table = [
 	"Private (password protected)" => [
 		0 => "Privato (protetto da password)",
 	],
-	"Album password" => [
-		0 => "Password album",
-	],
-	"Name" => [
-		0 => "Nome",
-	],
-	"Category name" => [
-		0 => "Nome categoria",
-	],
 	"URL key" => [
 		0 => "Chiave URL",
 	],
-	"Category URL key" => [
-		0 => "Chiave URL categoria",
-	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "Soltanto lettere, numeri e trattini",
-	],
-	"Brief description of this category" => [
-		0 => "Descrizione sintetica di questa categoria",
-	],
-	"Untitled image" => [
-		0 => "Immagine senza titolo",
 	],
 	"Mark this if the image is not safe for work" => [
 		0 => "Segna questo se l'immagine non è sicura",
@@ -1624,9 +1408,6 @@ $translation_table = [
 	"Expiration date" => [
 		0 => "Data di scadenza",
 	],
-	"YYYY-MM-DD HH:MM:SS" => [
-		0 => "YYYY-MM-DD HH:MM:SS",
-	],
 	"Example" => [
 		0 => "Esempio",
 	],
@@ -1639,17 +1420,8 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "Messaggio di testo, HTML o URL di reindirizzamento",
 	],
-	"Existing album" => [
-		0 => "Album esistente",
-	],
-	"create new album" => [
-		0 => "Crea nuovo album",
-	],
 	"Storage name" => [
 		0 => "Nome spazio di archiviazione",
-	],
-	"API" => [
-		0 => "API",
 	],
 	"Region" => [
 		0 => "Regione",
@@ -1692,12 +1464,6 @@ $translation_table = [
 	],
 	"API endpoint for OpenStack identity" => [
 		0 => "API endpoint per identità OpenStack",
-	],
-	"Username" => [
-		0 => "Username",
-	],
-	"Container" => [
-		0 => "Container",
 	],
 	"Storage container" => [
 		0 => "Container spazio di archiviazione",
@@ -1762,47 +1528,29 @@ $translation_table = [
 	"Load more" => [
 		0 => "Carica altro",
 	],
-	"Select all" => [
-		0 => "Seleziona tutto",
-	],
 	"Clear" => [
 		0 => "Cancella",
+	],
+	"Actions" => [
+		0 => "Azioni",
 	],
 	"Get embed codes" => [
 		0 => "Recupera i codici embed",
 	],
-	"Assign category" => [
-		0 => "Assegna categoria",
-	],
 	"Flag as safe" => [
 		0 => "Contrassegna come adatto a tutti",
+	],
+	"Select all" => [
+		0 => "Seleziona tutto",
 	],
 	"Clear selection" => [
 		0 => "Annulla selezione",
 	],
-	"Create new album" => [
-		0 => "Crea nuovo album",
-	],
-	"Create sub album" => [
-		0 => "Crea sotto album ",
-	],
-	"Share" => [
-		0 => "Condividi",
-	],
 	"Sign in with another account" => [
 		0 => "Accedi con un account diverso",
 	],
-	"Continue with %label%" => [
-		0 => "Continua con %label%",
-	],
-	"Home" => [
-		0 => "Home",
-	],
 	"There's nothing to show here." => [
 		0 => "Non c'è niente da mostrare qui.",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "Tutte le immagini selezionate saranno assegnate a questa categoria.",
 	],
 	"There is no categories." => [
 		0 => "Non ci sono categorie",
@@ -1822,20 +1570,8 @@ $translation_table = [
 	"Confirm approval" => [
 		0 => "Conferma l'approvazione",
 	],
-	"Do you really want to approve this content? This can't be undone." => [
-		0 => "Vuoi davvero rimuovere tutto il contenuto selezionato? Questo non può essere annullato.",
-	],
 	"Confirm deletion" => [
 		0 => "Conferma la cancellazione",
-	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "Vuoi davvero cancellare questo contenuto? Questa azione non può essere annullata.",
-	],
-	"Do you really want to approve all the selected content? This can't be undone." => [
-		0 => "Vuoi davvero rimuovere tutto il contenuto selezionato? Questo non può essere annullato.",
-	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "Vuoi davvero cancellare tutto il contenuto selezionato? Questa azione non può essere annullata.",
 	],
 	"Guest" => [
 		0 => "Ospite\n",
@@ -1852,9 +1588,6 @@ $translation_table = [
 	"Uploaded by guest" => [
 		0 => "Caricato da ospite",
 	],
-	"From %s" => [
-		0 => "Da %s",
-	],
 	"Uploaded by private" => [
 		0 => "Caricato da privato",
 	],
@@ -1864,8 +1597,11 @@ $translation_table = [
 	"Toggle unsafe flag" => [
 		0 => "Contrassegna come non adatto a tutti",
 	],
-	"That page doesn't exist" => [
-		0 => "La pagina non esiste",
+	"You either don't have permission to access this page or the link has expired." => [
+		0 => "Attenzione Tu non hai i permessi per accedere a questa pagina o il link oppure  è scaduto.",
+	],
+	"Go to homepage" => [
+		0 => "Vai alla home page",
 	],
 	"The requested page was not found." => [
 		0 => "La pagina richiesta non è stata trovata.",
@@ -1893,9 +1629,6 @@ $translation_table = [
 	],
 	"Your email address" => [
 		0 => "Il tuo indirizzo email",
-	],
-	"Submit" => [
-		0 => "Invia",
 	],
 	"An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Ti abbiamo inviata una email all'indirizzo email registrato con le indicazioni per reimpostare la password. Se non la hai ricevuta, verifica anche nelle cartelle spam o posta indesiderata.",
@@ -1933,20 +1666,17 @@ $translation_table = [
 	"An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Una e-mail a %s è stato inviato con le istruzioni per attivare l'account. Se non ricevete le istruzioni Prova a controllare i filtri junk o spam.",
 	],
-	"This content is private" => [
-		0 => "Questo contenuto è privato",
-	],
 	"Sub album" => [
 		0 => "Sotto album ",
-	],
-	"Do you really want to delete this album and all of its images? This can't be undone." => [
-		0 => "Vuoi davvero cancellare questo album e le relative immagini? Questa azione non può essere annullata.",
 	],
 	"Upload to album" => [
 		0 => "Carica un album",
 	],
 	"You like this" => [
 		0 => "Ti piace",
+	],
+	"This content is private" => [
+		0 => "Questo contenuto è privato",
 	],
 	"Please read and comply with the following conditions before you continue:" => [
 		0 => "Prima di proseguire sei invitato a leggere ed ad attenerti alle seguenti condizioni:",
@@ -1963,20 +1693,8 @@ $translation_table = [
 	"documentation" => [
 		0 => "documentazione",
 	],
-	"Learn about %s settings at our %d." => [
-		0 => "Scopri le impostazioni di %s nel nostro %d. ",
-	],
-	"The connecting IP is determined using the server variable %var%. If the detected IP doesn't match yours, it means that your web server is under a proxy and you need to tweak your server to set the real connecting IP." => [
-		0 => "L'IP di connessione viene determinato utilizzando la variabile server %var%. Se l'IP rilevato non corrisponde al tuo, significa che il tuo server Web è sotto un proxy e devi modificare il tuo server per impostare l'IP di connessione reale.",
-	],
-	"For Nginx, you must use %nginx%. For Apache, %apache%." => [
-		0 => "Per Nginx, è necessario utilizzare %nginx%. Per Apache, %apache%.",
-	],
-	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
-		0 => "Assicurati di affrontare questo problema poiché il sistema si basa su rilevamenti IP accurati per fornire funzionalità di base e per proteggere da spam, inondazioni e attacchi di forza bruta.",
-	],
-	"Disk used" => [
-		0 => "Spazio occupato su disco",
+	"Check the errors to proceed." => [
+		0 => "Controllare gli errori per procedere.",
 	],
 	"Queued" => [
 		0 => "In coda",
@@ -1995,9 +1713,6 @@ $translation_table = [
 	],
 	"Top level folders as %s" => [
 		0 => "Cartelle di primo livello come %s",
-	],
-	"Actions" => [
-		0 => "Azioni",
 	],
 	"Process" => [
 		0 => "Processi",
@@ -2032,137 +1747,530 @@ $translation_table = [
 	"Read the %s for more information about this feature." => [
 		0 => "Leggi %s per ulteriori informazioni su questa funzione. ",
 	],
-	"Add user" => [
-		0 => "Aggiungi utente",
+	"Dashboard > Settings > Website" => [
+		0 => "Dashboard> Impostazioni> Sito Web",
 	],
-	"Role" => [
-		0 => "Ruolo",
+	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
+		0 => "Mostra una schermata consenso prima di accedere al sito web. Utile per i siti web di contenuti per adulti in cui non dovrebbe essere consentito minori.",
 	],
-	"Manager" => [
-		0 => "Manager",
+	"Enable consent screen" => [
+		0 => "Abilita schermo consenso",
 	],
-	"Administrator" => [
-		0 => "Amministratore",
+	"Consent screen cover image" => [
+		0 => "immagine di copertina schermo consenso",
 	],
-	"Email address" => [
-		0 => "Indirizzo email",
+	"Show not safe content in listings" => [
+		0 => "Mostra contenuto non sicuro in lista",
 	],
-	"This setting is always diabled when using personal website mode." => [
-		0 => "Questa impostazione è sempre disabilitata quando si utilizza la modalità sito personale.",
+	"Blur NSFW content in listings" => [
+		0 => "Contenuti Blur NSFW nelle inserzioni",
 	],
-	"Add category" => [
-		0 => "Aggiungi categoria",
+	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
+		0 => "Attivare questa opzione se si desidera applicare un effetto di sfocatura sulle immagini NSFW nelle inserzioni.",
 	],
-	"Add IP ban" => [
-		0 => "Aggiungi blocco IP",
+	"Show not safe content in random mode" => [
+		0 => "Mostra contenuto non sicuro in modalità casuale",
 	],
-	"Add storage" => [
-		0 => "Aggiungi spazio di archiviazione",
+	"Show banners in not safe content" => [
+		0 => "Mostra banner nel contenuto non sicuro",
 	],
-	"Return to pages" => [
-		0 => "Torna alle pagine",
+	"Enable this if you want to show banners in not safe content pages." => [
+		0 => "Abilitare questa opzione se si desidera visualizzare banner in pagine di contenuti non sicuri.",
 	],
-	"Website name" => [
-		0 => "Nome del sito web",
+	"Lock %s editing" => [
+		0 => "Blocca la modifica di %s",
 	],
-	"Website doctitle" => [
-		0 => "Doctitle sito web",
+	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
+		0 => "Abilitalo per impedire agli utenti di modificare il flag NSFW. Se abilitato, solo l'amministratore e i gestori avranno questa autorizzazione.",
 	],
-	"Website description" => [
-		0 => "Descrizione sito web",
+	"Cookie law compliance" => [
+		0 => "Conformità normativa Cookie",
 	],
-	"Automatic" => [
-		0 => "Automatico",
+	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
+		0 => "Attivare questa opzione per visualizzare un messaggio che è conforme ai requisiti di legge Cookie UE. Nota: è necessario solo questo se il vostro sito è ospitato nella UE e se si aggiunge tracking cookie.",
 	],
-	"Forced" => [
-		0 => "Costretto",
+	"From name" => [
+		0 => "Dal nome",
 	],
-	"%a will use HTTPS detection on the server side (recommended). %f will use HTTPS regardless of your server setup. %d to don't use HTTPS at all." => [
-		0 => "%a utilizzerà il rilevamento HTTPS sul lato server (consigliato). %f utilizzerà HTTPS indipendentemente dall'impostazione del server. %d non usare affatto HTTPS.",
+	"Sender name for emails sent to users." => [
+		0 => "Nome email che riceveranno gli utenti",
 	],
-	"This only controls the protocol used in the URLs, it won't turn your website into a valid HTTPS website unless your server is configured to support and use HTTPS." => [
-		0 => "Questo controlla solo il protocollo utilizzato negli URL, non trasformerà il tuo sito Web in un sito Web HTTPS valido se il tuo server non è configurato per supportare e utilizzare HTTPS.",
+	"From email address" => [
+		0 => "Dall'indirizzo email",
 	],
-	"Default time zone" => [
-		0 => "Fuso orario predefinito",
+	"Sender email for emails sent to users." => [
+		0 => "Indirizzo email per le comunicazioni agli utenti",
 	],
-	"Select region" => [
-		0 => "Seleziona la regione",
+	"Incoming email address" => [
+		0 => "Indirizzo email per le comunicazioni in arrivo",
 	],
-	"Allows to search images, albums and users based on a given search query." => [
-		0 => "Abilita la ricerca di immagini, album ed utenti in base a specifica chiave di ricerca.",
+	"Recipient for contact form and system alerts." => [
+		0 => "Destinatario del modulo di contatto e degli avvisi di sistema.",
 	],
-	"Enables to browse public uploaded images. It also enables categories." => [
-		0 => "Abilita la visualizzazione delle immagini pubbliche. Inoltre abilita le categorie.",
+	"Email mode" => [
+		0 => "Modalità di invio Email",
 	],
-	"guests" => [
-		0 => "ospiti",
+	"How to send emails? SMTP recommended." => [
+		0 => "Come inviare e-mail? SMTP raccomandato.",
 	],
-	"Enables explore for guests." => [
-		0 => "Consente di esplorare per gli ospiti.",
+	"SMTP server and port" => [
+		0 => "SMPT porta del server",
 	],
-	"Enables to browse images randomly." => [
-		0 => "Abilita la visualizzazione casuale delle immagini.",
+	"SMTP security" => [
+		0 => "SMTP sicurezza",
 	],
-	"Likes" => [
-		0 => "Piaciuti",
+	"Unsecured" => [
+		0 => "Non garantito",
 	],
-	"Allows users to like content and populate \"Most liked\" listings." => [
-		0 => "Consente agli utenti di usare i \"like\" e popolare l'elenco dei \"più graditi\".",
+	"Comments API" => [
+		0 => "Commenti API",
 	],
-	"Followers allows users to follow each other." => [
-		0 => "Consente agli utenti di seguirsi.",
+	"Disqus API works with %s." => [
+		0 => "Disqus API lavora con %s",
 	],
-	"Website mode" => [
-		0 => "Modalità sito",
+	"Disqus shortname" => [
+		0 => "Disqus nomecorto",
 	],
-	"Community" => [
-		0 => "Comunità",
+	"%s secret key" => [
+		0 => "%s chiave segreta",
 	],
-	"Personal" => [
-		0 => "Personale",
+	"%s public key" => [
+		0 => "%s chiave pubblica",
 	],
-	"You can switch the website mode anytime." => [
-		0 => "Puoi modificare la modalità sito web in ogni momento.",
+	"Comment code" => [
+		0 => "Codice di commento",
 	],
-	"Personal mode target user" => [
-		0 => "Modalità personale utente di destinazione",
+	"Disqus, Facebook or anything you want. It will be used in image view." => [
+		0 => "Disqus, Facebook e tutto quello che vuoi. Sarà usato in visualizzazione dell'immagine per condividerla",
 	],
-	"User ID" => [
-		0 => "ID utente",
+	"Analytics code" => [
+		0 => "Codice di Google Analytics",
 	],
-	"Your user id is: %s" => [
-		0 => "Il tuo ID utente è: %s",
+	"Google Analytics or anything you want. It will be added to the theme footer." => [
+		0 => "Google Analytics o tutto quello che vuoi. Sarà aggiunto al piè di pagina del tema.",
 	],
-	"Numeric ID of the target user for personal mode." => [
-		0 => "ID numerico dell'utente di destinazione per la modalità personale.",
+	"%s spam protection" => [
+		0 => "%s spam protezione",
 	],
-	"Personal mode routing" => [
-		0 => "Percorso modalità personale",
+	"user generated content" => [
+		0 => "contenuto generato dall'utente",
 	],
-	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
-		0 => "Percorso personalizzato per mappare /username a /esempio. Utilizza \"/\" per mappare alla  homepage.",
+	"Enable this to use %l to block spam on %c." => [
+		0 => "Abilita questo per usare %  per bloccare lo spam %c.",
 	],
-	"Website privacy mode" => [
-		0 => "Modalità privacy sito web",
+	"user signup" => [
+		0 => "iscrizione utente",
 	],
-	"Private mode will make the website only available for registered users." => [
-		0 => "In modalità privata il sito è disponibile soltanto agli utenti iscritti.",
+	"%s site key" => [
+		0 => "%s chiave del sito",
 	],
-	"Content privacy mode" => [
-		0 => "Modalità privacy contenuto",
+	"Force %s on contact page" => [
+		0 => "Forza %s nella pagina dei contatti.",
+	],
+	"Enable this to always show %s on contact page." => [
+		0 => "Abilita questo per mostrare sempre %s nella pagina dei contatti.",
+	],
+	"Automatically moderate the content using the %s service." => [
+		0 => "Modera automaticamente il contenuto utilizzando il servizio %s.",
+	],
+	"Automatic approve" => [
+		0 => "Approvazione automatica",
+	],
+	"Enable this to automatically approve content moderated by this service." => [
+		0 => "Abilitalo per approvare automaticamente i contenuti moderati da questo servizio.",
+	],
+	"Block content" => [
+		0 => "Blocca contenuto",
+	],
+	"Adult" => [
+		0 => "Adulto",
+	],
+	"Teen and adult" => [
+		0 => "Adolescente e adulto",
+	],
+	"Flag NSFW" => [
+		0 => "Segnala NSFW",
+	],
+	"Twitter account" => [
+		0 => "Account twitter",
+	],
+	"Toggle this to enable or disable HTTPS" => [
+		0 => "Alterna questa opzione per abilitare o disabilitare HTTPS",
+	],
+	"Toggle this to enable or disable this storage" => [
+		0 => "Alterna questa opzione per abilitare o disabilitare la memorizzazione",
+	],
+	"Active" => [
+		0 => "Attivo",
+	],
+	"Storage method" => [
+		0 => "Metodo di memorizzazione",
+	],
+	"Disk used" => [
+		0 => "Spazio occupato su disco",
+	],
+	"Local storage is used by default or when no external storage is active." => [
+		0 => "L'archiviazione locale è utilizzata per impostazione predefinita o quando non è attiva quella esterna.",
+	],
+	"Notify to email" => [
+		0 => "Notifica per e-mail",
+	],
+	"If enabled the system will send an email on flood incidents." => [
+		0 => "Se attivato il sistema invierà una e-mail sui flood  che subisce il sito",
+	],
+	"Minute limit" => [
+		0 => "Limite in minuti",
+	],
+	"Hourly limit" => [
+		0 => "Limite orario",
+	],
+	"Daily limit" => [
+		0 => "Limite giornaliero",
+	],
+	"Weekly limit" => [
+		0 => "Limite settimanale",
+	],
+	"Monthly limit" => [
+		0 => "Limite mensile",
+	],
+	"Style" => [
+		0 => "Stile",
+	],
+	"Landing page" => [
+		0 => "Arrivo pagina",
+	],
+	"Split landing + images" => [
+		0 => "Split atterraggio + immagini",
+	],
+	"explore" => [
+		0 => "Esplorare",
+	],
+	"Route %s" => [
+		0 => "Itinerario %s",
+	],
+	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
+		0 => "Selezionare homepage stile.Per personalizzare ulteriormente modificare app/themes/%s/views/index.php",
+	],
+	"Cover image" => [
+		0 => "Immagine di copertina",
+	],
+	"Add new cover image" => [
+		0 => "Aggiungere un'immagine nuova di copertina",
+	],
+	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
+		0 => "Questo verrà aggiunto all'interno della homepage %s tag. Lascia vuoto per utilizzare i contenuti di default.",
+	],
+	"Paragraph" => [
+		0 => "Paragrafo",
+	],
+	"Call to action button color" => [
+		0 => "Pulsante di invito all'azione colore",
+	],
+	"Blue" => [
+		0 => "Blu",
+	],
+	"Green" => [
+		0 => "Verde",
+	],
+	"Orange" => [
+		0 => "Arancio",
+	],
+	"Red" => [
+		0 => "Rosso",
+	],
+	"Grey" => [
+		0 => "Grigio",
+	],
+	"Black" => [
+		0 => "Nero",
+	],
+	"White" => [
+		0 => "Bianco",
 	],
 	"Default" => [
 		0 => "Predefinito",
 	],
-	"Force private (self)" => [
-		0 => "Forza privato (sé stessi)",
+	"Color of the homepage call to action button." => [
+		0 => "Colore della homepage del pulsante di invito all'azione.",
 	],
-	"Force private (anyone with the link)" => [
-		0 => "Imposta privato (chiunque tramite link)",
+	"Call to action outline style button" => [
+		0 => "Invito all'azione pulsante stile contorno",
 	],
-	"Forced privacy modes will override user selected privacy." => [
-		0 => "Le modalità di privacy forzata sostituiranno le modalità di privacy degli utenti selezionati.",
+	"Enable this to use outline style for the homepage call to action button." => [
+		0 => "Attivare questa opzione per utilizzare lo stile contorno per homepage pulsante di invito all'azione.",
+	],
+	"Call to action functionality" => [
+		0 => "Invito alla funzionalità azione",
+	],
+	"Trigger uploader" => [
+		0 => "Grilletto uploader",
+	],
+	"Open URL" => [
+		0 => "Apri URL",
+	],
+	"Call to action URL" => [
+		0 => "Invito all'azione URL",
+	],
+	"Enter an absolute or relative URL" => [
+		0 => "Immettere un assoluta o URL relativa",
+	],
+	"A relative URL like %r will be mapped to %l" => [
+		0 => "Un URL relativo come%  sarà mappato%l",
+	],
+	"Call to action HTML" => [
+		0 => "Invito all'azione HTML",
+	],
+	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
+		0 => "Questo verrà aggiunto all'interno della chiamata di tag all'azione <a>. Lascia vuoto per utilizzare i contenuti di default.",
+	],
+	"User IDs" => [
+		0 => "Utente IDs",
+	],
+	"Empty" => [
+		0 => "Vuoto",
+	],
+	"Your user id is: %s" => [
+		0 => "Il tuo ID utente è: %s",
+	],
+	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
+		0 => "Elenco separato da virgole di ID utente di destinazione per mostrare le immagini sulla homepage. Lascialo vuoto o zero per visualizzare tutte le immagini recenti.",
+	],
+	"Enabled image formats" => [
+		0 => "Formati di immagine abilitati",
+	],
+	"Enable uploads" => [
+		0 => "Caricamenti",
+	],
+	"Enable this if you want to allow image upload from URLs." => [
+		0 => "Abilita questa opzione se desideri consentire il caricamento delle immagini. Questa impostazione non ha effetto sugli amministratori.",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "Nota che abilitando questo esporrai l'IP del tuo server.",
+	],
+	"Upload user interface" => [
+		0 => "Carica l'interfaccia utente",
+	],
+	"On-page container" => [
+		0 => "Contenitore in-page",
+	],
+	"route" => [
+		0 => "itinerario",
+	],
+	"Guest uploads" => [
+		0 => "Caricamenti anonimi",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "Abilita quest'opzione se vuoi consentire a utenti non registrati di caricare immagini.",
+	],
+	"Moderate uploads" => [
+		0 => "Caricamenti da moderare",
+	],
+	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
+		0 => "Abilita questa opzione per moderare i caricamenti in arrivo. Il contenuto di destinazione richiederà moderazione per l'approvazione.",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "Attiva i codici embed (uploader)",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "Abilitare questa opzione se si desidera visualizzare i codici embed quando il caricamento viene completato.",
+	],
+	"Upload threads" => [
+		0 => "Carica le discussioni",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "Numero di caricamenti simultanei.",
+	],
+	"Redirect on single upload" => [
+		0 => "reindirizzamento singolo caricamento",
+	],
+	"Enable this if you want to redirect to image page on single upload." => [
+		0 => "Abilita reindirizzamento alla pagina dell'immagine dopo singolo caricamento.",
+	],
+	"Enable duplicate uploads" => [
+		0 => "Caricamenti duplicati",
+	],
+	"Enable expirable uploads" => [
+		0 => "Caricamenti con scadenza",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "Abilita questa opzione per consentire caricamenti con cancellazione automatica.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "Cancellare automaticamente i guest upload",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "Abilitare questa opzione se si desidera forzare i caricamenti degli ospiti per essere eliminati automaticamente dopo un certo tempo.",
+	],
+	"Maximum image size" => [
+		0 => "La dimensione massima dell'immagine",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "Immagini più grandi di queste dimensioni avranno automaticamente ridimensionato. Utilizzare zero (0) per non impostare un limite.",
+	],
+	"Image Exif data" => [
+		0 => "Dati EXIF",
+	],
+	"Keep" => [
+		0 => "Mantieni",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "Seleziona l'impostazione predefinita per i dati <a %s>EXIF</a> nel caricamento.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "Dati EXIF (impostazione utente)",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "Abilita questa opzione per consentire ad ogni utente di configurare la gestione dei dati EXIF.",
+	],
+	"Maximum upload file size" => [
+		0 => "La dimensione massima del file di caricamento",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "La dimensione massima consentita dal server è %s. Questo limite è ricoperta da %u e %p (%f valori).",
+	],
+	"guests" => [
+		0 => "ospiti",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "Uguale a \"%s\" ma per gli ospiti.",
+	],
+	"Image path" => [
+		0 => "Percorso immagine",
+	],
+	"Relative to Chevereto root" => [
+		0 => "Relativo alla root del sito web",
+	],
+	"Where to store the images? Relative to Chevereto root." => [
+		0 => "Percorso archiviazioni immagini. Relativo alla root del sito web.",
+	],
+	"Storage mode" => [
+		0 => "Modalità spazio di archiviazione.",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "Datefolders crea  struttura %s",
+	],
+	"File naming method" => [
+		0 => "Modalità denominazione file",
+	],
+	"Original" => [
+		0 => "Originale",
+	],
+	"Mix original + random" => [
+		0 => "Originale + casuale",
+	],
+	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
+		0 => "Con \"originale\" è conservato il nome nativo, con \"casuale\" è generato un nome casuale, con \"ID\" il nome assegnato all'immagine corrisponde all'ID.",
+	],
+	"Thumb size" => [
+		0 => "Formato miniature",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "Le miniature avranno questo formato.",
+	],
+	"Medium image fixed dimension" => [
+		0 => "Dimensione prefissata dell'immagine ridotta",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "Se selezioni \"larghezza\", l'altezza sarà calcolata di conseguenza in automatico, e viceversa.",
+	],
+	"Medium image fixed size" => [
+		0 => "Formato fisso delle immagini ridotte",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "Larghezza od altezza saranno calcolate in automatico.",
+	],
+	"Expires" => [
+		0 => "Scade",
+	],
+	"Banned IP address will be forbidden to use the entire website." => [
+		0 => "Agli indirizzi IP bloccati è inibito l'utilizzo dell'intero sito.",
+	],
+	"Default language" => [
+		0 => "Lingua del sito",
+	],
+	"Default base language to use." => [
+		0 => "Lingua di base predefinita da utilizzare nel sito",
+	],
+	"Auto language" => [
+		0 => "Scelta della lingua automatica",
+	],
+	"Enable this if you want to automatically detect and set the right language for each user." => [
+		0 => "Attivare questa opzione se si desidera rilevare automaticamente e impostare la lingua giusta per ogni utente.",
+	],
+	"Language chooser" => [
+		0 => "Scelta Lingua",
+	],
+	"Enable this if you want to allow language selection." => [
+		0 => "Attivare questa opzione se si desidera consentire la selezione della lingua.",
+	],
+	"Enabled languages" => [
+		0 => "lingue attivate",
+	],
+	"List items per page" => [
+		0 => "Elenco articoli per pagina",
+	],
+	"How many items should be displayed per page listing." => [
+		0 => "Quanti articoli devono essere visualizzati per pagina in  elenco.",
+	],
+	"List pagination mode" => [
+		0 => "Modalità di impaginazione Lista",
+	],
+	"Endless scrolling" => [
+		0 => "Scrolling infinito",
+	],
+	"Classic pagination" => [
+		0 => "Impaginazione Classica",
+	],
+	"What pagination method should be used." => [
+		0 => "Quale metodo impaginazione deve essere utilizzato.",
+	],
+	"Listing viewer" => [
+		0 => "Elenco visualizzatore",
+	],
+	"Enable this to use the listing viewer when clicking on an image." => [
+		0 => "Abilita questa opzione per utilizzare il visualizzatore della scheda quando fai clic su un'immagine.",
+	],
+	"Image listing size" => [
+		0 => "Dimensioni lista Immagine",
+	],
+	"Fluid" => [
+		0 => "Fluido",
+	],
+	"Fixed" => [
+		0 => "Fisso",
+	],
+	"Both methods use a fixed width but fluid method uses automatic heights." => [
+		0 => "Entrambi i metodi utilizzano una larghezza fissa, ma il metodo fluido utilizza altezze automatici.",
+	],
+	"Listing columns number" => [
+		0 => "Numero colonne Lista",
+	],
+	"Here you can set how many columns are used based on each target device." => [
+		0 => "Qui è possibile impostare il numero di colonne vengono utilizzate in base a ciascun dispositivo di destinazione.",
+	],
+	"Phone" => [
+		0 => "Telefono",
+	],
+	"Vector version or your website logo in SVG format." => [
+		0 => "Il logo del tuo sito web deve avere il formato SVG.",
+	],
+	"Bitmap version or your website logo. PNG format is recommended." => [
+		0 => "Versione Bitmap per il logo del  vostro sito web logo. Si raccomanda formato PNG.",
+	],
+	"Logo height" => [
+		0 => "Aaltezza Logo",
+	],
+	"No value" => [
+		0 => "Nessun valore",
+	],
+	"Use this to set the logo height if needed." => [
+		0 => "Utilizzare questa opzione per impostare l'altezza per il logo, se necessario.",
+	],
+	"Favicon image" => [
+		0 => "Immagine favicon",
+	],
+	"Favicon image. Image must have same width and height." => [
+		0 => "Immagine Favicon. L'immagine deve avere stessa larghezza e altezza.",
 	],
 	"Page title" => [
 		0 => "Titolo pagina",
@@ -2184,9 +2292,6 @@ $translation_table = [
 	],
 	"Terms of service" => [
 		0 => "Termini di servizio",
-	],
-	"Privacy" => [
-		0 => "Privacy",
 	],
 	"Contact" => [
 		0 => "Contatto",
@@ -2254,9 +2359,6 @@ $translation_table = [
 	"Only alphanumerics, hyphens and whitespaces" => [
 		0 => "Soltanto caratteri alfanumerici, trattini e spazi bianchi",
 	],
-	"HTML &lt;a&gt; %s attribute" => [
-		0 => "Attributo HTML &lt;a&gt; %s",
-	],
 	"Link icon" => [
 		0 => "Link icona",
 	],
@@ -2269,536 +2371,56 @@ $translation_table = [
 	"Page sort order display for menus and listings. Use \"1\" for top priority." => [
 		0 => "Display ordine pagina ordina per i menu ed elenchi. Usare \"1\" per la massima priorità.",
 	],
-	"Do you really want to delete the page ID %s? This can't be undone." => [
-		0 => "Vuoi davvero eliminare la pagina con ID %s? Questa azione non può essere annullata.",
+	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed." => [
+		0 => "Il routing (instradamento ) ti consente di personalizzare al volo i collegamenti di percorso predefiniti. Sono consentiti solo caratteri alfanumerici, trattini e trattini bassi. ",
 	],
-	"Enabled image formats" => [
-		0 => "Formati di immagine abilitati",
+	"Routing for %s" => [
+		0 => "Routing per %s",
 	],
-	"Unchecked image formats won't be allowed to be uploaded." => [
-		0 => "Sarà consentito caricare soltanto i tipi di immagine selezionati.",
+	"SEO %s URLs" => [
+		0 => "SEO %s URL",
 	],
-	"Enable uploads" => [
-		0 => "Caricamenti",
+	"Enable this if you want to use SEO %s URLs." => [
+		0 => "Abilita questa opzione se desideri utilizzare gli URL di %s SEO.",
 	],
-	"Enable this if you want to allow image uploads. This setting doesn't affect administrators." => [
-		0 => "Abilitare questa opzione se si desidera consentire il caricamento di immagini. Questa impostazione non influisce sugli  amministratori.",
+	"Automatic updates check" => [
+		0 => "controllare gli aggiornamenti automatici",
 	],
-	"Upload user interface" => [
-		0 => "Carica l'interfaccia utente",
+	"When enabled the system will automatically check for new updates." => [
+		0 => "Quando si consente al sistema controllerà automaticamente i nuovi aggiornamenti.",
 	],
-	"On-page container" => [
-		0 => "Contenitore in-page",
+	"Display available updates notification" => [
+		0 => "Mostra aggiornamenti disponibili in notifica",
 	],
-	"route" => [
-		0 => "itinerario",
+	"Enable this to show a notice on top warning you about new available system updates." => [
+		0 => "Abilita questo per mostrare un avviso in alto che avvisa sui nuovi aggiornamenti di sistema disponibili.",
 	],
-	"Guest uploads" => [
-		0 => "Caricamenti anonimi",
+	"Dump update query" => [
+		0 => "Dump query di aggiornamento",
 	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "Abilita quest'opzione se vuoi consentire a utenti non registrati di caricare immagini.",
+	"Enable this if you want to dump the update query to run it manually." => [
+		0 => "Abilitare questa opzione se si desidera rilevare e impostare automaticamente la lingua giusta per ciascun utente.",
 	],
-	"Moderate uploads" => [
-		0 => "Caricamenti da moderare",
+	"Maintenance" => [
+		0 => "Manutenzione",
 	],
-	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
-		0 => "Abilita questa opzione per moderare i caricamenti in arrivo. Il contenuto di destinazione richiederà moderazione per l'approvazione.",
+	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
+		0 => "Questo codice alfanumerico è stato generato al momento dell'installazione.",
 	],
-	"Enable embed codes (uploader)" => [
-		0 => "Attiva i codici embed (uploader)",
+	"Debug level" => [
+		0 => "livello di debug",
 	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "Abilitare questa opzione se si desidera visualizzare i codici embed quando il caricamento viene completato.",
+	"None" => [
+		0 => "nessuno",
 	],
-	"Upload threads" => [
-		0 => "Carica le discussioni",
+	"Error log" => [
+		0 => "Log di errore",
 	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "Numero di caricamenti simultanei.",
+	"Print errors without error log" => [
+		0 => "Errori di stampa senza log degli errori",
 	],
-	"Redirect on single upload" => [
-		0 => "reindirizzamento singolo caricamento",
-	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "Abilita reindirizzamento alla pagina dell'immagine dopo singolo caricamento.",
-	],
-	"Enable duplicate uploads" => [
-		0 => "Caricamenti duplicati",
-	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs. This setting doesn't affect administrators." => [
-		0 => "Abilita questa opzione per consentire caricamenti duplicati dallo stesso IP nell'arco di 24 ore. Questa impostazione non ha effetto sugli amministratori.",
-	],
-	"Enable expirable uploads" => [
-		0 => "Caricamenti con scadenza",
-	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "Abilita questa opzione per consentire caricamenti con cancellazione automatica.",
-	],
-	"Auto delete guest uploads" => [
-		0 => "Cancellare automaticamente i guest upload",
-	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "Abilitare questa opzione se si desidera forzare i caricamenti degli ospiti per essere eliminati automaticamente dopo un certo tempo.",
-	],
-	"Maximum image size" => [
-		0 => "La dimensione massima dell'immagine",
-	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "Immagini più grandi di queste dimensioni avranno automaticamente ridimensionato. Utilizzare zero (0) per non impostare un limite.",
-	],
-	"Image Exif data" => [
-		0 => "Dati EXIF",
-	],
-	"Keep" => [
-		0 => "Mantieni",
-	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "Seleziona l'impostazione predefinita per i dati <a %s>EXIF</a> nel caricamento.",
-	],
-	"Image Exif data (user setting)" => [
-		0 => "Dati EXIF (impostazione utente)",
-	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "Abilita questa opzione per consentire ad ogni utente di configurare la gestione dei dati EXIF.",
-	],
-	"Maximum upload file size" => [
-		0 => "La dimensione massima del file di caricamento",
-	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "La dimensione massima consentita dal server è %s. Questo limite è ricoperta da %u e %p (%f valori).",
-	],
-	"Same as \"%s\" but for guests." => [
-		0 => "Uguale a \"%s\" ma per gli ospiti.",
-	],
-	"Image path" => [
-		0 => "Percorso immagine",
-	],
-	"Relative to Chevereto root" => [
-		0 => "Relativo alla root del sito web",
-	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "Percorso archiviazioni immagini. Relativo alla root del sito web.",
-	],
-	"Storage mode" => [
-		0 => "Modalità spazio di archiviazione.",
-	],
-	"Datefolders" => [
-		0 => "Datefolders",
-	],
-	"Direct" => [
-		0 => "Diretto",
-	],
-	"Datefolders creates %s structure" => [
-		0 => "Datefolders crea  struttura %s",
-	],
-	"File naming method" => [
-		0 => "Modalità denominazione file",
-	],
-	"Original" => [
-		0 => "Originale",
-	],
-	"Mix original + random" => [
-		0 => "Originale + casuale",
-	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "Con \"originale\" è conservato il nome nativo, con \"casuale\" è generato un nome casuale, con \"ID\" il nome assegnato all'immagine corrisponde all'ID.",
-	],
-	"Thumb size" => [
-		0 => "Formato miniature",
-	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "Le miniature avranno questo formato.",
-	],
-	"Medium image fixed dimension" => [
-		0 => "Dimensione prefissata dell'immagine ridotta",
-	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "Se selezioni \"larghezza\", l'altezza sarà calcolata di conseguenza in automatico, e viceversa.",
-	],
-	"Medium image fixed size" => [
-		0 => "Formato fisso delle immagini ridotte",
-	],
-	"Width or height will be automatically calculated." => [
-		0 => "Larghezza od altezza saranno calcolate in automatico.",
-	],
-	"Watermarks" => [
-		0 => "Filigrana",
-	],
-	"Enable this to put a logo or anything you want in image uploads." => [
-		0 => "Abilita questa opzione per inserire un logo od altro nelle immagini caricate.",
-	],
-	"Watermark user toggles" => [
-		0 => "Alterna utente Watermark",
-	],
-	"Enable watermark on guest uploads" => [
-		0 => "Abilita filigrana sui caricamenti di anonimi",
-	],
-	"Enable watermark on user uploads" => [
-		0 => "Abilita filigrana sui caricamenti degli utenti",
-	],
-	"Enable watermark on admin uploads" => [
-		0 => "Abilita watermark su  uploads degli Admin",
-	],
-	"Watermark file toggles" => [
-		0 => "Alterna i file Watermark",
-	],
-	"Enable watermark on GIF image uploads" => [
-		0 => "Abilita filigrana nel caricamento di immagini GIF",
-	],
-	"Minimum image size needed to apply watermark" => [
-		0 => "Dimensione minima dell'immagine necessaria per applicare filigrana",
-	],
-	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
-		0 => "Immagini più piccolo rispetto a questo non saranno filigranata. Usare zero (0) per non impostare un limite minimo dimensioni dell'immagine.",
-	],
-	"Watermark image" => [
-		0 => "Immagine filigrana",
-	],
-	"You will get best results with plain logos with drop shadow. You can use a large image if the file size is not that big (recommended max. is 16KB). Must be a PNG." => [
-		0 => "Otterrete i migliori risultati con i loghi di pianura con ombra. È possibile utilizzare una grande immagine, se la dimensione del file non è così grande (consigliato max. È 16 KB). Deve essere un PNG",
-	],
-	"Watermark position" => [
-		0 => "Posizione filigrana",
-	],
-	"left top" => [
-		0 => "in alto a sinistra",
-	],
-	"left center" => [
-		0 => "a sinistra",
-	],
-	"left bottom" => [
-		0 => "in basso a sinistra",
-	],
-	"center top" => [
-		0 => "in alto al centro",
-	],
-	"center center" => [
-		0 => "al centro",
-	],
-	"center bottom" => [
-		0 => "in basso al centro",
-	],
-	"right top" => [
-		0 => "in alto a destra",
-	],
-	"right center" => [
-		0 => "a destra",
-	],
-	"right bottom" => [
-		0 => "in basso a destra",
-	],
-	"Relative position of the watermark image. First horizontal align then vertical align." => [
-		0 => "Posizione relativa della filigrana. Prima allineamento orizzontale poi verticale.",
-	],
-	"Watermark percentage" => [
-		0 => "Percentuale filigrana",
-	],
-	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
-		0 => "Dimensione percentuale della filigrana rispetto all'immagine di destinazione. Valore da 1 a 100.",
-	],
-	"Watermark margin" => [
-		0 => "Margine watermark",
-	],
-	"Margin from the border of the image to the watermark image." => [
-		0 => "Margine dal confine dell'immagine della filigrana.",
-	],
-	"Watermark opacity" => [
-		0 => "Opacità watermark",
-	],
-	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
-		0 => "Opacità della filigrana nell'immagine finale filigranata. Valori da 0 a 100.",
-	],
-	"Dashboard > Settings > Website" => [
-		0 => "Dashboard> Impostazioni> Sito Web",
-	],
-	"Categories won't work when the explorer feature is turned off. To revert this setting go to %s." => [
-		0 => "Categorie non funziona quando la funzione Explorer è disattivata. Per ripristinare questa impostazione andare a %s.",
-	],
-	"Do you really want to delete the %s category? This can't be undone." => [
-		0 => "Vuoi davvero cancellare %s categoria? Questo non può essere annullata.",
-	],
-	"Note: Deleting a category doesn't delete the images that belongs to that category." => [
-		0 => "Nota: Eliminazione di una categoria non elimina le immagini che appartiene a quella categoria.",
-	],
-	"Edit category" => [
-		0 => "Edita categoria",
-	],
-	"Expires" => [
-		0 => "Scade",
-	],
-	"Do you really want to remove the ban to the IP %s? This can't be undone." => [
-		0 => "Vuoi davvero eliminare il divieto alla IP %s? Questa azione  non può essere annullata.",
-	],
-	"Banned IP address will be forbidden to use the entire website." => [
-		0 => "Agli indirizzi IP bloccati è inibito l'utilizzo dell'intero sito.",
-	],
-	"Edit IP ban" => [
-		0 => "Edita l'indirizzo  IP del ban",
-	],
-	"Enable signups" => [
-		0 => "Attiva registrazione utenti",
-	],
-	"Enable this if you want to allow users to signup." => [
-		0 => "Attiva questa opzione per consentire all'utente di registrarsi al sito",
-	],
-	"Enable user content delete" => [
-		0 => "Abilita l'eliminazione dei contenuti utente",
-	],
-	"Enable this if you want to allow users to delete their own content. This setting doesn't affect administrators." => [
-		0 => "Abilitare questa opzione se si desidera consentire agli utenti di eliminare i propri contenuti. Questa impostazione non riguarda gli amministratori.",
-	],
-	"Minimum age required" => [
-		0 => "Età minima richiesta",
-	],
-	"Empty" => [
-		0 => "Vuoto",
-	],
-	"Leave it empty to don't require a minimum age to use the website." => [
-		0 => "Lascia vuoto per non richiedono un'età minima per utilizzare il sito.",
-	],
-	"Notify on user signup" => [
-		0 => "Notifica sulla registrazione dell'utente",
-	],
-	"Enable this if you want to get an email notification for each new user signup." => [
-		0 => "Abilita questa opzione se desideri ricevere una notifica via email per ogni nuova registrazione utente.",
-	],
-	"Username routing" => [
-		0 => "Percorso nome utente",
-	],
-	"Enable this if you want to use %s/username URLs instead of %s/user/username." => [
-		0 => "Abilita questa opzione se vuoi usare l'URL %s/username invece di %s/user/username",
-	],
-	"Require email confirmation" => [
-		0 => "Richiede mail di conferma",
-	],
-	"Enable this if users must validate their email address on sign up." => [
-		0 => "Abilitare questa opzione se gli utenti devono confermare il proprio indirizzo e-mail per l'inscrizione",
-	],
-	"Require email for social signup" => [
-		0 => "Richiedi e-mail per inscrizione dei social",
-	],
-	"Enable this if users using social networks to register must provide an email address." => [
-		0 => "Abilita questa opzione se gli utenti che usano i social network per registrarsi devono fornire un indirizzo email.",
-	],
-	"User avatar max. filesize" => [
-		0 => "Avatar utente massima  dimensione del file",
-	],
-	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
-		0 => "Dimensione massima consentita per l'immagine avatar dell'utente. (Max consentito dal server è %s)",
-	],
-	"User background max. filesize" => [
-		0 => "Dimensione massima per lo sfondo dell'utente",
-	],
-	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
-		0 => "Dimensione massima consentita per l'immagine di sfondo dell'utente. (Max consentito dal server è %s)",
-	],
-	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
-		0 => "Mostra una schermata consenso prima di accedere al sito web. Utile per i siti web di contenuti per adulti in cui non dovrebbe essere consentito minori.",
-	],
-	"Enable consent screen" => [
-		0 => "Abilita schermo consenso",
-	],
-	"Consent screen cover image" => [
-		0 => "immagine di copertina schermo consenso",
-	],
-	"Block image uploads by IP if the system notice a flood  behavior based on the number of uploads per time period. This setting doesn't affect administrators." => [
-		0 => "Blocca l'Upload dell' immagine in base al suo IP se il sistema nota un comportamento anomalo in base al numero di arrivi per periodo di tempo. Questa impostazione non influisce sugli  amministratori.",
-	],
-	"Notify to email" => [
-		0 => "Notifica per e-mail",
-	],
-	"If enabled the system will send an email on flood incidents." => [
-		0 => "Se attivato il sistema invierà una e-mail sui flood  che subisce il sito",
-	],
-	"Minute limit" => [
-		0 => "Limite in minuti",
-	],
-	"Hourly limit" => [
-		0 => "Limite orario",
-	],
-	"Daily limit" => [
-		0 => "Limite giornaliero",
-	],
-	"Weekly limit" => [
-		0 => "Limite settimanale",
-	],
-	"Monthly limit" => [
-		0 => "Limite mensile",
-	],
-	"Lock %s editing" => [
-		0 => "Blocca la modifica di %s",
-	],
-	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
-		0 => "Abilitalo per impedire agli utenti di modificare il flag NSFW. Se abilitato, solo l'amministratore e i gestori avranno questa autorizzazione.",
-	],
-	"Show not safe content in listings" => [
-		0 => "Mostra contenuto non sicuro in lista",
-	],
-	"Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings." => [
-		0 => "Attivare questa opzione se si desidera visualizzare il contenuto non sicuro in inserzioni. Questa impostazione non influisce sugli amministratori e può essere soprascritta sulle  proprie impostazioni di utente.",
-	],
-	"Blur NSFW content in listings" => [
-		0 => "Contenuti Blur NSFW nelle inserzioni",
-	],
-	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
-		0 => "Attivare questa opzione se si desidera applicare un effetto di sfocatura sulle immagini NSFW nelle inserzioni.",
-	],
-	"Show banners in not safe content" => [
-		0 => "Mostra banner nel contenuto non sicuro",
-	],
-	"Enable this if you want to show banners in not safe content pages." => [
-		0 => "Abilitare questa opzione se si desidera visualizzare banner in pagine di contenuti non sicuri.",
-	],
-	"Show not safe content in random mode" => [
-		0 => "Mostra contenuto non sicuro in modalità casuale",
-	],
-	"List items per page" => [
-		0 => "Elenco articoli per pagina",
-	],
-	"How many items should be displayed per page listing." => [
-		0 => "Quanti articoli devono essere visualizzati per pagina in  elenco.",
-	],
-	"List pagination mode" => [
-		0 => "Modalità di impaginazione Lista",
-	],
-	"Endless scrolling" => [
-		0 => "Scrolling infinito",
-	],
-	"Classic pagination" => [
-		0 => "Impaginazione Classica",
-	],
-	"What pagination method should be used." => [
-		0 => "Quale metodo impaginazione deve essere utilizzato.",
-	],
-	"Listing viewer" => [
-		0 => "Elenco visualizzatore",
-	],
-	"Enable this to use the listing viewer when clicking on an image." => [
-		0 => "Abilita questa opzione per utilizzare il visualizzatore della scheda quando fai clic su un'immagine.",
-	],
-	"Image listing size" => [
-		0 => "Dimensioni lista Immagine",
-	],
-	"Fluid" => [
-		0 => "Fluido",
-	],
-	"Fixed" => [
-		0 => "Fisso",
-	],
-	"Both methods use a fixed width but fluid method uses automatic heights." => [
-		0 => "Entrambi i metodi utilizzano una larghezza fissa, ma il metodo fluido utilizza altezze automatici.",
-	],
-	"Album listing images requirement" => [
-		0 => "Requisito di immagini per elenco album",
-	],
-	"explore" => [
-		0 => "Esplorare",
-	],
-	"Sets the minimum image count needed to show albums in explore." => [
-		0 => "Imposta il numero minimo di immagini necessario per mostrare gli album in esplorazione.",
-	],
-	"Listing columns number" => [
-		0 => "Numero colonne Lista",
-	],
-	"Here you can set how many columns are used based on each target device." => [
-		0 => "Qui è possibile impostare il numero di colonne vengono utilizzate in base a ciascun dispositivo di destinazione.",
-	],
-	"Phone" => [
-		0 => "Telefono",
-	],
-	"Phablet" => [
-		0 => "Phablet",
-	],
-	"Tablet" => [
-		0 => "Tablet",
-	],
-	"Laptop" => [
-		0 => "Laptop",
-	],
-	"Desktop" => [
-		0 => "Desktop",
-	],
-	"Put your themes in the %s folder" => [
-		0 => "Mettere i temi nella cartella %s",
-	],
-	"Tone" => [
-		0 => "Tono",
-	],
-	"Light" => [
-		0 => "Chiaro",
-	],
-	"Dark" => [
-		0 => "Scuro",
-	],
-	"Main color" => [
-		0 => "Colore principale",
-	],
-	"Hexadecimal color value" => [
-		0 => "Valore di colore esadecimale",
-	],
-	"Use this to set the main theme color. Value must be in <a href=\"%s\" target=\"_blank\">hex format</a>." => [
-		0 => "Usare questo per impostare il colore del tema principale. Il valore deve essere in <a href=\"%s\" target=\"_blank\">formato esadecimale</a>.",
-	],
-	"Top bar button color" => [
-		0 => "Colore pulsante della top bar",
-	],
-	"Blue" => [
-		0 => "Blu",
-	],
-	"Green" => [
-		0 => "Verde",
-	],
-	"Orange" => [
-		0 => "Arancio",
-	],
-	"Red" => [
-		0 => "Rosso",
-	],
-	"Grey" => [
-		0 => "Grigio",
-	],
-	"Black" => [
-		0 => "Nero",
-	],
-	"White" => [
-		0 => "Bianco",
-	],
-	"Color for the top bar buttons like the \"Create account\" button." => [
-		0 => "Colore dei pulsanti come \"Crea account\" della top bar.",
-	],
-	"Enable vector logo" => [
-		0 => "Abilita logo vettoriale",
-	],
-	"Enable vector logo for high quality logo in devices with high pixel density." => [
-		0 => "Abilita logo del vettore per il logo di alta qualità in dispositivi con alta densità di pixel.",
-	],
-	"Vector logo image" => [
-		0 => "Vector logo immagine",
-	],
-	"Vector version or your website logo in SVG format." => [
-		0 => "Il logo del tuo sito web deve avere il formato SVG.",
-	],
-	"Raster logo image" => [
-		0 => "Logo immagine raster",
-	],
-	"Bitmap version or your website logo. PNG format is recommended." => [
-		0 => "Versione Bitmap per il logo del  vostro sito web logo. Si raccomanda formato PNG.",
-	],
-	"Logo height" => [
-		0 => "Aaltezza Logo",
-	],
-	"No value" => [
-		0 => "Nessun valore",
-	],
-	"Use this to set the logo height if needed." => [
-		0 => "Utilizzare questa opzione per impostare l'altezza per il logo, se necessario.",
-	],
-	"Favicon image" => [
-		0 => "Immagine favicon",
-	],
-	"Favicon image. Image must have same width and height." => [
-		0 => "Immagine Favicon. L'immagine deve avere stessa larghezza e altezza.",
+	"Print and log errors" => [
+		0 => "Errori di stampa e di registro",
 	],
 	"Image load max. filesize" => [
 		0 => "max dimensione del file Immagine di upload",
@@ -2863,273 +2485,6 @@ $translation_table = [
 	"Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website." => [
 		0 => "Non usare il markup %s qui. Questo è per il semplice codice JS, non per i tag di script HTML. Se usi tag script qui interromperà il tuo sito web.",
 	],
-	"Style" => [
-		0 => "Stile",
-	],
-	"Landing page" => [
-		0 => "Arrivo pagina",
-	],
-	"Split landing + images" => [
-		0 => "Split atterraggio + immagini",
-	],
-	"Route %s" => [
-		0 => "Itinerario %s",
-	],
-	"upload" => [
-		0 => "caricare",
-	],
-	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
-		0 => "Selezionare homepage stile.Per personalizzare ulteriormente modificare app/themes/%s/views/index.php",
-	],
-	"Cover image" => [
-		0 => "Immagine di copertina",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "Vuoi davvero eliminare questa immagine? Questaazione non può essere annullata.",
-	],
-	"Delete image" => [
-		0 => "Cancella immagine",
-	],
-	"Add new cover image" => [
-		0 => "Aggiungere un'immagine nuova di copertina",
-	],
-	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
-		0 => "Questo verrà aggiunto all'interno della homepage %s tag. Lascia vuoto per utilizzare i contenuti di default.",
-	],
-	"Paragraph" => [
-		0 => "Paragrafo",
-	],
-	"Call to action button color" => [
-		0 => "Pulsante di invito all'azione colore",
-	],
-	"Color of the homepage call to action button." => [
-		0 => "Colore della homepage del pulsante di invito all'azione.",
-	],
-	"Call to action outline style button" => [
-		0 => "Invito all'azione pulsante stile contorno",
-	],
-	"Enable this to use outline style for the homepage call to action button." => [
-		0 => "Attivare questa opzione per utilizzare lo stile contorno per homepage pulsante di invito all'azione.",
-	],
-	"Call to action functionality" => [
-		0 => "Invito alla funzionalità azione",
-	],
-	"Trigger uploader" => [
-		0 => "Grilletto uploader",
-	],
-	"Open URL" => [
-		0 => "Apri URL",
-	],
-	"Call to action URL" => [
-		0 => "Invito all'azione URL",
-	],
-	"Enter an absolute or relative URL" => [
-		0 => "Immettere un assoluta o URL relativa",
-	],
-	"A relative URL like %r will be mapped to %l" => [
-		0 => "Un URL relativo come%  sarà mappato%l",
-	],
-	"Call to action HTML" => [
-		0 => "Invito all'azione HTML",
-	],
-	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
-		0 => "Questo verrà aggiunto all'interno della chiamata di tag all'azione <a>. Lascia vuoto per utilizzare i contenuti di default.",
-	],
-	"User IDs" => [
-		0 => "Utente IDs",
-	],
-	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
-		0 => "Elenco separato da virgole di ID utente di destinazione per mostrare le immagini sulla homepage. Lascialo vuoto o zero per visualizzare tutte le immagini recenti.",
-	],
-	"Automatic updates check" => [
-		0 => "controllare gli aggiornamenti automatici",
-	],
-	"When enabled the system will automatically check for new updates." => [
-		0 => "Quando si consente al sistema controllerà automaticamente i nuovi aggiornamenti.",
-	],
-	"Display available updates notification" => [
-		0 => "Mostra aggiornamenti disponibili in notifica",
-	],
-	"Enable this to show a notice on top warning you about new available system updates." => [
-		0 => "Abilita questo per mostrare un avviso in alto che avvisa sui nuovi aggiornamenti di sistema disponibili.",
-	],
-	"Dump update query" => [
-		0 => "Dump query di aggiornamento",
-	],
-	"Enable this if you want to dump the update query to run it manually." => [
-		0 => "Abilitare questa opzione se si desidera rilevare e impostare automaticamente la lingua giusta per ciascun utente.",
-	],
-	"SEO %s URLs" => [
-		0 => "SEO %s URL",
-	],
-	"Enable this if you want to use SEO %s URLs." => [
-		0 => "Abilita questa opzione se desideri utilizzare gli URL di %s SEO.",
-	],
-	"Maintenance" => [
-		0 => "Manutenzione",
-	],
-	"When enabled the website will show a maintenance message. This setting doesn't affect administrators." => [
-		0 => "Quando è abilitato il sito mostrerà un messaggio di manutenzione. Questa impostazione non influisce sugli  amministratori.",
-	],
-	"Crypt salt" => [
-		0 => "Crypt salt",
-	],
-	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
-		0 => "Questo codice alfanumerico è stato generato al momento dell'installazione.",
-	],
-	"PHP error reporting" => [
-		0 => "segnalazione del PHP errori",
-	],
-	"Enable this if you want to print errors generated by PHP <a %s>error_reporting()</a>. This should be disabled in production." => [
-		0 => "Attivare questa opzione se si desidera stampare gli errori generati dal PHP <a %s> error_reporting () </a>. Questo dovrebbe essere disattivata in produzione.",
-	],
-	"Debug level" => [
-		0 => "livello di debug",
-	],
-	"None" => [
-		0 => "nessuno",
-	],
-	"Error log" => [
-		0 => "Log di errore",
-	],
-	"Print errors without error log" => [
-		0 => "Errori di stampa senza log degli errori",
-	],
-	"Print and log errors" => [
-		0 => "Errori di stampa e di registro",
-	],
-	"To configure the debug level check the <a %s>debug documentation</a>. Default level is \"Error log\" (1)." => [
-		0 => "Per configurare il controllo del livello di debug <a %s> documentazione di debug </a>. Il livello di default è \"Protocollo errori\" (1).",
-	],
-	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed." => [
-		0 => "Il routing (instradamento ) ti consente di personalizzare al volo i collegamenti di percorso predefiniti. Sono consentiti solo caratteri alfanumerici, trattini e trattini bassi. ",
-	],
-	"Image routing" => [
-		0 => "Immmagine routing",
-	],
-	"Routing for %s" => [
-		0 => "Routing per %s",
-	],
-	"Album routing" => [
-		0 => "Instradamento dell'album",
-	],
-	"Hostname" => [
-		0 => "Nome host",
-	],
-	"Hostname on which sub-domain wildcards will be added." => [
-		0 => "Nome host su cui verranno aggiunti i caratteri jolly del sotto dominio.",
-	],
-	"This setting may be overridden by %s." => [
-		0 => "Questa impostazione può essere ignorata da %s.",
-	],
-	"Language subdomains" => [
-		0 => "Sotto domini di lingua",
-	],
-	"languages" => [
-		0 => "le lingue",
-	],
-	"Enable to use %s for %t." => [
-		0 => "Abilita per usare %s per %t.",
-	],
-	"Username subdomains" => [
-		0 => "Sotto domini del nome utente",
-	],
-	"user profiles" => [
-		0 => "profili utente",
-	],
-	"Custom language strings" => [
-		0 => "stringhe lingua personalizzata",
-	],
-	"Default language" => [
-		0 => "Lingua del sito",
-	],
-	"Default base language to use." => [
-		0 => "Lingua di base predefinita da utilizzare nel sito",
-	],
-	"Auto language" => [
-		0 => "Scelta della lingua automatica",
-	],
-	"Enable this if you want to automatically detect and set the right language for each user." => [
-		0 => "Attivare questa opzione se si desidera rilevare automaticamente e impostare la lingua giusta per ogni utente.",
-	],
-	"Language chooser" => [
-		0 => "Scelta Lingua",
-	],
-	"Enable this if you want to allow language selection." => [
-		0 => "Attivare questa opzione se si desidera consentire la selezione della lingua.",
-	],
-	"Enabled languages" => [
-		0 => "lingue attivate",
-	],
-	"Unchecked languages won't be used in your website." => [
-		0 => "Lingue che non devono essere utilizzate nel vostro sito web.",
-	],
-	"Toggle this to enable or disable HTTPS" => [
-		0 => "Alterna questa opzione per abilitare o disabilitare HTTPS",
-	],
-	"Toggle this to enable or disable this storage" => [
-		0 => "Alterna questa opzione per abilitare o disabilitare la memorizzazione",
-	],
-	"Quota" => [
-		0 => "Quota",
-	],
-	"Active" => [
-		0 => "Attivo",
-	],
-	"Storage method" => [
-		0 => "Metodo di memorizzazione",
-	],
-	"Local storage is used by default or when no external storage is active." => [
-		0 => "L'archiviazione locale è utilizzata per impostazione predefinita o quando non è attiva quella esterna.",
-	],
-	"If you need help check the <a %s>storage documentation</a>." => [
-		0 => "Se hai bisogno di aiuto controllare la <a %s> documentazione di stoccaggio </a>.",
-	],
-	"Edit storage" => [
-		0 => "Modifica di archiviazione",
-	],
-	"From name" => [
-		0 => "Dal nome",
-	],
-	"Sender name for emails sent to users." => [
-		0 => "Nome email che riceveranno gli utenti",
-	],
-	"From email address" => [
-		0 => "Dall'indirizzo email",
-	],
-	"Sender email for emails sent to users." => [
-		0 => "Indirizzo email per le comunicazioni agli utenti",
-	],
-	"Incoming email address" => [
-		0 => "Indirizzo email per le comunicazioni in arrivo",
-	],
-	"Recipient for contact form and system alerts." => [
-		0 => "Destinatario del modulo di contatto e degli avvisi di sistema.",
-	],
-	"Email mode" => [
-		0 => "Modalità di invio Email",
-	],
-	"How to send emails? SMTP recommended." => [
-		0 => "Come inviare e-mail? SMTP raccomandato.",
-	],
-	"SMTP server and port" => [
-		0 => "SMPT porta del server",
-	],
-	"SMTP server" => [
-		0 => "SMTP server",
-	],
-	"SMTP username" => [
-		0 => "SMTP username",
-	],
-	"SMTP password" => [
-		0 => "SMTP password",
-	],
-	"SMTP security" => [
-		0 => "SMTP sicurezza",
-	],
-	"Unsecured" => [
-		0 => "Non garantito",
-	],
 	"Decode ID" => [
 		0 => "Decodifica ID",
 	],
@@ -3163,9 +2518,6 @@ $translation_table = [
 	"This will re-calculate the sum of all the image records associated to the target external storage." => [
 		0 => "Questo ricalcola la somma di tutti i record di immagine associati alla memoria esterna di destinazione.",
 	],
-	"Migrate image records from one external storage to another" => [
-		0 => "Migrare i record di immagini da una memoria esterna a un'altra",
-	],
 	"Source storage id" => [
 		0 => "ID di archiviazione di origine",
 	],
@@ -3178,155 +2530,209 @@ $translation_table = [
 	"This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage." => [
 		0 => "Questo aggiorna solo il database. È necessario trasferire i file effettivi nel contenitore di archiviazione di destinazione da soli. La riscrittura dell'URL è fortemente raccomandata. Utilizzare zero (0) per l'archiviazione locale.",
 	],
-	"You need a <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> for this." => [
-		0 => "Hai bisogno di un <a href=\"https://developers.facebook.com/\" target=\"_blank\"> Facebook app </a> per questo.",
-	],
-	"Facebook app id" => [
-		0 => "Facebook app id",
-	],
-	"Facebook app secret" => [
-		0 => "Facebook app segreta",
-	],
-	"You need a <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> for this." => [
-		0 => "Hai bisogno di un <a href=\"https://apps.twitter.com\" target=\"_blank\"> Twitter app </a> per questo.",
-	],
-	"Twitter API key" => [
-		0 => "Twitter API chiave",
-	],
-	"Twitter API secret" => [
-		0 => "Twitter API segreta",
-	],
-	"Twitter account" => [
-		0 => "Account twitter",
-	],
-	"You need a <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> for this." => [
-		0 => "Hai bisogno di un <a href=\"https://cloud.google.com/console\" target=\"_blank\"> Google app </a> per questo.",
-	],
-	"Google client id" => [
-		0 => "Google cliente id",
-	],
-	"Google client secret" => [
-		0 => "Google cliente segreta",
-	],
-	"You need a <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> for this." => [
-		0 => "Avete bisogno di un <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> per questo.",
-	],
-	"VK client id" => [
-		0 => "VK id cliente ",
-	],
-	"VK client secret" => [
-		0 => "VK  cliente  segreta",
-	],
-	"%s spam protection" => [
-		0 => "%s spam protezione",
-	],
-	"user generated content" => [
-		0 => "contenuto generato dall'utente",
-	],
-	"Enable this to use %l to block spam on %c." => [
-		0 => "Abilita questo per usare %  per bloccare lo spam %c.",
-	],
-	"%s API key" => [
-		0 => "%s API key",
-	],
-	"user signup" => [
-		0 => "iscrizione utente",
-	],
-	"You need a <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> for this." => [
-		0 => "Avete bisogno di un <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> per questo.",
-	],
-	"Please note that each reCAPTCHA version require its own set of keys. Don't forget to update the keys if you change versions." => [
-		0 => "Si noti che ciascuna versione di reCAPTCHA richiede il proprio set di chiavi. Non dimenticare di aggiornare le chiavi se cambi le versioni.",
-	],
-	"%s site key" => [
-		0 => "%s chiave del sito",
-	],
-	"%s secret key" => [
-		0 => "%s chiave segreta",
-	],
-	"reCAPTCHA threshold" => [
-		0 => "reCAPTCHA soglia",
-	],
-	"How many failed attempts are needed to ask for reCAPTCHA? Use zero (0) to always show reCAPTCHA." => [
-		0 => "Quanti tentativi falliti sono necessarie per chiedere reCAPTCHA? Usare zero (0) per mostrare sempre reCAPTCHA.",
-	],
-	"Force %s on contact page" => [
-		0 => "Forza %s nella pagina dei contatti.",
-	],
-	"Enable this to always show %s on contact page." => [
-		0 => "Abilita questo per mostrare sempre %s nella pagina dei contatti.",
-	],
-	"Comments API" => [
-		0 => "Commenti API",
-	],
-	"Disqus API works with %s." => [
-		0 => "Disqus API lavora con %s",
-	],
-	"Disqus shortname" => [
-		0 => "Disqus nomecorto",
-	],
-	"%s public key" => [
-		0 => "%s chiave pubblica",
-	],
-	"Comment code" => [
-		0 => "Codice di commento",
-	],
-	"Disqus, Facebook or anything you want. It will be used in image view." => [
-		0 => "Disqus, Facebook e tutto quello che vuoi. Sarà usato in visualizzazione dell'immagine per condividerla",
-	],
-	"Automatically moderate the content using the %s service." => [
-		0 => "Modera automaticamente il contenuto utilizzando il servizio %s.",
-	],
-	"Automatic approve" => [
-		0 => "Approvazione automatica",
-	],
-	"Enable this to automatically approve content moderated by this service." => [
-		0 => "Abilitalo per approvare automaticamente i contenuti moderati da questo servizio.",
-	],
-	"Block content" => [
-		0 => "Blocca contenuto",
-	],
-	"Adult" => [
-		0 => "Adulto",
-	],
-	"Teen and adult" => [
-		0 => "Adolescente e adulto",
-	],
-	"Flag NSFW" => [
-		0 => "Segnala NSFW",
-	],
-	"Analytics code" => [
-		0 => "Codice di Google Analytics",
-	],
-	"Google Analytics or anything you want. It will be added to the theme footer." => [
-		0 => "Google Analytics o tutto quello che vuoi. Sarà aggiunto al piè di pagina del tema.",
-	],
-	"API v1 key" => [
-		0 => "API v1 key",
-	],
-	"Use this key when using the <a %s>API v1</a>." => [
-		0 => "Utilizzare questo tasto quando si utilizza i <a %s>API v1</a>.",
+	"Additional settings" => [
+		0 => "Altre impostazioni",
 	],
 	"Plugin route" => [
 		0 => "Percorso Plugin",
 	],
-	"Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu. This setting doesn't affect administrators." => [
-		0 => "Abilita questo per visualizzare le istruzioni del plugin a %u. Un link a queste istruzioni verrà aggiunto al menu %s. Questa impostazione non riguarda gli amministratori.",
-	],
 	"Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL." => [
 		0 => "Utilizza questo per impostare una URL personalizzato per %p. Tieni presente che devi replicare manualmente %s in questa URL.",
 	],
-	"Cookie law compliance" => [
-		0 => "Conformità normativa Cookie",
+	"Enable signups" => [
+		0 => "Attiva registrazione utenti",
 	],
-	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
-		0 => "Attivare questa opzione per visualizzare un messaggio che è conforme ai requisiti di legge Cookie UE. Nota: è necessario solo questo se il vostro sito è ospitato nella UE e se si aggiunge tracking cookie.",
+	"Enable this if you want to allow users to signup." => [
+		0 => "Attiva questa opzione per consentire all'utente di registrarsi al sito",
 	],
-	"Save changes" => [
-		0 => "Salva cambiamenti",
+	"Enable user content delete" => [
+		0 => "Abilita l'eliminazione dei contenuti utente",
 	],
-	"Check the errors to proceed." => [
-		0 => "Controllare gli errori per procedere.",
+	"Minimum age required" => [
+		0 => "Età minima richiesta",
+	],
+	"Leave it empty to don't require a minimum age to use the website." => [
+		0 => "Lascia vuoto per non richiedono un'età minima per utilizzare il sito.",
+	],
+	"Notify on user signup" => [
+		0 => "Notifica sulla registrazione dell'utente",
+	],
+	"Enable this if you want to get an email notification for each new user signup." => [
+		0 => "Abilita questa opzione se desideri ricevere una notifica via email per ogni nuova registrazione utente.",
+	],
+	"Require email confirmation" => [
+		0 => "Richiede mail di conferma",
+	],
+	"Enable this if users must validate their email address on sign up." => [
+		0 => "Abilitare questa opzione se gli utenti devono confermare il proprio indirizzo e-mail per l'inscrizione",
+	],
+	"Require email for social signup" => [
+		0 => "Richiedi e-mail per inscrizione dei social",
+	],
+	"Enable this if users using social networks to register must provide an email address." => [
+		0 => "Abilita questa opzione se gli utenti che usano i social network per registrarsi devono fornire un indirizzo email.",
+	],
+	"User avatar max. filesize" => [
+		0 => "Avatar utente massima  dimensione del file",
+	],
+	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
+		0 => "Dimensione massima consentita per l'immagine avatar dell'utente. (Max consentito dal server è %s)",
+	],
+	"User background max. filesize" => [
+		0 => "Dimensione massima per lo sfondo dell'utente",
+	],
+	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
+		0 => "Dimensione massima consentita per l'immagine di sfondo dell'utente. (Max consentito dal server è %s)",
+	],
+	"Enable this to put a logo or anything you want in image uploads." => [
+		0 => "Abilita questa opzione per inserire un logo od altro nelle immagini caricate.",
+	],
+	"Watermark user toggles" => [
+		0 => "Alterna utente Watermark",
+	],
+	"Enable watermark on guest uploads" => [
+		0 => "Abilita filigrana sui caricamenti di anonimi",
+	],
+	"Enable watermark on user uploads" => [
+		0 => "Abilita filigrana sui caricamenti degli utenti",
+	],
+	"Enable watermark on admin uploads" => [
+		0 => "Abilita watermark su  uploads degli Admin",
+	],
+	"Watermark file toggles" => [
+		0 => "Alterna i file Watermark",
+	],
+	"Enable watermark on GIF image uploads" => [
+		0 => "Abilita filigrana nel caricamento di immagini GIF",
+	],
+	"Minimum image size needed to apply watermark" => [
+		0 => "Dimensione minima dell'immagine necessaria per applicare filigrana",
+	],
+	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
+		0 => "Immagini più piccolo rispetto a questo non saranno filigranata. Usare zero (0) per non impostare un limite minimo dimensioni dell'immagine.",
+	],
+	"Watermark image" => [
+		0 => "Immagine filigrana",
+	],
+	"Watermark position" => [
+		0 => "Posizione filigrana",
+	],
+	"left top" => [
+		0 => "in alto a sinistra",
+	],
+	"left center" => [
+		0 => "a sinistra",
+	],
+	"left bottom" => [
+		0 => "in basso a sinistra",
+	],
+	"center top" => [
+		0 => "in alto al centro",
+	],
+	"center center" => [
+		0 => "al centro",
+	],
+	"center bottom" => [
+		0 => "in basso al centro",
+	],
+	"right top" => [
+		0 => "in alto a destra",
+	],
+	"right center" => [
+		0 => "a destra",
+	],
+	"right bottom" => [
+		0 => "in basso a destra",
+	],
+	"Relative position of the watermark image. First horizontal align then vertical align." => [
+		0 => "Posizione relativa della filigrana. Prima allineamento orizzontale poi verticale.",
+	],
+	"Watermark percentage" => [
+		0 => "Percentuale filigrana",
+	],
+	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
+		0 => "Dimensione percentuale della filigrana rispetto all'immagine di destinazione. Valore da 1 a 100.",
+	],
+	"Watermark margin" => [
+		0 => "Margine watermark",
+	],
+	"Margin from the border of the image to the watermark image." => [
+		0 => "Margine dal confine dell'immagine della filigrana.",
+	],
+	"Watermark opacity" => [
+		0 => "Opacità watermark",
+	],
+	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
+		0 => "Opacità della filigrana nell'immagine finale filigranata. Valori da 0 a 100.",
+	],
+	"Website name" => [
+		0 => "Nome del sito web",
+	],
+	"Website doctitle" => [
+		0 => "Doctitle sito web",
+	],
+	"Website description" => [
+		0 => "Descrizione sito web",
+	],
+	"Default time zone" => [
+		0 => "Fuso orario predefinito",
+	],
+	"Select region" => [
+		0 => "Seleziona la regione",
+	],
+	"Allows to search images, albums and users based on a given search query." => [
+		0 => "Abilita la ricerca di immagini, album ed utenti in base a specifica chiave di ricerca.",
+	],
+	"Enables to browse public uploaded images. It also enables categories." => [
+		0 => "Abilita la visualizzazione delle immagini pubbliche. Inoltre abilita le categorie.",
+	],
+	"Enables to browse images randomly." => [
+		0 => "Abilita la visualizzazione casuale delle immagini.",
+	],
+	"Likes" => [
+		0 => "Piaciuti",
+	],
+	"Allows users to like content and populate \"Most liked\" listings." => [
+		0 => "Consente agli utenti di usare i \"like\" e popolare l'elenco dei \"più graditi\".",
+	],
+	"Followers allows users to follow each other." => [
+		0 => "Consente agli utenti di seguirsi.",
+	],
+	"Website mode" => [
+		0 => "Modalità sito",
+	],
+	"You can switch the website mode anytime." => [
+		0 => "Puoi modificare la modalità sito web in ogni momento.",
+	],
+	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
+		0 => "Percorso personalizzato per mappare /username a /esempio. Utilizza \"/\" per mappare alla  homepage.",
+	],
+	"Website privacy mode" => [
+		0 => "Modalità privacy sito web",
+	],
+	"Private mode will make the website only available for registered users." => [
+		0 => "In modalità privata il sito è disponibile soltanto agli utenti iscritti.",
+	],
+	"Content privacy mode" => [
+		0 => "Modalità privacy contenuto",
+	],
+	"Force private (self)" => [
+		0 => "Forza privato (sé stessi)",
+	],
+	"Force private (anyone with the link)" => [
+		0 => "Imposta privato (chiunque tramite link)",
+	],
+	"Forced privacy modes will override user selected privacy." => [
+		0 => "Le modalità di privacy forzata sostituiranno le modalità di privacy degli utenti selezionati.",
+	],
+	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
+		0 => "Assicurati di affrontare questo problema poiché il sistema si basa su rilevamenti IP accurati per fornire funzionalità di base e per proteggere da spam, inondazioni e attacchi di forza bruta.",
+	],
+	"Role" => [
+		0 => "Ruolo",
+	],
+	"Email address" => [
+		0 => "Indirizzo email",
 	],
 	"Play GIF" => [
 		0 => "Riproduci GIF",
@@ -3334,23 +2740,17 @@ $translation_table = [
 	"Load 360° view" => [
 		0 => "Carica vista a 360° ",
 	],
-	"Load full resolution" => [
-		0 => "Caricare con una piena risoluzione",
-	],
 	"%s image" => [
 		0 => "%s immagine ",
 	],
 	"Do you really want to approve this image? The image will go public if you approve it." => [
 		0 => "Vuoi davvero rimuovere tutto il contenuto selezionato? Questo non può essere annullato.",
 	],
-	"This is the album cover" => [
-		0 => "Questa è la copertina dell'album ",
-	],
 	"Cover" => [
 		0 => "Copertina",
 	],
-	"Added to %a and categorized in %c" => [
-		0 => "Aggiunto a %a e classificati in%c",
+	"This is the album cover" => [
+		0 => "Questa è la copertina dell'album ",
 	],
 	"Added to %s" => [
 		0 => "Aggiunto a %s",
@@ -3367,17 +2767,14 @@ $translation_table = [
 	"More Exif data" => [
 		0 => "Altro Exif dati",
 	],
-	"Album ID" => [
-		0 => "Album ID",
+	"Add IP ban" => [
+		0 => "Aggiungi blocco IP",
 	],
 	"Upload and share your images." => [
 		0 => "Carica e condividi le tue immagini",
 	],
 	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
 		0 => "Trascina e rilascia le immagini ovunque sullo schermo per iniziare il caricamento. Il limite è di %s. Collegamenti immagine diretto, BBCode e HTML miniature.",
-	],
-	"Start uploading" => [
-		0 => "Inizia il caricamento",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "Iscriviti per accedere a tutte le funzionalità del sito",
@@ -3388,17 +2785,11 @@ $translation_table = [
 	"Sign in with your account" => [
 		0 => "Accedi con il tuo account",
 	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "Non hai un account? <a href='%s'>Iscriviti</a> ora.",
-	],
 	"Logged out" => [
 		0 => "Disconnesso",
 	],
 	"You have been logged off %s. Hope to see you soon." => [
 		0 => "Sei stato disconnesso %s.Spero di rivederti presto",
-	],
-	"Go to homepage" => [
-		0 => "Vai alla home page",
 	],
 	"Website under maintenance" => [
 		0 => "Sito in manutenzione",
@@ -3411,9 +2802,6 @@ $translation_table = [
 	],
 	"Please enter your password to continue." => [
 		0 => "Si prega di inserire la password per continuare",
-	],
-	"Send" => [
-		0 => "Invia",
 	],
 	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
 		0 => "Aggiungi l'upload dell'immagine al tuo sito web, blog o forum installando il nostro plug-in per il caricamento. Fornisce l'upload di immagini a qualsiasi sito web posizionando un pulsante che permetterà agli utenti di caricare direttamente immagini al nostro servizio e gestirà automaticamente i codici necessari per l'inserimento. Tutte le funzioni incluse come trascinamento, rilascio remoto, ridimensionamento delle immagini e altro ancora.",
@@ -3472,24 +2860,6 @@ $translation_table = [
 	"The plugin has a large set of additional options that allow full customization. You can use custom HTML, CSS, own color palette, set observers and more. Check the %d and the plugin source to get a better idea of these advanced options." => [
 		0 => "Il plugin dispone di un vasto set di opzioni aggiuntive che consentono una completa personalizzazione. È possibile utilizzare HTML personalizzato, CSS, la propria tavolozza di colori, impostare gli osservatori e altro ancora. Controlla la %d e la fonte plugin per avere un'idea migliore di queste opzioni avanzate.",
 	],
-	"You either don't have permission to access this page or the link has expired." => [
-		0 => "Attenzione Tu non hai i permessi per accedere a questa pagina o il link oppure  è scaduto.",
-	],
-	"Search results" => [
-		0 => "Risultati della ricerca",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "Vuoi davvero eliminare questo utente? Attenzione, questa azione non può essere annullata",
-	],
-	"Delete user" => [
-		0 => "Cancella utente",
-	],
-	"Register date" => [
-		0 => "Data registrazione",
-	],
-	"Registration IP" => [
-		0 => "Registrazione IP",
-	],
 	"Valid" => [
 		0 => "Valdo",
 	],
@@ -3498,9 +2868,6 @@ $translation_table = [
 	],
 	"Awaiting email" => [
 		0 => "In attesa di e-mail",
-	],
-	"Awaiting confirmation" => [
-		0 => "In attesa di conferma",
 	],
 	"%i to %f characters<br>Letters, numbers and \"_\"" => [
 		0 => "%i a %f caratteri<br>Lettere, numeri e \"_\"",
@@ -3513,9 +2880,6 @@ $translation_table = [
 	],
 	"Keep image <a %s>Exif data</a> on upload" => [
 		0 => "Mantenere immagine <a %s> Exif </a> dati durante il caricamento",
-	],
-	"Newsletter" => [
-		0 => "Newsletter",
 	],
 	"Send me emails with news about %s" => [
 		0 => "Inviami email con notizie su %s",
@@ -3532,11 +2896,23 @@ $translation_table = [
 	"Timezone" => [
 		0 => "Fuso orario",
 	],
-	"This service is provided by %website_name%, we are an independent service provider. Many thanks for your ongoing support." => [
-		0 => "Questo servizio è fornito da %website_name%, siamo un fornitore di servizi indipendente. Molte grazie per il vostro continuo supporto. ",
+	"User has no connections." => [
+		0 => "L'utente non ha connessioni.",
 	],
-	"At %website_name% we are proudly using and supporting %software%." => [
-		0 => "In %website_name% utilizziamo e supportiamo con orgoglio %software%. ",
+	"Do you really want to disconnect %s from this account?" => [
+		0 => "Vuoi davvero scollegarti %s da questo account?",
+	],
+	"This account is connected to %s" => [
+		0 => "Questo account è collegato a %s",
+	],
+	"Do you really want to disconnect your %s account?" => [
+		0 => "Vuoi davvero scollegare questo  %s account?",
+	],
+	"You will be logged out and you won't be able to login to your account using this %s account." => [
+		0 => "Sarai disconnesso e non sarai in grado di accedere al tuo account utilizzando questo  %s account.",
+	],
+	"Button" => [
+		0 => "Bottone",
 	],
 	"Current password" => [
 		0 => "Password attuale",
@@ -3577,50 +2953,8 @@ $translation_table = [
 	"This is your real name, not your username." => [
 		0 => "Questo è il tuo vero nome, non il nome utente.",
 	],
-	"http://yourwebsite.com" => [
-		0 => "http://yourwebsite.com",
-	],
-	"Bio" => [
-		0 => "Bio",
-	],
 	"Tell us a little bit about you" => [
 		0 => "Raccontaci un po 'di te",
-	],
-	"User has no connections." => [
-		0 => "L'utente non ha connessioni.",
-	],
-	"Link your account to external services to be able to login here." => [
-		0 => "Collega il tuo account a servizi esterni per poter accedere e condividere contenuti.",
-	],
-	"Do you really want to disconnect %s from this account?" => [
-		0 => "Vuoi davvero scollegarti %s da questo account?",
-	],
-	"This account is connected to %s" => [
-		0 => "Questo account è collegato a %s",
-	],
-	"Do you really want to disconnect your %s account?" => [
-		0 => "Vuoi davvero scollegare questo  %s account?",
-	],
-	"You will be logged out and you won't be able to login to your account using this %s account." => [
-		0 => "Sarai disconnesso e non sarai in grado di accedere al tuo account utilizzando questo  %s account.",
-	],
-	"Your account is connected to %s" => [
-		0 => "Il tuo account è collegato a %s",
-	],
-	"disconnect" => [
-		0 => "scollegare",
-	],
-	"Connect %s" => [
-		0 => "Collegare  %s",
-	],
-	"Feel free to browse and discover all my shared images and albums." => [
-		0 => "Divertiti a sfogliare e scoprire tutte le mie immagini ed i miei album condivisi!",
-	],
-	"Button" => [
-		0 => "Bottone",
-	],
-	"View all my images" => [
-		0 => "Visualizza tutte le mie immagini",
 	],
 	"Login" => [
 		0 => "Accesso",
@@ -3634,20 +2968,8 @@ $translation_table = [
 	"If you have already signed up maybe you need to request to %s to activate your account." => [
 		0 => "Se ti sei già registrato forse devi richiedere a %s di attivare il tuo account.",
 	],
-	"You can also %s." => [
-		0 => "Puoi anche %s.",
-	],
 	"I'm at least %s years old" => [
 		0 => "Ho più di %s anni",
-	],
-	"terms" => [
-		0 => "condizioni",
-	],
-	"privacy policy" => [
-		0 => "politica sulla riservatezza",
-	],
-	"I agree to the %terms_link and %privacy_link" => [
-		0 => "Accetto i termini %terms_link e %privacy_link",
 	],
 	"Upload profile background" => [
 		0 => "Carica lo sfondo per il tuo profilo",
@@ -3658,9 +2980,6 @@ $translation_table = [
 	"Upload new image" => [
 		0 => "Carica nuova immagine",
 	],
-	"The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?" => [
-		0 => "L'immagine di sfondo del profilo sarà cancellata. Questa azione  non può essere annullata. Sei sicuro di voler eliminare l'immagine di sfondo del profilo?",
-	],
 	"Delete background" => [
 		0 => "Elimina sfondo",
 	],
@@ -3670,15 +2989,6 @@ $translation_table = [
 	],
 	"Follow" => [
 		0 => "Seguire",
-	],
-	"You have been forbidden to use this website." => [
-		0 => "Non sei autorizzato ad utilizzare questo sito web.",
-	],
-	"Plugin" => [
-		0 => "Plugin",
-	],
-	"Page %s" => [
-		0 => "Pagina %s",
 	],
 	"General questions/comments" => [
 		0 => "Domande generali/commenti",
@@ -3691,9 +3001,6 @@ $translation_table = [
 	],
 	"Invalid subject" => [
 		0 => "Soggetto non valido",
-	],
-	"Mail error" => [
-		0 => "Errore email",
 	],
 	"Message sent" => [
 		0 => "Messaggio inviato",
@@ -3710,29 +3017,8 @@ $translation_table = [
 	"Subject" => [
 		0 => "Soggetto",
 	],
-	"All the changes that you have made will be lost if you continue." => [
-		0 => "Tutte le modifiche apportate andranno perse se si continua.",
-	],
-	"Changes saved successfully." => [
-		0 => "Modifiche salvate con successo.",
-	],
-	"Go back to form" => [
-		0 => "Torna al form",
-	],
-	"continue anyway" => [
-		0 => "Continua comunque",
-	],
-	"Saving" => [
-		0 => "Salvataggio",
-	],
-	"Sending" => [
-		0 => "Invio",
-	],
-	"Confirm action" => [
-		0 => "Conferma",
-	],
-	"information" => [
-		0 => "informazioni",
+	"Send" => [
+		0 => "Invia",
 	],
 ];
 ?>

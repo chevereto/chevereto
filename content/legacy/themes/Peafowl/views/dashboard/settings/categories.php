@@ -31,7 +31,7 @@ echo read_the_docs_settings('categories', _s('Categories')); ?>
 <span class="c5 display-table-cell padding-right-10"><a data-modal="edit" data-target="form-modal" data-category-id="%ID%" data-content="category-name">%NAME%</a></span>
 <span class="c4 display-table-cell padding-right-10 phone-hide phablet-hide" data-content="category-url_key">%URL_KEY%</span>
 <span class="c13 display-table-cell padding-right-10 phone-display-block" data-content="category-description">%DESCRIPTION%</span>
-<span class="display-table-cell"><a class="btn btn-small default" data-category-id="%ID%" data-args="%ID%" data-confirm="' . _s("Do you really want to delete %s? This can't be undone.") . '" data-submit-fn="CHV.fn.category.delete.submit" data-before-fn="CHV.fn.category.delete.before" data-ajax-deferred="CHV.fn.category.delete.complete"><i class="fas fa-trash-alt margin-right-5"></i>' . _s('Delete') . '</a></span>
+<span class="display-table-cell"><a class="btn btn-small default" data-category-id="%ID%" data-args="%ID%" data-confirm="' . _s("Do you really want to delete %s?") . ' ' . _s("This can't be undone.") . '" data-submit-fn="CHV.fn.category.delete.submit" data-before-fn="CHV.fn.category.delete.before" data-ajax-deferred="CHV.fn.category.delete.complete"><i class="fas fa-trash-alt margin-right-5"></i>' . _s('Delete') . '</a></span>
 </li>';
 if (Handler::var('categories')) {
     foreach (Handler::var('categories') as $category) {

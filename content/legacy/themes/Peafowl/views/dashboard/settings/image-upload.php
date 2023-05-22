@@ -42,7 +42,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_uploads')); ?>
         </select></div>
-    <div class="input-below"><?php _se("Enable this if you want to allow image uploads. This setting doesn't affect administrators."); ?></div>
+    <div class="input-below"><?php _se("Enable this if you want to allow %s uploads.", _n('image', 'images', 1)); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
 </div>
 <div class="input-label">
     <label for="enable_uploads_url"><?php _se('Enable uploads'); ?> (URL)</label>
@@ -117,7 +117,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_duplicate_uploads')); ?>
         </select></div>
-    <div class="input-below"><?php _se("Enable this if you want to allow duplicate uploads from the same IP within 24hrs. This setting doesn't affect administrators."); ?></div>
+    <div class="input-below"><?php _se("Enable this if you want to allow duplicate uploads from the same IP within 24hrs."); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
 </div>
 <hr class="line-separator">
 <div class="input-label">

@@ -9,7 +9,7 @@ use Chevereto\Legacy\G\Handler;
 	<div class="list-tool tool-edit" data-action="edit">
 		<span class="btn-icon fas fa-edit"></span><span class="label label-edit"><?php _se('Edit'); ?></span>
 	</div>
-	<div class="list-tool tool-move" data-action="move" title="<?php _se('Move to %s', _s('album')); ?>">
+	<div class="list-tool tool-move" data-action="move" title="<?php _se('Move to %s', _n('album', 'albums', 1)); ?>">
 		<span class="btn-icon fas fa-exchange-alt"></span>
 	</div>
 	<?php

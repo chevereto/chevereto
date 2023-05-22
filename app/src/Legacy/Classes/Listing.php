@@ -742,7 +742,7 @@ class Listing
             ],
             'albums' => [
                 'icon' => 'fas fa-images',
-                'label' => _s('Albums'),
+                'label' => _n('Album', 'Albums', 20),
                 'content' => 'albums',
             ],
         ];
@@ -767,13 +767,13 @@ class Listing
             ],
             'albums' => [
                 'icon' => $listings['albums']['icon'],
-                'label' => _s('Albums'),
+                'label' => _n('Album', 'Albums', 20),
             ],
         ];
         if ((bool) env()['CHEVERETO_ENABLE_USERS']) {
             $contents['users'] = [
                 'icon' => $listings['users']['icon'],
-                'label' => _s('Users'),
+                'label' => _n('User', 'Users', 20),
             ];
         }
         $i = 0;

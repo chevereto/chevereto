@@ -11,7 +11,7 @@ if (!defined('ACCESS') || !ACCESS) {
 
 <div class="input-label">
 	<label for="form-image-title"><?php _se('Title'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-	<input type="text" id="form-image-title" name="form-image-title" class="text-input" value="<?php echo Handler::hasVar('image_safe_html') ? Handler::var('image_safe_html')["title"] : ''; ?>" placeholder="<?php _se('Untitled %s', _s('image')); ?>" maxlength="<?php echo getSetting('image_title_max_length'); ?>">
+	<input type="text" id="form-image-title" name="form-image-title" class="text-input" value="<?php echo Handler::hasVar('image_safe_html') ? Handler::var('image_safe_html')["title"] : ''; ?>" placeholder="<?php _se('Untitled %s', _n('image', 'images', 1)); ?>" maxlength="<?php echo getSetting('image_title_max_length'); ?>">
 </div>
 <?php
     if (!Handler::hasVar('image') || isset(Handler::var('image')['user'])) {
@@ -40,5 +40,5 @@ if (!Handler::cond('allowed_nsfw_flagging')) {
 ?>><span class="no-select"><i class="fas fa-flag"></i> <?php _se('Flag not safe'); ?></span></label></span></div>
 <div class="input-label">
     <label for="form-image-description"><?php _se('Description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-    <textarea id="form-image-description" name="form-image-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _s('image')); ?>"><?php echo Handler::var('image_safe_html')["description"] ?? ''; ?></textarea>
+    <textarea id="form-image-description" name="form-image-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _n('image', 'images', 1)); ?>"><?php echo Handler::var('image_safe_html')["description"] ?? ''; ?></textarea>
 </div>

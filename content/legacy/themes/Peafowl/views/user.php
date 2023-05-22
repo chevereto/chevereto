@@ -41,7 +41,7 @@ if (!defined('ACCESS') || !ACCESS) {
                     <div class="pop-box-inner pop-box-menu">
                         <ul>
                             <li class="with-icon"><a data-trigger="user-background-upload"><span class="btn-icon fas fa-camera"></span> <?php _se('Upload new image'); ?></a></li>
-                            <li class="with-icon"><a data-confirm="<?php _se("The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?"); ?>" data-submit-fn="CHV.fn.user_background.delete.submit" data-ajax-deferred="CHV.fn.user_background.delete.deferred"><span class="btn-icon fas fa-trash-alt"></span><?php _se('Delete background'); ?></a></li>
+                            <li class="with-icon"><a data-confirm="<?php _se("Are you sure that you want to delete the profile background image?"); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.user_background.delete.submit" data-ajax-deferred="CHV.fn.user_background.delete.deferred"><span class="btn-icon fas fa-trash-alt"></span><?php _se('Delete background'); ?></a></li>
                         </ul>
                     </div>
                 </div>
@@ -120,7 +120,7 @@ if (!defined('ACCESS') || !ACCESS) {
                     <a data-action="user_ban" class="btn btn-small default" rel="tooltip" data-tipTip="bottom" title="<?php _se('Set: %s', _s('Banned')); ?>"><span class="icon fas fa-ban"></span><span class="margin-left-5"><?php _se('Ban'); ?></span></a>
                     <a data-action="user_unban" class="btn btn-small default" rel="tooltip" data-tipTip="bottom" title="<?php _se('Set: %s', _s('Valid')); ?>"><span class="icon fas fa-ban"></span><span class="margin-left-5"><?php _se('Banned'); ?></span></a>
                 </div>
-				<a class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this user? This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span><span class="margin-left-5 phone-hide"><?php _se('Delete'); ?></span></a>
+				<a class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %s?", _n('user', 'users', 1)); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span><span class="margin-left-5 phone-hide"><?php _se('Delete'); ?></span></a>
 			<?php
                     } ?>
 			<?php
@@ -151,7 +151,7 @@ if (!defined('ACCESS') || !ACCESS) {
                 if (Handler::cond('owner')) {
                     ?>
 			<div class="text-align-right">
-				<button data-action="create-album" title="A" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span><span class="btn-text"><?php _se('Create new %s', _s('album')); ?></span></button>
+				<button data-action="create-album" title="A" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span><span class="btn-text"><?php _se('Create new %s', _n('album', 'albums', 1)); ?></span></button>
 				<?php include_theme_file('snippets/modal_create_album.php'); ?>
 			</div>
 			<?php

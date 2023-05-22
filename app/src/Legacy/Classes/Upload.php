@@ -229,7 +229,12 @@ class Upload
                 }
                 if ($this->source_image_exif instanceof Exif) {
                     $this->source_image_exif->setFileName($this->source_filename);
-                    if ($this->source_image_exif->getOrientation() !== false) {
+                    $orientation = $this->source_image_exif->getOrientation();
+                    // Note: Zero string means false in this context
+                    if ($orientation === '0') {
+                        $orientation = false;
+                    }
+                    if ($orientation !== false) {
                         ImageManagerStatic::make($this->downstream)->orientate()->save();
                     }
                 }
@@ -568,7 +573,7 @@ class Upload
                     $logged_user = Login::getUser();
                     $message = strtr('Flooding IP <a href="' . get_public_url('search/images/?q=ip:%ip') . '">%ip</a>', ['%ip' => get_client_ip()]) . '<br>';
                     if ($logged_user !== []) {
-                        $message .= 'User <a href="' . $logged_user['url'] . '">' . $logged_user['name'] . '</a><br>';
+                        $message .= 'User <a href="' . $logged_user['public_url'] . '">' . $logged_user['name'] . '</a><br>';
                     }
                     $message .= '<br>';
                     $message .= '<b>Uploads per time period</b><br>';

@@ -131,13 +131,10 @@ return function (Handler $handler) {
             case 'page':
             case 'seek':
             case 'peek':
-                // let it be
+                // known qs
                 break;
             default:
-                $handler->issueError(404);
-
-                return;
-
+                // ignore all
                 break;
         }
     }

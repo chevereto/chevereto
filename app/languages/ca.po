@@ -1,0 +1,1353 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: VERSION\n"
+"POT-Creation-Date: 2023-05-22 15:49+0000\n"
+"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "You have been forbidden to use this website."
+msgstr "Se li ha prohibit l'ús d'aquest lloc web."
+
+msgid "View all my images"
+msgstr "Veure totes les images"
+
+msgid "Feel free to browse and discover all my shared images and albums."
+msgstr "Sentiste lliure de navegar i descobrir totes les meves imatges i àlbums compartits."
+
+msgid "Request denied"
+msgstr "Renviacio denegada"
+
+msgid "That page doesn't exist"
+msgstr "Aquesta pagina no existis"
+
+msgid "Forgot password?"
+msgstr "Contrasenya olvidada?"
+
+msgid "Reset password"
+msgstr "Restableir la contrasenya"
+
+msgid "Resend account activation"
+msgstr "Renvia la activacio"
+
+msgid "Add your email address"
+msgstr "Inseriu la vostra adreça de correu electrònic"
+
+msgid "Email changed"
+msgstr "Email cargat"
+
+msgid "Invalid Username/Email"
+msgstr "Usuari o email incorrecte"
+
+msgid "User doesn't have an email."
+msgstr "Esto no es un email."
+
+msgid "Account needs to be activated to use this feature"
+msgstr "Ativa aquest compte per utiliza aquesta cosa"
+
+msgid "Account already activated"
+msgstr "El deu compte esta activat"
+
+msgid "Allow up to 15 minutes for the email. You can try again later."
+msgstr "Permetre fins a 15 minuts perquè el correu electrònic. Pots intentar-ho de nou més tard."
+
+#, php-format
+msgid "Reset your password at %s"
+msgstr "Renviar contrasenya a %s"
+
+#, php-format
+msgid "Confirmation required at %s"
+msgstr "Confirmacio requerida per %s"
+
+#, php-format
+msgid "Welcome to %s"
+msgstr "Benvingut a %s"
+
+msgid "Invalid password"
+msgstr "Contrasenya invàlida"
+
+msgid "Passwords don't match"
+msgstr "Les contrasenyes no coincideixen"
+
+msgid "Invalid email"
+msgstr "Correu electrònic no vàlid"
+
+msgid "Email already being used"
+msgstr "Correu electrònic ja està sent utilitzat"
+
+msgid "Check the errors in the form to continue."
+msgstr "Comprovi els errors en el formulari per a continuar."
+
+msgid "Embed codes"
+msgstr "Codis Incrusta"
+
+msgid "%a album hosted in %w"
+msgstr "%a aguardat en %w"
+
+msgid "image"
+msgid_plural "images"
+msgstr[0] "image"
+msgstr[1] "images"
+
+msgid "Stats"
+msgstr "Estadístiques"
+
+msgid "Images"
+msgstr "Imatges"
+
+msgid "Album"
+msgid_plural "Albums"
+msgstr[0] "1"
+msgstr[1] "un altre"
+
+msgid "User"
+msgid_plural "Users"
+msgstr[0] "Usuari"
+msgstr[1] "Usuaris"
+
+msgid "Settings"
+msgstr "Ajustos"
+
+msgid "Website"
+msgstr "Lloc web"
+
+msgid "Content"
+msgstr "Contingut"
+
+msgid "Listings"
+msgstr "Llistats"
+
+msgid "Image upload"
+msgstr "Càrrega d'imatges"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "Languages"
+msgstr "Idiomes"
+
+msgid "External storage"
+msgstr "Emmagatzematge extern"
+
+msgid "Homepage"
+msgstr "Pàgina d'inici"
+
+msgid "Pages"
+msgstr "Pàgines"
+
+msgid "External services"
+msgstr "Serveis externs"
+
+msgid "Flood protection"
+msgstr "Protecció contra les inundacions"
+
+msgid "IP bans"
+msgstr "Prohibicions IP"
+
+msgid "Watermarks"
+msgstr "Marques d'aigua"
+
+msgid "Community"
+msgstr "Comunitat"
+
+msgid "PHP version"
+msgstr "Versió de PHP"
+
+msgid "Server"
+msgstr "Servidor"
+
+msgid "MySQL version"
+msgstr "Versió de MySQL"
+
+msgid "MySQL server info"
+msgstr "Informació del servidor MySQL"
+
+msgid "File uploads"
+msgstr "La càrrega d'arxius"
+
+msgid "Enabled"
+msgstr "Activat"
+
+msgid "Disabled"
+msgstr "Discapacitat"
+
+msgid "Max. execution time"
+msgstr "32447\nMax. Temps d'execució"
+
+#, php-format
+msgid "%d second"
+msgid_plural "%d seconds"
+msgstr[0] "%d segon"
+msgstr[1] "%d segons"
+
+msgid "Memory limit"
+msgstr "Límit de memòria"
+
+msgid "External"
+msgstr "Extern"
+
+msgid "All"
+msgstr "Tots"
+
+msgid "search content"
+msgstr "el contingut de cerca"
+
+msgid "Add page"
+msgstr "Afegir pàgina"
+
+#, php-format
+msgid "Edit page ID %s"
+msgstr "Edita pàgina ID %s"
+
+msgid "The page has been added successfully."
+msgstr "La pàgina ha estat afegit amb èxit."
+
+msgid "The page has been deleted."
+msgstr "La pàgina ha estat esborrada."
+
+msgid "Explore"
+msgstr "Explorar"
+
+msgid "Invalid website name"
+msgstr "Invàlid nom del lloc web"
+
+msgid "Invalid language"
+msgstr "Idioma no vàlid"
+
+msgid "Invalid timezone"
+msgstr "Zona horària no vàlida"
+
+msgid "Invalid upload storage mode"
+msgstr "La manera d'emmagatzematge de càrrega no vàlid"
+
+msgid "Invalid upload filenaming"
+msgstr "Nomenament de fitxers de càrrega no vàlid"
+
+msgid "Invalid thumb width"
+msgstr "Ample del polze no vàlid"
+
+msgid "Invalid thumb height"
+msgstr "Alçada del polze no vàlid"
+
+msgid "Invalid watermark percentage"
+msgstr "Percentatge marca d'aigua no vàlid"
+
+msgid "Invalid watermark opacity"
+msgstr "Opacitat marca d'aigua no vàlid"
+
+msgid "Invalid theme"
+msgstr "El tema no vàlid"
+
+msgid "Invalid value"
+msgstr "Valor no vàlid"
+
+msgid "Invalid theme image listing size"
+msgstr "El tema no vàlid mida llistat imatge"
+
+msgid "Invalid user id"
+msgstr "ID d'usuari no vàlid"
+
+msgid "Invalid email mode"
+msgstr "Mode de correu electrònic no és vàlida"
+
+msgid "Invalid SMTP port"
+msgstr "Port SMTP no vàlid"
+
+msgid "Invalid SMTP security"
+msgstr "Seguretat SMTP no vàlid"
+
+msgid "Invalid website mode"
+msgstr "Mode de web invàlid"
+
+msgid "Invalid personal mode user ID"
+msgstr "Invàlida la manera personal ID d'usuari"
+
+msgid "Invalid or reserved route"
+msgstr "Ruta no vàlida o reservats"
+
+msgid "Invalid website privacy mode"
+msgstr "Mode de privacitat lloc web no vàlid"
+
+msgid "Invalid website content privacy mode"
+msgstr "Mode de contingut privacitat lloc web no vàlid"
+
+msgid "Invalid homepage style"
+msgstr "Estil de pàgina no vàlida"
+
+msgid "Invalid homepage call to action button color"
+msgstr "Invàlid anomenada pàgina web per botó d'acció de color"
+
+msgid "Invalid homepage call to action functionality"
+msgstr "Invàlid anomenada pàgina web per funcionalitat acció"
+
+msgid "Invalid title"
+msgstr "Títol vàlid"
+
+msgid "Invalid status"
+msgstr "L'estat no vàlid"
+
+msgid "Invalid type"
+msgstr "Tipus no vàlid"
+
+msgid "Invalid visibility"
+msgstr "Visibilitat no vàlid"
+
+msgid "Invalid target attribute"
+msgstr "Atribut de destinació no vàlid"
+
+msgid "Invalid rel attribute"
+msgstr "Atribut no vàlida"
+
+msgid "Invalid icon"
+msgstr "Icona de no vàlid"
+
+msgid "Invalid URL key"
+msgstr "Clau d'URL no vàlida"
+
+msgid "Invalid file path"
+msgstr "Ruta de fitxer no vàlid"
+
+msgid "Invalid link URL"
+msgstr "Invàlid URL enllaç"
+
+msgid "Invalid URL"
+msgstr "URL invalida"
+
+msgid "Invalid upload image path"
+msgstr "Ruta de les imatges pujada no vàlid"
+
+msgid "Invalid call to action URL"
+msgstr "Crida no vàlida a l'URL d'acció"
+
+#, php-format
+msgid "Max. allowed %s"
+msgstr "Max. permès %s"
+
+msgid "Invalid SMTP server"
+msgstr "Servidor SMTP no vàlid"
+
+msgid "Invalid SMTP username"
+msgstr "Nom d'usuari SMTP no vàlid"
+
+#, php-format
+msgid "This URL key is already being used by another page (ID %s)"
+msgstr "Aquesta clau URL ja està sent utilitzat per una altra pàgina (ID %s)"
+
+#, php-format
+msgid "This file path is already being used by another page (ID %s)"
+msgstr "Aquesta ruta d'arxiu que ja està sent utilitzat per una altra pàgina (ID %s)"
+
+#, php-format
+msgid "Can't save page contents: %s."
+msgstr "No es pot desar contingut de la pàgina: %s ."
+
+msgid "Dashboard"
+msgstr "Quadre de comandament"
+
+msgid "About"
+msgstr "Sobre"
+
+msgid "Image ID"
+msgstr "Identificador"
+
+msgid "Upload date"
+msgstr "Data de càrrega"
+
+msgid "Image %i in %a album"
+msgstr "Imatge %i en %a àlbum"
+
+msgid "Image %i in %c category"
+msgstr "Imatge %i en %c categoria"
+
+msgid "Image %i hosted in %w"
+msgstr "Imatge %i allotjat en %w"
+
+msgid "Direct links"
+msgstr "Enllaços directes"
+
+msgid "Start uploading"
+msgstr "MUNTA"
+
+msgid "Login needed"
+msgstr "Entrada necessària"
+
+msgid "Image"
+msgid_plural "Images"
+msgstr[0] "Imatge"
+msgstr[1] "Imatges"
+
+msgid "Category"
+msgstr "Categoria"
+
+msgid "IP address already banned"
+msgstr "Adreça IP ja va prohibir"
+
+msgid "Missing values"
+msgstr "Valors que falten"
+
+msgid "Invalid username"
+msgstr "Usuari no disponible"
+
+msgid "Invalid role"
+msgstr "Paper no vàlid"
+
+msgid "Username already being used"
+msgstr "Nom d'usuari ja està sent utilitzat"
+
+#, php-format
+msgid "%s has been disconnected."
+msgstr "%s s'ha desconnectat."
+
+msgid "Wrong Username/Email password combination"
+msgstr "Mail Nom d'usuari / contrasenya combinació de correu electrònic"
+
+msgid "Sign in"
+msgstr "Iniciar sessió"
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Account"
+msgstr "Compte"
+
+msgid "Profile"
+msgstr "Perfil"
+
+msgid "Password"
+msgstr "Clau"
+
+#, php-format
+msgid "An email has been sent to %s with instructions to activate this email"
+msgstr "Un correu electrònic ha estat enviat a %s amb instruccions per activar aquest correu electrònic"
+
+msgid "Invalid name"
+msgstr "Nom invàlid"
+
+msgid "Invalid website"
+msgstr "Pàgina web no vàlid"
+
+msgid "Wrong password"
+msgstr "Contrasenya incorrecta"
+
+msgid "Use a new password"
+msgstr "Utilitzeu una contrasenya nova"
+
+msgid "Changes have been saved."
+msgstr "Els canvis s'han desat."
+
+msgid "Password has been changed"
+msgstr "La contrasenya ha estat canviada"
+
+msgid "Password has been created."
+msgstr "Contrasenya ha estat creat."
+
+msgid "Wrong Username/Email values"
+msgstr "Nom d'usuari valors erronis / Correu"
+
+#, php-format
+msgid "Settings for %s"
+msgstr "Ajustos per %s"
+
+msgid "Username"
+msgstr "Nom d'usuari"
+
+msgid "User ID"
+msgstr "ID d'usuari"
+
+msgid "Create account"
+msgstr "Crear cuenta"
+
+msgid "Upload"
+msgstr "Pujar"
+
+msgid "Albums"
+msgstr "Àlbums"
+
+msgid "%n (%u) albums on %w"
+msgstr "%n (%u) àlbums en %p"
+
+msgid "%n (%u) on %w"
+msgstr "%n (%u) en %w"
+
+msgid "album"
+msgid_plural "albums"
+msgstr[0] "àlbum"
+msgstr[1] "àlbums"
+
+msgid "Note: This content is private. Change privacy to \"public\" to share."
+msgstr "Nota: Aquest contingut és privat. Canviï de privacitat per \"públic\" per compartir."
+
+msgid "Private"
+msgstr "Privat"
+
+msgid "Public"
+msgstr "Públic"
+
+msgid "Link"
+msgstr "Enllaç"
+
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minut"
+msgstr[1] "minuts"
+
+msgid "hour"
+msgid_plural "hours"
+msgstr[0] "hora"
+msgstr[1] "hores"
+
+msgid "day"
+msgid_plural "days"
+msgstr[0] "dia"
+msgstr[1] "dies"
+
+msgid "week"
+msgid_plural "weeks"
+msgstr[0] "setmana"
+msgstr[1] "setmanes"
+
+msgid "month"
+msgid_plural "months"
+msgstr[0] "mes"
+msgstr[1] "mesos"
+
+msgid "year"
+msgid_plural "years"
+msgstr[0] "any"
+msgstr[1] "anys"
+
+#, php-format
+msgid "Can't open %s for writing"
+msgstr "No es pot obrir %s per escriptura"
+
+msgid "Duplicated upload"
+msgstr "Putjada multiplicada"
+
+msgid "Private upload"
+msgstr "Muntada privada"
+
+msgid "view"
+msgid_plural "views"
+msgstr[0] "vist"
+msgstr[1] "vistes"
+
+msgid "Most recent"
+msgstr "Més recent"
+
+msgid "Oldest"
+msgstr "El més antic"
+
+msgid "Most viewed"
+msgstr "Més vistos"
+
+#, php-format
+msgid "Can't create %s destination dir"
+msgstr "No es pot crear %s de directori de destinació"
+
+#, javascript-format, php-format
+msgid "Storage capacity can't be lower than its current usage (%s)."
+msgstr "La capacitat d'emmagatzematge no pot ser inferior al seu ús actual (%s)."
+
+msgid "Unlimited"
+msgstr "Illimitat"
+
+msgid "used"
+msgstr "usat"
+
+msgid "Share"
+msgstr "Quota"
+
+msgid "second"
+msgid_plural "seconds"
+msgstr[0] "segon"
+msgstr[1] "segons"
+
+#, php-format
+msgid "%s ago"
+msgstr "%s antes"
+
+msgid "moments ago"
+msgstr "fa uns moments"
+
+msgid "Random"
+msgstr "Aleatori"
+
+msgid "Close"
+msgstr "Tanca"
+
+msgid "Advanced search"
+msgstr "Cerca avançada"
+
+#, php-format
+msgid "Notices (%s)"
+msgstr "Avisos (%s)"
+
+msgid "My Profile"
+msgstr "El meu perfil"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Sign out"
+msgstr "Desconnectar"
+
+msgid "An error occurred. Please try again later."
+msgstr "Hi ha hagut un error. Siusplau, intenta-ho més tard."
+
+msgid "Create album"
+msgstr "Crear àlbum"
+
+msgid "Edit"
+msgstr "Edita"
+
+msgid "Delete"
+msgstr "Esborrar"
+
+#, javascript-format
+msgid "%s's Albums"
+msgstr "%s 's Albums"
+
+msgid "private"
+msgstr "privat"
+
+msgid "The content has been deleted."
+msgstr "El contingut ha estat eliminat."
+
+msgid "Select"
+msgstr "Seleccionar"
+
+msgid "Submit"
+msgstr "Envia"
+
+msgid "or"
+msgstr "o"
+
+msgid "cancel"
+msgstr "cancel·lar"
+
+msgid "We received a request to change the email of your <a href=\"%u\">%n</a> account at %w."
+msgstr "Hem rebut una sol·licitud per canviar el correu electrònic de la seva <a href=\"%u\">%n</a> compte en %w."
+
+#, php-format
+msgid "To complete the process you must <a href=\"%s\">activate your email</a>."
+msgstr "Per completar el procés ha de <a href=\"%s\"> activar el teu correu electrònic </a> ."
+
+#, php-format
+msgid "Alternatively you can copy and paste the URL into your browser: <a href=\"%s\">%s</a>"
+msgstr "Alternativament, vostè pot copiar i enganxar la URL en el seu navegador: <a href=\"%s\">%s </a>"
+
+msgid "If you didn't intend this just ignore this message."
+msgstr "Si no té la intenció d'aquest simplement ignorar aquest missatge."
+
+#, php-format
+msgid "This request was made from IP: %s"
+msgstr "Aquesta sol·licitud es va fer a partir IP: %s"
+
+msgid "We received a request to register the %n account at %w."
+msgstr "Hem rebut una sol·licitud per registrar el %n compte en %w."
+
+#, php-format
+msgid "To complete the process you must <a href=\"%s\">activate your account</a>."
+msgstr "Per completar el procés ha de <a href=\"%s\"> activar el seu compte </a> ."
+
+msgid "We received a request to reset the password for your <a href=\"%u\">%n</a> account."
+msgstr "Hem rebut una sol·licitud per restablir la contrasenya del <a href=\"%u\">%n</a> compte."
+
+#, php-format
+msgid "To reset your password <a href=\"%s\">follow this link</a>."
+msgstr "Per restablir la contrasenya <a href=\"%s\"> segueixi aquest enllaç.</a>"
+
+msgid "Hi %n, welcome to %w"
+msgstr "Hola %n Benvingut a %w"
+
+msgid "Now that your account is ready you can enjoy uploading your images, creating albums and setting the privacy of your content as well as many more cool things that you will discover."
+msgstr "Ara que el seu compte està llista es pot gaudir de la possibilitat de pujar les seves imatges, creació d'àlbums i l'establiment de la privacitat del seu contingut, així com moltes coses més interessants que es descobreixen."
+
+msgid "By the way, here is you very own awesome profile page: <a href=\"%u\">%n</a>. Go ahead and customize it, its yours!."
+msgstr "Per cert, aquí és molt pròpia pàgina de perfil impressionant: <a href=\"%u\">%n</a>.Vagi per davant i personalitzar, és teu!."
+
+msgid "Thank you for joining"
+msgstr "Gràcies per unir-se"
+
+msgid "This email was sent from %w %u"
+msgstr "Aquest correu electrònic va ser enviat de %w %u"
+
+msgid "Drag and drop or paste images here to upload"
+msgstr "Arrossegar i deixar anar o enganxar imatges aquí per pujar"
+
+msgid "Select the images to upload"
+msgstr "Seleccioneu les imatges per pujar"
+
+msgid "complete"
+msgstr "complet"
+
+msgid "Upload complete"
+msgstr "Puja completa"
+
+msgid "Mark this if the upload is not family safe"
+msgstr "Marqueu això si la càrrega no està fora de perill de la família"
+
+msgid "Not family safe upload"
+msgstr "No segura"
+
+msgid "Uploading"
+msgstr "Càrrega"
+
+msgid "cancel remaining"
+msgstr "cancel·lar restant"
+
+msgid "learn more"
+msgstr "aprèn més"
+
+msgid "Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information."
+msgstr "Comproveu el <a data-modal=\"simple\" data-target=\"failed-upload-result\"> informe d'errors </a> per a més informació."
+
+msgid "Remove"
+msgstr "Treure"
+
+msgid "Title"
+msgstr "Títol"
+
+msgid "optional"
+msgstr "opcional"
+
+msgid "Resize image"
+msgstr "Canviar la mida de la imatge"
+
+msgid "Width"
+msgstr "Ample"
+
+msgid "Height"
+msgstr "Alçada"
+
+msgid "Note: Animated GIF images won't be resized."
+msgstr "Nota: Les imatges GIF animats no seran redimensionades."
+
+msgid "Mark this if the image is not family safe"
+msgstr "Marqueu aquesta opció si la imatge no és apte per a menors"
+
+msgid "Flag as unsafe"
+msgstr "Marcar com insegura"
+
+msgid "Description"
+msgstr "Descripció"
+
+msgid "Add image URLs"
+msgstr "Afegir URL de la imatge"
+
+msgid "Add the image URLs here"
+msgstr "Afegiu les adreces URL de la imatge aquí"
+
+msgid "Error report"
+msgstr "Informe d'error"
+
+msgid "Links"
+msgstr "Enllaços"
+
+msgid "Direct"
+msgstr "Directe"
+
+msgid "HTML Codes"
+msgstr "Codis HTML"
+
+msgid "HTML image"
+msgstr "Imatge HTML"
+
+msgid "HTML full linked"
+msgstr "HTML vinculats"
+
+msgid "HTML medium linked"
+msgstr "Medi HTML vinculat"
+
+msgid "HTML thumbnail linked"
+msgstr "Imatge HTML vinculat"
+
+msgid "BBCodes"
+msgstr "BBCode"
+
+msgid "BBCode full"
+msgstr "BBCode completa"
+
+msgid "BBCode full linked"
+msgstr "BBCode completa vinculada"
+
+msgid "BBCode medium linked"
+msgstr "Medi BBCode vinculat"
+
+msgid "BBCode thumbnail linked"
+msgstr "BBCode miniatura vinculat"
+
+msgid "Viewer links"
+msgstr "Visor d´enllaços"
+
+msgid "All these words"
+msgstr "Totes aquestes paraules"
+
+msgid "Type the important words: tri-colour rat terrier"
+msgstr "Escriu les paraules importants: tricolor terrier de rata"
+
+msgid "This exact word or phrase"
+msgstr "Aquesta paraula o frase exacta"
+
+msgid "Put exact words in quotes: \"rat terrier\""
+msgstr "Posar paraules exactes entre cometes: \"terrier de rata\""
+
+msgid "None of these words"
+msgstr "Cap d'aquestes paraules"
+
+msgid "Put a minus sign just before words you don't want: -rodent -\"Jack Russell\""
+msgstr "Poseu un signe menys just abans de les paraules que no desitja: -rodent - \"Jack Russell\""
+
+msgid "Storage"
+msgstr "Emmagatzematge"
+
+msgid "IP address"
+msgstr "Adreça IP"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Who can view this content"
+msgstr "Qui pot veure aquest contingut"
+
+msgid "Private (just me)"
+msgstr "Privat (només jo)"
+
+msgid "Private (anyone with the link)"
+msgstr "Privat (qualsevol persona amb l'enllaç)"
+
+msgid "URL key"
+msgstr "Clau d'URL"
+
+msgid "Only letters, numbers, and hyphens"
+msgstr "Només lletres, nombres, i guions"
+
+msgid "Path"
+msgstr "Camí"
+
+msgid "Expiration date"
+msgstr "Data de caducitat"
+
+msgid "YYYY-MM-DD HH:MM:SS"
+msgstr "AAAA-MM-DD HH: MM: SS"
+
+msgid "Example"
+msgstr "Exemple"
+
+msgid "Until which date this IP address will be banned? Leave it empty for no expiration."
+msgstr "Fins que data es va prohibir aquesta adreça IP? Deixeu buit sense caducitat."
+
+msgid "Message"
+msgstr "Missatge"
+
+msgid "Text message, HTML or a redirect URL"
+msgstr "Missatge de text, HTML o un URL de redireccionament"
+
+msgid "Storage name"
+msgstr "crear nou àlbum"
+
+msgid "Region"
+msgstr "Regió"
+
+msgid "Storage region"
+msgstr "Regió d'emmagatzematge"
+
+msgid "Storage bucket"
+msgstr "Cub d'emmagatzematge"
+
+msgid "Key"
+msgstr "Clau"
+
+msgid "Storage key"
+msgstr "Clau d'emmagatzematge"
+
+msgid "Storage secret"
+msgstr "Secret Emmagatzematge"
+
+msgid "Private key"
+msgstr "Clau privada"
+
+msgid "Google Cloud JSON key"
+msgstr "Clau de Google Cloud JSON"
+
+#, php-format
+msgid "You will need a <a %s>service account</a> for this."
+msgstr "Vostè necessitarà un <a %s> compte de servei </a> per això."
+
+msgid "Identity URL"
+msgstr "URL Identitat"
+
+msgid "Identity API endpoint"
+msgstr "Identitat punt final de l'API"
+
+msgid "API endpoint for OpenStack identity"
+msgstr "Punt final de l'API de la identitat OpenStack"
+
+msgid "Container"
+msgstr "Contenidor"
+
+msgid "Storage container"
+msgstr "Contenidor d'emmagatzematge"
+
+msgid "Tenant id"
+msgstr "Identificació del Llogater"
+
+msgid "Tenant id (account id)"
+msgstr "Identificació del Llogater (id del compte)"
+
+msgid "Tenant name"
+msgstr "Nom del Llogater"
+
+msgid "Tenant name (account name)"
+msgstr "Nom del Llogater (nom de compte)"
+
+msgid "Hostname or IP of the storage server"
+msgstr "Nom d'amfitrió o IP del servidor d'emmagatzematge"
+
+msgid "Server path"
+msgstr "Ruta del servidor"
+
+msgid "Server password"
+msgstr "Contrasenya del servidor"
+
+msgid "Storage capacity"
+msgstr "Capacitat d'emmagatzematge"
+
+msgid "Example: 20 GB, 1 TB, etc."
+msgstr "Exemple: 20 GB, 1 TB, etc."
+
+msgid "This storage will be disabled when it reach this capacity. Leave it blank or zero for no limit."
+msgstr "Aquest emmagatzematge es desactivarà quan s'assoleix aquesta capacitat. Deixeu-ho en blanc o zero sense límit."
+
+msgid "Storage URL"
+msgstr "URL Emmagatzematge"
+
+msgid "The system will map the images of this storage to this URL."
+msgstr "El sistema assignarà les imatges d'aquest emmagatzematge a aquest URL."
+
+msgid "view more"
+msgstr "veure més"
+
+msgid "Load more"
+msgstr "Carrega més"
+
+msgid "Get embed codes"
+msgstr "Obtenir codis embed"
+
+msgid "Flag as safe"
+msgstr "Marcar com segur"
+
+msgid "Select all"
+msgstr "Seleccionar Tot"
+
+msgid "Clear selection"
+msgstr "Esborrar selecció"
+
+msgid "Sign in with another account"
+msgstr "Iniciar sessió amb un altre compte"
+
+msgid "There's nothing to show here."
+msgstr "No hi ha res per mostrar aquí."
+
+msgid "There is no categories."
+msgstr "No hi ha categories."
+
+msgid "Confirm flag content as safe"
+msgstr "Confirma contingut marcar com segur"
+
+msgid "Do you really want to flag this content as safe?"
+msgstr "De debò vols denunciar aquest contingut tan segur?"
+
+msgid "Confirm flag content as unsafe"
+msgstr "Confirma contingut marcar com insegura"
+
+msgid "Do you really want to flag this content as unsafe?"
+msgstr "De debò vols denunciar aquest contingut tan insegur?"
+
+msgid "Confirm deletion"
+msgstr "Confirmar l'eliminació"
+
+msgid "Toggle unsafe flag"
+msgstr "Bandera insegura Toggle"
+
+msgid "Go to homepage"
+msgstr "Anar a la pàgina d'inici"
+
+msgid "The requested page was not found."
+msgstr "La pàgina sol · licitada no va ser trobada."
+
+msgid "The user has been deleted"
+msgstr "L'usuari ha estat eliminat"
+
+msgid "Your account is almost ready"
+msgstr "El seu compte està gairebé a punt"
+
+#, php-format
+msgid "An email to %s has been sent with instructions to activate your account. The activation link is only valid for 48 hours. If you don't receive the instructions try checking your junk or spam filters."
+msgstr "Un correu electrònic de %s ha estat enviat amb instruccions per activar el teu compte. L'enllaç d'activació només és vàlid durant 48 hores. Si no rep les instruccions intenten comprovar els teus brossa o spam filtres."
+
+msgid "Resend activation"
+msgstr "Reenvia activació"
+
+#, php-format
+msgid "You have successfully changed your account email to %s"
+msgstr "Ha canviat correctament el seu compte de correu electrònic per a %s"
+
+msgid "Go to my profile"
+msgstr "Anar al meu perfil"
+
+msgid "A confirmation link will be sent to this email with details to activate your account."
+msgstr "Un enllaç de confirmació serà enviat a aquest correu electrònic amb els detalls per activar el seu compte."
+
+msgid "Your email address"
+msgstr "La seva adreça de correu electrònic"
+
+msgid "An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters."
+msgstr "Un correu electrònic amb instruccions per restablir la contrasenya ha estat enviada a l'adreça de correu electrònic registrada. Si no rep les instruccions intenten comprovar els teus brossa o spam filtres."
+
+msgid "A previous email has been sent with instructions to reset your password. If you did not receive the instructions try checking your junk or spam filters."
+msgstr "Un correu electrònic anterior ha estat enviat amb instruccions per restablir la contrasenya. Si vostè no va rebre les instruccions intenten comprovar els teus brossa o spam filtres."
+
+msgid "Resend instructions"
+msgstr "Torneu a enviar instruccions"
+
+msgid "Username or Email address"
+msgstr "Nom d'usuari o adreça de correu electrònic"
+
+msgid "Your password has been changed. You can now try logging in using your new password."
+msgstr "La seva contrasenya ha estat canviada. Ara pot tractar d'iniciar sessió utilitzant la seva nova contrasenya."
+
+msgid "Login now"
+msgstr "Inicia sessió ara"
+
+msgid "Enter your new password"
+msgstr "Introduïu la nova contrasenya"
+
+#, php-format
+msgid "%d characters min"
+msgstr "%d caràcters min"
+
+msgid "Re-enter your new password"
+msgstr "Confirma la contrasenya"
+
+#, php-format
+msgid "An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters."
+msgstr "Un correu electrònic de %s ha estat enviat amb instruccions per activar el teu compte. Si no rep les instruccions intenten comprovar els teus brossa o spam filtres."
+
+msgid "This content is private"
+msgstr "Aquest contingut és privat"
+
+msgid "From email address"
+msgstr "Des del correu electrònic"
+
+msgid "Sender email for emails sent to users."
+msgstr "Envia un email a tots el usuaris"
+
+msgid "Incoming email address"
+msgstr "Adreça de correu electrònic"
+
+msgid "Recipient for contact form and system alerts."
+msgstr "Destinatari de la forma de contacte i sistema d'alertes."
+
+msgid "Disk used"
+msgstr "Disc utilitzat"
+
+msgid "Default"
+msgstr "Defecte"
+
+#, php-format
+msgid "Your user id is: %s"
+msgstr "El seu identificador d'usuari és: %s"
+
+msgid "Enable uploads"
+msgstr "Habilitar arxius"
+
+msgid "Guest uploads"
+msgstr "Arxius de clients"
+
+msgid "Enable this if you want to allow non registered users to upload."
+msgstr "Habiliteu aquesta opció si voleu permetre als usuaris no registrats per pujar."
+
+msgid "Image path"
+msgstr "Ruta de les imatges"
+
+msgid "Relative to Chevereto root"
+msgstr "En relació amb l'arrel Chevereto"
+
+msgid "Where to store the images? Relative to Chevereto root."
+msgstr "On es guarden les imatges? En relació amb l'arrel Chevereto."
+
+msgid "Storage mode"
+msgstr "Mode d'emmagatzematge"
+
+#, php-format
+msgid "Datefolders creates %s structure"
+msgstr "Datefolders crea %s estructura"
+
+msgid "File naming method"
+msgstr "Mètode de nomenclatura d'arxius"
+
+msgid "Mix original + random"
+msgstr "Original mix + atzar"
+
+msgid "\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID."
+msgstr "\"Original\" intentarà mantenir el nom d'origen de la imatge, mentre que \"Random\" generarà un nom aleatori. \"ID\" nomenarà la imatge de la mateixa manera que l'ID d'imatge."
+
+msgid "Thumb size"
+msgstr "Mida del polze"
+
+msgid "Expires"
+msgstr "Expira"
+
+msgid "Banned IP address will be forbidden to use the entire website."
+msgstr "Adreça IP Banned serà prohibit fer servir tot el lloc web."
+
+msgid "Page title"
+msgstr "Títol de la pàgina"
+
+msgid "Page status"
+msgstr "Verificació"
+
+msgid "Active page"
+msgstr "Pàgina actiu"
+
+#, php-format
+msgid "Inactive page (%s)"
+msgstr "Pàgina inactiva (%s)"
+
+msgid "Only active pages will be accessible."
+msgstr "Només les pàgines actives seran accessibles."
+
+msgid "Type"
+msgstr "Tipus"
+
+msgid "Page visibility"
+msgstr "Visibilitat Pàgina"
+
+msgid "Visible page"
+msgstr "Pàgina Visible"
+
+msgid "Hidden page"
+msgstr "Pàgina oculta"
+
+msgid "Hidden pages won't be show in system menus, but anyone can access to it with the link."
+msgstr "Pàgines ocultes no es mostren en els menús del sistema, però qualsevol persona pot accedir-hi amb l'enllaç."
+
+msgid "Only alphanumerics, hyphens and forward slash"
+msgstr "Només alfanumèrics, guions i barra diagonal"
+
+msgid "File path"
+msgstr "Ruta d'arxiu"
+
+msgid "Meta keywords"
+msgstr "Ruta d'arxiu"
+
+msgid "Meta description"
+msgstr "Metadescripció"
+
+msgid "Source code"
+msgstr "Codi font"
+
+#, php-format
+msgid "No write permission in %s path you will need to add this file using an external editor."
+msgstr "Sense permís d'escriptura en %s camí que cal afegir aquest fitxer fent servir un editor extern."
+
+#, php-format
+msgid "No write permission in %s you will need to edit the contents of this file using an external editor."
+msgstr "Sense permís d'escriptura en %s heu d'editar el contingut d'aquest fitxer utilitzant un editor extern."
+
+#, php-format
+msgid "Taken from: %s"
+msgstr "Pres de: %s"
+
+msgid "Link URL"
+msgstr "Enllaç URL"
+
+msgid "Link target attribute"
+msgstr "Atribut de destinació Enllaç"
+
+#, php-format
+msgid "Select %s to open the page or link in a new window."
+msgstr "Seleccioneu %s per obrir la pàgina o enllaç en una finestra."
+
+msgid "Link rel attribute"
+msgstr "Atribut rel Enllaç"
+
+msgid "Only alphanumerics, hyphens and whitespaces"
+msgstr "Només alfanumèrics, guions i espais en blanc"
+
+msgid "Link icon"
+msgstr "icona"
+
+#, php-format
+msgid "Check the <a %s>icon reference</a> for the complete list of supported icons."
+msgstr "Comproveu el <a %s> referència icona </a> per a la llista completa d'icones compatibles."
+
+msgid "Sort order display"
+msgstr "Pantalla Ordre de classificació"
+
+msgid "Page sort order display for menus and listings. Use \"1\" for top priority."
+msgstr "alla per pàgina classificar per als menús i llistats. Utilitzeu \"1\" per a la màxima prioritat."
+
+msgid "Additional settings"
+msgstr "Ajustos addicionals"
+
+msgid "Enable signups"
+msgstr "Activa subscripcions"
+
+msgid "Enable this if you want to allow users to signup."
+msgstr "Habiliteu aquesta opció si voleu que els usuaris puguin registrar-se."
+
+msgid "Enable this to put a logo or anything you want in image uploads."
+msgstr "Habiliteu aquesta per posar un logotip o el que vulguis a la pujada d'imatges."
+
+msgid "Watermark user toggles"
+msgstr "Alterna usuari Watermark"
+
+msgid "Enable watermark on guest uploads"
+msgstr "Activa marca d'aigua en els fitxers enviats convidats"
+
+msgid "Enable watermark on user uploads"
+msgstr "Activa marca d'aigua en els fitxers enviats per l'usuari"
+
+msgid "Enable watermark on admin uploads"
+msgstr "Activa marca d'aigua en càrregues d'administració"
+
+msgid "Watermark file toggles"
+msgstr "Alterna arxius Watermark"
+
+msgid "Enable watermark on GIF image uploads"
+msgstr "Activa marca d'aigua en GIF imatge enviats"
+
+msgid "Minimum image size needed to apply watermark"
+msgstr "Imatges més petit que això no es marca d'aigua. Utilitzeu zero (0) a no establir un límit mínim mida de la imatge."
+
+msgid "Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit."
+msgstr "Imatges més petit que això no es marca d'aigua. Utilitzeu zero (0) a no establir un límit mínim mida de la imatge."
+
+msgid "Watermark image"
+msgstr "La imatge de marca d'aigua"
+
+msgid "Watermark position"
+msgstr "Posició de marca d'aigua"
+
+msgid "left top"
+msgstr "dalt a l'esquerra"
+
+msgid "left center"
+msgstr "esquerre i central"
+
+msgid "left bottom"
+msgstr "baix a l'esquerra"
+
+msgid "center top"
+msgstr "part central superior"
+
+msgid "center center"
+msgstr "centre centre"
+
+msgid "center bottom"
+msgstr "part inferior central"
+
+msgid "right top"
+msgstr "dalt a la dreta"
+
+msgid "right center"
+msgstr "dret i central"
+
+msgid "right bottom"
+msgstr "baix a la dreta"
+
+msgid "Relative position of the watermark image. First horizontal align then vertical align."
+msgstr "Posició relativa de la imatge d'aigua. Primer align horitzontal després align vertical."
+
+msgid "Watermark percentage"
+msgstr "Percentatge Watermark"
+
+msgid "Watermark percentual size relative to the target image area. Values 1 to 100."
+msgstr "Watermark mida percentual respecte a l'àrea de la imatge de destinació. Valors 1 a 100."
+
+msgid "Watermark margin"
+msgstr "Marge Watermark"
+
+msgid "Margin from the border of the image to the watermark image."
+msgstr "Marge de la frontera de la imatge a la imatge d'aigua."
+
+msgid "Watermark opacity"
+msgstr "Opacitat Watermark"
+
+msgid "Opacity of the watermark in the final watermarked image. Values 0 to 100."
+msgstr "Opacitat de la marca d'aigua a la imatge de marca d'aigua final. Valors 0 a 100."
+
+msgid "Website name"
+msgstr "Nom del lloc web"
+
+msgid "Website doctitle"
+msgstr "Doctitle Lloc Web"
+
+msgid "Website description"
+msgstr "Descripció Plana web"
+
+msgid "Default time zone"
+msgstr "Zona horària per defecte"
+
+msgid "Select region"
+msgstr "Seleccioneu la regió"
+
+msgid "Website mode"
+msgstr "Mode de web"
+
+msgid "You can switch the website mode anytime."
+msgstr "Podeu canviar la manera de pàgina web en qualsevol moment."
+
+msgid "Custom route to map /username to /something. Use \"/\" to map to homepage."
+msgstr "Ruta personalitzada per mapear / nom d'usuari per / alguna cosa. Utilitzeu \"/\" per assignar a la pàgina principal."
+
+msgid "Website privacy mode"
+msgstr "Mode de privacitat Lloc Web"
+
+msgid "Private mode will make the website only available for registered users."
+msgstr "Mode privat farà que el lloc web només està disponible per a usuaris registrats."
+
+msgid "Content privacy mode"
+msgstr "Mode de privacitat contingut"
+
+msgid "Force private (self)"
+msgstr "Forçar privat (auto)"
+
+msgid "Force private (anyone with the link)"
+msgstr "Forçar privada (qualsevol persona amb l'enllaç)"
+
+msgid "Forced privacy modes will override user selected privacy."
+msgstr "Maneres de privacitat forçats s'anul·laran usuari privacitat seleccionat."
+
+msgid "Role"
+msgstr "Paper"
+
+msgid "Email address"
+msgstr "Correu electrònic"
+
+msgid "Add IP ban"
+msgstr "Afegir prohibició d'IP"
+
+msgid "Upload and share your images."
+msgstr "Braveheart • Iv"
+
+#, php-format
+msgid "Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails."
+msgstr "Comparteix les teves imatges espionatges batalles i deme Coses amb l'aliança %s max."
+
+msgid "Logged out"
+msgstr "Desconnectat"
+
+msgid "Confirm password"
+msgstr "Confirma la contrasenya"
+

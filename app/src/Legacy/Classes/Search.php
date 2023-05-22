@@ -24,7 +24,7 @@ class Search
 
     public string $wheres;
 
-    public ?string $q;
+    public string $q;
 
     public string $type;
 
@@ -51,6 +51,7 @@ class Search
         if ($this->requester['is_content_manager'] ?? false) {
             $as_handle = array_merge($as_handle, $as_handle_admin);
         }
+        $this->q = str_replace('@', '', $this->q);
         foreach ($as_handle as $k => $v) {
             if (isset($this->request[$k]) && $this->request[$k] !== '') {
                 $this->q .= ' ' . (isset($v) ? $v . ':' : '') . $this->request[$k];
@@ -58,7 +59,7 @@ class Search
         }
         $this->q = trim(preg_replace(['#\"+#', '#\'+#'], ['"', '\''], $this->q ?? ''));
         $search_op = $this->handleSearchOperators($this->q, $this->requester['is_content_manager'] ?? false);
-        $this->q = null;
+        $this->q = '';
         foreach ($search_op as $operator) {
             $this->q .= implode(' ', $operator) . ' ';
         }
@@ -134,7 +135,7 @@ class Search
         switch ($this->type) {
             case 'images':
                 if (isset($q_match)) {
-                    $wheres = 'WHERE MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST(:q IN BOOLEAN MODE)';
+                    $wheres = 'WHERE MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)';
                 }
                 if ($search_op_wheres !== []) {
                     $wheres .= (is_null($wheres) ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
@@ -145,7 +146,7 @@ class Search
                 if (empty($search_binds)) {
                     $wheres = 'WHERE album_id < 0';
                 } else {
-                    $wheres = (($op[0] ?? null) == 'ip' ? 'album_creation_ip LIKE REPLACE(:ip, "*", "%")' : 'WHERE MATCH(`album_name`,`album_description`) AGAINST(:q)');
+                    $wheres = (($op[0] ?? null) == 'ip' ? 'album_creation_ip LIKE REPLACE(:ip, "*", "%")' : 'WHERE MATCH(`album_name`,`album_description`) AGAINST (:q)');
                 }
 
             break;
@@ -156,7 +157,7 @@ class Search
                     $wheres = 'user_registration_ip LIKE REPLACE(:ip, "*", "%")';
                 } else {
                     $clauses = [
-                        'name_username' => 'WHERE MATCH(`user_name`,`user_username`) AGAINST(:q)',
+                        'name_username' => 'WHERE MATCH(`user_name`,`user_username`) AGAINST (:q)',
                         'email' => '`user_email` LIKE CONCAT("%", :q, "%")',
                     ];
                     if ($this->requester['is_content_manager'] ?? false) {

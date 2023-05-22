@@ -93,8 +93,8 @@ return function (Handler $handler) {
     $routes = [
         'stats' => _s('Stats'),
         'images' => _s('Images'),
-        'albums' => _s('Albums'),
-        'users' => _s('Users'),
+        'albums' => _n('Album', 'Albums', 20),
+        'users' => _n('User', 'Users', 20),
         'bulk-importer' => _s('Bulk importer'),
         'settings' => _s('Settings'),
     ];
@@ -150,8 +150,8 @@ return function (Handler $handler) {
         'flood-protection' => _s('Flood protection'),
         'banners' => _s('Banners'),
         'ip-bans' => _s('IP bans'),
-        'users' => _s('Users'),
-        'guest-api' => _s('Guest %s', 'API'),
+        'users' => _n('User', 'Users', 20),
+        'guest-api' => _s('Guests %s', 'API'),
         'watermarks' => _s('Watermarks'),
     ];
     $settings_sections_icons = [
@@ -229,7 +229,7 @@ return function (Handler $handler) {
     }
     $handler::setVar('docsBaseUrl', 'https://v4-docs.chevereto.com/');
     $handler::setVar('adminDocsBaseUrl', 'https://v4-admin.chevereto.com/');
-    $handler::setVar('userDocsBaseUrl', 'https://v4-admin.chevereto.com/');
+    $handler::setVar('userDocsBaseUrl', 'https://v4-user.chevereto.com/');
     $handler::setVar($route_prefix . '_menu', $route_menu);
     $handler::setVar('tabs', $route_menu);
     $is_error = false;
@@ -298,7 +298,7 @@ return function (Handler $handler) {
                     'href' => 'https://v4-admin.chevereto.com'
                 ],
                 [
-                    'label' => _s('%s docs', _s('User')),
+                    'label' => _s('%s docs', _n('User', 'Users', 1)),
                     'icon' => 'fas fa-user',
                     'href' => 'https://v4-user.chevereto.com'
                 ],
@@ -727,13 +727,13 @@ return function (Handler $handler) {
                                 ]
                             ],
                             'album' => [
-                                'label' => _s('%s page', _s('Album')),
+                                'label' => _s('%s page', _n('Album', 'Albums', 1)),
                                 'placements' => [
                                     'banner_album_before_header' => [
-                                        'label' => _s('Before header (%s page)', _s('Album'))
+                                        'label' => _s('Before header (%s page)', _n('Album', 'Albums', 1))
                                     ],
                                     'banner_album_after_header' => [
-                                        'label' => _s('After header (%s page)', _s('Album'))
+                                        'label' => _s('After header (%s page)', _n('Album', 'Albums', 1))
                                     ]
                                 ]
                             ],

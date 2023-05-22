@@ -135,7 +135,9 @@ return function (Handler $handler) {
                 $is_error = false;
             }
             if ($POST !== [] && !$is_error) {
-                $subject_type = filter_var($POST['user-subject'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+                $subject_type = filter_var($POST['user-subject'] ?? '', FILTER_VALIDATE_EMAIL)
+                    ? 'email'
+                    : 'username';
                 if (trim($POST['user-subject']) == '') {
                     $is_error = true;
                     $input_errors['user-subject'] = _s('Invalid Username/Email');

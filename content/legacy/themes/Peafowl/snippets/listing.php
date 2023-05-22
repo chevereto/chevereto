@@ -17,7 +17,7 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
 /** @var Listing $listing */
-$listing = Handler::hasVar('listing') ? Handler::var('listing') : get_global('listing');
+$listing = (Handler::hasVar('listing') ? Handler::var('listing') : get_global('listing'));
 $tabs = (array) (get_global('tabs') ? get_global('tabs') : Handler::var('tabs'));
 $isClassic = isset(get()['pagination']) || getSetting('listing_pagination_mode') == 'classic';
 $do_pagination = !isset($listing->pagination) or $listing->pagination == true ? true : false;

@@ -19,10 +19,10 @@ use Chevereto\Legacy\G\Handler;
 	<div class="list-tool tool-edit" data-action="edit" title="<?php _se('Edit'); ?>">
 		<span class="btn-icon fas fa-edit"></span>
 	</div>
-    <div class="list-tool tool-move phone-hide" data-action="move" title="<?php _se('Move to %s', _s('album')); ?>">
+    <div class="list-tool tool-move phone-hide" data-action="move" title="<?php _se('Move to %s', _n('album', 'albums', 1)); ?>">
 		<span class="btn-icon fas fa-exchange-alt"></span>
 	</div>
-	<div class="list-tool tool-create phone-hide" data-action="create-album" title="<?php _se('Create %s', _s('album')); ?>">
+	<div class="list-tool tool-create phone-hide" data-action="create-album" title="<?php _se('Create %s', _n('album', 'albums', 1)); ?>">
 		<span class="btn-icon fas fa-images"></span>
 	</div>
     <?php

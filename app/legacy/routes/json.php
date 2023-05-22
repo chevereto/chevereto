@@ -99,7 +99,13 @@ return function (Handler $handler) {
                     if (!$handler::cond('content_manager') && $owner_id != $logged_user['id']) {
                         throw new Exception('Invalid content owner request', 115);
                     }
-                    $user_picture_upload = User::uploadPicture($owner_id == $logged_user['id'] ? $logged_user : $owner_id, $REQUEST['what'], $source);
+                    $user_picture_upload = User::uploadPicture(
+                        $owner_id == $logged_user['id']
+                            ? $logged_user
+                            : $owner_id,
+                        $REQUEST['what'],
+                        $source
+                    );
                     $json_array['success'] = ['image' => $user_picture_upload, 'message' => sprintf('%s picture uploaded', ucfirst($type)), 'code' => 200];
 
                     break;
@@ -279,7 +285,7 @@ return function (Handler $handler) {
                 }
                 if (!empty($REQUEST['q'])) {
                     $search = new Search();
-                    $search->q = $REQUEST['q'];
+                    $search->q = $REQUEST['q'] ?? '';
                     $search->type = $list_request;
                     $search->request = $REQUEST;
                     $search->requester = Login::getUser();
@@ -441,7 +447,7 @@ return function (Handler $handler) {
                     case 'image':
                         $source_image_db = Image::getSingle($id);
                         if ($source_image_db === []) {
-                            throw new Exception(_s("%s doesn't exists", _s('Image')), 100);
+                            throw new Exception(_s("%s doesn't exists", _n('Image', 'Images', 1)), 100);
                         }
                         if (
                             isset($editing['nsfw']) && $editing['nsfw'] != $source_image_db['image_nsfw']
@@ -487,7 +493,7 @@ return function (Handler $handler) {
                         }
                         $album_id = $image_edit_db['image_album_id'];
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('%s edited', _s('Image')), 'code' => 200];
+                        $json_array['success'] = ['message' => _s('%s edited', _n('Image', 'Images', 1)), 'code' => 200];
                         $json_array['editing'] = $editing_request;
                         $json_array['image'] = Image::formatArray($image_edit_db, true);
                         if (isset($image_album_slice)) {
@@ -513,7 +519,7 @@ return function (Handler $handler) {
                             pretty: false
                         );
                         if ($source_album_db === []) {
-                            throw new Exception(_s("%s doesn't exists", _s('Album')), 100);
+                            throw new Exception(_s("%s doesn't exists", _n('Album', 'Albums', 1)), 100);
                         }
                         if (!$handler::cond('content_manager') && $source_album_db['album_user_id'] != $logged_user['id']) {
                             throw new Exception('Invalid content owner request', 102);
@@ -549,7 +555,7 @@ return function (Handler $handler) {
                             throw new Exception("Edited album doesn't exists", 100);
                         }
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('Content edited'), 'code' => 200];
+                        $json_array['success'] = ['message' => _s('%s edited', _('Content')), 'code' => 200];
                         $json_array['album'] = $album_edited;
                         if (isset($album_move)) {
                             $json_array['old_album'] = Album::formatArray(
@@ -703,7 +709,7 @@ return function (Handler $handler) {
                     Login::addPassword($add_user, $user['password'], false);
                 }
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => _s('%s added', _s('User')), 'code' => 200];
+                $json_array['success'] = ['message' => _s('%s added', _n('User', 'Users', 1)), 'code' => 200];
 
                 break;
             case 'add-category':
@@ -1025,7 +1031,7 @@ return function (Handler $handler) {
                     $delete_user_id = $owner_id == $logged_user['id'] ? $logged_user : $owner_id;
                     $delete_user = User::getSingle($delete_user_id, 'id');
                     if ($delete_user === []) {
-                        throw new Exception(_s('%s not found', _s('User')), 100);
+                        throw new Exception(_s('%s not found', _n('User', 'Users', 1)), 100);
                     }
                     if ($delete_user['is_content_manager'] && Login::isAdmin() == false) {
                         throw new Exception("Can't touch this!", 666);
@@ -1311,8 +1317,8 @@ return function (Handler $handler) {
                     unset($return['id']);
                     $json_array['success'] = [
                         'message' => $doing == 'follow'
-                            ? _s('%s %u followed', ['%s' => _s('User'), '%u' => $return['username']])
-                            : _s('%s %u unfollowed', ['%s' => _s('User'), '%u' => $return['username']]),
+                            ? _s('%s %u followed', ['%s' => _n('User', 'Users', 1), '%u' => $return['username']])
+                            : _s('%s %u unfollowed', ['%s' => _n('User', 'Users', 1), '%u' => $return['username']]),
                         'code' => 200,
                     ];
                     $json_array['user_followed'] = $return;
@@ -1337,8 +1343,8 @@ return function (Handler $handler) {
                 $album = Album::getSingle($album_id);
                 if ($image['album']['id'] !== ($album['id'] ?? 0)) {
                     throw new Exception(_s("%s doesn't belong to this %t", [
-                        '%s' => _s('Image'),
-                        '%t' => _s('Album'),
+                        '%s' => _n('Image', 'Images', 1),
+                        '%t' => _n('Album', 'Albums', 1),
                     ]), 100);
                 }
                 if (isset($logged_user['id'])) {
@@ -1352,7 +1358,7 @@ return function (Handler $handler) {
                 }
                 Album::update($album_id, ['cover_id' => $doing == 'album-cover-unset' ? null : $image_id]);
                 $json_array['success'] = [
-                    'message' => _s('%s cover altered', _s('Album')),
+                    'message' => _s('%s cover updated', _n('Album', 'Albums', 1)),
                     'code' => 200,
                 ];
 
@@ -1529,7 +1535,7 @@ return function (Handler $handler) {
                 }
                 $user = User::getSingle($user_id);
                 if ($user === []) {
-                    throw new Exception(_s('%s not found', _s('User')), 404);
+                    throw new Exception(_s('%s not found', _n('User', 'Users', 1)), 404);
                 }
                 User::update($user_id, ['status' => $doing == 'user_ban' ? 'banned' : 'valid']);
                 $json_array['status_code'] = 200;

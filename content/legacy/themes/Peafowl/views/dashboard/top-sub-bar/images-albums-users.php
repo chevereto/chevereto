@@ -23,16 +23,16 @@ Handler::setVar('tabs', Handler::var('sub_tabs'));
         ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
-                <a class="btn btn-small default" data-modal="form" data-target="modal-add-user"><i class="fas fa-user-plus margin-right-5"></i><?php _se('Create %s', _s('user')); ?></a>
+                <a class="btn btn-small default" data-modal="form" data-target="modal-add-user"><i class="fas fa-user-plus margin-right-5"></i><?php _se('Create %s', _n('user', 'users', 1)); ?></a>
             </div>
         </div>
         <div data-modal="modal-add-user" class="hidden" data-submit-fn="CHV.fn.user.add.submit" data-ajax-deferred="CHV.fn.user.add.complete">
-            <span class="modal-box-title"><i class="fas fa-user-plus"></i> <?php _se('Create %s', _s('user')); ?></span>
+            <span class="modal-box-title"><i class="fas fa-user-plus"></i> <?php _se('Create %s', _n('user', 'users', 1)); ?></span>
             <div class="modal-form">
                 <div class="input-label c8">
                     <label for="form-role"><?php _se('Role'); ?></label>
                     <select name="form-role" id="form-role" class="text-input">
-                        <option value="user" selected><?php _se('User'); ?></option>
+                        <option value="user" selected><?php _ne('User', 'Users', 1); ?></option>
                         <option value="manager"><?php _se('Manager'); ?></option>
                         <option value="admin"><?php _se('Administrator'); ?></option>
                     </select>

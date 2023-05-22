@@ -104,11 +104,11 @@ return function (Handler $handler) {
     $user_routes = [];
     $user_views = [
         'images' => [
-            'title' => _s("%a by %s", ['%a' => _s('Images')]),
+            'title' => _s("%t by %s", ['%t' => _s('Images')]),
             'title_short' => _s("Images"),
         ],
         'albums' => [
-            'title' => _s("%a by %s", ['%a' => _s('Albums')]),
+            'title' => _s("%t by %s", ['%t' => _n('Album', 'Albums', 20)]),
             'title_short' => _s("Albums"),
         ],
         'search' => [
@@ -128,11 +128,11 @@ return function (Handler $handler) {
     }
     if (getSetting('enable_followers')) {
         $user_views['following'] = [
-            'title' => _s("People followed by %s"),
+            'title' => _s("%t followed by %s", ['%t' => _n('User', 'Users', 20)]),
             'title_short' => _s('Following'),
         ];
         $user_views['followers'] = [
-            'title' => _s("People following %s"),
+            'title' => _s("%t following %s", ['%t' => _n('User', 'Users', 20)]),
             'title_short' => _s('Followers'),
         ];
         $user_routes[] = 'following';
@@ -252,7 +252,7 @@ return function (Handler $handler) {
                 [
                     'icon' => 'fas fa-images',
                     'type' => 'albums',
-                    'label' => _s('Albums'),
+                    'label' => _n('Album', 'Albums', 20),
                     'id' => 'list-user-albums',
                     'current' => $currentKey === 1,
                 ]
@@ -339,7 +339,7 @@ return function (Handler $handler) {
         $output_tpl = 'user/' . $tpl;
         if ($user_views['search']['current']) {
             $type = $user["search"]["type"];
-            $where = $user["search"]["type"] == "images" ? "WHERE image_user_id=:user_id AND MATCH(image_name, image_title, image_description, image_original_filename) AGAINST(:q)" : "WHERE album_user_id=:user_id AND MATCH(album_name, album_description) AGAINST(:q)";
+            $where = $user["search"]["type"] == "images" ? "WHERE image_user_id=:user_id AND MATCH(image_name, image_title, image_description, image_original_filename) AGAINST (:q)" : "WHERE album_user_id=:user_id AND MATCH(album_name, album_description) AGAINST (:q)";
         }
         $show_user_items_editor = Login::isLoggedUser();
         if ($type == 'albums') {

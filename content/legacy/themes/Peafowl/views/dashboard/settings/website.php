@@ -191,10 +191,10 @@ foreach ($regions ?? [] as $key => $region) {
             } ?>">
         <hr class="line-separator">
         <div class="input-label">
-            <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode_personal_uid"><?php _se('%s target user', _s('Single profile')); ?></label>
+            <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode_personal_uid"><?php _se('%s target %t', ['%s' => _s('Single profile'), '%t' => _n('user', 'users', 1)]); ?></label>
             <div class="c3"><input <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?> type="number" min="1" name="website_mode_personal_uid" id="website_mode_personal_uid" class="text-input" value="<?php echo Settings::get('website_mode_personal_uid'); ?>" placeholder="<?php _se('User ID'); ?>" rel="tooltip" title="<?php _se('Your user id is: %s', Login::getUser()['id']); ?>" data-tipTip="right" data-required></div>
             <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['website_mode_personal_uid'] ?? ''; ?></div>
-            <div class="input-below"><?php _se('Numeric ID of the target user for %s mode.', _s('Single profile')); ?></div>
+            <div class="input-below"><?php _se('Numeric ID of the target %t for %s mode.', ['%s' => _s('Single profile'), '%t' => _n('user', 'users', 1)]); ?></div>
         </div>
         <div class="input-label">
             <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode_personal_routing"><?php _se('%s routing', _s('Single profile')); ?></label>

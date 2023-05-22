@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2020-09-02 17:16+0000',
-  'PO-Revision-Date' => '2020-09-02 17:16+0000',
+  'POT-Creation-Date' => '2023-05-22 15:49+0000',
+  'PO-Revision-Date' => '2023-05-22 15:49+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'uk',
@@ -16,358 +16,14 @@ $translation_plural = array (
   'function' => '($n%10==1 && $n%100!=11 ? (0) : ($n%10>=2 && $n%10<=4 && ($n%100<10 || $n%100>=20) ? (1) : (2)))',
 );
 $translation_table = [
-	"Invalid email" => [
-		0 => "Неправильна адреса електронної пошти",
+	"You have been forbidden to use this website." => [
+		0 => "Вам заборонено користуватися цим сайтом.",
 	],
-	"Invalid username" => [
-		0 => "Неправильне ім'я користувача",
+	"View all my images" => [
+		0 => "Переглянути всі мої зображення",
 	],
-	"Invalid password" => [
-		0 => "Неправильний пароль",
-	],
-	"Invalid website mode" => [
-		0 => "Неправильний режим веб-сайту",
-	],
-	"From email address" => [
-		0 => "Адреса відправника",
-	],
-	"Sender email for emails sent to users." => [
-		0 => "Адреса відправника для розсилки повідомлень користувачам.",
-	],
-	"Incoming email address" => [
-		0 => "Адреса для вхідних повідомлень",
-	],
-	"Recipient for contact form and system alerts." => [
-		0 => "Адреса для форми зворотного зв'язку і системних повідомлень.",
-	],
-	"Website mode" => [
-		0 => "Режим роботи сайту",
-	],
-	"You can switch the website mode anytime." => [
-		0 => "Ви можете перемкнути режим веб-сайту в будь-який час.",
-	],
-	"Community" => [
-		0 => "Спільнота",
-	],
-	"Personal" => [
-		0 => "Особистий",
-	],
-	"Installed version is v%s" => [
-		0 => "Встановлена версія v%s",
-	],
-	"Can't connect to %s" => [
-		0 => "Неможливо приєднатись до %s",
-	],
-	"Last available release is v%s" => [
-		0 => "Останній доступний реліз v%s",
-	],
-	"Update needed, proceeding to download" => [
-		0 => "Потрібне оновлення, почати завантаження",
-	],
-	"No update needed" => [
-		0 => "Оновлення не потрібне",
-	],
-	"System files already up to date" => [
-		0 => "Системні файли вже оновлені",
-	],
-	"Starting v%s download" => [
-		0 => "Почати завантаження v%s",
-	],
-	"Downloaded v%s, proceeding to extraction" => [
-		0 => "Завантажено v%s, почати роспакування",
-	],
-	"Attempting to extract v%s" => [
-		0 => "Спроба розпакувати v%s",
-	],
-	"Extraction completed" => [
-		0 => "Розпакування завершено",
-	],
-	"Proceding to install the update" => [
-		0 => "Почати інсталяцію оновлення",
-	],
-	"Update failed" => [
-		0 => "Оновлення зірвано",
-	],
-	"Update in progress" => [
-		0 => "Оновлення в процесі",
-	],
-	"Missing %s file" => [
-		0 => "Відсутній %s файл",
-	],
-	"Invalid license info" => [
-		0 => "Неправильна інформація про ліцензію",
-	],
-	"Invalid license key" => [
-		0 => "Неправильний ключ ліцензії",
-	],
-	"Can't save file" => [
-		0 => "Неможливо зберегти файл",
-	],
-	"Can't download %s" => [
-		0 => "Неможливо завантажити %s",
-	],
-	"Can't extract %s" => [
-		0 => "Неможливо витягнути %s",
-	],
-	"Can't create %s directory - %e" => [
-		0 => "Неможливо створити %s директорію - %e",
-	],
-	"Can't update %s file - %e" => [
-		0 => "Неможливо оновити %s файл - %e",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "Перед продовженням перевірте форму на наявність помилок",
-	],
-	"You must enter the album name." => [
-		0 => "Ви повинні ввести назву альбому.",
-	],
-	"Confirm" => [
-		0 => "Підтвердити",
-	],
-	"Select existing album" => [
-		0 => "Виберіть існуючий альбом",
-	],
-	"An error occurred. Please try again later." => [
-		0 => "У процесі виконання сталася помилка. Будь ласка спробуйте пізніше.",
-	],
-	"Please select a valid image file type." => [
-		0 => "Будь ласка виберіть правильний формат зображення.",
-	],
-	"Please select a picture of at most %s size." => [
-		0 => "Будь ласка, виберіть зображення не більше %s розміром.",
-	],
-	"Profile image updated." => [
-		0 => "Зображення профілю оновлено.",
-	],
-	"Profile background image updated." => [
-		0 => "Фон профілю оновлений.",
-	],
-	"Profile background image deleted." => [
-		0 => "Фон профілю видалений.",
-	],
-	"Error deleting profile background image." => [
-		0 => "При видаленні фону профілю виникла помилка.",
-	],
-	"Passwords don't match" => [
-		0 => "Паролі не збігаються",
-	],
-	"Update available v%s" => [
-		0 => "Поновлення доступне v%s",
-	],
-	"There is an update available for your system. You can automatic download and install this update or go to %s to proceed to download the file." => [
-		0 => "Є поновлення для вашої системи. Ви можете автоматично скачати і встановити його або піти до %s для того щоб скачати його вручну.",
-	],
-	"The release notes for this update are:" => [
-		0 => "Нотатки про випуск для цього оновлення:",
-	],
-	"Update now" => [
-		0 => "Оновити зараз",
-	],
-	"or" => [
-		0 => "або",
-	],
-	"cancel" => [
-		0 => "скасувати",
-	],
-	"loading" => [
-		0 => "Завантаження",
-	],
-	"Like" => [
-		0 => "Сподобалось",
-	],
-	"Edit" => [
-		0 => "Редагувати",
-	],
-	"Album" => [
-		0 => "Альбом",
-		1 => "Альбоми",
-		2 => "Альбомів",
-	],
-	"Delete" => [
-		0 => "Видалити",
-	],
-	"Close" => [
-		0 => "Закрити",
-	],
-	"Previous" => [
-		0 => "Попередня",
-	],
-	"Next" => [
-		0 => "Наступна",
-	],
-	"Clipboard image" => [
-		0 => "Зображення у буфері обміну",
-	],
-	"File too big." => [
-		0 => "Файл занадто великий.",
-	],
-	"Invalid or unsupported file format." => [
-		0 => "Невірний або підтримуваний формат файлу.",
-	],
-	"Some files couldn't be added" => [
-		0 => "Деякі файли не були додані.",
-	],
-	"image" => [
-		0 => "зображення",
-		1 => "зображень",
-		2 => "зображень",
-	],
-	"%s's Albums" => [
-		0 => "%s Альбомів",
-	],
-	"Image edited successfully." => [
-		0 => "Зображення успішно змінене.",
-	],
-	"private" => [
-		0 => "приховане",
-	],
-	"Album edited successfully." => [
-		0 => "Альбом успішно відредагований.",
-	],
-	"Invalid URL key." => [
-		0 => "Невірний URL ключ.",
-	],
-	"Category URL key already being used." => [
-		0 => "Такий URL ключ вже використовується.",
-	],
-	"Category successfully deleted." => [
-		0 => "Категорія вилучена.",
-	],
-	"Category %s added." => [
-		0 => "Категорія %s додана.",
-	],
-	"Invalid expiration date." => [
-		0 => "Неправильна дата закінчення терміну дії.",
-	],
-	"IP %s already banned." => [
-		0 => "IP адреса %s вже заблокована",
-	],
-	"IP %s banned." => [
-		0 => "IP %s вже заблокована.",
-	],
-	"IP ban successfully deleted." => [
-		0 => "Блокування IP адреси успішно видалено.",
-	],
-	"Please fill all the required fields." => [
-		0 => "Будь ласка заповніть всі необхідні поля.",
-	],
-	"Invalid storage capacity value. Make sure to use a valid format." => [
-		0 => "Невірне значення доступного дискового простору. Переконайтеся, що ви використовуєте допустимий формат.",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "Ємність не може бути нижчою, ніж його поточне використання (%s).",
-	],
-	"Invalid URL." => [
-		0 => "Неправильна адреса.",
-	],
-	"Storage successfully edited." => [
-		0 => "Сховище змінено.",
-	],
-	"User added successfully." => [
-		0 => "Користувач доданий.",
-	],
-	"The content has been deleted." => [
-		0 => "Вміст видалено.",
-	],
-	"The content has been moved." => [
-		0 => "Вміст переміщено.",
-	],
-	"Select" => [
-		0 => "Виділити",
-	],
-	"Unselect" => [
-		0 => "Зняти виділення",
-	],
-	"The content has been edited." => [
-		0 => "Вміст змінено.",
-	],
-	"Spam detected" => [
-		0 => "Виявлено спам",
-	],
-	"album" => [
-		0 => "альбом",
-		1 => "альбомів",
-		2 => "альбомів",
-	],
-	"Untitled" => [
-		0 => "Безіменний",
-	],
-	"%s's images" => [
-		0 => "%s зображень",
-	],
-	"Note: This content is private but anyone with the link will be able to see this." => [
-		0 => "Примітка. Цей вміст є приватним, але кожен, хто має посилання, зможе це бачити.",
-	],
-	"Note: This content is password protected. Remember to pass the content password to share." => [
-		0 => "Примітка. Цей вміст захищений паролем. Не забувайте передавати пароль для доступу до вмісту.",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "Примітка. Цей вміст є приватним. Змініть конфіденційність на «публічний», щоб поділитися.",
-	],
-	"Private" => [
-		0 => "Приватний",
-	],
-	"Public" => [
-		0 => "Публічне",
-	],
-	"Me" => [
-		0 => "Я",
-	],
-	"Link" => [
-		0 => "Посилання",
-	],
-	"Password" => [
-		0 => "Пароль",
-	],
-	"view" => [
-		0 => "перегляд",
-		1 => "перегляда",
-		2 => "переглядів",
-	],
-	"After %n %t" => [
-		0 => "Після  %n %t",
-	],
-	"minute" => [
-		0 => "хвилина",
-		1 => "хвилин",
-		2 => "хвилин",
-	],
-	"hour" => [
-		0 => "година",
-		1 => "годин",
-		2 => "годин",
-	],
-	"day" => [
-		0 => "день",
-		1 => "днів",
-		2 => "днів",
-	],
-	"week" => [
-		0 => "тиждень",
-		1 => "тижнів",
-		2 => "тижнів",
-	],
-	"month" => [
-		0 => "місяць",
-		1 => "місяців",
-		2 => "місяців",
-	],
-	"year" => [
-		0 => "рік",
-		1 => "років",
-		2 => "років",
-	],
-	"Don't autodelete" => [
-		0 => "Не видаляти автоматично",
-	],
-	"Duplicated upload" => [
-		0 => "Подвійне завантаження",
-	],
-	"Private upload" => [
-		0 => "Приватне завантаження",
-	],
-	"like" => [
-		0 => "Подобається",
+	"Feel free to browse and discover all my shared images and albums." => [
+		0 => "Не соромтеся, щоб переглянути всі мої завантажені зображення та альбоми.",
 	],
 	"Recent" => [
 		0 => "Недавні",
@@ -375,113 +31,17 @@ $translation_table = [
 	"Trending" => [
 		0 => "Популярні",
 	],
-	"Top users" => [
-		0 => "Топ користувачів",
-	],
-	"Most recent" => [
-		0 => "Нові",
-	],
-	"Oldest" => [
-		0 => "Старі",
-	],
-	"Most viewed" => [
-		0 => "Найпопулярніші",
-	],
 	"Popular" => [
 		0 => "Популярні",
 	],
-	"Most liked" => [
-		0 => "Найбільш сподобались",
+	"Plugin" => [
+		0 => "Плаґін",
 	],
-	"Explore" => [
-		0 => "Огляд",
+	"Request denied" => [
+		0 => "У запиті відмовлено",
 	],
-	"Search" => [
-		0 => "Пошук",
-	],
-	"People" => [
-		0 => "Люди",
-	],
-	"Image" => [
-		0 => "Зображення",
-		1 => "Зображень",
-		2 => "Зображень",
-	],
-	"User" => [
-		0 => "Користувача",
-		1 => "Користувачів",
-		2 => "Користувачів",
-	],
-	"Can't create %s destination dir" => [
-		0 => "Неможливо створити %s папку у призначеному місці",
-	],
-	"Can't open %s for writing" => [
-		0 => "Неможливо відкрити %s для запису",
-	],
-	"Internal" => [
-		0 => "Внутрішній",
-	],
-	"Can't insert storage." => [
-		0 => "Неможливо додати сховище",
-	],
-	"Can't update storage details." => [
-		0 => "Неможливо оновити дані сховища",
-	],
-	"requires %s" => [
-		0 => "вимагається %s",
-	],
-	"Unlimited" => [
-		0 => "Необмежений",
-	],
-	"used" => [
-		0 => "використано",
-	],
-	"Private profile" => [
-		0 => "Прихований профіль",
-	],
-	"second" => [
-		0 => "секунда",
-		1 => "секунд",
-		2 => "секунд",
-	],
-	"%s ago" => [
-		0 => "%s тому",
-	],
-	"moments ago" => [
-		0 => "хвилин тому",
-	],
-	"Dashboard" => [
-		0 => "Панель керування",
-	],
-	"There is an update available for your system. Go to %s to download and install this update." => [
-		0 => "Доступне оновлення для вашої системи. Перейдіть до %s, щоб завантажити та встановити це оновлення.",
-	],
-	"System database is outdated. You need to run the <a href=\"%s\">update</a> tool." => [
-		0 => "Системна база даних застаріла. Вам необхідно запустити <a href=\"%s\">систему поновлення</a>",
-	],
-	"Website is in maintenance mode. To revert this setting go to <a href=\"%s\">Dashboard > Settings</a>." => [
-		0 => "Сайт перебуває в режимі обслуговування. Щоб змінити параметри перейдіть у <a href=\"%s\">Панель управління> Налаштування</a>",
-	],
-	"You should disable PHP error reporting for production enviroment. Go to <a href='%s'>System settings</a> to revert this setting." => [
-		0 => "Вам потрібно вимкнути показ помилок PHP. Для цього перейдіть у <a href='%s'>Налаштування</a> для зміни.",
-	],
-	"You haven't changed the default email settings. Go to <a href='%s'>Email settings</a> to fix this." => [
-		0 => "Ви не змінили налаштування електронної пошти за замовчуванням. Перейдіть у <a href='%s'>Налаштування Email</a> для зміни.",
-	],
-	"There is an update available for your Chevereto based website." => [
-		0 => "Існує оновлення для вашого веб-сайту на основі Chevereto.",
-	],
-	"admin dashboard" => [
-		0 => "панель адміністратора",
-	],
-	"You can apply this update directly from your %a or download it from %s and then manually install it." => [
-		0 => "Ви можете застосувати це оновлення безпосередньо зі свого %a або завантажити його з %s, і потім встановити його вручну.",
-	],
-	"view on %s" => [
-		0 => "перегляд на %s",
-	],
-	"I understand" => [
-		0 => "Я розумію",
+	"That page doesn't exist" => [
+		0 => "Такої сторінки не існує",
 	],
 	"Forgot password?" => [
 		0 => "Забули пароль?",
@@ -495,6 +55,9 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "Додати адресу електронної пошти",
 	],
+	"Awaiting confirmation" => [
+		0 => "В черзі",
+	],
 	"Email changed" => [
 		0 => "Адреса електронної пошти змінена",
 	],
@@ -503,9 +66,6 @@ $translation_table = [
 	],
 	"User doesn't have an email." => [
 		0 => "Для цього користувача не задано адресу електронної пошти.",
-	],
-	"Request denied" => [
-		0 => "У запиті відмовлено",
 	],
 	"Account needs to be activated to use this feature" => [
 		0 => "Для використання цієї функції, акаунт повинен бути активований",
@@ -525,23 +85,34 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "Ласкаво просимо на %s",
 	],
+	"Invalid password" => [
+		0 => "Неправильний пароль",
+	],
+	"Passwords don't match" => [
+		0 => "Паролі не збігаються",
+	],
+	"Invalid email" => [
+		0 => "Неправильна адреса електронної пошти",
+	],
 	"Email already being used" => [
 		0 => "Адреса вже використовується",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "Перед продовженням перевірте форму на наявність помилок",
 	],
 	"Password required" => [
 		0 => "Пароль обов'язковий",
 	],
-	"Share" => [
-		0 => "Поділитися",
-	],
 	"Embed codes" => [
 		0 => "Коди для вбудовування",
 	],
-	"Full info" => [
-		0 => "Детальна інформація",
-	],
 	"%a album hosted in %w" => [
 		0 => "%a альбом розміщений в %w",
+	],
+	"image" => [
+		0 => "зображення",
+		1 => "зображень",
+		2 => "зображень",
 	],
 	"Stats" => [
 		0 => "Статистика",
@@ -549,29 +120,99 @@ $translation_table = [
 	"Images" => [
 		0 => "Зображення",
 	],
-	"Albums" => [
-		0 => "Альбоми",
+	"Album" => [
+		0 => "Альбом",
+		1 => "Альбоми",
+		2 => "Альбомів",
 	],
-	"Users" => [
-		0 => "Користувачі",
+	"User" => [
+		0 => "Користувача",
+		1 => "Користувачів",
+		2 => "Користувачів",
 	],
 	"Settings" => [
 		0 => "Налаштування",
 	],
-	"Chevereto version" => [
-		0 => "Версія Chevereto",
+	"Website" => [
+		0 => "Сайт",
 	],
-	"install update" => [
-		0 => "Інсталювати оновлення",
+	"Content" => [
+		0 => "Зміст",
 	],
-	"check for updates" => [
-		0 => "перевірити оновлення",
+	"Listings" => [
+		0 => "Списки",
+	],
+	"Image upload" => [
+		0 => "Завантаження зображення",
+	],
+	"Categories" => [
+		0 => "Категорії",
+	],
+	"Theme" => [
+		0 => "Тема",
+	],
+	"System" => [
+		0 => "Система",
+	],
+	"Languages" => [
+		0 => "Мови",
+	],
+	"Email" => [
+		0 => "Електронна пошта",
+	],
+	"Tools" => [
+		0 => "Інструменти",
+	],
+	"External storage" => [
+		0 => "Зовнішнє сховище",
+	],
+	"Homepage" => [
+		0 => "Головна сторінка",
+	],
+	"Pages" => [
+		0 => "Сторінки",
+	],
+	"Routing" => [
+		0 => "Маршрутизація",
+	],
+	"External services" => [
+		0 => "Сторонні сервіси",
+	],
+	"Upload plugin" => [
+		0 => "Завантажити плагін",
+	],
+	"Consent screen" => [
+		0 => "Екран угоди",
+	],
+	"Flood protection" => [
+		0 => "Захист від флуду",
+	],
+	"Banners" => [
+		0 => "Банери",
+	],
+	"IP bans" => [
+		0 => "IP блокування",
+	],
+	"Watermarks" => [
+		0 => "Водяні знаки",
+	],
+	"Documentation" => [
+		0 => "Документація",
 	],
 	"Support" => [
 		0 => "Підтримка",
 	],
-	"Need help? Go to %s and you will get help quickly." => [
-		0 => "Потрібна допомога? Перейдіть до %s, і ви швидко отримаєте допомогу.",
+	"Community" => [
+		0 => "Спільнота",
+	],
+	"install update" => [
+		0 => "Інсталювати оновлення",
+	],
+	"Max. upload file size" => [
+		0 => "Макс. розмір файлу що завантажується",
+	],
+	"Not your IP?" => [
+		0 => "Не ваш IP?",
 	],
 	"PHP version" => [
 		0 => "Версія PHP",
@@ -585,9 +226,6 @@ $translation_table = [
 	"MySQL server info" => [
 		0 => "Інформація про сервер MySQL",
 	],
-	"GD Library" => [
-		0 => "Бібліотека GD",
-	],
 	"File uploads" => [
 		0 => "Завантаження файлів",
 	],
@@ -596,12 +234,6 @@ $translation_table = [
 	],
 	"Disabled" => [
 		0 => "Вимк.",
-	],
-	"Max. upload file size" => [
-		0 => "Макс. розмір файлу що завантажується",
-	],
-	"Max. post size" => [
-		0 => "Макс. розмір POST-запиту",
 	],
 	"Max. execution time" => [
 		0 => "Макс. час виконання",
@@ -613,84 +245,6 @@ $translation_table = [
 	],
 	"Memory limit" => [
 		0 => "Обмеження пам'яті",
-	],
-	"Not your IP?" => [
-		0 => "Не ваш IP?",
-	],
-	"Links" => [
-		0 => "Посилання",
-	],
-	"Documentation" => [
-		0 => "Документація",
-	],
-	"Changelog" => [
-		0 => "Список змін",
-	],
-	"Bug tracking" => [
-		0 => "Простежування помилок",
-	],
-	"Website" => [
-		0 => "Сайт",
-	],
-	"Content" => [
-		0 => "Зміст",
-	],
-	"Pages" => [
-		0 => "Сторінки",
-	],
-	"Listings" => [
-		0 => "Списки",
-	],
-	"Image upload" => [
-		0 => "Завантаження зображення",
-	],
-	"Categories" => [
-		0 => "Категорії",
-	],
-	"Consent screen" => [
-		0 => "Екран угоди",
-	],
-	"Flood protection" => [
-		0 => "Захист від флуду",
-	],
-	"Theme" => [
-		0 => "Тема",
-	],
-	"Homepage" => [
-		0 => "Головна сторінка",
-	],
-	"Banners" => [
-		0 => "Банери",
-	],
-	"System" => [
-		0 => "Система",
-	],
-	"Routing" => [
-		0 => "Маршрутизація",
-	],
-	"Languages" => [
-		0 => "Мови",
-	],
-	"External storage" => [
-		0 => "Зовнішнє сховище",
-	],
-	"Email" => [
-		0 => "Електронна пошта",
-	],
-	"Social networks" => [
-		0 => "Соціальні мережі",
-	],
-	"External services" => [
-		0 => "Сторонні сервіси",
-	],
-	"IP bans" => [
-		0 => "IP блокування",
-	],
-	"Additional settings" => [
-		0 => "Додаткові налаштування",
-	],
-	"Tools" => [
-		0 => "Інструменти",
 	],
 	"Can't delete all homepage cover images" => [
 		0 => "Не вдалося видалити всі зображення обкладинки домашньої сторінки",
@@ -767,15 +321,6 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "Нижній колонтитул (сторінка зображення)",
 	],
-	"Album page" => [
-		0 => "Сторінка альбому",
-	],
-	"Before header (album page)" => [
-		0 => "Перед заголовком (сторінка альбому)",
-	],
-	"After header (album page)" => [
-		0 => "Після заголовка (сторінка альбому)",
-	],
 	"User profile page" => [
 		0 => "Профіль користувача",
 	],
@@ -785,14 +330,8 @@ $translation_table = [
 	"Before listing (user profile)" => [
 		0 => "Перед списком зображень (профіль користувача)",
 	],
-	"Explore page" => [
-		0 => "Сторінка Огляд",
-	],
-	"After top (explore page)" => [
-		0 => "Після заголовка (сторінка огляд)",
-	],
-	"NSFW" => [
-		0 => "NSFW",
+	"Explore" => [
+		0 => "Огляд",
 	],
 	"Invalid website name" => [
 		0 => "Некоректна назва сайту",
@@ -833,15 +372,6 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "Некоректне значення",
 	],
-	"Invalid theme tone" => [
-		0 => "Неправильний стиль теми",
-	],
-	"Invalid theme main color" => [
-		0 => "Неправильний основний колір теми",
-	],
-	"Invalid theme top bar button color" => [
-		0 => "Неправильний колір кнопки верхньої панелі теми",
-	],
 	"Invalid theme image listing size" => [
 		0 => "Неправильний розмір зображення для списків",
 	],
@@ -856,6 +386,9 @@ $translation_table = [
 	],
 	"Invalid SMTP security" => [
 		0 => "Неправильні налаштування безпеки SMTP сервера",
+	],
+	"Invalid website mode" => [
+		0 => "Неправильний режим веб-сайту",
 	],
 	"Invalid personal mode user ID" => [
 		0 => "Неправильний персональний режим користувача з ідентифікатором",
@@ -914,6 +447,9 @@ $translation_table = [
 	"Invalid URL" => [
 		0 => "Неправильне посилання",
 	],
+	"Invalid key" => [
+		0 => "Неправильний ключ",
+	],
 	"Invalid upload image path" => [
 		0 => "Неправильна папка завантаження зображень",
 	],
@@ -929,9 +465,6 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "Неправильне SMTP ім'я",
 	],
-	"Invalid key" => [
-		0 => "Неправильний ключ",
-	],
 	"This URL key is already being used by another page (ID %s)" => [
 		0 => "Це посилання вже використовується іншою сторінкою (ID %s)",
 	],
@@ -941,6 +474,9 @@ $translation_table = [
 	"Can't save page contents: %s." => [
 		0 => "Не можливо зберегти вміст сторінки: %s.",
 	],
+	"Dashboard" => [
+		0 => "Панель керування",
+	],
 	"Following" => [
 		0 => "Слідувати",
 	],
@@ -949,15 +485,6 @@ $translation_table = [
 	],
 	"Image ID" => [
 		0 => "ID зображення",
-	],
-	"Uploader IP" => [
-		0 => "IP автора",
-	],
-	"Ban IP" => [
-		0 => "Блокування IP",
-	],
-	"IP already banned" => [
-		0 => "IP адреса вже заблокована",
 	],
 	"Upload date" => [
 		0 => "Дата завантаження",
@@ -998,14 +525,28 @@ $translation_table = [
 	"Thumbnail image (linked)" => [
 		0 => "Мініатюрне зображення (посилання)",
 	],
+	"Start uploading" => [
+		0 => "Почати завантаження",
+	],
 	"Login needed" => [
 		0 => "Необхідний вхід",
+	],
+	"Image" => [
+		0 => "Зображення",
+		1 => "Зображень",
+		2 => "Зображень",
+	],
+	"Category" => [
+		0 => "Категорія",
 	],
 	"IP address already banned" => [
 		0 => "IP адреса вже заблокована",
 	],
 	"Missing values" => [
 		0 => "Відсутні значення",
+	],
+	"Invalid username" => [
+		0 => "Неправильне ім'я користувача",
 	],
 	"Invalid role" => [
 		0 => "Неправильна роль",
@@ -1031,12 +572,6 @@ $translation_table = [
 	"Test email sent to %s." => [
 		0 => "Тестове повідомлення надіслано %s.",
 	],
-	"User %s followed" => [
-		0 => "Користувач %s стежить",
-	],
-	"User %s unfollowed" => [
-		0 => "Користувач %s не стежить",
-	],
 	"Content liked" => [
 		0 => "Вміст сподобався",
 	],
@@ -1058,17 +593,8 @@ $translation_table = [
 	"Upload images" => [
 		0 => "Завантажити зображення",
 	],
-	"Upload plugin" => [
-		0 => "Завантажити плагін",
-	],
-	"Image search results for %s" => [
-		0 => "Результат пошуку картинки для %s",
-	],
-	"Album search results for %s" => [
-		0 => "Результат пошуку альбома для %s",
-	],
-	"User search results for %s" => [
-		0 => "Результат пошуку користувача для %s",
+	"Search" => [
+		0 => "Пошук",
 	],
 	"Account" => [
 		0 => "Акаунт",
@@ -1076,8 +602,8 @@ $translation_table = [
 	"Profile" => [
 		0 => "Профіль",
 	],
-	"Linked accounts" => [
-		0 => "Пов'язані акаунти",
+	"Password" => [
+		0 => "Пароль",
 	],
 	"An email has been sent to %s with instructions to activate this email" => [
 		0 => "На %s було надіслано повідомлення з інструкціями щодо активації",
@@ -1087,6 +613,9 @@ $translation_table = [
 	],
 	"Invalid website" => [
 		0 => "Неправильний веб-сайт",
+	],
+	"Spam detected" => [
+		0 => "Виявлено спам",
 	],
 	"Wrong password" => [
 		0 => "Неправильний пароль",
@@ -1109,17 +638,26 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "Налаштування %s",
 	],
+	"Username" => [
+		0 => "Ім'я користувача",
+	],
+	"Delete user" => [
+		0 => "Видалити користувача",
+	],
+	"User ID" => [
+		0 => "ID користувача",
+	],
+	"Register date" => [
+		0 => "Дата реєстрації",
+	],
 	"Create account" => [
 		0 => "Створити обліковий запис",
 	],
 	"Upload" => [
 		0 => "Завантаження",
 	],
-	"%s's Images" => [
-		0 => "%s Зображень",
-	],
-	"Results for" => [
-		0 => "Результати для",
+	"Albums" => [
+		0 => "Альбоми",
 	],
 	"Liked by %s" => [
 		0 => "Сподобалось %s",
@@ -1136,11 +674,146 @@ $translation_table = [
 	"%n (%u) on %w" => [
 		0 => "%n (%u) в %w",
 	],
-	"Advanced search" => [
-		0 => "Розширений пошук",
+	"album" => [
+		0 => "альбом",
+		1 => "альбомів",
+		2 => "альбомів",
+	],
+	"Note: This content is private but anyone with the link will be able to see this." => [
+		0 => "Примітка. Цей вміст є приватним, але кожен, хто має посилання, зможе це бачити.",
+	],
+	"Note: This content is password protected. Remember to pass the content password to share." => [
+		0 => "Примітка. Цей вміст захищений паролем. Не забувайте передавати пароль для доступу до вмісту.",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "Примітка. Цей вміст є приватним. Змініть конфіденційність на «публічний», щоб поділитися.",
+	],
+	"Private" => [
+		0 => "Приватний",
+	],
+	"Public" => [
+		0 => "Публічне",
+	],
+	"Me" => [
+		0 => "Я",
+	],
+	"Link" => [
+		0 => "Посилання",
+	],
+	"After %n %t" => [
+		0 => "Після  %n %t",
+	],
+	"minute" => [
+		0 => "хвилина",
+		1 => "хвилин",
+		2 => "хвилин",
+	],
+	"hour" => [
+		0 => "година",
+		1 => "годин",
+		2 => "годин",
+	],
+	"day" => [
+		0 => "день",
+		1 => "днів",
+		2 => "днів",
+	],
+	"week" => [
+		0 => "тиждень",
+		1 => "тижнів",
+		2 => "тижнів",
+	],
+	"month" => [
+		0 => "місяць",
+		1 => "місяців",
+		2 => "місяців",
+	],
+	"year" => [
+		0 => "рік",
+		1 => "років",
+		2 => "років",
+	],
+	"Don't autodelete" => [
+		0 => "Не видаляти автоматично",
+	],
+	"Can't open %s for writing" => [
+		0 => "Неможливо відкрити %s для запису",
+	],
+	"Duplicated upload" => [
+		0 => "Подвійне завантаження",
+	],
+	"Private upload" => [
+		0 => "Приватне завантаження",
+	],
+	"view" => [
+		0 => "перегляд",
+		1 => "перегляда",
+		2 => "переглядів",
+	],
+	"like" => [
+		0 => "Подобається",
+	],
+	"Most recent" => [
+		0 => "Нові",
+	],
+	"Oldest" => [
+		0 => "Старі",
+	],
+	"Most viewed" => [
+		0 => "Найпопулярніші",
+	],
+	"Most liked" => [
+		0 => "Найбільш сподобались",
+	],
+	"People" => [
+		0 => "Люди",
+	],
+	"Can't create %s destination dir" => [
+		0 => "Неможливо створити %s папку у призначеному місці",
+	],
+	"Internal" => [
+		0 => "Внутрішній",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "Ємність не може бути нижчою, ніж його поточне використання (%s).",
+	],
+	"Unlimited" => [
+		0 => "Необмежений",
+	],
+	"used" => [
+		0 => "використано",
+	],
+	"Private profile" => [
+		0 => "Прихований профіль",
+	],
+	"Share" => [
+		0 => "Поділитися",
+	],
+	"view on %s" => [
+		0 => "перегляд на %s",
+	],
+	"I understand" => [
+		0 => "Я розумію",
+	],
+	"second" => [
+		0 => "секунда",
+		1 => "секунд",
+		2 => "секунд",
+	],
+	"%s ago" => [
+		0 => "%s тому",
+	],
+	"moments ago" => [
+		0 => "хвилин тому",
 	],
 	"Random" => [
 		0 => "Випадкове",
+	],
+	"Close" => [
+		0 => "Закрити",
+	],
+	"Advanced search" => [
+		0 => "Розширений пошук",
 	],
 	"Notices (%s)" => [
 		0 => "Повідомлення (%s)",
@@ -1148,14 +821,176 @@ $translation_table = [
 	"Notifications" => [
 		0 => "Повідомлення",
 	],
+	"loading" => [
+		0 => "Завантаження",
+	],
 	"You don't have notifications" => [
 		0 => "У Вас немає повідомлень",
 	],
 	"My Profile" => [
 		0 => "Мій профіль",
 	],
+	"Administrator" => [
+		0 => "Адміністратор",
+	],
 	"Sign out" => [
 		0 => "Вийти",
+	],
+	"You must enter the album name." => [
+		0 => "Ви повинні ввести назву альбому.",
+	],
+	"Confirm" => [
+		0 => "Підтвердити",
+	],
+	"Select existing album" => [
+		0 => "Виберіть існуючий альбом",
+	],
+	"An error occurred. Please try again later." => [
+		0 => "У процесі виконання сталася помилка. Будь ласка спробуйте пізніше.",
+	],
+	"Please select a valid image file type." => [
+		0 => "Будь ласка виберіть правильний формат зображення.",
+	],
+	"Please select a picture of at most %s size." => [
+		0 => "Будь ласка, виберіть зображення не більше %s розміром.",
+	],
+	"Profile image updated." => [
+		0 => "Зображення профілю оновлено.",
+	],
+	"Profile background image updated." => [
+		0 => "Фон профілю оновлений.",
+	],
+	"Profile background image deleted." => [
+		0 => "Фон профілю видалений.",
+	],
+	"Error deleting profile background image." => [
+		0 => "При видаленні фону профілю виникла помилка.",
+	],
+	"Update available v%s" => [
+		0 => "Поновлення доступне v%s",
+	],
+	"Like" => [
+		0 => "Сподобалось",
+	],
+	"Create album" => [
+		0 => "створити альбом",
+	],
+	"Edit" => [
+		0 => "Редагувати",
+	],
+	"Delete" => [
+		0 => "Видалити",
+	],
+	"Previous" => [
+		0 => "Попередня",
+	],
+	"Next" => [
+		0 => "Наступна",
+	],
+	"File too big." => [
+		0 => "Файл занадто великий.",
+	],
+	"Invalid or unsupported file format." => [
+		0 => "Невірний або підтримуваний формат файлу.",
+	],
+	"Some files couldn't be added" => [
+		0 => "Деякі файли не були додані.",
+	],
+	"%s's Albums" => [
+		0 => "%s Альбомів",
+	],
+	"Image edited successfully." => [
+		0 => "Зображення успішно змінене.",
+	],
+	"private" => [
+		0 => "приховане",
+	],
+	"The content has been edited." => [
+		0 => "Вміст змінено.",
+	],
+	"Invalid URL key." => [
+		0 => "Невірний URL ключ.",
+	],
+	"Category URL key already being used." => [
+		0 => "Такий URL ключ вже використовується.",
+	],
+	"Category successfully deleted." => [
+		0 => "Категорія вилучена.",
+	],
+	"Category %s added." => [
+		0 => "Категорія %s додана.",
+	],
+	"Invalid expiration date." => [
+		0 => "Неправильна дата закінчення терміну дії.",
+	],
+	"IP %s already banned." => [
+		0 => "IP адреса %s вже заблокована",
+	],
+	"IP %s banned." => [
+		0 => "IP %s вже заблокована.",
+	],
+	"IP ban successfully deleted." => [
+		0 => "Блокування IP адреси успішно видалено.",
+	],
+	"Please fill all the required fields." => [
+		0 => "Будь ласка заповніть всі необхідні поля.",
+	],
+	"Invalid storage capacity value. Make sure to use a valid format." => [
+		0 => "Невірне значення доступного дискового простору. Переконайтеся, що ви використовуєте допустимий формат.",
+	],
+	"Invalid URL." => [
+		0 => "Неправильна адреса.",
+	],
+	"Storage successfully edited." => [
+		0 => "Сховище змінено.",
+	],
+	"The content has been deleted." => [
+		0 => "Вміст видалено.",
+	],
+	"The content has been moved." => [
+		0 => "Вміст переміщено.",
+	],
+	"Select" => [
+		0 => "Виділити",
+	],
+	"Unselect" => [
+		0 => "Зняти виділення",
+	],
+	"All the changes that you have made will be lost if you continue." => [
+		0 => "Якщо ви продовжите, всі зроблені вами зміни будуть втрачені.",
+	],
+	"Save changes" => [
+		0 => "Зберегти зміни",
+	],
+	"Submit" => [
+		0 => "Надіслати",
+	],
+	"Changes saved successfully." => [
+		0 => "Зміни успішно збережені.",
+	],
+	"Go back to form" => [
+		0 => "Повернуться до форми",
+	],
+	"or" => [
+		0 => "або",
+	],
+	"continue anyway" => [
+		0 => "все одно продовжити",
+	],
+	"cancel" => [
+		0 => "скасувати",
+	],
+	"Saving" => [
+		0 => "збереження",
+	],
+	"Sending" => [
+		0 => "Відправка",
+	],
+	"Confirm action" => [
+		0 => "Підтвердіть дію",
+	],
+	"information" => [
+		0 => "інформація",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "Ми отримали запит на зміну адреси електронної пошти для вашого облікового запису <a href=\"%u\">%n</a> на %w.",
@@ -1205,12 +1040,6 @@ $translation_table = [
 	"Select the images to upload" => [
 		0 => "Виберіть зображення для відвантаження",
 	],
-	"Edit or resize any image by clicking the image preview" => [
-		0 => "Відредагувати або змінити розмір будь-якого зображення натиснувши на попередній перегляд",
-	],
-	"Edit any image by touching the image preview" => [
-		0 => "Відредагувати будь-яке зображення натиснувши на попередній перегляд",
-	],
 	"complete" => [
 		0 => "завершено",
 	],
@@ -1219,15 +1048,6 @@ $translation_table = [
 	],
 	"Upload complete" => [
 		0 => "Завантаження завершено",
-	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "У процесі обробки запиту сталася помилка.",
-	],
-	"Category" => [
-		0 => "Категорія",
-	],
-	"Select category" => [
-		0 => "Виберіть категорію",
 	],
 	"Mark this if the upload is not family safe" => [
 		0 => "Помітити це зображення як невідповідне для сімейного перегляду",
@@ -1241,9 +1061,6 @@ $translation_table = [
 	"cancel remaining" => [
 		0 => "скасувати решту",
 	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "Увага: Деякі зображення не були завантажені.",
-	],
 	"learn more" => [
 		0 => "детальніше",
 	],
@@ -1252,9 +1069,6 @@ $translation_table = [
 	],
 	"reset" => [
 		0 => "скинути",
-	],
-	"close" => [
-		0 => "закрити",
 	],
 	"copy" => [
 		0 => "копіювати",
@@ -1283,9 +1097,6 @@ $translation_table = [
 	"Note: Animated GIF images won't be resized." => [
 		0 => "Примітка: Анімовані GIF зображення не можуть міняти розмір",
 	],
-	"Auto delete image" => [
-		0 => "Автоматичне видалення зображення",
-	],
 	"Mark this if the image is not family safe" => [
 		0 => "Помітити це зображення як небезпечне",
 	],
@@ -1295,32 +1106,20 @@ $translation_table = [
 	"Description" => [
 		0 => "Опис",
 	],
-	"Brief description of this image" => [
-		0 => "Короткий опис зображення",
-	],
 	"Add image URLs" => [
 		0 => "Додайте посилання на зображення",
 	],
 	"Add the image URLs here" => [
 		0 => "Додайте сюди посилання на зображення",
 	],
-	"Create album" => [
-		0 => "створити альбом",
-	],
-	"existing album" => [
-		0 => "існуючий альбом",
-	],
-	"Move to album" => [
-		0 => "Перемістити до альбому",
-	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "Виберіть існуючий альбом для переміщення завантаженого вмісту. Ви також можете <a class=\"modal-switch\" data-switch=\"move-new-album\">створити новий альбом</a> і перемістити вміст в нього.",
-	],
 	"Error report" => [
 		0 => "Звіт про помилки",
 	],
-	"Viewer links" => [
-		0 => "Посилання на перегляд",
+	"Links" => [
+		0 => "Посилання",
+	],
+	"Direct" => [
+		0 => "Прямий",
 	],
 	"HTML Codes" => [
 		0 => "HTML коди",
@@ -1364,6 +1163,9 @@ $translation_table = [
 	"Markdown thumbnail linked" => [
 		0 => "Розмітка мініатюрами посилання",
 	],
+	"Viewer links" => [
+		0 => "Посилання на перегляд",
+	],
 	"All these words" => [
 		0 => "Зі словами",
 	],
@@ -1388,20 +1190,8 @@ $translation_table = [
 	"IP address" => [
 		0 => "IP адреса",
 	],
-	"Album name" => [
-		0 => "Назва альбому",
-	],
-	"move to existing album" => [
-		0 => "перемістити в існуючий",
-	],
-	"Album description" => [
-		0 => "Опис альбому",
-	],
-	"Brief description of this album" => [
-		0 => "Короткий опис цього альбому",
-	],
-	"Album privacy" => [
-		0 => "Видимість альбому",
+	"Name" => [
+		0 => "Ім'я",
 	],
 	"Who can view this content" => [
 		0 => "Хто може переглядати цей контент",
@@ -1415,35 +1205,17 @@ $translation_table = [
 	"Private (password protected)" => [
 		0 => "Приватний (виявлено пароль)",
 	],
-	"Name" => [
-		0 => "Ім'я",
-	],
-	"Category name" => [
-		0 => "Назва категорії",
-	],
 	"URL key" => [
 		0 => "Ключ для посилання",
 	],
-	"Category URL key" => [
-		0 => "Ключ для посилання категорії",
-	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "Тільки букви, цифри та дефіси",
-	],
-	"Brief description of this category" => [
-		0 => "Короткий опис цьої категорії",
-	],
-	"Untitled image" => [
-		0 => "Безіменне",
 	],
 	"Path" => [
 		0 => "Шлях",
 	],
 	"Expiration date" => [
 		0 => "Дата закінчення",
-	],
-	"YYYY-MM-DD HH:MM:SS" => [
-		0 => "YYYY-MM-DD HH:MM:SS",
 	],
 	"Example" => [
 		0 => "Приклад",
@@ -1457,17 +1229,8 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "Текстове повідомлення, HTML або перенаправлення URL",
 	],
-	"Existing album" => [
-		0 => "Існуючий альбом",
-	],
-	"create new album" => [
-		0 => "створити новий альбом",
-	],
 	"Storage name" => [
 		0 => "Назва сховища",
-	],
-	"API" => [
-		0 => "API",
 	],
 	"Region" => [
 		0 => "Регіон",
@@ -1507,9 +1270,6 @@ $translation_table = [
 	],
 	"API endpoint for OpenStack identity" => [
 		0 => "Кінцева точка API для ідентифікації в OpenStack",
-	],
-	"Username" => [
-		0 => "Ім'я користувача",
 	],
 	"Container" => [
 		0 => "Контейнер",
@@ -1559,47 +1319,26 @@ $translation_table = [
 	"Load more" => [
 		0 => "Завантажити ще",
 	],
+	"Actions" => [
+		0 => "Дії",
+	],
+	"Get embed codes" => [
+		0 => "Отримати коди для вбудовування",
+	],
+	"Flag as safe" => [
+		0 => "Помітити як безпечне",
+	],
 	"Select all" => [
 		0 => "виділити все",
 	],
 	"Clear selection" => [
 		0 => "Зняти виділення",
 	],
-	"Selection" => [
-		0 => "З виділеними",
-	],
-	"Action" => [
-		0 => "Дія",
-	],
-	"Get embed codes" => [
-		0 => "Отримати коди для вбудовування",
-	],
-	"Assign category" => [
-		0 => "Присвоїти категорію",
-	],
-	"Flag as safe" => [
-		0 => "Помітити як безпечне",
-	],
 	"Sign in with another account" => [
 		0 => "Увійти через",
 	],
 	"There's nothing to show here." => [
 		0 => "Немає елементів для відображення.",
-	],
-	"All the images will be moved to this newly created album. You can also move the images to an <a class=\"modal-switch\" data-switch=\"move-existing-album\">existing album</a>." => [
-		0 => "Всі зображення будуть поміщені в цей новий альбом. Ви також можете перемістити зображення в <a class=\"modal-switch\" data-switch=\"move-existing-album\">існуючий альбом</a>.",
-	],
-	"Select an existing album to move the image. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the image there." => [
-		0 => "Виберіть існуючий альбом, щоб перемістити зображення. Ви також можете <a class=\"modal-switch\" data-switch=\"move-new-album\">створити новий альбом</a> і перемістити зображення в нього.",
-	],
-	"Select an existing album to move the album contents. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the album contents there." => [
-		0 => "Виберіть існуючий альбом в який буде переміщено вміст. Ви також можете <a class=\"modal-switch\" data-switch=\"move-new-album\">створити новий альбом</a> для цього вмісту.",
-	],
-	"Select an existing album to move the images. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the images there." => [
-		0 => "Виберіть існуючий альбом, щоб перемістити зображення. Ви також можете <a class=\"modal-switch\" data-switch=\"move-new-album\">створити новий альбом</a> і перемістити зображення в нього.",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "Вибрані зображення будуть переміщені в дану категорію.",
 	],
 	"There is no categories." => [
 		0 => "Категорії не задані.",
@@ -1619,35 +1358,23 @@ $translation_table = [
 	"Confirm deletion" => [
 		0 => "Підтвердіть видалення",
 	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити даний вміст? Ця дія є незворотня.",
-	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити всі виділені зображення? Ця дія є незворотня.",
-	],
 	"Guest" => [
 		0 => "Гість",
 	],
 	"Private album" => [
 		0 => "Приватний альбом",
 	],
-	"From %s" => [
-		0 => "З альбому %s",
-	],
-	"by %u" => [
-		0 => "by %u",
-	],
 	"Toggle unsafe flag" => [
 		0 => "Переключити в небезпечне",
 	],
-	"That page doesn't exist" => [
-		0 => "Такої сторінки не існує",
+	"You either don't have permission to access this page or the link has expired." => [
+		0 => "У вас немає прав на доступ до даної сторінки або посилання застаріло.",
+	],
+	"Go to homepage" => [
+		0 => "Головна",
 	],
 	"The requested page was not found." => [
 		0 => "Сторінку не знайдено",
-	],
-	"Search something else" => [
-		0 => "Знайти щось ще",
 	],
 	"The user has been deleted" => [
 		0 => "Користувач видалений",
@@ -1672,9 +1399,6 @@ $translation_table = [
 	],
 	"Your email address" => [
 		0 => "Ваша адреса електронної пошти",
-	],
-	"Submit" => [
-		0 => "Надіслати",
 	],
 	"An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Інструкції по скиданню паролю були надіслані на вашу адресу. Якщо ви їх не отримали, перевірте папку Спам.",
@@ -1706,23 +1430,17 @@ $translation_table = [
 	"An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Інструкції по активації облікового запису були відправлені на %s . Якщо ви не отримали повідомлення, перевірте папку Спам.",
 	],
-	"This content is private" => [
-		0 => "Цей контент приватний",
-	],
-	"Do you really want to delete this album and all of its images? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити цей альбом з усіма зображеннями? Ця дія є незворотньою.",
-	],
 	"You like this" => [
 		0 => "Вам подобається це",
 	],
-	"Album link" => [
-		0 => "Посилання на альбом",
+	"This content is private" => [
+		0 => "Цей контент приватний",
 	],
 	"I Agree" => [
 		0 => "Я погоджуюся",
 	],
-	"Disk used" => [
-		0 => "Використано місця на диску",
+	"Check the errors to proceed." => [
+		0 => "Перед тим як продовжити, перевірте правильність заповнення.",
 	],
 	"Working" => [
 		0 => "Працює",
@@ -1736,8 +1454,11 @@ $translation_table = [
 	"Completed" => [
 		0 => "Завершено",
 	],
-	"Actions" => [
-		0 => "Дії",
+	"Cancel" => [
+		0 => "Скасувати",
+	],
+	"Errors" => [
+		0 => "Помилки",
 	],
 	"Reset" => [
 		0 => "Скинути",
@@ -1745,98 +1466,404 @@ $translation_table = [
 	"Resume" => [
 		0 => "Відновити",
 	],
-	"Errors" => [
-		0 => "Помилки",
-	],
 	"Status" => [
 		0 => "Статус",
 	],
-	"Cancel" => [
-		0 => "Скасувати",
+	"Show not safe content in listings" => [
+		0 => "Показувати небезпечний зміст",
 	],
-	"Add user" => [
-		0 => "Додати користувача",
+	"Blur NSFW content in listings" => [
+		0 => "Робити не чітким NSFW контент в списку",
 	],
-	"Role" => [
-		0 => "Роль",
+	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
+		0 => "Включіть це, якщо хочете використовувати розмите зображення для NSFW контенту в списку",
 	],
-	"Administrator" => [
-		0 => "Адміністратор",
+	"Show not safe content in random mode" => [
+		0 => "Показувати небезпечне зміст в режимі випадкового зображення",
 	],
-	"Email address" => [
-		0 => "Адреса електронної пошти",
+	"Show banners in not safe content" => [
+		0 => "Показувати банери на сторінках з небезпечним змістом.",
 	],
-	"Add category" => [
-		0 => "Додати категорію",
+	"Enable this if you want to show banners in not safe content pages." => [
+		0 => "Увімкніть, якщо ви хочете показувати банери на сторінках з небезпечним змістом.",
 	],
-	"Add IP ban" => [
-		0 => "Додати блокування по IP",
+	"Cookie law compliance" => [
+		0 => "Дотримання правил куків",
 	],
-	"Add storage" => [
-		0 => "Додати сховище",
+	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
+		0 => "Цей параметр використовується для відображення повідомлення, що відповідає вимогам законодавства ЄС про куки. Примітка: Вам потрібно тільки це, якщо ваш сайт розміщений в ЄС, і якщо ви додали відстеження куків.",
 	],
-	"Return to pages" => [
-		0 => "Повернутись до сторінок",
+	"From name" => [
+		0 => "Відправник",
 	],
-	"Website name" => [
-		0 => "Назва сайту",
+	"Sender name for emails sent to users." => [
+		0 => "Ім'я відправника для розсилки повідомлень користувачам.",
 	],
-	"Website doctitle" => [
-		0 => "Заголовок сайту",
+	"From email address" => [
+		0 => "Адреса відправника",
 	],
-	"Website description" => [
-		0 => "Опис сайту",
+	"Sender email for emails sent to users." => [
+		0 => "Адреса відправника для розсилки повідомлень користувачам.",
 	],
-	"Default time zone" => [
-		0 => "Часовий пояс  за замовчуванням",
+	"Incoming email address" => [
+		0 => "Адреса для вхідних повідомлень",
 	],
-	"Select region" => [
-		0 => "Оберіть регіон",
+	"Recipient for contact form and system alerts." => [
+		0 => "Адреса для форми зворотного зв'язку і системних повідомлень.",
 	],
-	"guests" => [
-		0 => "гості",
+	"Email mode" => [
+		0 => "Режим електронної пошти",
 	],
-	"Likes" => [
-		0 => "Вподобання",
+	"How to send emails? SMTP recommended." => [
+		0 => "Як відправляти повідомлення? Рекомендується використовувати SMTP.",
 	],
-	"Personal mode target user" => [
-		0 => "Особистий режим цільового користувача",
+	"SMTP server and port" => [
+		0 => "SMTP сервер та порт",
 	],
-	"User ID" => [
+	"SMTP server" => [
+		0 => "SMTP сервер",
+	],
+	"SMTP username" => [
+		0 => "Ім'я користувача SMTP",
+	],
+	"SMTP password" => [
+		0 => "Пароль SMTP",
+	],
+	"SMTP security" => [
+		0 => "Безпека SMTP",
+	],
+	"Unsecured" => [
+		0 => "Небезпечний",
+	],
+	"Comment code" => [
+		0 => "Код для системи коментарів",
+	],
+	"Disqus, Facebook or anything you want. It will be used in image view." => [
+		0 => "Disqus, Facebook або будь-яка система на ваш вибір. Вона буде використана при перегляді зображення.",
+	],
+	"Analytics code" => [
+		0 => "Код для збору статистики",
+	],
+	"Google Analytics or anything you want. It will be added to the theme footer." => [
+		0 => "Google Analytics або система збору статистики на ваш вибір. Цей код буде додано до \"підвал\" теми.",
+	],
+	"Twitter account" => [
+		0 => "Акаунт в Twitter",
+	],
+	"Toggle this to enable or disable HTTPS" => [
+		0 => "Змініть цю настройку щоб включити або відключити HTTPS",
+	],
+	"Toggle this to enable or disable this storage" => [
+		0 => "Змініть цю настройку щоб включити або відключити це сховище",
+	],
+	"Quota" => [
+		0 => "Квота",
+	],
+	"Active" => [
+		0 => "Активне",
+	],
+	"Storage method" => [
+		0 => "Тип сховища",
+	],
+	"Disk used" => [
+		0 => "Використано місця на диску",
+	],
+	"Local storage is used by default or when no external storage is active." => [
+		0 => "Локальне сховище використовується за замовчуванням або за відсутності активних зовнішніх сховищ.",
+	],
+	"Notify to email" => [
+		0 => "Повідомити електронною поштою",
+	],
+	"If enabled the system will send an email on flood incidents." => [
+		0 => "При включенні цієї опції, система буде повідомляти про флуд-атаках поштою.",
+	],
+	"Minute limit" => [
+		0 => "Завантаження за хвилину",
+	],
+	"Hourly limit" => [
+		0 => "Завантаження за годину",
+	],
+	"Daily limit" => [
+		0 => "Завантаження за день",
+	],
+	"Weekly limit" => [
+		0 => "Завантаження за тиждень",
+	],
+	"Monthly limit" => [
+		0 => "Завантаження за місяць",
+	],
+	"Style" => [
+		0 => "Стиль",
+	],
+	"Landing page" => [
+		0 => "Стартова сторінка",
+	],
+	"Split landing + images" => [
+		0 => "Стартова сторінка + зображення",
+	],
+	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
+		0 => "Виберіть стиль головної сторінки. Щоб налаштувати його відредагуйте app/themes/%s/views/index.php",
+	],
+	"Cover image" => [
+		0 => "Зображення обкладинки",
+	],
+	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
+		0 => "Це буде додано в середину домашньої сторінки %s як тег. Залиште поле пустим, якщо ви хочете використати дані по-замовчуванню",
+	],
+	"Paragraph" => [
+		0 => "Пункт",
+	],
+	"Call to action button color" => [
+		0 => "Колір кнопки дії",
+	],
+	"Blue" => [
+		0 => "Синій",
+	],
+	"Green" => [
+		0 => "Зелений",
+	],
+	"Orange" => [
+		0 => "Помаранчевий",
+	],
+	"Red" => [
+		0 => "Червоний",
+	],
+	"Grey" => [
+		0 => "Сірий",
+	],
+	"Black" => [
+		0 => "Чорний",
+	],
+	"White" => [
+		0 => "Білий",
+	],
+	"Default" => [
+		0 => "За замовчуванням",
+	],
+	"Color of the homepage call to action button." => [
+		0 => "Колір кнопки переходу на домашню сторінку",
+	],
+	"Call to action outline style button" => [
+		0 => "Контур кнопки для дії",
+	],
+	"Enable this to use outline style for the homepage call to action button." => [
+		0 => "Включіть це, щоб використовувати стиль обведення кнопки загрузки на стартовій сторінці.",
+	],
+	"Call to action functionality" => [
+		0 => "Заклик до дії",
+	],
+	"Trigger uploader" => [
+		0 => "Трігери завантаження",
+	],
+	"Open URL" => [
+		0 => "Відкрити посилання",
+	],
+	"Call to action URL" => [
+		0 => "Дія для посилання",
+	],
+	"Enter an absolute or relative URL" => [
+		0 => "Введіть абсолютне або відносне посилання",
+	],
+	"A relative URL like %r will be mapped to %l" => [
+		0 => "Відносне посилання як %r буде відображено в %l",
+	],
+	"Call to action HTML" => [
+		0 => "Дія для HTML",
+	],
+	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
+		0 => "Це буде додано в дію для тега <a>. Залиште це поле порожнім, щоб використовувати вміст за замовчуванням.",
+	],
+	"User IDs" => [
 		0 => "ID користувача",
 	],
 	"Your user id is: %s" => [
 		0 => "Ваш id користувача: %s",
 	],
-	"Numeric ID of the target user for personal mode." => [
-		0 => "Цифровий ідентифікатор цільового користувача для особистого режиму.",
+	"Enable uploads" => [
+		0 => "Включити завантаження",
 	],
-	"Personal mode routing" => [
-		0 => "Особистий режим направлення",
+	"Guest uploads" => [
+		0 => "Гостьові завантаження",
 	],
-	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
-		0 => "Звичайне перенаправлення з /ім'я-користувача в /кудась. Використовуйте \"/\" для направлення на домашню сторінку.",
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "Увімкніть цю опцію, якщо хочете дозволити завантажувати зображення незареєстрованим користувачам.",
 	],
-	"Website privacy mode" => [
-		0 => "Режим конфіденційності сайту",
+	"Enable embed codes (uploader)" => [
+		0 => "Коди для вбудовування (у завантажувачі)",
 	],
-	"Private mode will make the website only available for registered users." => [
-		0 => "Приватний сайт буде доступний тільки для зареєстрованих користувачів.",
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "Ввімкніть цю опцію, якщо ви хочете показувати коди для вбудовування після завершення завантаження.",
 	],
-	"Content privacy mode" => [
-		0 => "Режим видимості вмісту",
+	"Enable expirable uploads" => [
+		0 => "Включити автовидалення для завантажень",
 	],
-	"Default" => [
-		0 => "За замовчуванням",
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "Включіть це якщо ви хочете щоб були завантаження з автоматичним видалення зображень",
 	],
-	"Force private (self)" => [
-		0 => "Приховані (тільки власник)",
+	"Image Exif data" => [
+		0 => "Exif дані зображення",
 	],
-	"Force private (anyone with the link)" => [
-		0 => "Приховані (тільки за посиланням)",
+	"Keep" => [
+		0 => "Тримати",
 	],
-	"Forced privacy modes will override user selected privacy." => [
-		0 => "При включенні примусових режимів видимості, зазначені користувачами значення будуть проігноровані.",
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "Виберіть налаштування для зображення <a %s>Exif дані</a> при загрузці",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "Exif дані зображення (налаштування)",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "Включити, якщо ви хочете, щоб кожен користувач для налаштування зображення даних Exif були оброблені.",
+	],
+	"guests" => [
+		0 => "гості",
+	],
+	"Image path" => [
+		0 => "Шлях до зображень",
+	],
+	"Relative to Chevereto root" => [
+		0 => "Відносно шляху до Chevereto",
+	],
+	"Where to store the images? Relative to Chevereto root." => [
+		0 => "Де зберігати зображення? Щодо шляху до Chevereto.",
+	],
+	"Storage mode" => [
+		0 => "Режим зберігання",
+	],
+	"Datefolders" => [
+		0 => "Папки по датах",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "\"Папки по датах\" створює структуру виду %s",
+	],
+	"File naming method" => [
+		0 => "Назви файлів",
+	],
+	"Original" => [
+		0 => "Оригінал",
+	],
+	"Mix original + random" => [
+		0 => "Змішане оригінал + випадкове",
+	],
+	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
+		0 => "\"Оригінал\" намагатиметься зберегти ім'я джерела зображення, а \"Випадкова\" буде генерувати випадкове ім'я. \"ID\" назве зображення так само, як зображення ID.",
+	],
+	"Thumb size" => [
+		0 => "Розмір мініатюри",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "Мініатюра буде обмежена цим розміром.",
+	],
+	"Medium image fixed dimension" => [
+		0 => "Середній розмір зображення фіксований",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "Середні зображення будуть фіксовані до цього розміру. Для прикладу, якщо ви вибираєте \"ширина\", то розмір буде фіксованим і висота зображення будуть автоматично розраховані.",
+	],
+	"Medium image fixed size" => [
+		0 => "Середнє зображення фіксованого розміру",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "Ширина або висота будуть автоматично розраховані",
+	],
+	"Expires" => [
+		0 => "Закінчення",
+	],
+	"Banned IP address will be forbidden to use the entire website." => [
+		0 => "Заблокованій IP-адресі буде заборонено використовувати весь веб-сайт.",
+	],
+	"Default language" => [
+		0 => "Мова за замовчуванням",
+	],
+	"Default base language to use." => [
+		0 => "Використовується за замовчуванням мова.",
+	],
+	"Auto language" => [
+		0 => "Автоматичний вибір мови",
+	],
+	"Enable this if you want to automatically detect and set the right language for each user." => [
+		0 => "Включити це, якщо ви хочете, щоб автоматично виявлялась і встановлювалась правильна мова для кожного користувача.",
+	],
+	"Language chooser" => [
+		0 => "Вибір мови",
+	],
+	"Enable this if you want to allow language selection." => [
+		0 => "Ввімкніть це, якщо хочете дозволити вибір мови",
+	],
+	"Enabled languages" => [
+		0 => "Дозволені мови",
+	],
+	"List items per page" => [
+		0 => "Елементів на сторінку",
+	],
+	"How many items should be displayed per page listing." => [
+		0 => "Скільки зображень відображати на сторінку.",
+	],
+	"List pagination mode" => [
+		0 => "Режим розбиття на сторінки",
+	],
+	"Endless scrolling" => [
+		0 => "Нескінченна прокрутка",
+	],
+	"Classic pagination" => [
+		0 => "Нумеровані сторінки",
+	],
+	"What pagination method should be used." => [
+		0 => "Який спосіб розбиття на сторінки використовувати.",
+	],
+	"Image listing size" => [
+		0 => "Розмір мініатюр в списку",
+	],
+	"Fluid" => [
+		0 => "Адаптивний",
+	],
+	"Fixed" => [
+		0 => "Фіксований",
+	],
+	"Both methods use a fixed width but fluid method uses automatic heights." => [
+		0 => "Обидва методи використовують фіксовану ширину, але в адаптивному методі, висота обчислюється із збереженням пропорцій зображення.",
+	],
+	"Listing columns number" => [
+		0 => "Кількість колонок",
+	],
+	"Here you can set how many columns are used based on each target device." => [
+		0 => "Тут ви можете встановити, скільки стовпців використовуються на основі кожного цільового пристрою.",
+	],
+	"Phone" => [
+		0 => "Телефон",
+	],
+	"Phablet" => [
+		0 => "Фаблет",
+	],
+	"Tablet" => [
+		0 => "Планшет",
+	],
+	"Laptop" => [
+		0 => "Ноутбук",
+	],
+	"Desktop" => [
+		0 => "ПК",
+	],
+	"Vector version or your website logo in SVG format." => [
+		0 => "Векторний логотип вашого сайту у форматі SVG.",
+	],
+	"Bitmap version or your website logo. PNG format is recommended." => [
+		0 => "Растровий логотип вашого сайту. Рекомендується використовувати формат PNG.",
+	],
+	"Logo height" => [
+		0 => "Висота логотипу",
+	],
+	"No value" => [
+		0 => "Немає значення",
+	],
+	"Use this to set the logo height if needed." => [
+		0 => "Використовуйте це поле, якщо необхідно вказати висоту логотипу.",
+	],
+	"Favicon image" => [
+		0 => "Іконка сайту",
+	],
+	"Favicon image. Image must have same width and height." => [
+		0 => "Іконка вашого сайту. Ширина і висота даного зображення повинні бути однакові.",
 	],
 	"Page title" => [
 		0 => "Заголовок сторінки",
@@ -1910,9 +1937,6 @@ $translation_table = [
 	"Only alphanumerics, hyphens and whitespaces" => [
 		0 => "Тільки латинські букви і цифри, дефіси та пропуски",
 	],
-	"HTML &lt;a&gt; %s attribute" => [
-		0 => "HTML &lt;a&gt;%s атрибути",
-	],
 	"Link icon" => [
 		0 => "Посилання на іконку",
 	],
@@ -1925,107 +1949,119 @@ $translation_table = [
 	"Page sort order display for menus and listings. Use \"1\" for top priority." => [
 		0 => "Порядок сортування сторінок для меню. Використовуйте \"1\" для вищого пріоритету",
 	],
-	"Do you really want to delete the page ID %s? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити сторінку з ID %s? Це не можливо буде відмінити.",
+	"Maintenance" => [
+		0 => "Обслуговування",
 	],
-	"Enable uploads" => [
-		0 => "Включити завантаження",
+	"Crypt salt" => [
+		0 => "Криптографічна сіль",
 	],
-	"Enable this if you want to allow image uploads. This setting doesn't affect administrators." => [
-		0 => "Увімкніть цю опцію, якщо ви хочете дозволити завантаження зображень. Цей параметр не впливає на адміністраторів.",
+	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
+		0 => "Ця сіль використовується для перетворення цифрових ID в літерні. Вона була створена при установці.",
 	],
-	"Guest uploads" => [
-		0 => "Гостьові завантаження",
+	"Debug level" => [
+		0 => "Рівень налагодження",
 	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "Увімкніть цю опцію, якщо хочете дозволити завантажувати зображення незареєстрованим користувачам.",
+	"None" => [
+		0 => "Ні",
 	],
-	"Enable embed codes (uploader)" => [
-		0 => "Коди для вбудовування (у завантажувачі)",
+	"Error log" => [
+		0 => "Журнал помилок",
 	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "Ввімкніть цю опцію, якщо ви хочете показувати коди для вбудовування після завершення завантаження.",
+	"Print errors without error log" => [
+		0 => "Друк помилок без журналу помилок",
 	],
-	"Enable expirable uploads" => [
-		0 => "Включити автовидалення для завантажень",
+	"Print and log errors" => [
+		0 => "Друк і журнал помилок",
 	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "Включіть це якщо ви хочете щоб були завантаження з автоматичним видалення зображень",
+	"Enable download button" => [
+		0 => "Включити кнопку завантаження",
 	],
-	"Image Exif data" => [
-		0 => "Exif дані зображення",
+	"Enable this if you want to show the image download button." => [
+		0 => "Увімкніть, щоб показувати кнопку завантаження зображення.",
 	],
-	"Keep" => [
-		0 => "Тримати",
+	"Enable right click on image" => [
+		0 => "Включити меню правої клавіши миші на зображенні",
 	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "Виберіть налаштування для зображення <a %s>Exif дані</a> при загрузці",
+	"Enable this if you want to allow right click on image viewer page." => [
+		0 => "Включіть це, якщо Ви хочете дозволити меню правої клавіши миші",
 	],
-	"Image Exif data (user setting)" => [
-		0 => "Exif дані зображення (налаштування)",
+	"Enable show Exif data" => [
+		0 => "Включити показ Exif даних",
 	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "Включити, якщо ви хочете, щоб кожен користувач для налаштування зображення даних Exif були оброблені.",
+	"Enable this if you want to show image Exif data." => [
+		0 => "Включіть це, якщо ви хочете показувати Exif дані.",
 	],
-	"Image path" => [
-		0 => "Шлях до зображень",
+	"Enable social share" => [
+		0 => "Увімкнути опцію \"поділитися\"",
 	],
-	"Relative to Chevereto root" => [
-		0 => "Відносно шляху до Chevereto",
+	"Enable this if you want to show social network buttons to share content." => [
+		0 => "Ввімкніть цю опцію, щоб показувати кнопки соціальних мереж.",
 	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "Де зберігати зображення? Щодо шляху до Chevereto.",
+	"Enable embed codes (content)" => [
+		0 => "Коди для вбудовування (в перегляді)",
 	],
-	"Storage mode" => [
-		0 => "Режим зберігання",
+	"Enable this if you want to show embed codes for the content." => [
+		0 => "Ввімкніть цю опцію, якщо ви хочете показувати коди для вбудовування в перегляді зображень.",
 	],
-	"Datefolders" => [
-		0 => "Папки по датах",
+	"Not safe content checkbox in uploader" => [
+		0 => "Показувати у завантажувачі настройку для небезпечного змісту",
 	],
-	"Direct" => [
-		0 => "Прямий",
+	"Enable this if you want to show a checkbox to indicate not safe content upload." => [
+		0 => "Увімкніть, щоб дати користувачам можливість вказувати безпеку зображення при завантаженні.",
 	],
-	"Datefolders creates %s structure" => [
-		0 => "\"Папки по датах\" створює структуру виду %s",
+	"Custom CSS code" => [
+		0 => "Власний CSS",
 	],
-	"File naming method" => [
-		0 => "Назви файлів",
+	"Put your custom CSS code here. It will be placed as <style> just before the closing </head> tag." => [
+		0 => "Вставте сюди ваш власний CSS код. Він буде вставлений за допомогою тега <style> перед закриваючим тегом </head>",
 	],
-	"Original" => [
-		0 => "Оригінал",
+	"Custom JS code" => [
+		0 => "Власний JS",
 	],
-	"Mix original + random" => [
-		0 => "Змішане оригінал + випадкове",
+	"Put your custom JS code here. It will be placed as <script> just before the closing </head> tag." => [
+		0 => "Вставте сюди ваш власний JS код. Він буде вставлений за допомогою тега <script> перед закриваючим тегом </head>",
 	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "\"Оригінал\" намагатиметься зберегти ім'я джерела зображення, а \"Випадкова\" буде генерувати випадкове ім'я. \"ID\" назве зображення так само, як зображення ID.",
+	"Send test email" => [
+		0 => "Надіслати тестове повідомлення",
 	],
-	"Thumb size" => [
-		0 => "Розмір мініатюри",
+	"Use this to test how your emails are being delivered. We recommend you to use %s." => [
+		0 => "Використовуйте це тестове повідомлення для перевірки доставки пошти, Ми рекомендуємо використовувати %s.",
 	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "Мініатюра буде обмежена цим розміром.",
+	"Additional settings" => [
+		0 => "Додаткові налаштування",
 	],
-	"Medium image fixed dimension" => [
-		0 => "Середній розмір зображення фіксований",
+	"Enable signups" => [
+		0 => "Включити реєстрацію",
 	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "Середні зображення будуть фіксовані до цього розміру. Для прикладу, якщо ви вибираєте \"ширина\", то розмір буде фіксованим і висота зображення будуть автоматично розраховані.",
+	"Enable this if you want to allow users to signup." => [
+		0 => "Увімкніть, щоб дозволити реєстрацію користувачів.",
 	],
-	"Medium image fixed size" => [
-		0 => "Середнє зображення фіксованого розміру",
+	"Require email confirmation" => [
+		0 => "Вимагати підтвердження електронної пошти",
 	],
-	"Width or height will be automatically calculated." => [
-		0 => "Ширина або висота будуть автоматично розраховані",
+	"Enable this if users must validate their email address on sign up." => [
+		0 => "Ввімкніть цю опцію, щоб вимагати підтвердження адреси електронної пошти при реєстрації.",
 	],
-	"Watermarks" => [
-		0 => "Водяні знаки",
+	"Require email for social signup" => [
+		0 => "Вимагати Email-адресу при реєстрації через соціальну мережу",
+	],
+	"Enable this if users using social networks to register must provide an email address." => [
+		0 => "Ввімкніть цю опцію, якщо ви хочете, щоб користувачам, які реєструються через соціальні мережі, необхідно було вказувати адресу електронної пошти.",
+	],
+	"User avatar max. filesize" => [
+		0 => "Аватар користувача макс. розмір файлу",
+	],
+	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
+		0 => "Максимально дозволений розмір файлу для аватару користувача. (Макс. дозволено на сервері %s)",
+	],
+	"User background max. filesize" => [
+		0 => "Фонове зображення сторінки користувача макс. розмір файлу",
+	],
+	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
+		0 => "Максимально дозволений розмір файлу для фонового зображення сторінки користувача. (Макс. дозволено на сервері %s)",
 	],
 	"Enable this to put a logo or anything you want in image uploads." => [
 		0 => "Увімкніть, щоб помістити логотип або будь-яке інше зображення на всі завантаження.",
-	],
-	"Warning: Can't write in %s" => [
-		0 => "Увага: Не можу записати в %s",
 	],
 	"Watermark user toggles" => [
 		0 => "Перемикач водяного знаку користувача",
@@ -2053,9 +2089,6 @@ $translation_table = [
 	],
 	"Watermark image" => [
 		0 => "Зображення захисного знаку",
-	],
-	"You will get best results with plain logos with drop shadow. You can use a large image if the file size is not that big (recommended max. is 16KB). Must be a PNG." => [
-		0 => "Ви отримаєте кращі результати з простих логотипів з тінню. Ви можете використовувати збільшене зображення, якщо розмір файлу не такий великий (рекомендується макс. 16KB). Повинно бути PNG.",
 	],
 	"Watermark position" => [
 		0 => "Положення захисного знаку",
@@ -2108,569 +2141,56 @@ $translation_table = [
 	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
 		0 => "Прозорість захисного знаку при накладенні на зображення. Повинно бути в діапазоні від 0 до 100.",
 	],
-	"Do you really want to delete the %s category? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити категорію %s? Ця дія незворотня",
+	"Website name" => [
+		0 => "Назва сайту",
 	],
-	"Note: Deleting a category doesn't delete the images that belongs to that category." => [
-		0 => "Замітка: Видалення категорії не спричинить за собою видалення зображень.",
+	"Website doctitle" => [
+		0 => "Заголовок сайту",
 	],
-	"Edit category" => [
-		0 => "Змінити категорію",
+	"Website description" => [
+		0 => "Опис сайту",
 	],
-	"Expires" => [
-		0 => "Закінчення",
+	"Default time zone" => [
+		0 => "Часовий пояс  за замовчуванням",
 	],
-	"Do you really want to remove the ban to the IP %s? This can't be undone." => [
-		0 => "Ви дійсно хочете зняти блокування IP %s ? Це не може бути скасовано.",
+	"Select region" => [
+		0 => "Оберіть регіон",
 	],
-	"Banned IP address will be forbidden to use the entire website." => [
-		0 => "Заблокованій IP-адресі буде заборонено використовувати весь веб-сайт.",
+	"Likes" => [
+		0 => "Вподобання",
 	],
-	"Edit IP ban" => [
-		0 => "Редагувати блокування IP",
+	"Website mode" => [
+		0 => "Режим роботи сайту",
 	],
-	"Enable signups" => [
-		0 => "Включити реєстрацію",
+	"You can switch the website mode anytime." => [
+		0 => "Ви можете перемкнути режим веб-сайту в будь-який час.",
 	],
-	"Enable this if you want to allow users to signup." => [
-		0 => "Увімкніть, щоб дозволити реєстрацію користувачів.",
+	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
+		0 => "Звичайне перенаправлення з /ім'я-користувача в /кудась. Використовуйте \"/\" для направлення на домашню сторінку.",
 	],
-	"Username routing" => [
-		0 => "Адресація користувачів",
+	"Website privacy mode" => [
+		0 => "Режим конфіденційності сайту",
 	],
-	"Enable this if you want to use %s/username URLs instead of %s/user/username." => [
-		0 => "Ввімкніть цю опцію, якщо ви хочете використовувати адреси профілів виду %s/ім'я_користувача замість %s/user/ім'я_користувача",
+	"Private mode will make the website only available for registered users." => [
+		0 => "Приватний сайт буде доступний тільки для зареєстрованих користувачів.",
 	],
-	"Require email confirmation" => [
-		0 => "Вимагати підтвердження електронної пошти",
+	"Content privacy mode" => [
+		0 => "Режим видимості вмісту",
 	],
-	"Enable this if users must validate their email address on sign up." => [
-		0 => "Ввімкніть цю опцію, щоб вимагати підтвердження адреси електронної пошти при реєстрації.",
+	"Force private (self)" => [
+		0 => "Приховані (тільки власник)",
 	],
-	"Require email for social signup" => [
-		0 => "Вимагати Email-адресу при реєстрації через соціальну мережу",
+	"Force private (anyone with the link)" => [
+		0 => "Приховані (тільки за посиланням)",
 	],
-	"Enable this if users using social networks to register must provide an email address." => [
-		0 => "Ввімкніть цю опцію, якщо ви хочете, щоб користувачам, які реєструються через соціальні мережі, необхідно було вказувати адресу електронної пошти.",
+	"Forced privacy modes will override user selected privacy." => [
+		0 => "При включенні примусових режимів видимості, зазначені користувачами значення будуть проігноровані.",
 	],
-	"User avatar max. filesize" => [
-		0 => "Аватар користувача макс. розмір файлу",
+	"Role" => [
+		0 => "Роль",
 	],
-	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
-		0 => "Максимально дозволений розмір файлу для аватару користувача. (Макс. дозволено на сервері %s)",
-	],
-	"User background max. filesize" => [
-		0 => "Фонове зображення сторінки користувача макс. розмір файлу",
-	],
-	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
-		0 => "Максимально дозволений розмір файлу для фонового зображення сторінки користувача. (Макс. дозволено на сервері %s)",
-	],
-	"Block image uploads by IP if the system notice a flood  behavior based on the number of uploads per time period. This setting doesn't affect administrators." => [
-		0 => "Блокувати завантаження зображень по IP, якщо на підставі кількості завантажень, система виявить підозру на флуд. Цей параметр не впливає на адміністраторів.",
-	],
-	"Notify to email" => [
-		0 => "Повідомити електронною поштою",
-	],
-	"If enabled the system will send an email on flood incidents." => [
-		0 => "При включенні цієї опції, система буде повідомляти про флуд-атаках поштою.",
-	],
-	"Minute limit" => [
-		0 => "Завантаження за хвилину",
-	],
-	"Hourly limit" => [
-		0 => "Завантаження за годину",
-	],
-	"Daily limit" => [
-		0 => "Завантаження за день",
-	],
-	"Weekly limit" => [
-		0 => "Завантаження за тиждень",
-	],
-	"Monthly limit" => [
-		0 => "Завантаження за місяць",
-	],
-	"Show not safe content in listings" => [
-		0 => "Показувати небезпечний зміст",
-	],
-	"Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings." => [
-		0 => "Увімкніть, щоб відображати небезпечний зміст. Ця установка не впливає на адміністраторів і може бути скасована користувачем з власних настройок",
-	],
-	"Blur NSFW content in listings" => [
-		0 => "Робити не чітким NSFW контент в списку",
-	],
-	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
-		0 => "Включіть це, якщо хочете використовувати розмите зображення для NSFW контенту в списку",
-	],
-	"Show banners in not safe content" => [
-		0 => "Показувати банери на сторінках з небезпечним змістом.",
-	],
-	"Enable this if you want to show banners in not safe content pages." => [
-		0 => "Увімкніть, якщо ви хочете показувати банери на сторінках з небезпечним змістом.",
-	],
-	"Show not safe content in random mode" => [
-		0 => "Показувати небезпечне зміст в режимі випадкового зображення",
-	],
-	"List items per page" => [
-		0 => "Елементів на сторінку",
-	],
-	"How many items should be displayed per page listing." => [
-		0 => "Скільки зображень відображати на сторінку.",
-	],
-	"List pagination mode" => [
-		0 => "Режим розбиття на сторінки",
-	],
-	"Endless scrolling" => [
-		0 => "Нескінченна прокрутка",
-	],
-	"Classic pagination" => [
-		0 => "Нумеровані сторінки",
-	],
-	"What pagination method should be used." => [
-		0 => "Який спосіб розбиття на сторінки використовувати.",
-	],
-	"Image listing size" => [
-		0 => "Розмір мініатюр в списку",
-	],
-	"Fluid" => [
-		0 => "Адаптивний",
-	],
-	"Fixed" => [
-		0 => "Фіксований",
-	],
-	"Both methods use a fixed width but fluid method uses automatic heights." => [
-		0 => "Обидва методи використовують фіксовану ширину, але в адаптивному методі, висота обчислюється із збереженням пропорцій зображення.",
-	],
-	"Listing columns number" => [
-		0 => "Кількість колонок",
-	],
-	"Here you can set how many columns are used based on each target device." => [
-		0 => "Тут ви можете встановити, скільки стовпців використовуються на основі кожного цільового пристрою.",
-	],
-	"Phone" => [
-		0 => "Телефон",
-	],
-	"Phablet" => [
-		0 => "Фаблет",
-	],
-	"Tablet" => [
-		0 => "Планшет",
-	],
-	"Laptop" => [
-		0 => "Ноутбук",
-	],
-	"Desktop" => [
-		0 => "ПК",
-	],
-	"Put your themes in the %s folder" => [
-		0 => "Помістіть свої теми в папку %s",
-	],
-	"Tone" => [
-		0 => "Стиль",
-	],
-	"Light" => [
-		0 => "Світлий",
-	],
-	"Dark" => [
-		0 => "Темний",
-	],
-	"Main color" => [
-		0 => "Основний колір",
-	],
-	"Hexadecimal color value" => [
-		0 => "Шістнадцяткове значення кольору",
-	],
-	"Use this to set the main theme color. Value must be in <a href=\"%s\" target=\"_blank\">hex format</a>." => [
-		0 => "Використовуйте це, щоб встановити основну колірну тему. Значення має бути в <a href=\"%s\" target=\"_blank\">Hex форматі</a>.",
-	],
-	"Top bar button color" => [
-		0 => "Колір кнопки верхньої панелі",
-	],
-	"Blue" => [
-		0 => "Синій",
-	],
-	"Green" => [
-		0 => "Зелений",
-	],
-	"Orange" => [
-		0 => "Помаранчевий",
-	],
-	"Red" => [
-		0 => "Червоний",
-	],
-	"Grey" => [
-		0 => "Сірий",
-	],
-	"Black" => [
-		0 => "Чорний",
-	],
-	"White" => [
-		0 => "Білий",
-	],
-	"Color for the top bar buttons like the \"Create account\" button." => [
-		0 => "Колір кнопки \"Створити обліковий запис\" у верхній панелі кнопок .",
-	],
-	"Enable vector logo" => [
-		0 => "Увімкнути векторний логотип",
-	],
-	"Enable vector logo for high quality logo in devices with high pixel density." => [
-		0 => "Увімкніть векторний логотип для підвищення якості зображення на дисплеях з великою щільністю пікселів.",
-	],
-	"Vector logo image" => [
-		0 => "Векторний логотип",
-	],
-	"Vector version or your website logo in SVG format." => [
-		0 => "Векторний логотип вашого сайту у форматі SVG.",
-	],
-	"Raster logo image" => [
-		0 => "Растровий логотип",
-	],
-	"Bitmap version or your website logo. PNG format is recommended." => [
-		0 => "Растровий логотип вашого сайту. Рекомендується використовувати формат PNG.",
-	],
-	"Logo height" => [
-		0 => "Висота логотипу",
-	],
-	"No value" => [
-		0 => "Немає значення",
-	],
-	"Use this to set the logo height if needed." => [
-		0 => "Використовуйте це поле, якщо необхідно вказати висоту логотипу.",
-	],
-	"Favicon image" => [
-		0 => "Іконка сайту",
-	],
-	"Favicon image. Image must have same width and height." => [
-		0 => "Іконка вашого сайту. Ширина і висота даного зображення повинні бути однакові.",
-	],
-	"Enable download button" => [
-		0 => "Включити кнопку завантаження",
-	],
-	"Enable this if you want to show the image download button." => [
-		0 => "Увімкніть, щоб показувати кнопку завантаження зображення.",
-	],
-	"Enable right click on image" => [
-		0 => "Включити меню правої клавіши миші на зображенні",
-	],
-	"Enable this if you want to allow right click on image viewer page." => [
-		0 => "Включіть це, якщо Ви хочете дозволити меню правої клавіши миші",
-	],
-	"Enable show Exif data" => [
-		0 => "Включити показ Exif даних",
-	],
-	"Enable this if you want to show image Exif data." => [
-		0 => "Включіть це, якщо ви хочете показувати Exif дані.",
-	],
-	"Enable social share" => [
-		0 => "Увімкнути опцію \"поділитися\"",
-	],
-	"Enable this if you want to show social network buttons to share content." => [
-		0 => "Ввімкніть цю опцію, щоб показувати кнопки соціальних мереж.",
-	],
-	"Enable embed codes (content)" => [
-		0 => "Коди для вбудовування (в перегляді)",
-	],
-	"Enable this if you want to show embed codes for the content." => [
-		0 => "Ввімкніть цю опцію, якщо ви хочете показувати коди для вбудовування в перегляді зображень.",
-	],
-	"Not safe content checkbox in uploader" => [
-		0 => "Показувати у завантажувачі настройку для небезпечного змісту",
-	],
-	"Enable this if you want to show a checkbox to indicate not safe content upload." => [
-		0 => "Увімкніть, щоб дати користувачам можливість вказувати безпеку зображення при завантаженні.",
-	],
-	"Custom CSS code" => [
-		0 => "Власний CSS",
-	],
-	"Put your custom CSS code here. It will be placed as <style> just before the closing </head> tag." => [
-		0 => "Вставте сюди ваш власний CSS код. Він буде вставлений за допомогою тега <style> перед закриваючим тегом </head>",
-	],
-	"Custom JS code" => [
-		0 => "Власний JS",
-	],
-	"Put your custom JS code here. It will be placed as <script> just before the closing </head> tag." => [
-		0 => "Вставте сюди ваш власний JS код. Він буде вставлений за допомогою тега <script> перед закриваючим тегом </head>",
-	],
-	"Style" => [
-		0 => "Стиль",
-	],
-	"Landing page" => [
-		0 => "Стартова сторінка",
-	],
-	"Split landing + images" => [
-		0 => "Стартова сторінка + зображення",
-	],
-	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
-		0 => "Виберіть стиль головної сторінки. Щоб налаштувати його відредагуйте app/themes/%s/views/index.php",
-	],
-	"Cover image" => [
-		0 => "Зображення обкладинки",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити дане зображення? Ця дія є незворотньою",
-	],
-	"Delete image" => [
-		0 => "Видалити зображення",
-	],
-	"Vector version or your website logo in SVG format (only for homepage)." => [
-		0 => "Векторна версія логотипу вашого сайту у SVG форматі (тільки для домашньої сторінки)",
-	],
-	"Bitmap version or your website logo (only for homepage). PNG format is recommended." => [
-		0 => "Растрова версія логотипу вашого сайту у PNG форматі (тільки для домашньої сторінки)",
-	],
-	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
-		0 => "Це буде додано в середину домашньої сторінки %s як тег. Залиште поле пустим, якщо ви хочете використати дані по-замовчуванню",
-	],
-	"Paragraph" => [
-		0 => "Пункт",
-	],
-	"Call to action button color" => [
-		0 => "Колір кнопки дії",
-	],
-	"Color of the homepage call to action button." => [
-		0 => "Колір кнопки переходу на домашню сторінку",
-	],
-	"Call to action outline style button" => [
-		0 => "Контур кнопки для дії",
-	],
-	"Enable this to use outline style for the homepage call to action button." => [
-		0 => "Включіть це, щоб використовувати стиль обведення кнопки загрузки на стартовій сторінці.",
-	],
-	"Call to action functionality" => [
-		0 => "Заклик до дії",
-	],
-	"Trigger uploader" => [
-		0 => "Трігери завантаження",
-	],
-	"Open URL" => [
-		0 => "Відкрити посилання",
-	],
-	"Call to action URL" => [
-		0 => "Дія для посилання",
-	],
-	"Enter an absolute or relative URL" => [
-		0 => "Введіть абсолютне або відносне посилання",
-	],
-	"A relative URL like %r will be mapped to %l" => [
-		0 => "Відносне посилання як %r буде відображено в %l",
-	],
-	"Call to action HTML" => [
-		0 => "Дія для HTML",
-	],
-	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
-		0 => "Це буде додано в дію для тега <a>. Залиште це поле порожнім, щоб використовувати вміст за замовчуванням.",
-	],
-	"User IDs" => [
-		0 => "ID користувача",
-	],
-	"Minify code" => [
-		0 => "Мінімізувати код",
-	],
-	"Enable this if you want to auto minify CSS and JS code." => [
-		0 => "Включіть це, якщо ви хочете автоматично мінімізувати CSS та JS код.",
-	],
-	"Maintenance" => [
-		0 => "Обслуговування",
-	],
-	"When enabled the website will show a maintenance message. This setting doesn't affect administrators." => [
-		0 => "При включенні, відображає на сайті повідомлення про технічне обслуговування. Ця установка не впливає на адміністраторів.",
-	],
-	"Crypt salt" => [
-		0 => "Криптографічна сіль",
-	],
-	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
-		0 => "Ця сіль використовується для перетворення цифрових ID в літерні. Вона була створена при установці.",
-	],
-	"PHP error reporting" => [
-		0 => "Звіти про помилки PHP",
-	],
-	"Enable this if you want to print errors generated by PHP <a %s>error_reporting()</a>. This should be disabled in production." => [
-		0 => "Увімкніть це, якщо ви хочете щоб показувало помилки PHP <a %s>error_reporting()</a>. По замовчуванню це відключено.",
-	],
-	"Debug level" => [
-		0 => "Рівень налагодження",
-	],
-	"None" => [
-		0 => "Ні",
-	],
-	"Error log" => [
-		0 => "Журнал помилок",
-	],
-	"Print errors without error log" => [
-		0 => "Друк помилок без журналу помилок",
-	],
-	"Print and log errors" => [
-		0 => "Друк і журнал помилок",
-	],
-	"To configure the debug level check the <a %s>debug documentation</a>. Default level is \"Error log\" (1)." => [
-		0 => "Щоб налаштувати рівень налагодження перевірте <a %s>документацію по налагодженню</a>. Рівень за замовчуванням є \"Журнал помилок\" (1).",
-	],
-	"Default language" => [
-		0 => "Мова за замовчуванням",
-	],
-	"Default base language to use." => [
-		0 => "Використовується за замовчуванням мова.",
-	],
-	"Auto language" => [
-		0 => "Автоматичний вибір мови",
-	],
-	"Enable this if you want to automatically detect and set the right language for each user." => [
-		0 => "Включити це, якщо ви хочете, щоб автоматично виявлялась і встановлювалась правильна мова для кожного користувача.",
-	],
-	"Language chooser" => [
-		0 => "Вибір мови",
-	],
-	"Enable this if you want to allow language selection." => [
-		0 => "Ввімкніть це, якщо хочете дозволити вибір мови",
-	],
-	"Enabled languages" => [
-		0 => "Дозволені мови",
-	],
-	"Unchecked languages won't be used in your website." => [
-		0 => "Не відзначені мови не будуть використовуватись на вашому сайті.",
-	],
-	"Toggle this to enable or disable HTTPS" => [
-		0 => "Змініть цю настройку щоб включити або відключити HTTPS",
-	],
-	"Toggle this to enable or disable this storage" => [
-		0 => "Змініть цю настройку щоб включити або відключити це сховище",
-	],
-	"Quota" => [
-		0 => "Квота",
-	],
-	"Active" => [
-		0 => "Активне",
-	],
-	"Storage method" => [
-		0 => "Тип сховища",
-	],
-	"Local storage is used by default or when no external storage is active." => [
-		0 => "Локальне сховище використовується за замовчуванням або за відсутності активних зовнішніх сховищ.",
-	],
-	"If you need help check the <a %s>storage documentation</a>." => [
-		0 => "Якщо вам потрібна допомога зверніться до <a %s>документації</a>.",
-	],
-	"Edit storage" => [
-		0 => "Змінити",
-	],
-	"From name" => [
-		0 => "Відправник",
-	],
-	"Sender name for emails sent to users." => [
-		0 => "Ім'я відправника для розсилки повідомлень користувачам.",
-	],
-	"Email mode" => [
-		0 => "Режим електронної пошти",
-	],
-	"How to send emails? SMTP recommended." => [
-		0 => "Як відправляти повідомлення? Рекомендується використовувати SMTP.",
-	],
-	"SMTP server and port" => [
-		0 => "SMTP сервер та порт",
-	],
-	"SMTP server" => [
-		0 => "SMTP сервер",
-	],
-	"SMTP username" => [
-		0 => "Ім'я користувача SMTP",
-	],
-	"SMTP password" => [
-		0 => "Пароль SMTP",
-	],
-	"SMTP security" => [
-		0 => "Безпека SMTP",
-	],
-	"Unsecured" => [
-		0 => "Небезпечний",
-	],
-	"Send test email" => [
-		0 => "Надіслати тестове повідомлення",
-	],
-	"Use this to test how your emails are being delivered. We recommend you to use %s." => [
-		0 => "Використовуйте це тестове повідомлення для перевірки доставки пошти, Ми рекомендуємо використовувати %s.",
-	],
-	"You need a <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> for this." => [
-		0 => "Для цього вам необхідні <a href=\"https://developers.facebook.com/\" target=\"_blank\"> інструменти розробника Facebook</a>.",
-	],
-	"Facebook app id" => [
-		0 => "ID Facebook app",
-	],
-	"Facebook app secret" => [
-		0 => "Секрет Facebook app",
-	],
-	"You need a <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> for this." => [
-		0 => "Для цього вам необхідні <a href=\"https://apps.twitter.com\" target=\"_blank\">інструменти розробника Twitter</a>.",
-	],
-	"Twitter API key" => [
-		0 => "Ключ Twitter API",
-	],
-	"Twitter API secret" => [
-		0 => "Секрет Twitter API",
-	],
-	"Twitter account" => [
-		0 => "Акаунт в Twitter",
-	],
-	"You need a <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> for this." => [
-		0 => "Для цього вам необхідні <a href=\"https://cloud.google.com/console\" target=\"_blank\"> інструменти розробника Google</a>.",
-	],
-	"Google client id" => [
-		0 => "ID клиента Google",
-	],
-	"Google client secret" => [
-		0 => "Секрет клієнта Google",
-	],
-	"You need a <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> for this." => [
-		0 => "Для цього вам необхідні <a href=\"http://vk.com/dev\" target=\"_blank\">інструменти розробника ВКонтакті</a>.",
-	],
-	"VK client id" => [
-		0 => "Для ID клієнта ВКонтакті",
-	],
-	"VK client secret" => [
-		0 => "Секретний ключ клієнта ВКонтакті",
-	],
-	"You need a <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> for this." => [
-		0 => "Для цього вам необхідний <a href=\"%s\" target=\"_blank\">ключ reCAPTCHA</a>.",
-	],
-	"reCAPTCHA threshold" => [
-		0 => "Поріг спрацьовування reCAPTCHA",
-	],
-	"How many failed attempts are needed to ask for reCAPTCHA? Use zero (0) to always show reCAPTCHA." => [
-		0 => "Після скількох невдалих спроб потрібно використовувати reCAPTCHA ? Використовуйте нуль (0), щоб завжди показувати reCAPTCHA.",
-	],
-	"Comment code" => [
-		0 => "Код для системи коментарів",
-	],
-	"Disqus, Facebook or anything you want. It will be used in image view." => [
-		0 => "Disqus, Facebook або будь-яка система на ваш вибір. Вона буде використана при перегляді зображення.",
-	],
-	"Analytics code" => [
-		0 => "Код для збору статистики",
-	],
-	"Google Analytics or anything you want. It will be added to the theme footer." => [
-		0 => "Google Analytics або система збору статистики на ваш вибір. Цей код буде додано до \"підвал\" теми.",
-	],
-	"For documentation about the API check the <a %s>API documentation</a>" => [
-		0 => "Документація по API доступна за адресою <a %s>API документація</a>",
-	],
-	"API v1 key" => [
-		0 => "Ключ API v1",
-	],
-	"Use this key when using the <a %s>API v1</a>." => [
-		0 => "Використовуйте цей ключ для <a %s>API v1</a>.",
-	],
-	"Cookie law compliance" => [
-		0 => "Дотримання правил куків",
-	],
-	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
-		0 => "Цей параметр використовується для відображення повідомлення, що відповідає вимогам законодавства ЄС про куки. Примітка: Вам потрібно тільки це, якщо ваш сайт розміщений в ЄС, і якщо ви додали відстеження куків.",
-	],
-	"Save changes" => [
-		0 => "Зберегти зміни",
-	],
-	"Check the errors to proceed." => [
-		0 => "Перед тим як продовжити, перевірте правильність заповнення.",
-	],
-	"Added to %a and categorized in %c" => [
-		0 => "Додано до %a в категорію %c",
+	"Email address" => [
+		0 => "Адреса електронної пошти",
 	],
 	"Added to %s" => [
 		0 => "Додано до %s",
@@ -2687,14 +2207,8 @@ $translation_table = [
 	"More Exif data" => [
 		0 => "Більше даних Exif",
 	],
-	"Share image" => [
-		0 => "Поділитися",
-	],
-	"Album ID" => [
-		0 => "ID альбома",
-	],
-	"In this album" => [
-		0 => "У цьому альбомі",
+	"Add IP ban" => [
+		0 => "Додати блокування по IP",
 	],
 	"Upload and share your images." => [
 		0 => "Завантажуйте і діліться зображеннями.",
@@ -2702,17 +2216,11 @@ $translation_table = [
 	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
 		0 => "Перетягніть зображення яке Ви хочете загрузити в будь-яке місце і почніть завантажувати свої картинки. %s обмеження на один файл. Прямі посилання зображення, BBCode і HTML мініатюри.",
 	],
-	"Start uploading" => [
-		0 => "Почати завантаження",
-	],
 	"Sign up to unlock all the features" => [
 		0 => "Зареєструватися, щоб отримати більше можливостей.",
 	],
 	"Manage your content, create private albums, customize your profile and more." => [
 		0 => "Керуйте аккаунтом, створюйте альбоми, змінюйте свій профіль і багато іншого.",
-	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "У вас ще немає акаунта? <a href='%s'>Зареєструйтесь</a> зараз.",
 	],
 	"Logged out" => [
 		0 => "Вийти",
@@ -2720,32 +2228,11 @@ $translation_table = [
 	"You have been logged off %s. Hope to see you soon." => [
 		0 => "Успішний вихід з системи. До нових зустрічей на %s.",
 	],
-	"Go to homepage" => [
-		0 => "Головна",
-	],
 	"Website under maintenance" => [
 		0 => "Сайт на обслуговуванні",
 	],
 	"We're performing scheduled maintenance tasks in the website. Please come back in a few minutes." => [
 		0 => "Ми виконуємо планові роботи з технічного обслуговування на веб-сайті. Будь ласка, поверніться до нас трошки пізніше",
-	],
-	"You either don't have permission to access this page or the link has expired." => [
-		0 => "У вас немає прав на доступ до даної сторінки або посилання застаріло.",
-	],
-	"Search results" => [
-		0 => "Результати пошуку",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "Ви дійсно хочете видалити даного користувача? Ця дія є незворотньою.",
-	],
-	"Delete user" => [
-		0 => "Видалити користувача",
-	],
-	"Register date" => [
-		0 => "Дата реєстрації",
-	],
-	"Registration IP" => [
-		0 => "IP при реєстрації",
 	],
 	"Valid" => [
 		0 => "Підтверджений",
@@ -2755,9 +2242,6 @@ $translation_table = [
 	],
 	"Awaiting email" => [
 		0 => "Чекає повідомлення",
-	],
-	"Awaiting confirmation" => [
-		0 => "В черзі",
 	],
 	"%i to %f characters<br>Letters, numbers and \"_\"" => [
 		0 => "від %i до %f знаків<br>Букви, цифри і \"_\"",
@@ -2789,6 +2273,24 @@ $translation_table = [
 	"Timezone" => [
 		0 => "Часовий пояс",
 	],
+	"User has no connections." => [
+		0 => "У користувача немає зв'язків з іншими акаунтами.",
+	],
+	"Do you really want to disconnect %s from this account?" => [
+		0 => "Ви дійсно хочете відв'язати %s від цього аккаунта?",
+	],
+	"This account is connected to %s" => [
+		0 => "Цей акаунт пов'язаний з %s",
+	],
+	"Do you really want to disconnect your %s account?" => [
+		0 => "Ви дійсно хочете відв'язати ваш аккаунт %s?",
+	],
+	"You will be logged out and you won't be able to login to your account using this %s account." => [
+		0 => "Буде виконаний вихід із системи і ви більше не зможете входити через акаунт %s.",
+	],
+	"Button" => [
+		0 => "Кнопка",
+	],
 	"Current password" => [
 		0 => "Поточний пароль",
 	],
@@ -2816,56 +2318,14 @@ $translation_table = [
 	"Re-enter your password" => [
 		0 => "Повторіть пароль",
 	],
-	"Upload new image" => [
-		0 => "Завантажити зображення",
-	],
-	"Delete existing image" => [
-		0 => "Видалити",
-	],
 	"This is your real name, not your username." => [
 		0 => "Це ваше справжнє ім'я, а не ім'я користувача.",
-	],
-	"http://yourwebsite.com" => [
-		0 => "http://yourwebsite.com",
 	],
 	"Bio" => [
 		0 => "Біографія",
 	],
 	"Tell us a little bit about you" => [
 		0 => "Розкажіть нам трошки про себе",
-	],
-	"User has no connections." => [
-		0 => "У користувача немає зв'язків з іншими акаунтами.",
-	],
-	"Do you really want to disconnect %s from this account?" => [
-		0 => "Ви дійсно хочете відв'язати %s від цього аккаунта?",
-	],
-	"This account is connected to %s" => [
-		0 => "Цей акаунт пов'язаний з %s",
-	],
-	"Do you really want to disconnect your %s account?" => [
-		0 => "Ви дійсно хочете відв'язати ваш аккаунт %s?",
-	],
-	"You will be logged out and you won't be able to login to your account using this %s account." => [
-		0 => "Буде виконаний вихід із системи і ви більше не зможете входити через акаунт %s.",
-	],
-	"Your account is connected to %s" => [
-		0 => "Ваш аккаунт пов'язаний з %s",
-	],
-	"disconnect" => [
-		0 => "відв'язати",
-	],
-	"Connect %s" => [
-		0 => "Пов'язати %s",
-	],
-	"Feel free to browse and discover all my shared images and albums." => [
-		0 => "Не соромтеся, щоб переглянути всі мої завантажені зображення та альбоми.",
-	],
-	"Button" => [
-		0 => "Кнопка",
-	],
-	"View all my images" => [
-		0 => "Переглянути всі мої зображення",
 	],
 	"resend account activation" => [
 		0 => "Повторити відправку посилання для активації",
@@ -2876,8 +2336,8 @@ $translation_table = [
 	"Change background" => [
 		0 => "Змінити фон",
 	],
-	"The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?" => [
-		0 => "Фон профілю буде видалений.  Ви дійсно хочете видалити фон профілю?",
+	"Upload new image" => [
+		0 => "Завантажити зображення",
 	],
 	"Delete background" => [
 		0 => "Видалити фон",
@@ -2887,12 +2347,6 @@ $translation_table = [
 	],
 	"Follow" => [
 		0 => "Слідкувати",
-	],
-	"You have been forbidden to use this website." => [
-		0 => "Вам заборонено користуватися цим сайтом.",
-	],
-	"Plugin" => [
-		0 => "Плаґін",
 	],
 	"General questions/comments" => [
 		0 => "Загальні питання / коментарі",
@@ -2906,35 +2360,8 @@ $translation_table = [
 	"Invalid subject" => [
 		0 => "Неправильна тема",
 	],
-	"Mail error" => [
-		0 => "Помилка електронної пошти",
-	],
 	"Message sent. We will get in contact soon." => [
 		0 => "Повідомлення надіслано. Ми зв'яжемося найближчим часом.",
-	],
-	"All the changes that you have made will be lost if you continue." => [
-		0 => "Якщо ви продовжите, всі зроблені вами зміни будуть втрачені.",
-	],
-	"Changes saved successfully." => [
-		0 => "Зміни успішно збережені.",
-	],
-	"Go back to form" => [
-		0 => "Повернуться до форми",
-	],
-	"continue anyway" => [
-		0 => "все одно продовжити",
-	],
-	"Saving" => [
-		0 => "збереження",
-	],
-	"Sending" => [
-		0 => "Відправка",
-	],
-	"Confirm action" => [
-		0 => "Підтвердіть дію",
-	],
-	"information" => [
-		0 => "інформація",
 	],
 ];
 ?>

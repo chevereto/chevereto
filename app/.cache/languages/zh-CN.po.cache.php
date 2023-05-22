@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2021-06-19 15:47+0000',
-  'PO-Revision-Date' => '2021-06-19 15:47+0000',
+  'POT-Creation-Date' => '2023-05-21 15:42+0000',
+  'PO-Revision-Date' => '2023-05-21 15:42+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'zh_CN',
@@ -16,332 +16,17 @@ $translation_plural = array (
   'function' => '0',
 );
 $translation_table = [
-	"Invalid email" => [
-		0 => "无效的电子邮箱",
+	"You have been forbidden to use this website." => [
+		0 => "您已经被禁止使用本网站.",
 	],
-	"Invalid username" => [
-		0 => "无效的用户名",
+	"Moderate" => [
+		0 => "审核",
 	],
-	"Invalid password" => [
-		0 => "无效的密码",
+	"View all my images" => [
+		0 => "查看我的所有图片",
 	],
-	"Installed version is v%s" => [
-		0 => "当前版本为v%s",
-	],
-	"Can't connect to %s" => [
-		0 => "无法连接到%s",
-	],
-	"Last available release is v%s" => [
-		0 => "最新的可用版本为v%s",
-	],
-	"Update needed, proceeding to download" => [
-		0 => "需要更新，请继续下载",
-	],
-	"No update needed" => [
-		0 => "不需要更新",
-	],
-	"System files already up to date" => [
-		0 => "系统文件已经是最新的",
-	],
-	"Starting v%s download" => [
-		0 => "开始下载v%s",
-	],
-	"Downloaded v%s, proceeding to extraction" => [
-		0 => "已下载v%s, 继续解压",
-	],
-	"Attempting to extract v%s" => [
-		0 => "尝试解压v%s",
-	],
-	"Extraction completed" => [
-		0 => "解压完成",
-	],
-	"Proceding to install the update" => [
-		0 => "正在安装这个更新",
-	],
-	"Update failed" => [
-		0 => "更新失败",
-	],
-	"Update in progress" => [
-		0 => "正在更新",
-	],
-	"Missing %s file" => [
-		0 => "缺少 %s 文件",
-	],
-	"Invalid license info" => [
-		0 => "无效的许可证信息",
-	],
-	"Can't save file" => [
-		0 => "无法保存文件",
-	],
-	"Can't extract %s" => [
-		0 => "无法解压 %s",
-	],
-	"Can't create %s directory - %e" => [
-		0 => "无法创建 %s 目录 - %e",
-	],
-	"Can't update %s file - %e" => [
-		0 => "无法更新 %s 文件 - %e",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "继续前请检查表单中的错误.",
-	],
-	"Note: This content is private but anyone with the link will be able to see this." => [
-		0 => "注意: 此内容是私密的，但任何人通过链接将能够看到它。",
-	],
-	"Note: This content is password protected. Remember to pass the content password to share." => [
-		0 => "注意: 此内容已使用密码保护，请通过密码来分享。",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "注意: 此内容是私密的。若要分享，请更改隐私设置为“公开”。",
-	],
-	"You must enter the album name." => [
-		0 => "您必须输入相册名称.",
-	],
-	"Confirm" => [
-		0 => "确认",
-	],
-	"The content has been approved." => [
-		0 => "内容已获批准。",
-	],
-	"Select existing album" => [
-		0 => "选择现有的相册",
-	],
-	"An error occurred. Please try again later." => [
-		0 => "发生错误。请稍后再试。",
-	],
-	"Please select a valid image file type." => [
-		0 => "请选择一个有效的图像文件类型。",
-	],
-	"Please select a picture of at most %s size." => [
-		0 => "请选择最大 %s 的图像。",
-	],
-	"Profile image updated." => [
-		0 => "个人信息已更新。",
-	],
-	"Profile background image updated." => [
-		0 => "个人信息背景图片已更新。",
-	],
-	"Profile background image deleted." => [
-		0 => "个人信息背景图片已删除。",
-	],
-	"Error deleting profile background image." => [
-		0 => "删除个人信息的背景图片时出错。",
-	],
-	"Passwords don't match" => [
-		0 => "密码错误",
-	],
-	"Update available v%s" => [
-		0 => "有可用更新v%s",
-	],
-	"There is an update available for your system. You can automatic download and install this update or go to %s to proceed to download the file." => [
-		0 => "有系统可用的更新。您可以自动下载并安装此更新或者前往 %s 继续下载该更新文件。",
-	],
-	"The release notes for this update are:" => [
-		0 => "本次更新的发行说明：",
-	],
-	"system requirements" => [
-		0 => "系统要求",
-	],
-	"I confirm that this server meets the %s for this update" => [
-		0 => "我确认此服务器满足此次更新的 %s",
-	],
-	"Update now" => [
-		0 => "现在更新",
-	],
-	"This website is running latest %s version" => [
-		0 => "此网站正在运行最新版%s",
-	],
-	"Please review the system requirements before proceeding" => [
-		0 => "请在继续之前查看系统要求",
-	],
-	"loading" => [
-		0 => "正在加载",
-	],
-	"Toggle select" => [
-		0 => "选中/取消选中",
-	],
-	"Like" => [
-		0 => "喜欢",
-	],
-	"Toggle flag" => [
-		0 => "标记或取消标记",
-	],
-	"Edit" => [
-		0 => "编辑",
-	],
-	"Album" => [
-		0 => "相册",
-	],
-	"Approve" => [
-		0 => "批准",
-	],
-	"Delete" => [
-		0 => "删除",
-	],
-	"Close" => [
-		0 => "关闭",
-	],
-	"Previous" => [
-		0 => "上一页",
-	],
-	"Next" => [
-		0 => "下一页",
-	],
-	"Clipboard image" => [
-		0 => "剪贴板图像",
-	],
-	"File too big." => [
-		0 => "文件过大。",
-	],
-	"Invalid or unsupported file format." => [
-		0 => "无效或不支持的文件格式。",
-	],
-	"Some files couldn't be added" => [
-		0 => "有些文件无法添加",
-	],
-	"image" => [
-		0 => "图片",
-	],
-	"%s's Albums" => [
-		0 => "%s 的相册",
-	],
-	"Image edited successfully." => [
-		0 => "图片编辑成功。",
-	],
-	"private" => [
-		0 => "私密",
-	],
-	"Album edited successfully." => [
-		0 => "相册编辑成功。",
-	],
-	"Invalid URL key." => [
-		0 => "无效的 URL Key。",
-	],
-	"Category URL key already being used." => [
-		0 => "此分类的 URL key 已被占用。",
-	],
-	"Category successfully deleted." => [
-		0 => "当前分类删除成功。",
-	],
-	"Category %s added." => [
-		0 => "类别 %s 已增加。",
-	],
-	"Invalid expiration date." => [
-		0 => "无效的截止日期。",
-	],
-	"IP %s already banned." => [
-		0 => "IP %s 已经被禁止访问。",
-	],
-	"IP %s banned." => [
-		0 => "成功封禁IP %s。",
-	],
-	"IP ban successfully deleted." => [
-		0 => "IP 已从屏蔽列表中删除。",
-	],
-	"Please fill all the required fields." => [
-		0 => "请填写所有必填字段。",
-	],
-	"Invalid storage capacity value. Make sure to use a valid format." => [
-		0 => "无效的存储容量值。请务必使用一个有效的格式。",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "存储容量不能少于当前的使用情况（%s）。",
-	],
-	"Invalid URL." => [
-		0 => "无效的 URL。",
-	],
-	"Storage successfully edited." => [
-		0 => "储存编辑成功。",
-	],
-	"User added successfully." => [
-		0 => "分类添加成功。",
-	],
-	"The content has been deleted." => [
-		0 => "该图片已经被删除。",
-	],
-	"The content has been moved." => [
-		0 => "该图片已经被移动。",
-	],
-	"Select" => [
-		0 => "选择",
-	],
-	"Unselect" => [
-		0 => "取消选择",
-	],
-	"The content has been edited." => [
-		0 => "该内容已被编辑。",
-	],
-	"Import ID %s removed" => [
-		0 => "导入任务 ID %s 已删除",
-	],
-	"Spam detected" => [
-		0 => "垃圾邮件检测",
-	],
-	"album" => [
-		0 => "相册",
-	],
-	"Flooding detected. You can only upload %limit% %content% per %time%" => [
-		0 => "检测到泛洪。 您只能每 %time% 上传 %limit% %content%",
-	],
-	"Untitled" => [
-		0 => "无标题",
-	],
-	"%s's images" => [
-		0 => "%s 的图片",
-	],
-	"Private" => [
-		0 => "仅注册用户",
-	],
-	"Public" => [
-		0 => "访客开放",
-	],
-	"Me" => [
-		0 => "我",
-	],
-	"Link" => [
-		0 => "链接",
-	],
-	"Password" => [
-		0 => "密码",
-	],
-	"view" => [
-		0 => "次浏览",
-	],
-	"After %n %t" => [
-		0 => "经过 %n %t",
-	],
-	"minute" => [
-		0 => "分钟",
-	],
-	"hour" => [
-		0 => "小时",
-	],
-	"day" => [
-		0 => "天",
-	],
-	"week" => [
-		0 => "周",
-	],
-	"month" => [
-		0 => "月",
-	],
-	"year" => [
-		0 => "年",
-	],
-	"Don't autodelete" => [
-		0 => "不自动删除",
-	],
-	"Can't open %s for writing" => [
-		0 => "无法打开 %s 写入",
-	],
-	"Duplicated upload" => [
-		0 => "重复上传",
-	],
-	"Private upload" => [
-		0 => "私密（只有本人可见）",
-	],
-	"like" => [
-		0 => "喜欢",
+	"Feel free to browse and discover all my shared images and albums." => [
+		0 => "随意浏览, 发现我所有的图片和相册共享.",
 	],
 	"Recent" => [
 		0 => "最新",
@@ -349,113 +34,32 @@ $translation_table = [
 	"Trending" => [
 		0 => "热门",
 	],
-	"Top users" => [
-		0 => "所有用户",
-	],
-	"Most recent" => [
-		0 => "最新的",
-	],
-	"Oldest" => [
-		0 => "最旧的",
-	],
-	"Most viewed" => [
-		0 => "最热门的",
-	],
 	"Popular" => [
 		0 => "最爱",
-	],
-	"Most liked" => [
-		0 => "最喜欢的",
-	],
-	"Explore" => [
-		0 => "探索",
 	],
 	"Animated" => [
 		0 => "动图",
 	],
-	"Search" => [
-		0 => "搜索",
+	"Plugin" => [
+		0 => "插件",
 	],
-	"People" => [
-		0 => "人",
+	"Request denied" => [
+		0 => "请求被拒绝",
 	],
-	"Image" => [
-		0 => "图片",
+	"terms" => [
+		0 => "服务条款",
 	],
-	"User" => [
-		0 => "用户",
+	"privacy policy" => [
+		0 => "隐私政策",
 	],
-	"adult" => [
-		0 => "成人",
+	"I agree to the %terms_link and %privacy_link" => [
+		0 => "我同意 %terms_link 和 %privacy_link",
 	],
-	"teen" => [
-		0 => "青少年",
+	"That page doesn't exist" => [
+		0 => "该页面不存在",
 	],
-	"Content of type %s is forbidden" => [
-		0 => "禁止上传 %s 内容",
-	],
-	"Can't create %s destination dir" => [
-		0 => "无法创建 %s 目标目录",
-	],
-	"Internal" => [
-		0 => "内部",
-	],
-	"Unlimited" => [
-		0 => "无限制",
-	],
-	"used" => [
-		0 => "已使用",
-	],
-	"Private profile" => [
-		0 => "私隐设置",
-	],
-	"second" => [
-		0 => "秒",
-	],
-	"%s ago" => [
-		0 => "%s 前",
-	],
-	"moments ago" => [
-		0 => "刚刚",
-	],
-	"Dashboard" => [
-		0 => "仪表盘",
-	],
-	"There is an update available for your system. Go to %s to download and install this update." => [
-		0 => "您的系统有一个可用更新. 转到 %s 下载并安装此更新.",
-	],
-	"System database is outdated. You need to run the <a href=\"%s\">update</a> tool." => [
-		0 => "系统数据库已经过时. 您需要运行 <a href=\"%s\">更新</a> 工具.",
-	],
-	"Website is in maintenance mode. To revert this setting go to <a href=\"%s\">Dashboard > Settings</a>." => [
-		0 => "网站处于维护模式. 恢复设置 <a href=\"%s\">仪表盘 > 设置</a>.",
-	],
-	"You should disable PHP error reporting for production enviroment. Go to <a href='%s'>System settings</a> to revert this setting." => [
-		0 => "您应该在生产环境中禁用PHP错误报告. 转到<a href='%s'>系统设置</a>恢复此设置.",
-	],
-	"You haven't changed the default email settings. Go to <a href='%s'>Email settings</a> to fix this." => [
-		0 => "您没有改变默认的电子邮件设置. 转到<a href='%s'>电子邮件设置</a>以解决此问题.",
-	],
-	"There is an update available for your Chevereto based website." => [
-		0 => "Chevereto有可用更新",
-	],
-	"admin dashboard" => [
-		0 => "管理仪表盘",
-	],
-	"You can apply this update directly from your %a or download it from %s and then manually install it." => [
-		0 => "您可以直接从 %a 安装此更新或从 %s 下载, 然后手动安装更新.",
-	],
-	"view on %s" => [
-		0 => "%s 已查看",
-	],
-	"cookie policy" => [
-		0 => "cookie 政策",
-	],
-	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
-		0 => "我们使用我们自己的和第三方的 cookie 来改善您的浏览体验和我们的服务。如果您继续使用我们的网站，即表示您接受此 %cookie_policy_link。",
-	],
-	"I understand" => [
-		0 => "\"我\"明白了",
+	"Page %s" => [
+		0 => "第 %s 页",
 	],
 	"Forgot password?" => [
 		0 => "忘记密码?",
@@ -469,6 +73,12 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "添加您的电子邮件地址",
 	],
+	"Awaiting confirmation" => [
+		0 => "等待确认",
+	],
+	"Two-factor authentication" => [
+		0 => "双重验证",
+	],
 	"Email changed" => [
 		0 => "该电子邮件已修改",
 	],
@@ -480,9 +90,6 @@ $translation_table = [
 	],
 	"User doesn't have an email." => [
 		0 => "用户没有设置电子邮件.",
-	],
-	"Request denied" => [
-		0 => "请求被拒绝",
 	],
 	"Account needs to be activated to use this feature" => [
 		0 => "帐号需要激活才能使用此功能",
@@ -505,8 +112,23 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "欢迎来到 %s",
 	],
+	"Invalid password" => [
+		0 => "无效的密码",
+	],
+	"Passwords don't match" => [
+		0 => "密码错误",
+	],
+	"Invalid email" => [
+		0 => "无效的电子邮箱",
+	],
 	"Email already being used" => [
 		0 => "该电子邮箱已经被使用",
+	],
+	"Invalid code" => [
+		0 => "无效的代码",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "继续前请检查表单中的错误.",
 	],
 	"Password required" => [
 		0 => "需要密码",
@@ -514,8 +136,11 @@ $translation_table = [
 	"Embed codes" => [
 		0 => "嵌入代码",
 	],
-	"Sub albums" => [
-		0 => "子相册",
+	"albums" => [
+		0 => "相册",
+	],
+	"Sub %s" => [
+		0 => "子 %s",
 	],
 	"Info" => [
 		0 => "详细",
@@ -523,41 +148,149 @@ $translation_table = [
 	"%a album hosted in %w" => [
 		0 => "%a 相册托管在 %w",
 	],
+	"image" => [
+		0 => "图片",
+	],
 	"Stats" => [
 		0 => "统计",
 	],
 	"Images" => [
 		0 => "图片",
 	],
-	"Albums" => [
+	"Album" => [
 		0 => "相册",
 	],
-	"Users" => [
+	"User" => [
 		0 => "用户",
-	],
-	"Settings" => [
-		0 => "设置",
 	],
 	"Bulk importer" => [
 		0 => "批量导入",
 	],
-	"install update" => [
-		0 => "安装更新",
+	"Settings" => [
+		0 => "设置",
 	],
-	"check for updates" => [
-		0 => "检查更新",
+	"Website" => [
+		0 => "网站",
 	],
-	"Contributing" => [
-		0 => "贡献",
+	"Content" => [
+		0 => "内容",
+	],
+	"Listings" => [
+		0 => "页面列表",
+	],
+	"Image upload" => [
+		0 => "图片上传",
+	],
+	"Semantics" => [
+		0 => "语义",
+	],
+	"Categories" => [
+		0 => "分类",
+	],
+	"Theme" => [
+		0 => "主题",
+	],
+	"System" => [
+		0 => "系统",
+	],
+	"Languages" => [
+		0 => "语言",
+	],
+	"Email" => [
+		0 => "电子邮件",
+	],
+	"Tools" => [
+		0 => "工具",
+	],
+	"Logo" => [
+		0 => "Logo",
+	],
+	"External storage" => [
+		0 => "外部存储",
+	],
+	"Homepage" => [
+		0 => "主页",
+	],
+	"Pages" => [
+		0 => "页面",
+	],
+	"Routing" => [
+		0 => "路径",
+	],
+	"External services" => [
+		0 => "外部服务",
+	],
+	"Login providers" => [
+		0 => "登录提供商",
+	],
+	"Upload plugin" => [
+		0 => "上传插件",
+	],
+	"Cookie compliance" => [
+		0 => "Cookie 合规性",
+	],
+	"Consent screen" => [
+		0 => "内容警告",
+	],
+	"Flood protection" => [
+		0 => "防洪保护",
+	],
+	"Banners" => [
+		0 => "横幅广告",
+	],
+	"IP bans" => [
+		0 => "IP屏蔽",
+	],
+	"Watermarks" => [
+		0 => "水印",
+	],
+	"Documentation" => [
+		0 => "文档",
+	],
+	"Admin" => [
+		0 => "管理员",
+	],
+	"%s docs" => [
+		0 => "%s 文档",
 	],
 	"Support" => [
 		0 => "客服支持",
 	],
-	"Bug tracking" => [
-		0 => "错误跟踪",
+	"Releases" => [
+		0 => "已发行版本",
 	],
-	"Documentation" => [
-		0 => "文档",
+	"Community" => [
+		0 => "社区",
+	],
+	"License" => [
+		0 => "许可证",
+	],
+	"install update" => [
+		0 => "安装更新",
+	],
+	"Check updates" => [
+		0 => "检查更新",
+	],
+	"not running" => [
+		0 => "未运行",
+	],
+	"Max. upload file size" => [
+		0 => "最大的文件上传",
+	],
+	"Graphics Library" => [
+		0 => "图形库",
+	],
+	"Rebuild stats" => [
+		0 => "重建统计信息",
+	],
+	"Connecting IP" => [
+		0 => "正在连接的IP",
+	],
+	"Not your IP?" => [
+		0 => "这不是我的IP？",
+	],
+	"Cron last ran" => [
+		0 => "上次运行Cron",
 	],
 	"PHP version" => [
 		0 => "PHP版本",
@@ -571,9 +304,6 @@ $translation_table = [
 	"MySQL server info" => [
 		0 => "MySQL数据库服务器信息",
 	],
-	"Graphics Library" => [
-		0 => "图形库",
-	],
 	"File uploads" => [
 		0 => "文件上传",
 	],
@@ -583,12 +313,6 @@ $translation_table = [
 	"Disabled" => [
 		0 => "禁用",
 	],
-	"Max. upload file size" => [
-		0 => "最大的文件上传",
-	],
-	"Max. post size" => [
-		0 => "最大的执行大小",
-	],
 	"Max. execution time" => [
 		0 => "最大的执行时间",
 	],
@@ -597,78 +321,6 @@ $translation_table = [
 	],
 	"Memory limit" => [
 		0 => "内存限制",
-	],
-	"Rebuild stats" => [
-		0 => "重建统计信息",
-	],
-	"Connecting IP" => [
-		0 => "正在连接的IP",
-	],
-	"Not your IP?" => [
-		0 => "这不是我的IP？",
-	],
-	"Website" => [
-		0 => "网站",
-	],
-	"Content" => [
-		0 => "内容",
-	],
-	"Pages" => [
-		0 => "页面",
-	],
-	"Listings" => [
-		0 => "页面列表",
-	],
-	"Image upload" => [
-		0 => "图片上传",
-	],
-	"Categories" => [
-		0 => "分类",
-	],
-	"Consent screen" => [
-		0 => "内容警告",
-	],
-	"Flood protection" => [
-		0 => "防洪保护",
-	],
-	"Theme" => [
-		0 => "主题",
-	],
-	"Homepage" => [
-		0 => "主页",
-	],
-	"Banners" => [
-		0 => "横幅广告",
-	],
-	"System" => [
-		0 => "系统",
-	],
-	"Routing" => [
-		0 => "路径",
-	],
-	"Languages" => [
-		0 => "语言",
-	],
-	"External storage" => [
-		0 => "外部存储",
-	],
-	"Email" => [
-		0 => "电子邮件",
-	],
-	"Social networks" => [
-		0 => "社交网络",
-	],
-	"External services" => [
-		0 => "外部服务",
-	],
-	"IP bans" => [
-		0 => "IP屏蔽",
-	],
-	"Additional settings" => [
-		0 => "其他设置",
-	],
-	"Tools" => [
-		0 => "工具",
 	],
 	"Can't delete all homepage cover images" => [
 		0 => "不能删除所有的首页封面图片",
@@ -751,14 +403,14 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "页脚（图像页）",
 	],
-	"Album page" => [
-		0 => "相册页面",
+	"%s page" => [
+		0 => "%s 页面",
 	],
-	"Before header (album page)" => [
-		0 => "头前（相册页面）",
+	"Before header (%s page)" => [
+		0 => "标题前（%s 页）",
 	],
-	"After header (album page)" => [
-		0 => "头后（相册页面）",
+	"After header (%s page)" => [
+		0 => "标题后（%s 页）",
 	],
 	"User profile page" => [
 		0 => "个人信息页",
@@ -769,11 +421,11 @@ $translation_table = [
 	"Before listing (user profile)" => [
 		0 => "列表（个人信息页）",
 	],
-	"Explore page" => [
-		0 => "探索页",
+	"Explore" => [
+		0 => "探索",
 	],
-	"After top (explore page)" => [
-		0 => "头前（探索页）",
+	"After top (%s page)" => [
+		0 => "页顶后（%s 页）",
 	],
 	"NSFW" => [
 		0 => "不安全（NSFW）",
@@ -817,14 +469,11 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "无效的值",
 	],
-	"Invalid theme tone" => [
-		0 => "无效的主题色调",
+	"palette" => [
+		0 => "调色板",
 	],
-	"Invalid theme main color" => [
-		0 => "无效的主题主要颜色",
-	],
-	"Invalid theme top bar button color" => [
-		0 => "无效的主题顶部菜单栏按钮颜色",
+	"Invalid %s" => [
+		0 => "无效 %s",
 	],
 	"Invalid theme image listing size" => [
 		0 => "无效的主题图片列表样式",
@@ -907,6 +556,9 @@ $translation_table = [
 	"Invalid URL" => [
 		0 => "无效URL",
 	],
+	"Invalid key" => [
+		0 => "无效的密钥",
+	],
 	"Routes can't be the same" => [
 		0 => "路径不能是相同的",
 	],
@@ -934,9 +586,6 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "无效的SMTP用户名",
 	],
-	"Invalid key" => [
-		0 => "无效的密钥",
-	],
 	"This URL key is already being used by another page (ID %s)" => [
 		0 => "此链接值已被另一个页面使用 (ID %s)",
 	],
@@ -946,23 +595,20 @@ $translation_table = [
 	"Can't save page contents: %s." => [
 		0 => "无法保存页面内容: %s.",
 	],
+	"Dashboard" => [
+		0 => "仪表盘",
+	],
 	"Following" => [
 		0 => "已关注",
 	],
 	"About" => [
 		0 => "关于",
 	],
+	"Comments" => [
+		0 => "评论",
+	],
 	"Image ID" => [
 		0 => "图片ID",
-	],
-	"Uploader IP" => [
-		0 => "上传者IP",
-	],
-	"Ban IP" => [
-		0 => "屏蔽IP",
-	],
-	"IP already banned" => [
-		0 => "IP已被屏蔽",
 	],
 	"Upload date" => [
 		0 => "上传时间",
@@ -1003,8 +649,26 @@ $translation_table = [
 	"Thumbnail image (linked)" => [
 		0 => "缩略图（链接）",
 	],
+	"Start uploading" => [
+		0 => "开始上传",
+	],
 	"Login needed" => [
 		0 => "需要登录",
+	],
+	"Image" => [
+		0 => "图片",
+	],
+	"%s doesn't exists" => [
+		0 => "%s 不存在",
+	],
+	"%s edited" => [
+		0 => "%s 已编辑",
+	],
+	"Category" => [
+		0 => "分类",
+	],
+	"%s URL key already being used." => [
+		0 => "%s URL已被使用",
 	],
 	"IP address already banned" => [
 		0 => "IP地址已被禁止",
@@ -1012,11 +676,20 @@ $translation_table = [
 	"Missing values" => [
 		0 => "遗漏值",
 	],
+	"Invalid username" => [
+		0 => "无效的用户名",
+	],
 	"Invalid role" => [
 		0 => "无效的角色",
 	],
 	"Username already being used" => [
 		0 => "用户名已被使用",
+	],
+	"%s added" => [
+		0 => "%s 已添加",
+	],
+	"%s not found" => [
+		0 => "%s 未找到",
 	],
 	"Add a password or another social connection before deleting %s" => [
 		0 => "添加一个密码或其他社交连接之前删除 %s",
@@ -1039,14 +712,17 @@ $translation_table = [
 	"Downloading %s data" => [
 		0 => "正在下载 %s 数据",
 	],
-	"User %s followed" => [
-		0 => "用户 %s 已关注",
+	"%s %u followed" => [
+		0 => "%s %u 关注了",
 	],
-	"User %s unfollowed" => [
-		0 => "用户 %s 取消关注",
+	"%s %u unfollowed" => [
+		0 => "%s %u 取消关注",
 	],
-	"Album cover altered" => [
-		0 => "相册封面更改了",
+	"%s doesn't belong to this %t" => [
+		0 => "%s 不属于这个 %t",
+	],
+	"%s cover updated" => [
+		0 => "%s 封面已更新",
 	],
 	"Content liked" => [
 		0 => "喜欢的内容",
@@ -1069,23 +745,14 @@ $translation_table = [
 	"Sign in" => [
 		0 => "登录",
 	],
-	"Moderate" => [
-		0 => "审核",
-	],
 	"Upload images" => [
 		0 => "上传图片",
 	],
-	"Upload plugin" => [
-		0 => "上传插件",
+	"%t search results for %s" => [
+		0 => "%s 的 %t 个搜索结果",
 	],
-	"Image search results for %s" => [
-		0 => "图片搜索结果 %s",
-	],
-	"Album search results for %s" => [
-		0 => "相册搜索结果 %s",
-	],
-	"User search results for %s" => [
-		0 => "用户搜索结果 %s",
+	"Search" => [
+		0 => "搜索",
 	],
 	"Account" => [
 		0 => "账户",
@@ -1093,11 +760,17 @@ $translation_table = [
 	"Profile" => [
 		0 => "个人资料",
 	],
-	"Linked accounts" => [
-		0 => "关联账户",
+	"Password" => [
+		0 => "密码",
+	],
+	"Security" => [
+		0 => "安全",
+	],
+	"Connections" => [
+		0 => "连接",
 	],
 	"Powered by" => [
-		0 => "Powered by",
+		0 => "致谢",
 	],
 	"Invalid image expiration: %s" => [
 		0 => "无效的图片失效: %s",
@@ -1110,6 +783,9 @@ $translation_table = [
 	],
 	"Invalid website" => [
 		0 => "无效的网站",
+	],
+	"Spam detected" => [
+		0 => "垃圾邮件检测",
 	],
 	"Wrong password" => [
 		0 => "密码错误",
@@ -1132,6 +808,27 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "设置为 %s",
 	],
+	"Username" => [
+		0 => "用户名",
+	],
+	"user" => [
+		0 => "用户",
+	],
+	"Do you really want to delete this %s?" => [
+		0 => "您确定要删除 %s 吗？",
+	],
+	"This can't be undone." => [
+		0 => "此操作无法撤销。",
+	],
+	"Delete user" => [
+		0 => "删除用户",
+	],
+	"User ID" => [
+		0 => "用户ID",
+	],
+	"Register date" => [
+		0 => "注册日期",
+	],
 	"You must agree to the terms and privacy policy" => [
 		0 => "您必须同意我们的服务条款和隐私政策",
 	],
@@ -1144,11 +841,11 @@ $translation_table = [
 	"Upload" => [
 		0 => "上传",
 	],
-	"%s's Images" => [
-		0 => "%s 的图片",
+	"%t by %s" => [
+		0 => "来自 %s 的 %t",
 	],
-	"Results for" => [
-		0 => "结果",
+	"Albums" => [
+		0 => "相册",
 	],
 	"Liked by %s" => [
 		0 => "%s 的喜欢",
@@ -1156,8 +853,17 @@ $translation_table = [
 	"Liked" => [
 		0 => "喜欢",
 	],
+	"%t followed by %s" => [
+		0 => "用户 %s 已关注 %t",
+	],
+	"%t following %s" => [
+		0 => "%t 关注 %s",
+	],
 	"Followers" => [
 		0 => "粉丝",
+	],
+	"Search results for %s" => [
+		0 => "%s 的搜索结果",
 	],
 	"%n (%u) albums on %w" => [
 		0 => "%n (%u) 相册在 %w",
@@ -1165,11 +871,182 @@ $translation_table = [
 	"%n (%u) on %w" => [
 		0 => "%n (%u) 在 %w",
 	],
+	"album" => [
+		0 => "相册",
+	],
+	"Flooding detected. You can only upload %limit% %content% per %time%" => [
+		0 => "检测到洪水攻击。 您只能每 %time% 上传 %limit% %content%",
+	],
+	"Unnamed" => [
+		0 => "未命名",
+	],
+	"Note: This content is private but anyone with the link will be able to see this." => [
+		0 => "注意: 此内容是私密的，但任何人通过链接将能够看到它。",
+	],
+	"Note: This content is password protected. Remember to pass the content password to share." => [
+		0 => "注意: 此内容已使用密码保护，请通过密码来分享。",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "注意: 此内容是私密的。若要分享，请更改隐私设置为“公开”。",
+	],
+	"Private" => [
+		0 => "仅注册用户",
+	],
+	"Public" => [
+		0 => "访客开放",
+	],
+	"Me" => [
+		0 => "我",
+	],
+	"Link" => [
+		0 => "链接",
+	],
+	"CSAM content is forbidden" => [
+		0 => "禁止儿童色情内容",
+	],
+	"After %n %t" => [
+		0 => "经过 %n %t",
+	],
+	"minute" => [
+		0 => "分钟",
+	],
+	"hour" => [
+		0 => "小时",
+	],
+	"day" => [
+		0 => "天",
+	],
+	"week" => [
+		0 => "周",
+	],
+	"month" => [
+		0 => "月",
+	],
+	"year" => [
+		0 => "年",
+	],
+	"Don't autodelete" => [
+		0 => "不自动删除",
+	],
+	"Can't open %s for writing" => [
+		0 => "无法打开 %s 写入",
+	],
+	"Duplicated upload" => [
+		0 => "重复上传",
+	],
+	"Private upload" => [
+		0 => "私密（只有本人可见）",
+	],
+	"view" => [
+		0 => "次浏览",
+	],
+	"like" => [
+		0 => "喜欢",
+	],
+	"Top" => [
+		0 => "顶部",
+	],
+	"Most recent" => [
+		0 => "最新的",
+	],
+	"Oldest" => [
+		0 => "最旧的",
+	],
+	"Most viewed" => [
+		0 => "最热门的",
+	],
+	"Most liked" => [
+		0 => "最喜欢的",
+	],
+	"People" => [
+		0 => "人",
+	],
+	"adult" => [
+		0 => "成人",
+	],
+	"teen" => [
+		0 => "青少年",
+	],
+	"Content of type %s is forbidden" => [
+		0 => "禁止上传 %s 内容",
+	],
+	"Can't create %s destination dir" => [
+		0 => "无法创建 %s 目标目录",
+	],
+	"Internal" => [
+		0 => "内部",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "存储容量不能少于当前的使用情况（%s）。",
+	],
+	"Unlimited" => [
+		0 => "无限制",
+	],
+	"used" => [
+		0 => "已使用",
+	],
+	"Private profile" => [
+		0 => "私隐设置",
+	],
+	"Share" => [
+		0 => "分享",
+	],
+	"view on %s" => [
+		0 => "%s 已查看",
+	],
+	"cookie policy" => [
+		0 => "cookie 政策",
+	],
+	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
+		0 => "我们使用我们自己的和第三方的 cookie 来改善您的浏览体验和我们的服务。如果您继续使用我们的网站，即表示您接受此 %cookie_policy_link。",
+	],
+	"I understand" => [
+		0 => "我明白",
+	],
+	"second" => [
+		0 => "秒",
+	],
+	"%s ago" => [
+		0 => "%s 前",
+	],
+	"moments ago" => [
+		0 => "刚刚",
+	],
+	"There is an update available for your system." => [
+		0 => "有适用于您的系統更新。",
+	],
+	"Go to %s to download and install this update." => [
+		0 => "转到 %s 下载并安装此更新。",
+	],
+	"System database is outdated." => [
+		0 => "系统数据库已过期。",
+	],
+	"Update" => [
+		0 => "更新",
+	],
+	"You need to %s." => [
+		0 => "你需要 %s。",
+	],
+	"Website is in maintenance mode." => [
+		0 => "网站正处于维护模式。",
+	],
+	"To revert this setting go to %s." => [
+		0 => "要恢复此设置，请转到 %s。",
+	],
+	"%s settings" => [
+		0 => "%s 设置",
+	],
+	"You haven't changed the default email settings. Go to %emailSettings% to fix this." => [
+		0 => "您没有更改默认电子邮件设置。 请转到 %emailSettings% 来解决这个问题。",
+	],
 	"Discovery" => [
 		0 => "发现",
 	],
 	"Random" => [
 		0 => "随机",
+	],
+	"Close" => [
+		0 => "关闭",
 	],
 	"Advanced search" => [
 		0 => "高级搜索",
@@ -1180,17 +1057,224 @@ $translation_table = [
 	"Notifications" => [
 		0 => "通知",
 	],
+	"loading" => [
+		0 => "正在加载",
+	],
 	"You don't have notifications" => [
 		0 => "您没有任何通知",
 	],
 	"My Profile" => [
 		0 => "我的图片",
 	],
-	"Lights" => [
-		0 => "灯光",
+	"Palette" => [
+		0 => "调色板",
+	],
+	"Administrator" => [
+		0 => "管理员",
+	],
+	"Manager" => [
+		0 => "管理",
 	],
 	"Sign out" => [
 		0 => "注销",
+	],
+	"You must enter the album name." => [
+		0 => "您必须输入相册名称.",
+	],
+	"Confirm" => [
+		0 => "确认",
+	],
+	"The content has been approved." => [
+		0 => "内容已获批准。",
+	],
+	"Select existing album" => [
+		0 => "选择现有的相册",
+	],
+	"An error occurred. Please try again later." => [
+		0 => "发生错误。请稍后再试。",
+	],
+	"Please select a valid image file type." => [
+		0 => "请选择一个有效的图像文件类型。",
+	],
+	"Please select a picture of at most %s size." => [
+		0 => "请选择最大 %s 的图像。",
+	],
+	"Profile image updated." => [
+		0 => "个人信息已更新。",
+	],
+	"Profile background image updated." => [
+		0 => "个人信息背景图片已更新。",
+	],
+	"Profile background image deleted." => [
+		0 => "个人信息背景图片已删除。",
+	],
+	"Error deleting profile background image." => [
+		0 => "删除个人信息的背景图片时出错。",
+	],
+	"Update available v%s" => [
+		0 => "有可用更新v%s",
+	],
+	"There is an update available for this system." => [
+		0 => "有适用于您的系统更新。",
+	],
+	"Update instructions" => [
+		0 => "更新说明",
+	],
+	"This website is running latest %s version" => [
+		0 => "此网站正在运行最新版%s",
+	],
+	"Please review the system requirements before proceeding" => [
+		0 => "请在继续之前查看系统要求",
+	],
+	"Toggle select" => [
+		0 => "选中/取消选中",
+	],
+	"Like" => [
+		0 => "喜欢",
+	],
+	"Create album" => [
+		0 => "创建相册",
+	],
+	"Toggle flag" => [
+		0 => "标记或取消标记",
+	],
+	"Edit" => [
+		0 => "编辑",
+	],
+	"Approve" => [
+		0 => "批准",
+	],
+	"Delete" => [
+		0 => "删除",
+	],
+	"Previous" => [
+		0 => "上一页",
+	],
+	"Next" => [
+		0 => "下一页",
+	],
+	"Zoom" => [
+		0 => "缩放",
+	],
+	"File too big." => [
+		0 => "文件过大。",
+	],
+	"Invalid or unsupported file format." => [
+		0 => "无效或不支持的文件格式。",
+	],
+	"Some files couldn't be added" => [
+		0 => "有些文件无法添加",
+	],
+	"file" => [
+		0 => "文件",
+	],
+	"%s's Albums" => [
+		0 => "%s 的相册",
+	],
+	"Image edited successfully." => [
+		0 => "图片编辑成功。",
+	],
+	"private" => [
+		0 => "私密",
+	],
+	"The content has been edited." => [
+		0 => "该内容已被编辑。",
+	],
+	"Invalid URL key." => [
+		0 => "无效的 URL Key。",
+	],
+	"Category URL key already being used." => [
+		0 => "此分类的 URL key 已被占用。",
+	],
+	"Category successfully deleted." => [
+		0 => "当前分类删除成功。",
+	],
+	"Category %s added." => [
+		0 => "类别 %s 已增加。",
+	],
+	"Invalid expiration date." => [
+		0 => "无效的截止日期。",
+	],
+	"IP %s already banned." => [
+		0 => "IP %s 已经被禁止访问。",
+	],
+	"IP %s banned." => [
+		0 => "成功封禁IP %s。",
+	],
+	"IP ban successfully deleted." => [
+		0 => "IP 已从屏蔽列表中删除。",
+	],
+	"Please fill all the required fields." => [
+		0 => "请填写所有必填字段。",
+	],
+	"Invalid storage capacity value. Make sure to use a valid format." => [
+		0 => "无效的存储容量值。请务必使用一个有效的格式。",
+	],
+	"Invalid URL." => [
+		0 => "无效的 URL。",
+	],
+	"Storage successfully edited." => [
+		0 => "储存编辑成功。",
+	],
+	"%s added successfully." => [
+		0 => "%s 添加成功。",
+	],
+	"The content has been deleted." => [
+		0 => "该图片已经被删除。",
+	],
+	"The content has been moved." => [
+		0 => "该图片已经被移动。",
+	],
+	"Select" => [
+		0 => "选择",
+	],
+	"Unselect" => [
+		0 => "取消选择",
+	],
+	"Import ID %s removed" => [
+		0 => "导入任务 ID %s 已删除",
+	],
+	"All the changes that you have made will be lost if you continue." => [
+		0 => "如果您继续您所做的所有更改将丢失.",
+	],
+	"Save changes" => [
+		0 => "保存修改",
+	],
+	"Submit" => [
+		0 => "提交",
+	],
+	"Changes saved successfully." => [
+		0 => "成功保存更改.",
+	],
+	"Go back to form" => [
+		0 => "返回表格",
+	],
+	"or" => [
+		0 => "或",
+	],
+	"continue anyway" => [
+		0 => "仍要继续",
+	],
+	"cancel" => [
+		0 => "取消",
+	],
+	"Saving" => [
+		0 => "保存",
+	],
+	"Sending" => [
+		0 => "发送中",
+	],
+	"Confirm action" => [
+		0 => "操作确认",
+	],
+	"information" => [
+		0 => "信息",
+	],
+	"Paste" => [
+		0 => "粘贴",
+	],
+	"Right click" => [
+		0 => "右键点击",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "我们收到了在 %w 更改 <a href=\"%u\">%n</a> 帐户电子邮件的要求.",
@@ -1240,14 +1324,23 @@ $translation_table = [
 	"Select the images to upload" => [
 		0 => "选择需要上传的图片",
 	],
+	"You can also %i or %u." => [
+		0 => "您也可以%i或者%u。",
+	],
+	"You can also %s." => [
+		0 => "您也可以 %s.",
+	],
 	"browse from your computer" => [
 		0 => "浏览您的计算机",
 	],
 	"add image URLs" => [
 		0 => "添加图像的URL",
 	],
-	"You can also %i or %u." => [
-		0 => "您也可以%i或者%u。",
+	"You can also %i, %c or %u." => [
+		0 => "您也可以%i,%c或者%u.",
+	],
+	"You can also %i or %c." => [
+		0 => "您也可以 %i 或 %c。",
 	],
 	"browse from your device" => [
 		0 => "浏览您的计算机",
@@ -1255,26 +1348,17 @@ $translation_table = [
 	"take a picture" => [
 		0 => "拍照",
 	],
-	"You can also %i, %c or %u." => [
-		0 => "您也可以%i,%c或者%u.",
+	"Register to get %s" => [
+		0 => "注册之后可上传大小:%s",
 	],
-	"Edit or resize any image by clicking the image preview" => [
-		0 => "通过点击图像预览来编辑或调整任意图像的大小",
+	"clicking" => [
+		0 => "点击",
 	],
-	"Edit any image by touching the image preview" => [
-		0 => "通过点击图像预览来调整任意图像",
+	"Customize upload by %action% on any preview" => [
+		0 => "在任何预览上 %action% 自定义上传",
 	],
-	"your computer" => [
-		0 => "您的计算机",
-	],
-	"You can add more images from %i or %u." => [
-		0 => "您可以从%i或者%u添加更多的图片.",
-	],
-	"your device" => [
-		0 => "您的设备",
-	],
-	"You can add more images from %i, %c or %u." => [
-		0 => "您可以从%i,%c或者%u添加更多的图片.",
+	"touching" => [
+		0 => "触摸",
 	],
 	"Uploading %q %o" => [
 		0 => "上传 %q %o",
@@ -1297,11 +1381,11 @@ $translation_table = [
 	"You can %c with the content just uploaded." => [
 		0 => "您可以将刚刚上传的图片 %c.",
 	],
-	"create a new album" => [
-		0 => "创建相册",
+	"create new %s" => [
+		0 => "创建新的 %s",
 	],
-	"move it to an existing album" => [
-		0 => "移动到现有的相册",
+	"move it to an existing %s" => [
+		0 => "将其移动到现有的 %s",
 	],
 	"You must %s or %l to save this content into your account." => [
 		0 => "您必须 %s 或 %l 才能将此内容保存到您的帐户中。",
@@ -1315,14 +1399,23 @@ $translation_table = [
 	"No %s have been uploaded" => [
 		0 => "没有 %s被上传",
 	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "发生错误, 系统无法处理您的请求.",
+	"Some errors have occurred and the system couldn't process your request." => [
+		0 => "发生了某些错误，系统无法处理您的请求。",
 	],
-	"Category" => [
+	"category" => [
 		0 => "分类",
 	],
-	"Select category" => [
-		0 => "选择类别",
+	"Select %s" => [
+		0 => "选择 %s",
+	],
+	"Auto delete" => [
+		0 => "自动删除",
+	],
+	"Sign up" => [
+		0 => "注册",
+	],
+	"%s to be able to customize or disable image auto delete." => [
+		0 => "%s以自定义或防止图片被自动删除",
 	],
 	"Mark this if the upload is not family safe" => [
 		0 => "标记这个上传内容为不健康",
@@ -1333,17 +1426,11 @@ $translation_table = [
 	"Uploading" => [
 		0 => "上传",
 	],
-	"or" => [
-		0 => "或",
-	],
-	"cancel" => [
-		0 => "取消",
-	],
 	"cancel remaining" => [
 		0 => "取消剩下的",
 	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "注意: 一些图像不能上传.",
+	"Note: Some files couldn't be uploaded." => [
+		0 => "注意：部分文件无法上传。",
 	],
 	"learn more" => [
 		0 => "了解更多",
@@ -1351,14 +1438,8 @@ $translation_table = [
 	"Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information." => [
 		0 => "检查 <a data-modal=\"simple\" data-target=\"failed-upload-result\">错误报告</a> 更多信息.",
 	],
-	"Register to get %s" => [
-		0 => "注册之后可上传大小:%s",
-	],
 	"reset" => [
 		0 => "重置",
-	],
-	"close" => [
-		0 => "关闭",
 	],
 	"Note" => [
 		0 => "通知",
@@ -1374,6 +1455,12 @@ $translation_table = [
 	],
 	"Remove" => [
 		0 => "删除",
+	],
+	"upload" => [
+		0 => "上传",
+	],
+	"Edit %s" => [
+		0 => "编辑 %s",
 	],
 	"Title" => [
 		0 => "标题",
@@ -1393,15 +1480,6 @@ $translation_table = [
 	"Note: Animated GIF images won't be resized." => [
 		0 => "注意: 动画GIF图像将不会被调整.",
 	],
-	"Auto delete image" => [
-		0 => "自动删除图片",
-	],
-	"Sign up" => [
-		0 => "注册",
-	],
-	"%s to be able to customize or disable image auto delete." => [
-		0 => "%s以自定义或防止图片被自动删除",
-	],
 	"Mark this if the image is not family safe" => [
 		0 => "标记这个图像为不健康",
 	],
@@ -1411,8 +1489,8 @@ $translation_table = [
 	"Description" => [
 		0 => "描述",
 	],
-	"Brief description of this image" => [
-		0 => "这张图片的简略描述",
+	"Brief description of this %s" => [
+		0 => "此 %s 的简要说明",
 	],
 	"Add image URLs" => [
 		0 => "增加图片的URL",
@@ -1420,26 +1498,20 @@ $translation_table = [
 	"Add the image URLs here" => [
 		0 => "添加图片到这里",
 	],
-	"Create album" => [
-		0 => "创建相册",
+	"Create %s" => [
+		0 => "创建 %s",
 	],
 	"The uploaded content will be moved to this newly created album." => [
 		0 => "上传的内容将被移动到新创建的相册。",
 	],
-	"existing album" => [
-		0 => "目前的相册",
-	],
-	"You can also move the content to an %a." => [
-		0 => "您还可以将内容移动到 %a 。",
-	],
 	"You must %s or %l if you want to edit this album later on." => [
 		0 => "如果您想稍后编辑此相册，则必须为 %s 或 %l。",
 	],
-	"Move to album" => [
-		0 => "移动相册",
+	"Move to %s" => [
+		0 => "移动到 %s",
 	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "选择现有相册以移动上传的内容。您还可以<a class=\"modal-switch\" data-switch=\"move-new-album\">创建新相册</a>并将内容移动到那里。",
+	"Select an existing album to move the uploaded content." => [
+		0 => "把上传的内容移动到现有相册。",
 	],
 	"Error report" => [
 		0 => "错误报告",
@@ -1447,8 +1519,14 @@ $translation_table = [
 	"Links" => [
 		0 => "链接",
 	],
-	"Viewer links" => [
-		0 => "查看链接",
+	"Viewer" => [
+		0 => "检视器",
+	],
+	"%s links" => [
+		0 => "%s 链接",
+	],
+	"Direct" => [
+		0 => "默认格式",
 	],
 	"HTML Codes" => [
 		0 => "HTML代码",
@@ -1492,6 +1570,9 @@ $translation_table = [
 	"Markdown thumbnail linked" => [
 		0 => "Markdown 缩略图链接",
 	],
+	"Viewer links" => [
+		0 => "查看链接",
+	],
 	"All these words" => [
 		0 => "搜索全部关键字内容",
 	],
@@ -1516,20 +1597,35 @@ $translation_table = [
 	"IP address" => [
 		0 => "IP地址",
 	],
-	"Album name" => [
-		0 => "相册名称",
+	"Name" => [
+		0 => "名称",
 	],
-	"move to existing album" => [
-		0 => "移动到现有的相册",
+	"Unnamed %s" => [
+		0 => "未命名 %s",
 	],
-	"Album description" => [
-		0 => "相册描述",
+	"Call to action" => [
+		0 => "行动号召",
 	],
-	"Brief description of this album" => [
-		0 => "简要的描述一下这个相册",
+	"Enable call to action buttons" => [
+		0 => "启动行动号召按钮",
 	],
-	"Album privacy" => [
-		0 => "相册加密",
+	"Call to action buttons will be displayed on the %s page and in content belonging to." => [
+		0 => "行动号召按钮将显示在 %s 页面以及子页面中。",
+	],
+	"You can use %emoji% or %package% icons." => [
+		0 => "您可以使用 %emoji% 或 %package% 图标。",
+	],
+	"Label" => [
+		0 => "标签",
+	],
+	"Buy now" => [
+		0 => "现在购买",
+	],
+	"Icon" => [
+		0 => "图标",
+	],
+	"Privacy" => [
+		0 => "隐私",
 	],
 	"Who can view this content" => [
 		0 => "谁可以看到",
@@ -1543,29 +1639,26 @@ $translation_table = [
 	"Private (password protected)" => [
 		0 => "加密（密码访问, 包括您）",
 	],
-	"Album password" => [
-		0 => "相册密码",
+	"Change password" => [
+		0 => "更改密码",
 	],
-	"Name" => [
-		0 => "名称",
+	"Set password" => [
+		0 => "设置密码",
 	],
-	"Category name" => [
-		0 => "类别名称",
+	"%s name" => [
+		0 => "%s 名字",
 	],
 	"URL key" => [
 		0 => "链接 key",
 	],
-	"Category URL key" => [
-		0 => "分类 URL key",
+	"%s URL key" => [
+		0 => "%s 链接key",
 	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "只允许字母, 数字和字符",
 	],
-	"Brief description of this category" => [
-		0 => "简要描述这一类别",
-	],
-	"Untitled image" => [
-		0 => "无标题图像",
+	"Untitled %s" => [
+		0 => "未命名 %s",
 	],
 	"Mark this if the image is not safe for work" => [
 		0 => "如果图像不安全(NSFW)，请在此标记。",
@@ -1624,17 +1717,14 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "文本消息, HTML或重定向URL",
 	],
-	"Existing album" => [
-		0 => "现有的相册",
-	],
-	"create new album" => [
-		0 => "新建相册",
-	],
 	"Storage name" => [
 		0 => "存储名称",
 	],
 	"API" => [
 		0 => "API",
+	],
+	"This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API." => [
+		0 => "这是针对旧的已弃用的 B2 API。对于新存储桶，您必须使用 S3 兼容 API。",
 	],
 	"Region" => [
 		0 => "区域",
@@ -1661,7 +1751,7 @@ $translation_table = [
 		0 => "私钥(Private key)",
 	],
 	"Google Cloud JSON key" => [
-		0 => "Google Cloud JSON key",
+		0 => "谷歌云 JSON key",
 	],
 	"You will need a <a %s>service account</a> for this." => [
 		0 => "您需要一个 <a %s>服务帐户</a> .",
@@ -1678,9 +1768,6 @@ $translation_table = [
 	"API endpoint for OpenStack identity" => [
 		0 => "对于OpenStack的身份API端点",
 	],
-	"Username" => [
-		0 => "用户名",
-	],
 	"Container" => [
 		0 => "容器",
 	],
@@ -1688,13 +1775,13 @@ $translation_table = [
 		0 => "存储容器",
 	],
 	"Tenant id" => [
-		0 => "Tenant id",
+		0 => "Tenant ID",
 	],
 	"Tenant id (account id)" => [
 		0 => "Tenant id（用户id）",
 	],
 	"Tenant name" => [
-		0 => "Tenant name",
+		0 => "租户姓名",
 	],
 	"Tenant name (account name)" => [
 		0 => "Tenant name（用户名）",
@@ -1747,47 +1834,44 @@ $translation_table = [
 	"Load more" => [
 		0 => "加载更多",
 	],
-	"Select all" => [
-		0 => "选择所有",
-	],
 	"Clear" => [
 		0 => "清除",
+	],
+	"Actions" => [
+		0 => "操作",
 	],
 	"Get embed codes" => [
 		0 => "获取嵌入代码",
 	],
-	"Assign category" => [
-		0 => "添加分类",
+	"Assign %s" => [
+		0 => "分配 %s",
 	],
 	"Flag as safe" => [
 		0 => "标记为安全",
 	],
+	"Select all" => [
+		0 => "选择所有",
+	],
 	"Clear selection" => [
 		0 => "清除所选的",
 	],
-	"Create new album" => [
-		0 => "新建相册",
+	"Create new %s" => [
+		0 => "新建 %s",
 	],
-	"Create sub album" => [
-		0 => "创建子相册",
-	],
-	"Share" => [
-		0 => "分享",
+	"sub %s" => [
+		0 => "子 %s",
 	],
 	"Sign in with another account" => [
 		0 => "登录您的帐户",
 	],
-	"Continue with %label%" => [
-		0 => "用 %label% 账号登录",
+	"Sign in with %label%" => [
+		0 => "使用 %label% 登录",
 	],
 	"Home" => [
 		0 => "首页",
 	],
 	"There's nothing to show here." => [
 		0 => "没有要显示的内容",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "所有选择的图像将会分配给此分类.",
 	],
 	"There is no categories." => [
 		0 => "没有此分类.",
@@ -1807,20 +1891,20 @@ $translation_table = [
 	"Confirm approval" => [
 		0 => "确认批准",
 	],
-	"Do you really want to approve this content? This can't be undone." => [
-		0 => "您确定要执行这个操作吗？这是个无法挽回的操作",
+	"Do you really want to approve this content?" => [
+		0 => "你确定要批准此内容?",
 	],
 	"Confirm deletion" => [
 		0 => "确认删除",
 	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "您真的想删除此内容? 一旦删除将无法恢复.",
+	"Do you really want to remove this content?" => [
+		0 => "你确定要移除此内容？",
 	],
-	"Do you really want to approve all the selected content? This can't be undone." => [
-		0 => "您确定要执行这个操作吗？这是个无法挽回的操作",
+	"Do you really want to approve all the selected content?" => [
+		0 => "你确定要批准所有选定的内容吗？",
 	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "您真的想删除所选内容? 一旦删除将无法恢复.",
+	"Do you really want to remove all the selected content?" => [
+		0 => "你确定要移除所有选定的内容吗？",
 	],
 	"Guest" => [
 		0 => "访客",
@@ -1837,9 +1921,6 @@ $translation_table = [
 	"Uploaded by guest" => [
 		0 => "来自访客",
 	],
-	"From %s" => [
-		0 => "来自 %s",
-	],
 	"Uploaded by private" => [
 		0 => "由私人上传",
 	],
@@ -1849,8 +1930,11 @@ $translation_table = [
 	"Toggle unsafe flag" => [
 		0 => "切换不安全标记",
 	],
-	"That page doesn't exist" => [
-		0 => "该页面不存在",
+	"You either don't have permission to access this page or the link has expired." => [
+		0 => "您没有权限访问此网页或链接已过期.",
+	],
+	"Go to homepage" => [
+		0 => "转到主页",
 	],
 	"The requested page was not found." => [
 		0 => "所请求的页面不存在",
@@ -1878,9 +1962,6 @@ $translation_table = [
 	],
 	"Your email address" => [
 		0 => "您的电子邮件地址",
-	],
-	"Submit" => [
-		0 => "提交",
 	],
 	"An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "一封包含重置密码说明的电子邮件已发送到注册的电子邮件地址。如果您没有收到说明，请尝试检查您的垃圾邮件或垃圾邮件过滤器。",
@@ -1918,20 +1999,32 @@ $translation_table = [
 	"An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "已向 %s 发送了一封电子邮件，其中包含激活您帐户的说明。如果您没有收到说明，请尝试检查您的垃圾邮件或垃圾邮件过滤器。",
 	],
-	"This content is private" => [
-		0 => "此内容是私有的",
+	"Unable to authenticate?" => [
+		0 => "无法验证？",
+	],
+	"If you lost your authentication device you must contact the system administrator." => [
+		0 => "如果您丢失了身份验证设备您必须联系系统管理员。",
+	],
+	"Enter the security code from your authenticator app." => [
+		0 => "从您的身份验证器应用程序输入安全代码。",
+	],
+	"Security code" => [
+		0 => "安全码",
 	],
 	"Sub album" => [
 		0 => "子相册",
 	],
-	"Do you really want to delete this album and all of its images? This can't be undone." => [
-		0 => "您真的要删除此相册及其所有图片吗？这是无法撤消的。",
+	"Do you really want to delete this %a and all of its %i?" => [
+		0 => "你确定要删除此 %a 及其所有 %i 吗？",
 	],
 	"Upload to album" => [
 		0 => "上传到相册",
 	],
 	"You like this" => [
 		0 => "您喜欢它",
+	],
+	"This content is private" => [
+		0 => "此内容是私有的",
 	],
 	"Please read and comply with the following conditions before you continue:" => [
 		0 => "请阅读并遵守以下条件, 然后再继续:",
@@ -1948,20 +2041,11 @@ $translation_table = [
 	"documentation" => [
 		0 => "文档",
 	],
-	"Learn about %s settings at our %d." => [
-		0 => "在我们的 %d 了解 %s 设置。",
+	"Learn about %s at our %d." => [
+		0 => "了解关于 %s 在我们的 %d.",
 	],
-	"The connecting IP is determined using the server variable %var%. If the detected IP doesn't match yours, it means that your web server is under a proxy and you need to tweak your server to set the real connecting IP." => [
-		0 => "连接IP是通过服务器变量 %var% 来确定的。如果检测到的IP与您的不一致，说明您的Web服务器是在代理服务器下，您需要调整您的服务器来设置真正的连接IP。",
-	],
-	"For Nginx, you must use %nginx%. For Apache, %apache%." => [
-		0 => "对于Nginx，您必须使用 %nginx% ；对于Apache，使用 %apache% 。",
-	],
-	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
-		0 => "请确保解决此问题，因为系统依靠准确的IP检测来提供基本功能，并能防止垃圾邮件、洪水攻击和暴力破解攻击。",
-	],
-	"Disk used" => [
-		0 => "已用大小",
+	"Check the errors to proceed." => [
+		0 => "请检查错误并继续.",
 	],
 	"Queued" => [
 		0 => "排队",
@@ -1980,9 +2064,6 @@ $translation_table = [
 	],
 	"Top level folders as %s" => [
 		0 => "顶级文件夹为 %s",
-	],
-	"Actions" => [
-		0 => "操作",
 	],
 	"Process" => [
 		0 => "处理",
@@ -2017,137 +2098,668 @@ $translation_table = [
 	"Read the %s for more information about this feature." => [
 		0 => "阅读 %s 以了解有关此功能的更多信息。",
 	],
-	"Add user" => [
-		0 => "添加用户",
+	"Single profile" => [
+		0 => "单一配置文件",
 	],
-	"Role" => [
-		0 => "角色",
+	"This setting is always disabled when using %s website mode." => [
+		0 => "使用 %s 网站模式时始终禁用此设置.",
 	],
-	"Manager" => [
-		0 => "管理",
+	"%s won't work when the explorer feature is turned off." => [
+		0 => "当探索功能关闭时,%s 将无法工作,",
 	],
-	"Administrator" => [
-		0 => "管理员",
+	"Dashboard > Settings > Website" => [
+		0 => "仪表盘 > 设置 > 网站",
 	],
-	"Email address" => [
-		0 => "Email地址",
+	"Do you really want to delete %s?" => [
+		0 => "你确定要删除 %s吗？",
 	],
-	"This setting is always diabled when using personal website mode." => [
-		0 => "开启个人网站模式时, 该设置始终禁用.",
+	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
+		0 => "在访问网站之前显示屏幕的一个同意. 对于成人内容的网站,不应该让未成年人浏览.",
 	],
-	"Add category" => [
-		0 => "添加类别",
+	"Enable consent screen" => [
+		0 => "启用网站内容警告",
 	],
-	"Add IP ban" => [
-		0 => "添加IP",
+	"Consent screen cover image" => [
+		0 => "内容警告背景图片",
 	],
-	"Add storage" => [
-		0 => "添加存储",
+	"Show not safe content in listings" => [
+		0 => "在列表中显示不安全内容(NSFW)",
 	],
-	"Return to pages" => [
-		0 => "返回页面",
+	"Enable this if you want to show not safe content in listings." => [
+		0 => "如果你想在列表中显示不安全的内容，请启用此选项。",
 	],
-	"Website name" => [
-		0 => "网站名称",
+	"Can be overridden by user own settings." => [
+		0 => "可以被用户自己的设置覆盖。",
 	],
-	"Website doctitle" => [
-		0 => "网站标题",
+	"This setting doesn't affect administrators." => [
+		0 => "此设置不影响管理员。",
 	],
-	"Website description" => [
-		0 => "网站描述",
+	"Blur NSFW content in listings" => [
+		0 => "在列表中模糊显示NSFW内容",
 	],
-	"Automatic" => [
-		0 => "自动",
+	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
+		0 => "如果您想对列表中的NSFW图片应用高斯模糊效果，请启用此功能。",
 	],
-	"Forced" => [
-		0 => "强制",
+	"Show not safe content in random mode" => [
+		0 => "在随机模式显示标记为不安全内容",
 	],
-	"%a will use HTTPS detection on the server side (recommended). %f will use HTTPS regardless of your server setup. %d to don't use HTTPS at all." => [
-		0 => "%a 将在服务器端检测并自动使用HTTPS(推荐)， %f 无论您的服务器如何设置，都将使用HTTPS， %d 禁用且完全不使用HTTPS。",
+	"Show banners in not safe content" => [
+		0 => "在不安全的内容中显示横幅广告",
 	],
-	"This only controls the protocol used in the URLs, it won't turn your website into a valid HTTPS website unless your server is configured to support and use HTTPS." => [
-		0 => "这仅控制URL中使用的协议，除非您的服务器配置为支持和使用HTTPS，否则它不会将您的网站变为有效的HTTPS网站。",
+	"Enable this if you want to show banners in not safe content pages." => [
+		0 => "如果您想在不安全的内容页面中显示横幅广告，请启用此功能。",
 	],
-	"Default time zone" => [
-		0 => "默认时区",
+	"Lock %s editing" => [
+		0 => "锁定 %s 编辑",
 	],
-	"Select region" => [
-		0 => "选择区域",
+	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
+		0 => "启用此功能可防止用户更改NSFW标志。启用后，只有管理员和管理有此权限。",
 	],
-	"Allows to search images, albums and users based on a given search query." => [
-		0 => "可以按特定的内容查询图片, 相册, 和用户.",
+	"Stop words" => [
+		0 => "屏蔽词",
 	],
-	"Enables to browse public uploaded images. It also enables categories." => [
-		0 => "启用探索图库功能, 允许查看所有用户上传的图片（不含私隐）,并可以按分类查看.",
+	"One rule per line" => [
+		0 => "每行一条规则",
 	],
-	"guests" => [
-		0 => "游客",
+	"Define words that won't be allowed for content." => [
+		0 => "定义内容中不允许使用的词汇。",
 	],
-	"Enables explore for guests." => [
-		0 => "为游客启用探索.",
+	"Cookie law compliance" => [
+		0 => "Cookie的法律法规",
 	],
-	"Enables to browse images randomly." => [
-		0 => "启用随机浏览图片.",
+	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
+		0 => "启用它, 显示一条消息, 符合欧盟的Cookie法律的要求. 注意: 您只需要这个, 如果您的网站托管在欧盟, 如果您添加跟踪Cookie.",
 	],
-	"Likes" => [
-		0 => "喜欢",
+	"email delivery" => [
+		0 => "电子邮件发送",
 	],
-	"Allows users to like content and populate \"Most liked\" listings." => [
-		0 => "允许用户使用喜欢LIKE功能, 并显示用户已喜欢列表.",
+	"Don't forget to test %t at %s" => [
+		0 => "请不要忘记在 %s测试 %t",
 	],
-	"Followers allows users to follow each other." => [
-		0 => "关注者允许用户互相关注.",
+	"From name" => [
+		0 => "发送名称",
 	],
-	"Website mode" => [
-		0 => "网站模式",
+	"Sender name for emails sent to users." => [
+		0 => "接收到邮件显示的发送人名称",
 	],
-	"Community" => [
-		0 => "社区",
+	"From email address" => [
+		0 => "发件人的电子邮箱地址",
 	],
-	"Personal" => [
-		0 => "个人",
+	"Sender email for emails sent to users." => [
+		0 => "在收件人处显示的发件人邮箱",
 	],
-	"You can switch the website mode anytime." => [
-		0 => "您可以随时切换网站模式。",
+	"Incoming email address" => [
+		0 => "收信电子邮箱地址",
 	],
-	"Personal mode target user" => [
-		0 => "个人模式的目标用户",
+	"Recipient for contact form and system alerts." => [
+		0 => "联系表单和系统警告的收件人",
 	],
-	"User ID" => [
-		0 => "用户ID",
+	"Email mode" => [
+		0 => "发送邮件的方式",
 	],
-	"Your user id is: %s" => [
-		0 => "您的用户ID是: %s",
+	"How to send emails? SMTP recommended." => [
+		0 => "如何发送邮件? 推荐使用SMTP.",
 	],
-	"Numeric ID of the target user for personal mode." => [
-		0 => "个人模式的数值是目标用户的ID.",
+	"SMTP server and port" => [
+		0 => "SMTP服务器与端口",
 	],
-	"Personal mode routing" => [
-		0 => "个人模式链接格式",
+	"SMTP server" => [
+		0 => "SMTP服务器",
 	],
-	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
-		0 => "定制的链接格式  /username 到 /something. 使用 “/” 映射到主页。",
+	"SMTP username" => [
+		0 => "SMTP用户名",
 	],
-	"Website privacy mode" => [
-		0 => "网站的隐私模式",
+	"SMTP password" => [
+		0 => "SMTP密码",
 	],
-	"Private mode will make the website only available for registered users." => [
-		0 => "启用私密模式后仅对注册用户开放使用.",
+	"SMTP security" => [
+		0 => "SMTP安全",
 	],
-	"Content privacy mode" => [
-		0 => "隐私模式",
+	"Unsecured" => [
+		0 => "不使用任何安全模式",
+	],
+	"Comments API" => [
+		0 => "评论 API",
+	],
+	"Disqus API works with %s." => [
+		0 => "Disqus API 适用于 %s.",
+	],
+	"Disqus shortname" => [
+		0 => "Disqus 短名称",
+	],
+	"%s secret key" => [
+		0 => "%s 密钥",
+	],
+	"%s public key" => [
+		0 => "%s 公共密钥",
+	],
+	"Comment code" => [
+		0 => "评论社会化代码",
+	],
+	"Disqus, Facebook or anything you want. It will be used in image view." => [
+		0 => "DISQUS, Facebook或其他. 它将在图像视图中使用.",
+	],
+	"Analytics code" => [
+		0 => "Analytics（分析）代码",
+	],
+	"Google Analytics or anything you want. It will be added to the theme footer." => [
+		0 => "谷歌Analytics（分析）或其他. 它将被添加到主题页脚.",
+	],
+	"%s spam protection" => [
+		0 => "%s 垃圾邮件保护",
+	],
+	"user generated content" => [
+		0 => "用户生成内容",
+	],
+	"Enable this to use %l to block spam on %c." => [
+		0 => "启用 %l 来阻止 %c 中的垃圾邮件。",
+	],
+	"%s API key" => [
+		0 => "%s API 密钥",
+	],
+	"user signup" => [
+		0 => "用户注册",
+	],
+	"%s site key" => [
+		0 => "%s 站点密钥",
+	],
+	"%s threshold" => [
+		0 => "%s 阈值",
+	],
+	"How many failed attempts are needed to ask for CAPTCHA? Use zero (0) to always show CAPTCHA." => [
+		0 => "多少次失败尝试后要求验证码？ 使用零 (0) 始终需要验证码。",
+	],
+	"Force %s on contact page" => [
+		0 => "在联系页面强制开启 %s",
+	],
+	"Enable this to always show %s on contact page." => [
+		0 => "启用此选项可始终在联系人页面上显示 %s 。",
+	],
+	"Use %s to combat child sexual abuse material (CSAM)." => [
+		0 => "使用 %s 打击儿童性虐待材料 (CSAM)。",
+	],
+	"Automatically moderate the content using the %s service." => [
+		0 => "使用 %s 服务来自动审核上传的图片。",
+	],
+	"Automatic approve" => [
+		0 => "自动审核",
+	],
+	"Enable this to automatically approve content moderated by this service." => [
+		0 => "启用此功能可自动审核本服务管理的所有内容。",
+	],
+	"Block content" => [
+		0 => "屏蔽内容",
+	],
+	"Adult" => [
+		0 => "成人",
+	],
+	"Teen and adult" => [
+		0 => "儿童和成人",
+	],
+	"Flag NSFW" => [
+		0 => "标记 NSFW",
+	],
+	"Twitter account" => [
+		0 => "Twitter账号",
+	],
+	"Toggle this to enable or disable HTTPS" => [
+		0 => "切换此启用或禁用HTTPS链接",
+	],
+	"Toggle this to enable or disable this storage" => [
+		0 => "切换此启用或禁用此存储",
+	],
+	"Quota" => [
+		0 => "配额",
+	],
+	"Active" => [
+		0 => "活动",
+	],
+	"Storage method" => [
+		0 => "存储方法",
+	],
+	"Disk used" => [
+		0 => "已用大小",
+	],
+	"Local storage is used by default or when no external storage is active." => [
+		0 => "默认情况下使用本地存储, 或在外部存储没有处于激活状态.",
+	],
+	"storage" => [
+		0 => "存储",
+	],
+	"Block image uploads by IP if the system notice a flood behavior based on the number of uploads per time period." => [
+		0 => "如果系统根据每个时间段的上传数量发现泛洪行为，则按IP阻止上传图片。",
+	],
+	"Notify to email" => [
+		0 => "以电子邮件通知",
+	],
+	"If enabled the system will send an email on flood incidents." => [
+		0 => "发现洪水攻击后系统自动发送电子邮件.",
+	],
+	"Minute limit" => [
+		0 => "每分钟的限额",
+	],
+	"Hourly limit" => [
+		0 => "每小时的限额",
+	],
+	"Daily limit" => [
+		0 => "每日的限额",
+	],
+	"Weekly limit" => [
+		0 => "每周的限额",
+	],
+	"Monthly limit" => [
+		0 => "每月的限额",
+	],
+	"Public API key" => [
+		0 => "公共 API 密钥",
+	],
+	"This key is for guest usage." => [
+		0 => "此密钥供访客使用。",
+	],
+	"Check the %s documentation." => [
+		0 => "查看 %s 文档",
+	],
+	"Style" => [
+		0 => "样式",
+	],
+	"Landing page" => [
+		0 => "仅显示上传按钮",
+	],
+	"Split landing + images" => [
+		0 => "上传按钮 + 最新图片",
+	],
+	"explore" => [
+		0 => "探索",
+	],
+	"Route %s" => [
+		0 => "路径 %s",
+	],
+	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
+		0 => "选择主页风格. 详细定制主页编辑此 app/themes/%s/views/index.php",
+	],
+	"Cover image" => [
+		0 => "封面图片",
+	],
+	"Do you really want to delete?" => [
+		0 => "你确定要删除吗？",
+	],
+	"Delete %s" => [
+		0 => "删除 %s",
+	],
+	"Add new cover image" => [
+		0 => "添加新的封面图片",
+	],
+	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
+		0 => "这将被添加在主页 %s 标记. 保持空白以使用默认内容.",
+	],
+	"Paragraph" => [
+		0 => "段落",
+	],
+	"Call to action button color" => [
+		0 => "“开始上传”按钮的颜色",
+	],
+	"Blue" => [
+		0 => "蓝",
+	],
+	"Green" => [
+		0 => "绿",
+	],
+	"Orange" => [
+		0 => "橙",
+	],
+	"Red" => [
+		0 => "红",
+	],
+	"Grey" => [
+		0 => "灰",
+	],
+	"Black" => [
+		0 => "黑",
+	],
+	"White" => [
+		0 => "白",
 	],
 	"Default" => [
 		0 => "默认",
 	],
-	"Force private (self)" => [
-		0 => "全局隐私（只有用户本人可见）",
+	"Color of the homepage call to action button." => [
+		0 => "请选择“开始上传”按钮的颜色.",
 	],
-	"Force private (anyone with the link)" => [
-		0 => "全局隐私（所有人通过链接可见）",
+	"Call to action outline style button" => [
+		0 => "主页“开始上传”按钮的背景透明",
 	],
-	"Forced privacy modes will override user selected privacy." => [
-		0 => "全局隐私模式将覆盖用户选择的隐私.",
+	"Enable this to use outline style for the homepage call to action button." => [
+		0 => "启用它, 则“开始上传”按钮的背景颜色改为透明样式.",
+	],
+	"Call to action functionality" => [
+		0 => "按钮功能",
+	],
+	"Trigger uploader" => [
+		0 => "触发上传",
+	],
+	"Open URL" => [
+		0 => "打开网址",
+	],
+	"Call to action URL" => [
+		0 => "按钮网址",
+	],
+	"Enter an absolute or relative URL" => [
+		0 => "输入一个绝对或相对URL网址",
+	],
+	"A relative URL like %r will be mapped to %l" => [
+		0 => "这样一个相对URL网址 %r 将映射到 %l",
+	],
+	"Call to action HTML" => [
+		0 => "按钮HTML代码",
+	],
+	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
+		0 => "这将被添加在按钮 <a> 标记. 保持空白以使用默认内容.",
+	],
+	"User IDs" => [
+		0 => "用户 ID",
+	],
+	"Empty" => [
+		0 => "空",
+	],
+	"Your user id is: %s" => [
+		0 => "您的用户ID是: %s",
+	],
+	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
+		0 => "指定的用户ID显示在主页最新图片上, 多个用户用逗号分隔. 留空则显示所有全站最新的图片.",
+	],
+	"Enabled image formats" => [
+		0 => "启用的图像格式",
+	],
+	"Unsupported in your server" => [
+		0 => "您的服务器不支持",
+	],
+	"Only checked image formats will be allowed to be uploaded." => [
+		0 => "只允许上传选中的图片格式。",
+	],
+	"Enable uploads" => [
+		0 => "启用上传",
+	],
+	"Enable this if you want to allow image upload from URLs." => [
+		0 => "如果您想允许上传图片，请启用此选项。此设置不会影响管理员。",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "请注意，启用此功能将暴露您的服务器 IP。",
+	],
+	"This feature is available only for administrators." => [
+		0 => "此功能仅供管理员使用。",
+	],
+	"Upload user interface" => [
+		0 => "上传用户界面",
+	],
+	"On-page container" => [
+		0 => "页面容器",
+	],
+	"route" => [
+		0 => "路由",
+	],
+	"Guest uploads" => [
+		0 => "访客（不需注册）上传",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "启用它则允许未注册的用户上传图片",
+	],
+	"Moderate uploads" => [
+		0 => "上传审核",
+	],
+	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
+		0 => "启用后，需要对上传内容进行审核。目标内容被通过审核后才会予以展示。",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "启用嵌入代码（上传者）",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "如果您想图片上传完成后显示嵌入代码请启用这个功能.",
+	],
+	"Upload threads" => [
+		0 => "上传线程",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "最大同时上传的线程数(并行上传)",
+	],
+	"Redirect on single upload" => [
+		0 => "单张图片上传跳转",
+	],
+	"Enable this if you want to redirect to image page on single upload." => [
+		0 => "启用后上传单张图片后跳转到该图片的图片页面.",
+	],
+	"Enable duplicate uploads" => [
+		0 => "启用重复上传",
+	],
+	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs." => [
+		0 => "如果你希望允许同一IP在24小时内重复上传，请启用此选项。",
+	],
+	"Enable expirable uploads" => [
+		0 => "启用可过期上传",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "如果您想允许上传与自动删除选项启用它.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "自动删除访客图片",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "如果要强制访客上传的图片在某段时间后自动删除，请启用此功能.",
+	],
+	"Maximum image size" => [
+		0 => "最大图片大小",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "大于此尺寸的图片将自动缩小尺寸.默认(0)则不设置限制.",
+	],
+	"Image Exif data" => [
+		0 => "图像的Exif数据",
+	],
+	"Keep" => [
+		0 => "保留",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "选择默认的图片 <a %s>Exif数据</a> 上传.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "图像的Exif数据（用户设定）",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "启用它, 如果您允许每个用户设置是否删除图像的Exif数据.",
+	],
+	"Maximum upload file size" => [
+		0 => "最大上传文件大小（MB）",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "服务器最大允许上传%s.因为参数%u和%p(文件:%f)",
+	],
+	"guests" => [
+		0 => "游客",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "跟\"%s\"一样，限制游客上传的最大文件大小.",
+	],
+	"Image path" => [
+		0 => "图像路径",
+	],
+	"Relative to Chevereto root" => [
+		0 => "相对于Chevereto的root",
+	],
+	"Where to store the images? Relative to Chevereto root." => [
+		0 => "在哪里存储图像? 相对于Chevereto根目录.",
+	],
+	"Storage mode" => [
+		0 => "存储方式",
+	],
+	"Datefolders" => [
+		0 => "日期文件夹",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "日期文件夹创建 %s 结构",
+	],
+	"File naming method" => [
+		0 => "文件的命名格式",
+	],
+	"Original" => [
+		0 => "原始的",
+	],
+	"Mix original + random" => [
+		0 => "原始的 + 随机",
+	],
+	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
+		0 => "\"原始的\"会尽量保持图像源名称, 而\"随机\"则生成一个随机名称. \"ID\"则使用生成的图像ID来命名.",
+	],
+	"Thumb size" => [
+		0 => "缩略图大小",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "固定大小的缩略图",
+	],
+	"Medium image fixed dimension" => [
+		0 => "中等图片尺寸固定",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "中等图像将被固定至此分辨率. 例如, 如果您选择\"宽度\", 这方面将是固定的, 图像的高度将自动计算.",
+	],
+	"Medium image fixed size" => [
+		0 => "中等图片大小固定",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "宽度或高度将自动计算.",
+	],
+	"Expires" => [
+		0 => "到期",
+	],
+	"Do you really want to remove the ban to the IP %s?" => [
+		0 => "你确定要取消对IP %s的封禁吗？",
+	],
+	"Banned IP address will be forbidden to use the entire website." => [
+		0 => "被禁止的IP地址将禁止使用整个网站.",
+	],
+	"Default language" => [
+		0 => "默认语言",
+	],
+	"Default base language to use." => [
+		0 => "默认基本语言",
+	],
+	"Auto language" => [
+		0 => "自动选择语言",
+	],
+	"Enable this if you want to automatically detect and set the right language for each user." => [
+		0 => "启用它, 如果您想自动检测并为每个用户设置正确的语言.",
+	],
+	"Language chooser" => [
+		0 => "语言选择器",
+	],
+	"Enable this if you want to allow language selection." => [
+		0 => "启用这个如果您想允许用户选择语言.",
+	],
+	"Enabled languages" => [
+		0 => "启用语言",
+	],
+	"Only checked languages will be used in your website." => [
+		0 => "你的网站将仅使用选中的语言。",
+	],
+	"List items per page" => [
+		0 => "每页列表项目",
+	],
+	"How many items should be displayed per page listing." => [
+		0 => "每页显示多少项目",
+	],
+	"List pagination mode" => [
+		0 => "列表分页模式",
+	],
+	"Endless scrolling" => [
+		0 => "瀑布流模式",
+	],
+	"Classic pagination" => [
+		0 => "经典分页模式",
+	],
+	"What pagination method should be used." => [
+		0 => "应该用什么分页模式.",
+	],
+	"Listing viewer" => [
+		0 => "列表预览",
+	],
+	"Enable this to use the listing viewer when clicking on an image." => [
+		0 => "启用之后，您在探索页面点击图片之后会有预览界面.",
+	],
+	"Image listing size" => [
+		0 => "图片列表样式",
+	],
+	"Fluid" => [
+		0 => "自动",
+	],
+	"Fixed" => [
+		0 => "固定",
+	],
+	"Both methods use a fixed width but fluid method uses automatic heights." => [
+		0 => "首页图片列表样式. 这两种方法都使用固定宽度, 但“自动”的方法是使用自动图片的高度.",
+	],
+	"Listing columns number" => [
+		0 => "页面显示列数",
+	],
+	"Here you can set how many columns are used based on each target device." => [
+		0 => "在这里您可以设置针对不同的设备显示多少列, 以优化各设备的显示体验.",
+	],
+	"Phone" => [
+		0 => "手机",
+	],
+	"Phablet" => [
+		0 => "大屏手机",
+	],
+	"Tablet" => [
+		0 => "平板电脑",
+	],
+	"Laptop" => [
+		0 => "笔记本电脑",
+	],
+	"Desktop" => [
+		0 => "桌面台式电脑",
+	],
+	"Application" => [
+		0 => "应用程序",
+	],
+	"%s id" => [
+		0 => "%s id",
+	],
+	"%s secret" => [
+		0 => "%s 秘密",
+	],
+	"Vector" => [
+		0 => "矢量",
+	],
+	"Text" => [
+		0 => "文本",
+	],
+	"Text option uses the website name as logo." => [
+		0 => "文本选项使用网站名称作为logo。",
+	],
+	"Logo vector" => [
+		0 => "矢量logo",
+	],
+	"Vector version or your website logo in SVG format." => [
+		0 => "SVG格式的矢量版本Logo.",
+	],
+	"Logo image" => [
+		0 => "Logo图像",
+	],
+	"Bitmap version or your website logo. PNG format is recommended." => [
+		0 => "PNG格式的位图版本Logo.",
+	],
+	"Logo height" => [
+		0 => "Logo高度",
+	],
+	"No value" => [
+		0 => "没有值",
+	],
+	"Use this to set the logo height if needed." => [
+		0 => "启用此选项, 以设置标志的高度.",
+	],
+	"Favicon image" => [
+		0 => "网站图标",
+	],
+	"Favicon image. Image must have same width and height." => [
+		0 => "网站图标. 所上传图像必须具有相同的宽度和高度.",
 	],
 	"Page title" => [
 		0 => "页面标题",
@@ -2169,9 +2781,6 @@ $translation_table = [
 	],
 	"Terms of service" => [
 		0 => "服务条款",
-	],
-	"Privacy" => [
-		0 => "隐私",
 	],
 	"Contact" => [
 		0 => "联系",
@@ -2239,8 +2848,8 @@ $translation_table = [
 	"Only alphanumerics, hyphens and whitespaces" => [
 		0 => "只允许字母数字, 连接符和空格.",
 	],
-	"HTML &lt;a&gt; %s attribute" => [
-		0 => "HTML &lt;a&gt; %s 的属性",
+	"HTML %s attribute" => [
+		0 => "HTML %s 属性",
 	],
 	"Link icon" => [
 		0 => "链接图标",
@@ -2254,161 +2863,275 @@ $translation_table = [
 	"Page sort order display for menus and listings. Use \"1\" for top priority." => [
 		0 => "菜单和列表页面排序顺序显示. 使用\"1\"为最优先的.",
 	],
-	"Do you really want to delete the page ID %s? This can't be undone." => [
-		0 => "您真的要删除的页面ID %s? 这将不能撤消.",
+	"Do you really want to delete the page ID %s?" => [
+		0 => "你确定要删除页面ID %s吗？",
 	],
-	"Enabled image formats" => [
-		0 => "启用的图像格式",
+	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed." => [
+		0 => "路径允许您自定义默认路径。只允许使用字母数字、连字符和下划线字符。",
 	],
-	"Unchecked image formats won't be allowed to be uploaded." => [
-		0 => "不允许上传未经检查的图片格式.",
+	"%s routing" => [
+		0 => "%s 路由",
 	],
-	"Enable uploads" => [
-		0 => "启用上传",
+	"Routing for %s" => [
+		0 => "对于路径 %s",
 	],
-	"Enable this if you want to allow image uploads. This setting doesn't affect administrators." => [
-		0 => "启用图片上传（如果您想允许图片上传请启用）. 此设置不会影响管理员.",
+	"Root" => [
+		0 => "根",
 	],
-	"Upload user interface" => [
-		0 => "上传用户界面",
+	"Determine which content to resolve on root route." => [
+		0 => "决定要在根路由上解析的内容。",
 	],
-	"On-page container" => [
-		0 => "页面容器",
+	"SEO %s URLs" => [
+		0 => "%s URL地址SEO优化",
 	],
-	"route" => [
-		0 => "路由",
+	"Enable this if you want to use SEO %s URLs." => [
+		0 => "如果要使用%s地址SEO优化，请启用此选项。",
 	],
-	"Guest uploads" => [
-		0 => "访客（不需注册）上传",
+	"Semantics allows you to define the nouns used for content to customize your content driven experience." => [
+		0 => "语义允许你定义用于内容的名词，以自定义你的的内容驱动体验。",
 	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "启用它则允许未注册的用户上传图片",
+	"Automatic updates check" => [
+		0 => "自动更新检查",
 	],
-	"Moderate uploads" => [
-		0 => "上传审核",
+	"When enabled the system will automatically check for new updates." => [
+		0 => "启用时, 系统将自动检查新更新.",
 	],
-	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
-		0 => "启用后，需要对上传内容进行审核。目标内容被通过审核后才会予以展示。",
+	"Display available updates notification" => [
+		0 => "显示可用的更新通知",
 	],
-	"Enable embed codes (uploader)" => [
-		0 => "启用嵌入代码（上传者）",
+	"Enable this to show a notice on top warning you about new available system updates." => [
+		0 => "启用此则显示一个通知, 提示您关于新的可用系统更新.",
 	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "如果您想图片上传完成后显示嵌入代码请启用这个功能.",
+	"Dump update query" => [
+		0 => "转储更新查询",
 	],
-	"Upload threads" => [
-		0 => "上传线程",
+	"Enable this if you want to dump the update query to run it manually." => [
+		0 => "启用此选项，可以为每个用户自动检测和设置正确的语言。",
 	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "最大同时上传的线程数(并行上传)",
+	"Maintenance" => [
+		0 => "维护模式",
 	],
-	"Redirect on single upload" => [
-		0 => "单张图片上传跳转",
+	"When enabled the website will show a maintenance message." => [
+		0 => "启用后，网站将显示一条维护消息。",
 	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "启用后上传单张图片后跳转到该图片的图片页面.",
+	"Crypt salt" => [
+		0 => "Crypt salt 特殊码",
 	],
-	"Enable duplicate uploads" => [
-		0 => "启用重复上传",
+	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
+		0 => "此ID为系统的一个特殊码, 相当于V2.x的“__CHV_CRYPT_SALT__”值, 本设置仅在安装或升级时才用到, 一经使用请勿修改.",
 	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs. This setting doesn't affect administrators." => [
-		0 => "启用它, 则允许24小时内来自同一个IP的重复上传. 这个设置不会影响管理员.",
+	"Debug errors" => [
+		0 => "调试错误",
 	],
-	"Enable expirable uploads" => [
-		0 => "启用可过期上传",
+	"Debug level" => [
+		0 => "调试级别",
 	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "如果您想允许上传与自动删除选项启用它.",
+	"None" => [
+		0 => "无",
 	],
-	"Auto delete guest uploads" => [
-		0 => "自动删除访客图片",
+	"Error log" => [
+		0 => "错误日志",
 	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "如果要强制访客上传的图片在某段时间后自动删除，请启用此功能.",
+	"Print errors without error log" => [
+		0 => "没有错误日志列出错误",
 	],
-	"Maximum image size" => [
-		0 => "最大图片大小",
+	"Print and log errors" => [
+		0 => "列出错误日志",
 	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "大于此尺寸的图片将自动缩小尺寸.默认(0)则不设置限制.",
+	"To configure the debug level check the %docs%." => [
+		0 => "要设置调试级别，请查看 %docs%。",
 	],
-	"Image Exif data" => [
-		0 => "图像的Exif数据",
+	"Enable %service%" => [
+		0 => "启用 %service%",
 	],
-	"Keep" => [
-		0 => "保留",
+	"Enable this if you want to send debug messages to %xr%." => [
+		0 => "如果你想要将调试信息发送到 %xr%，请启用此功能。",
 	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "选择默认的图片 <a %s>Exif数据</a> 上传.",
+	"%s Host" => [
+		0 => "%s 主机",
 	],
-	"Image Exif data (user setting)" => [
-		0 => "图像的Exif数据（用户设定）",
+	"%s Port" => [
+		0 => "%s 端口",
 	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "启用它, 如果您允许每个用户设置是否删除图像的Exif数据.",
+	"%s Key" => [
+		0 => "%s 密钥",
 	],
-	"Maximum upload file size" => [
-		0 => "最大上传文件大小（MB）",
+	"Default %s" => [
+		0 => "默认 %s",
 	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "服务器最大允许上传%s.因为参数%u和%p(文件:%f)",
+	"Image load max. filesize" => [
+		0 => "最大文件大小",
 	],
-	"Same as \"%s\" but for guests." => [
-		0 => "跟\"%s\"一样，限制游客上传的最大文件大小.",
+	"Images greater than this size will show a button to load full resolution image." => [
+		0 => "图片大小大于该值时将显示一个按钮以加载原图图.",
 	],
-	"Image path" => [
-		0 => "图像路径",
+	"Enable download button" => [
+		0 => "启用下载按钮",
 	],
-	"Relative to Chevereto root" => [
-		0 => "相对于Chevereto的root",
+	"Enable this if you want to show the image download button." => [
+		0 => "启用此代表在图片页显示原图下载按钮.",
 	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "在哪里存储图像? 相对于Chevereto根目录.",
+	"Enable right click on image" => [
+		0 => "启用右键点击图片",
 	],
-	"Storage mode" => [
-		0 => "存储方式",
+	"Enable this if you want to allow right click on image viewer page." => [
+		0 => "启用此则允许在图片页使用鼠标右键功能.",
 	],
-	"Datefolders" => [
-		0 => "日期文件夹",
+	"Enable show Exif data" => [
+		0 => "启用显示Exif数据",
 	],
-	"Direct" => [
-		0 => "默认格式",
+	"Enable this if you want to show image Exif data." => [
+		0 => "如果您想要显示图像的Exif数据, 启用此项.",
 	],
-	"Datefolders creates %s structure" => [
-		0 => "日期文件夹创建 %s 结构",
+	"%s first tab" => [
+		0 => "%s 第一个选项卡",
 	],
-	"File naming method" => [
-		0 => "文件的命名格式",
+	"Determine the first tab on %s page." => [
+		0 => "确定 %s 页上的第一个选项卡。",
 	],
-	"Original" => [
-		0 => "原始的",
+	"Enable social share" => [
+		0 => "启用社会网站分享",
 	],
-	"Mix original + random" => [
-		0 => "原始的 + 随机",
+	"Enable this if you want to show social network buttons to share content." => [
+		0 => "启用此选项, 以启用社交网站分享功能.",
 	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "\"原始的\"会尽量保持图像源名称, 而\"随机\"则生成一个随机名称. \"ID\"则使用生成的图像ID来命名.",
+	"Enable embed codes (content)" => [
+		0 => "启用嵌入代码（内容）",
 	],
-	"Thumb size" => [
-		0 => "缩略图大小",
+	"Everybody" => [
+		0 => "任何人",
 	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "固定大小的缩略图",
+	"Users only" => [
+		0 => "仅限用户",
 	],
-	"Medium image fixed dimension" => [
-		0 => "中等图片尺寸固定",
+	"Enable this if you want to show embed codes for the content." => [
+		0 => "启用此选项, 以内容嵌入代码.",
 	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "中等图像将被固定至此分辨率. 例如, 如果您选择\"宽度\", 这方面将是固定的, 图像的高度将自动计算.",
+	"Not safe content checkbox in uploader" => [
+		0 => "在上传时显示\"标记不安全内容\"复选框",
 	],
-	"Medium image fixed size" => [
-		0 => "中等图片大小固定",
+	"Enable this if you want to show a checkbox to indicate not safe content upload." => [
+		0 => "如果您想在上传页面显示一个复选框来标记\"不安全的内容(NSFW)\"，请启用此功能。",
 	],
-	"Width or height will be automatically calculated." => [
-		0 => "宽度或高度将自动计算.",
+	"Custom CSS code" => [
+		0 => "自定义CSS代码",
 	],
-	"Watermarks" => [
-		0 => "水印",
+	"Put your custom CSS code here. It will be placed as <style> just before the closing </head> tag." => [
+		0 => "把您的自定义CSS代码在这里. 它会被放在 <style> 标签 </head> 前的位置.",
+	],
+	"Custom JS code" => [
+		0 => "自定义JS代码",
+	],
+	"Put your custom JS code here. It will be placed as <script> just before the closing </head> tag." => [
+		0 => "把您的自定义JS代码在这里. 它会被放在 <script> 标签 </head> 前的位置.",
+	],
+	"Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website." => [
+		0 => "不要在这里使用 %s 标签。 这适用于纯JS代码，不适用于HTML脚本标签。 如果您在此处使用脚本标签，则会破坏您的网站。",
+	],
+	"Decode ID" => [
+		0 => "解码 ID",
+	],
+	"Encode ID" => [
+		0 => "编码 ID",
+	],
+	"Send test email" => [
+		0 => "发送测试邮件",
+	],
+	"Use this to test how your emails are being delivered. We recommend you to use %s." => [
+		0 => "使用此来测试您的电子邮件是否已发送. 我们建议您使用 %s.",
+	],
+	"Export a user" => [
+		0 => "导出用户(1个)",
+	],
+	"Export user" => [
+		0 => "导出",
+	],
+	"This will allow you to download a user's standard personal information in JSON format." => [
+		0 => "这将让用户信息保存到 .Json 格式的文件中并下载",
+	],
+	"Regenerate external storage stats" => [
+		0 => "重新生成外部存储统计信息",
+	],
+	"Storage id" => [
+		0 => "存储 id",
+	],
+	"Regenerate" => [
+		0 => "重建",
+	],
+	"This will re-calculate the sum of all the image records associated to the target external storage." => [
+		0 => "这将重新计算与目标外部存储相关联的所有图像记录的总和。",
+	],
+	"Migrate external storage records" => [
+		0 => "迁移外部存储记录",
+	],
+	"Source storage id" => [
+		0 => "源存储 id",
+	],
+	"Target storage id" => [
+		0 => "目标存储 id",
+	],
+	"Migrate" => [
+		0 => "迁移",
+	],
+	"This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage." => [
+		0 => "这只会更新数据库。 您必须自己将实际文件传输到目标存储容器。 强烈建议进行URL重写。 使用零（0）进行本地存储。",
+	],
+	"Additional settings" => [
+		0 => "其他设置",
+	],
+	"Plugin route" => [
+		0 => "上传插件",
+	],
+	"Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu." => [
+		0 => "启用它以在 %u 显示插件说明。这些说明的链接将添加到 %s 菜单。",
+	],
+	"Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL." => [
+		0 => "使用它来设置%p的自定义URL。请注意，您需要手动复制此URL中的%s。",
+	],
+	"Enable signups" => [
+		0 => "开放注册",
+	],
+	"Enable this if you want to allow users to signup." => [
+		0 => "启用它代表您允许用户自行注册账号.",
+	],
+	"Enable user content delete" => [
+		0 => "用户内容删除",
+	],
+	"Minimum age required" => [
+		0 => "最低年龄要求",
+	],
+	"Leave it empty to don't require a minimum age to use the website." => [
+		0 => "留空则表示不设置最低年龄, 对所有年龄都有效.",
+	],
+	"Notify on user signup" => [
+		0 => "用户注册通知",
+	],
+	"Enable this if you want to get an email notification for each new user signup." => [
+		0 => "启用之后，如果有人注册就会给您发送邮件通知.",
+	],
+	"Require email confirmation" => [
+		0 => "需要电子邮件确认",
+	],
+	"Enable this if users must validate their email address on sign up." => [
+		0 => "启用此选项, 用户必须验证注册电子邮件地址.",
+	],
+	"Require email for social signup" => [
+		0 => "需要电子邮件社交注册",
+	],
+	"Enable this if users using social networks to register must provide an email address." => [
+		0 => "启用此选项, 使用社交网络注册的用户必须提供一个电子邮件地址.",
+	],
+	"User avatar max. filesize" => [
+		0 => "最大的用户头像大小",
+	],
+	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
+		0 => "最大允许用户头像的文件大小.（由服务器最大允许 %s）",
+	],
+	"User background max. filesize" => [
+		0 => "最大的背景图片大小",
+	],
+	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
+		0 => "最大允许背景图片的文件大小.（由服务器最大允许 %s）",
 	],
 	"Enable this to put a logo or anything you want in image uploads." => [
 		0 => "启用它, 把您想要一个水印添加到任何上传的图像（仅对启用后的上传有效）.",
@@ -2431,6 +3154,9 @@ $translation_table = [
 	"Enable watermark on GIF image uploads" => [
 		0 => "启用GIF图片上传水印",
 	],
+	"Animated images won't be watermarked." => [
+		0 => "动图不会添加水印。",
+	],
 	"Minimum image size needed to apply watermark" => [
 		0 => "应用水印需要最小图像尺寸",
 	],
@@ -2440,8 +3166,8 @@ $translation_table = [
 	"Watermark image" => [
 		0 => "水印图像",
 	],
-	"You will get best results with plain logos with drop shadow. You can use a large image if the file size is not that big (recommended max. is 16KB). Must be a PNG." => [
-		0 => "您想获得最佳的普通的标志与阴影效果. 您可以使用一个大的图像, 如果文件大小并不大（建议最多为16KB）. 必须是PNG.",
+	"Max size %s." => [
+		0 => "大小上限 %s",
 	],
 	"Watermark position" => [
 		0 => "水印位置",
@@ -2494,824 +3220,107 @@ $translation_table = [
 	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
 		0 => "水印的不透明度设置, 值由0到100.",
 	],
-	"Dashboard > Settings > Website" => [
-		0 => "仪表盘 > 设置 > 网站",
+	"Website name" => [
+		0 => "网站名称",
 	],
-	"Categories won't work when the explorer feature is turned off. To revert this setting go to %s." => [
-		0 => "当关闭图库功能时, 图片分类将不能正常工作. 恢复此设置前往 %s.",
+	"Website doctitle" => [
+		0 => "网站标题",
 	],
-	"Do you really want to delete the %s category? This can't be undone." => [
-		0 => "您真的要删除%s类别? 这不能被撤销.",
+	"Website description" => [
+		0 => "网站描述",
 	],
-	"Note: Deleting a category doesn't delete the images that belongs to that category." => [
-		0 => "注意: 删除分类不会删除属于该类别中的图像.",
+	"Default time zone" => [
+		0 => "默认时区",
 	],
-	"Edit category" => [
-		0 => "编辑类别",
+	"Select region" => [
+		0 => "选择区域",
 	],
-	"Expires" => [
-		0 => "到期",
+	"Allows to search images, albums and users based on a given search query." => [
+		0 => "可以按特定的内容查询图片, 相册, 和用户.",
 	],
-	"Do you really want to remove the ban to the IP %s? This can't be undone." => [
-		0 => "您真的想要删除该已禁止的IP %s ? 这将是无法撤销的.",
+	"search" => [
+		0 => "搜索",
 	],
-	"Banned IP address will be forbidden to use the entire website." => [
-		0 => "被禁止的IP地址将禁止使用整个网站.",
+	"Enables %s for guests." => [
+		0 => "为访客启用 %s。",
 	],
-	"Edit IP ban" => [
-		0 => "编辑IP屏蔽列表",
+	"Enables to browse public uploaded images. It also enables categories." => [
+		0 => "启用探索图库功能, 允许查看所有用户上传的图片（不含私隐）,并可以按分类查看.",
 	],
-	"Enable signups" => [
-		0 => "开放注册",
+	"Enables to browse images randomly." => [
+		0 => "启用随机浏览图片.",
 	],
-	"Enable this if you want to allow users to signup." => [
-		0 => "启用它代表您允许用户自行注册账号.",
+	"random" => [
+		0 => "随机",
 	],
-	"Enable user content delete" => [
-		0 => "用户内容删除",
+	"Enable this if you want to show a \"%s\" link at the footer." => [
+		0 => "如果你想在页脚处显示 “%s” 链接，请启用此选项。",
 	],
-	"Enable this if you want to allow users to delete their own content. This setting doesn't affect administrators." => [
-		0 => "如果要允许用户删除自己的内容，请启用此功能。 此设置不会影响管理员。",
+	"Likes" => [
+		0 => "喜欢",
 	],
-	"Minimum age required" => [
-		0 => "最低年龄要求",
+	"Allows users to like content and populate \"Most liked\" listings." => [
+		0 => "允许用户使用喜欢LIKE功能, 并显示用户已喜欢列表.",
 	],
-	"Empty" => [
-		0 => "空",
+	"Followers allows users to follow each other." => [
+		0 => "关注者允许用户互相关注.",
 	],
-	"Leave it empty to don't require a minimum age to use the website." => [
-		0 => "留空则表示不设置最低年龄, 对所有年龄都有效.",
+	"Website mode" => [
+		0 => "网站模式",
 	],
-	"Notify on user signup" => [
-		0 => "用户注册通知",
+	"Multi-user" => [
+		0 => "多用户",
 	],
-	"Enable this if you want to get an email notification for each new user signup." => [
-		0 => "启用之后，如果有人注册就会给您发送邮件通知.",
+	"You can switch the website mode anytime." => [
+		0 => "您可以随时切换网站模式。",
 	],
-	"Username routing" => [
-		0 => "用户名链接结构",
+	"%s target %t" => [
+		0 => "%s 目标 %t",
 	],
-	"Enable this if you want to use %s/username URLs instead of %s/user/username." => [
-		0 => "启用它选项, 则使用（%s/用户名）的URL结构, 而不是（%s/user/用户名）的URL结构.",
+	"Numeric ID of the target %t for %s mode." => [
+		0 => "%s 模式的目标 %t 的数字ID。",
 	],
-	"Require email confirmation" => [
-		0 => "需要电子邮件确认",
+	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
+		0 => "定制的链接格式  /username 到 /something. 使用 “/” 映射到主页。",
 	],
-	"Enable this if users must validate their email address on sign up." => [
-		0 => "启用此选项, 用户必须验证注册电子邮件地址.",
+	"Website privacy mode" => [
+		0 => "网站的隐私模式",
 	],
-	"Require email for social signup" => [
-		0 => "需要电子邮件社交注册",
+	"Private mode will make the website only available for registered users." => [
+		0 => "启用私密模式后仅对注册用户开放使用.",
 	],
-	"Enable this if users using social networks to register must provide an email address." => [
-		0 => "启用此选项, 使用社交网络注册的用户必须提供一个电子邮件地址.",
+	"Content privacy mode" => [
+		0 => "隐私模式",
 	],
-	"User avatar max. filesize" => [
-		0 => "最大的用户头像大小",
+	"Force private (self)" => [
+		0 => "全局隐私（只有用户本人可见）",
 	],
-	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
-		0 => "最大允许用户头像的文件大小.（由服务器最大允许 %s）",
+	"Force private (anyone with the link)" => [
+		0 => "全局隐私（所有人通过链接可见）",
 	],
-	"User background max. filesize" => [
-		0 => "最大的背景图片大小",
+	"Forced privacy modes will override user selected privacy." => [
+		0 => "全局隐私模式将覆盖用户选择的隐私.",
 	],
-	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
-		0 => "最大允许背景图片的文件大小.（由服务器最大允许 %s）",
+	"If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %env% and when not set it fall-back to %var%." => [
+		0 => "如果检测到的IP与你的IP不符，这意味着你的Web服务器正在使用代理。连接IP可以使用环境变量 %env% 中定义的HTTP标头进行设置，当未进行设置时，它将回退到 %var% 。",
 	],
-	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
-		0 => "在访问网站之前显示屏幕的一个同意. 对于成人内容的网站,不应该让未成年人浏览.",
+	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
+		0 => "请确保解决此问题，因为系统依靠准确的IP检测来提供基本功能，并能防止垃圾邮件、洪水攻击和暴力破解攻击。",
 	],
-	"Enable consent screen" => [
-		0 => "启用网站内容警告",
+	"Disk" => [
+		0 => "磁盘",
 	],
-	"Consent screen cover image" => [
-		0 => "内容警告背景图片",
+	"%s News" => [
+		0 => "%s 新闻",
 	],
-	"Block image uploads by IP if the system notice a flood  behavior based on the number of uploads per time period. This setting doesn't affect administrators." => [
-		0 => "通过IP封锁图片上传, 如果系统发现根据每个时间段上传数量洪水的行为. 此设置不会影响管理员.",
+	"Installation details" => [
+		0 => "安装详情",
 	],
-	"Notify to email" => [
-		0 => "以电子邮件通知",
+	"Role" => [
+		0 => "角色",
 	],
-	"If enabled the system will send an email on flood incidents." => [
-		0 => "发现洪水攻击后系统自动发送电子邮件.",
-	],
-	"Minute limit" => [
-		0 => "每分钟的限额",
-	],
-	"Hourly limit" => [
-		0 => "每小时的限额",
-	],
-	"Daily limit" => [
-		0 => "每日的限额",
-	],
-	"Weekly limit" => [
-		0 => "每周的限额",
-	],
-	"Monthly limit" => [
-		0 => "每月的限额",
-	],
-	"Lock %s editing" => [
-		0 => "锁定 %s 编辑",
-	],
-	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
-		0 => "启用此功能可防止用户更改NSFW标志。启用后，只有管理员和管理有此权限。",
-	],
-	"Show not safe content in listings" => [
-		0 => "在列表中显示不安全内容(NSFW)",
-	],
-	"Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings." => [
-		0 => "如果您想在列表中显示不安全的内容(NSFW)，请启用此功能。此设置不影响管理员，可由用户自己的设置覆盖。",
-	],
-	"Blur NSFW content in listings" => [
-		0 => "在列表中模糊显示NSFW内容",
-	],
-	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
-		0 => "如果您想对列表中的NSFW图片应用高斯模糊效果，请启用此功能。",
-	],
-	"Show banners in not safe content" => [
-		0 => "在不安全的内容中显示横幅广告",
-	],
-	"Enable this if you want to show banners in not safe content pages." => [
-		0 => "如果您想在不安全的内容页面中显示横幅广告，请启用此功能。",
-	],
-	"Show not safe content in random mode" => [
-		0 => "在随机模式显示标记为不安全内容",
-	],
-	"List items per page" => [
-		0 => "每页列表项目",
-	],
-	"How many items should be displayed per page listing." => [
-		0 => "每页显示多少项目",
-	],
-	"List pagination mode" => [
-		0 => "列表分页模式",
-	],
-	"Endless scrolling" => [
-		0 => "瀑布流模式",
-	],
-	"Classic pagination" => [
-		0 => "经典分页模式",
-	],
-	"What pagination method should be used." => [
-		0 => "应该用什么分页模式.",
-	],
-	"Listing viewer" => [
-		0 => "列表预览",
-	],
-	"Enable this to use the listing viewer when clicking on an image." => [
-		0 => "启用之后，您在探索页面点击图片之后会有预览界面.",
-	],
-	"Image listing size" => [
-		0 => "图片列表样式",
-	],
-	"Fluid" => [
-		0 => "自动",
-	],
-	"Fixed" => [
-		0 => "固定",
-	],
-	"Both methods use a fixed width but fluid method uses automatic heights." => [
-		0 => "首页图片列表样式. 这两种方法都使用固定宽度, 但“自动”的方法是使用自动图片的高度.",
-	],
-	"Album listing images requirement" => [
-		0 => "相册被列出所需图片数量",
-	],
-	"explore" => [
-		0 => "探索",
-	],
-	"Sets the minimum image count needed to show albums in explore." => [
-		0 => "设置探索页中可以被展示出的相册所需的最少图像数量.",
-	],
-	"Listing columns number" => [
-		0 => "页面显示列数",
-	],
-	"Here you can set how many columns are used based on each target device." => [
-		0 => "在这里您可以设置针对不同的设备显示多少列, 以优化各设备的显示体验.",
-	],
-	"Phone" => [
-		0 => "手机",
-	],
-	"Phablet" => [
-		0 => "大屏手机",
-	],
-	"Tablet" => [
-		0 => "平板电脑",
-	],
-	"Laptop" => [
-		0 => "笔记本电脑",
-	],
-	"Desktop" => [
-		0 => "桌面台式电脑",
-	],
-	"Put your themes in the %s folder" => [
-		0 => "把您的主题上传到 %s 文件夹",
-	],
-	"Tone" => [
-		0 => "色调",
-	],
-	"Light" => [
-		0 => "白",
-	],
-	"Dark" => [
-		0 => "黑",
-	],
-	"Main color" => [
-		0 => "主要颜色",
-	],
-	"Hexadecimal color value" => [
-		0 => "十六进制颜色值",
-	],
-	"Use this to set the main theme color. Value must be in <a href=\"%s\" target=\"_blank\">hex format</a>." => [
-		0 => "使用此设置的主要主题颜色. 值必须是 <a href=\"%s\" target=\"_blank\">十六进制</a> 格式.",
-	],
-	"Top bar button color" => [
-		0 => "顶部菜单栏按钮颜色",
-	],
-	"Blue" => [
-		0 => "蓝",
-	],
-	"Green" => [
-		0 => "绿",
-	],
-	"Orange" => [
-		0 => "橙",
-	],
-	"Red" => [
-		0 => "红",
-	],
-	"Grey" => [
-		0 => "灰",
-	],
-	"Black" => [
-		0 => "黑",
-	],
-	"White" => [
-		0 => "白",
-	],
-	"Color for the top bar buttons like the \"Create account\" button." => [
-		0 => "顶栏的颜色按钮为\"创建帐户\"按钮.",
-	],
-	"Enable vector logo" => [
-		0 => "启用矢量Logo（SVG）",
-	],
-	"Enable vector logo for high quality logo in devices with high pixel density." => [
-		0 => "在高像素密度的设备启用矢量标志为高品质的标志.",
-	],
-	"Vector logo image" => [
-		0 => "矢量Logo图像",
-	],
-	"Vector version or your website logo in SVG format." => [
-		0 => "SVG格式的矢量版本Logo.",
-	],
-	"Raster logo image" => [
-		0 => "光栅Logo图像",
-	],
-	"Bitmap version or your website logo. PNG format is recommended." => [
-		0 => "PNG格式的位图版本Logo.",
-	],
-	"Logo height" => [
-		0 => "Logo高度",
-	],
-	"No value" => [
-		0 => "没有值",
-	],
-	"Use this to set the logo height if needed." => [
-		0 => "启用此选项, 以设置标志的高度.",
-	],
-	"Favicon image" => [
-		0 => "网站图标",
-	],
-	"Favicon image. Image must have same width and height." => [
-		0 => "网站图标. 所上传图像必须具有相同的宽度和高度.",
-	],
-	"Image load max. filesize" => [
-		0 => "最大文件大小",
-	],
-	"Images greater than this size will show a button to load full resolution image." => [
-		0 => "图片大小大于该值时将显示一个按钮以加载原图图.",
-	],
-	"Enable download button" => [
-		0 => "启用下载按钮",
-	],
-	"Enable this if you want to show the image download button." => [
-		0 => "启用此代表在图片页显示原图下载按钮.",
-	],
-	"Enable right click on image" => [
-		0 => "启用右键点击图片",
-	],
-	"Enable this if you want to allow right click on image viewer page." => [
-		0 => "启用此则允许在图片页使用鼠标右键功能.",
-	],
-	"Enable show Exif data" => [
-		0 => "启用显示Exif数据",
-	],
-	"Enable this if you want to show image Exif data." => [
-		0 => "如果您想要显示图像的Exif数据, 启用此项.",
-	],
-	"Enable social share" => [
-		0 => "启用社会网站分享",
-	],
-	"Enable this if you want to show social network buttons to share content." => [
-		0 => "启用此选项, 以启用社交网站分享功能.",
-	],
-	"Enable embed codes (content)" => [
-		0 => "启用嵌入代码（内容）",
-	],
-	"Everybody" => [
-		0 => "任何人",
-	],
-	"Users only" => [
-		0 => "仅限用户",
-	],
-	"Enable this if you want to show embed codes for the content." => [
-		0 => "启用此选项, 以内容嵌入代码.",
-	],
-	"Not safe content checkbox in uploader" => [
-		0 => "在上传时显示\"标记不安全内容\"复选框",
-	],
-	"Enable this if you want to show a checkbox to indicate not safe content upload." => [
-		0 => "如果您想在上传页面显示一个复选框来标记\"不安全的内容(NSFW)\"，请启用此功能。",
-	],
-	"Custom CSS code" => [
-		0 => "自定义CSS代码",
-	],
-	"Put your custom CSS code here. It will be placed as <style> just before the closing </head> tag." => [
-		0 => "把您的自定义CSS代码在这里. 它会被放在 <style> 标签 </head> 前的位置.",
-	],
-	"Custom JS code" => [
-		0 => "自定义JS代码",
-	],
-	"Put your custom JS code here. It will be placed as <script> just before the closing </head> tag." => [
-		0 => "把您的自定义JS代码在这里. 它会被放在 <script> 标签 </head> 前的位置.",
-	],
-	"Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website." => [
-		0 => "不要在这里使用 %s 标签。 这适用于纯JS代码，不适用于HTML脚本标签。 如果您在此处使用脚本标签，则会破坏您的网站。",
-	],
-	"Style" => [
-		0 => "样式",
-	],
-	"Landing page" => [
-		0 => "仅显示上传按钮",
-	],
-	"Split landing + images" => [
-		0 => "上传按钮 + 最新图片",
-	],
-	"Route %s" => [
-		0 => "路径 %s",
-	],
-	"upload" => [
-		0 => "上传",
-	],
-	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
-		0 => "选择主页风格. 详细定制主页编辑此 app/themes/%s/views/index.php",
-	],
-	"Cover image" => [
-		0 => "封面图片",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "您真的需要删除这张图片? 这将无法恢复.",
-	],
-	"Delete image" => [
-		0 => "删除图片",
-	],
-	"Add new cover image" => [
-		0 => "添加新的封面图片",
-	],
-	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
-		0 => "这将被添加在主页 %s 标记. 保持空白以使用默认内容.",
-	],
-	"Paragraph" => [
-		0 => "段落",
-	],
-	"Call to action button color" => [
-		0 => "“开始上传”按钮的颜色",
-	],
-	"Color of the homepage call to action button." => [
-		0 => "请选择“开始上传”按钮的颜色.",
-	],
-	"Call to action outline style button" => [
-		0 => "主页“开始上传”按钮的背景透明",
-	],
-	"Enable this to use outline style for the homepage call to action button." => [
-		0 => "启用它, 则“开始上传”按钮的背景颜色改为透明样式.",
-	],
-	"Call to action functionality" => [
-		0 => "按钮功能",
-	],
-	"Trigger uploader" => [
-		0 => "触发上传",
-	],
-	"Open URL" => [
-		0 => "打开网址",
-	],
-	"Call to action URL" => [
-		0 => "按钮网址",
-	],
-	"Enter an absolute or relative URL" => [
-		0 => "输入一个绝对或相对URL网址",
-	],
-	"A relative URL like %r will be mapped to %l" => [
-		0 => "这样一个相对URL网址 %r 将映射到 %l",
-	],
-	"Call to action HTML" => [
-		0 => "按钮HTML代码",
-	],
-	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
-		0 => "这将被添加在按钮 <a> 标记. 保持空白以使用默认内容.",
-	],
-	"User IDs" => [
-		0 => "用户 ID",
-	],
-	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
-		0 => "指定的用户ID显示在主页最新图片上, 多个用户用逗号分隔. 留空则显示所有全站最新的图片.",
-	],
-	"Automatic updates check" => [
-		0 => "自动更新检查",
-	],
-	"When enabled the system will automatically check for new updates." => [
-		0 => "启用时, 系统将自动检查新更新.",
-	],
-	"Display available updates notification" => [
-		0 => "显示可用的更新通知",
-	],
-	"Enable this to show a notice on top warning you about new available system updates." => [
-		0 => "启用此则显示一个通知, 提示您关于新的可用系统更新.",
-	],
-	"Dump update query" => [
-		0 => "转储更新查询",
-	],
-	"Enable this if you want to dump the update query to run it manually." => [
-		0 => "启用此选项，可以为每个用户自动检测和设置正确的语言。",
-	],
-	"SEO %s URLs" => [
-		0 => "%s URL地址SEO优化",
-	],
-	"Enable this if you want to use SEO %s URLs." => [
-		0 => "如果要使用%s地址SEO优化，请启用此选项。",
-	],
-	"Maintenance" => [
-		0 => "维护模式",
-	],
-	"When enabled the website will show a maintenance message. This setting doesn't affect administrators." => [
-		0 => "当启用该设置网站将重定向到维修页面. 此设置不影响管理员。",
-	],
-	"Crypt salt" => [
-		0 => "Crypt salt 特殊码",
-	],
-	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
-		0 => "此ID为系统的一个特殊码, 相当于V2.x的“__CHV_CRYPT_SALT__”值, 本设置仅在安装或升级时才用到, 一经使用请勿修改.",
-	],
-	"PHP error reporting" => [
-		0 => "PHP错误报告",
-	],
-	"Enable this if you want to print errors generated by PHP <a %s>error_reporting()</a>. This should be disabled in production." => [
-		0 => "启用PHP <a %s>error_reporting()</a> 函数，以便显示PHP错误报告， 建议在生产环境中禁用。",
-	],
-	"Debug level" => [
-		0 => "调试级别",
-	],
-	"None" => [
-		0 => "无",
-	],
-	"Error log" => [
-		0 => "错误日志",
-	],
-	"Print errors without error log" => [
-		0 => "没有错误日志列出错误",
-	],
-	"Print and log errors" => [
-		0 => "列出错误日志",
-	],
-	"To configure the debug level check the <a %s>debug documentation</a>. Default level is \"Error log\" (1)." => [
-		0 => "要配置调试级别请查看<a %s>调试文档</a>. 默认级别为\"错误日志\"(1).",
-	],
-	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed." => [
-		0 => "路径允许您自定义默认路径。只允许使用字母数字、连字符和下划线字符。",
-	],
-	"Image routing" => [
-		0 => "图像页面路径",
-	],
-	"Routing for %s" => [
-		0 => "对于路径 %s",
-	],
-	"Album routing" => [
-		0 => "相册路径",
-	],
-	"Hostname" => [
-		0 => "主机名",
-	],
-	"Hostname on which sub-domain wildcards will be added." => [
-		0 => "将添加子域通配符的主机名。",
-	],
-	"This setting may be overridden by %s." => [
-		0 => "此设置可能被%s覆盖。",
-	],
-	"Language subdomains" => [
-		0 => "语言子域",
-	],
-	"languages" => [
-		0 => "语言",
-	],
-	"Enable to use %s for %t." => [
-		0 => "启用 %s 用于 %t。",
-	],
-	"Username subdomains" => [
-		0 => "用户名子域名",
-	],
-	"user profiles" => [
-		0 => "用户资料",
-	],
-	"Custom language strings" => [
-		0 => "自定义语言字符串",
-	],
-	"Default language" => [
-		0 => "默认语言",
-	],
-	"Default base language to use." => [
-		0 => "默认基本语言",
-	],
-	"Auto language" => [
-		0 => "自动选择语言",
-	],
-	"Enable this if you want to automatically detect and set the right language for each user." => [
-		0 => "启用它, 如果您想自动检测并为每个用户设置正确的语言.",
-	],
-	"Language chooser" => [
-		0 => "语言选择器",
-	],
-	"Enable this if you want to allow language selection." => [
-		0 => "启用这个如果您想允许用户选择语言.",
-	],
-	"Enabled languages" => [
-		0 => "启用语言",
-	],
-	"Unchecked languages won't be used in your website." => [
-		0 => "未选中的语言将不会在自己的网站中使用.",
-	],
-	"Toggle this to enable or disable HTTPS" => [
-		0 => "切换此启用或禁用HTTPS链接",
-	],
-	"Toggle this to enable or disable this storage" => [
-		0 => "切换此启用或禁用此存储",
-	],
-	"Quota" => [
-		0 => "配额",
-	],
-	"Active" => [
-		0 => "活动",
-	],
-	"Storage method" => [
-		0 => "存储方法",
-	],
-	"Local storage is used by default or when no external storage is active." => [
-		0 => "默认情况下使用本地存储, 或在外部存储没有处于激活状态.",
-	],
-	"If you need help check the <a %s>storage documentation</a>." => [
-		0 => "如果您需要帮助, 请查看<a %s>存储文档</a>.",
-	],
-	"Edit storage" => [
-		0 => "编辑存储",
-	],
-	"From name" => [
-		0 => "发送名称",
-	],
-	"Sender name for emails sent to users." => [
-		0 => "接收到邮件显示的发送人名称",
-	],
-	"From email address" => [
-		0 => "发件人的电子邮箱地址",
-	],
-	"Sender email for emails sent to users." => [
-		0 => "在收件人处显示的发件人邮箱",
-	],
-	"Incoming email address" => [
-		0 => "收信电子邮箱地址",
-	],
-	"Recipient for contact form and system alerts." => [
-		0 => "联系表单和系统警告的收件人",
-	],
-	"Email mode" => [
-		0 => "发送邮件的方式",
-	],
-	"How to send emails? SMTP recommended." => [
-		0 => "如何发送邮件? 推荐使用SMTP.",
-	],
-	"SMTP server and port" => [
-		0 => "SMTP服务器与端口",
-	],
-	"SMTP server" => [
-		0 => "SMTP服务器",
-	],
-	"SMTP username" => [
-		0 => "SMTP用户名",
-	],
-	"SMTP password" => [
-		0 => "SMTP密码",
-	],
-	"SMTP security" => [
-		0 => "SMTP安全",
-	],
-	"Unsecured" => [
-		0 => "不使用任何安全模式",
-	],
-	"Decode ID" => [
-		0 => "解码 ID",
-	],
-	"Encode ID" => [
-		0 => "编码 ID",
-	],
-	"Send test email" => [
-		0 => "发送测试邮件",
-	],
-	"Use this to test how your emails are being delivered. We recommend you to use %s." => [
-		0 => "使用此来测试您的电子邮件是否已发送. 我们建议您使用 %s.",
-	],
-	"Export a user" => [
-		0 => "导出用户(1个)",
-	],
-	"Export user" => [
-		0 => "导出",
-	],
-	"This will allow you to download a user's standard personal information in JSON format." => [
-		0 => "这将让用户信息保存到 .Json 格式的文件中并下载",
-	],
-	"Regenerate external storage stats" => [
-		0 => "重新生成外部存储统计信息",
-	],
-	"Storage id" => [
-		0 => "存储 id",
-	],
-	"Regenerate" => [
-		0 => "重建",
-	],
-	"This will re-calculate the sum of all the image records associated to the target external storage." => [
-		0 => "这将重新计算与目标外部存储相关联的所有图像记录的总和。",
-	],
-	"Migrate image records from one external storage to another" => [
-		0 => "将图像记录从一个外部存储迁移到另一个外部存储",
-	],
-	"Source storage id" => [
-		0 => "源存储 id",
-	],
-	"Target storage id" => [
-		0 => "目标存储 id",
-	],
-	"Migrate" => [
-		0 => "迁移",
-	],
-	"This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage." => [
-		0 => "这只会更新数据库。 您必须自己将实际文件传输到目标存储容器。 强烈建议进行URL重写。 使用零（0）进行本地存储。",
-	],
-	"You need a <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> for this." => [
-		0 => "完成此您需要一个 <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> ",
-	],
-	"Facebook app id" => [
-		0 => "Facebook app 应用 id",
-	],
-	"Facebook app secret" => [
-		0 => "Facebook app 应用 secret",
-	],
-	"You need a <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> for this." => [
-		0 => "完成此您需要一个 <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app </a>",
-	],
-	"Twitter API key" => [
-		0 => "Twitter API 应用密匙",
-	],
-	"Twitter API secret" => [
-		0 => "Twitter API 应用 secret",
-	],
-	"Twitter account" => [
-		0 => "Twitter账号",
-	],
-	"You need a <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> for this." => [
-		0 => "完成此您需要一个<a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a>",
-	],
-	"Google client id" => [
-		0 => "Google 客户端 id",
-	],
-	"Google client secret" => [
-		0 => "Google 客户端 secret",
-	],
-	"You need a <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> for this." => [
-		0 => "完成此您需要一个 <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a>",
-	],
-	"VK client id" => [
-		0 => "VK 客户端 id",
-	],
-	"VK client secret" => [
-		0 => "VK 客户端秘钥",
-	],
-	"%s spam protection" => [
-		0 => "%s 垃圾邮件保护",
-	],
-	"user generated content" => [
-		0 => "用户生成内容",
-	],
-	"Enable this to use %l to block spam on %c." => [
-		0 => "启用 %l 来阻止 %c 中的垃圾邮件。",
-	],
-	"%s API key" => [
-		0 => "%s API 密钥",
-	],
-	"user signup" => [
-		0 => "用户注册",
-	],
-	"You need a <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> for this." => [
-		0 => "您需要一个 <a href=\"%s\" target=\"_blank\">验证码Key</a> 来完成此项设置.",
-	],
-	"Please note that each reCAPTCHA version require its own set of keys. Don't forget to update the keys if you change versions." => [
-		0 => "请注意，每个reCAPTCHA版本都有一组对应的密钥。 如果您更改了版本，请不要忘记更新密钥。",
-	],
-	"%s site key" => [
-		0 => "%s 站点密钥",
-	],
-	"%s secret key" => [
-		0 => "%s 密钥",
-	],
-	"reCAPTCHA threshold" => [
-		0 => "验证码阈值",
-	],
-	"How many failed attempts are needed to ask for reCAPTCHA? Use zero (0) to always show reCAPTCHA." => [
-		0 => "登陆失败多少次后显示验证码? 键入\"0\"零则始终显示验证码.",
-	],
-	"Force %s on contact page" => [
-		0 => "在联系页面强制开启 %s",
-	],
-	"Enable this to always show %s on contact page." => [
-		0 => "启用此选项可始终在联系人页面上显示 %s 。",
-	],
-	"Comments API" => [
-		0 => "评论 API",
-	],
-	"Disqus API works with %s." => [
-		0 => "Disqus API 适用于 %s.",
-	],
-	"Disqus shortname" => [
-		0 => "Disqus 短名称",
-	],
-	"%s public key" => [
-		0 => "%s 公共密钥",
-	],
-	"Comment code" => [
-		0 => "评论社会化代码",
-	],
-	"Disqus, Facebook or anything you want. It will be used in image view." => [
-		0 => "DISQUS, Facebook或其他. 它将在图像视图中使用.",
-	],
-	"Automatically moderate the content using the %s service." => [
-		0 => "使用 %s 服务来自动审核上传的图片。",
-	],
-	"Automatic approve" => [
-		0 => "自动审核",
-	],
-	"Enable this to automatically approve content moderated by this service." => [
-		0 => "启用此功能可自动审核本服务管理的所有内容。",
-	],
-	"Block content" => [
-		0 => "屏蔽内容",
-	],
-	"Adult" => [
-		0 => "成人",
-	],
-	"Teen and adult" => [
-		0 => "儿童和成人",
-	],
-	"Flag NSFW" => [
-		0 => "标记 NSFW",
-	],
-	"Analytics code" => [
-		0 => "Analytics（分析）代码",
-	],
-	"Google Analytics or anything you want. It will be added to the theme footer." => [
-		0 => "谷歌Analytics（分析）或其他. 它将被添加到主题页脚.",
-	],
-	"API v1 key" => [
-		0 => "API v1 密钥",
-	],
-	"Use this key when using the <a %s>API v1</a>." => [
-		0 => "使用<a %s>API V1</a>时使用此值.",
-	],
-	"Plugin route" => [
-		0 => "上传插件",
-	],
-	"Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu. This setting doesn't affect administrators." => [
-		0 => "启用此功能可在%u页面显示插件说明。这些说明的链接将添加到%s菜单中。此设置不会影响管理员。",
-	],
-	"Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL." => [
-		0 => "使用它来设置%p的自定义URL。请注意，您需要手动复制此URL中的%s。",
-	],
-	"Cookie law compliance" => [
-		0 => "Cookie的法律法规",
-	],
-	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
-		0 => "启用它, 显示一条消息, 符合欧盟的Cookie法律的要求. 注意: 您只需要这个, 如果您的网站托管在欧盟, 如果您添加跟踪Cookie.",
-	],
-	"Save changes" => [
-		0 => "保存修改",
-	],
-	"Check the errors to proceed." => [
-		0 => "请检查错误并继续.",
+	"Email address" => [
+		0 => "Email地址",
 	],
 	"Play GIF" => [
 		0 => "播放 GIF",
@@ -3319,23 +3328,20 @@ $translation_table = [
 	"Load 360° view" => [
 		0 => "加载 360° 视图",
 	],
-	"Load full resolution" => [
-		0 => "加载原图",
-	],
 	"%s image" => [
 		0 => "%s 图片",
 	],
 	"Do you really want to approve this image? The image will go public if you approve it." => [
 		0 => "您真的要删除所有选定的内容吗？这是无法撤消的。",
 	],
-	"This is the album cover" => [
-		0 => "这是相册的封面",
+	"Download" => [
+		0 => "下载",
 	],
 	"Cover" => [
 		0 => "封面",
 	],
-	"Added to %a and categorized in %c" => [
-		0 => "加入 %a 和标记上 %c",
+	"This is the album cover" => [
+		0 => "这是相册的封面",
 	],
 	"Added to %s" => [
 		0 => "加入 %s",
@@ -3346,23 +3352,29 @@ $translation_table = [
 	"Uploaded %s" => [
 		0 => "已上传 %s",
 	],
+	"This content will be removed on %s" => [
+		0 => "此內容将于 %s 移除",
+	],
+	"No description provided." => [
+		0 => "未提供说明。",
+	],
 	"Less Exif data" => [
 		0 => "关闭详细Exif数据",
 	],
 	"More Exif data" => [
 		0 => "打开详细Exif数据",
 	],
-	"Album ID" => [
-		0 => "相册ID",
+	"%s ID" => [
+		0 => "%s ID",
+	],
+	"Add IP ban" => [
+		0 => "添加IP",
 	],
 	"Upload and share your images." => [
 		0 => "上传与分享您的照片",
 	],
 	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
 		0 => "任意拖放图片到这里, 即开始上传您的图片. 最大 %s 图片大小. 直接的源图片链接, BBCode代码和HTML缩略图显示.",
-	],
-	"Start uploading" => [
-		0 => "开始上传",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "注册即可解锁并体验所有的功能",
@@ -3373,17 +3385,14 @@ $translation_table = [
 	"Sign in with your account" => [
 		0 => "使用您的帐户登录",
 	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "没有账号? <a href='%s'>马上注册</a>.",
+	"Don't have an account? %signup% now." => [
+		0 => "没有账户？现在 %signup% 。",
 	],
 	"Logged out" => [
 		0 => "注销",
 	],
 	"You have been logged off %s. Hope to see you soon." => [
 		0 => "您已退出 %s , 希望很快再见到您.",
-	],
-	"Go to homepage" => [
-		0 => "转到主页",
 	],
 	"Website under maintenance" => [
 		0 => "网站正在维护中",
@@ -3397,8 +3406,8 @@ $translation_table = [
 	"Please enter your password to continue." => [
 		0 => "请输入您的密码以继续浏览.",
 	],
-	"Send" => [
-		0 => "发送",
+	"Unlock" => [
+		0 => "解锁",
 	],
 	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
 		0 => "通过安装我们的上传插件，将图像上传到您的网站，博客或论坛。 它提供图像上传到任何网站，放置一个按钮，将允许您的用户直接上传图像到我们的服务，它将自动处理插入所需的代码。 所有功能包括拖放，远程上传，图像调整大小等。",
@@ -3457,24 +3466,6 @@ $translation_table = [
 	"The plugin has a large set of additional options that allow full customization. You can use custom HTML, CSS, own color palette, set observers and more. Check the %d and the plugin source to get a better idea of these advanced options." => [
 		0 => "该插件具有大量附加选项，允许完全自定义。 您可以使用自定义HTML，CSS，自己的调色板，设置监控服务等。 查找%d和插件源以更好地了解这些高级选项。",
 	],
-	"You either don't have permission to access this page or the link has expired." => [
-		0 => "您没有权限访问此网页或链接已过期.",
-	],
-	"Search results" => [
-		0 => "搜索结果",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "您真的要删除这个用户? 这将不能恢复.",
-	],
-	"Delete user" => [
-		0 => "删除用户",
-	],
-	"Register date" => [
-		0 => "注册日期",
-	],
-	"Registration IP" => [
-		0 => "注册IP",
-	],
 	"Valid" => [
 		0 => "有效的",
 	],
@@ -3483,9 +3474,6 @@ $translation_table = [
 	],
 	"Awaiting email" => [
 		0 => "等待设置电子邮件",
-	],
-	"Awaiting confirmation" => [
-		0 => "等待确认",
 	],
 	"%i to %f characters<br>Letters, numbers and \"_\"" => [
 		0 => "%i 到 %f 个字符<br>字母, 数字 和 \"_\" 符号",
@@ -3517,11 +3505,47 @@ $translation_table = [
 	"Timezone" => [
 		0 => "时区",
 	],
-	"This service is provided by %website_name%, we are an independent service provider. Many thanks for your ongoing support." => [
-		0 => "此服务由 %website_name% 提供，我们是独立的服务提供商。非常感谢您一直以来的支持。",
+	"%s key" => [
+		0 => "%s key",
 	],
-	"At %website_name% we are proudly using and supporting %software%." => [
-		0 => "在 %website_name%，我们自豪地使用和支持 %software%。",
+	"Store the %s in a secure location as it will be shown just once." => [
+		0 => "将 %s 保存在安全位置，因为它只显示一次。",
+	],
+	"Are you sure that you want to revoke the existing %s?" => [
+		0 => "您确定要撤销现有的 %s 吗？",
+	],
+	"Regen key" => [
+		0 => "重新生成密钥",
+	],
+	"User has no connections." => [
+		0 => "用户没有连接.",
+	],
+	"Link your account to external login providers to be able to login here." => [
+		0 => "将您的帐户链接到外部登录提供商以便能够在此处登录。",
+	],
+	"Do you really want to disconnect %s from this account?" => [
+		0 => "您真的想从这个帐户断开 %s 吗？",
+	],
+	"This account is connected to %s" => [
+		0 => "此帐户连接到 %s",
+	],
+	"Do you really want to disconnect your %s account?" => [
+		0 => "您真的要断开您的 %s 帐户?",
+	],
+	"You will be logged out and you won't be able to login to your account using this %s account." => [
+		0 => "您将被注销, 而您将无法使用此 %s 的帐户登录到您的帐户.",
+	],
+	"Connected to %s" => [
+		0 => "连接到 %s",
+	],
+	"Logged in" => [
+		0 => "登录",
+	],
+	"Connect %label%" => [
+		0 => "连接 %label%",
+	],
+	"Button" => [
+		0 => "按钮",
 	],
 	"Current password" => [
 		0 => "当前的密码",
@@ -3550,6 +3574,24 @@ $translation_table = [
 	"Re-enter your password" => [
 		0 => "请再次输入您的密码",
 	],
+	"This service is based on Chevereto hosted edition." => [
+		0 => "此服务基于 Chevereto 托管版.",
+	],
+	"Usage of this service must be in compliance with the Chevereto Software Terms of Service." => [
+		0 => "使用此服务必须遵守 Chevereto 软件服务条款.",
+	],
+	"This instance is hosted in a service layer provided by Chevereto Software, which hereby declare not being responsible for the use of this service neither the damages that this service may cause." => [
+		0 => "本实例托管在 Chevereto Software 提供的服务层中,在此声明不对使用该服务或因该服务可能造成的损害负责。",
+	],
+	"This service is based on Chevereto self-hosted edition." => [
+		0 => "此服务基于 Chevereto 自托管版本.",
+	],
+	"Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"." => [
+		0 => "Chevereto 软件的使用必须遵守“The Chevereto License”软件许可条款。",
+	],
+	"This instance is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this instance and it won't be responsible for this service neither the damages that this service may cause." => [
+		0 => "本实例托管在非Chevereto Software提供的服务层,在此声明对本实例的管理层没有任何控制权和访问权,不对本服务负责,也不对该服务可能造成的损害负责.",
+	],
 	"Upload avatar" => [
 		0 => "上传头像",
 	],
@@ -3562,50 +3604,23 @@ $translation_table = [
 	"This is your real name, not your username." => [
 		0 => "这是您的个性昵称. 不是您的用户名.",
 	],
-	"http://yourwebsite.com" => [
-		0 => "http://YourWebsite.com（您的网站地址）",
-	],
 	"Bio" => [
 		0 => "个人介绍",
 	],
 	"Tell us a little bit about you" => [
 		0 => "告诉我们一点关于您的信息",
 	],
-	"User has no connections." => [
-		0 => "用户没有连接.",
+	"Two-factor authentication is enabled." => [
+		0 => "二次身份验证(2FA)已启用。",
 	],
-	"Link your account to external services to be able to login here." => [
-		0 => "将您的帐户连接到外部服务，以便能够快捷登录和分享内容。",
+	"Do you really want to disable two-factor authentication?" => [
+		0 => "您真的要禁用二次身份验证(2FA)吗？",
 	],
-	"Do you really want to disconnect %s from this account?" => [
-		0 => "您真的想从这个帐户断开 %s 吗？",
+	"Disable" => [
+		0 => "禁用",
 	],
-	"This account is connected to %s" => [
-		0 => "此帐户连接到 %s",
-	],
-	"Do you really want to disconnect your %s account?" => [
-		0 => "您真的要断开您的 %s 帐户?",
-	],
-	"You will be logged out and you won't be able to login to your account using this %s account." => [
-		0 => "您将被注销, 而您将无法使用此 %s 的帐户登录到您的帐户.",
-	],
-	"Your account is connected to %s" => [
-		0 => "您的帐户已连接到 %s",
-	],
-	"disconnect" => [
-		0 => "断开",
-	],
-	"Connect %s" => [
-		0 => "绑定 %s 账号",
-	],
-	"Feel free to browse and discover all my shared images and albums." => [
-		0 => "随意浏览, 发现我所有的图片和相册共享.",
-	],
-	"Button" => [
-		0 => "按钮",
-	],
-	"View all my images" => [
-		0 => "查看我的所有图片",
+	"Scan the QR code below with an authenticator application and enter the code displayed." => [
+		0 => "使用验证器应用程序扫描下面的二维码,然后输入显示的代码.",
 	],
 	"Login" => [
 		0 => "登录",
@@ -3619,20 +3634,8 @@ $translation_table = [
 	"If you have already signed up maybe you need to request to %s to activate your account." => [
 		0 => "如果您已经注册，您可能需要请求 %s 来激活您的帐户。",
 	],
-	"You can also %s." => [
-		0 => "您也可以 %s.",
-	],
 	"I'm at least %s years old" => [
 		0 => "我已年满 %s 周岁",
-	],
-	"terms" => [
-		0 => "服务条款",
-	],
-	"privacy policy" => [
-		0 => "隐私政策",
-	],
-	"I agree to the %terms_link and %privacy_link" => [
-		0 => "我同意 %terms_link 和 %privacy_link",
 	],
 	"Upload profile background" => [
 		0 => "上传背景图片",
@@ -3643,8 +3646,8 @@ $translation_table = [
 	"Upload new image" => [
 		0 => "上传新的图片",
 	],
-	"The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?" => [
-		0 => "该个人信息的背景图像将被删除. 这将不能恢复. 您确定要删除个人信息的背景图片?",
+	"Are you sure that you want to delete the profile background image?" => [
+		0 => "你确定要删除个人资料的背景图片吗？",
 	],
 	"Delete background" => [
 		0 => "删除背景图片",
@@ -3655,14 +3658,11 @@ $translation_table = [
 	"Follow" => [
 		0 => "关注",
 	],
-	"You have been forbidden to use this website." => [
-		0 => "您已经被禁止使用本网站.",
+	"Set: %s" => [
+		0 => "设置： %s",
 	],
-	"Plugin" => [
-		0 => "插件",
-	],
-	"Page %s" => [
-		0 => "第 %s 页",
+	"Ban" => [
+		0 => "封禁",
 	],
 	"General questions/comments" => [
 		0 => "一般问题/意见",
@@ -3675,9 +3675,6 @@ $translation_table = [
 	],
 	"Invalid subject" => [
 		0 => "无效的主题",
-	],
-	"Mail error" => [
-		0 => "邮件错误",
 	],
 	"Message sent" => [
 		0 => "发送消息",
@@ -3694,29 +3691,8 @@ $translation_table = [
 	"Subject" => [
 		0 => "主题",
 	],
-	"All the changes that you have made will be lost if you continue." => [
-		0 => "如果您继续您所做的所有更改将丢失.",
-	],
-	"Changes saved successfully." => [
-		0 => "成功保存更改.",
-	],
-	"Go back to form" => [
-		0 => "返回表格",
-	],
-	"continue anyway" => [
-		0 => "继续?",
-	],
-	"Saving" => [
-		0 => "保存",
-	],
-	"Sending" => [
-		0 => "发送中",
-	],
-	"Confirm action" => [
-		0 => "操作确认",
-	],
-	"information" => [
-		0 => "信息",
+	"Send" => [
+		0 => "发送",
 	],
 ];
 ?>

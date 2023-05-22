@@ -631,6 +631,13 @@ class L10n
         'base' => 'bs',
         'short_name' => 'BS',
       ],
+      'bs-BA' => [
+        'code' => 'bs-BA',
+        'dir' => 'ltr',
+        'name' => 'Bosanski',
+        'base' => 'bs',
+        'short_name' => 'BS (BA)',
+      ],
       'bs-BS' => [
         'code' => 'bs-BS',
         'dir' => 'ltr',

@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2020-04-16 20:33+0000',
-  'PO-Revision-Date' => '2020-04-16 20:33+0000',
+  'POT-Creation-Date' => '2023-05-22 15:49+0000',
+  'PO-Revision-Date' => '2023-05-22 15:49+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'bg_BG',
@@ -16,364 +16,17 @@ $translation_plural = array (
   'function' => '($n != 1)',
 );
 $translation_table = [
-	"Invalid email" => [
-		0 => "Невалиден имейл",
+	"You have been forbidden to use this website." => [
+		0 => "Забранено вие да използвате този сайт.",
 	],
-	"Invalid username" => [
-		0 => "Невалидно потребителско име",
+	"Moderate" => [
+		0 => "Преглед на съдържанието",
 	],
-	"Invalid password" => [
-		0 => "Невалидна парола",
+	"View all my images" => [
+		0 => "Виж всички мои снимки",
 	],
-	"Invalid website mode" => [
-		0 => "Невалиден режим на сайта",
-	],
-	"From email address" => [
-		0 => "От имейл адрес",
-	],
-	"Sender email for emails sent to users." => [
-		0 => "Имейл, от който потребителите ще получават имейлите",
-	],
-	"Incoming email address" => [
-		0 => "Имейл за входяща поща",
-	],
-	"Recipient for contact form and system alerts." => [
-		0 => "Получател на форма за контакт и системни сигнали.",
-	],
-	"Website mode" => [
-		0 => "Режим на уебсайта",
-	],
-	"You can switch the website mode anytime." => [
-		0 => "Можете да превключвате по всяко време режима на уебсайта",
-	],
-	"Community" => [
-		0 => "Общество",
-	],
-	"Personal" => [
-		0 => "Лично",
-	],
-	"Installed version is v%s" => [
-		0 => "Инсталирана версия : %s",
-	],
-	"Can't connect to %s" => [
-		0 => "Не може да се свърже с %s",
-	],
-	"Last available release is v%s" => [
-		0 => "Последната налична версия е v%s",
-	],
-	"Update needed, proceeding to download" => [
-		0 => "Необходима е актуализация",
-	],
-	"No update needed" => [
-		0 => "Не е необходима актуализация",
-	],
-	"System files already up to date" => [
-		0 => "Системните файлове вече са актуализирани",
-	],
-	"Starting v%s download" => [
-		0 => "Сваляне на версия : v%s",
-	],
-	"Downloaded v%s, proceeding to extraction" => [
-		0 => "Свалена версия : v%s започва се разархивиране",
-	],
-	"Attempting to extract v%s" => [
-		0 => "Опит за екстракт v%s",
-	],
-	"Extraction completed" => [
-		0 => "Екстрахирането завърши",
-	],
-	"Proceding to install the update" => [
-		0 => "Започване на актуализация",
-	],
-	"Update failed" => [
-		0 => "Неуспешна актуализация",
-	],
-	"Update in progress" => [
-		0 => "В моментът се извършва актуализация",
-	],
-	"Missing %s file" => [
-		0 => "Липсва %s файл",
-	],
-	"Invalid license info" => [
-		0 => "Невалиден лиценз",
-	],
-	"Invalid license key" => [
-		0 => "Невалиден лиценз",
-	],
-	"Can't save file" => [
-		0 => "Файлът не може да бъде запазен",
-	],
-	"Can't download %s" => [
-		0 => "Неуспешно сваляне на %s",
-	],
-	"Can't extract %s" => [
-		0 => "Неуспешно извличане на %s",
-	],
-	"Can't create %s directory - %e" => [
-		0 => "Неуспешно създаване на %s директория - %e",
-	],
-	"Can't update %s file - %e" => [
-		0 => "Неуспешно обновяване на %s файл -  %e",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "Проверете грешките във формата, за да продължите.",
-	],
-	"You must enter the album name." => [
-		0 => "Нужно е да въведете името на албума.",
-	],
-	"Confirm" => [
-		0 => "Потвърди",
-	],
-	"Select existing album" => [
-		0 => "Изберете съществуващ албум",
-	],
-	"An error occurred. Please try again later." => [
-		0 => "Възникна грешка. Моля, опитайте по-късно.",
-	],
-	"Please select a valid image file type." => [
-		0 => "Моля изберете валиден файлов формат.",
-	],
-	"Please select a picture of at most %s size." => [
-		0 => "Моля изберете снимка с максимален размер %s.",
-	],
-	"Profile image updated." => [
-		0 => "Профилната снимка е обновена",
-	],
-	"Profile background image updated." => [
-		0 => "Фоновата снимка е обновена успешно.",
-	],
-	"Profile background image deleted." => [
-		0 => "Фоновата снимка е изтрита успешно.",
-	],
-	"Error deleting profile background image." => [
-		0 => "Грешка при изтриване на фоновата снимка.",
-	],
-	"Passwords don't match" => [
-		0 => "Паролите не съвпадат",
-	],
-	"Update available v%s" => [
-		0 => "Наличен е ъпдейт v%s",
-	],
-	"There is an update available for your system. You can automatic download and install this update or go to %s to proceed to download the file." => [
-		0 => "Има налично обновление за системата ви. Можете автоматично да свалите и инсталирате ъпдейта или да отидете до %s, за да продължите със свалянето на файла.",
-	],
-	"The release notes for this update are:" => [
-		0 => "Бележките за тази актуализация са:",
-	],
-	"Update now" => [
-		0 => "Актуализирайте сега",
-	],
-	"or" => [
-		0 => "или",
-	],
-	"cancel" => [
-		0 => "отмени",
-	],
-	"This website is running latest %s version" => [
-		0 => "Уебсайтът използва последна %s  версия",
-	],
-	"loading" => [
-		0 => "зареждане",
-	],
-	"Toggle select" => [
-		0 => "Отбележи селекция",
-	],
-	"Like" => [
-		0 => "Харесай",
-	],
-	"Toggle flag" => [
-		0 => "Отбележи флаг",
-	],
-	"Edit" => [
-		0 => "Редактирай",
-	],
-	"Album" => [
-		0 => "Албум",
-		1 => "Албуми",
-	],
-	"Delete" => [
-		0 => "Изтрий",
-	],
-	"Close" => [
-		0 => "Затвори",
-	],
-	"Previous" => [
-		0 => "Предишна",
-	],
-	"Next" => [
-		0 => "Следваща",
-	],
-	"Clipboard image" => [
-		0 => "Снимка от клипборда",
-	],
-	"File too big." => [
-		0 => "Файлът е прекалено голям",
-	],
-	"Invalid or unsupported file format." => [
-		0 => "Невалиден или формат, който не се поддържа.",
-	],
-	"Some files couldn't be added" => [
-		0 => "Някои файлове не бяха добвени",
-	],
-	"image" => [
-		0 => "снимка",
-		1 => "снимки",
-	],
-	"%s's Albums" => [
-		0 => "%s Албуми",
-	],
-	"Image edited successfully." => [
-		0 => "Снимката е редактирана успешно.",
-	],
-	"private" => [
-		0 => "скрито",
-	],
-	"Album edited successfully." => [
-		0 => "Албумът е редактиран успешно.",
-	],
-	"Invalid URL key." => [
-		0 => "Невалиден URL ключ.",
-	],
-	"Category URL key already being used." => [
-		0 => "URL на категорията вече се използва.",
-	],
-	"Category successfully deleted." => [
-		0 => "Категорията е успешно изтрита.",
-	],
-	"Category %s added." => [
-		0 => "Категория %s е добавена.",
-	],
-	"Invalid expiration date." => [
-		0 => "Невалидна дата за изтичане.",
-	],
-	"IP %s already banned." => [
-		0 => "IP %s вече има бан.",
-	],
-	"IP %s banned." => [
-		0 => "Успешен бан на IP %s.",
-	],
-	"IP ban successfully deleted." => [
-		0 => "Бан по IP успешно премахнат.",
-	],
-	"Please fill all the required fields." => [
-		0 => "Моля попълнете всички задължителни полета.",
-	],
-	"Invalid storage capacity value. Make sure to use a valid format." => [
-		0 => "Невалидна стойност за съхранение. Моля проверете дали използвате правилно форматиране.",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "Обем на паметта не може да бъде по-ниска от сегашната му използвана памет  (%s).",
-	],
-	"Invalid URL." => [
-		0 => "Невалиден URL.",
-	],
-	"Storage successfully edited." => [
-		0 => "Хранилището е редактирано успешно",
-	],
-	"User added successfully." => [
-		0 => "Потребителят е добавен успешно",
-	],
-	"The content has been deleted." => [
-		0 => "Съдържанието е изтрито",
-	],
-	"The content has been moved." => [
-		0 => "Съдържанието е преместено",
-	],
-	"Select" => [
-		0 => "Избери",
-	],
-	"Unselect" => [
-		0 => "Размаркирай",
-	],
-	"The content has been edited." => [
-		0 => "Съдържанието е редактирано",
-	],
-	"Select number of threads" => [
-		0 => "Изберете брой теми",
-	],
-	"Spam detected" => [
-		0 => "Засечено е спам",
-	],
-	"album" => [
-		0 => "албум",
-		1 => "албуми",
-	],
-	"Flooding detected. You can only upload %limit% %content% per %time%" => [
-		0 => "Достигнахте лимита можете да качвате само %limit% %content% за %time%.",
-	],
-	"Untitled" => [
-		0 => "Неозаглавен",
-	],
-	"%s's images" => [
-		0 => "Изображенията на %s",
-	],
-	"Note: This content is private but anyone with the link will be able to see this." => [
-		0 => "Бележка: Това съдържание е скрито, но всеки с точен линк може да го види.",
-	],
-	"Note: This content is password protected. Remember to pass the content password to share." => [
-		0 => "Бележка: Това съдържание е защитено с парола. Не забравяйте да изпратите на получателя паролата.",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "Това съдържание е скрито. Променете поверителността на \"публично\", ако желаете да го споделите.",
-	],
-	"Private" => [
-		0 => "Скрито",
-	],
-	"Public" => [
-		0 => "Публично",
-	],
-	"Me" => [
-		0 => "Аз",
-	],
-	"Link" => [
-		0 => "Връзка",
-	],
-	"Password" => [
-		0 => "Парола",
-	],
-	"view" => [
-		0 => "преглед",
-		1 => "прегледа",
-	],
-	"After %n %t" => [
-		0 => "След %n %t",
-	],
-	"minute" => [
-		0 => "минута",
-		1 => "минути",
-	],
-	"hour" => [
-		0 => "час",
-		1 => "часа",
-	],
-	"day" => [
-		0 => "ден",
-		1 => "дни",
-	],
-	"week" => [
-		0 => "седмица",
-		1 => "седмици",
-	],
-	"month" => [
-		0 => "месец",
-		1 => "месеца",
-	],
-	"year" => [
-		0 => "година",
-		1 => "години",
-	],
-	"Don't autodelete" => [
-		0 => "Да не се изтрива автоматично",
-	],
-	"Duplicated upload" => [
-		0 => "Дублирано качване",
-	],
-	"Private upload" => [
-		0 => "Скрито качване",
-	],
-	"like" => [
-		0 => "Харесване",
-		1 => "Харесвания",
+	"Feel free to browse and discover all my shared images and albums." => [
+		0 => "Чувствайте се свободни да разгледате всички мои споделени снимки и албуми.",
 	],
 	"Recent" => [
 		0 => "Последни",
@@ -381,119 +34,32 @@ $translation_table = [
 	"Trending" => [
 		0 => "Популярни",
 	],
-	"Top users" => [
-		0 => "Топ потребители",
-	],
-	"Most recent" => [
-		0 => "Най-нови",
-	],
-	"Oldest" => [
-		0 => "Най-стари",
-	],
-	"Most viewed" => [
-		0 => "Най-гледани",
-	],
 	"Popular" => [
 		0 => "Популярни",
-	],
-	"Most liked" => [
-		0 => "Най-харесвани",
-	],
-	"Explore" => [
-		0 => "Разгледай",
 	],
 	"Animated" => [
 		0 => "Анимирани",
 	],
-	"Search" => [
-		0 => "Търси",
+	"Plugin" => [
+		0 => "Плъгин",
 	],
-	"People" => [
-		0 => "Хора",
+	"Request denied" => [
+		0 => "Искането е отказано",
 	],
-	"Image" => [
-		0 => "Снимка",
-		1 => "Снимки",
+	"terms" => [
+		0 => "условия",
 	],
-	"User" => [
-		0 => "Потребител",
-		1 => "Потребители",
+	"privacy policy" => [
+		0 => "политика за поверителност",
 	],
-	"Can't create %s destination dir" => [
-		0 => "Неуспешно създаване на %s директория",
+	"I agree to the %terms_link and %privacy_link" => [
+		0 => "Съгласен съм с %terms_link и %privacy_link",
 	],
-	"Can't open %s for writing" => [
-		0 => "Не можете да отворите %s за писане",
+	"That page doesn't exist" => [
+		0 => "Страницата не съществува",
 	],
-	"Internal" => [
-		0 => "Вътрешен",
-	],
-	"Can't insert storage." => [
-		0 => "Неуспешно вмъкване на хранилище.",
-	],
-	"Can't update storage details." => [
-		0 => "Неуспешно обновлени на детайли за хранилището.",
-	],
-	"requires %s" => [
-		0 => "изисква %s",
-	],
-	"Unlimited" => [
-		0 => "Неограничено",
-	],
-	"used" => [
-		0 => "употребяван",
-	],
-	"Private profile" => [
-		0 => "Скрит профил",
-	],
-	"second" => [
-		0 => "секунда",
-		1 => "секунди",
-	],
-	"%s ago" => [
-		0 => "Преди %s",
-	],
-	"moments ago" => [
-		0 => "преди моменти",
-	],
-	"Dashboard" => [
-		0 => "Табло",
-	],
-	"There is an update available for your system. Go to %s to download and install this update." => [
-		0 => "Налично е обновление за вашата система. Отидете до %s, за да свалите и инсталирате обновлението.",
-	],
-	"System database is outdated. You need to run the <a href=\"%s\">update</a> tool." => [
-		0 => "Система за база данни е остаряла. Вие трябва да стартирате инструмента за <a href=\"%s\"> актуализация</a>.",
-	],
-	"Website is in maintenance mode. To revert this setting go to <a href=\"%s\">Dashboard > Settings</a>." => [
-		0 => "Уебсайта е в режим на поддръжка. За да възстановите настройката отида да <a href=\"%s\"> Табло > Настройки</a>.",
-	],
-	"You should disable PHP error reporting for production enviroment. Go to <a href='%s'>System settings</a> to revert this setting." => [
-		0 => "Нужно е да изключите PHP докладването на грешки за готовия сайт. Отидете на  <a href='%s'>Системни настройки</a>, за да върнете тази настройка.",
-	],
-	"You haven't changed the default email settings. Go to <a href='%s'>Email settings</a> to fix this." => [
-		0 => "Не сте променили email настройките по подразбиране. Отидете до <a href='%s'>Email настройки</a>, за да поправите това.",
-	],
-	"There is an update available for your Chevereto based website." => [
-		0 => "Наличен е ъпдейт за вашия Chevereto базиран уебсайт.",
-	],
-	"admin dashboard" => [
-		0 => "администраторско табло",
-	],
-	"You can apply this update directly from your %a or download it from %s and then manually install it." => [
-		0 => "Можете да приложите този ъпдейт от вашия %a или да го свалите от %s и след това ръчно да го инсталирате.",
-	],
-	"view on %s" => [
-		0 => "вижте на %s",
-	],
-	"cookie policy" => [
-		0 => "политика за бисквитките",
-	],
-	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
-		0 => "Ние използваме наши ни на трети страни бисквитки, за да подобрим вашия престой и нашите услуги. Ако продължите да използвате нашия сайт, вие се съгласявате с %cookie_policy_link",
-	],
-	"I understand" => [
-		0 => "Разбирам",
+	"Page %s" => [
+		0 => "Страница %s",
 	],
 	"Forgot password?" => [
 		0 => "Забравена парола?",
@@ -507,6 +73,9 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "Добавете своя имейл адрес",
 	],
+	"Awaiting confirmation" => [
+		0 => "Очаква потвърждение",
+	],
 	"Email changed" => [
 		0 => "Имейлът е променен",
 	],
@@ -519,14 +88,14 @@ $translation_table = [
 	"User doesn't have an email." => [
 		0 => "Потребителят не разполага с имейл.",
 	],
-	"Request denied" => [
-		0 => "Искането е отказано",
-	],
 	"Account needs to be activated to use this feature" => [
 		0 => "За да използвате тази функция е нужно да активирате вашият профил",
 	],
 	"Account already activated" => [
 		0 => "Профилът вече е активиран",
+	],
+	"Account banned" => [
+		0 => "Профилът е забранен",
 	],
 	"Allow up to 15 minutes for the email. You can try again later." => [
 		0 => "След като изчакате 15 минути за имейла. Можете да опитате отново по-късно.",
@@ -540,23 +109,36 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "Добре дошли в %s",
 	],
+	"Invalid password" => [
+		0 => "Невалидна парола",
+	],
+	"Passwords don't match" => [
+		0 => "Паролите не съвпадат",
+	],
+	"Invalid email" => [
+		0 => "Невалиден имейл",
+	],
 	"Email already being used" => [
 		0 => "Този имейл вече се използва",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "Проверете грешките във формата, за да продължите.",
 	],
 	"Password required" => [
 		0 => "Изисква парола",
 	],
-	"Share" => [
-		0 => "Сподели",
-	],
 	"Embed codes" => [
 		0 => "Кодове за вграждане",
 	],
-	"Full info" => [
-		0 => "Пълна информация",
+	"Info" => [
+		0 => "Информация",
 	],
 	"%a album hosted in %w" => [
 		0 => "Албум %a се хоства в %w",
+	],
+	"image" => [
+		0 => "снимка",
+		1 => "снимки",
 	],
 	"Stats" => [
 		0 => "Статистика",
@@ -564,32 +146,112 @@ $translation_table = [
 	"Images" => [
 		0 => "Изображения",
 	],
-	"Albums" => [
-		0 => "Албуми",
+	"Album" => [
+		0 => "Албум",
+		1 => "Албуми",
 	],
-	"Users" => [
-		0 => "Потребители",
-	],
-	"Settings" => [
-		0 => "Настройки",
+	"User" => [
+		0 => "Потребител",
+		1 => "Потребители",
 	],
 	"Bulk importer" => [
 		0 => "Основен вносител",
 	],
-	"Chevereto version" => [
-		0 => "Версия на Chevereto",
+	"Settings" => [
+		0 => "Настройки",
 	],
-	"install update" => [
-		0 => "инсталирайте актуализация",
+	"Website" => [
+		0 => "Уебсайт",
 	],
-	"check for updates" => [
-		0 => "провери за актуализации",
+	"Content" => [
+		0 => "Съдържание",
+	],
+	"Listings" => [
+		0 => "Списъци",
+	],
+	"Image upload" => [
+		0 => "Качване на изображение",
+	],
+	"Categories" => [
+		0 => "Категории",
+	],
+	"Theme" => [
+		0 => "Тема",
+	],
+	"System" => [
+		0 => "Система",
+	],
+	"Languages" => [
+		0 => "Езици",
+	],
+	"Email" => [
+		0 => "Имейл",
+	],
+	"Tools" => [
+		0 => "Инструменти",
+	],
+	"External storage" => [
+		0 => "Външно съхранение",
+	],
+	"Homepage" => [
+		0 => "Начална страница",
+	],
+	"Pages" => [
+		0 => "Страници",
+	],
+	"Routing" => [
+		0 => "Насочване",
+	],
+	"External services" => [
+		0 => "Външни услуги",
+	],
+	"Upload plugin" => [
+		0 => "Качване на плъгин",
+	],
+	"Consent screen" => [
+		0 => "Екран за съгласие",
+	],
+	"Flood protection" => [
+		0 => "Защита от флууд",
+	],
+	"Banners" => [
+		0 => "Банери",
+	],
+	"IP bans" => [
+		0 => "Бан по IP",
+	],
+	"Watermarks" => [
+		0 => "Водни знаци",
+	],
+	"Documentation" => [
+		0 => "Документация",
 	],
 	"Support" => [
 		0 => "Поддръжка",
 	],
-	"Need help? Go to %s and you will get help quickly." => [
-		0 => "Имате нужда от помощ? Отидете на %s и ще получите бързо помощ",
+	"Releases" => [
+		0 => "Издания",
+	],
+	"Community" => [
+		0 => "Общество",
+	],
+	"install update" => [
+		0 => "инсталирайте актуализация",
+	],
+	"Max. upload file size" => [
+		0 => "Максимален размер за качване",
+	],
+	"Graphics Library" => [
+		0 => "Графична библиотека",
+	],
+	"Rebuild stats" => [
+		0 => "Възстановете статистиката",
+	],
+	"Connecting IP" => [
+		0 => "Свързване IP",
+	],
+	"Not your IP?" => [
+		0 => "Не е ващо IP?",
 	],
 	"PHP version" => [
 		0 => "PHP версия",
@@ -603,9 +265,6 @@ $translation_table = [
 	"MySQL server info" => [
 		0 => "MySQL сървър информация",
 	],
-	"GD Library" => [
-		0 => "GD библиотека",
-	],
 	"File uploads" => [
 		0 => "Качени файлове",
 	],
@@ -614,12 +273,6 @@ $translation_table = [
 	],
 	"Disabled" => [
 		0 => "Изключено",
-	],
-	"Max. upload file size" => [
-		0 => "Максимален размер за качване",
-	],
-	"Max. post size" => [
-		0 => "Максимален размер на публикацията",
 	],
 	"Max. execution time" => [
 		0 => "Максимално време за изпълнение",
@@ -630,90 +283,6 @@ $translation_table = [
 	],
 	"Memory limit" => [
 		0 => "Ограничение на паметта",
-	],
-	"Connecting IP" => [
-		0 => "Свързване IP",
-	],
-	"Not your IP?" => [
-		0 => "Не е ващо IP?",
-	],
-	"Links" => [
-		0 => "Връзки",
-	],
-	"Collaboration" => [
-		0 => "Сътрудничество",
-	],
-	"Documentation" => [
-		0 => "Документация",
-	],
-	"Changelog" => [
-		0 => "Промени",
-	],
-	"Bug tracking" => [
-		0 => "Бъгове",
-	],
-	"Website" => [
-		0 => "Уебсайт",
-	],
-	"Content" => [
-		0 => "Съдържание",
-	],
-	"Pages" => [
-		0 => "Страници",
-	],
-	"Listings" => [
-		0 => "Списъци",
-	],
-	"Image upload" => [
-		0 => "Качване на изображение",
-	],
-	"Categories" => [
-		0 => "Категории",
-	],
-	"Consent screen" => [
-		0 => "Екран за съгласие",
-	],
-	"Flood protection" => [
-		0 => "Защита от флууд",
-	],
-	"Theme" => [
-		0 => "Тема",
-	],
-	"Homepage" => [
-		0 => "Начална страница",
-	],
-	"Banners" => [
-		0 => "Банери",
-	],
-	"System" => [
-		0 => "Система",
-	],
-	"Routing" => [
-		0 => "Насочване",
-	],
-	"Languages" => [
-		0 => "Езици",
-	],
-	"External storage" => [
-		0 => "Външно съхранение",
-	],
-	"Email" => [
-		0 => "Имейл",
-	],
-	"Social networks" => [
-		0 => "Социални мрежи",
-	],
-	"External services" => [
-		0 => "Външни услуги",
-	],
-	"IP bans" => [
-		0 => "Бан по IP",
-	],
-	"Additional settings" => [
-		0 => "Допълнителни настройки",
-	],
-	"Tools" => [
-		0 => "Инструменти",
 	],
 	"Can't delete all homepage cover images" => [
 		0 => "Не могат да бъдат изтрити всички изображения на корицата на началната страница",
@@ -781,9 +350,6 @@ $translation_table = [
 	"Inside viewer top (image page)" => [
 		0 => "отгоре (страница с изображения)",
 	],
-	"Expected banner size 728x90" => [
-		0 => "Очакван размер на банера 728x90",
-	],
 	"Inside viewer foot (image page)" => [
 		0 => "Долна част (страница с изображения)",
 	],
@@ -799,15 +365,6 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "Долна част (изображения)",
 	],
-	"Album page" => [
-		0 => "Албум страница",
-	],
-	"Before header (album page)" => [
-		0 => "Преди заглавието (албум)",
-	],
-	"After header (album page)" => [
-		0 => "След заглавието (албум)",
-	],
 	"User profile page" => [
 		0 => "Потребителска страница",
 	],
@@ -817,11 +374,8 @@ $translation_table = [
 	"Before listing (user profile)" => [
 		0 => "Преди публикациите (потребителски профил)",
 	],
-	"Explore page" => [
-		0 => "Разгледайте страницата",
-	],
-	"After top (explore page)" => [
-		0 => "След началото",
+	"Explore" => [
+		0 => "Разгледай",
 	],
 	"NSFW" => [
 		0 => "NFSW",
@@ -865,18 +419,6 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "Невалидна стойност",
 	],
-	"Invalid theme tone" => [
-		0 => "Невалиден тон на темата",
-	],
-	"Invalid theme main color" => [
-		0 => "Невалиден основен цвят на темата",
-	],
-	"Invalid theme top bar color" => [
-		0 => "Невалиден цвят на горната лента",
-	],
-	"Invalid theme top bar button color" => [
-		0 => "Невалиден цвят на бутона на горната лента",
-	],
 	"Invalid theme image listing size" => [
 		0 => "Невалиден размер на списъка с изображение",
 	],
@@ -891,6 +433,9 @@ $translation_table = [
 	],
 	"Invalid SMTP security" => [
 		0 => "Невалидна сигурност на SMTP",
+	],
+	"Invalid website mode" => [
+		0 => "Невалиден режим на сайта",
 	],
 	"Invalid personal mode user ID" => [
 		0 => "Невалиден идентификационен номер на потребител в личен режим",
@@ -955,6 +500,9 @@ $translation_table = [
 	"Invalid URL" => [
 		0 => "Невалиден адрес",
 	],
+	"Invalid key" => [
+		0 => "Невалиден ключ",
+	],
 	"Routes can't be the same" => [
 		0 => "Маршрутите не могат да бъдат еднакви",
 	],
@@ -982,9 +530,6 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "Грешно въведен SMTP потребител",
 	],
-	"Invalid key" => [
-		0 => "Невалиден ключ",
-	],
 	"This URL key is already being used by another page (ID %s)" => [
 		0 => "Този ключ за URL адрес вече се използва от друга страница (ID %s)",
 	],
@@ -994,6 +539,9 @@ $translation_table = [
 	"Can't save page contents: %s." => [
 		0 => "Съдържанието на страницата не може да бъде запазено %s.",
 	],
+	"Dashboard" => [
+		0 => "Табло",
+	],
 	"Following" => [
 		0 => "Следва",
 	],
@@ -1002,15 +550,6 @@ $translation_table = [
 	],
 	"Image ID" => [
 		0 => "изображение ID",
-	],
-	"Uploader IP" => [
-		0 => "IP на потребителя",
-	],
-	"Ban IP" => [
-		0 => "Бан IP",
-	],
-	"IP already banned" => [
-		0 => "IP-то вече е баннат",
 	],
 	"Upload date" => [
 		0 => "Дата на качване",
@@ -1051,14 +590,27 @@ $translation_table = [
 	"Thumbnail image (linked)" => [
 		0 => "Изображение на миниатюра (с връзка)",
 	],
+	"Start uploading" => [
+		0 => "Започнете да качвате",
+	],
 	"Login needed" => [
 		0 => "Необходимо е да влезнете",
+	],
+	"Image" => [
+		0 => "Снимка",
+		1 => "Снимки",
+	],
+	"Category" => [
+		0 => "Категория",
 	],
 	"IP address already banned" => [
 		0 => "IP адресът вече е баннат",
 	],
 	"Missing values" => [
 		0 => "Липсващи стойности",
+	],
+	"Invalid username" => [
+		0 => "Невалидно потребителско име",
 	],
 	"Invalid role" => [
 		0 => "Невалидна роля",
@@ -1087,12 +639,6 @@ $translation_table = [
 	"Downloading %s data" => [
 		0 => "Изтегляне на %s данни",
 	],
-	"User %s followed" => [
-		0 => "Потребителят %s последва",
-	],
-	"User %s unfollowed" => [
-		0 => "Потребителят %s спря да следва",
-	],
 	"Content liked" => [
 		0 => "Харесали съдържание",
 	],
@@ -1117,17 +663,8 @@ $translation_table = [
 	"Upload images" => [
 		0 => "Качване на изображения",
 	],
-	"Upload plugin" => [
-		0 => "Качване на плъгин",
-	],
-	"Image search results for %s" => [
-		0 => "Резултати от търсенето на изображения за %s",
-	],
-	"Album search results for %s" => [
-		0 => "Резултати от търсенето на албуми за %s",
-	],
-	"User search results for %s" => [
-		0 => "Резултати от потребителско търсене за %s",
+	"Search" => [
+		0 => "Търси",
 	],
 	"Account" => [
 		0 => "Акаунт",
@@ -1135,8 +672,11 @@ $translation_table = [
 	"Profile" => [
 		0 => "Профил",
 	],
-	"Linked accounts" => [
-		0 => "Свързани акаунти",
+	"Password" => [
+		0 => "Парола",
+	],
+	"Powered by" => [
+		0 => "Осъществено от",
 	],
 	"Invalid image expiration: %s" => [
 		0 => "Невалиден срок на изображението %s",
@@ -1149,6 +689,9 @@ $translation_table = [
 	],
 	"Invalid website" => [
 		0 => "Невалиден уебсайт",
+	],
+	"Spam detected" => [
+		0 => "Засечено е спам",
 	],
 	"Wrong password" => [
 		0 => "Грешна парола",
@@ -1171,6 +714,18 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "Настройки за %s",
 	],
+	"Username" => [
+		0 => "Потребителско име",
+	],
+	"Delete user" => [
+		0 => "Изтриване на потребител",
+	],
+	"User ID" => [
+		0 => "Потребителско ID",
+	],
+	"Register date" => [
+		0 => "Дата на регистрация",
+	],
 	"You must agree to the terms and privacy policy" => [
 		0 => "Трябва да се съгласите с условията и политиката за поверителност",
 	],
@@ -1183,11 +738,8 @@ $translation_table = [
 	"Upload" => [
 		0 => "Качи",
 	],
-	"%s's Images" => [
-		0 => "Изображенията на: %s",
-	],
-	"Results for" => [
-		0 => "Резултати за",
+	"Albums" => [
+		0 => "Албуми",
 	],
 	"Liked by %s" => [
 		0 => "Харесвано от %s",
@@ -1204,14 +756,159 @@ $translation_table = [
 	"%n (%u) on %w" => [
 		0 => "%n (%u) на %w",
 	],
+	"album" => [
+		0 => "албум",
+		1 => "албуми",
+	],
+	"Flooding detected. You can only upload %limit% %content% per %time%" => [
+		0 => "Достигнахте лимита можете да качвате само %limit% %content% за %time%.",
+	],
+	"Note: This content is private but anyone with the link will be able to see this." => [
+		0 => "Бележка: Това съдържание е скрито, но всеки с точен линк може да го види.",
+	],
+	"Note: This content is password protected. Remember to pass the content password to share." => [
+		0 => "Бележка: Това съдържание е защитено с парола. Не забравяйте да изпратите на получателя паролата.",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "Това съдържание е скрито. Променете поверителността на \"публично\", ако желаете да го споделите.",
+	],
+	"Private" => [
+		0 => "Скрито",
+	],
+	"Public" => [
+		0 => "Публично",
+	],
+	"Me" => [
+		0 => "Аз",
+	],
+	"Link" => [
+		0 => "Връзка",
+	],
+	"After %n %t" => [
+		0 => "След %n %t",
+	],
+	"minute" => [
+		0 => "минута",
+		1 => "минути",
+	],
+	"hour" => [
+		0 => "час",
+		1 => "часа",
+	],
+	"day" => [
+		0 => "ден",
+		1 => "дни",
+	],
+	"week" => [
+		0 => "седмица",
+		1 => "седмици",
+	],
+	"month" => [
+		0 => "месец",
+		1 => "месеца",
+	],
+	"year" => [
+		0 => "година",
+		1 => "години",
+	],
+	"Don't autodelete" => [
+		0 => "Да не се изтрива автоматично",
+	],
+	"Can't open %s for writing" => [
+		0 => "Не можете да отворите %s за писане",
+	],
+	"Duplicated upload" => [
+		0 => "Дублирано качване",
+	],
+	"Private upload" => [
+		0 => "Скрито качване",
+	],
+	"view" => [
+		0 => "преглед",
+		1 => "прегледа",
+	],
+	"like" => [
+		0 => "Харесване",
+		1 => "Харесвания",
+	],
+	"Most recent" => [
+		0 => "Най-нови",
+	],
+	"Oldest" => [
+		0 => "Най-стари",
+	],
+	"Most viewed" => [
+		0 => "Най-гледани",
+	],
+	"Most liked" => [
+		0 => "Най-харесвани",
+	],
+	"People" => [
+		0 => "Хора",
+	],
+	"adult" => [
+		0 => "възрастен",
+	],
+	"teen" => [
+		0 => "тийнейджър",
+	],
+	"Content of type %s is forbidden" => [
+		0 => "Съдържанието от тип %s е забранено",
+	],
+	"Can't create %s destination dir" => [
+		0 => "Неуспешно създаване на %s директория",
+	],
+	"Internal" => [
+		0 => "Вътрешен",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "Обем на паметта не може да бъде по-ниска от сегашната му използвана памет  (%s).",
+	],
+	"Unlimited" => [
+		0 => "Неограничено",
+	],
+	"used" => [
+		0 => "употребяван",
+	],
+	"Private profile" => [
+		0 => "Скрит профил",
+	],
+	"Share" => [
+		0 => "Сподели",
+	],
+	"view on %s" => [
+		0 => "вижте на %s",
+	],
+	"cookie policy" => [
+		0 => "политика за бисквитките",
+	],
+	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
+		0 => "Ние използваме наши ни на трети страни бисквитки, за да подобрим вашия престой и нашите услуги. Ако продължите да използвате нашия сайт, вие се съгласявате с %cookie_policy_link",
+	],
+	"I understand" => [
+		0 => "Разбирам",
+	],
+	"second" => [
+		0 => "секунда",
+		1 => "секунди",
+	],
+	"%s ago" => [
+		0 => "Преди %s",
+	],
+	"moments ago" => [
+		0 => "преди моменти",
+	],
 	"Discovery" => [
 		0 => "Откритие",
 	],
-	"Advanced search" => [
-		0 => "Подробно търсене",
-	],
 	"Random" => [
 		0 => "Произволен",
+	],
+	"Close" => [
+		0 => "Затвори",
+	],
+	"Advanced search" => [
+		0 => "Подробно търсене",
 	],
 	"Notices (%s)" => [
 		0 => "Известия %s",
@@ -1219,14 +916,200 @@ $translation_table = [
 	"Notifications" => [
 		0 => "Известия",
 	],
+	"loading" => [
+		0 => "зареждане",
+	],
 	"You don't have notifications" => [
 		0 => "Нямате известия",
 	],
 	"My Profile" => [
 		0 => "Моят профил",
 	],
+	"Administrator" => [
+		0 => "Администратор",
+	],
+	"Manager" => [
+		0 => "Мениджър",
+	],
 	"Sign out" => [
 		0 => "Изход",
+	],
+	"You must enter the album name." => [
+		0 => "Нужно е да въведете името на албума.",
+	],
+	"Confirm" => [
+		0 => "Потвърди",
+	],
+	"The content has been approved." => [
+		0 => "Съдържанието е одобрено.",
+	],
+	"Select existing album" => [
+		0 => "Изберете съществуващ албум",
+	],
+	"An error occurred. Please try again later." => [
+		0 => "Възникна грешка. Моля, опитайте по-късно.",
+	],
+	"Please select a valid image file type." => [
+		0 => "Моля изберете валиден файлов формат.",
+	],
+	"Please select a picture of at most %s size." => [
+		0 => "Моля изберете снимка с максимален размер %s.",
+	],
+	"Profile image updated." => [
+		0 => "Профилната снимка е обновена",
+	],
+	"Profile background image updated." => [
+		0 => "Фоновата снимка е обновена успешно.",
+	],
+	"Profile background image deleted." => [
+		0 => "Фоновата снимка е изтрита успешно.",
+	],
+	"Error deleting profile background image." => [
+		0 => "Грешка при изтриване на фоновата снимка.",
+	],
+	"Update available v%s" => [
+		0 => "Наличен е ъпдейт v%s",
+	],
+	"This website is running latest %s version" => [
+		0 => "Уебсайтът използва последна %s  версия",
+	],
+	"Please review the system requirements before proceeding" => [
+		0 => "Моля, прегледайте системните изисквания, преди да продължите",
+	],
+	"Toggle select" => [
+		0 => "Отбележи селекция",
+	],
+	"Like" => [
+		0 => "Харесай",
+	],
+	"Create album" => [
+		0 => "Създай албум",
+	],
+	"Toggle flag" => [
+		0 => "Отбележи флаг",
+	],
+	"Edit" => [
+		0 => "Редактирай",
+	],
+	"Approve" => [
+		0 => "Одобряване",
+	],
+	"Delete" => [
+		0 => "Изтрий",
+	],
+	"Previous" => [
+		0 => "Предишна",
+	],
+	"Next" => [
+		0 => "Следваща",
+	],
+	"File too big." => [
+		0 => "Файлът е прекалено голям",
+	],
+	"Invalid or unsupported file format." => [
+		0 => "Невалиден или формат, който не се поддържа.",
+	],
+	"Some files couldn't be added" => [
+		0 => "Някои файлове не бяха добвени",
+	],
+	"%s's Albums" => [
+		0 => "%s Албуми",
+	],
+	"Image edited successfully." => [
+		0 => "Снимката е редактирана успешно.",
+	],
+	"private" => [
+		0 => "скрито",
+	],
+	"The content has been edited." => [
+		0 => "Съдържанието е редактирано",
+	],
+	"Invalid URL key." => [
+		0 => "Невалиден URL ключ.",
+	],
+	"Category URL key already being used." => [
+		0 => "URL на категорията вече се използва.",
+	],
+	"Category successfully deleted." => [
+		0 => "Категорията е успешно изтрита.",
+	],
+	"Category %s added." => [
+		0 => "Категория %s е добавена.",
+	],
+	"Invalid expiration date." => [
+		0 => "Невалидна дата за изтичане.",
+	],
+	"IP %s already banned." => [
+		0 => "IP %s вече има бан.",
+	],
+	"IP %s banned." => [
+		0 => "Успешен бан на IP %s.",
+	],
+	"IP ban successfully deleted." => [
+		0 => "Бан по IP успешно премахнат.",
+	],
+	"Please fill all the required fields." => [
+		0 => "Моля попълнете всички задължителни полета.",
+	],
+	"Invalid storage capacity value. Make sure to use a valid format." => [
+		0 => "Невалидна стойност за съхранение. Моля проверете дали използвате правилно форматиране.",
+	],
+	"Invalid URL." => [
+		0 => "Невалиден URL.",
+	],
+	"Storage successfully edited." => [
+		0 => "Хранилището е редактирано успешно",
+	],
+	"The content has been deleted." => [
+		0 => "Съдържанието е изтрито",
+	],
+	"The content has been moved." => [
+		0 => "Съдържанието е преместено",
+	],
+	"Select" => [
+		0 => "Избери",
+	],
+	"Unselect" => [
+		0 => "Размаркирай",
+	],
+	"Import ID %s removed" => [
+		0 => "Идент. № на %s е премахнат",
+	],
+	"All the changes that you have made will be lost if you continue." => [
+		0 => "Всички промени, които сте направили, няма да бъдат запазени, ако продължите.",
+	],
+	"Save changes" => [
+		0 => "Запази промените",
+	],
+	"Submit" => [
+		0 => "Изпрати",
+	],
+	"Changes saved successfully." => [
+		0 => "Промените са запазени успешно.",
+	],
+	"Go back to form" => [
+		0 => "Върнете се обратно до формата",
+	],
+	"or" => [
+		0 => "или",
+	],
+	"continue anyway" => [
+		0 => "продължете въпреки това",
+	],
+	"cancel" => [
+		0 => "отмени",
+	],
+	"Saving" => [
+		0 => "Запазване",
+	],
+	"Sending" => [
+		0 => "Изпращане",
+	],
+	"Confirm action" => [
+		0 => "Потвърдете действието",
+	],
+	"information" => [
+		0 => "Информация",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "Получихме заявка за промяна на имейла на вашия <a href=\"%u\">%n</a> акаунт в %w",
@@ -1276,14 +1159,23 @@ $translation_table = [
 	"Select the images to upload" => [
 		0 => "Изберете изображенията за качване",
 	],
+	"You can also %i or %u." => [
+		0 => "Можете също %i или %u",
+	],
+	"You can also %s." => [
+		0 => "Можете също да %s.",
+	],
 	"browse from your computer" => [
 		0 => "Изберете от вашия компютър",
 	],
 	"add image URLs" => [
 		0 => "добавете URL адреси на изображения",
 	],
-	"You can also %i or %u." => [
-		0 => "Можете също %i или %u",
+	"You can also %i, %c or %u." => [
+		0 => "Можете също %i, %c или %u.",
+	],
+	"You can also %i or %c." => [
+		0 => "Можете също %i или %c",
 	],
 	"browse from your device" => [
 		0 => "Изберете от вашето устройство",
@@ -1291,26 +1183,8 @@ $translation_table = [
 	"take a picture" => [
 		0 => "направи снимка",
 	],
-	"You can also %i, %c or %u." => [
-		0 => "Можете също %i, %c или %u.",
-	],
-	"Edit or resize any image by clicking the image preview" => [
-		0 => "Редактирайте или променете размерите на всяко изображение, като щракнете варху визуализацията на изображението",
-	],
-	"Edit any image by touching the image preview" => [
-		0 => "Редактирайте всяко изображение, като докоснете визуализацията на изображението",
-	],
-	"your computer" => [
-		0 => "вашия компютър",
-	],
-	"You can add more images from %i or %u." => [
-		0 => "Можете да добавите още изображения от %i или %u.",
-	],
-	"your device" => [
-		0 => "вашето устройство",
-	],
-	"You can add more images from %i, %c or %u." => [
-		0 => "Можете да добавите още изображения от %i, %c или %u.",
+	"Register to get %s" => [
+		0 => "Регистрирайте се, за да получите %s",
 	],
 	"Uploading %q %o" => [
 		0 => "Качване %q %o",
@@ -1333,12 +1207,6 @@ $translation_table = [
 	"You can %c with the content just uploaded." => [
 		0 => "Можете да %c с току-що каченото съдържание.",
 	],
-	"create a new album" => [
-		0 => "създайте нов албум",
-	],
-	"move it to an existing album" => [
-		0 => "преместете го в съществуващ албум",
-	],
 	"You must %s or %l to save this content into your account." => [
 		0 => "Трябва да %s или %l да запазите това съдържание във вашия акаунт.",
 	],
@@ -1351,14 +1219,11 @@ $translation_table = [
 	"No %s have been uploaded" => [
 		0 => "%s не са качени",
 	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "Възникнаха някои грешки и системата не можа да обработи вашата заявка.",
+	"Sign up" => [
+		0 => "Регистрирайте се",
 	],
-	"Category" => [
-		0 => "Категория",
-	],
-	"Select category" => [
-		0 => "Изберете категория",
+	"%s to be able to customize or disable image auto delete." => [
+		0 => "%s за да можете да персонализирате или деактивирате автоматичното изтриване на изображението.",
 	],
 	"Mark this if the upload is not family safe" => [
 		0 => "Маркирайте това ако изображението не е подходящо за всички възрасти.",
@@ -1372,23 +1237,20 @@ $translation_table = [
 	"cancel remaining" => [
 		0 => "Отменете останалите",
 	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "Забележка: Някои изображения не могат да бъдат качени.",
-	],
 	"learn more" => [
 		0 => "Научете повече",
 	],
 	"Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information." => [
 		0 => "Проверете <a data-modal=\"simple\" data-target=\"failed-upload-result\">доклад за грешка</a> за повече информация.",
 	],
-	"Register to get %s" => [
-		0 => "Регистрирайте се, за да получите %s",
-	],
 	"reset" => [
 		0 => "Нулирай",
 	],
-	"close" => [
-		0 => "затвори",
+	"Note" => [
+		0 => "Забележка",
+	],
+	"We must approve the uploaded content before being able to share." => [
+		0 => "Каченето съдържание изисква одобрение преди да бъде споделен.",
 	],
 	"copy" => [
 		0 => "Копирай",
@@ -1398,9 +1260,6 @@ $translation_table = [
 	],
 	"Remove" => [
 		0 => "Премахни",
-	],
-	"Edit image" => [
-		0 => "Редактиране на изображението",
 	],
 	"Title" => [
 		0 => "Заглавие",
@@ -1420,15 +1279,6 @@ $translation_table = [
 	"Note: Animated GIF images won't be resized." => [
 		0 => "Забележка: Анимираните GIF изображения няма да бъдат намалени.",
 	],
-	"Auto delete image" => [
-		0 => "Автоматично изтриване на изображението",
-	],
-	"Sign up" => [
-		0 => "Регистрирайте се",
-	],
-	"%s to be able to customize or disable image auto delete." => [
-		0 => "%s за да можете да персонализирате или деактивирате автоматичното изтриване на изображението.",
-	],
 	"Mark this if the image is not family safe" => [
 		0 => "Маркирайте това, ако изображението не е подходящо за всички възрасти",
 	],
@@ -1438,41 +1288,26 @@ $translation_table = [
 	"Description" => [
 		0 => "Описание",
 	],
-	"Brief description of this image" => [
-		0 => "Кратко описание на изображението",
-	],
 	"Add image URLs" => [
 		0 => "Добавете URL адреси на изображения",
 	],
 	"Add the image URLs here" => [
 		0 => "Добавете URL адреси на изображения тук",
 	],
-	"Create album" => [
-		0 => "Създай албум",
-	],
 	"The uploaded content will be moved to this newly created album." => [
 		0 => "Каченото съдържание ще бъде преместено в този новосъздаден албум.",
-	],
-	"existing album" => [
-		0 => "съществуващ албум",
-	],
-	"You can also move the content to an %a." => [
-		0 => "Можете също да преместите съдържанието в %a.",
 	],
 	"You must %s or %l if you want to edit this album later on." => [
 		0 => "Трябва да %s или %l, ако искате да редактирате този албум по-късно.",
 	],
-	"Move to album" => [
-		0 => "Премести в албум",
-	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "Изберете съществуващ албум, за да преместите каченото съдържание. Можете също <a class=\"modal-switch\" data-switch=\"move-new-album\"> да създадете нов албум</a> и да преместете съдържанието там.",
-	],
 	"Error report" => [
 		0 => "Доклад за грешка",
 	],
-	"Viewer links" => [
-		0 => "Връзки за зрители",
+	"Links" => [
+		0 => "Връзки",
+	],
+	"Direct" => [
+		0 => "Директен",
 	],
 	"HTML Codes" => [
 		0 => "HTML кодове",
@@ -1516,6 +1351,9 @@ $translation_table = [
 	"Markdown thumbnail linked" => [
 		0 => "Свързана миниатюра",
 	],
+	"Viewer links" => [
+		0 => "Връзки за зрители",
+	],
 	"All these words" => [
 		0 => "Всички тези думи",
 	],
@@ -1540,20 +1378,11 @@ $translation_table = [
 	"IP address" => [
 		0 => "IP адрес",
 	],
-	"Album name" => [
-		0 => "Име на албума",
+	"Name" => [
+		0 => "Име",
 	],
-	"move to existing album" => [
-		0 => "премести в съществуващ албум",
-	],
-	"Album description" => [
-		0 => "Описание на албума",
-	],
-	"Brief description of this album" => [
-		0 => "Кратко описание албума",
-	],
-	"Album privacy" => [
-		0 => "Поверителност на албума",
+	"Privacy" => [
+		0 => "Поверителност",
 	],
 	"Who can view this content" => [
 		0 => "Кой може да вижда това съдържание",
@@ -1567,29 +1396,11 @@ $translation_table = [
 	"Private (password protected)" => [
 		0 => "Скрито (защитен с парола)",
 	],
-	"Album password" => [
-		0 => "Парола за албума",
-	],
-	"Name" => [
-		0 => "Име",
-	],
-	"Category name" => [
-		0 => "Име на категорията",
-	],
 	"URL key" => [
 		0 => "URL ключ",
 	],
-	"Category URL key" => [
-		0 => "URL ключ за категорията",
-	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "Само букви, цифри и тирета",
-	],
-	"Brief description of this category" => [
-		0 => "Кратко описание на категорията",
-	],
-	"Untitled image" => [
-		0 => "Изображение без заглавие",
 	],
 	"Path" => [
 		0 => "Път",
@@ -1615,6 +1426,9 @@ $translation_table = [
 	"Threads" => [
 		0 => "Теми",
 	],
+	"Select number of threads" => [
+		0 => "Изберете брой теми",
+	],
 	"This determines how intensive and fast will be the import process. Don't use more than %s threads on a shared server." => [
 		0 => "Това определя колко интензивен и бърз ще бъде процесът на импортиране. Не използвайте повече от %s теми на споделен сървър.",
 	],
@@ -1638,12 +1452,6 @@ $translation_table = [
 	],
 	"Text message, HTML or a redirect URL" => [
 		0 => "Текстово съобщение, HTML или URL адрес за пренасочване",
-	],
-	"Existing album" => [
-		0 => "Съществуващ албум",
-	],
-	"create new album" => [
-		0 => "създайте нов албум",
 	],
 	"Storage name" => [
 		0 => "Име на съхранение",
@@ -1692,9 +1500,6 @@ $translation_table = [
 	],
 	"API endpoint for OpenStack identity" => [
 		0 => "Крайна точка на API за идентичност на OpenStack",
-	],
-	"Username" => [
-		0 => "Потребителско име",
 	],
 	"Container" => [
 		0 => "Контейнер",
@@ -1762,62 +1567,32 @@ $translation_table = [
 	"Load more" => [
 		0 => "Зареди още",
 	],
+	"Clear" => [
+		0 => "Изчисти",
+	],
+	"Actions" => [
+		0 => "Дейности",
+	],
+	"Get embed codes" => [
+		0 => "Вземете кодове за вграждане",
+	],
+	"Flag as safe" => [
+		0 => "Маркирай като безопасно",
+	],
 	"Select all" => [
 		0 => "Маркирай всичко",
 	],
 	"Clear selection" => [
 		0 => "Изчистване на селекцията",
 	],
-	"Selection" => [
-		0 => "Селекция",
-	],
-	"Action" => [
-		0 => "Действие",
-	],
-	"Get embed codes" => [
-		0 => "Вземете кодове за вграждане",
-	],
-	"Assign category" => [
-		0 => "Присвойте категория",
-	],
-	"Flag as safe" => [
-		0 => "Маркирай като безопасно",
-	],
-	"Create new album" => [
-		0 => "Създайте нов албум",
-	],
 	"Sign in with another account" => [
 		0 => "Влезте с друг акаунт",
-	],
-	"Continue with %label%" => [
-		0 => "Продължете с %label%",
 	],
 	"Home" => [
 		0 => "Начало",
 	],
 	"There's nothing to show here." => [
 		0 => "Тук няма какво да се покаже.",
-	],
-	"Edit image details" => [
-		0 => "Редактиране на подробности за изображението",
-	],
-	"Edit album details" => [
-		0 => "Редактирай албум",
-	],
-	"All the images will be moved to this newly created album. You can also move the images to an <a class=\"modal-switch\" data-switch=\"move-existing-album\">existing album</a>." => [
-		0 => "Всички изображения ще бъдат преместени в този новосъздаден албум. Можете също да преместите изображенията в <a class=\"modal-switch\" data-switch=\"move-existing-album\">съществуващ албум</a>",
-	],
-	"Select an existing album to move the image. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the image there." => [
-		0 => "Изберете съществуващ албум, за да преместите изображението. Можете също <a class=\"modal-switch\" data-switch=\"move-new-album\">да създадете нов албум</a> и да преместите изображението там.",
-	],
-	"Select an existing album to move the album contents. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the album contents there." => [
-		0 => "Изберете съществуващ албум, за да преместите съдържанието на албума. Можете също <a class=\"modal-switch\" data-switch=\"move-new-album\">създадете нов албум</a> и да преместите изображението там.",
-	],
-	"Select an existing album to move the images. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the images there." => [
-		0 => "Изберете съществуващ албум, за да преместите изображението. Можете също <a class=\"modal-switch\" data-switch=\"move-new-album\">създадете нов албум</a> и да преместите изображенията там.",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "Всички избрани изображения ще бъдат назначени към тази категория.",
 	],
 	"There is no categories." => [
 		0 => "Няма категории.",
@@ -1834,20 +1609,11 @@ $translation_table = [
 	"Do you really want to flag this content as unsafe?" => [
 		0 => "Наистина ли искате да маркирате това съдържание като опасно?",
 	],
+	"Confirm approval" => [
+		0 => "Потвърдете одобрението",
+	],
 	"Confirm deletion" => [
 		0 => "Потвърждаване на изтриването",
-	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "Наистина ли искате да премахнете това съдържание? Това не може да бъде отменено.",
-	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "Наистина ли искате да премахнете цялото избрано съдържание? Това не може да бъде отменено.",
-	],
-	"Fullscreen" => [
-		0 => "Цял екран",
-	],
-	"Exit fullscreen" => [
-		0 => "Изход от цял екран",
 	],
 	"Guest" => [
 		0 => "Гост",
@@ -1864,9 +1630,6 @@ $translation_table = [
 	"Uploaded by guest" => [
 		0 => "Качено от гост",
 	],
-	"From %s" => [
-		0 => "От %s",
-	],
 	"Uploaded by private" => [
 		0 => "Качено от скрит",
 	],
@@ -1876,14 +1639,14 @@ $translation_table = [
 	"Toggle unsafe flag" => [
 		0 => "Превключвайте опасен флаг",
 	],
-	"That page doesn't exist" => [
-		0 => "Страницата не съществува",
+	"You either don't have permission to access this page or the link has expired." => [
+		0 => "Или нямате разрешение за достъп до тази страница или връзката е изтекла.",
+	],
+	"Go to homepage" => [
+		0 => "Начална страница",
 	],
 	"The requested page was not found." => [
 		0 => "Страницата не бе открита",
-	],
-	"Search something else" => [
-		0 => "Потърси нещо друго",
 	],
 	"The user has been deleted" => [
 		0 => "Потребителят бе изтрит",
@@ -1908,9 +1671,6 @@ $translation_table = [
 	],
 	"Your email address" => [
 		0 => "Вашият имейл адрес",
-	],
-	"Submit" => [
-		0 => "Изпрати",
 	],
 	"An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "На вашият email са изпратени инструкции как да промените своята парола. Ако не получите писмото, то проверете в папките за спам",
@@ -1948,23 +1708,14 @@ $translation_table = [
 	"An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Изпратен е имейл до %s с инструкциите за активиране на вашия акаунт. Ако не сте получили инструкциите моля проверете спам кутията.",
 	],
-	"This content is private" => [
-		0 => "Това съдържание е скрито",
-	],
-	"Do you really want to delete this album and all of its images? This can't be undone." => [
-		0 => "Наистина ли искате да изтриете този албум и всичките му изображения? Това не може да бъде отменено.",
-	],
-	"Delete album" => [
-		0 => "Изтрий албум",
+	"Upload to album" => [
+		0 => "Качване в албума",
 	],
 	"You like this" => [
 		0 => "Вие харесвате това",
 	],
-	"Upload to album" => [
-		0 => "Качване в албума",
-	],
-	"Album link" => [
-		0 => "Връзка към албум",
+	"This content is private" => [
+		0 => "Това съдържание е скрито",
 	],
 	"Please read and comply with the following conditions before you continue:" => [
 		0 => "Моля, прочетете и спазвайте следните условия, преди да продължите:",
@@ -1981,20 +1732,8 @@ $translation_table = [
 	"documentation" => [
 		0 => "Документация",
 	],
-	"Learn more about %s at our %d." => [
-		0 => "Научете повече за %s на нашия %d.",
-	],
-	"The connecting IP is determined using the server variable %var%. If the detected IP doesn't match yours, it means that your web server is under a proxy and you need to tweak your server to set the real connecting IP." => [
-		0 => "Свързващият се IP адрес се определя чрез променлива на сървъра %var%. Ако откритият IP адрес не съвпада с вашия, това означава, че вашият уеб сървър е под прокси и трябва да настроите вашия сървър, за да настроите реалното се свързващо IP.",
-	],
-	"For Nginx, you must use %nginx%. For Apache, %apache%." => [
-		0 => "За Nginx трябва да използвате %nginx%. За Apache, %apache%.",
-	],
-	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
-		0 => "Уверете се, че се справяте с този проблем, тъй като системата разчита на точни IP открития, за да осигури основни функционалности и да се предпази от спам, флууд и BruteForce атаки.",
-	],
-	"Disk used" => [
-		0 => "Използвано дисково пространство",
+	"Check the errors to proceed." => [
+		0 => "Провери за грешки, за да продължиш",
 	],
 	"Queued" => [
 		0 => "На опашка",
@@ -2011,11 +1750,17 @@ $translation_table = [
 	"Completed" => [
 		0 => "Завършен",
 	],
-	"Actions" => [
-		0 => "Дейности",
+	"Top level folders as %s" => [
+		0 => "Папки на най-високо ниво като %s",
+	],
+	"Process" => [
+		0 => "Процес",
 	],
 	"Pause" => [
 		0 => "Пауза",
+	],
+	"Cancel" => [
+		0 => "Отмени",
 	],
 	"Process log" => [
 		0 => "Дневник на процес логовете",
@@ -2023,158 +1768,536 @@ $translation_table = [
 	"Errors" => [
 		0 => "Грешки",
 	],
-	"Status" => [
-		0 => "Статус",
-	],
-	"Add import job" => [
-		0 => "Добавете задание за импортиране",
-	],
-	"This tool allows to mass add content to your website by pointing a system path with the content you want to import. It supports the addition of users, albums, and images using a folder based structure. You can learn more about the folder structure, adding metadata, and all about this tool in our %d." => [
-		0 => "Този инструмент позволява масово добавяне на съдържание към уебсайта ви, като посочва системен път със съдържанието, което искате да импортирате. Той поддържа добавянето на потребители, албуми и изображения, използвайки структура, базирана на папки. Можете да научите повече за структурата на папките, добавяне на метаданни и всичко за този инструмент в нашия %d.",
-	],
-	"Process import" => [
-		0 => "Процес на импортиране",
-	],
-	"Top level folders as %s" => [
-		0 => "Папки на най-високо ниво като %s",
-	],
-	"Process" => [
-		0 => "Процес",
-	],
-	"Cancel" => [
-		0 => "Отмени",
-	],
 	"Do you really want to remove the import ID %s?" => [
 		0 => "Наистина ли искате да премахнете ID за импортиране %s?",
 	],
-	"Parser" => [
-		0 => "Синтактичен анализ",
+	"Reset" => [
+		0 => "Нулиране",
 	],
-	"Add user" => [
-		0 => "Добавяне на потребител",
+	"Resume" => [
+		0 => "Продължи",
 	],
-	"Role" => [
-		0 => "Роля",
+	"Status" => [
+		0 => "Статус",
 	],
-	"Manager" => [
-		0 => "Мениджър",
+	"Dashboard > Settings > Website" => [
+		0 => "Табло за управление> Настройки> Уебсайт",
 	],
-	"Administrator" => [
-		0 => "Администратор",
+	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
+		0 => "Показва екран за съгласие преди да влезете в уебсайта. Полезно за уебсайтове за съдържание за възрастни, където непълнолетни не трябва да бъдат допускани.",
 	],
-	"Email address" => [
-		0 => "Имейл адрес",
+	"Enable consent screen" => [
+		0 => "Активиране на екрана за съгласие",
 	],
-	"This setting is always diabled when using personal website mode." => [
-		0 => "Тази настройка винаги е деактивирана при използване на личен уебсайт режим.",
+	"Consent screen cover image" => [
+		0 => "Съгласие изображение на корицата на екрана",
 	],
-	"Add category" => [
-		0 => "Добавяне на категория",
+	"Show not safe content in listings" => [
+		0 => "Показване на не безопасно съдържание в списъците",
 	],
-	"Add IP ban" => [
-		0 => "Добавете бан по IP",
+	"Blur NSFW content in listings" => [
+		0 => "Размиване на NSFW съдържание в списъците",
 	],
-	"Add storage" => [
-		0 => "Добавете място за съхранение",
+	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
+		0 => "Активирайте това, ако искате да приложите ефект на размазване върху NSFW изображенията в списъците.",
 	],
-	"Return to pages" => [
-		0 => "Върнете се на страниците",
+	"Show not safe content in random mode" => [
+		0 => "Показване на не безопасно съдържание в произволен режим",
 	],
-	"Website name" => [
-		0 => "Име на уебсайт",
+	"Show banners in not safe content" => [
+		0 => "Показване на банери в не безопасно съдържание",
 	],
-	"Website doctitle" => [
-		0 => "Заглавие на уебсайт",
+	"Enable this if you want to show banners in not safe content pages." => [
+		0 => "Активирайте това, ако искате да показвате банери на страници с не безопасно съдържание.",
 	],
-	"Website description" => [
-		0 => "Описание на уебсайтa",
+	"Cookie law compliance" => [
+		0 => "Спазване на закона за бисквитките",
 	],
-	"Powered by" => [
-		0 => "Осъществено от",
+	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
+		0 => "Активирайте това, за да се покаже съобщение, което отговаря на изискванията на законодателството на ЕС за бисквитките. Забележка: Това ви трябва само ако уебсайтът ви се хоства в ЕС и ако добавите бисквитки за проследяване.",
 	],
-	"Enable this if you want to show a \"%s\" link at the footer." => [
-		0 => "Активирайте това, ако искате да се показват бутони за споделяне в социалните мрежи.",
+	"From name" => [
+		0 => "От име",
 	],
-	"Automatic" => [
-		0 => "Автоматичен",
+	"Sender name for emails sent to users." => [
+		0 => "Име, от което потребителите ще се получават email-ите",
 	],
-	"Forced" => [
-		0 => "Принуден",
+	"From email address" => [
+		0 => "От имейл адрес",
 	],
-	"%a will use HTTPS detection on the server side (recommended). %f will use HTTPS regardless of your server setup. %d to don't use HTTPS at all." => [
-		0 => "%a ще използва HTTPS откриване от страна на сървъра (препоръчително). %f ще използва HTTPS независимо от настройката на вашия сървър. %d изобщо да не използвате HTTPS.",
+	"Sender email for emails sent to users." => [
+		0 => "Имейл, от който потребителите ще получават имейлите",
 	],
-	"This only controls the protocol used in the URLs, it won't turn your website into a valid HTTPS website unless your server is configured to support and use HTTPS." => [
-		0 => "Това контролира само протокола, използван в URL адресите, няма да превърне вашия уебсайт в валиден HTTPS уебсайт, освен ако вашият сървър не е конфигуриран да поддържа и използва HTTPS.",
+	"Incoming email address" => [
+		0 => "Имейл за входяща поща",
 	],
-	"Default time zone" => [
-		0 => "Часова зона по подразбиране",
+	"Recipient for contact form and system alerts." => [
+		0 => "Получател на форма за контакт и системни сигнали.",
 	],
-	"Select region" => [
-		0 => "Избери регион",
+	"Email mode" => [
+		0 => "Режим на имейл",
 	],
-	"Allows to search images, albums and users based on a given search query." => [
-		0 => "Позволява да търсите изображения, албуми и потребители въз основа на дадена заявка за търсене.",
+	"How to send emails? SMTP recommended." => [
+		0 => "Как да изпращам имейли? SMTP се препоръчва.",
 	],
-	"Enables to browse public uploaded images. It also enables categories." => [
-		0 => "Разрешава да разглеждате публично качени изображения. Също така дава възможност за категории.",
+	"SMTP server and port" => [
+		0 => "SMTP сървър и порт",
 	],
-	"guests" => [
-		0 => "Гости",
+	"SMTP server" => [
+		0 => "SMTP сървър",
 	],
-	"Enables explore for guests." => [
-		0 => "Позволява откриване за гостите.",
+	"SMTP username" => [
+		0 => "SMTP потребител",
 	],
-	"Enables to browse images randomly." => [
-		0 => "Позволява да разглеждането изображения произволно.",
+	"SMTP password" => [
+		0 => "SMTP парола",
 	],
-	"Likes" => [
-		0 => "Харесвания",
+	"SMTP security" => [
+		0 => "SMTP защита",
 	],
-	"Allows users to like content and populate \"Most liked\" listings." => [
-		0 => "Позволява на потребителите да харесват съдържание и да попълват списъци с „Най-харесвани“.",
+	"Unsecured" => [
+		0 => "Незащитено",
 	],
-	"Followers allows users to follow each other." => [
-		0 => "Последователите позволяват на потребителите да следват един друг.",
+	"Comments API" => [
+		0 => "API за коментари",
 	],
-	"Personal mode target user" => [
-		0 => "Личен режим на целевия потребител",
+	"Disqus API works with %s." => [
+		0 => "Disqus API работи с %s.",
 	],
-	"User ID" => [
-		0 => "Потребителско ID",
+	"Disqus shortname" => [
+		0 => "Disqus кратко име",
 	],
-	"Your user id is: %s" => [
-		0 => "Вашето потребитеслко ID е: %s",
+	"%s secret key" => [
+		0 => "%s секретен код",
 	],
-	"Numeric ID of the target user for personal mode." => [
-		0 => "Числов идентификатор на целевия потребител за личен режим.",
+	"%s public key" => [
+		0 => "%s публичен ключ",
 	],
-	"Personal mode routing" => [
-		0 => "Личен режим на маршрутизиране",
+	"Comment code" => [
+		0 => "Код за коментар",
 	],
-	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
-		0 => "Персонализиран маршрут за карта / потребителско име до / нещо. Използвайте \"/\", за да насочите към началната страница.",
+	"Disqus, Facebook or anything you want. It will be used in image view." => [
+		0 => "Disqus, Facebook или всичко, което искате. Те ще бъдат използвани при изглед на изображение",
 	],
-	"Website privacy mode" => [
-		0 => "Режим на поверителност на уебсайта",
+	"Analytics code" => [
+		0 => "Код на Google Анализ",
 	],
-	"Private mode will make the website only available for registered users." => [
-		0 => "Скрития режим ще направи уебсайта достъпен само за регистрирани потребители.",
+	"Google Analytics or anything you want. It will be added to the theme footer." => [
+		0 => "Google Analytics или всичко, което искате. Те ще бъдат добавени към долната част на темата.",
 	],
-	"Content privacy mode" => [
-		0 => "Режим на поверителност на съдържанието",
+	"%s spam protection" => [
+		0 => "%s защита срещу спам",
+	],
+	"user generated content" => [
+		0 => "генерираното от потребителите съдържание",
+	],
+	"Enable this to use %l to block spam on %c." => [
+		0 => "Активирайте това, за да използвате %l за блокиране на спам на %c.",
+	],
+	"%s API key" => [
+		0 => "%s API ключ",
+	],
+	"user signup" => [
+		0 => "регистрация на потребител",
+	],
+	"%s site key" => [
+		0 => "%s ключ на сайта",
+	],
+	"Force %s on contact page" => [
+		0 => "Принуди %s на страницата за контакти",
+	],
+	"Enable this to always show %s on contact page." => [
+		0 => "Активирайте това, за да се показва винаги %s на страницата за контакти.",
+	],
+	"Twitter account" => [
+		0 => "Twitter акаунт",
+	],
+	"Toggle this to enable or disable HTTPS" => [
+		0 => "Превключете това, за да активирате или деактивирате HTTPS",
+	],
+	"Toggle this to enable or disable this storage" => [
+		0 => "Превключете това, за да активирате или деактивирате това хранилище",
+	],
+	"Quota" => [
+		0 => "Квота",
+	],
+	"Active" => [
+		0 => "Активен",
+	],
+	"Storage method" => [
+		0 => "Метод на съхранение",
+	],
+	"Disk used" => [
+		0 => "Използвано дисково пространство",
+	],
+	"Local storage is used by default or when no external storage is active." => [
+		0 => "Локалното хранилище се използва по подразбиране или когато няма активно външно хранилище.",
+	],
+	"Notify to email" => [
+		0 => "Уведоми чрез email",
+	],
+	"If enabled the system will send an email on flood incidents." => [
+		0 => "Ако е активирана, системата ще изпрати имейл за инциденти с флууд.",
+	],
+	"Minute limit" => [
+		0 => "Минутен лимит",
+	],
+	"Hourly limit" => [
+		0 => "Часови лимит",
+	],
+	"Daily limit" => [
+		0 => "Дневен лимит",
+	],
+	"Weekly limit" => [
+		0 => "Седмичен лимит",
+	],
+	"Monthly limit" => [
+		0 => "Месечен лимит",
+	],
+	"Style" => [
+		0 => "Стил",
+	],
+	"Landing page" => [
+		0 => "Целева страница",
+	],
+	"Split landing + images" => [
+		0 => "Разделяне + изображения",
+	],
+	"explore" => [
+		0 => "Разгледай",
+	],
+	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
+		0 => "Изберете стила на началната страница. За да го персонализирате допълнително, редактирайте app/themes/%s/views/index.php",
+	],
+	"Cover image" => [
+		0 => "Изображение на корицата",
+	],
+	"Add new cover image" => [
+		0 => "Добавете ново изображение на корицата",
+	],
+	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
+		0 => "Това ще бъде добавено в маркера %s на началната страница. Оставете празно, за да използвате съдържанието по подразбиране.",
+	],
+	"Paragraph" => [
+		0 => "Параграф",
+	],
+	"Call to action button color" => [
+		0 => "Призив към действие цветен бутон",
+	],
+	"Blue" => [
+		0 => "Син",
+	],
+	"Green" => [
+		0 => "Зелен",
+	],
+	"Orange" => [
+		0 => "Оранжев",
+	],
+	"Red" => [
+		0 => "Червен",
+	],
+	"Grey" => [
+		0 => "Сив",
+	],
+	"Black" => [
+		0 => "Черно",
+	],
+	"White" => [
+		0 => "бял",
 	],
 	"Default" => [
 		0 => "По подразбиране",
 	],
-	"Force private (self)" => [
-		0 => "Принудително скрито (самостоятелно)",
+	"Color of the homepage call to action button." => [
+		0 => "Цвят на бутона за призоваване към действие на началната страница.",
 	],
-	"Force private (anyone with the link)" => [
-		0 => "Принудително скрито (всеки с връзката)",
+	"Call to action outline style button" => [
+		0 => "Бутон контур стил",
 	],
-	"Forced privacy modes will override user selected privacy." => [
-		0 => "Принудителните режими на поверителност ще отменят избраната от потребителите поверителност.",
+	"Enable this to use outline style for the homepage call to action button." => [
+		0 => "Активирайте това, за да използвате стила на контура на началната страница.",
+	],
+	"Call to action functionality" => [
+		0 => "Призив към действие функционалност",
+	],
+	"Trigger uploader" => [
+		0 => "Задействащо устройство за задействане",
+	],
+	"Open URL" => [
+		0 => "Отваряне на URL адрес",
+	],
+	"Call to action URL" => [
+		0 => "URL адрес на призив за действие",
+	],
+	"Enter an absolute or relative URL" => [
+		0 => "Въведете абсолютен или относителен URL адрес",
+	],
+	"A relative URL like %r will be mapped to %l" => [
+		0 => "Относителен URL адрес като %r ще бъде картографиран на %l",
+	],
+	"Call to action HTML" => [
+		0 => "HTML за призоваване към действие",
+	],
+	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
+		0 => "Това ще бъде добавено в <a> маркера за призив към действие. Оставете празно, за да използвате съдържанието по подразбиране.",
+	],
+	"User IDs" => [
+		0 => "Потребителски ID-та",
+	],
+	"Empty" => [
+		0 => "Празен",
+	],
+	"Your user id is: %s" => [
+		0 => "Вашето потребитеслко ID е: %s",
+	],
+	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
+		0 => "Списък на разделени със запетая ID-та на целеви потребители, за да се показват изображения на началната страница. Оставете празно или нулево, за да се показват всички скорошни изображения.",
+	],
+	"Enabled image formats" => [
+		0 => "Активирани формати на изображения",
+	],
+	"Enable uploads" => [
+		0 => "Активиране на качванията",
+	],
+	"Enable this if you want to allow image upload from URLs." => [
+		0 => "Активирайте това, ако искате да разрешите качването на изображения. Тази настройка н засяга администраторите.",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "Обърнете внимание, че активирането на това ще изложи IP адреса на вашия сървър.",
+	],
+	"Upload user interface" => [
+		0 => "Качване на потребителски интерфейс",
+	],
+	"On-page container" => [
+		0 => "Контейнер на страница",
+	],
+	"route" => [
+		0 => "Път",
+	],
+	"Guest uploads" => [
+		0 => "Качени от Гости",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "Разреши на нерегистрирани потребители да качват снимки",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "Активиране на вградени кодове (за качване)",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "Активирайте това, ако искате да покажете вградени кодове, когато качването приключи.",
+	],
+	"Upload threads" => [
+		0 => "Бързина на качването",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "Бързина за едновременно качване (паралелни качвания)",
+	],
+	"Redirect on single upload" => [
+		0 => "Пренасочване към единично качване",
+	],
+	"Enable this if you want to redirect to image page on single upload." => [
+		0 => "Активирайте това, ако искате да пренасочите към страницата с изображения при едно качване.",
+	],
+	"Enable duplicate uploads" => [
+		0 => "Активиране на дубликати",
+	],
+	"Enable expirable uploads" => [
+		0 => "Активиране на сваляне на изображения с дата на изтичане.",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "Активирайте това, ако искате да разрешите качването с опция за автоматично изтриване.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "Автоматично изтриване на качвания на гости",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "Активирайте това, ако искате да принудите качванията на гостите да бъдат автоматично изтрити след определено време.",
+	],
+	"Maximum image size" => [
+		0 => "Максимален размер на изображението",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "Изображенията, по-големи от този размер, ще бъдат автоматично намалени. Използвайте нула (0), за да не задавате ограничение.",
+	],
+	"Image Exif data" => [
+		0 => "Изображение Exif данни",
+	],
+	"Keep" => [
+		0 => "Пази",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "Изберете настройката по подразбиране за изображение на <a %s>Exif данни</a> при качване.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "Данни за изображение на Exif (настройка на потребителя)",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "Активирайте това, ако искате да разрешите на всеки потребител да конфигурира как ще се обработват данни Exif с изображения.",
+	],
+	"Maximum upload file size" => [
+		0 => "Максимален размер на файла за качване",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "Максималният размер, разрешен от сървъра, е %s. Тази граница е ограничена от %u и %p (%f стойности).",
+	],
+	"guests" => [
+		0 => "Гости",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "Същото като \"%s\", но за гостите.",
+	],
+	"Image path" => [
+		0 => "Местоположение на снимката",
+	],
+	"Relative to Chevereto root" => [
+		0 => "Относително за chevereto root",
+	],
+	"Where to store the images? Relative to Chevereto root." => [
+		0 => "Къде да съхранявате изображенията? Относително chevereto root",
+	],
+	"Storage mode" => [
+		0 => "Режим на съхранение",
+	],
+	"Datefolders" => [
+		0 => "Папки с дата",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "Папките с дата създават %s структура",
+	],
+	"File naming method" => [
+		0 => "Метод за преименуване на файловете",
+	],
+	"Original" => [
+		0 => "Запази оригинала",
+	],
+	"Mix original + random" => [
+		0 => "Смесете оригинални + произволни",
+	],
+	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
+		0 => "„оригинал“ ще се опита да запази името на източника на изображение, докато „случайно“ ще генерира произволно име. „ID“ ще назове изображението точно като идентификатора на изображението.",
+	],
+	"Thumb size" => [
+		0 => "Размер на миниатюра",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "Миниатюрите ще бъдат преоразмерени до този размер",
+	],
+	"Medium image fixed dimension" => [
+		0 => "Фиксиран размер на средно изображение",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "Изображенията с фиксиран размер на средния размер dimMedium ще бъдат фиксирани към това измерение. Например, ако изберете \"ширина\", този размер ще бъде фиксиран и височината на изображението ще бъде автоматично изчислена",
+	],
+	"Medium image fixed size" => [
+		0 => "Фиксиран размер на средно изображение",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "Ширината или височината ще се изчисляват автоматично.",
+	],
+	"Expires" => [
+		0 => "Изтича",
+	],
+	"Banned IP address will be forbidden to use the entire website." => [
+		0 => "Забранен IP адрес ще бъде забранен за използване на целия уебсайт.",
+	],
+	"Default language" => [
+		0 => "Език по подразбиране",
+	],
+	"Default base language to use." => [
+		0 => "Да се използва език по подразбиране",
+	],
+	"Auto language" => [
+		0 => "Автоматичен избор на език",
+	],
+	"Enable this if you want to automatically detect and set the right language for each user." => [
+		0 => "Активирайте това, ако искате автоматично да откриете и зададете правилния език за всеки потребител.",
+	],
+	"Language chooser" => [
+		0 => "Избор на език",
+	],
+	"Enable this if you want to allow language selection." => [
+		0 => "Активирайте това, ако искате да разрешите избор на език.",
+	],
+	"Enabled languages" => [
+		0 => "Активирани езици",
+	],
+	"List items per page" => [
+		0 => "Списък с елементи на страница",
+	],
+	"How many items should be displayed per page listing." => [
+		0 => "Колко елемента ще се покажа на една страница",
+	],
+	"List pagination mode" => [
+		0 => "Списък на режим на страници",
+	],
+	"Endless scrolling" => [
+		0 => "Безкрайно превъртане",
+	],
+	"Classic pagination" => [
+		0 => "Класическа страница",
+	],
+	"What pagination method should be used." => [
+		0 => "Какъв метод на страници трябва да се използва.",
+	],
+	"Listing viewer" => [
+		0 => "Визуализатор на списъци",
+	],
+	"Enable this to use the listing viewer when clicking on an image." => [
+		0 => "Активирайте това, за да използвате програмата за преглед на списъци, когато щракнете върху изображение.",
+	],
+	"Image listing size" => [
+		0 => "Размер на списък с изображения",
+	],
+	"Fluid" => [
+		0 => "Течен",
+	],
+	"Fixed" => [
+		0 => "Фиксирана",
+	],
+	"Both methods use a fixed width but fluid method uses automatic heights." => [
+		0 => "И двата метода използват фиксирана ширина, но течния метод използва автоматични височини.",
+	],
+	"Listing columns number" => [
+		0 => "Номер на колоните в списъка",
+	],
+	"Here you can set how many columns are used based on each target device." => [
+		0 => "Тук можете да зададете колко колони да се използват въз основа на всяко целево устройство.",
+	],
+	"Phone" => [
+		0 => "Телефон",
+	],
+	"Phablet" => [
+		0 => "Фаблет",
+	],
+	"Tablet" => [
+		0 => "Таблет",
+	],
+	"Laptop" => [
+		0 => "Лаптоп",
+	],
+	"Desktop" => [
+		0 => "Работен плот",
+	],
+	"Vector version or your website logo in SVG format." => [
+		0 => "Векторна версия или логото на вашия уебсайт във SVG формат.",
+	],
+	"Bitmap version or your website logo. PNG format is recommended." => [
+		0 => "Версия на bitmap или логото на вашия уебсайт. PNG форматът се препоръчва.",
+	],
+	"Logo height" => [
+		0 => "Височина на логото",
+	],
+	"No value" => [
+		0 => "Без стойност",
+	],
+	"Use this to set the logo height if needed." => [
+		0 => "Използвайте това, за да зададете височината на логото, ако е необходимо.",
+	],
+	"Favicon image" => [
+		0 => "Favicon изображение",
+	],
+	"Favicon image. Image must have same width and height." => [
+		0 => "Favicon изображение. Изображението трябва да има еднаква ширина и височина.",
 	],
 	"Page title" => [
 		0 => "Заглавие на страница",
@@ -2196,9 +2319,6 @@ $translation_table = [
 	],
 	"Terms of service" => [
 		0 => "Условия за ползване",
-	],
-	"Privacy" => [
-		0 => "Поверителност",
 	],
 	"Contact" => [
 		0 => "Контакти",
@@ -2266,9 +2386,6 @@ $translation_table = [
 	"Only alphanumerics, hyphens and whitespaces" => [
 		0 => "Само буквено-цифрови знаци, тирета и празни места",
 	],
-	"HTML &lt;a&gt; %s attribute" => [
-		0 => "HTML &lt;a&gt; %s атрибут",
-	],
 	"Link icon" => [
 		0 => "Икона на връзката",
 	],
@@ -2281,539 +2398,56 @@ $translation_table = [
 	"Page sort order display for menus and listings. Use \"1\" for top priority." => [
 		0 => "Показване на подредбата на страници за менюта и списъци. Използвайте \"1\" за основен приоритет.",
 	],
-	"pages" => [
-		0 => "страници",
+	"Routing for %s" => [
+		0 => "Маршрут за %s",
 	],
-	"Do you really want to delete the page ID %s? This can't be undone." => [
-		0 => "Наистина ли искате да изтриете ID на страницата %s? Това не може да бъде отменено.",
+	"SEO %s URLs" => [
+		0 => "SEO %s URL адреси",
 	],
-	"Enabled image formats" => [
-		0 => "Активирани формати на изображения",
+	"Enable this if you want to use SEO %s URLs." => [
+		0 => "Активирайте това, ако искате да използвате SEO %s URL адреси.",
 	],
-	"Unchecked image formats won't be allowed to be uploaded." => [
-		0 => "Нерегистрирани формати на изображения няма да бъдат разрешени за качване.",
+	"Automatic updates check" => [
+		0 => "Автоматични проверки за актуализации",
 	],
-	"Enable uploads" => [
-		0 => "Активиране на качванията",
+	"When enabled the system will automatically check for new updates." => [
+		0 => "При активиране системата автоматично ще проверява за нови актуализации.",
 	],
-	"Enable this if you want to allow image uploads. This setting doesn't affect administrators." => [
-		0 => "Активирайте това, ако искате да разрешите качване на изображения. Тази настройка не засяга администраторите.",
+	"Display available updates notification" => [
+		0 => "Показване на наличните известия за актуализации",
 	],
-	"Guest uploads" => [
-		0 => "Качени от Гости",
+	"Enable this to show a notice on top warning you about new available system updates." => [
+		0 => "Активирайте това, за да се показват известия отгоре, да ви предупреждава за нови налични системни актуализации.",
 	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "Разреши на нерегистрирани потребители да качват снимки",
+	"Dump update query" => [
+		0 => "Dump актуализация на заявката",
 	],
-	"Upload user interface" => [
-		0 => "Качване на потребителски интерфейс",
+	"Enable this if you want to dump the update query to run it manually." => [
+		0 => "Активирайте това, ако искате автоматично да откриете и зададете правилния език за всеки потребител.",
 	],
-	"On-page container" => [
-		0 => "Контейнер на страница",
+	"Maintenance" => [
+		0 => "Поддръжка",
 	],
-	"route" => [
-		0 => "Път",
+	"Crypt salt" => [
+		0 => "Криптер",
 	],
-	"Enable embed codes (uploader)" => [
-		0 => "Активиране на вградени кодове (за качване)",
+	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
+		0 => "Този криптер се използва за преобразуване на числовия идентификатор в буквено-цифрова стойност. Той е генериран при инсталация.",
 	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "Активирайте това, ако искате да покажете вградени кодове, когато качването приключи.",
+	"Debug level" => [
+		0 => "Ниво на грешки",
 	],
-	"Upload threads" => [
-		0 => "Бързина на качването",
+	"None" => [
+		0 => "Нито един",
 	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "Бързина за едновременно качване (паралелни качвания)",
+	"Error log" => [
+		0 => "Дневник на грешки",
 	],
-	"Redirect on single upload" => [
-		0 => "Пренасочване към единично качване",
+	"Print errors without error log" => [
+		0 => "Грешки при печат без журнал за грешки",
 	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "Активирайте това, ако искате да пренасочите към страницата с изображения при едно качване.",
-	],
-	"Enable duplicate uploads" => [
-		0 => "Активиране на дубликати",
-	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs. This setting doesn't affect administrators." => [
-		0 => "Активирайте това, ако искате да разрешите дублиращи качвания от един и същ IP адрес в рамките на 24 часа. Тази настройка не засяга администраторите.",
-	],
-	"Enable expirable uploads" => [
-		0 => "Активиране на сваляне на изображения с дата на изтичане.",
-	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "Активирайте това, ако искате да разрешите качването с опция за автоматично изтриване.",
-	],
-	"Auto delete guest uploads" => [
-		0 => "Автоматично изтриване на качвания на гости",
-	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "Активирайте това, ако искате да принудите качванията на гостите да бъдат автоматично изтрити след определено време.",
-	],
-	"Maximum image size" => [
-		0 => "Максимален размер на изображението",
-	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "Изображенията, по-големи от този размер, ще бъдат автоматично намалени. Използвайте нула (0), за да не задавате ограничение.",
-	],
-	"Image Exif data" => [
-		0 => "Изображение Exif данни",
-	],
-	"Keep" => [
-		0 => "Пази",
-	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "Изберете настройката по подразбиране за изображение на <a %s>Exif данни</a> при качване.",
-	],
-	"Image Exif data (user setting)" => [
-		0 => "Данни за изображение на Exif (настройка на потребителя)",
-	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "Активирайте това, ако искате да разрешите на всеки потребител да конфигурира как ще се обработват данни Exif с изображения.",
-	],
-	"Maximum upload file size" => [
-		0 => "Максимален размер на файла за качване",
-	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "Максималният размер, разрешен от сървъра, е %s. Тази граница е ограничена от %u и %p (%f стойности).",
-	],
-	"Same as \"%s\" but for guests." => [
-		0 => "Същото като \"%s\", но за гостите.",
-	],
-	"Image path" => [
-		0 => "Местоположение на снимката",
-	],
-	"Relative to Chevereto root" => [
-		0 => "Относително за chevereto root",
-	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "Къде да съхранявате изображенията? Относително chevereto root",
-	],
-	"Storage mode" => [
-		0 => "Режим на съхранение",
-	],
-	"Datefolders" => [
-		0 => "Папки с дата",
-	],
-	"Direct" => [
-		0 => "Директен",
-	],
-	"Datefolders creates %s structure" => [
-		0 => "Папките с дата създават %s структура",
-	],
-	"File naming method" => [
-		0 => "Метод за преименуване на файловете",
-	],
-	"Original" => [
-		0 => "Запази оригинала",
-	],
-	"Mix original + random" => [
-		0 => "Смесете оригинални + произволни",
-	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "„оригинал“ ще се опита да запази името на източника на изображение, докато „случайно“ ще генерира произволно име. „ID“ ще назове изображението точно като идентификатора на изображението.",
-	],
-	"Thumb size" => [
-		0 => "Размер на миниатюра",
-	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "Миниатюрите ще бъдат преоразмерени до този размер",
-	],
-	"Medium image fixed dimension" => [
-		0 => "Фиксиран размер на средно изображение",
-	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "Изображенията с фиксиран размер на средния размер dimMedium ще бъдат фиксирани към това измерение. Например, ако изберете \"ширина\", този размер ще бъде фиксиран и височината на изображението ще бъде автоматично изчислена",
-	],
-	"Medium image fixed size" => [
-		0 => "Фиксиран размер на средно изображение",
-	],
-	"Width or height will be automatically calculated." => [
-		0 => "Ширината или височината ще се изчисляват автоматично.",
-	],
-	"Watermarks" => [
-		0 => "Водни знаци",
-	],
-	"Enable this to put a logo or anything you want in image uploads." => [
-		0 => "Активирайте това, за да поставите лого или всичко, което искате в качването на изображения.",
-	],
-	"Warning: Can't write in %s" => [
-		0 => "Предупреждение: Не може да пишете в: %s",
-	],
-	"Watermark user toggles" => [
-		0 => "Превключватели на водния знак",
-	],
-	"Enable watermark on guest uploads" => [
-		0 => "Активиране на воден знак при качвания от гости",
-	],
-	"Enable watermark on user uploads" => [
-		0 => "Активиране на воден знак при качвания от потребители",
-	],
-	"Enable watermark on admin uploads" => [
-		0 => "Активиране на воден знак при качвания от администратор",
-	],
-	"Watermark file toggles" => [
-		0 => "Файлове с воден знак",
-	],
-	"Enable watermark on GIF image uploads" => [
-		0 => "Активиране на воден знак при качване на GIF изображения",
-	],
-	"Minimum image size needed to apply watermark" => [
-		0 => "Минимален размер на изображението, необходим за прилагане на воден знак",
-	],
-	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
-		0 => "Изображенията по-малки от минималното изискване няма да садържат воден знак. Използвайте нула (0), за да не задавате ограничение за минимален размер на изображението.",
-	],
-	"Watermark image" => [
-		0 => "Изображение на воден знак",
-	],
-	"You will get best results with plain logos with drop shadow. You can use a large image if the file size is not that big (recommended max. is 16KB). Must be a PNG." => [
-		0 => "Ще получите най-добри резултати с обикновени логота с капка сянка. Можете да използвате голямо изображение, ако размерът на файла не е толкова голям (препоръчително макс. Е 16 KB). Трябва да е PNG.",
-	],
-	"Watermark position" => [
-		0 => "Позиция на воден знак",
-	],
-	"left top" => [
-		0 => "ляв връх",
-	],
-	"left center" => [
-		0 => "ляв център",
-	],
-	"left bottom" => [
-		0 => "ляво дъно",
-	],
-	"center top" => [
-		0 => "централна горна част",
-	],
-	"center center" => [
-		0 => "център център",
-	],
-	"center bottom" => [
-		0 => "център дъно",
-	],
-	"right top" => [
-		0 => "десен връх",
-	],
-	"right center" => [
-		0 => "десен център",
-	],
-	"right bottom" => [
-		0 => "дясно дъно",
-	],
-	"Relative position of the watermark image. First horizontal align then vertical align." => [
-		0 => "Относително положение на изображението на водния знак. Първо хоризонтално подравняване, след това вертикално подравняване.",
-	],
-	"Watermark percentage" => [
-		0 => "Процент воден знак",
-	],
-	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
-		0 => "Процентна големина на воден знак спрямо целевата област на изображението. Стойности от 1 до 100.",
-	],
-	"Watermark margin" => [
-		0 => "Марж на воден знак",
-	],
-	"Margin from the border of the image to the watermark image." => [
-		0 => "Поле от границата на изображението до изображението на воден знак.",
-	],
-	"Watermark opacity" => [
-		0 => "Непрозрачност на воден знак",
-	],
-	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
-		0 => "Непрозрачност на водния знак в крайното изображение с воден знак. Стойности от 0 до 100.",
-	],
-	"Dashboard > Settings > Website" => [
-		0 => "Табло за управление> Настройки> Уебсайт",
-	],
-	"Categories won't work when the explorer feature is turned off. To revert this setting go to %s." => [
-		0 => "Категориите няма да работят, когато функцията на Explorer е изключена. За да върнете тази настройка, отидете на %s.",
-	],
-	"Do you really want to delete the %s category? This can't be undone." => [
-		0 => "Наистина ли искате да изтриете %s категория? Това не може да бъде отменено.",
-	],
-	"Note: Deleting a category doesn't delete the images that belongs to that category." => [
-		0 => "Забележка: Изтриването на категория не изтрива изображенията, които принадлежат към тази категория.",
-	],
-	"Edit category" => [
-		0 => "Редактиране на категория",
-	],
-	"Expires" => [
-		0 => "Изтича",
-	],
-	"Do you really want to remove the ban to the IP %s? This can't be undone." => [
-		0 => "Наистина ли искате да премахнете забраната на IP %s? Това не може да бъде отменено.",
-	],
-	"Banned IP address will be forbidden to use the entire website." => [
-		0 => "Забранен IP адрес ще бъде забранен за използване на целия уебсайт.",
-	],
-	"Edit IP ban" => [
-		0 => "Редактиране на IP забрана",
-	],
-	"Enable signups" => [
-		0 => "Активиране на регистрациите",
-	],
-	"Enable this if you want to allow users to signup." => [
-		0 => "Активирайте това, ако искате да разрешите на потребителите да се регистрират.",
-	],
-	"Enable user content delete" => [
-		0 => "Активиране на изтриването на потребителското съдържание",
-	],
-	"Enable this if you want to allow users to delete their own content. This setting doesn't affect administrators." => [
-		0 => "Активирайте това, ако искате да разрешите на потребителите да изтриват собственото си съдържание. Тази настройка не засяга администраторите.",
-	],
-	"Minimum age required" => [
-		0 => "Необходима минимална възраст",
-	],
-	"Empty" => [
-		0 => "Празен",
-	],
-	"Leave it empty to don't require a minimum age to use the website." => [
-		0 => "Оставете празно, за да не изисква минимална възраст за използване на уебсайта.",
-	],
-	"Notify on user signup" => [
-		0 => "Уведомете при регистрация от потребителя",
-	],
-	"Enable this if you want to get an email notification for each new user signup." => [
-		0 => "Активирайте това, ако искате да получавате известие по имейл за всяка нова регистрация на потребител.",
-	],
-	"Username routing" => [
-		0 => "Маршрутизиране на потребителско име",
-	],
-	"Enable this if you want to use %s/username URLs instead of %s/user/username." => [
-		0 => "Активирайте това, ако искате да използвате URL адреси %s / потребителско име вместо %s / потребител / потребителско име.",
-	],
-	"Require email confirmation" => [
-		0 => "Изисква на потвърждение на имейл адреса",
-	],
-	"Enable this if users must validate their email address on sign up." => [
-		0 => "Активирайте това, ако потребителите трябва да потвърдят имейл адреса си при регистрация.",
-	],
-	"Require email for social signup" => [
-		0 => "Изисквайте имейл за социална регистрация",
-	],
-	"Enable this if users using social networks to register must provide an email address." => [
-		0 => "Активирайте това, ако потребителите, използващи социални мрежи за регистриране, трябва да предоставят имейл адрес.",
-	],
-	"User avatar max. filesize" => [
-		0 => "Потребителски аватар макс. размер на файла",
-	],
-	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
-		0 => "Макс. разрешен размер на файла за изображението на аватара на потребителя. (Макс. Разрешен от сървъра е %s)",
-	],
-	"User background max. filesize" => [
-		0 => "Потребителски фон макс. размер на файла",
-	],
-	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
-		0 => "Макс. разрешен размер на файла за потребителско фоново изображение. (Макс. Разрешен от сървъра е %s)",
-	],
-	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
-		0 => "Показва екран за съгласие преди да влезете в уебсайта. Полезно за уебсайтове за съдържание за възрастни, където непълнолетни не трябва да бъдат допускани.",
-	],
-	"Enable consent screen" => [
-		0 => "Активиране на екрана за съгласие",
-	],
-	"Consent screen cover image" => [
-		0 => "Съгласие изображение на корицата на екрана",
-	],
-	"Block image uploads by IP if the system notice a flood  behavior based on the number of uploads per time period. This setting doesn't affect administrators." => [
-		0 => "Блокирайте качването на изображения от IP, ако системата забележи поведение на флууд въз основа на броя качвания за период от време. Тази настройка не засяга администраторите.",
-	],
-	"Notify to email" => [
-		0 => "Уведоми чрез email",
-	],
-	"If enabled the system will send an email on flood incidents." => [
-		0 => "Ако е активирана, системата ще изпрати имейл за инциденти с флууд.",
-	],
-	"Minute limit" => [
-		0 => "Минутен лимит",
-	],
-	"Hourly limit" => [
-		0 => "Часови лимит",
-	],
-	"Daily limit" => [
-		0 => "Дневен лимит",
-	],
-	"Weekly limit" => [
-		0 => "Седмичен лимит",
-	],
-	"Monthly limit" => [
-		0 => "Месечен лимит",
-	],
-	"Show not safe content in listings" => [
-		0 => "Показване на не безопасно съдържание в списъците",
-	],
-	"Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings." => [
-		0 => "Активирайте това, ако искате да показвате не безопасно съдържание в списъците. Тази настройка не засяга администраторите и може да бъде отменена от собствените настройки на потребителя.",
-	],
-	"Blur NSFW content in listings" => [
-		0 => "Размиване на NSFW съдържание в списъците",
-	],
-	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
-		0 => "Активирайте това, ако искате да приложите ефект на размазване върху NSFW изображенията в списъците.",
-	],
-	"Show banners in not safe content" => [
-		0 => "Показване на банери в не безопасно съдържание",
-	],
-	"Enable this if you want to show banners in not safe content pages." => [
-		0 => "Активирайте това, ако искате да показвате банери на страници с не безопасно съдържание.",
-	],
-	"Show not safe content in random mode" => [
-		0 => "Показване на не безопасно съдържание в произволен режим",
-	],
-	"List items per page" => [
-		0 => "Списък с елементи на страница",
-	],
-	"How many items should be displayed per page listing." => [
-		0 => "Колко елемента ще се покажа на една страница",
-	],
-	"List pagination mode" => [
-		0 => "Списък на режим на страници",
-	],
-	"Endless scrolling" => [
-		0 => "Безкрайно превъртане",
-	],
-	"Classic pagination" => [
-		0 => "Класическа страница",
-	],
-	"What pagination method should be used." => [
-		0 => "Какъв метод на страници трябва да се използва.",
-	],
-	"Listing viewer" => [
-		0 => "Визуализатор на списъци",
-	],
-	"Enable this to use the listing viewer when clicking on an image." => [
-		0 => "Активирайте това, за да използвате програмата за преглед на списъци, когато щракнете върху изображение.",
-	],
-	"Image listing size" => [
-		0 => "Размер на списък с изображения",
-	],
-	"Fluid" => [
-		0 => "Течен",
-	],
-	"Fixed" => [
-		0 => "Фиксирана",
-	],
-	"Both methods use a fixed width but fluid method uses automatic heights." => [
-		0 => "И двата метода използват фиксирана ширина, но течния метод използва автоматични височини.",
-	],
-	"Album listing images requirement" => [
-		0 => "Изискване за изображения в албума",
-	],
-	"explore" => [
-		0 => "Разгледай",
-	],
-	"Sets the minimum image count needed to show albums in explore." => [
-		0 => "Задава минималния брой изображения, необходим за показване на албуми в проучване.",
-	],
-	"Listing columns number" => [
-		0 => "Номер на колоните в списъка",
-	],
-	"Here you can set how many columns are used based on each target device." => [
-		0 => "Тук можете да зададете колко колони да се използват въз основа на всяко целево устройство.",
-	],
-	"Phone" => [
-		0 => "Телефон",
-	],
-	"Phablet" => [
-		0 => "Фаблет",
-	],
-	"Tablet" => [
-		0 => "Таблет",
-	],
-	"Laptop" => [
-		0 => "Лаптоп",
-	],
-	"Desktop" => [
-		0 => "Работен плот",
-	],
-	"theme editing" => [
-		0 => "редактиране на теми",
-	],
-	"Put your themes in the %s folder" => [
-		0 => "Сложи темите си в папка %s",
-	],
-	"Tone" => [
-		0 => "Тон",
-	],
-	"Light" => [
-		0 => "Светъл",
-	],
-	"Dark" => [
-		0 => "Тъмен",
-	],
-	"Main color" => [
-		0 => "Основен цвят",
-	],
-	"Hexadecimal color value" => [
-		0 => "Шестнадесетична стойност на цвета",
-	],
-	"Use this to set the main theme color. Value must be in <a href=\"%s\" target=\"_blank\">hex format</a>." => [
-		0 => "Използвайте това, за да зададете основния цвят на темата. Стойността трябва да бъде в <a href=\"%s\" target=\"_blank\">шестнадесетичен формат</a>.",
-	],
-	"Top bar color" => [
-		0 => "Цвят на горната лента",
-	],
-	"Black" => [
-		0 => "Черно",
-	],
-	"White" => [
-		0 => "бял",
-	],
-	"If you set this to \"white\" the top bar and all the black tones will be changed to white tones." => [
-		0 => "Ако зададете това на \"бяло\" горната лента и всички черни тонове ще бъдат променени на бели тонове.",
-	],
-	"Top bar button color" => [
-		0 => "Цвят на бутона на горната лента",
-	],
-	"Blue" => [
-		0 => "Син",
-	],
-	"Green" => [
-		0 => "Зелен",
-	],
-	"Orange" => [
-		0 => "Оранжев",
-	],
-	"Red" => [
-		0 => "Червен",
-	],
-	"Grey" => [
-		0 => "Сив",
-	],
-	"Color for the top bar buttons like the \"Create account\" button." => [
-		0 => "Цвят за бутоните в горната лента като бутона „Създаване на акаунт“.",
-	],
-	"Enable vector logo" => [
-		0 => "Активиране на векторното лого",
-	],
-	"Enable vector logo for high quality logo in devices with high pixel density." => [
-		0 => "Активирайте векторното лого за висококачествено лого в устройства с висока плътност на пикселите.",
-	],
-	"Vector logo image" => [
-		0 => "Векторно лого изображение",
-	],
-	"Vector version or your website logo in SVG format." => [
-		0 => "Векторна версия или логото на вашия уебсайт във SVG формат.",
-	],
-	"Raster logo image" => [
-		0 => "Растерно лого изображение",
-	],
-	"Bitmap version or your website logo. PNG format is recommended." => [
-		0 => "Версия на bitmap или логото на вашия уебсайт. PNG форматът се препоръчва.",
-	],
-	"Logo height" => [
-		0 => "Височина на логото",
-	],
-	"No value" => [
-		0 => "Без стойност",
-	],
-	"Use this to set the logo height if needed." => [
-		0 => "Използвайте това, за да зададете височината на логото, ако е необходимо.",
-	],
-	"Favicon image" => [
-		0 => "Favicon изображение",
-	],
-	"Favicon image. Image must have same width and height." => [
-		0 => "Favicon изображение. Изображението трябва да има еднаква ширина и височина.",
+	"Print and log errors" => [
+		0 => "Грешки при печат и регистрация",
 	],
 	"Image load max. filesize" => [
 		0 => "Максимално зареждане на изображението размер на файла",
@@ -2872,276 +2506,6 @@ $translation_table = [
 	"Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website." => [
 		0 => "Не използвай %s маркиране тук. Това е за обикновен JS код, а не за HTML скриптове. Ако тук използвате тагове за скриптове, ще нарушите вашия уебсайт.",
 	],
-	"Style" => [
-		0 => "Стил",
-	],
-	"Landing page" => [
-		0 => "Целева страница",
-	],
-	"Split landing + images" => [
-		0 => "Разделяне + изображения",
-	],
-	"Route explore" => [
-		0 => "Проучване на маршрут",
-	],
-	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
-		0 => "Изберете стила на началната страница. За да го персонализирате допълнително, редактирайте app/themes/%s/views/index.php",
-	],
-	"Cover image" => [
-		0 => "Изображение на корицата",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "Наистина ли искате да изтриете това изображение? Това не може да бъде отменено.",
-	],
-	"Delete image" => [
-		0 => "Изтриване на изображението",
-	],
-	"Add new cover image" => [
-		0 => "Добавете ново изображение на корицата",
-	],
-	"Vector version or your website logo in SVG format (only for homepage)." => [
-		0 => "Векторна версия или логото на вашия уебсайт във SVG формат (само за начална страница).",
-	],
-	"Bitmap version or your website logo (only for homepage). PNG format is recommended." => [
-		0 => "Версия на bitmap или логото на вашия уебсайт (само за начална страница). PNG форматът се препоръчва.",
-	],
-	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
-		0 => "Това ще бъде добавено в маркера %s на началната страница. Оставете празно, за да използвате съдържанието по подразбиране.",
-	],
-	"Paragraph" => [
-		0 => "Параграф",
-	],
-	"Call to action button color" => [
-		0 => "Призив към действие цветен бутон",
-	],
-	"Color of the homepage call to action button." => [
-		0 => "Цвят на бутона за призоваване към действие на началната страница.",
-	],
-	"Call to action outline style button" => [
-		0 => "Бутон контур стил",
-	],
-	"Enable this to use outline style for the homepage call to action button." => [
-		0 => "Активирайте това, за да използвате стила на контура на началната страница.",
-	],
-	"Call to action functionality" => [
-		0 => "Призив към действие функционалност",
-	],
-	"Trigger uploader" => [
-		0 => "Задействащо устройство за задействане",
-	],
-	"Open URL" => [
-		0 => "Отваряне на URL адрес",
-	],
-	"Call to action URL" => [
-		0 => "URL адрес на призив за действие",
-	],
-	"Enter an absolute or relative URL" => [
-		0 => "Въведете абсолютен или относителен URL адрес",
-	],
-	"A relative URL like %r will be mapped to %l" => [
-		0 => "Относителен URL адрес като %r ще бъде картографиран на %l",
-	],
-	"Call to action HTML" => [
-		0 => "HTML за призоваване към действие",
-	],
-	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
-		0 => "Това ще бъде добавено в <a> маркера за призив към действие. Оставете празно, за да използвате съдържанието по подразбиране.",
-	],
-	"User IDs" => [
-		0 => "Потребителски ID-та",
-	],
-	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
-		0 => "Списък на разделени със запетая ID-та на целеви потребители, за да се показват изображения на началната страница. Оставете празно или нулево, за да се показват всички скорошни изображения.",
-	],
-	"banners" => [
-		0 => "банери",
-	],
-	"Automatic updates check" => [
-		0 => "Автоматични проверки за актуализации",
-	],
-	"When enabled the system will automatically check for new updates." => [
-		0 => "При активиране системата автоматично ще проверява за нови актуализации.",
-	],
-	"Display available updates notification" => [
-		0 => "Показване на наличните известия за актуализации",
-	],
-	"Enable this to show a notice on top warning you about new available system updates." => [
-		0 => "Активирайте това, за да се показват известия отгоре, да ви предупреждава за нови налични системни актуализации.",
-	],
-	"Dump update query" => [
-		0 => "Dump актуализация на заявката",
-	],
-	"Enable this if you want to dump the update query to run it manually." => [
-		0 => "Активирайте това, ако искате автоматично да откриете и зададете правилния език за всеки потребител.",
-	],
-	"SEO %s URLs" => [
-		0 => "SEO %s URL адреси",
-	],
-	"Enable this if you want to use SEO %s URLs." => [
-		0 => "Активирайте това, ако искате да използвате SEO %s URL адреси.",
-	],
-	"Minify code" => [
-		0 => "Минимизиране на кода",
-	],
-	"Enable this if you want to auto minify CSS and JS code." => [
-		0 => "Активирайте това, ако искате автоматично да минимизирате CSS и JS код.",
-	],
-	"Maintenance" => [
-		0 => "Поддръжка",
-	],
-	"When enabled the website will show a maintenance message. This setting doesn't affect administrators." => [
-		0 => "Когато е активиран, уебсайтът ще покаже съобщение за поддръжка. Тази настройка не засяга администраторите.",
-	],
-	"Crypt salt" => [
-		0 => "Криптер",
-	],
-	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
-		0 => "Този криптер се използва за преобразуване на числовия идентификатор в буквено-цифрова стойност. Той е генериран при инсталация.",
-	],
-	"PHP error reporting" => [
-		0 => "Отчитане на грешки в PHP",
-	],
-	"Enable this if you want to print errors generated by PHP <a %s>error_reporting()</a>. This should be disabled in production." => [
-		0 => "Активирайте това, ако искате да отпечатате грешки, генерирани от PHP <a %s>error_reporting()</a>. Това трябва да бъде деактивирано в производството.",
-	],
-	"Debug level" => [
-		0 => "Ниво на грешки",
-	],
-	"None" => [
-		0 => "Нито един",
-	],
-	"Error log" => [
-		0 => "Дневник на грешки",
-	],
-	"Print errors without error log" => [
-		0 => "Грешки при печат без журнал за грешки",
-	],
-	"Print and log errors" => [
-		0 => "Грешки при печат и регистрация",
-	],
-	"To configure the debug level check the <a %s>debug documentation</a>. Default level is \"Error log\" (1)." => [
-		0 => "За да конфигурирате ниво на грешка, проверете <a %s> документацията за отстраняване на грешки </a>. Нивото по подразбиране е \"Регистър на грешките\" (1).",
-	],
-	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed. Check out our %s if you want to override or add new routes." => [
-		0 => "Маршрутизацията ви позволява да персонализирате връзки по подразбиране по маршрута в движение. Разрешени са само буквено-цифрови, тире и подчертаващи символи. Вижте нашите %s, ако искате да замените или добавите нови маршрути.",
-	],
-	"Image routing" => [
-		0 => "Маршрутизиране на изображения",
-	],
-	"Routing for %s" => [
-		0 => "Маршрут за %s",
-	],
-	"Album routing" => [
-		0 => "Маршрутизиране на албуми",
-	],
-	"Hostname" => [
-		0 => "Име на хост",
-	],
-	"Hostname on which sub-domain wildcards will be added." => [
-		0 => "Име на хост, върху който ще бъдат добавени подметки.",
-	],
-	"This setting may be overridden by %s." => [
-		0 => "Тази настройка може да бъде отменена с %s.",
-	],
-	"Language subdomains" => [
-		0 => "Езикови поддомейни",
-	],
-	"languages" => [
-		0 => "езици",
-	],
-	"Enable to use %s for %t." => [
-		0 => "Активиране за използване на %s за %t.",
-	],
-	"Username subdomains" => [
-		0 => "Потребителско име поддомейни",
-	],
-	"user profiles" => [
-		0 => "потребителски профили",
-	],
-	"Custom language strings" => [
-		0 => "Персонализирани езикови низове",
-	],
-	"language strings" => [
-		0 => "езикови низове",
-	],
-	"Default language" => [
-		0 => "Език по подразбиране",
-	],
-	"Default base language to use." => [
-		0 => "Да се използва език по подразбиране",
-	],
-	"Auto language" => [
-		0 => "Автоматичен избор на език",
-	],
-	"Enable this if you want to automatically detect and set the right language for each user." => [
-		0 => "Активирайте това, ако искате автоматично да откриете и зададете правилния език за всеки потребител.",
-	],
-	"Language chooser" => [
-		0 => "Избор на език",
-	],
-	"Enable this if you want to allow language selection." => [
-		0 => "Активирайте това, ако искате да разрешите избор на език.",
-	],
-	"Enabled languages" => [
-		0 => "Активирани езици",
-	],
-	"Unchecked languages won't be used in your website." => [
-		0 => "Неописаните езици няма да се използват във вашия уебсайт.",
-	],
-	"Toggle this to enable or disable HTTPS" => [
-		0 => "Превключете това, за да активирате или деактивирате HTTPS",
-	],
-	"Toggle this to enable or disable this storage" => [
-		0 => "Превключете това, за да активирате или деактивирате това хранилище",
-	],
-	"Quota" => [
-		0 => "Квота",
-	],
-	"Active" => [
-		0 => "Активен",
-	],
-	"Storage method" => [
-		0 => "Метод на съхранение",
-	],
-	"Local storage is used by default or when no external storage is active." => [
-		0 => "Локалното хранилище се използва по подразбиране или когато няма активно външно хранилище.",
-	],
-	"If you need help check the <a %s>storage documentation</a>." => [
-		0 => "Ако имате нужда от помощ, проверете <a %s> документацията за съхранение </a>.",
-	],
-	"Edit storage" => [
-		0 => "Редактиране на хранилището",
-	],
-	"From name" => [
-		0 => "От име",
-	],
-	"Sender name for emails sent to users." => [
-		0 => "Име, от което потребителите ще се получават email-ите",
-	],
-	"Email mode" => [
-		0 => "Режим на имейл",
-	],
-	"How to send emails? SMTP recommended." => [
-		0 => "Как да изпращам имейли? SMTP се препоръчва.",
-	],
-	"SMTP server and port" => [
-		0 => "SMTP сървър и порт",
-	],
-	"SMTP server" => [
-		0 => "SMTP сървър",
-	],
-	"SMTP username" => [
-		0 => "SMTP потребител",
-	],
-	"SMTP password" => [
-		0 => "SMTP парола",
-	],
-	"SMTP security" => [
-		0 => "SMTP защита",
-	],
-	"Unsecured" => [
-		0 => "Незащитено",
-	],
 	"Decode ID" => [
 		0 => "ID за декодиране",
 	],
@@ -3175,9 +2539,6 @@ $translation_table = [
 	"This will re-calculate the sum of all the image records associated to the target external storage." => [
 		0 => "Това ще пресметне сумата от всички записи на изображения, свързани с целевото външно хранилище.",
 	],
-	"Migrate image records from one external storage to another" => [
-		0 => "Мигрирайте записи на изображения от една външна памет към друга",
-	],
 	"Source storage id" => [
 		0 => "Идент. № за съхранение",
 	],
@@ -3190,149 +2551,212 @@ $translation_table = [
 	"This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage." => [
 		0 => "Това актуализира само базата данни. Трябва сами да прехвърлите действителните файлове в целевия контейнер за съхранение. Препоръчва се пренаписване на URL адреси. Използвайте нула (0) за локално съхранение.",
 	],
-	"social networks" => [
-		0 => "социални мрежи",
-	],
-	"You need a <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> for this." => [
-		0 => "Необходимо е <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook приложение</a>",
-	],
-	"Facebook app id" => [
-		0 => "ID на фейсбук апликацията",
-	],
-	"Facebook app secret" => [
-		0 => "Секретен код на фейсбук апликацията",
-	],
-	"You need a <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> for this." => [
-		0 => "Необходимо е <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter приложение</a>",
-	],
-	"Twitter API key" => [
-		0 => "API Ключ на Twitter",
-	],
-	"Twitter API secret" => [
-		0 => "Секретен код на Twitter",
-	],
-	"Twitter account" => [
-		0 => "Twitter акаунт",
-	],
-	"You need a <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> for this." => [
-		0 => "Необходимо е <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google приложение</a>",
-	],
-	"Google client id" => [
-		0 => "Идент. № на клиента на Google",
-	],
-	"Google client secret" => [
-		0 => "Секретен код на Google",
-	],
-	"You need a <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> for this." => [
-		0 => "За това се нуждаете от <a href=\"http://vk.com/dev\" target=\"_blank\">VK приложение</a>.",
-	],
-	"VK client id" => [
-		0 => "VK клиентски номер",
-	],
-	"VK client secret" => [
-		0 => "Секретен код на VK",
-	],
-	"%s spam protection" => [
-		0 => "%s защита срещу спам",
-	],
-	"user generated content" => [
-		0 => "генерираното от потребителите съдържание",
-	],
-	"Enable this to use %l to block spam on %c." => [
-		0 => "Активирайте това, за да използвате %l за блокиране на спам на %c.",
-	],
-	"%s API key" => [
-		0 => "%s API ключ",
-	],
-	"user signup" => [
-		0 => "регистрация на потребител",
-	],
-	"You need a <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> for this." => [
-		0 => "За това се нуждаете от <a href=\"%s\" target=\"_blank\">reCAPTCHA ключ</a>.",
-	],
-	"Please note that each reCAPTCHA version require its own set of keys. Don't forget to update the keys if you change versions." => [
-		0 => "Моля, обърнете внимание, че всяка версия на reCAPTCHA изисква собствен набор от ключове. Не забравяйте да актуализирате ключовете, ако промените версиите.",
-	],
-	"%s site key" => [
-		0 => "%s ключ на сайта",
-	],
-	"%s secret key" => [
-		0 => "%s секретен код",
-	],
-	"reCAPTCHA threshold" => [
-		0 => "reCAPTCHA праг",
-	],
-	"How many failed attempts are needed to ask for reCAPTCHA? Use zero (0) to always show reCAPTCHA." => [
-		0 => "Колко неуспешни опита са необходими, за да се поиска reCAPTCHA? Използвайте нула (0), за да показвате винаги reCAPTCHA.",
-	],
-	"Force %s on contact page" => [
-		0 => "Принуди %s на страницата за контакти",
-	],
-	"Enable this to always show %s on contact page." => [
-		0 => "Активирайте това, за да се показва винаги %s на страницата за контакти.",
-	],
-	"Comments API" => [
-		0 => "API за коментари",
-	],
-	"Disqus API works with %s." => [
-		0 => "Disqus API работи с %s.",
-	],
-	"Disqus shortname" => [
-		0 => "Disqus кратко име",
-	],
-	"%s public key" => [
-		0 => "%s публичен ключ",
-	],
-	"Comment code" => [
-		0 => "Код за коментар",
-	],
-	"Disqus, Facebook or anything you want. It will be used in image view." => [
-		0 => "Disqus, Facebook или всичко, което искате. Те ще бъдат използвани при изглед на изображение",
-	],
-	"Analytics code" => [
-		0 => "Код на Google Анализ",
-	],
-	"Google Analytics or anything you want. It will be added to the theme footer." => [
-		0 => "Google Analytics или всичко, което искате. Те ще бъдат добавени към долната част на темата.",
-	],
-	"For documentation about the API check the <a %s>API documentation</a>" => [
-		0 => "За документация на API проверете <a %s>документацията за API</a>",
-	],
-	"API v1 key" => [
-		0 => "Ключ API v1",
-	],
-	"Use this key when using the <a %s>API v1</a>." => [
-		0 => "Използвайте този ключ, когато използвате <a %s>API v1</a>.",
+	"Additional settings" => [
+		0 => "Допълнителни настройки",
 	],
 	"Plugin route" => [
 		0 => "Плъгин маршрут",
 	],
-	"Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu. This setting doesn't affect administrators." => [
-		0 => "Активирайте това за показване на инструкции за плъгини на %u. Връзките към тези инструкции ще бъдат добавени към менюто %s. Тази настройка не засяга администраторите.",
-	],
 	"Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL." => [
 		0 => "Използвайте това, за да зададете персонализиран URL адрес за %p. Моля, обърнете внимание, че трябва ръчно да копирате %s в този URL адрес.",
 	],
-	"Cookie law compliance" => [
-		0 => "Спазване на закона за бисквитките",
+	"Enable signups" => [
+		0 => "Активиране на регистрациите",
 	],
-	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
-		0 => "Активирайте това, за да се покаже съобщение, което отговаря на изискванията на законодателството на ЕС за бисквитките. Забележка: Това ви трябва само ако уебсайтът ви се хоства в ЕС и ако добавите бисквитки за проследяване.",
+	"Enable this if you want to allow users to signup." => [
+		0 => "Активирайте това, ако искате да разрешите на потребителите да се регистрират.",
 	],
-	"Save changes" => [
-		0 => "Запази промените",
+	"Enable user content delete" => [
+		0 => "Активиране на изтриването на потребителското съдържание",
 	],
-	"Check the errors to proceed." => [
-		0 => "Провери за грешки, за да продължиш",
+	"Minimum age required" => [
+		0 => "Необходима минимална възраст",
+	],
+	"Leave it empty to don't require a minimum age to use the website." => [
+		0 => "Оставете празно, за да не изисква минимална възраст за използване на уебсайта.",
+	],
+	"Notify on user signup" => [
+		0 => "Уведомете при регистрация от потребителя",
+	],
+	"Enable this if you want to get an email notification for each new user signup." => [
+		0 => "Активирайте това, ако искате да получавате известие по имейл за всяка нова регистрация на потребител.",
+	],
+	"Require email confirmation" => [
+		0 => "Изисква на потвърждение на имейл адреса",
+	],
+	"Enable this if users must validate their email address on sign up." => [
+		0 => "Активирайте това, ако потребителите трябва да потвърдят имейл адреса си при регистрация.",
+	],
+	"Require email for social signup" => [
+		0 => "Изисквайте имейл за социална регистрация",
+	],
+	"Enable this if users using social networks to register must provide an email address." => [
+		0 => "Активирайте това, ако потребителите, използващи социални мрежи за регистриране, трябва да предоставят имейл адрес.",
+	],
+	"User avatar max. filesize" => [
+		0 => "Потребителски аватар макс. размер на файла",
+	],
+	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
+		0 => "Макс. разрешен размер на файла за изображението на аватара на потребителя. (Макс. Разрешен от сървъра е %s)",
+	],
+	"User background max. filesize" => [
+		0 => "Потребителски фон макс. размер на файла",
+	],
+	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
+		0 => "Макс. разрешен размер на файла за потребителско фоново изображение. (Макс. Разрешен от сървъра е %s)",
+	],
+	"Enable this to put a logo or anything you want in image uploads." => [
+		0 => "Активирайте това, за да поставите лого или всичко, което искате в качването на изображения.",
+	],
+	"Watermark user toggles" => [
+		0 => "Превключватели на водния знак",
+	],
+	"Enable watermark on guest uploads" => [
+		0 => "Активиране на воден знак при качвания от гости",
+	],
+	"Enable watermark on user uploads" => [
+		0 => "Активиране на воден знак при качвания от потребители",
+	],
+	"Enable watermark on admin uploads" => [
+		0 => "Активиране на воден знак при качвания от администратор",
+	],
+	"Watermark file toggles" => [
+		0 => "Файлове с воден знак",
+	],
+	"Enable watermark on GIF image uploads" => [
+		0 => "Активиране на воден знак при качване на GIF изображения",
+	],
+	"Minimum image size needed to apply watermark" => [
+		0 => "Минимален размер на изображението, необходим за прилагане на воден знак",
+	],
+	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
+		0 => "Изображенията по-малки от минималното изискване няма да садържат воден знак. Използвайте нула (0), за да не задавате ограничение за минимален размер на изображението.",
+	],
+	"Watermark image" => [
+		0 => "Изображение на воден знак",
+	],
+	"Watermark position" => [
+		0 => "Позиция на воден знак",
+	],
+	"left top" => [
+		0 => "ляв връх",
+	],
+	"left center" => [
+		0 => "ляв център",
+	],
+	"left bottom" => [
+		0 => "ляво дъно",
+	],
+	"center top" => [
+		0 => "централна горна част",
+	],
+	"center center" => [
+		0 => "център център",
+	],
+	"center bottom" => [
+		0 => "център дъно",
+	],
+	"right top" => [
+		0 => "десен връх",
+	],
+	"right center" => [
+		0 => "десен център",
+	],
+	"right bottom" => [
+		0 => "дясно дъно",
+	],
+	"Relative position of the watermark image. First horizontal align then vertical align." => [
+		0 => "Относително положение на изображението на водния знак. Първо хоризонтално подравняване, след това вертикално подравняване.",
+	],
+	"Watermark percentage" => [
+		0 => "Процент воден знак",
+	],
+	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
+		0 => "Процентна големина на воден знак спрямо целевата област на изображението. Стойности от 1 до 100.",
+	],
+	"Watermark margin" => [
+		0 => "Марж на воден знак",
+	],
+	"Margin from the border of the image to the watermark image." => [
+		0 => "Поле от границата на изображението до изображението на воден знак.",
+	],
+	"Watermark opacity" => [
+		0 => "Непрозрачност на воден знак",
+	],
+	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
+		0 => "Непрозрачност на водния знак в крайното изображение с воден знак. Стойности от 0 до 100.",
+	],
+	"Website name" => [
+		0 => "Име на уебсайт",
+	],
+	"Website doctitle" => [
+		0 => "Заглавие на уебсайт",
+	],
+	"Website description" => [
+		0 => "Описание на уебсайтa",
+	],
+	"Default time zone" => [
+		0 => "Часова зона по подразбиране",
+	],
+	"Select region" => [
+		0 => "Избери регион",
+	],
+	"Allows to search images, albums and users based on a given search query." => [
+		0 => "Позволява да търсите изображения, албуми и потребители въз основа на дадена заявка за търсене.",
+	],
+	"Enables to browse public uploaded images. It also enables categories." => [
+		0 => "Разрешава да разглеждате публично качени изображения. Също така дава възможност за категории.",
+	],
+	"Enables to browse images randomly." => [
+		0 => "Позволява да разглеждането изображения произволно.",
+	],
+	"Likes" => [
+		0 => "Харесвания",
+	],
+	"Allows users to like content and populate \"Most liked\" listings." => [
+		0 => "Позволява на потребителите да харесват съдържание и да попълват списъци с „Най-харесвани“.",
+	],
+	"Followers allows users to follow each other." => [
+		0 => "Последователите позволяват на потребителите да следват един друг.",
+	],
+	"Website mode" => [
+		0 => "Режим на уебсайта",
+	],
+	"You can switch the website mode anytime." => [
+		0 => "Можете да превключвате по всяко време режима на уебсайта",
+	],
+	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
+		0 => "Персонализиран маршрут за карта / потребителско име до / нещо. Използвайте \"/\", за да насочите към началната страница.",
+	],
+	"Website privacy mode" => [
+		0 => "Режим на поверителност на уебсайта",
+	],
+	"Private mode will make the website only available for registered users." => [
+		0 => "Скрития режим ще направи уебсайта достъпен само за регистрирани потребители.",
+	],
+	"Content privacy mode" => [
+		0 => "Режим на поверителност на съдържанието",
+	],
+	"Force private (self)" => [
+		0 => "Принудително скрито (самостоятелно)",
+	],
+	"Force private (anyone with the link)" => [
+		0 => "Принудително скрито (всеки с връзката)",
+	],
+	"Forced privacy modes will override user selected privacy." => [
+		0 => "Принудителните режими на поверителност ще отменят избраната от потребителите поверителност.",
+	],
+	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
+		0 => "Уверете се, че се справяте с този проблем, тъй като системата разчита на точни IP открития, за да осигури основни функционалности и да се предпази от спам, флууд и BruteForce атаки.",
+	],
+	"Role" => [
+		0 => "Роля",
+	],
+	"Email address" => [
+		0 => "Имейл адрес",
 	],
 	"Play GIF" => [
 		0 => "Старт GIF",
-	],
-	"Load full resolution" => [
-		0 => "Заредете пълна резолюция",
-	],
-	"Added to %a and categorized in %c" => [
-		0 => "Добавено към %a и категоризирано в %c",
 	],
 	"Added to %s" => [
 		0 => "Добавено към %s",
@@ -3349,23 +2773,14 @@ $translation_table = [
 	"More Exif data" => [
 		0 => "Повече данни от Exif",
 	],
-	"Share image" => [
-		0 => "Споделете изображение",
-	],
-	"Album ID" => [
-		0 => "ID на албума",
-	],
-	"In this album" => [
-		0 => "В този албум",
+	"Add IP ban" => [
+		0 => "Добавете бан по IP",
 	],
 	"Upload and share your images." => [
 		0 => "Качвайте и споделяйте вашите изображения.",
 	],
 	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
 		0 => "Плъзнете и пуснете навсякъде, където искате и започнете да качвате изображенията си сега. %s ограничение. Директни връзки към изображения, миниатюри на BBCode и HTML.",
-	],
-	"Start uploading" => [
-		0 => "Започнете да качвате",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "Регистрирайте се, за да отключите всички функции",
@@ -3376,17 +2791,11 @@ $translation_table = [
 	"Sign in with your account" => [
 		0 => "Влезте с вашия акаунт",
 	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "Нямате акаунт? <a href='%s'> Регистрирайте се</a> сега.",
-	],
 	"Logged out" => [
 		0 => "Излязохте",
 	],
 	"You have been logged off %s. Hope to see you soon." => [
 		0 => "Вие излязохте успешно, %s очакваме ви отново скоро време.",
-	],
-	"Go to homepage" => [
-		0 => "Начална страница",
 	],
 	"Website under maintenance" => [
 		0 => "Уеб Сайта е временно спрян",
@@ -3399,9 +2808,6 @@ $translation_table = [
 	],
 	"Please enter your password to continue." => [
 		0 => "Моля, въведете паролата си, за да продължите.",
-	],
-	"Send" => [
-		0 => "Изпрати",
 	],
 	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
 		0 => "Качване на изображения към вашия уебсайт, блог или форум е възможно след като инсталирате нашия плъгин за качване.Тои осигурява качване на изображения във всеки уебсайт чрез поставяне на бутон, който ще позволи на потребителите директно да качват изображения в нашия сайт и автоматично ще обработи кодовете, необходими за вмъкване на изображения.Всички включени функции като плъзгане и пускане, отдалечено качване, поправяне на размери на изображения и други.",
@@ -3460,24 +2866,6 @@ $translation_table = [
 	"The plugin has a large set of additional options that allow full customization. You can use custom HTML, CSS, own color palette, set observers and more. Check the %d and the plugin source to get a better idea of these advanced options." => [
 		0 => "Плъгинът разполага с голям избор от допълнителни опции, които позволяват пълна персонализация. Можете да използвате персонализиран HTML, CSS, собствена цветова палитра, да зададете наблюдатели и други. Проверете %d и източника на приставки, за да получите по-добра представа за тези разширени опции.",
 	],
-	"You either don't have permission to access this page or the link has expired." => [
-		0 => "Или нямате разрешение за достъп до тази страница или връзката е изтекла.",
-	],
-	"Search results" => [
-		0 => "Резултати от търсенето",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "Наистина ли искате да изтриете този потребител? Това не може да бъде отменено.",
-	],
-	"Delete user" => [
-		0 => "Изтриване на потребител",
-	],
-	"Register date" => [
-		0 => "Дата на регистрация",
-	],
-	"Registration IP" => [
-		0 => "Регистрирано IP",
-	],
 	"Valid" => [
 		0 => "Валиден",
 	],
@@ -3486,9 +2874,6 @@ $translation_table = [
 	],
 	"Awaiting email" => [
 		0 => "Чакащ имейл",
-	],
-	"Awaiting confirmation" => [
-		0 => "Очаква потвърждение",
 	],
 	"%i to %f characters<br>Letters, numbers and \"_\"" => [
 		0 => "%i до %f  символи<br>букви и цифри",
@@ -3520,6 +2905,24 @@ $translation_table = [
 	"Timezone" => [
 		0 => "Часова зона",
 	],
+	"User has no connections." => [
+		0 => "Потребителят няма връзки.",
+	],
+	"Do you really want to disconnect %s from this account?" => [
+		0 => "Сигурни ли сте че искате да излезете %s от този акаунт?",
+	],
+	"This account is connected to %s" => [
+		0 => "Този акаунт е свързан към %s",
+	],
+	"Do you really want to disconnect your %s account?" => [
+		0 => "Сигурни ли сте че искате да прекъснете %s вашия акаунт?",
+	],
+	"You will be logged out and you won't be able to login to your account using this %s account." => [
+		0 => "Вие ще излезете и няма да можете да влезете отново във вашия акаунт използвайки %s този акаунт",
+	],
+	"Button" => [
+		0 => "Бутон",
+	],
 	"Current password" => [
 		0 => "Текуща парола",
 	],
@@ -3547,12 +2950,6 @@ $translation_table = [
 	"Re-enter your password" => [
 		0 => "Въведете отново вашата парола",
 	],
-	"Upload new image" => [
-		0 => "Качи ново изображение",
-	],
-	"Delete existing image" => [
-		0 => "Изтриване на съществуващо изображение",
-	],
 	"Make my profile and identity totally private" => [
 		0 => "Направи ми профила и самоличноста скрито",
 	],
@@ -3562,50 +2959,11 @@ $translation_table = [
 	"This is your real name, not your username." => [
 		0 => "Това е вашето истинско име, а не вашето потребителско име.",
 	],
-	"http://yourwebsite.com" => [
-		0 => "http://вашиятуебсайт.com",
-	],
 	"Bio" => [
 		0 => "Биография",
 	],
 	"Tell us a little bit about you" => [
 		0 => "Разкажете ни малко за вас",
-	],
-	"User has no connections." => [
-		0 => "Потребителят няма връзки.",
-	],
-	"Link your account to external services to be able to login here." => [
-		0 => "Свържете акаунта си с външни услуги, за да можете да влизате и споделяте съдържание.",
-	],
-	"Do you really want to disconnect %s from this account?" => [
-		0 => "Сигурни ли сте че искате да излезете %s от този акаунт?",
-	],
-	"This account is connected to %s" => [
-		0 => "Този акаунт е свързан към %s",
-	],
-	"Do you really want to disconnect your %s account?" => [
-		0 => "Сигурни ли сте че искате да прекъснете %s вашия акаунт?",
-	],
-	"You will be logged out and you won't be able to login to your account using this %s account." => [
-		0 => "Вие ще излезете и няма да можете да влезете отново във вашия акаунт използвайки %s този акаунт",
-	],
-	"Your account is connected to %s" => [
-		0 => "Вашият акаунт е свързан към %s",
-	],
-	"disconnect" => [
-		0 => "Прекъсване",
-	],
-	"Connect %s" => [
-		0 => "Свързване %s",
-	],
-	"Feel free to browse and discover all my shared images and albums." => [
-		0 => "Чувствайте се свободни да разгледате всички мои споделени снимки и албуми.",
-	],
-	"Button" => [
-		0 => "Бутон",
-	],
-	"View all my images" => [
-		0 => "Виж всички мои снимки",
 	],
 	"Login" => [
 		0 => "Влез",
@@ -3619,20 +2977,8 @@ $translation_table = [
 	"If you have already signed up maybe you need to request to %s to activate your account." => [
 		0 => "Ако вече сте се регистрирали, може би трябва да изисквате %s, за да активирате акаунта си.",
 	],
-	"You can also %s." => [
-		0 => "Можете също да %s.",
-	],
 	"I'm at least %s years old" => [
 		0 => "Аз съм поне на %s години",
-	],
-	"terms" => [
-		0 => "условия",
-	],
-	"privacy policy" => [
-		0 => "политика за поверителност",
-	],
-	"I agree to the %terms_link and %privacy_link" => [
-		0 => "Съгласен съм с %terms_link и %privacy_link",
 	],
 	"Upload profile background" => [
 		0 => "Качване на фонова снимка за профила",
@@ -3640,14 +2986,11 @@ $translation_table = [
 	"Change background" => [
 		0 => "Смени фона",
 	],
-	"The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?" => [
-		0 => "Фоновото изображение на профила ще бъде изтрито. Това не може да бъде отменено. Сигурни ли сте, че искате да изтриете фоновото изображение на профила?",
+	"Upload new image" => [
+		0 => "Качи ново изображение",
 	],
 	"Delete background" => [
 		0 => "Изтриване на фона",
-	],
-	"Edit profile" => [
-		0 => "Редактиране на профила",
 	],
 	"Follower" => [
 		0 => "Последовател",
@@ -3655,15 +2998,6 @@ $translation_table = [
 	],
 	"Follow" => [
 		0 => "Последвай",
-	],
-	"You have been forbidden to use this website." => [
-		0 => "Забранено вие да използвате този сайт.",
-	],
-	"Plugin" => [
-		0 => "Плъгин",
-	],
-	"Page %s" => [
-		0 => "Страница %s",
 	],
 	"General questions/comments" => [
 		0 => "Общи въпроси / коментари",
@@ -3676,9 +3010,6 @@ $translation_table = [
 	],
 	"Invalid subject" => [
 		0 => "Невалиден предмет",
-	],
-	"Mail error" => [
-		0 => "Грешка в пощата",
 	],
 	"Message sent" => [
 		0 => "Съобщението е изпратено",
@@ -3695,29 +3026,8 @@ $translation_table = [
 	"Subject" => [
 		0 => "Предмет",
 	],
-	"All the changes that you have made will be lost if you continue." => [
-		0 => "Всички промени, които сте направили, няма да бъдат запазени, ако продължите.",
-	],
-	"Changes saved successfully." => [
-		0 => "Промените са запазени успешно.",
-	],
-	"Go back to form" => [
-		0 => "Върнете се обратно до формата",
-	],
-	"continue anyway" => [
-		0 => "продължете въпреки това",
-	],
-	"Saving" => [
-		0 => "Запазване",
-	],
-	"Sending" => [
-		0 => "Изпращане",
-	],
-	"Confirm action" => [
-		0 => "Потвърдете действието",
-	],
-	"information" => [
-		0 => "Информация",
+	"Send" => [
+		0 => "Изпрати",
 	],
 ];
 ?>

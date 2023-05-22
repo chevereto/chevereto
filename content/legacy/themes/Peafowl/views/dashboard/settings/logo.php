@@ -16,7 +16,7 @@ echo read_the_docs_settings('logo', _s('Logo')); ?>
     <div class="c5 phablet-c1"><select type="text" name="logo_type" id="logo_type" class="text-input" data-combo="logo-combo">
             <?php
             echo get_select_options_html(
-    ['vector' => _s('Vector'), 'image' => _s('Image'), 'text' => _s('Text')],
+    ['vector' => _s('Vector'), 'image' => _n('Image', 'Images', 1), 'text' => _s('Text')],
     Handler::var('safe_post') ? Handler::var('safe_post')['logo_type'] : Settings::get('logo_type')
 ); ?>
         </select></div>

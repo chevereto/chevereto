@@ -95,13 +95,13 @@ function time_elapsed_string(string $datetime, bool $full = false): string
     $diffWeek = floor($diff->d / 7);
     $diff->d -= intval($diffWeek * 7);
     $string = [
-        'y' => _s('year'),
-        'm' => _s('month'),
-        'w' => _s('week'),
-        'd' => _s('day'),
-        'h' => _s('hour'),
-        'i' => _s('minute'),
-        's' => _s('second'),
+        'y' => _n('year', 'years', 1),
+        'm' => _n('month', 'months', 1),
+        'w' => _n('week', 'weeks', 1),
+        'd' => _n('day', 'days', 1),
+        'h' => _n('hour', 'hours', 1),
+        'i' => _n('minute', 'minutes', 1),
+        's' => _n('second', 'seconds', 1),
     ];
     foreach ($string as $k => &$v) {
         $elapsed = $k === 'w'
@@ -342,7 +342,7 @@ function getSystemNotices(): array
                 '%emailSettings%' => '<a href="'
                     . get_base_url('dashboard/settings/email')
                     . '"><i class="fas fa-at margin-right-035em"></i>'
-                    . _s('Email settings') . '</a>'
+                    . _s('%s settings', _s('Email')) . '</a>'
             ]
         );
     }

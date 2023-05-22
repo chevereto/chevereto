@@ -7,7 +7,7 @@ if (!defined('ACCESS') || !ACCESS) {
 } ?>
 
 <div data-modal="new-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_create_album" data-ajax-deferred="CHV.fn.complete_create_album">
-	<span class="modal-box-title"><i class="fas fa-images"></i> <?php _se('Create new %s', _s('album')); ?></span>
+	<span class="modal-box-title"><i class="fas fa-images"></i> <?php _se('Create new %s', _n('album', 'albums', 1)); ?></span>
 	<div class="modal-form">
 	<?php include_theme_file("snippets/form_album.php", ['album-switch' => false]); ?>
 	</div>

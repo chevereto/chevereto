@@ -589,6 +589,7 @@ $settings_updates = [
         'semantics_categories' => '',
     ],
     '4.0.7' => null,
+    '4.0.8' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',

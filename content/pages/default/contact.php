@@ -122,7 +122,7 @@ include_theme_header(); ?>
 				<div class="input-warning red-warning"><?php echo $input_errors['subject'] ?? ''; ?></div>
 			</div>
 			<div class="input-label c12">
-				<label for="message"><?php _se('Message'); ?></label>
+				<div><label for="message"><?php _se('Message'); ?></label></div>
 				<textarea name="message" id="message" class="text-input r3" required><?php if ($is_error) {
                         echo Handler::var('safe_post')['message'];
                     } ?></textarea>

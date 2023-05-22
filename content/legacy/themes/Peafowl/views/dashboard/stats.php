@@ -67,11 +67,11 @@ $series = [
         'data' => $diskDataSeries,
     ],
     [
-        'name' => _s('Users'),
+        'name' => _n('User', 'Users', 20),
         'data' => $userDataSeries,
     ],
     [
-        'name' => _s('Albums'),
+        'name' => _n('Album', 'Albums', 20),
         'data' => $albumDataSeries,
     ],
 ];

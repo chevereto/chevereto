@@ -34,7 +34,7 @@ if ($user_items_editor !== false) {
 </div>
 
 <div data-modal="form-create-album" class="hidden">
-	<span class="modal-box-title"><i class="far fa-images"></i> <?php _se('Create %s', _s('album')); ?></span>
+	<span class="modal-box-title"><i class="far fa-images"></i> <?php _se('Create %s', _n('album', 'albums', 1)); ?></span>
     <div class="image-preview"></div>
     <div class="modal-form">
 		<div id="move-new-album" data-content="form-new-album" data-view="switchable">
@@ -45,7 +45,7 @@ if ($user_items_editor !== false) {
 </div>
 
 <div data-modal="form-move-single" class="hidden">
-	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _s('album')); ?></span>
+	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _n('album', 'albums', 1)); ?></span>
     <div class="image-preview"></div>
 	<div class="modal-form">
 		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
@@ -55,7 +55,7 @@ if ($user_items_editor !== false) {
 </div>
 
 <div data-modal="form-move-multiple" class="hidden">
-	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _s('album')); ?></span>
+	<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _n('album', 'albums', 1)); ?></span>
     <div class="image-preview"></div>
 	<div class="modal-form">
 		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
@@ -72,7 +72,7 @@ if ($user_items_editor !== false) {
 	<span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Assign %s', _s('category')); ?></span>
 	<?php if (Handler::var('categories')) { ?>
     <div class="image-preview"></div>
-	<p><?php _se('All the selected images will be assigned to this %s.', _s('category')); ?></p>
+	<p><?php _se('Selection will be assigned to %t.', ['%t' => _s('category')]); ?></p>
 	<div class="input-label c8">
 		<?php include_theme_file('snippets/form_category'); ?>
 	</div>
@@ -95,20 +95,20 @@ if ($user_items_editor !== false) {
 <div data-modal="form-approve-single" class="hidden">
 	<span class="modal-box-title"><i class="fas fa-check-double"></i> <?php _se('Confirm approval'); ?></span>
     <div class="image-preview"></div>
-	<p><?php _se("Do you really want to approve this content? This can't be undone."); ?></p>
+	<p><?php _se("Do you really want to approve this content?"); ?> <?php _se("This can't be undone."); ?></p>
 </div>
 <div data-modal="form-delete-single" class="hidden">
 	<span class="modal-box-title"><i class="fas fa-trash-alt"></i> <?php _se('Confirm deletion'); ?></span>
     <div class="image-preview"></div>
-	<p><?php _se("Do you really want to remove this content? This can't be undone."); ?></p>
+	<p><?php _se("Do you really want to remove this content?"); ?> <?php _se("This can't be undone."); ?></p>
 </div>
 <div data-modal="form-approve-multiple" class="hidden">
 	<span class="modal-box-title"><i class="fas fa-check-double"></i> <?php _se('Confirm approval'); ?></span>
     <div class="image-preview"></div>
-	<p><?php _se("Do you really want to approve all the selected content? This can't be undone."); ?></p>
+	<p><?php _se("Do you really want to approve all the selected content?"); ?> <?php _se("This can't be undone."); ?></p>
 </div>
 <div data-modal="form-delete-multiple" class="hidden">
 	<span class="modal-box-title"><i class="fas fa-trash-alt"></i> <?php _se('Confirm deletion'); ?></span>
     <div class="image-preview"></div>
-	<p><?php _se("Do you really want to remove all the selected content? This can't be undone."); ?></p>
+	<p><?php _se("Do you really want to remove all the selected content?"); ?> <?php _se("This can't be undone."); ?></p>
 </div>

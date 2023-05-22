@@ -65,7 +65,7 @@ if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
                 <select name="role" id="role" class="text-input">
                     <?php
                                 foreach ([
-                                    'user' => ['label' => _s('User'), 'selected' => !Handler::var('user')['is_admin']],
+                                    'user' => ['label' => _n('User', 'Users', 1), 'selected' => !Handler::var('user')['is_admin']],
                                     'manager' => ['label' => _s('Manager'), 'selected' => Handler::var('user')['is_manager']],
                                     'admin' => ['label' => _s('Administrator'), 'selected' => Handler::var('user')['is_admin']],
                                 ] as $k => $v) {

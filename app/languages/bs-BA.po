@@ -1,0 +1,760 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: VERSION\n"
+"POT-Creation-Date: 2023-05-22 15:49+0000\n"
+"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
+"Language: bs_BA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Request denied"
+msgstr "Zahtjev odbijen"
+
+msgid "That page doesn't exist"
+msgstr "Ova stranica ne postoji"
+
+msgid "Reset password"
+msgstr "Promjeni lozinku"
+
+msgid "Resend account activation"
+msgstr "Pošalji aktivaciju za korisnički račun ponovno"
+
+msgid "Add your email address"
+msgstr "Dodaj E-mail adresu"
+
+msgid "Awaiting confirmation"
+msgstr "Očekujem potvrdu"
+
+msgid "Email changed"
+msgstr "E-mail adresa je promijenjena"
+
+msgid "Invalid Username/Email"
+msgstr "Pogrešno ste upisali korisničko ime ili e-mail adresu"
+
+msgid "Account needs to be activated to use this feature"
+msgstr "Profil treba da bude aktiviran za ove pogodnosti"
+
+msgid "Account already activated"
+msgstr "Profil već aktiviran"
+
+msgid "Allow up to 15 minutes for the email. You can try again later."
+msgstr "Dozvolite do 15 minuta za email. Možete pokušati ponovo kasnije"
+
+#, php-format
+msgid "Reset your password at %s"
+msgstr "Resetirajte svoju šifru na %s"
+
+#, php-format
+msgid "Confirmation required at %s"
+msgstr "Potrebna potvrda na %s"
+
+#, php-format
+msgid "Welcome to %s"
+msgstr "Dobrodošli na %s"
+
+msgid "Invalid password"
+msgstr "Netačna šifra"
+
+msgid "Passwords don't match"
+msgstr "Šifre se ne podudaraju"
+
+msgid "Invalid email"
+msgstr "Netačan email"
+
+msgid "Email already being used"
+msgstr "Email se već koristi"
+
+msgid "Check the errors in the form to continue."
+msgstr "Provjerite greške u formi da nastavite"
+
+msgid "Embed codes"
+msgstr "Zalijepiti kodove"
+
+msgid "Stats"
+msgstr "Statistika"
+
+msgid "Settings"
+msgstr "Postavke"
+
+msgid "Website"
+msgstr "Web stranica"
+
+msgid "Image upload"
+msgstr "Postavljanje slike"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "External services"
+msgstr "Eksterne usluge"
+
+msgid "Flood protection"
+msgstr "Flood protekcija"
+
+msgid "Community"
+msgstr "Zajednica"
+
+msgid "PHP version"
+msgstr "PHP verzija"
+
+msgid "MySQL version"
+msgstr "MySQL verzija"
+
+msgid "File uploads"
+msgstr "Fajl postavljanja"
+
+msgid "Enabled"
+msgstr "Dozvoljeno"
+
+msgid "Disabled"
+msgstr "Onesposobljeno"
+
+msgid "Max. execution time"
+msgstr "Max. vrijeme izvršenja"
+
+msgid "Memory limit"
+msgstr "Limit memorije"
+
+msgid "search content"
+msgstr "Petražite sastav"
+
+msgid "Explore"
+msgstr "Istraži"
+
+msgid "Invalid website name"
+msgstr "Netačno ime web stranice"
+
+msgid "Invalid language"
+msgstr "Netačan jezik"
+
+msgid "Invalid timezone"
+msgstr "Netačna vremenska zona"
+
+msgid "Invalid upload storage mode"
+msgstr "Netačan način postavljanja skladišta"
+
+msgid "Invalid upload filenaming"
+msgstr "Netačno postavljanje file imena"
+
+msgid "Invalid thumb width"
+msgstr "Netačna thumb širina"
+
+msgid "Invalid thumb height"
+msgstr "Pogrešna visina sličice"
+
+msgid "Invalid theme"
+msgstr "Pogrešna tema"
+
+msgid "Invalid value"
+msgstr "Netačna količina"
+
+msgid "Invalid email mode"
+msgstr "Nevažeći način e-maila"
+
+msgid "Invalid SMTP port"
+msgstr "Pogrešan SMTP port"
+
+msgid "Invalid upload image path"
+msgstr "Pogrešna putanja slike za postavljanje"
+
+#, php-format
+msgid "Max. allowed %s"
+msgstr "Maksimalno dopušteno %s"
+
+msgid "Invalid SMTP server"
+msgstr "Pogrešan SMTP server"
+
+msgid "Invalid SMTP username"
+msgstr "Pogrešno SMTP korisničko ime"
+
+msgid "Dashboard"
+msgstr "Kontrolna ploča"
+
+msgid "About"
+msgstr "U vezi"
+
+msgid "Image ID"
+msgstr "ID slike"
+
+msgid "Upload date"
+msgstr "Datum postavljanja"
+
+msgid "Direct links"
+msgstr "Direktni linkovi"
+
+msgid "Image link"
+msgstr "Link slike"
+
+msgid "Image URL"
+msgstr "URL slike"
+
+msgid "Thumbnail URL"
+msgstr "URL sličice"
+
+msgid "Medium URL"
+msgstr "Srednji URL"
+
+msgid "Login needed"
+msgstr "Prijava potrebna"
+
+msgid "Invalid username"
+msgstr "Netačno korisničko ime"
+
+msgid "Wrong Username/Email password combination"
+msgstr "Pogrešan korisnički naziv, e-mail adresa ili kombinacija lozinke"
+
+msgid "Sign in"
+msgstr "Prijava"
+
+msgid "Search"
+msgstr "Pretraži"
+
+msgid "Account"
+msgstr "Korisnički račun"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Password"
+msgstr "Lozinka"
+
+#, php-format
+msgid "An email has been sent to %s with instructions to activate this email"
+msgstr "Poslali smo e-mail korisniku %s sa instrukcijama kako aktivirati korisnički račun"
+
+msgid "Invalid name"
+msgstr "Pogrešan naziv"
+
+msgid "Invalid website"
+msgstr "Pogrešna web stranica"
+
+msgid "Wrong password"
+msgstr "Pogrešna lozinka"
+
+msgid "Use a new password"
+msgstr "Koristi novu lozinku"
+
+msgid "Password has been changed"
+msgstr "Lozinka je uspiješno promijenjena"
+
+msgid "Wrong Username/Email values"
+msgstr "Pogrešno korisničko ime ili e-mail"
+
+#, php-format
+msgid "Settings for %s"
+msgstr "Postavke za %s"
+
+msgid "Username"
+msgstr "Korisnički naziv"
+
+msgid "Delete user"
+msgstr "Izbrišite korisnika"
+
+msgid "User ID"
+msgstr "ID korisnika"
+
+msgid "Register date"
+msgstr "Datum registriranja"
+
+msgid "Create account"
+msgstr "Napravi korisnički račun"
+
+msgid "Upload"
+msgstr "Upload."
+
+msgid "Albums"
+msgstr "Albumi"
+
+msgid "Note: This content is private. Change privacy to \"public\" to share."
+msgstr "Napomena: Ovaj sadržaj je privatan, promijeni privatnost albuma na javno ukoliko želiš da ostali korisnici mogu vidjeti ovaj sadržaj."
+
+msgid "Public"
+msgstr "Javno"
+
+msgid "Private upload"
+msgstr "Privatno postavljanje"
+
+msgid "Most recent"
+msgstr "Najnovije"
+
+msgid "Oldest"
+msgstr "Najstarije"
+
+msgid "Most viewed"
+msgstr "Najviše pregledano"
+
+msgid "Share"
+msgstr "Podijeli"
+
+#, php-format
+msgid "%s ago"
+msgstr "%s prije"
+
+msgid "moments ago"
+msgstr "trenutaka prije"
+
+msgid "Random"
+msgstr "Slučajno"
+
+msgid "loading"
+msgstr "učitavanje"
+
+msgid "My Profile"
+msgstr "Moj profil"
+
+msgid "Sign out"
+msgstr "Izlogirajte se"
+
+msgid "You must enter the album name."
+msgstr "Ime albuma morate unijeti ovdje"
+
+msgid "Confirm"
+msgstr "Potvrdi"
+
+msgid "An error occurred. Please try again later."
+msgstr "Došlo je do greške. Molim vas pokušajte kasnije"
+
+msgid "Please select a valid image file type."
+msgstr "Selektirajte važeći tip fajl slike"
+
+#, javascript-format
+msgid "Please select a picture of at most %s size."
+msgstr "Selektirajte sliku na najvećoj %s veličini"
+
+msgid "Profile image updated."
+msgstr "Slika profila ažurirana "
+
+msgid "Create album"
+msgstr "Kreirajte album"
+
+msgid "Edit"
+msgstr "Izmjenite"
+
+msgid "Delete"
+msgstr "Izbrišite"
+
+#, javascript-format
+msgid "%s's Albums"
+msgstr "%s albumi"
+
+msgid "private"
+msgstr "Privatno"
+
+msgid "Select"
+msgstr "Odaberi"
+
+msgid "Unselect"
+msgstr "Poništi"
+
+msgid "All the changes that you have made will be lost if you continue."
+msgstr "Sve promjene koje ste upisali će biti izgubljene ukoliko nastavite."
+
+msgid "Save changes"
+msgstr "Spremi promjene"
+
+msgid "Submit"
+msgstr "Potvrdi"
+
+msgid "Changes saved successfully."
+msgstr "Promjene uspješno sačuvane"
+
+msgid "Go back to form"
+msgstr "Vrati se nazad na formu"
+
+msgid "or"
+msgstr "ili"
+
+msgid "continue anyway"
+msgstr "svejedno nastavi"
+
+msgid "cancel"
+msgstr "Poništi"
+
+msgid "Confirm action"
+msgstr "Potvrdi akciju"
+
+msgid "Upload complete"
+msgstr "Prijenos je završen"
+
+msgid "Uploading"
+msgstr "Postavljanje"
+
+msgid "cancel remaining"
+msgstr "otkaži preostale"
+
+msgid "learn more"
+msgstr "saznaj više"
+
+msgid "Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information."
+msgstr "Provjeri <a data-modal=\"simple\" data-target=\"failed-upload-result\">izvještaj grešaka</a> za više informacija."
+
+msgid "optional"
+msgstr "neobavezano"
+
+msgid "Add image URLs"
+msgstr "Dodajte URL-ove slike"
+
+msgid "Add the image URLs here"
+msgstr "Dodajte URL-ova slike ovdje"
+
+msgid "Error report"
+msgstr "Prijavite grešku"
+
+msgid "Links"
+msgstr "Linkovi"
+
+msgid "Direct"
+msgstr "Direktno"
+
+msgid "HTML Codes"
+msgstr "HTML kodovi"
+
+msgid "HTML medium linked"
+msgstr "HTML djelimično povezan"
+
+msgid "HTML thumbnail linked"
+msgstr "HTML thumbnail povezan"
+
+msgid "BBCodes"
+msgstr "BBKodovi"
+
+msgid "BBCode thumbnail linked"
+msgstr "BBKode thumbnail povezan"
+
+msgid "Viewer links"
+msgstr "Linkovi gledalaca"
+
+msgid "Name"
+msgstr "Naziv"
+
+msgid "Who can view this content"
+msgstr "Ko može sve da gleda ovaj sadržaj"
+
+msgid "Private (just me)"
+msgstr "Privatno (samo ja)"
+
+msgid "Message"
+msgstr "Poruka"
+
+msgid "view more"
+msgstr "Vidite više"
+
+msgid "Load more"
+msgstr "Očitajte više"
+
+msgid "Select all"
+msgstr "Selektujte sve"
+
+msgid "Clear selection"
+msgstr "Jasan izbor"
+
+msgid "Sign in with another account"
+msgstr "Prijavite se sa drugog profila."
+
+msgid "There's nothing to show here."
+msgstr "Ovdje se nema šta prikazati"
+
+msgid "Confirm deletion"
+msgstr "Potvrdite brisanje "
+
+msgid "Guest"
+msgstr "Gost"
+
+msgid "You either don't have permission to access this page or the link has expired."
+msgstr "Vi nemate dozvolu za pristup ovoj stranici ili veza je istekla."
+
+msgid "Go to homepage"
+msgstr "Idi na početnu"
+
+msgid "The requested page was not found."
+msgstr "Tražena stranica nije pronađena."
+
+msgid "The user has been deleted"
+msgstr "Član je obrisan iz baze servisa"
+
+msgid "Your account is almost ready"
+msgstr "Vaš korisnički račun je skoro spreman za korištenje"
+
+msgid "Resend activation"
+msgstr "Pošalji aktivacijski e-mail ponovo"
+
+#, php-format
+msgid "You have successfully changed your account email to %s"
+msgstr "Uspješno ste promjenili email profila u %s."
+
+msgid "Go to my profile"
+msgstr "Idite na moj profil."
+
+msgid "Your email address"
+msgstr "Vaša E-mail adresa."
+
+msgid "An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters."
+msgstr "E-Mail sa instrukcijama kako promijenuti vašu lozinku je poslan na e-mail adresu sa kojom ste se registrovali. Ukoliko ne dobijete instrukcije, provjerite spam filtere ili folder junk/spam na vašem e-mail servisu."
+
+msgid "Resend instructions"
+msgstr "Pošalji upute ponovno"
+
+msgid "Username or Email address"
+msgstr "Korisničko ime ili Email adresa."
+
+msgid "Login now"
+msgstr "Prijavite se sada"
+
+msgid "Enter your new password"
+msgstr "Upiši novu lozinku"
+
+msgid "Re-enter your new password"
+msgstr "Ponovno unesite novu lozinku"
+
+msgid "From name"
+msgstr "Poslano od naziva"
+
+msgid "Sender name for emails sent to users."
+msgstr "Ime pošiljatelja za e-mailove poslane članovima."
+
+msgid "From email address"
+msgstr "Sa email adrese"
+
+msgid "Sender email for emails sent to users."
+msgstr "Email adresa pošiljatelja za e-mailove poslate članovima."
+
+msgid "Incoming email address"
+msgstr "Dolazeža E-Mail adresa"
+
+msgid "Recipient for contact form and system alerts."
+msgstr "Primatelj za kontakt forme i sustav upozorenja."
+
+msgid "Email mode"
+msgstr "E-Mail mod"
+
+msgid "SMTP server and port"
+msgstr "SMTP server i port"
+
+msgid "SMTP username"
+msgstr "SMTP korisničko ime"
+
+msgid "SMTP password"
+msgstr "SMTP lozinka"
+
+msgid "SMTP security"
+msgstr "SMTP sigurnost"
+
+msgid "Unsecured"
+msgstr "Nesigurno"
+
+msgid "Comment code"
+msgstr "Kod komentara."
+
+msgid "Disqus, Facebook or anything you want. It will be used in image view."
+msgstr "Raspravite, Facebook ili šta želite. Bit će korišteno u pogledu slike."
+
+msgid "Analytics code"
+msgstr "Analitički kod."
+
+msgid "Google Analytics or anything you want. It will be added to the theme footer."
+msgstr "Google analistik ili bilo što šta želite. Bit će dodato u temu footera."
+
+msgid "Disk used"
+msgstr "Iskorišćeno memorije"
+
+msgid "Notify to email"
+msgstr "Obavijesti na e-mail"
+
+msgid "Minute limit"
+msgstr "Minute granica"
+
+msgid "Hourly limit"
+msgstr "Satni limit"
+
+msgid "Daily limit"
+msgstr "Dnevni limit"
+
+msgid "Weekly limit"
+msgstr "Sedmični limit"
+
+msgid "Monthly limit"
+msgstr "Mjesečni limit"
+
+msgid "Guest uploads"
+msgstr "Postavljanje slika za goste"
+
+msgid "Enable this if you want to allow non registered users to upload."
+msgstr "Omogućite ovo ako želite da gosti uploaduju slike."
+
+msgid "Image path"
+msgstr "Putanja slike na serveru"
+
+msgid "Relative to Chevereto root"
+msgstr "Gdje želite sačuvati slike? Po zadanim postavkama ostavite putanju \"images\"."
+
+msgid "Storage mode"
+msgstr "Način za pohranu"
+
+msgid "Datefolders"
+msgstr "Vremenske mape"
+
+#, php-format
+msgid "Datefolders creates %s structure"
+msgstr "Vremenski nazivi foldera kreiraju strukturu %s"
+
+msgid "File naming method"
+msgstr "Način imenovanja datoteka"
+
+msgid "Original"
+msgstr "Originalno"
+
+msgid "Thumb size"
+msgstr "Veličina ikone"
+
+msgid "Thumbnails will be fixed to this size."
+msgstr "Veličina ikone će biti fiksna za ovu veličinu"
+
+msgid "Default language"
+msgstr "Zadani jezik"
+
+msgid "Default base language to use."
+msgstr "Ovaj jezik će biti prikazan svim posjetiocima kao zadani jezik."
+
+msgid "Auto language"
+msgstr "Automatski jezik"
+
+msgid "How many items should be displayed per page listing."
+msgstr "Koliko sadržaja treba da bude prikazano po stranici"
+
+msgid "Crypt salt"
+msgstr "Enkripcija"
+
+msgid "This is the salt used to convert numeric ID to alphanumeric. It was generated on install."
+msgstr "Ovo se koristi da konvertuje numerički ID u alfanumerički. Generisan je pri instalaciji."
+
+msgid "Website name"
+msgstr "Naziv web stranice"
+
+msgid "Website doctitle"
+msgstr "Podnaslov web stranice"
+
+msgid "Website description"
+msgstr "Opis web stranice"
+
+msgid "Default time zone"
+msgstr "Zadana vremenska zona"
+
+msgid "Select region"
+msgstr "Izaberi regiju"
+
+msgid "Website mode"
+msgstr "Način rada web stranice"
+
+msgid "You can switch the website mode anytime."
+msgstr "Način rada web stranice možete prebacivati u bilo kom trenutku."
+
+msgid "Role"
+msgstr "Uloga"
+
+msgid "Email address"
+msgstr "E-mail adresa."
+
+#, php-format
+msgid "Added to %s"
+msgstr "Dodato do %s"
+
+#, php-format
+msgid "Uploaded %s"
+msgstr "Postaviti %s"
+
+msgid "Logged out"
+msgstr "Odjavi se"
+
+#, php-format
+msgid "You have been logged off %s. Hope to see you soon."
+msgstr "Odjavljeni ste %s. Nadam se da ćemo uskoro ponovno vas vidjeti."
+
+msgid "Valid"
+msgstr "Vrijedi"
+
+msgid "Banned"
+msgstr "Zabranjen/Banovan"
+
+msgid "Awaiting email"
+msgstr "Očekujem e-mail"
+
+msgid "Language"
+msgstr "Jezik"
+
+msgid "Timezone"
+msgstr "Vremenska zona"
+
+msgid "User has no connections."
+msgstr "Korisnik nema veze."
+
+#, php-format
+msgid "Do you really want to disconnect %s from this account?"
+msgstr "Da li stvarno želite odspojiti %s s tog korisničkog računa?"
+
+#, php-format
+msgid "This account is connected to %s"
+msgstr "Ovaj korisnički račun je spojen na %s"
+
+#, php-format
+msgid "Do you really want to disconnect your %s account?"
+msgstr "Da li stvarno želite odspojiti vaš %s korisnički račun?"
+
+#, php-format
+msgid "You will be logged out and you won't be able to login to your account using this %s account."
+msgstr "Bit ćete odjavljeni i nećete moći se prijaviti na vaš korisnički račun korištenjem ovog %s računa."
+
+msgid "Current password"
+msgstr "Trenutna lozinka"
+
+msgid "Enter your current password"
+msgstr "Unesite trenutnu lozinku"
+
+msgid "New password"
+msgstr "Nova lozinka"
+
+msgid "Confirm new password"
+msgstr "Potvrdi novu lozinku"
+
+msgid "This user doesn't have a password. Add one using this form."
+msgstr "Ovaj korisnik nema lozinku. Dodajte ju pomoću ovog obrasca."
+
+msgid "Enter your password"
+msgstr "Upiši svoju lozinku"
+
+msgid "Confirm password"
+msgstr "Potvrdi lozinku"
+
+msgid "Re-enter your password"
+msgstr "Ponovno upišite svoju lozinku"
+
+msgid "This is your real name, not your username."
+msgstr "To je vaše pravo ime, a ne vaše korisničko ime."
+
+msgid "Upload profile background"
+msgstr "Postavi pozadinu profila"
+
+msgid "Change background"
+msgstr "Promjenite pozadinu"
+
+msgid "Upload new image"
+msgstr "Postavite novu sliku"
+
+msgid "Delete background"
+msgstr "Izbrišite pozadinu"
+
+msgid "DMCA complaint"
+msgstr "DMCA žalba"
+
+msgid "Invalid message"
+msgstr "Pogrešna poruka"
+
+msgid "Invalid subject"
+msgstr "Pogrešan subjekt"
+

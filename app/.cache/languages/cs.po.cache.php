@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2021-09-23 13:05+0000',
-  'PO-Revision-Date' => '2021-09-23 13:05+0000',
+  'POT-Creation-Date' => '2023-05-22 15:49+0000',
+  'PO-Revision-Date' => '2023-05-22 15:49+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'cs',
@@ -16,383 +16,17 @@ $translation_plural = array (
   'function' => '($n != 1)',
 );
 $translation_table = [
-	"You can also %i." => [
-		0 => "Můžete také %i.",
+	"You have been forbidden to use this website." => [
+		0 => "Máte zakázáno používat tuto webovou stránku.",
 	],
-	"You can also %i or %c." => [
-		0 => "Můžete také %i nebo %c.",
+	"Moderate" => [
+		0 => "Moderovat",
 	],
-	"You can add more images from %i." => [
-		0 => "Můžete přidat další obrázky z %i.",
+	"View all my images" => [
+		0 => "Zobrazit všechny mé obrázky",
 	],
-	"You can add more images from %i or %c." => [
-		0 => "Můžete přidat další obrázky z %i nebo %c.",
-	],
-	"Enable this if you want to allow image upload from URLs." => [
-		0 => "Zapněte tuto volbu, pokud chcete povolit nahrávání obrázků. Toto nastavení nemá vliv na administrátory.",
-	],
-	"Note that enabling this will expose your server IP." => [
-		0 => "Pamatujte na to, že povolením této možnosti odhalíte IP adresu svého serveru.",
-	],
-	"Invalid email" => [
-		0 => "Neplatný e-mail",
-	],
-	"Invalid username" => [
-		0 => "Neplatné uživatelské jméno",
-	],
-	"Invalid password" => [
-		0 => "Neplatné heslo",
-	],
-	"Installed version is v%s" => [
-		0 => "Instalovaná verze je v%s",
-	],
-	"Can't connect to %s" => [
-		0 => "Nelze se připojit k %s",
-	],
-	"Last available release is v%s" => [
-		0 => "Poslední dostupná verze je v%s",
-	],
-	"Update needed, proceeding to download" => [
-		0 => "Je nutná aktualizace, přecházím ke stažení",
-	],
-	"No update needed" => [
-		0 => "Aktualizace není nutná",
-	],
-	"System files already up to date" => [
-		0 => "Systémové soubory jsou již aktuální",
-	],
-	"Starting v%s download" => [
-		0 => "Začínám stahovat v%s",
-	],
-	"Downloaded v%s, proceeding to extraction" => [
-		0 => "Verze v%s je stažena, přecházím k rozbalování",
-	],
-	"Attempting to extract v%s" => [
-		0 => "Pokouším se rozbalit verzi v%s",
-	],
-	"Extraction completed" => [
-		0 => "Rozbalování bylo dokončeno",
-	],
-	"Proceding to install the update" => [
-		0 => "Přecházím k instalaci aktualizace",
-	],
-	"Update failed" => [
-		0 => "Aktualizace selhala",
-	],
-	"Update in progress" => [
-		0 => "Probíhá aktualizace",
-	],
-	"Missing %s file" => [
-		0 => "Chybějící %s soubor",
-	],
-	"Invalid license info" => [
-		0 => "Neplatná informace o licenci",
-	],
-	"Can't save file" => [
-		0 => "Soubor nelze uložit",
-	],
-	"Can't extract %s" => [
-		0 => "Nelze rozbalit %s",
-	],
-	"Can't create %s directory - %e" => [
-		0 => "Nelze vytvořit %s adresář - %e",
-	],
-	"Can't update %s file - %e" => [
-		0 => "Nelze aktualizovat %s soubor - %e",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "Aby jste mohli pokračovat, zkontrolujte chyby ve formuláři.",
-	],
-	"Note: This content is private but anyone with the link will be able to see this." => [
-		0 => "Poznámka: Tento obsah je soukromý, ale kdokoli s odkazem jej bude moci zobrazit.",
-	],
-	"Note: This content is password protected. Remember to pass the content password to share." => [
-		0 => "Poznámka: Tento obsah je chráněn heslem. Pokud jej hodláte sdílet, nezapomeňte sdělit příjemci i heslo.",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "Poznámka: Tento obsah je soukromý. Pro umožnění sdílení je potřeba změnit soukromí na \"veřejné\".",
-	],
-	"You must enter the album name." => [
-		0 => "Musíte zadat název alba.",
-	],
-	"Confirm" => [
-		0 => "Potvrdit",
-	],
-	"The content has been approved." => [
-		0 => "Obsah byl schválen.",
-	],
-	"Select existing album" => [
-		0 => "Vyberte stávající album",
-	],
-	"An error occurred. Please try again later." => [
-		0 => "Došlo k chybě. Prosím zkuste opakovat akci později.",
-	],
-	"Please select a valid image file type." => [
-		0 => "Prosím vyberte přípustné typy souborů obrázků.",
-	],
-	"Please select a picture of at most %s size." => [
-		0 => "Prosím vyberte obrázek s největší %s velikostí.",
-	],
-	"Profile image updated." => [
-		0 => "Profilový obrázek byl aktualizován.",
-	],
-	"Profile background image updated." => [
-		0 => "Pozadí profilu bylo aktualizováno.",
-	],
-	"Profile background image deleted." => [
-		0 => "Pozadí profilu bylo odstraněno.",
-	],
-	"Error deleting profile background image." => [
-		0 => "Nastala chyba při odstraňování obrázku pozadí profilu.",
-	],
-	"Passwords don't match" => [
-		0 => "Hesla se neshodují",
-	],
-	"Update available v%s" => [
-		0 => "Je dostupná aktualizace v%s",
-	],
-	"There is an update available for your system. You can automatic download and install this update or go to %s to proceed to download the file." => [
-		0 => "Je k dispozici aktualizace pro váš systém. Můžete ji automaticky stáhnout a instalovat, nebo běžte na %s a stáhněte si instalační soubor.",
-	],
-	"The release notes for this update are:" => [
-		0 => "Poznámky k verzi této aktualizace:",
-	],
-	"system requirements" => [
-		0 => "požadavky na systém",
-	],
-	"I confirm that this server meets the %s for this update" => [
-		0 => "Potvrzuji, že tento server splňuje %s pro tuto aktualizaci",
-	],
-	"Update now" => [
-		0 => "Aktualizovat nyní",
-	],
-	"This website is running latest %s version" => [
-		0 => "Tato webová stránka používá nejnovější verzi %s",
-	],
-	"Please review the system requirements before proceeding" => [
-		0 => "Než budete pokračovat, zkontrolujte systémové požadavky",
-	],
-	"loading" => [
-		0 => "načítání",
-	],
-	"Toggle select" => [
-		0 => "Označit vybraný obrázek",
-	],
-	"Like" => [
-		0 => "Líbí se",
-	],
-	"Toggle flag" => [
-		0 => "Označit štítkem",
-	],
-	"Edit" => [
-		0 => "Uprav",
-	],
-	"Album" => [
-		0 => "Album",
-		1 => "Alb",
-		2 => "Alb",
-		3 => "Alba",
-	],
-	"Approve" => [
-		0 => "Schválit",
-	],
-	"Delete" => [
-		0 => "Smazat",
-	],
-	"Close" => [
-		0 => "Zavřít",
-	],
-	"Previous" => [
-		0 => "Předchozí",
-	],
-	"Next" => [
-		0 => "Další",
-	],
-	"Clipboard image" => [
-		0 => "Kopírovat obrázek do schránky",
-	],
-	"File too big." => [
-		0 => "Soubor je příliš velký.",
-	],
-	"Invalid or unsupported file format." => [
-		0 => "Neplatný nebo nepodporovaný formát souboru.",
-	],
-	"Some files couldn't be added" => [
-		0 => "Některé soubory nemohly být přidány.",
-	],
-	"image" => [
-		0 => "obrázek",
-		1 => "obrázků",
-		2 => "obrázků",
-		3 => "obrázky",
-	],
-	"%s's Albums" => [
-		0 => "%s Alb",
-	],
-	"Image edited successfully." => [
-		0 => "Obrázek byl úspěšně upraven.",
-	],
-	"private" => [
-		0 => "soukromý",
-	],
-	"Album edited successfully." => [
-		0 => "Album úspěšně upraveno.",
-	],
-	"Invalid URL key." => [
-		0 => "Neplatný klíč URL.",
-	],
-	"Category URL key already being used." => [
-		0 => "URL klíč kategorie se již používá.",
-	],
-	"Category successfully deleted." => [
-		0 => "Kategorie byla úspěšně odstraněna.",
-	],
-	"Category %s added." => [
-		0 => "Kategorie %s byla přidána.",
-	],
-	"Invalid expiration date." => [
-		0 => "Neplatné datum ukončení platnosti.",
-	],
-	"IP %s already banned." => [
-		0 => "IP %s je již zakázána.",
-	],
-	"IP %s banned." => [
-		0 => "IP %s je zakázána.",
-	],
-	"IP ban successfully deleted." => [
-		0 => "IP zákaz byl úspěšně odstraněn.",
-	],
-	"Please fill all the required fields." => [
-		0 => "Prosím vyplňte všechny požadované kolonky.",
-	],
-	"Invalid storage capacity value. Make sure to use a valid format." => [
-		0 => "Neplatná velikost úložiště. Prosím ověřte, že je ve správném formátu.",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "Velikost úložiště nemůže být menší než ta, kterou používáte nyní (%s).",
-	],
-	"Invalid URL." => [
-		0 => "Neplatné URL.",
-	],
-	"Storage successfully edited." => [
-		0 => "Úložiště bylo úspěšně upraveno.",
-	],
-	"User added successfully." => [
-		0 => "Uživatel byl úspěšně přidán.",
-	],
-	"The content has been deleted." => [
-		0 => "Obsah byl smazán.",
-	],
-	"The content has been moved." => [
-		0 => "Obsah byl přesunut.",
-	],
-	"Select" => [
-		0 => "Vybrat",
-	],
-	"Unselect" => [
-		0 => "Odebrat",
-	],
-	"The content has been edited." => [
-		0 => "Obsah byl upraven.",
-	],
-	"Import ID %s removed" => [
-		0 => "Import ID %s byl odstraněn",
-	],
-	"Spam detected" => [
-		0 => "Byl detekován spam",
-	],
-	"album" => [
-		0 => "album",
-		1 => "alba",
-		2 => "alba",
-		3 => "alba",
-	],
-	"Flooding detected. You can only upload %limit% %content% per %time%" => [
-		0 => "Bylo zjištěno zahlcení. Můžete nahrát pouze %limit% %content% za %time%",
-	],
-	"Untitled" => [
-		0 => "Nepojmenováno",
-	],
-	"%s's images" => [
-		0 => "%s obrázků",
-	],
-	"Private" => [
-		0 => "Soukromý",
-	],
-	"Public" => [
-		0 => "Veřejné",
-	],
-	"Me" => [
-		0 => "Já",
-	],
-	"Link" => [
-		0 => "Odkaz",
-	],
-	"Password" => [
-		0 => "Heslo",
-	],
-	"view" => [
-		0 => "zobrazení",
-		1 => "zobrazení",
-		2 => "zobrazení",
-		3 => "zobrazení",
-	],
-	"After %n %t" => [
-		0 => "Po %n %t",
-	],
-	"minute" => [
-		0 => "minuta",
-		1 => "minut",
-		2 => "minut",
-		3 => "minuty",
-	],
-	"hour" => [
-		0 => "hodina",
-		1 => "hodin",
-		2 => "hodin",
-		3 => "hodiny",
-	],
-	"day" => [
-		0 => "den",
-		1 => "dnů",
-		2 => "dnů",
-		3 => "dny",
-	],
-	"week" => [
-		0 => "týden",
-		1 => "týdnů",
-		2 => "týdnů",
-		3 => "týdny",
-	],
-	"month" => [
-		0 => "měsíc",
-		1 => "měsíců",
-		2 => "měsíců",
-		3 => "měsíce",
-	],
-	"year" => [
-		0 => "rok",
-		1 => "let",
-		2 => "let",
-		3 => "let",
-	],
-	"Don't autodelete" => [
-		0 => "Automaticky nemazat",
-	],
-	"Can't open %s for writing" => [
-		0 => "Nelze otevřít %s pro zápis",
-	],
-	"Duplicated upload" => [
-		0 => "Duplicitně nahráno",
-	],
-	"Private upload" => [
-		0 => "Soukromé nahrávání",
-	],
-	"like" => [
-		0 => "líbí se",
-		1 => "se líbí",
-		2 => "se líbí",
-		3 => "líbí se",
+	"Feel free to browse and discover all my shared images and albums." => [
+		0 => "Neváhejte a prohlédněte si všechny mé sdílené obrázky a alba.",
 	],
 	"Recent" => [
 		0 => "Nedávné",
@@ -400,122 +34,29 @@ $translation_table = [
 	"Trending" => [
 		0 => "Trendy",
 	],
-	"Top users" => [
-		0 => "Top uživatelé",
-	],
-	"Most recent" => [
-		0 => "Nejnovější",
-	],
-	"Oldest" => [
-		0 => "Nejstarší",
-	],
-	"Most viewed" => [
-		0 => "Nejprohlíženější",
-	],
 	"Popular" => [
 		0 => "Populární",
-	],
-	"Most liked" => [
-		0 => "Nejoblíbenější",
-	],
-	"Explore" => [
-		0 => "Prozkoumat",
 	],
 	"Animated" => [
 		0 => "Animované",
 	],
-	"Search" => [
-		0 => "Hledat",
+	"Request denied" => [
+		0 => "Požadavek byl zamítnut",
 	],
-	"People" => [
-		0 => "Lidé",
+	"terms" => [
+		0 => "Podmínky",
 	],
-	"Image" => [
-		0 => "Obrázek",
-		1 => "Obrázků",
-		2 => "Obrázků",
-		3 => "Obrázky",
+	"privacy policy" => [
+		0 => "Zásady ochrany osobních údajů",
 	],
-	"User" => [
-		0 => "Uřivatel",
-		1 => "Uživatelů",
-		2 => "Uživatelů",
-		3 => "Uživatelé",
+	"I agree to the %terms_link and %privacy_link" => [
+		0 => "Souhlasím s %terms_link a %privacy_link",
 	],
-	"adult" => [
-		0 => "dospělý",
+	"That page doesn't exist" => [
+		0 => "Tato stránka neexistuje",
 	],
-	"teen" => [
-		0 => "dospívající",
-	],
-	"Content of type %s is forbidden" => [
-		0 => "Obsah typu %s je zakázán",
-	],
-	"Can't create %s destination dir" => [
-		0 => "Nelze vytvořit %s cílový adresář",
-	],
-	"Internal" => [
-		0 => "Interní",
-	],
-	"Unlimited" => [
-		0 => "Neomezeno",
-	],
-	"used" => [
-		0 => "využíváno",
-	],
-	"Private profile" => [
-		0 => "Soukromý profil",
-	],
-	"second" => [
-		0 => "sekunda",
-		1 => "sekund",
-		2 => "sekund",
-		3 => "sekundy",
-	],
-	"%s ago" => [
-		0 => "před %s",
-	],
-	"moments ago" => [
-		0 => "před několika okamžiky",
-	],
-	"Dashboard" => [
-		0 => "Administrace",
-	],
-	"There is an update available for your system. Go to %s to download and install this update." => [
-		0 => "Je k dispozici nová aktualizace pro Váš systém. Klikněte na následující odkaz %s pro stažení a instalaci této aktualizace.",
-	],
-	"System database is outdated. You need to run the <a href=\"%s\">update</a> tool." => [
-		0 => "Systémová databáze je zastaralá. Je potřeba spustit <a href=\"%s\">aktualizační</a> nástroj.",
-	],
-	"Website is in maintenance mode. To revert this setting go to <a href=\"%s\">Dashboard > Settings</a>." => [
-		0 => "Webová stránka se nachází v režimu údržby. Pro změnu tohoto nastavení jděte do <a href=\"%s\">Administrace > Nastavení</a>.",
-	],
-	"You should disable PHP error reporting for production enviroment. Go to <a href='%s'>System settings</a> to revert this setting." => [
-		0 => "Měl by jste vypnout zobrazování PHP chyb pro přehlednější prostředí. Jděte na <a href='%s'>Systémové nastavení</a> pro změnu tohoto nastavení.",
-	],
-	"You haven't changed the default email settings. Go to <a href='%s'>Email settings</a> to fix this." => [
-		0 => "Dosud jste nezměnili výchozí nastavení e-mailu. Pro změnu tohoto nastavení jděte do <a href='%s'>Nastavení e-mailu</a>.",
-	],
-	"There is an update available for your Chevereto based website." => [
-		0 => "Je zde dostupná aktualizace pro vaši Chevereto webovou stránku.",
-	],
-	"admin dashboard" => [
-		0 => "Nástěnka admina",
-	],
-	"You can apply this update directly from your %a or download it from %s and then manually install it." => [
-		0 => "Tuto aktualizaci můžete nainstalovat automaticky přímo ze svého %a nebo si ji stáhnout z %s a nainstalovat manuálně.",
-	],
-	"view on %s" => [
-		0 => "zobrazit na %s",
-	],
-	"cookie policy" => [
-		0 => "zásady cookie",
-	],
-	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
-		0 => "Používáme naše vlastní cookies a cookies třetích stran, abychom zlepšili vaše zážitky z prohlížení a s používáním našich služeb. Pokud budete pokračovat v používání našich webových stránek, souhlasíte a přijímáte naše %cookie_policy_link.",
-	],
-	"I understand" => [
-		0 => "Rozumím",
+	"Page %s" => [
+		0 => "Stránka %s",
 	],
 	"Forgot password?" => [
 		0 => "Zapoměli jste heslo?",
@@ -529,6 +70,9 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "Přidejte vaši e-mailovou adresu.",
 	],
+	"Awaiting confirmation" => [
+		0 => "Čeká se na potvrzení",
+	],
 	"Email changed" => [
 		0 => "E-mail změněn",
 	],
@@ -540,9 +84,6 @@ $translation_table = [
 	],
 	"User doesn't have an email." => [
 		0 => "Uživatel nemá žádnou e-mailovou adresu.",
-	],
-	"Request denied" => [
-		0 => "Požadavek byl zamítnut",
 	],
 	"Account needs to be activated to use this feature" => [
 		0 => "Pro použití této funkce si musíte svůj účet nejprve aktivovat.",
@@ -565,8 +106,20 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "Vítejte do %s",
 	],
+	"Invalid password" => [
+		0 => "Neplatné heslo",
+	],
+	"Passwords don't match" => [
+		0 => "Hesla se neshodují",
+	],
+	"Invalid email" => [
+		0 => "Neplatný e-mail",
+	],
 	"Email already being used" => [
 		0 => "E-mailová adresa již v systému existuje",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "Aby jste mohli pokračovat, zkontrolujte chyby ve formuláři.",
 	],
 	"Password required" => [
 		0 => "Je vyžadováno heslo",
@@ -574,14 +127,17 @@ $translation_table = [
 	"Embed codes" => [
 		0 => "Kódy pro vložení",
 	],
-	"Sub albums" => [
-		0 => "Podřízená alba",
-	],
 	"Info" => [
 		0 => "info",
 	],
 	"%a album hosted in %w" => [
 		0 => "%a album hostováno v %w",
+	],
+	"image" => [
+		0 => "obrázek",
+		1 => "obrázků",
+		2 => "obrázků",
+		3 => "obrázky",
 	],
 	"Stats" => [
 		0 => "Statistiky",
@@ -589,50 +145,122 @@ $translation_table = [
 	"Images" => [
 		0 => "Obrázky",
 	],
-	"Albums" => [
-		0 => "Alba",
+	"Album" => [
+		0 => "Album",
+		1 => "Alb",
+		2 => "Alb",
+		3 => "Alba",
 	],
-	"Users" => [
-		0 => "Uživatelé",
-	],
-	"Settings" => [
-		0 => "Nastavení",
+	"User" => [
+		0 => "Uřivatel",
+		1 => "Uživatelů",
+		2 => "Uživatelů",
+		3 => "Uživatelé",
 	],
 	"Bulk importer" => [
 		0 => "Hromadný import",
 	],
-	"install update" => [
-		0 => "Instalovat aktualizaci",
+	"Settings" => [
+		0 => "Nastavení",
 	],
-	"check for updates" => [
-		0 => "Zkontrolovat aktualizace",
+	"Website" => [
+		0 => "Webová stránka",
 	],
-	"Contributing" => [
-		0 => "Přispívání",
+	"Content" => [
+		0 => "Obsah",
 	],
-	"Support" => [
-		0 => "Podpora",
+	"Listings" => [
+		0 => "Výpisy",
 	],
-	"Bug tracking" => [
-		0 => "Nachlášení chyb",
+	"Image upload" => [
+		0 => "Nahrávání obrázků",
+	],
+	"Categories" => [
+		0 => "Kategorie",
+	],
+	"Theme" => [
+		0 => "Šablona (theme)",
+	],
+	"System" => [
+		0 => "Systém",
+	],
+	"Languages" => [
+		0 => "Jazyky",
+	],
+	"Email" => [
+		0 => "E-mail",
+	],
+	"Tools" => [
+		0 => "Nástroje",
+	],
+	"External storage" => [
+		0 => "Externí úložiště",
+	],
+	"Homepage" => [
+		0 => "Domovská stránka",
+	],
+	"Pages" => [
+		0 => "Stránky",
+	],
+	"Routing" => [
+		0 => "Směrování",
+	],
+	"External services" => [
+		0 => "Externí služby",
+	],
+	"Upload plugin" => [
+		0 => "Plugin pro nahrávání",
+	],
+	"Consent screen" => [
+		0 => "Schvalovací obrazovka",
+	],
+	"Flood protection" => [
+		0 => "Ochrana proti záplavě (flood)",
+	],
+	"Banners" => [
+		0 => "Bannery",
+	],
+	"IP bans" => [
+		0 => "IP bany",
+	],
+	"Watermarks" => [
+		0 => "Vodoznaky",
 	],
 	"Documentation" => [
 		0 => "Dokumentace",
 	],
+	"Support" => [
+		0 => "Podpora",
+	],
+	"Community" => [
+		0 => "Komunita",
+	],
+	"install update" => [
+		0 => "Instalovat aktualizaci",
+	],
+	"Max. upload file size" => [
+		0 => "Max. velikost nahrávaného souboru",
+	],
+	"Graphics Library" => [
+		0 => "Grafická knihovna",
+	],
+	"Rebuild stats" => [
+		0 => "Znovu sestavit statistiky",
+	],
+	"Connecting IP" => [
+		0 => "Připojení IP",
+	],
+	"Not your IP?" => [
+		0 => "Není vaše IP?",
+	],
 	"PHP version" => [
 		0 => "PHP verze",
-	],
-	"Server" => [
-		0 => "Server",
 	],
 	"MySQL version" => [
 		0 => "MySQL verze",
 	],
 	"MySQL server info" => [
 		0 => "Informace o MySQL serveru",
-	],
-	"Graphics Library" => [
-		0 => "Grafická knihovna",
 	],
 	"File uploads" => [
 		0 => "Nahraných souborů",
@@ -642,12 +270,6 @@ $translation_table = [
 	],
 	"Disabled" => [
 		0 => "Vypnuto",
-	],
-	"Max. upload file size" => [
-		0 => "Max. velikost nahrávaného souboru",
-	],
-	"Max. post size" => [
-		0 => "Max. velikost nahrávání (post size)",
 	],
 	"Max. execution time" => [
 		0 => "Max. čas požadavků (exec, time)",
@@ -660,78 +282,6 @@ $translation_table = [
 	],
 	"Memory limit" => [
 		0 => "Limit paměti (mem. limit)",
-	],
-	"Rebuild stats" => [
-		0 => "Znovu sestavit statistiky",
-	],
-	"Connecting IP" => [
-		0 => "Připojení IP",
-	],
-	"Not your IP?" => [
-		0 => "Není vaše IP?",
-	],
-	"Website" => [
-		0 => "Webová stránka",
-	],
-	"Content" => [
-		0 => "Obsah",
-	],
-	"Pages" => [
-		0 => "Stránky",
-	],
-	"Listings" => [
-		0 => "Výpisy",
-	],
-	"Image upload" => [
-		0 => "Nahrávání obrázků",
-	],
-	"Categories" => [
-		0 => "Kategorie",
-	],
-	"Consent screen" => [
-		0 => "Schvalovací obrazovka",
-	],
-	"Flood protection" => [
-		0 => "Ochrana proti záplavě (flood)",
-	],
-	"Theme" => [
-		0 => "Šablona (theme)",
-	],
-	"Homepage" => [
-		0 => "Domovská stránka",
-	],
-	"Banners" => [
-		0 => "Bannery",
-	],
-	"System" => [
-		0 => "Systém",
-	],
-	"Routing" => [
-		0 => "Směrování",
-	],
-	"Languages" => [
-		0 => "Jazyky",
-	],
-	"External storage" => [
-		0 => "Externí úložiště",
-	],
-	"Email" => [
-		0 => "E-mail",
-	],
-	"Social networks" => [
-		0 => "Sociální sítě",
-	],
-	"External services" => [
-		0 => "Externí služby",
-	],
-	"IP bans" => [
-		0 => "IP bany",
-	],
-	"Additional settings" => [
-		0 => "Doplňková nastavení",
-	],
-	"Tools" => [
-		0 => "Nástroje",
 	],
 	"Can't delete all homepage cover images" => [
 		0 => "Nelze odstranit všechny obrázky pozadí domovské stránky",
@@ -814,15 +364,6 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "Patička (stránka s obrázkem)",
 	],
-	"Album page" => [
-		0 => "Stránka s albem",
-	],
-	"Before header (album page)" => [
-		0 => "Před hlavičkou (stránka s albem)",
-	],
-	"After header (album page)" => [
-		0 => "Za hlavičkou (stránka s albem)",
-	],
 	"User profile page" => [
 		0 => "Stránka s uživatelským profilem",
 	],
@@ -832,11 +373,8 @@ $translation_table = [
 	"Before listing (user profile)" => [
 		0 => "Před výpisem (stránka s uživatelským profilem)",
 	],
-	"Explore page" => [
-		0 => "Prozkoumat stránku",
-	],
-	"After top (explore page)" => [
-		0 => "Za hlavičkou (stránka procházení)",
+	"Explore" => [
+		0 => "Prozkoumat",
 	],
 	"NSFW" => [
 		0 => "NFSW",
@@ -879,15 +417,6 @@ $translation_table = [
 	],
 	"Invalid value" => [
 		0 => "Neplatná hodnota",
-	],
-	"Invalid theme tone" => [
-		0 => "Neplatný tón šablony.",
-	],
-	"Invalid theme main color" => [
-		0 => "Chybná barva hlavní šablony",
-	],
-	"Invalid theme top bar button color" => [
-		0 => "Neplatná barva vrchního baru tématu.",
 	],
 	"Invalid theme image listing size" => [
 		0 => "Neplatná velikost náhledového obrázku šablony",
@@ -970,6 +499,9 @@ $translation_table = [
 	"Invalid URL" => [
 		0 => "Neplatná URL adresa",
 	],
+	"Invalid key" => [
+		0 => "Neplatný klíč",
+	],
 	"Routes can't be the same" => [
 		0 => "Cesty nemůžou být stejné",
 	],
@@ -997,9 +529,6 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "Špatné SMTP uživatelské jméno",
 	],
-	"Invalid key" => [
-		0 => "Neplatný klíč",
-	],
 	"This URL key is already being used by another page (ID %s)" => [
 		0 => "Tato URL adresa klíče je již používána jinou stránkou (ID %s)",
 	],
@@ -1009,6 +538,9 @@ $translation_table = [
 	"Can't save page contents: %s." => [
 		0 => "Nelze uložit obsah stránky: %s.",
 	],
+	"Dashboard" => [
+		0 => "Administrace",
+	],
 	"Following" => [
 		0 => "Sledující",
 	],
@@ -1017,15 +549,6 @@ $translation_table = [
 	],
 	"Image ID" => [
 		0 => "ID obrázku",
-	],
-	"Uploader IP" => [
-		0 => "IP adresa autora",
-	],
-	"Ban IP" => [
-		0 => "Zakázat IP",
-	],
-	"IP already banned" => [
-		0 => "IP je již zakázána",
 	],
 	"Upload date" => [
 		0 => "Datum nahrání",
@@ -1066,14 +589,29 @@ $translation_table = [
 	"Thumbnail image (linked)" => [
 		0 => "Miniatura obrázku (odkazy pro vložení)",
 	],
+	"Start uploading" => [
+		0 => "Začít nahrávat",
+	],
 	"Login needed" => [
 		0 => "Vyžadováno přihlášení",
+	],
+	"Image" => [
+		0 => "Obrázek",
+		1 => "Obrázků",
+		2 => "Obrázků",
+		3 => "Obrázky",
+	],
+	"Category" => [
+		0 => "Kategorie",
 	],
 	"IP address already banned" => [
 		0 => "IP adresa je již zabanována",
 	],
 	"Missing values" => [
 		0 => "Chybí hodnoty",
+	],
+	"Invalid username" => [
+		0 => "Neplatné uživatelské jméno",
 	],
 	"Invalid role" => [
 		0 => "Neplatná úloha",
@@ -1102,15 +640,6 @@ $translation_table = [
 	"Downloading %s data" => [
 		0 => "Stahování dat %s",
 	],
-	"User %s followed" => [
-		0 => "Uživatel %s začal sledovat",
-	],
-	"User %s unfollowed" => [
-		0 => "Uživatel %s přestal sledovat",
-	],
-	"Album cover altered" => [
-		0 => "Obal alba změněn",
-	],
 	"Content liked" => [
 		0 => "Obsah se líbí",
 	],
@@ -1132,23 +661,11 @@ $translation_table = [
 	"Sign in" => [
 		0 => "Přihlásit se",
 	],
-	"Moderate" => [
-		0 => "Moderovat",
-	],
 	"Upload images" => [
 		0 => "Nahrát obrázky",
 	],
-	"Upload plugin" => [
-		0 => "Plugin pro nahrávání",
-	],
-	"Image search results for %s" => [
-		0 => "Výsledky vyhledávání obrázku pro výraz %s",
-	],
-	"Album search results for %s" => [
-		0 => "Výsledky vyhledávání alba pro výraz %s",
-	],
-	"User search results for %s" => [
-		0 => "Výsledky vyhledávání uživatele pro výraz %s",
+	"Search" => [
+		0 => "Hledat",
 	],
 	"Account" => [
 		0 => "Účet",
@@ -1156,8 +673,8 @@ $translation_table = [
 	"Profile" => [
 		0 => "Profil",
 	],
-	"Linked accounts" => [
-		0 => "Propojené účty",
+	"Password" => [
+		0 => "Heslo",
 	],
 	"Powered by" => [
 		0 => "Běží na systému",
@@ -1173,6 +690,9 @@ $translation_table = [
 	],
 	"Invalid website" => [
 		0 => "Neplatná webová stránka",
+	],
+	"Spam detected" => [
+		0 => "Byl detekován spam",
 	],
 	"Wrong password" => [
 		0 => "Neplatné heslo",
@@ -1195,6 +715,18 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "Nastavení pro %s",
 	],
+	"Username" => [
+		0 => "Uživatelské jméno",
+	],
+	"Delete user" => [
+		0 => "Odstranit uživatele",
+	],
+	"User ID" => [
+		0 => "Uživatelské ID",
+	],
+	"Register date" => [
+		0 => "Datum registrace",
+	],
 	"You must agree to the terms and privacy policy" => [
 		0 => "Musíte souhlasit s podmínkami a zásadami ochrany osobních údajů",
 	],
@@ -1207,11 +739,8 @@ $translation_table = [
 	"Upload" => [
 		0 => "Nahrát",
 	],
-	"%s's Images" => [
-		0 => "%s Obrázků",
-	],
-	"Results for" => [
-		0 => "Výsledky pro",
+	"Albums" => [
+		0 => "Alba",
 	],
 	"Liked by %s" => [
 		0 => "Co se líbí %s",
@@ -1228,11 +757,176 @@ $translation_table = [
 	"%n (%u) on %w" => [
 		0 => "%n (%u) v %w",
 	],
+	"album" => [
+		0 => "album",
+		1 => "alba",
+		2 => "alba",
+		3 => "alba",
+	],
+	"Flooding detected. You can only upload %limit% %content% per %time%" => [
+		0 => "Bylo zjištěno zahlcení. Můžete nahrát pouze %limit% %content% za %time%",
+	],
+	"Note: This content is private but anyone with the link will be able to see this." => [
+		0 => "Poznámka: Tento obsah je soukromý, ale kdokoli s odkazem jej bude moci zobrazit.",
+	],
+	"Note: This content is password protected. Remember to pass the content password to share." => [
+		0 => "Poznámka: Tento obsah je chráněn heslem. Pokud jej hodláte sdílet, nezapomeňte sdělit příjemci i heslo.",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "Poznámka: Tento obsah je soukromý. Pro umožnění sdílení je potřeba změnit soukromí na \"veřejné\".",
+	],
+	"Private" => [
+		0 => "Soukromý",
+	],
+	"Public" => [
+		0 => "Veřejné",
+	],
+	"Me" => [
+		0 => "Já",
+	],
+	"Link" => [
+		0 => "Odkaz",
+	],
+	"After %n %t" => [
+		0 => "Po %n %t",
+	],
+	"minute" => [
+		0 => "minuta",
+		1 => "minut",
+		2 => "minut",
+		3 => "minuty",
+	],
+	"hour" => [
+		0 => "hodina",
+		1 => "hodin",
+		2 => "hodin",
+		3 => "hodiny",
+	],
+	"day" => [
+		0 => "den",
+		1 => "dnů",
+		2 => "dnů",
+		3 => "dny",
+	],
+	"week" => [
+		0 => "týden",
+		1 => "týdnů",
+		2 => "týdnů",
+		3 => "týdny",
+	],
+	"month" => [
+		0 => "měsíc",
+		1 => "měsíců",
+		2 => "měsíců",
+		3 => "měsíce",
+	],
+	"year" => [
+		0 => "rok",
+		1 => "let",
+		2 => "let",
+		3 => "let",
+	],
+	"Don't autodelete" => [
+		0 => "Automaticky nemazat",
+	],
+	"Can't open %s for writing" => [
+		0 => "Nelze otevřít %s pro zápis",
+	],
+	"Duplicated upload" => [
+		0 => "Duplicitně nahráno",
+	],
+	"Private upload" => [
+		0 => "Soukromé nahrávání",
+	],
+	"view" => [
+		0 => "zobrazení",
+		1 => "zobrazení",
+		2 => "zobrazení",
+		3 => "zobrazení",
+	],
+	"like" => [
+		0 => "líbí se",
+		1 => "se líbí",
+		2 => "se líbí",
+		3 => "líbí se",
+	],
+	"Most recent" => [
+		0 => "Nejnovější",
+	],
+	"Oldest" => [
+		0 => "Nejstarší",
+	],
+	"Most viewed" => [
+		0 => "Nejprohlíženější",
+	],
+	"Most liked" => [
+		0 => "Nejoblíbenější",
+	],
+	"People" => [
+		0 => "Lidé",
+	],
+	"adult" => [
+		0 => "dospělý",
+	],
+	"teen" => [
+		0 => "dospívající",
+	],
+	"Content of type %s is forbidden" => [
+		0 => "Obsah typu %s je zakázán",
+	],
+	"Can't create %s destination dir" => [
+		0 => "Nelze vytvořit %s cílový adresář",
+	],
+	"Internal" => [
+		0 => "Interní",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "Velikost úložiště nemůže být menší než ta, kterou používáte nyní (%s).",
+	],
+	"Unlimited" => [
+		0 => "Neomezeno",
+	],
+	"used" => [
+		0 => "využíváno",
+	],
+	"Private profile" => [
+		0 => "Soukromý profil",
+	],
+	"Share" => [
+		0 => "Sdílet",
+	],
+	"view on %s" => [
+		0 => "zobrazit na %s",
+	],
+	"cookie policy" => [
+		0 => "zásady cookie",
+	],
+	"We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link." => [
+		0 => "Používáme naše vlastní cookies a cookies třetích stran, abychom zlepšili vaše zážitky z prohlížení a s používáním našich služeb. Pokud budete pokračovat v používání našich webových stránek, souhlasíte a přijímáte naše %cookie_policy_link.",
+	],
+	"I understand" => [
+		0 => "Rozumím",
+	],
+	"second" => [
+		0 => "sekunda",
+		1 => "sekund",
+		2 => "sekund",
+		3 => "sekundy",
+	],
+	"%s ago" => [
+		0 => "před %s",
+	],
+	"moments ago" => [
+		0 => "před několika okamžiky",
+	],
 	"Discovery" => [
 		0 => "Objevit",
 	],
 	"Random" => [
 		0 => "Náhodně",
+	],
+	"Close" => [
+		0 => "Zavřít",
 	],
 	"Advanced search" => [
 		0 => "Pokročilé vyhledávání",
@@ -1243,17 +937,200 @@ $translation_table = [
 	"Notifications" => [
 		0 => "Oznámení",
 	],
+	"loading" => [
+		0 => "načítání",
+	],
 	"You don't have notifications" => [
 		0 => "Nemáte žádná oznámení",
 	],
 	"My Profile" => [
 		0 => "Můj profil",
 	],
-	"Lights" => [
-		0 => "Světla",
+	"Administrator" => [
+		0 => "Administrátor",
+	],
+	"Manager" => [
+		0 => "Správce",
 	],
 	"Sign out" => [
 		0 => "Odhlásit se",
+	],
+	"You must enter the album name." => [
+		0 => "Musíte zadat název alba.",
+	],
+	"Confirm" => [
+		0 => "Potvrdit",
+	],
+	"The content has been approved." => [
+		0 => "Obsah byl schválen.",
+	],
+	"Select existing album" => [
+		0 => "Vyberte stávající album",
+	],
+	"An error occurred. Please try again later." => [
+		0 => "Došlo k chybě. Prosím zkuste opakovat akci později.",
+	],
+	"Please select a valid image file type." => [
+		0 => "Prosím vyberte přípustné typy souborů obrázků.",
+	],
+	"Please select a picture of at most %s size." => [
+		0 => "Prosím vyberte obrázek s největší %s velikostí.",
+	],
+	"Profile image updated." => [
+		0 => "Profilový obrázek byl aktualizován.",
+	],
+	"Profile background image updated." => [
+		0 => "Pozadí profilu bylo aktualizováno.",
+	],
+	"Profile background image deleted." => [
+		0 => "Pozadí profilu bylo odstraněno.",
+	],
+	"Error deleting profile background image." => [
+		0 => "Nastala chyba při odstraňování obrázku pozadí profilu.",
+	],
+	"Update available v%s" => [
+		0 => "Je dostupná aktualizace v%s",
+	],
+	"This website is running latest %s version" => [
+		0 => "Tato webová stránka používá nejnovější verzi %s",
+	],
+	"Please review the system requirements before proceeding" => [
+		0 => "Než budete pokračovat, zkontrolujte systémové požadavky",
+	],
+	"Toggle select" => [
+		0 => "Označit vybraný obrázek",
+	],
+	"Like" => [
+		0 => "Líbí se",
+	],
+	"Create album" => [
+		0 => "Vytvořit album",
+	],
+	"Toggle flag" => [
+		0 => "Označit štítkem",
+	],
+	"Edit" => [
+		0 => "Uprav",
+	],
+	"Approve" => [
+		0 => "Schválit",
+	],
+	"Delete" => [
+		0 => "Smazat",
+	],
+	"Previous" => [
+		0 => "Předchozí",
+	],
+	"Next" => [
+		0 => "Další",
+	],
+	"File too big." => [
+		0 => "Soubor je příliš velký.",
+	],
+	"Invalid or unsupported file format." => [
+		0 => "Neplatný nebo nepodporovaný formát souboru.",
+	],
+	"Some files couldn't be added" => [
+		0 => "Některé soubory nemohly být přidány.",
+	],
+	"%s's Albums" => [
+		0 => "%s Alb",
+	],
+	"Image edited successfully." => [
+		0 => "Obrázek byl úspěšně upraven.",
+	],
+	"private" => [
+		0 => "soukromý",
+	],
+	"The content has been edited." => [
+		0 => "Obsah byl upraven.",
+	],
+	"Invalid URL key." => [
+		0 => "Neplatný klíč URL.",
+	],
+	"Category URL key already being used." => [
+		0 => "URL klíč kategorie se již používá.",
+	],
+	"Category successfully deleted." => [
+		0 => "Kategorie byla úspěšně odstraněna.",
+	],
+	"Category %s added." => [
+		0 => "Kategorie %s byla přidána.",
+	],
+	"Invalid expiration date." => [
+		0 => "Neplatné datum ukončení platnosti.",
+	],
+	"IP %s already banned." => [
+		0 => "IP %s je již zakázána.",
+	],
+	"IP %s banned." => [
+		0 => "IP %s je zakázána.",
+	],
+	"IP ban successfully deleted." => [
+		0 => "IP zákaz byl úspěšně odstraněn.",
+	],
+	"Please fill all the required fields." => [
+		0 => "Prosím vyplňte všechny požadované kolonky.",
+	],
+	"Invalid storage capacity value. Make sure to use a valid format." => [
+		0 => "Neplatná velikost úložiště. Prosím ověřte, že je ve správném formátu.",
+	],
+	"Invalid URL." => [
+		0 => "Neplatné URL.",
+	],
+	"Storage successfully edited." => [
+		0 => "Úložiště bylo úspěšně upraveno.",
+	],
+	"The content has been deleted." => [
+		0 => "Obsah byl smazán.",
+	],
+	"The content has been moved." => [
+		0 => "Obsah byl přesunut.",
+	],
+	"Select" => [
+		0 => "Vybrat",
+	],
+	"Unselect" => [
+		0 => "Odebrat",
+	],
+	"Import ID %s removed" => [
+		0 => "Import ID %s byl odstraněn",
+	],
+	"All the changes that you have made will be lost if you continue." => [
+		0 => "Všechny změny, které jste provedl(a), budou ztraceny",
+	],
+	"Save changes" => [
+		0 => "Uložit změny",
+	],
+	"Submit" => [
+		0 => "Odeslat",
+	],
+	"Changes saved successfully." => [
+		0 => "Změny byly úspěšně uloženy.",
+	],
+	"Go back to form" => [
+		0 => "Vrátit se zpět na formulář",
+	],
+	"or" => [
+		0 => "nebo",
+	],
+	"continue anyway" => [
+		0 => "přesto pokračovat",
+	],
+	"cancel" => [
+		0 => "zrušit",
+	],
+	"Saving" => [
+		0 => "Ukládání",
+	],
+	"Sending" => [
+		0 => "Odesílání",
+	],
+	"Confirm action" => [
+		0 => "Potvrdit akci",
+	],
+	"information" => [
+		0 => "informace",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "Zaznamenali jsme pokus o změnu e-mailu vašeho <a href=\"%u\">%n</a> účtu na %w.",
@@ -1303,14 +1180,23 @@ $translation_table = [
 	"Select the images to upload" => [
 		0 => "Zvolte obrázky k nahrání",
 	],
+	"You can also %i or %u." => [
+		0 => "Můžeš také %i nebo %u.",
+	],
+	"You can also %s." => [
+		0 => "Můžete také %s.",
+	],
 	"browse from your computer" => [
 		0 => "vybrat z vašeho počítače",
 	],
 	"add image URLs" => [
 		0 => "přidat URL adresy obrázků",
 	],
-	"You can also %i or %u." => [
-		0 => "Můžeš také %i nebo %u.",
+	"You can also %i, %c or %u." => [
+		0 => "Můžete také %i, %c nebo %u.",
+	],
+	"You can also %i or %c." => [
+		0 => "Můžete také %i nebo %c.",
 	],
 	"browse from your device" => [
 		0 => "procházet z vašeho zařízení",
@@ -1318,26 +1204,8 @@ $translation_table = [
 	"take a picture" => [
 		0 => "pořídit fotku",
 	],
-	"You can also %i, %c or %u." => [
-		0 => "Můžete také %i, %c nebo %u.",
-	],
-	"Edit or resize any image by clicking the image preview" => [
-		0 => "Upravte nebo změňte velikost libovolného obrázku kliknutím na náhled obrázku",
-	],
-	"Edit any image by touching the image preview" => [
-		0 => "Upravte jakýkoli snímek tím, že se dotknete náhledu obrázku",
-	],
-	"your computer" => [
-		0 => "vašeho počítače",
-	],
-	"You can add more images from %i or %u." => [
-		0 => "Můžete přidat další obrázky z %i nebo %u.",
-	],
-	"your device" => [
-		0 => "vašeho zařízení",
-	],
-	"You can add more images from %i, %c or %u." => [
-		0 => "Můžete přidat další obrázky z %i, %c nebo %u.",
+	"Register to get %s" => [
+		0 => "Zaregistrujte se pro získání %s",
 	],
 	"Uploading %q %o" => [
 		0 => "Nahrávání %q %o",
@@ -1360,12 +1228,6 @@ $translation_table = [
 	"You can %c with the content just uploaded." => [
 		0 => "Můžete %c s právě nahraným obsahem.",
 	],
-	"create a new album" => [
-		0 => "vytvořit nové album",
-	],
-	"move it to an existing album" => [
-		0 => "přesunout do již existujícího alba",
-	],
 	"You must %s or %l to save this content into your account." => [
 		0 => "Musíte se %s nebo %l pro uložení tohoto obsahu do svého účtu.",
 	],
@@ -1378,14 +1240,11 @@ $translation_table = [
 	"No %s have been uploaded" => [
 		0 => "Žádné %s nebyly nahrány",
 	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "Bohužel se vyskytly nějaké chyby a server nemohl dokončit vaše požadavky.",
+	"Sign up" => [
+		0 => "Přihlásit se",
 	],
-	"Category" => [
-		0 => "Kategorie",
-	],
-	"Select category" => [
-		0 => "Vyberte kategorii",
+	"%s to be able to customize or disable image auto delete." => [
+		0 => "%s pro zapnutí nebo vypnutí automatického mazání obrázků",
 	],
 	"Mark this if the upload is not family safe" => [
 		0 => "Zatrhněte pokud obrázek není vhodný pro děti a mladistvé.",
@@ -1396,17 +1255,8 @@ $translation_table = [
 	"Uploading" => [
 		0 => "Nahrávám",
 	],
-	"or" => [
-		0 => "nebo",
-	],
-	"cancel" => [
-		0 => "zrušit",
-	],
 	"cancel remaining" => [
 		0 => "zrušit zbývající",
-	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "Upozornění: Některé obrázky nelze nahrát.",
 	],
 	"learn more" => [
 		0 => "dozvědět se více",
@@ -1414,14 +1264,8 @@ $translation_table = [
 	"Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information." => [
 		0 => "Zkontrolujte <a data-modal=\"simple\" data-target=\"failed-upload-result\">chybovou zprávu</a> kde se dozvíte více informací.",
 	],
-	"Register to get %s" => [
-		0 => "Zaregistrujte se pro získání %s",
-	],
 	"reset" => [
 		0 => "resetovat",
-	],
-	"close" => [
-		0 => "zavřít",
 	],
 	"Note" => [
 		0 => "Poznámka",
@@ -1437,6 +1281,9 @@ $translation_table = [
 	],
 	"Remove" => [
 		0 => "Odstranit",
+	],
+	"upload" => [
+		0 => "nahrát",
 	],
 	"Title" => [
 		0 => "Název",
@@ -1456,15 +1303,6 @@ $translation_table = [
 	"Note: Animated GIF images won't be resized." => [
 		0 => "Poznámka: Animované GIF obrázky se nezmění.",
 	],
-	"Auto delete image" => [
-		0 => "Automatické smazání obrázku",
-	],
-	"Sign up" => [
-		0 => "Přihlásit se",
-	],
-	"%s to be able to customize or disable image auto delete." => [
-		0 => "%s pro zapnutí nebo vypnutí automatického mazání obrázků",
-	],
 	"Mark this if the image is not family safe" => [
 		0 => "Zatrhněte pokud obrázek není vhodný pro děti a mladistvé.",
 	],
@@ -1474,35 +1312,17 @@ $translation_table = [
 	"Description" => [
 		0 => "Popis",
 	],
-	"Brief description of this image" => [
-		0 => "Stručný popis obrázku",
-	],
 	"Add image URLs" => [
 		0 => "Přidat URL obrázku",
 	],
 	"Add the image URLs here" => [
 		0 => "Přidejte URL obrázku zde",
 	],
-	"Create album" => [
-		0 => "Vytvořit album",
-	],
 	"The uploaded content will be moved to this newly created album." => [
 		0 => "Nahraný obsah bude přesunut do tohoto nově vytvořeného alba.",
 	],
-	"existing album" => [
-		0 => "existujícího alba",
-	],
-	"You can also move the content to an %a." => [
-		0 => "Obsah můžete také přesunout do %a.",
-	],
 	"You must %s or %l if you want to edit this album later on." => [
 		0 => "Pokud chcete album později upravit, musíte se nejdříve %s nebo %l.",
-	],
-	"Move to album" => [
-		0 => "Přesunout do alba",
-	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "Vyberte existující album k nahrání obrázků. Samozřejmě můžete také <a class=\"modal-switch\" data-switch=\"move-new-album\">vytvořit album</a> a nahrát obrázky do něj.",
 	],
 	"Error report" => [
 		0 => "Chybová zpráva",
@@ -1510,8 +1330,8 @@ $translation_table = [
 	"Links" => [
 		0 => "Odkazy",
 	],
-	"Viewer links" => [
-		0 => "Odkaz s náhledem",
+	"Direct" => [
+		0 => "Přímý",
 	],
 	"HTML Codes" => [
 		0 => "HTML kódy",
@@ -1555,6 +1375,9 @@ $translation_table = [
 	"Markdown thumbnail linked" => [
 		0 => "Markdown kód náhledu obrázku s odkazem",
 	],
+	"Viewer links" => [
+		0 => "Odkaz s náhledem",
+	],
 	"All these words" => [
 		0 => "Všechna tato slova",
 	],
@@ -1579,20 +1402,11 @@ $translation_table = [
 	"IP address" => [
 		0 => "IP adresa",
 	],
-	"Album name" => [
-		0 => "Název alba",
+	"Name" => [
+		0 => "Jméno",
 	],
-	"move to existing album" => [
-		0 => "přesunout do existujicího alba",
-	],
-	"Album description" => [
-		0 => "Popis alba",
-	],
-	"Brief description of this album" => [
-		0 => "Stručný popis tohoto alba",
-	],
-	"Album privacy" => [
-		0 => "Soukromí alba",
+	"Privacy" => [
+		0 => "Soukromí",
 	],
 	"Who can view this content" => [
 		0 => "Kdo může zobrazit tento obsah",
@@ -1606,29 +1420,11 @@ $translation_table = [
 	"Private (password protected)" => [
 		0 => "Soukromé (chráněno heslem)",
 	],
-	"Album password" => [
-		0 => "Heslo alba",
-	],
-	"Name" => [
-		0 => "Jméno",
-	],
-	"Category name" => [
-		0 => "Jméno kategorie",
-	],
 	"URL key" => [
 		0 => "URL klíč",
 	],
-	"Category URL key" => [
-		0 => "URL klíč kategorie",
-	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "Pouze písmena, čísla a pomlčky",
-	],
-	"Brief description of this category" => [
-		0 => "Stručný popis této kategorie",
-	],
-	"Untitled image" => [
-		0 => "Obrázek bez názvu",
 	],
 	"Mark this if the image is not safe for work" => [
 		0 => "Označit tento obrázek, pokud není vhodný a bezpečný",
@@ -1687,20 +1483,8 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "Textová zpráva, HTML nebo přesměrovat URL",
 	],
-	"Existing album" => [
-		0 => "Stávající album",
-	],
-	"create new album" => [
-		0 => "Vytvořit nové album",
-	],
 	"Storage name" => [
 		0 => "Jméno úložiště",
-	],
-	"API" => [
-		0 => "API",
-	],
-	"Region" => [
-		0 => "Region",
 	],
 	"Storage region" => [
 		0 => "Region úložiště (Storage region)",
@@ -1713,9 +1497,6 @@ $translation_table = [
 	],
 	"Storage key" => [
 		0 => "Klíč úložiště",
-	],
-	"Secret" => [
-		0 => "Secret",
 	],
 	"Storage secret" => [
 		0 => "Secret úložiště",
@@ -1740,9 +1521,6 @@ $translation_table = [
 	],
 	"API endpoint for OpenStack identity" => [
 		0 => "Koncový bod API OpenStack identity (API endpoint for OpenStack identity)",
-	],
-	"Username" => [
-		0 => "Uživatelské jméno",
 	],
 	"Container" => [
 		0 => "Kontejner (Container)",
@@ -1810,44 +1588,29 @@ $translation_table = [
 	"Load more" => [
 		0 => "Načíst více",
 	],
-	"Select all" => [
-		0 => "Vybrat vše",
+	"Actions" => [
+		0 => "Akce",
 	],
 	"Get embed codes" => [
 		0 => "Zobrazit kódy pro vložení",
 	],
-	"Assign category" => [
-		0 => "Přiřadit kategorii",
-	],
 	"Flag as safe" => [
 		0 => "Označit jako bezpečné",
+	],
+	"Select all" => [
+		0 => "Vybrat vše",
 	],
 	"Clear selection" => [
 		0 => "Zrušit výběr",
 	],
-	"Create new album" => [
-		0 => "Vytvořit nové album",
-	],
-	"Create sub album" => [
-		0 => "Vytvořit podřízené album",
-	],
-	"Share" => [
-		0 => "Sdílet",
-	],
 	"Sign in with another account" => [
 		0 => "Přihlásit se pomocí jiného účtu",
-	],
-	"Continue with %label%" => [
-		0 => "Pokračovat s %label%",
 	],
 	"Home" => [
 		0 => "Domů",
 	],
 	"There's nothing to show here." => [
 		0 => "Zde se nenachází nic k zobrazení.",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "Všechny vybrané obrázky budou zařazeny do této kategorie.",
 	],
 	"There is no categories." => [
 		0 => "Nejsou zde žádné kategorie.",
@@ -1867,20 +1630,8 @@ $translation_table = [
 	"Confirm approval" => [
 		0 => "Potvrďte souhlas",
 	],
-	"Do you really want to approve this content? This can't be undone." => [
-		0 => "Opravdu chcete odstranit veškerý vybraný obsah? Toto nelze vrátit zpět.",
-	],
 	"Confirm deletion" => [
 		0 => "Potvrďte odstranění",
-	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "Opravdu chcete odstranit tento obsah? (Nelze vrátit zpět)",
-	],
-	"Do you really want to approve all the selected content? This can't be undone." => [
-		0 => "Opravdu chcete odstranit veškerý vybraný obsah? Toto nelze vrátit zpět.",
-	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "Opravdu si přejete odstranit vybraný obsah?  (Nelze vrátit zpět)",
 	],
 	"Guest" => [
 		0 => "Host",
@@ -1897,9 +1648,6 @@ $translation_table = [
 	"Uploaded by guest" => [
 		0 => "Nahráno návštěvníkem",
 	],
-	"From %s" => [
-		0 => "Od %s",
-	],
 	"Uploaded by private" => [
 		0 => "Nahráno soukromě",
 	],
@@ -1909,8 +1657,11 @@ $translation_table = [
 	"Toggle unsafe flag" => [
 		0 => "Označit obrázek jako nevhodný",
 	],
-	"That page doesn't exist" => [
-		0 => "Tato stránka neexistuje",
+	"You either don't have permission to access this page or the link has expired." => [
+		0 => "Nemáte oprávnění k prohlížení této stránky nebo odkaz ze kterého jste se zde dostali již expiroval.",
+	],
+	"Go to homepage" => [
+		0 => "Jít na úvodní stránku",
 	],
 	"The requested page was not found." => [
 		0 => "Požadovaná stránka nebyla nalezena.",
@@ -1938,9 +1689,6 @@ $translation_table = [
 	],
 	"Your email address" => [
 		0 => "Vaše e-mailová adresa",
-	],
-	"Submit" => [
-		0 => "Odeslat",
 	],
 	"An email with instructions to reset your password has been sent to the registered email address. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "E-mail s instrukcemi jak resetovat vaše heslo byl právě odeslán na e-mailovou adresu, kterou jste uvedli při registraci. Pokud jste e-mail s instrukcemi neobdrželi, pak prosím zkontrolujte vaši složku se spamem či ostatní filtrovanou poštu.",
@@ -1978,20 +1726,17 @@ $translation_table = [
 	"An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters." => [
 		0 => "Na adresu %s byl zaslán email s instrukcemi pro aktivaci Vašeho účtu. Pokud jste neobdrželi žádné instrukce, zkontrolujte prosím Vaši nevyžádanou poštu nebo spamové filtry.",
 	],
-	"This content is private" => [
-		0 => "Tento obsah je soukromý",
-	],
 	"Sub album" => [
 		0 => "Podřízené album",
-	],
-	"Do you really want to delete this album and all of its images? This can't be undone." => [
-		0 => "Opravdu si přejete odstranit toto album a všechny obrázky do něj zařazené? (Tuto akci nelze vrátit)",
 	],
 	"Upload to album" => [
 		0 => "Nahrát do alba",
 	],
 	"You like this" => [
 		0 => "Toto se vám líbí",
+	],
+	"This content is private" => [
+		0 => "Tento obsah je soukromý",
 	],
 	"Please read and comply with the following conditions before you continue:" => [
 		0 => "Přečtěte si a souhlaste s těmito podmínkami, než budete moci pokračovat:",
@@ -2008,20 +1753,8 @@ $translation_table = [
 	"documentation" => [
 		0 => "dokumentace",
 	],
-	"Learn about %s settings at our %d." => [
-		0 => "Přečtěte si další informace o nastavení %s na našem %d.",
-	],
-	"The connecting IP is determined using the server variable %var%. If the detected IP doesn't match yours, it means that your web server is under a proxy and you need to tweak your server to set the real connecting IP." => [
-		0 => "Připojovací IP adresa je určena pomocí proměnné serveru %var%. Pokud zjištěná IP neodpovídá vaší, znamená to, že váš webový server je za proxy a je potřeba vyladit váš server pro nastavení skutečné spojující IP.",
-	],
-	"For Nginx, you must use %nginx%. For Apache, %apache%." => [
-		0 => "Pro Nginx musíte použít %nginx%. Pro Apache, %apache%.",
-	],
-	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
-		0 => "Ujistěte se, že tento problém řešíte, protože systém spoléhá na přesné detekce IP, aby poskytoval základní funkce a chránil před spamem, záplavami a útoky brutální silou.",
-	],
-	"Disk used" => [
-		0 => "Využití disku",
+	"Check the errors to proceed." => [
+		0 => "Před pokračováním zkontrolujte chyby",
 	],
 	"Queued" => [
 		0 => "Ve frontě",
@@ -2040,9 +1773,6 @@ $translation_table = [
 	],
 	"Top level folders as %s" => [
 		0 => "Složky nejvyšší úrovně jako %s",
-	],
-	"Actions" => [
-		0 => "Akce",
 	],
 	"Process" => [
 		0 => "Proces",
@@ -2077,137 +1807,458 @@ $translation_table = [
 	"Read the %s for more information about this feature." => [
 		0 => "Přečtěte si %s pro více informací o této funkci.",
 	],
-	"Add user" => [
-		0 => "Přidat uživatele",
+	"Dashboard > Settings > Website" => [
+		0 => "Administrace > Nastavení > Webová stránka",
 	],
-	"Role" => [
-		0 => "Úloha",
+	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
+		0 => "Zobrazuje schvalovací obrazovku před přístupem na tyto webové stránky. Toto je užitečné pro webové stránky s obsahem pro dospělé, který by neměl být přístupný nezletilím.",
 	],
-	"Manager" => [
-		0 => "Správce",
+	"Enable consent screen" => [
+		0 => "Zapnout schvalovací obrazovku",
 	],
-	"Administrator" => [
-		0 => "Administrátor",
+	"Consent screen cover image" => [
+		0 => "Obrázek schvalovací obrazovky",
 	],
-	"Email address" => [
-		0 => "E-mailová adresa",
+	"Show not safe content in listings" => [
+		0 => "V galerii vypisovat i nevhodný obsah",
 	],
-	"This setting is always diabled when using personal website mode." => [
-		0 => "Toto nastavení je vždy zakázáno při použití režimu osobní webové stránky.",
+	"Blur NSFW content in listings" => [
+		0 => "Rozostření NSFW obsahu v seznamech",
 	],
-	"Add category" => [
-		0 => "Přidat kategorii",
+	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
+		0 => "Povolte tuto možnost, pokud chcete použít efekt rozostření  NSFW obrázků v seznamech.",
 	],
-	"Add IP ban" => [
-		0 => "Přidat zakázanou IP",
+	"Show not safe content in random mode" => [
+		0 => "Zobraz nevhodný obsah v náhodném pořadí",
 	],
-	"Add storage" => [
-		0 => "Přidat úložiště",
+	"Show banners in not safe content" => [
+		0 => "Zobrazit bannery v nevhodném obsahu",
 	],
-	"Return to pages" => [
-		0 => "Návrat na stránky",
+	"Enable this if you want to show banners in not safe content pages." => [
+		0 => "Nastavte pokud chcete zobrazovat bannery i mezi nevhodným obsahem.",
 	],
-	"Website name" => [
-		0 => "Název webu",
+	"Lock %s editing" => [
+		0 => "Zamknout úpravy %s",
 	],
-	"Website doctitle" => [
-		0 => "Nadpis webové stránky (title)",
+	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
+		0 => "Povolte tuto funkci, aby uživatelé nemohli změnit příznak NSFW. Pokud je funkce povolena, toto oprávnění budou mít pouze administrátoři a správci.",
 	],
-	"Website description" => [
-		0 => "Popis webu",
+	"Cookie law compliance" => [
+		0 => "Vyžádání EU cookie politiky",
 	],
-	"Automatic" => [
-		0 => "Automaticky",
+	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
+		0 => "Povolením této možnosti se zobrazí zpráva, která splňuje požadavky kladené na cookie právních předpisů EU. Poznámka: Toto nastavení budete potřebovat pouze, pokud jsou vaše webové stránky umístěny v EU, a pokud přidáte tracking cookies.",
 	],
-	"Forced" => [
-		0 => "Vynucené",
+	"From name" => [
+		0 => "Od jména",
 	],
-	"%a will use HTTPS detection on the server side (recommended). %f will use HTTPS regardless of your server setup. %d to don't use HTTPS at all." => [
-		0 => "%a použije detekci HTTPS na straně serveru (doporučeno). %f bude používat protokol HTTPS bez ohledu na nastavení vašeho serveru. %d nepoužije protokol HTTPS vůbec.",
+	"Sender name for emails sent to users." => [
+		0 => "Jméno odesílatele uvedeného v e-mailech odeslaných uživatelům.",
 	],
-	"This only controls the protocol used in the URLs, it won't turn your website into a valid HTTPS website unless your server is configured to support and use HTTPS." => [
-		0 => "Tímto se řídí pouze protokol používaný v URL adresách, nebude to vaše webové stránky přeměňovat na platné HTTPS webové stránky, pokud nebude váš server nakonfigurován pro podporu a použití protokolu HTTPS.",
+	"From email address" => [
+		0 => "Z e-mailové adresy",
 	],
-	"Default time zone" => [
-		0 => "Výchozí časové pásmo",
+	"Sender email for emails sent to users." => [
+		0 => "E-mail odesílatele uvedený v e-mailech odeslaných uživatelům.",
 	],
-	"Select region" => [
-		0 => "Vyber region",
+	"Incoming email address" => [
+		0 => "Příchozí e-mailová adresa",
 	],
-	"Allows to search images, albums and users based on a given search query." => [
-		0 => "Umožňuje vyhledávat obrázky, alba a uživatele na základě daného vyhledávacího dotazu.",
+	"Recipient for contact form and system alerts." => [
+		0 => "Příjemce pro kontaktování v případě systémových varování.",
 	],
-	"Enables to browse public uploaded images. It also enables categories." => [
-		0 => "Umožňuje procházet veřejně nahrané obrázky. Také umožňuje procházet veřejné kategorie.",
+	"Email mode" => [
+		0 => "Režim e-mailu.",
 	],
-	"guests" => [
-		0 => "hosté",
+	"How to send emails? SMTP recommended." => [
+		0 => "Způsob odesílání e-mailů. Doporučena metoda SMTP.",
 	],
-	"Enables explore for guests." => [
-		0 => "Umožňuje procházet veřejně nahrané obrázky i neregistrovaným uživatelům.",
+	"SMTP server and port" => [
+		0 => "SMTP server a port",
 	],
-	"Enables to browse images randomly." => [
-		0 => "Umožňuje prohlížet obrázky v náhodném pořadí.",
+	"SMTP username" => [
+		0 => "Uživatelské jméno na SMTP server",
 	],
-	"Likes" => [
-		0 => "Líbí se",
+	"SMTP password" => [
+		0 => "Heslo na SMTP server",
 	],
-	"Allows users to like content and populate \"Most liked\" listings." => [
-		0 => "Umožňuje uživatelům \"lajkovat\" obsah a šířit výpisy \"Nejoblíbenějších\".",
+	"SMTP security" => [
+		0 => "SMTP zabezpečení",
 	],
-	"Followers allows users to follow each other." => [
-		0 => "Odběratelé uživatelům umožňují se navzájem sledovat.",
+	"Unsecured" => [
+		0 => "Nezabezpečeno",
 	],
-	"Website mode" => [
-		0 => "Režim webové stránky",
+	"Comments API" => [
+		0 => "API komentářů",
 	],
-	"Community" => [
-		0 => "Komunita",
+	"Disqus API works with %s." => [
+		0 => "Disqus API pracuje s %s.",
 	],
-	"Personal" => [
-		0 => "Osobní",
+	"Disqus shortname" => [
+		0 => "Vaše krátké jméno na Disqus",
 	],
-	"You can switch the website mode anytime." => [
-		0 => "Režim webové stránky můžete kdykoliv přepnout.",
+	"%s secret key" => [
+		0 => "%s tajný kód",
 	],
-	"Personal mode target user" => [
-		0 => "Cílový uživatel osobního režimu",
+	"%s public key" => [
+		0 => "%s veřejný kód",
 	],
-	"User ID" => [
-		0 => "Uživatelské ID",
+	"Comment code" => [
+		0 => "Kód komentáře",
 	],
-	"Your user id is: %s" => [
-		0 => "Vaše uživatelské id je: %s",
+	"Disqus, Facebook or anything you want. It will be used in image view." => [
+		0 => "Disqus, Facebook nebo cokoliv jiného. Bude použito v zobrazení obrázku.",
 	],
-	"Numeric ID of the target user for personal mode." => [
-		0 => "Číselné ID cílového uživatele pro osobním režim.",
+	"Analytics code" => [
+		0 => "Kód analytics.",
 	],
-	"Personal mode routing" => [
-		0 => "Routování osobního režimu",
+	"Google Analytics or anything you want. It will be added to the theme footer." => [
+		0 => "Google Analytics nebo cokoliv jiného. Bude přidáno do patičky.",
 	],
-	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
-		0 => "Vlastní cesta pro namapování /uživatelskéjméno na /cokoliv. Použijte \"/\" pro namapování na domovskou stránku.",
+	"%s spam protection" => [
+		0 => "Ochrana proti spamu %s",
 	],
-	"Website privacy mode" => [
-		0 => "Režim soukromí webu",
+	"user generated content" => [
+		0 => "uživatelem vytvořený obsah",
 	],
-	"Private mode will make the website only available for registered users." => [
-		0 => "Soukromý režim způsobí, že stránka bude dostupná pouze registrovaným uživatelům.",
+	"Enable this to use %l to block spam on %c." => [
+		0 => "Povolte tuto možnost, chcete-li pomocí %s blokovat spam na %c.",
 	],
-	"Content privacy mode" => [
-		0 => "Obsah soukromého módu",
+	"%s API key" => [
+		0 => "API klíč %s",
+	],
+	"user signup" => [
+		0 => "registrace uživatele",
+	],
+	"%s site key" => [
+		0 => "%s kód stránky",
+	],
+	"Force %s on contact page" => [
+		0 => "Vynutit %s na kontaktní stránce",
+	],
+	"Enable this to always show %s on contact page." => [
+		0 => "Aktivací této funkce se bude %s vždy zobrazovat na kontaktní stránce.",
+	],
+	"Automatically moderate the content using the %s service." => [
+		0 => "Automaticky moderujte obsah pomocí služby %s.",
+	],
+	"Automatic approve" => [
+		0 => "Automatické schválení",
+	],
+	"Enable this to automatically approve content moderated by this service." => [
+		0 => "Povolte tuto funkci pro automatické schválení obsahu moderovaného touto službou.",
+	],
+	"Block content" => [
+		0 => "Blokovat obsah",
+	],
+	"Adult" => [
+		0 => "Dospělí",
+	],
+	"Teen and adult" => [
+		0 => "Dospívající i dospělí",
+	],
+	"Flag NSFW" => [
+		0 => "Příznak NSFW",
+	],
+	"Twitter account" => [
+		0 => "Twitter účet",
+	],
+	"Disk used" => [
+		0 => "Využití disku",
+	],
+	"Local storage is used by default or when no external storage is active." => [
+		0 => "Ve výchozím stavu je nataveno místní ukládání. Používá se i pokud není aktivní žádné externí uložiště.",
+	],
+	"Notify to email" => [
+		0 => "Upozornit na e-mail",
+	],
+	"If enabled the system will send an email on flood incidents." => [
+		0 => "Pokud je zapnuté, pak vás systém o pokusu o záplavu varuje e-mailem.",
+	],
+	"Minute limit" => [
+		0 => "Minutový limit",
+	],
+	"Hourly limit" => [
+		0 => "Hodinový limit",
+	],
+	"Daily limit" => [
+		0 => "Denní limit",
+	],
+	"Weekly limit" => [
+		0 => "Týdenní limit",
+	],
+	"Monthly limit" => [
+		0 => "Měsíční limit",
+	],
+	"Style" => [
+		0 => "Styl",
+	],
+	"Landing page" => [
+		0 => "Vstupní stránka",
+	],
+	"Split landing + images" => [
+		0 => "Split landing + obrázky",
+	],
+	"explore" => [
+		0 => "průzkumník",
+	],
+	"Route %s" => [
+		0 => "Trasa %s",
+	],
+	"Blue" => [
+		0 => "Modrá",
+	],
+	"Green" => [
+		0 => "Zelená",
+	],
+	"Orange" => [
+		0 => "Oranžová",
+	],
+	"Red" => [
+		0 => "Červená",
+	],
+	"Grey" => [
+		0 => "Šedá",
+	],
+	"Black" => [
+		0 => "Černá",
+	],
+	"White" => [
+		0 => "Bílá",
 	],
 	"Default" => [
 		0 => "Výchozí",
 	],
-	"Force private (self)" => [
-		0 => "Vynutit soukromí (jen já)",
+	"Empty" => [
+		0 => "Prázdné",
 	],
-	"Force private (anyone with the link)" => [
-		0 => "Vynutit soukromí (kdokoliv kdo má link)",
+	"Your user id is: %s" => [
+		0 => "Vaše uživatelské id je: %s",
 	],
-	"Forced privacy modes will override user selected privacy." => [
-		0 => "Vynucení soukromí ovlivní i to co měl uživatel nastaveno.",
+	"Enabled image formats" => [
+		0 => "Povolené formáty obrázků",
+	],
+	"Enable uploads" => [
+		0 => "Povolit nahrávání",
+	],
+	"Enable this if you want to allow image upload from URLs." => [
+		0 => "Zapněte tuto volbu, pokud chcete povolit nahrávání obrázků. Toto nastavení nemá vliv na administrátory.",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "Pamatujte na to, že povolením této možnosti odhalíte IP adresu svého serveru.",
+	],
+	"Upload user interface" => [
+		0 => "Rozhraní uživatelského nahrávání",
+	],
+	"On-page container" => [
+		0 => "On-page kontejner",
+	],
+	"route" => [
+		0 => "trasa",
+	],
+	"Guest uploads" => [
+		0 => "Nahráno hostem",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "Povol pokud chceš umožnit neregistrovaným uživatelům nahrávání.",
+	],
+	"Moderate uploads" => [
+		0 => "Moderovat nahrávání",
+	],
+	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
+		0 => "Povolte tuto funkci pro moderování příchozích nahrávek. Cílový obsah bude ke schválení vyžadovat moderování.",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "Povolit vkládací odkazy (v nahrávacím nástroji)",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "Povolte pokud chcete umožnit zobrazování vkládacích odkazů jakmile bude obrázek úspěšné nahraný.",
+	],
+	"Upload threads" => [
+		0 => "Počet vláken pro nahrávání",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "Počet vláken použitých při nahrávání (souběžné nahrávání více souborů)",
+	],
+	"Redirect on single upload" => [
+		0 => "Přesměrování na jednotlivé nahrání",
+	],
+	"Enable this if you want to redirect to image page on single upload." => [
+		0 => "Povolte tuto funkci, pokud chcete přesměrovat na stránku s obrázky při jednotlivém nahrávání.",
+	],
+	"Enable duplicate uploads" => [
+		0 => "Povolit duplicitní nahrávání",
+	],
+	"Enable expirable uploads" => [
+		0 => "Povolit časové omezení pro nahrané soubory",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "Aktivujte tuto funkci, pokud chcete povolit nahrávání s volbou automatického mazání.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "Automatické mazání návštěvnických uploadů",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "Při povolení budou automatické mazány návštěvnické uploady po určitém čase.",
+	],
+	"Maximum image size" => [
+		0 => "Maximální velikost obrázku",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "Obrázky větší, než je tato velikost budou automaticky zmenšeny. Zadejte nulu (0) pokud chcete zachovat původní velikost obrázku.",
+	],
+	"Image Exif data" => [
+		0 => "Exif data obrázku",
+	],
+	"Keep" => [
+		0 => "Zachovat",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "Zvolit výchozí nastavení pro <a %s>Exif data</a> obrázku při nahrávání.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "Exif data obrázku (uživ. nastavení)",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "Povolte, pokud chcete, aby měl každý uživatel možnost nastavit, jak bude nakládáno s EXIF daty obrázku.",
+	],
+	"Maximum upload file size" => [
+		0 => "Maximální velikost nahrávaného souboru",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "Maximální velikost povolená serverem je %s. Tato velikost je limitována %u a %p (%f hodnoty).",
+	],
+	"guests" => [
+		0 => "hosté",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "Stejné jako \"%s\" ale platné pouze pro neregistrované uživatele.",
+	],
+	"Image path" => [
+		0 => "Cesta k obrázku",
+	],
+	"Relative to Chevereto root" => [
+		0 => "Relativně k Chvereto root",
+	],
+	"Where to store the images? Relative to Chevereto root." => [
+		0 => "Kde ukládat obrázky? Relativní k chevereto rootu.",
+	],
+	"Storage mode" => [
+		0 => "Režim ukládání",
+	],
+	"Datefolders" => [
+		0 => "Složky podle data",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "Složka podle data vytvoří %s strukturu",
+	],
+	"File naming method" => [
+		0 => "Metoda pojmenování souborů",
+	],
+	"Original" => [
+		0 => "Originální",
+	],
+	"Mix original + random" => [
+		0 => "Mix originál + náhodné",
+	],
+	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
+		0 => "\"Originál\" se bude snažit zachovat název zdrojového obrázku, zatímco \"náhodné \" bude generovat náhodné jméno. \"ID\" název  bude stejný, jako ID obrázku.",
+	],
+	"Thumb size" => [
+		0 => "Velikost miniatury",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "MIniatury budou nastaveny na tuto velikost",
+	],
+	"Medium image fixed dimension" => [
+		0 => "Střední velikost obrázku - pevný rozměr",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "Střední velikost obrázku bude mít tyto rozměry. Například, pokud zvolíte \"šířku\", tento rozměr bude opraven a výška obrázku bude automaticky vypočítána.",
+	],
+	"Medium image fixed size" => [
+		0 => "Střední velikost obrázku - pevná velikost",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "Šířka nebo výška bude automaticky vypočítána.",
+	],
+	"Expires" => [
+		0 => "Vyprší",
+	],
+	"Banned IP address will be forbidden to use the entire website." => [
+		0 => "Zakázaným IP adresám bude znemožněn přístup na celý tento web.",
+	],
+	"List items per page" => [
+		0 => "Počet obrázků na stránku",
+	],
+	"How many items should be displayed per page listing." => [
+		0 => "Kolik položek může být zobrazeno na jedné stránce výpisu",
+	],
+	"List pagination mode" => [
+		0 => "Listovací stránkování",
+	],
+	"Endless scrolling" => [
+		0 => "Nekonečné skrolování",
+	],
+	"Classic pagination" => [
+		0 => "Klasické stránkování",
+	],
+	"What pagination method should be used." => [
+		0 => "Jaká metoda stránkování má být použita?",
+	],
+	"Listing viewer" => [
+		0 => "Prohlížeč seznamu obrázků",
+	],
+	"Enable this to use the listing viewer when clicking on an image." => [
+		0 => "Povolte to, chcete-li kliknutím na obrázek otevřít prohlížeč seznamu obrázků.",
+	],
+	"Image listing size" => [
+		0 => "Velikost náhledu",
+	],
+	"Fluid" => [
+		0 => "Plynulý",
+	],
+	"Fixed" => [
+		0 => "Pevný",
+	],
+	"Both methods use a fixed width but fluid method uses automatic heights." => [
+		0 => "Obě metody používají pevnou šířku, ale plynulá využívá proměnnou výšku.",
+	],
+	"Listing columns number" => [
+		0 => "Počet sloupců výpisu",
+	],
+	"Here you can set how many columns are used based on each target device." => [
+		0 => "Zde můžete nastavit, kolik sloupců se použije na základě každého cílového zařízení.",
+	],
+	"Phone" => [
+		0 => "Telefon",
+	],
+	"Laptop" => [
+		0 => "Notebook",
+	],
+	"Desktop" => [
+		0 => "Počítač",
+	],
+	"Vector version or your website logo in SVG format." => [
+		0 => "Vektorová verze loga vaší webové stránky ve formátu SVG.",
+	],
+	"Bitmap version or your website logo. PNG format is recommended." => [
+		0 => "Rastrová verze loga vaší webové stránky, nejlépe ve formátu PNG.",
+	],
+	"Logo height" => [
+		0 => "Výška loga.",
+	],
+	"No value" => [
+		0 => "Žádná hodnota",
+	],
+	"Use this to set the logo height if needed." => [
+		0 => "Toto použijte pro natavení výšky loga pokud je to potřeba.",
+	],
+	"Favicon image" => [
+		0 => "Favicon (ikonka webu)",
+	],
+	"Favicon image. Image must have same width and height." => [
+		0 => "Favicon musí mít stejnou šířku a výšku.",
 	],
 	"Page title" => [
 		0 => "Název stránky",
@@ -2229,9 +2280,6 @@ $translation_table = [
 	],
 	"Terms of service" => [
 		0 => "Podmínky používání služby",
-	],
-	"Privacy" => [
-		0 => "Soukromí",
 	],
 	"Contact" => [
 		0 => "Kontakt",
@@ -2299,9 +2347,6 @@ $translation_table = [
 	"Only alphanumerics, hyphens and whitespaces" => [
 		0 => "Pouze alfanumerické znaky, pomlčky a prázné mezery",
 	],
-	"HTML &lt;a&gt; %s attribute" => [
-		0 => "HTML &lt;a&gt; %s atributy",
-	],
 	"Link icon" => [
 		0 => "Odkaz na ikonu",
 	],
@@ -2313,537 +2358,6 @@ $translation_table = [
 	],
 	"Page sort order display for menus and listings. Use \"1\" for top priority." => [
 		0 => "Pořadí zobrazení stránky pro menu a výpisy. Použijte \"1\" pro nejvyšší prioritu.",
-	],
-	"Do you really want to delete the page ID %s? This can't be undone." => [
-		0 => "Opravdu chcete smazat stránku ID %s? Tato akce nelze vrátit zpátky.",
-	],
-	"Enabled image formats" => [
-		0 => "Povolené formáty obrázků",
-	],
-	"Unchecked image formats won't be allowed to be uploaded." => [
-		0 => "Nezaškrtnuté formáty obrázkových souborů nebudou moci být nahrány.",
-	],
-	"Enable uploads" => [
-		0 => "Povolit nahrávání",
-	],
-	"Enable this if you want to allow image uploads. This setting doesn't affect administrators." => [
-		0 => "Povolte pokud chcete umožnit nahrávání. Toto nastavení nemá vliv na administrátory",
-	],
-	"Upload user interface" => [
-		0 => "Rozhraní uživatelského nahrávání",
-	],
-	"On-page container" => [
-		0 => "On-page kontejner",
-	],
-	"route" => [
-		0 => "trasa",
-	],
-	"Guest uploads" => [
-		0 => "Nahráno hostem",
-	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "Povol pokud chceš umožnit neregistrovaným uživatelům nahrávání.",
-	],
-	"Moderate uploads" => [
-		0 => "Moderovat nahrávání",
-	],
-	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
-		0 => "Povolte tuto funkci pro moderování příchozích nahrávek. Cílový obsah bude ke schválení vyžadovat moderování.",
-	],
-	"Enable embed codes (uploader)" => [
-		0 => "Povolit vkládací odkazy (v nahrávacím nástroji)",
-	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "Povolte pokud chcete umožnit zobrazování vkládacích odkazů jakmile bude obrázek úspěšné nahraný.",
-	],
-	"Upload threads" => [
-		0 => "Počet vláken pro nahrávání",
-	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "Počet vláken použitých při nahrávání (souběžné nahrávání více souborů)",
-	],
-	"Redirect on single upload" => [
-		0 => "Přesměrování na jednotlivé nahrání",
-	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "Povolte tuto funkci, pokud chcete přesměrovat na stránku s obrázky při jednotlivém nahrávání.",
-	],
-	"Enable duplicate uploads" => [
-		0 => "Povolit duplicitní nahrávání",
-	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs. This setting doesn't affect administrators." => [
-		0 => "Zapněte tuto funkci, pokud chcete povolit duplicitní nahrávání obrázků ze stejné IP adresy v rámci 24 hodin. Toto nastavení nemá vliv na administrátory.",
-	],
-	"Enable expirable uploads" => [
-		0 => "Povolit časové omezení pro nahrané soubory",
-	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "Aktivujte tuto funkci, pokud chcete povolit nahrávání s volbou automatického mazání.",
-	],
-	"Auto delete guest uploads" => [
-		0 => "Automatické mazání návštěvnických uploadů",
-	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "Při povolení budou automatické mazány návštěvnické uploady po určitém čase.",
-	],
-	"Maximum image size" => [
-		0 => "Maximální velikost obrázku",
-	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "Obrázky větší, než je tato velikost budou automaticky zmenšeny. Zadejte nulu (0) pokud chcete zachovat původní velikost obrázku.",
-	],
-	"Image Exif data" => [
-		0 => "Exif data obrázku",
-	],
-	"Keep" => [
-		0 => "Zachovat",
-	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "Zvolit výchozí nastavení pro <a %s>Exif data</a> obrázku při nahrávání.",
-	],
-	"Image Exif data (user setting)" => [
-		0 => "Exif data obrázku (uživ. nastavení)",
-	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "Povolte, pokud chcete, aby měl každý uživatel možnost nastavit, jak bude nakládáno s EXIF daty obrázku.",
-	],
-	"Maximum upload file size" => [
-		0 => "Maximální velikost nahrávaného souboru",
-	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "Maximální velikost povolená serverem je %s. Tato velikost je limitována %u a %p (%f hodnoty).",
-	],
-	"Same as \"%s\" but for guests." => [
-		0 => "Stejné jako \"%s\" ale platné pouze pro neregistrované uživatele.",
-	],
-	"Image path" => [
-		0 => "Cesta k obrázku",
-	],
-	"Relative to Chevereto root" => [
-		0 => "Relativně k Chvereto root",
-	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "Kde ukládat obrázky? Relativní k chevereto rootu.",
-	],
-	"Storage mode" => [
-		0 => "Režim ukládání",
-	],
-	"Datefolders" => [
-		0 => "Složky podle data",
-	],
-	"Direct" => [
-		0 => "Přímý",
-	],
-	"Datefolders creates %s structure" => [
-		0 => "Složka podle data vytvoří %s strukturu",
-	],
-	"File naming method" => [
-		0 => "Metoda pojmenování souborů",
-	],
-	"Original" => [
-		0 => "Originální",
-	],
-	"Mix original + random" => [
-		0 => "Mix originál + náhodné",
-	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "\"Originál\" se bude snažit zachovat název zdrojového obrázku, zatímco \"náhodné \" bude generovat náhodné jméno. \"ID\" název  bude stejný, jako ID obrázku.",
-	],
-	"Thumb size" => [
-		0 => "Velikost miniatury",
-	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "MIniatury budou nastaveny na tuto velikost",
-	],
-	"Medium image fixed dimension" => [
-		0 => "Střední velikost obrázku - pevný rozměr",
-	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "Střední velikost obrázku bude mít tyto rozměry. Například, pokud zvolíte \"šířku\", tento rozměr bude opraven a výška obrázku bude automaticky vypočítána.",
-	],
-	"Medium image fixed size" => [
-		0 => "Střední velikost obrázku - pevná velikost",
-	],
-	"Width or height will be automatically calculated." => [
-		0 => "Šířka nebo výška bude automaticky vypočítána.",
-	],
-	"Watermarks" => [
-		0 => "Vodoznaky",
-	],
-	"Enable this to put a logo or anything you want in image uploads." => [
-		0 => "Aktivuj pokud chceš vložit logo nebo cokoliv jiného do nahrávaných obrázků.",
-	],
-	"Watermark user toggles" => [
-		0 => "Přepínač vodoznaku uživatele",
-	],
-	"Enable watermark on guest uploads" => [
-		0 => "Povolit vodoznak pro soubory nahrané hostem",
-	],
-	"Enable watermark on user uploads" => [
-		0 => "Povolit vodoznak pro soubory nahrané uživatelem",
-	],
-	"Enable watermark on admin uploads" => [
-		0 => "Povolit vodoznak pro soubory nahrané administrátorem",
-	],
-	"Watermark file toggles" => [
-		0 => "Přepínač vodoznaku souboru",
-	],
-	"Enable watermark on GIF image uploads" => [
-		0 => "Povolit vodoznak při nahrávání GIF obrázků",
-	],
-	"Minimum image size needed to apply watermark" => [
-		0 => "Minimální potřebná velikost obrázku pro vložení vodoznaku",
-	],
-	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
-		0 => "Do obrázků menších, než je tato hodnota nebude možno vložit vodoznak. Pokud zadáte nulu (0) , nebude stanoven žádný minimální limit velikosti obrázku.",
-	],
-	"Watermark image" => [
-		0 => "Soubor s vodoznakem",
-	],
-	"You will get best results with plain logos with drop shadow. You can use a large image if the file size is not that big (recommended max. is 16KB). Must be a PNG." => [
-		0 => "Nejlepší výsledky dosáhnete s hladkými logy s vrženým stínem. Můžete použít i velký obrázek ale pouze v případě, že velikost souboru není příliž velká (doporučená velikost je max.16 kb ). Soubor musí být ve formátu png.",
-	],
-	"Watermark position" => [
-		0 => "Pozice vodoznaku",
-	],
-	"left top" => [
-		0 => "vpravo nahoře",
-	],
-	"left center" => [
-		0 => "vlevo uprostřed",
-	],
-	"left bottom" => [
-		0 => "vlevo dole",
-	],
-	"center top" => [
-		0 => "uprostřed nahoře",
-	],
-	"center center" => [
-		0 => "uprostřed",
-	],
-	"center bottom" => [
-		0 => "uprostřed dole",
-	],
-	"right top" => [
-		0 => "vpravo nahoře",
-	],
-	"right center" => [
-		0 => "vpravo uprostřed",
-	],
-	"right bottom" => [
-		0 => "vpravo dole",
-	],
-	"Relative position of the watermark image. First horizontal align then vertical align." => [
-		0 => "Relativní pozice vodoznaku. První hodnota je horizontální, druhá vertikální",
-	],
-	"Watermark percentage" => [
-		0 => "Procentuální velikost vodoznaku",
-	],
-	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
-		0 => "Procentuální velikost vodoznaku v poměru k ploše cílového obrázku. Hodnoty od 1 do 100.",
-	],
-	"Watermark margin" => [
-		0 => "Odsazení vodoznaku.",
-	],
-	"Margin from the border of the image to the watermark image." => [
-		0 => "Odsazení od okraje obrázku po vodoznak.",
-	],
-	"Watermark opacity" => [
-		0 => "Průhlednost vodoznaku.",
-	],
-	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
-		0 => "Průhlednost vodoznaku vzhledem k obrázku. Hodnoty od 0 do 100.",
-	],
-	"Dashboard > Settings > Website" => [
-		0 => "Administrace > Nastavení > Webová stránka",
-	],
-	"Categories won't work when the explorer feature is turned off. To revert this setting go to %s." => [
-		0 => "Kategorie nebudou fungovat, pokud je tato funkce průzkumníka vypnuta. Pro změnu tohoto nastavení běžte do %s.",
-	],
-	"Do you really want to delete the %s category? This can't be undone." => [
-		0 => "Opravdu chcete odstranit tuto %s kategorii? (Tuto akci nelze vrátit zpět)",
-	],
-	"Note: Deleting a category doesn't delete the images that belongs to that category." => [
-		0 => "Upozornění: Odstranění kategorie nezpůsobí odstranění obrázků do ní zařazených.",
-	],
-	"Edit category" => [
-		0 => "Uprav kategorii",
-	],
-	"Expires" => [
-		0 => "Vyprší",
-	],
-	"Do you really want to remove the ban to the IP %s? This can't be undone." => [
-		0 => "Opravdu chcete odstranit zákaz pro tuto IP %s? Tato akce nelze vrátit zpět.",
-	],
-	"Banned IP address will be forbidden to use the entire website." => [
-		0 => "Zakázaným IP adresám bude znemožněn přístup na celý tento web.",
-	],
-	"Edit IP ban" => [
-		0 => "Upravit IP zákaz",
-	],
-	"Enable signups" => [
-		0 => "Povolit registrace",
-	],
-	"Enable this if you want to allow users to signup." => [
-		0 => "Povolte, pokud chcete povolit uživatelům registraci.",
-	],
-	"Enable user content delete" => [
-		0 => "Povolit smazání obsahu uživatele",
-	],
-	"Enable this if you want to allow users to delete their own content. This setting doesn't affect administrators." => [
-		0 => "Zapněte tuto funkci, pokud chcete uživatelům povolit smazat vlastní obsah. Toto nastavení nemá vliv na správce.",
-	],
-	"Minimum age required" => [
-		0 => "Požadavek na minimální věk",
-	],
-	"Empty" => [
-		0 => "Prázdné",
-	],
-	"Leave it empty to don't require a minimum age to use the website." => [
-		0 => "Zanechte pole prázdné, pokud nevyžadujete minimální věk uživatele pro používání této webové stránky.",
-	],
-	"Notify on user signup" => [
-		0 => "Upozornit na registraci uživatele",
-	],
-	"Enable this if you want to get an email notification for each new user signup." => [
-		0 => "Povolte to, pokud chcete dostat e-mailové upozornění pro každou novou registraci uživatele.",
-	],
-	"Username routing" => [
-		0 => "Routování uživatelského jména",
-	],
-	"Enable this if you want to use %s/username URLs instead of %s/user/username." => [
-		0 => "Povolte pokud chcete používat URL ve formátu %s/uzivatelskejmeno namísto %s/uzivatel/username.",
-	],
-	"Require email confirmation" => [
-		0 => "Je vyžadováno potvrzení e-mailu",
-	],
-	"Enable this if users must validate their email address on sign up." => [
-		0 => "Povolte pokud uživatelé musí potvrdit svou e-mailovou schránku během registrace.",
-	],
-	"Require email for social signup" => [
-		0 => "K přihlášení přes sociální síť je vyžadován e-mail.",
-	],
-	"Enable this if users using social networks to register must provide an email address." => [
-		0 => "Povolte pokud uživatelé, využívající k registraci sociální sítě, budou muset také poskytnou svou e-mailovou adresu.",
-	],
-	"User avatar max. filesize" => [
-		0 => "Max. velikost souboru avatara",
-	],
-	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
-		0 => "Max. povolená velikost souboru obrázku avatara. (Max. velikost povolená serverem je %s)",
-	],
-	"User background max. filesize" => [
-		0 => "Max. velikost souboru uživatelského pozadí",
-	],
-	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
-		0 => "Max. povolená velikost souboru obrázku pozadí. (Max. velikost povolená serverem je %s)",
-	],
-	"Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed." => [
-		0 => "Zobrazuje schvalovací obrazovku před přístupem na tyto webové stránky. Toto je užitečné pro webové stránky s obsahem pro dospělé, který by neměl být přístupný nezletilím.",
-	],
-	"Enable consent screen" => [
-		0 => "Zapnout schvalovací obrazovku",
-	],
-	"Consent screen cover image" => [
-		0 => "Obrázek schvalovací obrazovky",
-	],
-	"Block image uploads by IP if the system notice a flood  behavior based on the number of uploads per time period. This setting doesn't affect administrators." => [
-		0 => "Zablokovat nahrávání obrázku pro zvolenou IP adresu a obrana proti záplavě na základě maximálního počtu nahraných souborů za časový úsek. Toto nastavení neovlivňuje administrátory.",
-	],
-	"Notify to email" => [
-		0 => "Upozornit na e-mail",
-	],
-	"If enabled the system will send an email on flood incidents." => [
-		0 => "Pokud je zapnuté, pak vás systém o pokusu o záplavu varuje e-mailem.",
-	],
-	"Minute limit" => [
-		0 => "Minutový limit",
-	],
-	"Hourly limit" => [
-		0 => "Hodinový limit",
-	],
-	"Daily limit" => [
-		0 => "Denní limit",
-	],
-	"Weekly limit" => [
-		0 => "Týdenní limit",
-	],
-	"Monthly limit" => [
-		0 => "Měsíční limit",
-	],
-	"Lock %s editing" => [
-		0 => "Zamknout úpravy %s",
-	],
-	"Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission." => [
-		0 => "Povolte tuto funkci, aby uživatelé nemohli změnit příznak NSFW. Pokud je funkce povolena, toto oprávnění budou mít pouze administrátoři a správci.",
-	],
-	"Show not safe content in listings" => [
-		0 => "V galerii vypisovat i nevhodný obsah",
-	],
-	"Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings." => [
-		0 => "Povolte tuto možnost, pokud chcete zobrazit obsah, který není bezpečný v seznamech. Toto nastavení neovlivní správci a lze přepsat vlastním nastavením uživatele.",
-	],
-	"Blur NSFW content in listings" => [
-		0 => "Rozostření NSFW obsahu v seznamech",
-	],
-	"Enable this if you want to apply a blur effect on the NSFW images in listings." => [
-		0 => "Povolte tuto možnost, pokud chcete použít efekt rozostření  NSFW obrázků v seznamech.",
-	],
-	"Show banners in not safe content" => [
-		0 => "Zobrazit bannery v nevhodném obsahu",
-	],
-	"Enable this if you want to show banners in not safe content pages." => [
-		0 => "Nastavte pokud chcete zobrazovat bannery i mezi nevhodným obsahem.",
-	],
-	"Show not safe content in random mode" => [
-		0 => "Zobraz nevhodný obsah v náhodném pořadí",
-	],
-	"List items per page" => [
-		0 => "Počet obrázků na stránku",
-	],
-	"How many items should be displayed per page listing." => [
-		0 => "Kolik položek může být zobrazeno na jedné stránce výpisu",
-	],
-	"List pagination mode" => [
-		0 => "Listovací stránkování",
-	],
-	"Endless scrolling" => [
-		0 => "Nekonečné skrolování",
-	],
-	"Classic pagination" => [
-		0 => "Klasické stránkování",
-	],
-	"What pagination method should be used." => [
-		0 => "Jaká metoda stránkování má být použita?",
-	],
-	"Listing viewer" => [
-		0 => "Prohlížeč seznamu obrázků",
-	],
-	"Enable this to use the listing viewer when clicking on an image." => [
-		0 => "Povolte to, chcete-li kliknutím na obrázek otevřít prohlížeč seznamu obrázků.",
-	],
-	"Image listing size" => [
-		0 => "Velikost náhledu",
-	],
-	"Fluid" => [
-		0 => "Plynulý",
-	],
-	"Fixed" => [
-		0 => "Pevný",
-	],
-	"Both methods use a fixed width but fluid method uses automatic heights." => [
-		0 => "Obě metody používají pevnou šířku, ale plynulá využívá proměnnou výšku.",
-	],
-	"Album listing images requirement" => [
-		0 => "Požadavek na seznam obrázků v albu",
-	],
-	"explore" => [
-		0 => "průzkumník",
-	],
-	"Sets the minimum image count needed to show albums in explore." => [
-		0 => "Nastavte minimální počet obrázků potřebných pro zobrazení alb v průzkumníkovi.",
-	],
-	"Listing columns number" => [
-		0 => "Počet sloupců výpisu",
-	],
-	"Here you can set how many columns are used based on each target device." => [
-		0 => "Zde můžete nastavit, kolik sloupců se použije na základě každého cílového zařízení.",
-	],
-	"Phone" => [
-		0 => "Telefon",
-	],
-	"Phablet" => [
-		0 => "Phablet",
-	],
-	"Tablet" => [
-		0 => "Tablet",
-	],
-	"Laptop" => [
-		0 => "Notebook",
-	],
-	"Desktop" => [
-		0 => "Počítač",
-	],
-	"Put your themes in the %s folder" => [
-		0 => "Vlož svoje téma (šablonu) do složky %s",
-	],
-	"Tone" => [
-		0 => "Tón",
-	],
-	"Light" => [
-		0 => "Světlý",
-	],
-	"Dark" => [
-		0 => "Tmavý",
-	],
-	"Main color" => [
-		0 => "Hlavní barva",
-	],
-	"Hexadecimal color value" => [
-		0 => "Hexadecimální hodnota barvy",
-	],
-	"Use this to set the main theme color. Value must be in <a href=\"%s\" target=\"_blank\">hex format</a>." => [
-		0 => "Použijte pro nastavení barvy hlavní šablony. Hodnota musí být v <a href=\"%s\" target=\"_blank\">hex formátu</a>.",
-	],
-	"Top bar button color" => [
-		0 => "Barva tlačítka horního baru",
-	],
-	"Blue" => [
-		0 => "Modrá",
-	],
-	"Green" => [
-		0 => "Zelená",
-	],
-	"Orange" => [
-		0 => "Oranžová",
-	],
-	"Red" => [
-		0 => "Červená",
-	],
-	"Grey" => [
-		0 => "Šedá",
-	],
-	"Black" => [
-		0 => "Černá",
-	],
-	"White" => [
-		0 => "Bílá",
-	],
-	"Color for the top bar buttons like the \"Create account\" button." => [
-		0 => "Barva tlačítek na horní liště, např. jako je tlačítko \"Vytvořit účet\".",
-	],
-	"Enable vector logo" => [
-		0 => "Zapnout vektorové logo",
-	],
-	"Enable vector logo for high quality logo in devices with high pixel density." => [
-		0 => "Zapnout vektorové logo pro vysokou kvalitu na HD displejích.",
-	],
-	"Vector logo image" => [
-		0 => "Soubor s vektorovým logem",
-	],
-	"Vector version or your website logo in SVG format." => [
-		0 => "Vektorová verze loga vaší webové stránky ve formátu SVG.",
-	],
-	"Raster logo image" => [
-		0 => "Soubor s rastrovým logem.",
-	],
-	"Bitmap version or your website logo. PNG format is recommended." => [
-		0 => "Rastrová verze loga vaší webové stránky, nejlépe ve formátu PNG.",
-	],
-	"Logo height" => [
-		0 => "Výška loga.",
-	],
-	"No value" => [
-		0 => "Žádná hodnota",
-	],
-	"Use this to set the logo height if needed." => [
-		0 => "Toto použijte pro natavení výšky loga pokud je to potřeba.",
-	],
-	"Favicon image" => [
-		0 => "Favicon (ikonka webu)",
-	],
-	"Favicon image. Image must have same width and height." => [
-		0 => "Favicon musí mít stejnou šířku a výšku.",
 	],
 	"Image load max. filesize" => [
 		0 => "Max. velikost obrázku",
@@ -2908,273 +2422,6 @@ $translation_table = [
 	"Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website." => [
 		0 => "Zde nepoužívejte značku %s. Toto je pro jednoduchý kód JS, ne pro značky skriptů HTML. Používáte-li zde značky skriptů, narušíte své webové stránky.",
 	],
-	"Style" => [
-		0 => "Styl",
-	],
-	"Landing page" => [
-		0 => "Vstupní stránka",
-	],
-	"Split landing + images" => [
-		0 => "Split landing + obrázky",
-	],
-	"Route %s" => [
-		0 => "Trasa %s",
-	],
-	"upload" => [
-		0 => "nahrát",
-	],
-	"Select the homepage style. To customize it further edit app/themes/%s/views/index.php" => [
-		0 => "Vyberte styl domovské obrazovky. Pro přispůsobení stylu jej upravte v app/themes/%s/views/index.php",
-	],
-	"Cover image" => [
-		0 => "Titulní obrázek",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "Opravdu chcete obrázek vymazat? Tuto akci nelze vzít zpět.",
-	],
-	"Delete image" => [
-		0 => "Smazat obrázek",
-	],
-	"Add new cover image" => [
-		0 => "Přidat nový titulní obrázek",
-	],
-	"This will be added inside the homepage %s tag. Leave it blank to use the default contents." => [
-		0 => "Toto bude přidáno dovnitř %s tagu domovské stránky. Ponechte pole prázdné pro použití výchozího obsahu.",
-	],
-	"Paragraph" => [
-		0 => "Odstavec",
-	],
-	"Call to action button color" => [
-		0 => "Barva tlačítka \"Call to action\"",
-	],
-	"Color of the homepage call to action button." => [
-		0 => "Barva tlačítka s výzvou k akci na domovské stránce.",
-	],
-	"Call to action outline style button" => [
-		0 => "okraje tlačítek",
-	],
-	"Enable this to use outline style for the homepage call to action button." => [
-		0 => "Zapněte, pokud chcete aktivovat rámeček kolem tlačítka akce na titulce",
-	],
-	"Call to action functionality" => [
-		0 => "Funkce tlačítka Call to action",
-	],
-	"Trigger uploader" => [
-		0 => "Spouštění nahrávání",
-	],
-	"Open URL" => [
-		0 => "Otevřít URL adresu",
-	],
-	"Call to action URL" => [
-		0 => "Výzva k akci URL",
-	],
-	"Enter an absolute or relative URL" => [
-		0 => "Zadat absolutní nebo relativní URL",
-	],
-	"A relative URL like %r will be mapped to %l" => [
-		0 => "Relativní URL jako %r bude namapována na %l",
-	],
-	"Call to action HTML" => [
-		0 => "Výzva k akci HTML",
-	],
-	"This will be added inside the call to action <a> tag. Leave it blank to use the default contents." => [
-		0 => "Toto bude přidáno uvnitř výzvy k akci <a> tagu. Zanechte prázdné pro použití výchozího obsahu.",
-	],
-	"User IDs" => [
-		0 => "ID uživatele(ů)",
-	],
-	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
-		0 => "Seznam ID cílových uživatelů oddělených čárkami pro zobrazení jejich obrázků na domovské stránce. Chcete-li zobrazit všechny poslední obrázky, ponechte pole prázdné nebo zadejte nulu.",
-	],
-	"Automatic updates check" => [
-		0 => "Automatická kontrola aktualizací",
-	],
-	"When enabled the system will automatically check for new updates." => [
-		0 => "Když je tato volba povolena, umožňuje systému automaticky kontrolovat nové aktualizace.",
-	],
-	"Display available updates notification" => [
-		0 => "Zobrazení oznámení o dostupné aktualizaci Chevereta",
-	],
-	"Enable this to show a notice on top warning you about new available system updates." => [
-		0 => "Povolte, pokud chcete zobrazit oznámení při dostupné aktualizaci Chevereta.",
-	],
-	"Dump update query" => [
-		0 => "Dotaz na aktualizaci výpisu",
-	],
-	"Enable this if you want to dump the update query to run it manually." => [
-		0 => "Aktivujte tuto možnost, pokud chcete automaticky zjistit a nastavit správný jazyk pro každého uživatele.",
-	],
-	"SEO %s URLs" => [
-		0 => "SEO URL adresy pro %s",
-	],
-	"Enable this if you want to use SEO %s URLs." => [
-		0 => "Povolte tuto možnost, pokud chcete používat SEO URL adresy pro %s.",
-	],
-	"Maintenance" => [
-		0 => "Mód údržby",
-	],
-	"When enabled the website will show a maintenance message. This setting doesn't affect administrators." => [
-		0 => "Při aktivaci se na webové stránce se zobrazí hlášení o údržbě. Toto nastavení nemá vliv na administrátory.",
-	],
-	"Crypt salt" => [
-		0 => "Kryptografická sůl",
-	],
-	"This is the salt used to convert numeric ID to alphanumeric. It was generated on install." => [
-		0 => "Toto je \"salt\" (kryptografická sůl) používaný k převodu číselného ID na alfanumerický. Byl vygenerován během instalace.",
-	],
-	"PHP error reporting" => [
-		0 => "Hlášení chyb PHP",
-	],
-	"Enable this if you want to print errors generated by PHP <a %s>error_reporting()</a>. This should be disabled in production." => [
-		0 => "Povolte, pokud chcete tisknout chyby generované PHP <a %s>error_reporting()</a>. Toto by mělo být ve výchozím nastavení vypnuto.",
-	],
-	"Debug level" => [
-		0 => "Úroveň ladění",
-	],
-	"None" => [
-		0 => "Není",
-	],
-	"Error log" => [
-		0 => "Protokol chyb",
-	],
-	"Print errors without error log" => [
-		0 => "Vytisknout chyby bez protokolu chyb",
-	],
-	"Print and log errors" => [
-		0 => "Vytisknout a protokolovat chyby",
-	],
-	"To configure the debug level check the <a %s>debug documentation</a>. Default level is \"Error log\" (1)." => [
-		0 => "Pro nastavení úrovně ladění si prohlédněte <a %s>debug documentation</a>. Výchozí hodnota je \"Error log\" (1).",
-	],
-	"Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed." => [
-		0 => "Směrování umožňuje přizpůsobit výchozí vazby trasy za běhu. Povoleny jsou pouze alfanumerické znaky, spojovníky a znak podtržítka.",
-	],
-	"Image routing" => [
-		0 => "Směrování obrázku",
-	],
-	"Routing for %s" => [
-		0 => "Směrování pro %s",
-	],
-	"Album routing" => [
-		0 => "Směrování alba",
-	],
-	"Hostname" => [
-		0 => "Název hostitele",
-	],
-	"Hostname on which sub-domain wildcards will be added." => [
-		0 => "Název hostitele, ke kterému budou přidány zástupné znaky subdomény.",
-	],
-	"This setting may be overridden by %s." => [
-		0 => "Toto nastavení může být přepsáno pomocí %s.",
-	],
-	"Language subdomains" => [
-		0 => "Jazykové subdomény",
-	],
-	"languages" => [
-		0 => "jazyky",
-	],
-	"Enable to use %s for %t." => [
-		0 => "Povolit použití %s pro %t.",
-	],
-	"Username subdomains" => [
-		0 => "Subdomény uživatelského jména",
-	],
-	"user profiles" => [
-		0 => "uživatelských profilů",
-	],
-	"Custom language strings" => [
-		0 => "Vlastní jazykové řetězce",
-	],
-	"Default language" => [
-		0 => "Výchozí jazyk",
-	],
-	"Default base language to use." => [
-		0 => "Výchozí jazyk pro použití",
-	],
-	"Auto language" => [
-		0 => "Jazyk automaticky",
-	],
-	"Enable this if you want to automatically detect and set the right language for each user." => [
-		0 => "Povolte, pokud chcete, aby se automaticky detekovat a nastavil správný jazyk pro každého uživatele.",
-	],
-	"Language chooser" => [
-		0 => "Výběr jazyka",
-	],
-	"Enable this if you want to allow language selection." => [
-		0 => "Povolte tuto možnost, pokud chcete povolit výběr jazyka.",
-	],
-	"Enabled languages" => [
-		0 => "Povolené jazyky",
-	],
-	"Unchecked languages won't be used in your website." => [
-		0 => "Nezaškrtnuté jazyky nebudou použity na vašich webových stránkách.",
-	],
-	"Toggle this to enable or disable HTTPS" => [
-		0 => "Přepněte pro zapnutí HTTPS",
-	],
-	"Toggle this to enable or disable this storage" => [
-		0 => "Přepněte pro povolení nebo zakázání tohoto úložiště.",
-	],
-	"Quota" => [
-		0 => "Kvóta",
-	],
-	"Active" => [
-		0 => "Aktivní",
-	],
-	"Storage method" => [
-		0 => "Metoda ukládání",
-	],
-	"Local storage is used by default or when no external storage is active." => [
-		0 => "Ve výchozím stavu je nataveno místní ukládání. Používá se i pokud není aktivní žádné externí uložiště.",
-	],
-	"If you need help check the <a %s>storage documentation</a>." => [
-		0 => "Pokud potřebujete pomoc, zkontrolujte <a %s>dokumentaci úložiště</a>.",
-	],
-	"Edit storage" => [
-		0 => "Upravit úložiště.",
-	],
-	"From name" => [
-		0 => "Od jména",
-	],
-	"Sender name for emails sent to users." => [
-		0 => "Jméno odesílatele uvedeného v e-mailech odeslaných uživatelům.",
-	],
-	"From email address" => [
-		0 => "Z e-mailové adresy",
-	],
-	"Sender email for emails sent to users." => [
-		0 => "E-mail odesílatele uvedený v e-mailech odeslaných uživatelům.",
-	],
-	"Incoming email address" => [
-		0 => "Příchozí e-mailová adresa",
-	],
-	"Recipient for contact form and system alerts." => [
-		0 => "Příjemce pro kontaktování v případě systémových varování.",
-	],
-	"Email mode" => [
-		0 => "Režim e-mailu.",
-	],
-	"How to send emails? SMTP recommended." => [
-		0 => "Způsob odesílání e-mailů. Doporučena metoda SMTP.",
-	],
-	"SMTP server and port" => [
-		0 => "SMTP server a port",
-	],
-	"SMTP server" => [
-		0 => "SMTP server",
-	],
-	"SMTP username" => [
-		0 => "Uživatelské jméno na SMTP server",
-	],
-	"SMTP password" => [
-		0 => "Heslo na SMTP server",
-	],
-	"SMTP security" => [
-		0 => "SMTP zabezpečení",
-	],
-	"Unsecured" => [
-		0 => "Nezabezpečeno",
-	],
 	"Decode ID" => [
 		0 => "ID dekódování",
 	],
@@ -3208,9 +2455,6 @@ $translation_table = [
 	"This will re-calculate the sum of all the image records associated to the target external storage." => [
 		0 => "Tím se přepočítá součet všech záznamů obrázků přidružených k cílovému externímu úložišti.",
 	],
-	"Migrate image records from one external storage to another" => [
-		0 => "Migrujte záznamy obrázků z jednoho externího úložiště do jiného",
-	],
 	"Source storage id" => [
 		0 => "ID zdrojového úložiště",
 	],
@@ -3223,155 +2467,209 @@ $translation_table = [
 	"This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage." => [
 		0 => "Toto pouze aktualizuje databázi. Musíte přenést skutečné soubory do cílového úložného kontejneru. Přepis URL je důrazně doporučen. Použijte nulu (0) pro místní úložiště.",
 	],
-	"You need a <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook app</a> for this." => [
-		0 => "Potřebujete <a href=\"https://developers.facebook.com/\" target=\"_blank\">Facebook aplikaci</a>.",
-	],
-	"Facebook app id" => [
-		0 => "ID Facebook aplikace",
-	],
-	"Facebook app secret" => [
-		0 => "Facebook app secret",
-	],
-	"You need a <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> for this." => [
-		0 => "Potřebujete <a href=\"https://apps.twitter.com\" target=\"_blank\">Twitter app</a> pro toto.",
-	],
-	"Twitter API key" => [
-		0 => "Twitter API klíč",
-	],
-	"Twitter API secret" => [
-		0 => "Twitter API secret",
-	],
-	"Twitter account" => [
-		0 => "Twitter účet",
-	],
-	"You need a <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> for this." => [
-		0 => "Potřebujete <a href=\"https://cloud.google.com/console\" target=\"_blank\">Google app</a> pro toto.",
-	],
-	"Google client id" => [
-		0 => "Google client (klientské) id",
-	],
-	"Google client secret" => [
-		0 => "Google client secret",
-	],
-	"You need a <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> for this." => [
-		0 => "Potřebujete <a href=\"http://vk.com/dev\" target=\"_blank\">VK app</a> pro toto.",
-	],
-	"VK client id" => [
-		0 => "VK client id",
-	],
-	"VK client secret" => [
-		0 => "VK client secret",
-	],
-	"%s spam protection" => [
-		0 => "Ochrana proti spamu %s",
-	],
-	"user generated content" => [
-		0 => "uživatelem vytvořený obsah",
-	],
-	"Enable this to use %l to block spam on %c." => [
-		0 => "Povolte tuto možnost, chcete-li pomocí %s blokovat spam na %c.",
-	],
-	"%s API key" => [
-		0 => "API klíč %s",
-	],
-	"user signup" => [
-		0 => "registrace uživatele",
-	],
-	"You need a <a href=\"%s\" target=\"_blank\">reCAPTCHA key</a> for this." => [
-		0 => "Potřebujete <a href=\"%s\" target=\"_blank\">reCAPTCHA klíč</a>.",
-	],
-	"Please note that each reCAPTCHA version require its own set of keys. Don't forget to update the keys if you change versions." => [
-		0 => "Vezměte prosím na vědomí, že každá verze reCAPTCHA vyžaduje vlastní sadu klíčů. Nezapomeňte aktualizovat klíče, pokud měníte verze.",
-	],
-	"%s site key" => [
-		0 => "%s kód stránky",
-	],
-	"%s secret key" => [
-		0 => "%s tajný kód",
-	],
-	"reCAPTCHA threshold" => [
-		0 => "reCAPTCHA threshold (práh)",
-	],
-	"How many failed attempts are needed to ask for reCAPTCHA? Use zero (0) to always show reCAPTCHA." => [
-		0 => "Kolik neúspěšných pokusů je zapotřebí k vyžadování reCAPTCHA? Zadejte nula (0), aby se reCAPTCHA zobrazovala vždy.",
-	],
-	"Force %s on contact page" => [
-		0 => "Vynutit %s na kontaktní stránce",
-	],
-	"Enable this to always show %s on contact page." => [
-		0 => "Aktivací této funkce se bude %s vždy zobrazovat na kontaktní stránce.",
-	],
-	"Comments API" => [
-		0 => "API komentářů",
-	],
-	"Disqus API works with %s." => [
-		0 => "Disqus API pracuje s %s.",
-	],
-	"Disqus shortname" => [
-		0 => "Vaše krátké jméno na Disqus",
-	],
-	"%s public key" => [
-		0 => "%s veřejný kód",
-	],
-	"Comment code" => [
-		0 => "Kód komentáře",
-	],
-	"Disqus, Facebook or anything you want. It will be used in image view." => [
-		0 => "Disqus, Facebook nebo cokoliv jiného. Bude použito v zobrazení obrázku.",
-	],
-	"Automatically moderate the content using the %s service." => [
-		0 => "Automaticky moderujte obsah pomocí služby %s.",
-	],
-	"Automatic approve" => [
-		0 => "Automatické schválení",
-	],
-	"Enable this to automatically approve content moderated by this service." => [
-		0 => "Povolte tuto funkci pro automatické schválení obsahu moderovaného touto službou.",
-	],
-	"Block content" => [
-		0 => "Blokovat obsah",
-	],
-	"Adult" => [
-		0 => "Dospělí",
-	],
-	"Teen and adult" => [
-		0 => "Dospívající i dospělí",
-	],
-	"Flag NSFW" => [
-		0 => "Příznak NSFW",
-	],
-	"Analytics code" => [
-		0 => "Kód analytics.",
-	],
-	"Google Analytics or anything you want. It will be added to the theme footer." => [
-		0 => "Google Analytics nebo cokoliv jiného. Bude přidáno do patičky.",
-	],
-	"API v1 key" => [
-		0 => "API v1 klíč",
-	],
-	"Use this key when using the <a %s>API v1</a>." => [
-		0 => "Použít tento klíč při použití <a %s>API v1</a>.",
+	"Additional settings" => [
+		0 => "Doplňková nastavení",
 	],
 	"Plugin route" => [
 		0 => "Směrování Pluginu",
 	],
-	"Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu. This setting doesn't affect administrators." => [
-		0 => "Toto aktivujte, aby jste zobrazili instrukce pluginu na %u. Odkaz na tyto pokyny bude přidán do nabídky %s.Toto nastavení nemá vliv na administrátory.",
-	],
 	"Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL." => [
 		0 => "Toto použijte pro nastavení vlastní URL adresy pro %p. Upozorňujeme, že musíte v této URL adrese ručně zkopírovat %s.",
 	],
-	"Cookie law compliance" => [
-		0 => "Vyžádání EU cookie politiky",
+	"Enable signups" => [
+		0 => "Povolit registrace",
 	],
-	"Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies." => [
-		0 => "Povolením této možnosti se zobrazí zpráva, která splňuje požadavky kladené na cookie právních předpisů EU. Poznámka: Toto nastavení budete potřebovat pouze, pokud jsou vaše webové stránky umístěny v EU, a pokud přidáte tracking cookies.",
+	"Enable this if you want to allow users to signup." => [
+		0 => "Povolte, pokud chcete povolit uživatelům registraci.",
 	],
-	"Save changes" => [
-		0 => "Uložit změny",
+	"Enable user content delete" => [
+		0 => "Povolit smazání obsahu uživatele",
 	],
-	"Check the errors to proceed." => [
-		0 => "Před pokračováním zkontrolujte chyby",
+	"Minimum age required" => [
+		0 => "Požadavek na minimální věk",
+	],
+	"Leave it empty to don't require a minimum age to use the website." => [
+		0 => "Zanechte pole prázdné, pokud nevyžadujete minimální věk uživatele pro používání této webové stránky.",
+	],
+	"Notify on user signup" => [
+		0 => "Upozornit na registraci uživatele",
+	],
+	"Enable this if you want to get an email notification for each new user signup." => [
+		0 => "Povolte to, pokud chcete dostat e-mailové upozornění pro každou novou registraci uživatele.",
+	],
+	"Require email confirmation" => [
+		0 => "Je vyžadováno potvrzení e-mailu",
+	],
+	"Enable this if users must validate their email address on sign up." => [
+		0 => "Povolte pokud uživatelé musí potvrdit svou e-mailovou schránku během registrace.",
+	],
+	"Require email for social signup" => [
+		0 => "K přihlášení přes sociální síť je vyžadován e-mail.",
+	],
+	"Enable this if users using social networks to register must provide an email address." => [
+		0 => "Povolte pokud uživatelé, využívající k registraci sociální sítě, budou muset také poskytnou svou e-mailovou adresu.",
+	],
+	"User avatar max. filesize" => [
+		0 => "Max. velikost souboru avatara",
+	],
+	"Max. allowed filesize for user avatar image. (Max allowed by server is %s)" => [
+		0 => "Max. povolená velikost souboru obrázku avatara. (Max. velikost povolená serverem je %s)",
+	],
+	"User background max. filesize" => [
+		0 => "Max. velikost souboru uživatelského pozadí",
+	],
+	"Max. allowed filesize for user background image. (Max allowed by server is %s)" => [
+		0 => "Max. povolená velikost souboru obrázku pozadí. (Max. velikost povolená serverem je %s)",
+	],
+	"Enable this to put a logo or anything you want in image uploads." => [
+		0 => "Aktivuj pokud chceš vložit logo nebo cokoliv jiného do nahrávaných obrázků.",
+	],
+	"Watermark user toggles" => [
+		0 => "Přepínač vodoznaku uživatele",
+	],
+	"Enable watermark on guest uploads" => [
+		0 => "Povolit vodoznak pro soubory nahrané hostem",
+	],
+	"Enable watermark on user uploads" => [
+		0 => "Povolit vodoznak pro soubory nahrané uživatelem",
+	],
+	"Enable watermark on admin uploads" => [
+		0 => "Povolit vodoznak pro soubory nahrané administrátorem",
+	],
+	"Watermark file toggles" => [
+		0 => "Přepínač vodoznaku souboru",
+	],
+	"Enable watermark on GIF image uploads" => [
+		0 => "Povolit vodoznak při nahrávání GIF obrázků",
+	],
+	"Minimum image size needed to apply watermark" => [
+		0 => "Minimální potřebná velikost obrázku pro vložení vodoznaku",
+	],
+	"Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit." => [
+		0 => "Do obrázků menších, než je tato hodnota nebude možno vložit vodoznak. Pokud zadáte nulu (0) , nebude stanoven žádný minimální limit velikosti obrázku.",
+	],
+	"Watermark image" => [
+		0 => "Soubor s vodoznakem",
+	],
+	"Watermark position" => [
+		0 => "Pozice vodoznaku",
+	],
+	"left top" => [
+		0 => "vpravo nahoře",
+	],
+	"left center" => [
+		0 => "vlevo uprostřed",
+	],
+	"left bottom" => [
+		0 => "vlevo dole",
+	],
+	"center top" => [
+		0 => "uprostřed nahoře",
+	],
+	"center center" => [
+		0 => "uprostřed",
+	],
+	"center bottom" => [
+		0 => "uprostřed dole",
+	],
+	"right top" => [
+		0 => "vpravo nahoře",
+	],
+	"right center" => [
+		0 => "vpravo uprostřed",
+	],
+	"right bottom" => [
+		0 => "vpravo dole",
+	],
+	"Relative position of the watermark image. First horizontal align then vertical align." => [
+		0 => "Relativní pozice vodoznaku. První hodnota je horizontální, druhá vertikální",
+	],
+	"Watermark percentage" => [
+		0 => "Procentuální velikost vodoznaku",
+	],
+	"Watermark percentual size relative to the target image area. Values 1 to 100." => [
+		0 => "Procentuální velikost vodoznaku v poměru k ploše cílového obrázku. Hodnoty od 1 do 100.",
+	],
+	"Watermark margin" => [
+		0 => "Odsazení vodoznaku.",
+	],
+	"Margin from the border of the image to the watermark image." => [
+		0 => "Odsazení od okraje obrázku po vodoznak.",
+	],
+	"Watermark opacity" => [
+		0 => "Průhlednost vodoznaku.",
+	],
+	"Opacity of the watermark in the final watermarked image. Values 0 to 100." => [
+		0 => "Průhlednost vodoznaku vzhledem k obrázku. Hodnoty od 0 do 100.",
+	],
+	"Website name" => [
+		0 => "Název webu",
+	],
+	"Website doctitle" => [
+		0 => "Nadpis webové stránky (title)",
+	],
+	"Website description" => [
+		0 => "Popis webu",
+	],
+	"Default time zone" => [
+		0 => "Výchozí časové pásmo",
+	],
+	"Select region" => [
+		0 => "Vyber region",
+	],
+	"Allows to search images, albums and users based on a given search query." => [
+		0 => "Umožňuje vyhledávat obrázky, alba a uživatele na základě daného vyhledávacího dotazu.",
+	],
+	"Enables to browse public uploaded images. It also enables categories." => [
+		0 => "Umožňuje procházet veřejně nahrané obrázky. Také umožňuje procházet veřejné kategorie.",
+	],
+	"Enables to browse images randomly." => [
+		0 => "Umožňuje prohlížet obrázky v náhodném pořadí.",
+	],
+	"Likes" => [
+		0 => "Líbí se",
+	],
+	"Allows users to like content and populate \"Most liked\" listings." => [
+		0 => "Umožňuje uživatelům \"lajkovat\" obsah a šířit výpisy \"Nejoblíbenějších\".",
+	],
+	"Followers allows users to follow each other." => [
+		0 => "Odběratelé uživatelům umožňují se navzájem sledovat.",
+	],
+	"Website mode" => [
+		0 => "Režim webové stránky",
+	],
+	"You can switch the website mode anytime." => [
+		0 => "Režim webové stránky můžete kdykoliv přepnout.",
+	],
+	"Custom route to map /username to /something. Use \"/\" to map to homepage." => [
+		0 => "Vlastní cesta pro namapování /uživatelskéjméno na /cokoliv. Použijte \"/\" pro namapování na domovskou stránku.",
+	],
+	"Website privacy mode" => [
+		0 => "Režim soukromí webu",
+	],
+	"Private mode will make the website only available for registered users." => [
+		0 => "Soukromý režim způsobí, že stránka bude dostupná pouze registrovaným uživatelům.",
+	],
+	"Content privacy mode" => [
+		0 => "Obsah soukromého módu",
+	],
+	"Force private (self)" => [
+		0 => "Vynutit soukromí (jen já)",
+	],
+	"Force private (anyone with the link)" => [
+		0 => "Vynutit soukromí (kdokoliv kdo má link)",
+	],
+	"Forced privacy modes will override user selected privacy." => [
+		0 => "Vynucení soukromí ovlivní i to co měl uživatel nastaveno.",
+	],
+	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
+		0 => "Ujistěte se, že tento problém řešíte, protože systém spoléhá na přesné detekce IP, aby poskytoval základní funkce a chránil před spamem, záplavami a útoky brutální silou.",
+	],
+	"Role" => [
+		0 => "Úloha",
+	],
+	"Email address" => [
+		0 => "E-mailová adresa",
 	],
 	"Play GIF" => [
 		0 => "Přehrát GIF",
@@ -3379,20 +2677,14 @@ $translation_table = [
 	"Load 360° view" => [
 		0 => "Načíst 360° pohled",
 	],
-	"Load full resolution" => [
-		0 => "Načíst v plném rozlišení",
-	],
 	"Do you really want to approve this image? The image will go public if you approve it." => [
 		0 => "Opravdu chcete odstranit veškerý vybraný obsah? Toto nelze vrátit zpět.",
-	],
-	"This is the album cover" => [
-		0 => "Toto je obal alba",
 	],
 	"Cover" => [
 		0 => "Obal",
 	],
-	"Added to %a and categorized in %c" => [
-		0 => "Přidáno do alba %a a zařazeno do kategorie %c",
+	"This is the album cover" => [
+		0 => "Toto je obal alba",
 	],
 	"Added to %s" => [
 		0 => "Přidáno do alba %s",
@@ -3409,17 +2701,14 @@ $translation_table = [
 	"More Exif data" => [
 		0 => "Více EXIF dat",
 	],
-	"Album ID" => [
-		0 => "Album ID",
+	"Add IP ban" => [
+		0 => "Přidat zakázanou IP",
 	],
 	"Upload and share your images." => [
 		0 => "Nahrajte a sdílejte obrázky.",
 	],
 	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
 		0 => "Chyťte a přetáhněte obrázky kamkoli budete chtít a začněte ihned nahrávat. Maximální velikost souboru je %s. \nZískáte přímé odkazy, BB-kód, HTML náhledy a vaše obrázky můžete snadno sdílet na mnoha sociálních sítích.",
-	],
-	"Start uploading" => [
-		0 => "Začít nahrávat",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "Zaregistrujte se pro zpřístupnění všech funkcí",
@@ -3430,17 +2719,11 @@ $translation_table = [
 	"Sign in with your account" => [
 		0 => "Přihlaste se pomocí svého účtu",
 	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "Nemáte účet? <a href='%s'>Registrujte se</a>.",
-	],
 	"Logged out" => [
 		0 => "Odhlášeno",
 	],
 	"You have been logged off %s. Hope to see you soon." => [
 		0 => "Odhlášení z webu %s proběhlo úspěšně. Brzy na shledanou.",
-	],
-	"Go to homepage" => [
-		0 => "Jít na úvodní stránku",
 	],
 	"Website under maintenance" => [
 		0 => "Na webové stránce probíhá údržba",
@@ -3453,9 +2736,6 @@ $translation_table = [
 	],
 	"Please enter your password to continue." => [
 		0 => "Pro pokračování zadejte prosím vaše heslo.",
-	],
-	"Send" => [
-		0 => "Odeslat",
 	],
 	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
 		0 => "Přidejte funkci nahrávání obrázků na své webové stránky, blog nebo fórum nainstalováním pluginu pro nahrávání. Tato funkce poskytuje možnost nahrávání obrázků z libovolné webové stránky tím, že zde umístí tlačítko, které umožní vašim uživatelům přímo odesílat obrázky do naší služby a automaticky zpracuje a vytvoří kódy potřebné pro vkládání. Všechny funkce zahrnují například funkci přetáhni a pusť, vzdálené nahrávání, změnu velikosti obrázků a další.",
@@ -3514,24 +2794,6 @@ $translation_table = [
 	"The plugin has a large set of additional options that allow full customization. You can use custom HTML, CSS, own color palette, set observers and more. Check the %d and the plugin source to get a better idea of these advanced options." => [
 		0 => "Plugin má velkou sadu dalších možností, které umožňují úplné přizpůsobení. Můžete použít vlastní HTML, CSS, vlastní paletu barev, nastavit pozorovatele a další. Zkontrolujte %d a zdroj pluginu, abyste získali lepší představu o těchto pokročilých možnostech.",
 	],
-	"You either don't have permission to access this page or the link has expired." => [
-		0 => "Nemáte oprávnění k prohlížení této stránky nebo odkaz ze kterého jste se zde dostali již expiroval.",
-	],
-	"Search results" => [
-		0 => "Výsledky vyhledávání",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "Opravdu chcete odstranit tohoto uživatele? Tuto akci nelze vzít zpět.",
-	],
-	"Delete user" => [
-		0 => "Odstranit uživatele",
-	],
-	"Register date" => [
-		0 => "Datum registrace",
-	],
-	"Registration IP" => [
-		0 => "IP při registraci",
-	],
 	"Valid" => [
 		0 => "Platný",
 	],
@@ -3540,9 +2802,6 @@ $translation_table = [
 	],
 	"Awaiting email" => [
 		0 => "Čeká se na e-mail",
-	],
-	"Awaiting confirmation" => [
-		0 => "Čeká se na potvrzení",
 	],
 	"%i to %f characters<br>Letters, numbers and \"_\"" => [
 		0 => "%i do %f znaků<br>Písmena, čísla a \"_\"",
@@ -3574,11 +2833,23 @@ $translation_table = [
 	"Timezone" => [
 		0 => "Časová zóna",
 	],
-	"This service is provided by %website_name%, we are an independent service provider. Many thanks for your ongoing support." => [
-		0 => "Tuto službu poskytuje %website_name%, jsme nezávislým poskytovatelem služeb. Mnohokrát děkujeme za vaši trvalou podporu.",
+	"User has no connections." => [
+		0 => "Uživatel nemá žádné propojení.",
 	],
-	"At %website_name% we are proudly using and supporting %software%." => [
-		0 => "Jsme hrdí, že na naší webové stránce %website_name% používáme a podporujeme %software%.",
+	"Do you really want to disconnect %s from this account?" => [
+		0 => "Opravdu se chcete odpojit %s od tohoto účtu?",
+	],
+	"This account is connected to %s" => [
+		0 => "Tento účet je propojen s %s",
+	],
+	"Do you really want to disconnect your %s account?" => [
+		0 => "Opravdu chcete odpojit váš %s účet?",
+	],
+	"You will be logged out and you won't be able to login to your account using this %s account." => [
+		0 => "Budete odhlášen(a) a již se nebudete moci přihlásit ke svému účtu prostřednictvím tohoto %s účtu.",
+	],
+	"Button" => [
+		0 => "Tlačítko",
 	],
 	"Current password" => [
 		0 => "Současné heslo",
@@ -3619,50 +2890,11 @@ $translation_table = [
 	"This is your real name, not your username." => [
 		0 => "Toto je vaše opravdové jméno, ne uživatelské.",
 	],
-	"http://yourwebsite.com" => [
-		0 => "http://vašewebovástránka.cz",
-	],
 	"Bio" => [
 		0 => "Životopis",
 	],
 	"Tell us a little bit about you" => [
 		0 => "Řekněte nám něco o vás...",
-	],
-	"User has no connections." => [
-		0 => "Uživatel nemá žádné propojení.",
-	],
-	"Link your account to external services to be able to login here." => [
-		0 => "Propojte svůj účet s externími službami, abyste se mohli přihlásit a sdílet obsah.",
-	],
-	"Do you really want to disconnect %s from this account?" => [
-		0 => "Opravdu se chcete odpojit %s od tohoto účtu?",
-	],
-	"This account is connected to %s" => [
-		0 => "Tento účet je propojen s %s",
-	],
-	"Do you really want to disconnect your %s account?" => [
-		0 => "Opravdu chcete odpojit váš %s účet?",
-	],
-	"You will be logged out and you won't be able to login to your account using this %s account." => [
-		0 => "Budete odhlášen(a) a již se nebudete moci přihlásit ke svému účtu prostřednictvím tohoto %s účtu.",
-	],
-	"Your account is connected to %s" => [
-		0 => "Váš účet je propojen s %s",
-	],
-	"disconnect" => [
-		0 => "odpojit",
-	],
-	"Connect %s" => [
-		0 => "Propojit %s",
-	],
-	"Feel free to browse and discover all my shared images and albums." => [
-		0 => "Neváhejte a prohlédněte si všechny mé sdílené obrázky a alba.",
-	],
-	"Button" => [
-		0 => "Tlačítko",
-	],
-	"View all my images" => [
-		0 => "Zobrazit všechny mé obrázky",
 	],
 	"Login" => [
 		0 => "Přihlásit se",
@@ -3676,20 +2908,8 @@ $translation_table = [
 	"If you have already signed up maybe you need to request to %s to activate your account." => [
 		0 => "Pokud jste se již zaregistrovali, možná budete muset požádat %s o aktivaci Vašeho účtu.",
 	],
-	"You can also %s." => [
-		0 => "Můžete také %s.",
-	],
 	"I'm at least %s years old" => [
 		0 => "Je mi minimálně %s let.",
-	],
-	"terms" => [
-		0 => "Podmínky",
-	],
-	"privacy policy" => [
-		0 => "Zásady ochrany osobních údajů",
-	],
-	"I agree to the %terms_link and %privacy_link" => [
-		0 => "Souhlasím s %terms_link a %privacy_link",
 	],
 	"Upload profile background" => [
 		0 => "Nahrát pozadí profilu",
@@ -3699,9 +2919,6 @@ $translation_table = [
 	],
 	"Upload new image" => [
 		0 => "Nahrát nový soubor",
-	],
-	"The profile background image will be deleted. This can't be undone. Are you sure that you want to delete the profile background image?" => [
-		0 => "Profilový obrázek pozadí bude odstraněn. Tuto akci nelze vrátit. Opravdu si přejete pokračovat?",
 	],
 	"Delete background" => [
 		0 => "Odstranit pozadí",
@@ -3715,15 +2932,6 @@ $translation_table = [
 	"Follow" => [
 		0 => "Sledovat",
 	],
-	"You have been forbidden to use this website." => [
-		0 => "Máte zakázáno používat tuto webovou stránku.",
-	],
-	"Plugin" => [
-		0 => "Plugin",
-	],
-	"Page %s" => [
-		0 => "Stránka %s",
-	],
 	"General questions/comments" => [
 		0 => "Obecné dotazy a komentáře",
 	],
@@ -3735,9 +2943,6 @@ $translation_table = [
 	],
 	"Invalid subject" => [
 		0 => "Neplatný předmět",
-	],
-	"Mail error" => [
-		0 => "Chyba e-mailu.",
 	],
 	"Message sent" => [
 		0 => "Zpráva byla odeslána",
@@ -3754,29 +2959,8 @@ $translation_table = [
 	"Subject" => [
 		0 => "Předmět zprávy",
 	],
-	"All the changes that you have made will be lost if you continue." => [
-		0 => "Všechny změny, které jste provedl(a), budou ztraceny",
-	],
-	"Changes saved successfully." => [
-		0 => "Změny byly úspěšně uloženy.",
-	],
-	"Go back to form" => [
-		0 => "Vrátit se zpět na formulář",
-	],
-	"continue anyway" => [
-		0 => "přesto pokračovat",
-	],
-	"Saving" => [
-		0 => "Ukládání",
-	],
-	"Sending" => [
-		0 => "Odesílání",
-	],
-	"Confirm action" => [
-		0 => "Potvrdit akci",
-	],
-	"information" => [
-		0 => "informace",
+	"Send" => [
+		0 => "Odeslat",
 	],
 ];
 ?>

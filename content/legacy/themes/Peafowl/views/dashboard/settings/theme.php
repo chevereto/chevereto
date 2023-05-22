@@ -74,7 +74,7 @@ foreach (array_keys($palettes->get()) as $id) {
     <div class="input-below"><?php _se('Enable this if you want to show image Exif data.'); ?></div>
 </div>
 <div class="input-label">
-    <label for="image_first_tab"><?php _se('%s first tab', _s('Image')); ?></label>
+    <label for="image_first_tab"><?php _se('%s first tab', _n('Image', 'Images', 1)); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="image_first_tab" id="image_first_tab" class="text-input">
             <?php
             echo get_select_options_html(
@@ -88,7 +88,7 @@ foreach (array_keys($palettes->get()) as $id) {
 );
             ?>
         </select></div>
-    <div class="input-below"><?php _se('Determine the first tab on %s page.', _s('image')); ?></div>
+    <div class="input-below"><?php _se('Determine the first tab on %s page.', _n('image', 'images', 1)); ?></div>
 </div>
 <hr class="line-separator">
 <div class="input-label">

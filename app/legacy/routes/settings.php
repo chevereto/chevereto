@@ -540,7 +540,7 @@ return function (Handler $handler) {
                 'label' => _s('Username'),
                 'content' => '<a href="' . $handler::var('user')['url'] . '" class="btn btn-small default"><span class="icon fas fa-user-circle"></span><span class="margin-left-5">' . $handler::var('user')['username'] . '</span></a>' . (
                     $handler::cond('dashboard_user')
-                        ? (' <a class="btn btn-small default" data-confirm="' . _s("Do you really want to delete this user? This can't be undone.") . '" data-submit-fn="CHV.fn.user.delete.submit" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="' . get_base_url("json") . '"><span class="icon fas fa-trash-alt"></span><span class="phone-hide margin-left-5">' . _s('Delete user') . '</span></a>')
+                        ? (' <a class="btn btn-small default" data-confirm="' . _s("Do you really want to delete this %s?", _n('user', 'users', 1)) . ' ' . _s("This can't be undone.") . '" data-submit-fn="CHV.fn.user.delete.submit" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="' . get_base_url("json") . '"><span class="icon fas fa-trash-alt"></span><span class="phone-hide margin-left-5">' . _s('Delete user') . '</span></a>')
                         : ''
                 )
             ],
@@ -553,7 +553,7 @@ return function (Handler $handler) {
                 'content' => $handler::var('user')['image_count']
             ],
             [
-                'label' => _s('Albums'),
+                'label' => _n('Album', 'Albums', 20),
                 'content' => $handler::var('user')['album_count']
             ],
             [

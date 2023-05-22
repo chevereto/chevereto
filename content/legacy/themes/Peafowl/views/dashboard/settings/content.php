@@ -19,7 +19,7 @@ echo read_the_docs_settings('content', _s('Content')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('show_nsfw_in_listings')); ?>
         </select></div>
-    <div class="input-below"><?php _se("Enable this if you want to show not safe content in listings. This setting doesn't affect administrators and can be overridden by user own settings."); ?></div>
+    <div class="input-below"><?php _se("Enable this if you want to show not safe content in listings."); ?> <?php _se('Can be overridden by user own settings.'); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
 </div>
 <div class="input-label">
     <label for="theme_nsfw_blur"><?php _se('Blur NSFW content in listings'); ?></label>

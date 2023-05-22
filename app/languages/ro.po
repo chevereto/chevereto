@@ -1,0 +1,31 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: VERSION\n"
+"POT-Creation-Date: 2023-05-22 15:49+0000\n"
+"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2);\n"
+
+msgid "Invalid password"
+msgstr "Parola greșită"
+
+msgid "Invalid email"
+msgstr "E-mail greșit"
+
+msgid "Invalid username"
+msgstr "User greșit"
+
+msgid "Private profile"
+msgstr "Profil privat"
+
+msgid "From email address"
+msgstr "De la adresa de email"
+
+msgid "Sender email for emails sent to users."
+msgstr "Trimite email către toţi userii"
+

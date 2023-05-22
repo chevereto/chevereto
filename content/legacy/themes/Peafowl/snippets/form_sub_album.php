@@ -13,11 +13,11 @@ if (!defined('ACCESS') || !ACCESS) {
         $label = 'form-album-name';
     ?>
     <label for="<?php echo $label; ?>"><?php _se('Name'); ?></label>
-    <input type="text" name="<?php echo $label; ?>" class="text-input" value="" placeholder="<?php _se('Unnamed %s', _s('album')); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
+    <input type="text" name="<?php echo $label; ?>" class="text-input" value="" placeholder="<?php _se('Unnamed %s', _n('album', 'albums', 1)); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
 </div>
 <div class="input-label">
 	<label for="form-album-description"><?php _se('Description'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-	<textarea id="form-album-description" name="form-album-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _s('album')); ?>"></textarea>
+	<textarea id="form-album-description" name="form-album-description" class="text-input no-resize" placeholder="<?php _se('Brief description of this %s', _n('album', 'albums', 1)); ?>"></textarea>
 </div>
 <?php if (getSetting('website_privacy_mode') == 'public' or (getSetting('website_privacy_mode') == 'private' and getSetting('website_content_privacy_mode') == 'default')) {
         ?>

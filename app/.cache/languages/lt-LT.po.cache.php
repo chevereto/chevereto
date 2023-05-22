@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2020-04-16 20:33+0000',
-  'PO-Revision-Date' => '2020-04-16 20:33+0000',
+  'POT-Creation-Date' => '2023-05-22 15:49+0000',
+  'PO-Revision-Date' => '2023-05-22 15:49+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'lt_LT',
@@ -16,254 +16,29 @@ $translation_plural = array (
   'function' => '($n%10==1 && $n%100!=11 ? (0) : ($n%10>=2 && ($n%100<10 || $n%100>=20) ? (1) : (2)))',
 );
 $translation_table = [
-	"Invalid email" => [
-		0 => "Neteisingas el.paštas",
+	"You have been forbidden to use this website." => [
+		0 => "Jums draudžiama naudotis šia svetaine.",
 	],
-	"Invalid username" => [
-		0 => "Neteisingas vartotojo vardas",
+	"View all my images" => [
+		0 => "Žiūrėti visus mano paveikslėlius",
 	],
-	"Invalid password" => [
-		0 => "Neteisingas slaptažodis",
+	"Plugin" => [
+		0 => "Įskiepis",
 	],
-	"Invalid website mode" => [
-		0 => "Neteisingas svetainės režimas",
+	"Request denied" => [
+		0 => "Užklausa atmesta",
 	],
-	"From email address" => [
-		0 => "Iš el.pašto",
+	"terms" => [
+		0 => "sąlygos",
 	],
-	"Sender email for emails sent to users." => [
-		0 => "Laiškų siuntimo vartotojams el.paštas",
+	"privacy policy" => [
+		0 => "privatumo politika",
 	],
-	"Incoming email address" => [
-		0 => "Įeinantis el. paštas",
+	"I agree to the %terms_link and %privacy_link" => [
+		0 => "Aš sutinku su %terms_link ir %privacy_link",
 	],
-	"Recipient for contact form and system alerts." => [
-		0 => "Kontaktinės formos ir sistemos perspėjimų gavėjas.",
-	],
-	"Website mode" => [
-		0 => "Svetainės režimas",
-	],
-	"You can switch the website mode anytime." => [
-		0 => "Svetainės režimą galite pakeisti bet kada.",
-	],
-	"Community" => [
-		0 => "Bendruomenė",
-	],
-	"Personal" => [
-		0 => "Asmeninė",
-	],
-	"Installed version is v%s" => [
-		0 => "Įdiegta versija yra v%s",
-	],
-	"Can't connect to %s" => [
-		0 => "Nepavyksta prisijungti prie %s",
-	],
-	"Last available release is v%s" => [
-		0 => "Paskutinis galimas leidimas yra v%s",
-	],
-	"No update needed" => [
-		0 => "Nereikia atnaujinti",
-	],
-	"System files already up to date" => [
-		0 => "Sistemos failai jau atnaujinti",
-	],
-	"Starting v%s download" => [
-		0 => "Pradedamas v%s atsisiuntimas",
-	],
-	"Update failed" => [
-		0 => "Atnaujinti nepavyko",
-	],
-	"Missing %s file" => [
-		0 => "Trūksta %s failo",
-	],
-	"Can't save file" => [
-		0 => "Negalima išsaugoti failo",
-	],
-	"Check the errors in the form to continue." => [
-		0 => "Pasitikrinkite klaidas ir tęskite.",
-	],
-	"Confirm" => [
-		0 => "Patvirtinti",
-	],
-	"Passwords don't match" => [
-		0 => "Slaptažodžiai nesutampa",
-	],
-	"or" => [
-		0 => "ar",
-	],
-	"cancel" => [
-		0 => "atšaukti",
-	],
-	"loading" => [
-		0 => "kraunama",
-	],
-	"Edit" => [
-		0 => "Redaguoti",
-	],
-	"Album" => [
-		0 => "Album.",
-		1 => "Album.",
-		2 => "Album.",
-		3 => "Album.",
-	],
-	"Delete" => [
-		0 => "Pašalinti",
-	],
-	"Close" => [
-		0 => "Uždaryti",
-	],
-	"image" => [
-		0 => "paveiksl.",
-		1 => "paveiksl.",
-		2 => "paveiksl.",
-		3 => "paveiksl.",
-	],
-	"%s's Albums" => [
-		0 => "%s albumai",
-	],
-	"private" => [
-		0 => "privatus",
-	],
-	"Storage capacity can't be lower than its current usage (%s)." => [
-		0 => "Atminties talpa negali būti mažesnė nei dabartinis jos naudojimas (%s)",
-	],
-	"Invalid URL." => [
-		0 => "Neteisingas URL.",
-	],
-	"The content has been deleted." => [
-		0 => "Turinys buvo pašalintas",
-	],
-	"Select" => [
-		0 => "Rinktis",
-	],
-	"album" => [
-		0 => "album.",
-		1 => "album.",
-		2 => "album.",
-		3 => "album.",
-	],
-	"Flooding detected. You can only upload %limit% %content% per %time%" => [
-		0 => "Aptiktas piktnaudžiavimas. Galite įkelti tik %limit% %content% per %time%",
-	],
-	"Untitled" => [
-		0 => "Be pavadinimo",
-	],
-	"%s's images" => [
-		0 => "%s paveikslėliai",
-	],
-	"Note: This content is private. Change privacy to \"public\" to share." => [
-		0 => "Perspėjimas: Turinys yra privatus. Pakeiskite privatumo lygį į \"viešą\"  ir galėsite dalintis.",
-	],
-	"Public" => [
-		0 => "Viešas",
-	],
-	"Me" => [
-		0 => "Aš",
-	],
-	"Link" => [
-		0 => "Nuoroda",
-	],
-	"Password" => [
-		0 => "Slaptažodis",
-	],
-	"view" => [
-		0 => "perž.",
-		1 => "perž.",
-		2 => "perž.",
-		3 => "perž.",
-	],
-	"minute" => [
-		0 => "min.",
-		1 => "min.",
-		2 => "min.",
-		3 => "min.",
-	],
-	"hour" => [
-		0 => "val.",
-		1 => "val.",
-		2 => "val.",
-		3 => "val.",
-	],
-	"day" => [
-		0 => "d.",
-		1 => "d.",
-		2 => "d.",
-		3 => "d.",
-	],
-	"week" => [
-		0 => "sav.",
-		1 => "sav.",
-		2 => "sav.",
-		3 => "sav.",
-	],
-	"month" => [
-		0 => "mėn.",
-		1 => "mėn.",
-		2 => "mėn.",
-		3 => "mėn.",
-	],
-	"year" => [
-		0 => "m.",
-		1 => "m.",
-		2 => "m.",
-		3 => "m.",
-	],
-	"Private upload" => [
-		0 => "Privatus įkėlimas",
-	],
-	"Top users" => [
-		0 => "Top vartotojai",
-	],
-	"Most recent" => [
-		0 => "Naujausia",
-	],
-	"Oldest" => [
-		0 => "Seniausia",
-	],
-	"Most viewed" => [
-		0 => "Labiausiai žiūrima",
-	],
-	"Explore" => [
-		0 => "Naršyti",
-	],
-	"Search" => [
-		0 => "Ieškoti",
-	],
-	"People" => [
-		0 => "Žmonės",
-	],
-	"Image" => [
-		0 => "Paveikslėlis",
-		1 => "Paveikslėliai",
-		2 => "Paveikslėliai",
-		3 => "Paveikslėliai",
-	],
-	"User" => [
-		0 => "Vartotojas",
-		1 => "Vartotojai",
-		2 => "Vartotojai",
-		3 => "Vartotojai",
-	],
-	"Unlimited" => [
-		0 => "Be apribojimo",
-	],
-	"used" => [
-		0 => "naudojama",
-	],
-	"second" => [
-		0 => "s.",
-		1 => "s.",
-		2 => "s.",
-		3 => "s.",
-	],
-	"%s ago" => [
-		0 => "prieš %s",
-	],
-	"moments ago" => [
-		0 => "ką tik",
-	],
-	"Dashboard" => [
-		0 => "Skydelis",
+	"That page doesn't exist" => [
+		0 => "Puslapis neegzistuoja",
 	],
 	"Forgot password?" => [
 		0 => "Pamiršote slaptažodį?",
@@ -277,6 +52,9 @@ $translation_table = [
 	"Add your email address" => [
 		0 => "Įrašykite savo el.paštą",
 	],
+	"Awaiting confirmation" => [
+		0 => "Laukiama patvirtinimo",
+	],
 	"Email changed" => [
 		0 => "El.paštas pakeistas",
 	],
@@ -285,9 +63,6 @@ $translation_table = [
 	],
 	"User doesn't have an email." => [
 		0 => "Vartotojas neturi el.pašto.",
-	],
-	"Request denied" => [
-		0 => "Užklausa atmesta",
 	],
 	"Account needs to be activated to use this feature" => [
 		0 => "Paskyra reikalauja aktyvacijos",
@@ -307,86 +82,53 @@ $translation_table = [
 	"Welcome to %s" => [
 		0 => "Sveiki atvykę į %s",
 	],
+	"Invalid password" => [
+		0 => "Neteisingas slaptažodis",
+	],
+	"Passwords don't match" => [
+		0 => "Slaptažodžiai nesutampa",
+	],
+	"Invalid email" => [
+		0 => "Neteisingas el.paštas",
+	],
 	"Email already being used" => [
 		0 => "Šis el.paštas jau naudojamas",
+	],
+	"Check the errors in the form to continue." => [
+		0 => "Pasitikrinkite klaidas ir tęskite.",
 	],
 	"Password required" => [
 		0 => "Būtinas slaptažodis",
 	],
-	"Share" => [
-		0 => "Dalintis",
-	],
 	"Embed codes" => [
 		0 => "Dalinimosi kodas",
 	],
-	"Full info" => [
-		0 => "Pilna informacija",
+	"image" => [
+		0 => "paveiksl.",
+		1 => "paveiksl.",
+		2 => "paveiksl.",
+		3 => "paveiksl.",
 	],
 	"Stats" => [
 		0 => "Statistika",
 	],
 	"Images" => [
-		0 => "paveikslėliai",
+		0 => "Paveikslėliai",
 	],
-	"Albums" => [
-		0 => "Albumai",
+	"Album" => [
+		0 => "Album.",
+		1 => "Album.",
+		2 => "Album.",
+		3 => "Album.",
 	],
-	"Users" => [
-		0 => "Vartotojai",
+	"User" => [
+		0 => "Vartotojas",
+		1 => "Vartotojai",
+		2 => "Vartotojai",
+		3 => "Vartotojai",
 	],
 	"Settings" => [
 		0 => "Nustatymai",
-	],
-	"Chevereto version" => [
-		0 => "Chevereto versija",
-	],
-	"check for updates" => [
-		0 => "tikrinti atnaujinimus",
-	],
-	"Support" => [
-		0 => "Pagalba",
-	],
-	"PHP version" => [
-		0 => "PHP versija",
-	],
-	"Server" => [
-		0 => "Serveris",
-	],
-	"MySQL version" => [
-		0 => "MySQL versija",
-	],
-	"MySQL server info" => [
-		0 => "MySQL serverio informacija",
-	],
-	"GD Library" => [
-		0 => "GD biblioteka",
-	],
-	"File uploads" => [
-		0 => "Failų įkėlimas",
-	],
-	"Enabled" => [
-		0 => "Įjungta",
-	],
-	"Disabled" => [
-		0 => "Išjungta",
-	],
-	"Max. post size" => [
-		0 => "Maksimalus aprašymo dydis",
-	],
-	"Max. execution time" => [
-		0 => "Maksimalus vykdymo laikas",
-	],
-	"%d second" => [
-		0 => "%d sek.",
-		1 => "%d sek.",
-		2 => "%d sek.",
-		3 => "%d sek.",
-	],
-	"Memory limit" => [
-		0 => "Atminties limitas",
-	],
-	"Links" => [
-		0 => "Nuorodos",
 	],
 	"Website" => [
 		0 => "Svetainė",
@@ -403,17 +145,8 @@ $translation_table = [
 	"Categories" => [
 		0 => "Kategorijos",
 	],
-	"Flood protection" => [
-		0 => "Apsauga nuo floodo",
-	],
 	"Theme" => [
 		0 => "Tema",
-	],
-	"Homepage" => [
-		0 => "Namų puslapis",
-	],
-	"Banners" => [
-		0 => "Baneriai",
 	],
 	"System" => [
 		0 => "Sistema",
@@ -421,20 +154,65 @@ $translation_table = [
 	"Languages" => [
 		0 => "Kalbos",
 	],
-	"External storage" => [
-		0 => "Išorinė saugykla",
-	],
 	"Email" => [
 		0 => "El.paštas",
 	],
-	"Social networks" => [
-		0 => "Socialiniai tinklai",
+	"External storage" => [
+		0 => "Išorinė saugykla",
+	],
+	"Homepage" => [
+		0 => "Namų puslapis",
 	],
 	"External services" => [
 		0 => "Išorinės tarnybos",
 	],
+	"Flood protection" => [
+		0 => "Apsauga nuo floodo",
+	],
+	"Banners" => [
+		0 => "Baneriai",
+	],
 	"IP bans" => [
 		0 => "Užblokuoti IP",
+	],
+	"Support" => [
+		0 => "Pagalba",
+	],
+	"Community" => [
+		0 => "Bendruomenė",
+	],
+	"PHP version" => [
+		0 => "PHP versija",
+	],
+	"Server" => [
+		0 => "Serveris",
+	],
+	"MySQL version" => [
+		0 => "MySQL versija",
+	],
+	"MySQL server info" => [
+		0 => "MySQL serverio informacija",
+	],
+	"File uploads" => [
+		0 => "Failų įkėlimas",
+	],
+	"Enabled" => [
+		0 => "Įjungta",
+	],
+	"Disabled" => [
+		0 => "Išjungta",
+	],
+	"Max. execution time" => [
+		0 => "Maksimalus vykdymo laikas",
+	],
+	"%d second" => [
+		0 => "%d sek.",
+		1 => "%d sek.",
+		2 => "%d sek.",
+		3 => "%d sek.",
+	],
+	"Memory limit" => [
+		0 => "Atminties limitas",
 	],
 	"Local" => [
 		0 => "Vietinis",
@@ -447,6 +225,9 @@ $translation_table = [
 	],
 	"search content" => [
 		0 => "ieškoti",
+	],
+	"Explore" => [
+		0 => "Naršyti",
 	],
 	"Invalid website name" => [
 		0 => "Neteisingas svetainės pavadinimas",
@@ -475,9 +256,6 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "Neteisingas dydis",
 	],
-	"Invalid theme tone" => [
-		0 => "Neteisingas temos tonas",
-	],
 	"Invalid theme image listing size" => [
 		0 => "Neteisingas temos paveikslėlių sąrašo dydis",
 	],
@@ -492,6 +270,9 @@ $translation_table = [
 	],
 	"Invalid SMTP security" => [
 		0 => "Neteisinga SMTP apsauga",
+	],
+	"Invalid website mode" => [
+		0 => "Neteisingas svetainės režimas",
 	],
 	"Invalid website content privacy mode" => [
 		0 => "Neteisingas svetainės turinio privatumo režimas",
@@ -511,14 +292,14 @@ $translation_table = [
 	"Invalid SMTP username" => [
 		0 => "Neteisingas SMTP vartotojo vardas",
 	],
+	"Dashboard" => [
+		0 => "Skydelis",
+	],
 	"About" => [
 		0 => "Apie",
 	],
 	"Image ID" => [
 		0 => "Paveikslėlio ID",
-	],
-	"Uploader IP" => [
-		0 => "Įkėlėjo ID",
 	],
 	"Upload date" => [
 		0 => "Įkėlimo data",
@@ -541,11 +322,23 @@ $translation_table = [
 	"Login needed" => [
 		0 => "Reikia prisijungti",
 	],
+	"Image" => [
+		0 => "Paveikslėlis",
+		1 => "Paveikslėliai",
+		2 => "Paveikslėliai",
+		3 => "Paveikslėliai",
+	],
+	"Category" => [
+		0 => "Kategorija",
+	],
 	"IP address already banned" => [
 		0 => "IP adresas jau yra užblokuotas",
 	],
 	"Missing values" => [
 		0 => "Dingę dydžiai",
+	],
+	"Invalid username" => [
+		0 => "Neteisingas vartotojo vardas",
 	],
 	"Invalid role" => [
 		0 => "Neteisinga rolė",
@@ -562,14 +355,17 @@ $translation_table = [
 	"Sign in" => [
 		0 => "Prisijungti",
 	],
+	"Search" => [
+		0 => "Ieškoti",
+	],
 	"Account" => [
 		0 => "Paskyra",
 	],
 	"Profile" => [
 		0 => "Profilis",
 	],
-	"Linked accounts" => [
-		0 => "Susiję profiliai",
+	"Password" => [
+		0 => "Slaptažodis",
 	],
 	"An email has been sent to %s with instructions to activate this email" => [
 		0 => "Laiškas buvo išsiųstas į %s el. paštą su elektroninio pašto aktyvavimo instrukcijomis",
@@ -601,29 +397,197 @@ $translation_table = [
 	"Settings for %s" => [
 		0 => "%s nustatymai",
 	],
+	"Username" => [
+		0 => "Vartotojo vardas",
+	],
+	"Delete user" => [
+		0 => "Pašalinti vartotoją",
+	],
+	"User ID" => [
+		0 => "Vartotojo ID",
+	],
+	"Register date" => [
+		0 => "Registracijos data",
+	],
 	"Create account" => [
 		0 => "Sukurti paskyrą",
 	],
 	"Upload" => [
 		0 => "Įkelti",
 	],
-	"%s's Images" => [
-		0 => "%s paveikslėliai",
+	"Albums" => [
+		0 => "Albumai",
 	],
-	"Advanced search" => [
-		0 => "Išplėstinė paieška",
+	"album" => [
+		0 => "album.",
+		1 => "album.",
+		2 => "album.",
+		3 => "album.",
+	],
+	"Flooding detected. You can only upload %limit% %content% per %time%" => [
+		0 => "Aptiktas piktnaudžiavimas. Galite įkelti tik %limit% %content% per %time%",
+	],
+	"Note: This content is private. Change privacy to \"public\" to share." => [
+		0 => "Perspėjimas: Turinys yra privatus. Pakeiskite privatumo lygį į \"viešą\"  ir galėsite dalintis.",
+	],
+	"Public" => [
+		0 => "Viešas",
+	],
+	"Me" => [
+		0 => "Aš",
+	],
+	"Link" => [
+		0 => "Nuoroda",
+	],
+	"minute" => [
+		0 => "minutė",
+		1 => "minutės",
+		2 => "minučių",
+		3 => "minutės",
+	],
+	"hour" => [
+		0 => "valanda",
+		1 => "valandos",
+		2 => "valandų",
+		3 => "valandos",
+	],
+	"day" => [
+		0 => "d.",
+		1 => "d.",
+		2 => "d.",
+		3 => "d.",
+	],
+	"week" => [
+		0 => "sav.",
+		1 => "sav.",
+		2 => "sav.",
+		3 => "sav.",
+	],
+	"month" => [
+		0 => "mėn.",
+		1 => "mėn.",
+		2 => "mėn.",
+		3 => "mėn.",
+	],
+	"year" => [
+		0 => "m.",
+		1 => "m.",
+		2 => "m.",
+		3 => "m.",
+	],
+	"Private upload" => [
+		0 => "Privatus įkėlimas",
+	],
+	"view" => [
+		0 => "perž.",
+		1 => "perž.",
+		2 => "perž.",
+		3 => "perž.",
+	],
+	"Most recent" => [
+		0 => "Naujausia",
+	],
+	"Oldest" => [
+		0 => "Seniausia",
+	],
+	"Most viewed" => [
+		0 => "Labiausiai žiūrima",
+	],
+	"People" => [
+		0 => "Žmonės",
+	],
+	"Storage capacity can't be lower than its current usage (%s)." => [
+		0 => "Atminties talpa negali būti mažesnė nei dabartinis jos naudojimas (%s)",
+	],
+	"Unlimited" => [
+		0 => "Be apribojimo",
+	],
+	"used" => [
+		0 => "naudojama",
+	],
+	"Share" => [
+		0 => "Dalintis",
+	],
+	"second" => [
+		0 => "s.",
+		1 => "s.",
+		2 => "s.",
+		3 => "s.",
+	],
+	"%s ago" => [
+		0 => "prieš %s",
+	],
+	"moments ago" => [
+		0 => "ką tik",
 	],
 	"Random" => [
 		0 => "Atsitiktinis",
 	],
+	"Close" => [
+		0 => "Uždaryti",
+	],
+	"Advanced search" => [
+		0 => "Išplėstinė paieška",
+	],
 	"Notices (%s)" => [
 		0 => "Pranešimai (%s)",
+	],
+	"loading" => [
+		0 => "kraunama",
 	],
 	"My Profile" => [
 		0 => "Mano profilis",
 	],
+	"Administrator" => [
+		0 => "Administratorius",
+	],
 	"Sign out" => [
 		0 => "Atsijungti",
+	],
+	"Confirm" => [
+		0 => "Patvirtinti",
+	],
+	"Create album" => [
+		0 => "Sukurti albumą",
+	],
+	"Edit" => [
+		0 => "Redaguoti",
+	],
+	"Delete" => [
+		0 => "Pašalinti",
+	],
+	"%s's Albums" => [
+		0 => "%s albumai",
+	],
+	"private" => [
+		0 => "privatus",
+	],
+	"Invalid URL." => [
+		0 => "Neteisingas URL.",
+	],
+	"The content has been deleted." => [
+		0 => "Turinys buvo pašalintas",
+	],
+	"Select" => [
+		0 => "Rinktis",
+	],
+	"Save changes" => [
+		0 => "Išsaugoti pakeitimus",
+	],
+	"Changes saved successfully." => [
+		0 => "Pakeitimai sėkmingai išsaugoti.",
+	],
+	"or" => [
+		0 => "ar",
+	],
+	"cancel" => [
+		0 => "atšaukti",
+	],
+	"Confirm action" => [
+		0 => "Patvirtinti veiksmą",
+	],
+	"information" => [
+		0 => "informacija",
 	],
 	"We received a request to change the email of your <a href=\"%u\">%n</a> account at %w." => [
 		0 => "Gavome prašymą pakeisti el.paštą jūsų <a href=\"%u\">%n</a> paskyroje %w.",
@@ -673,15 +637,6 @@ $translation_table = [
 	"Upload complete" => [
 		0 => "Įkėlimas baigtas",
 	],
-	"Some errors have occured and the system couldn't process your request." => [
-		0 => "Dėl tam tikrų klaidų sistema negalėjo apdoroti jūsų užklausos",
-	],
-	"Category" => [
-		0 => "Kategorija",
-	],
-	"Select category" => [
-		0 => "Rinktis kategoriją",
-	],
 	"Mark this if the upload is not family safe" => [
 		0 => "Pažymėkite, jei įkėlimas neskirtas peržiūrėti visai šeimai",
 	],
@@ -694,17 +649,11 @@ $translation_table = [
 	"cancel remaining" => [
 		0 => "atšaukti likusius",
 	],
-	"Note: Some images couldn't be uploaded." => [
-		0 => "Pastaba: Kai kurie paveikslėliai negalėjo būti įkelti.",
-	],
 	"learn more" => [
 		0 => "sužinoti daugiau",
 	],
 	"Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information." => [
 		0 => "Peržiūrėkite <a data-modal=\"simple\" data-target=\"failed-upload-result\">klaidų ataskaitas,</a> jei norite sužinoti daugiau.",
-	],
-	"close" => [
-		0 => "uždaryti",
 	],
 	"Title" => [
 		0 => "Pavadinimas",
@@ -721,29 +670,17 @@ $translation_table = [
 	"Description" => [
 		0 => "Aprašymas",
 	],
-	"Brief description of this image" => [
-		0 => "Trumpas paveikslėlio aprašymas",
-	],
 	"Add image URLs" => [
 		0 => "Įkelti paveikslėlio URL",
 	],
 	"Add the image URLs here" => [
 		0 => "Čia įkelkite paveikslėlio URL",
 	],
-	"Create album" => [
-		0 => "Sukurti albumą",
-	],
-	"Move to album" => [
-		0 => "Perkelti į albumą",
-	],
-	"Select an existing album to move the uploaded content. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the content there." => [
-		0 => "Rinkitės jau esantį albumą ir patalpinkite jame ką tik įkeltą turinį. Taip pat galite <a class=\"modal-switch\" data-switch=\"move-new-album\">sukurti naują albumą</a> ir talpinti ką tik įkeltus elementus jame.",
-	],
 	"Error report" => [
 		0 => "Pranešimas apie klaidą",
 	],
-	"Viewer links" => [
-		0 => "Peržiūros nuorodos",
+	"Links" => [
+		0 => "Nuorodos",
 	],
 	"HTML Codes" => [
 		0 => "HTML kodai",
@@ -762,6 +699,9 @@ $translation_table = [
 	],
 	"BBCode thumbnail linked" => [
 		0 => "BBkodo miniatiūros nuoroda",
+	],
+	"Viewer links" => [
+		0 => "Peržiūros nuorodos",
 	],
 	"All these words" => [
 		0 => "Visi šie žodžiai",
@@ -787,17 +727,11 @@ $translation_table = [
 	"IP address" => [
 		0 => "IP adresas",
 	],
-	"Album name" => [
-		0 => "Albumo pavadinimas",
+	"Name" => [
+		0 => "Vardas",
 	],
-	"move to existing album" => [
-		0 => "perkelti į jau esantį albumą",
-	],
-	"Album description" => [
-		0 => "Albumo aprašymas",
-	],
-	"Brief description of this album" => [
-		0 => "Trumpas albumo aprašymas",
+	"Privacy" => [
+		0 => "Privatumas",
 	],
 	"Who can view this content" => [
 		0 => "Kas gali matyti šį turinį",
@@ -808,35 +742,14 @@ $translation_table = [
 	"Private (anyone with the link)" => [
 		0 => "Privatus (kitiems pagal nuorodą)",
 	],
-	"Name" => [
-		0 => "Vardas",
-	],
-	"Category name" => [
-		0 => "Kategorijos pavadinimas",
-	],
 	"URL key" => [
 		0 => "URL raktas",
-	],
-	"Category URL key" => [
-		0 => "Kategorijos URL raktas",
 	],
 	"Only letters, numbers, and hyphens" => [
 		0 => "Tik raidės, skaičiai ir brūkšneliai",
 	],
-	"Brief description of this category" => [
-		0 => "Kategorijos trumpas aprašymas",
-	],
-	"Untitled image" => [
-		0 => "Paveikslėlis be pavadinimo",
-	],
-	"Path" => [
-		0 => "Path",
-	],
 	"Expiration date" => [
 		0 => "Galiojimo data",
-	],
-	"YYYY-MM-DD HH:MM:SS" => [
-		0 => "YYYY-MM-DD HH:MM:SS",
 	],
 	"Example" => [
 		0 => "Pavyzdys",
@@ -850,23 +763,11 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "Teksto žinutė, HTML arba nukreipimo URL",
 	],
-	"Existing album" => [
-		0 => "Esantis albumas",
-	],
-	"create new album" => [
-		0 => "Sukurti naują albumą",
-	],
 	"Storage name" => [
 		0 => "Laikmenos pavadinimas",
 	],
-	"API" => [
-		0 => "API",
-	],
 	"Region" => [
 		0 => "Regionas",
-	],
-	"Storage bucket" => [
-		0 => "Storage bucket",
 	],
 	"Key" => [
 		0 => "Raktas",
@@ -874,38 +775,8 @@ $translation_table = [
 	"Storage key" => [
 		0 => "Laikmenos raktas",
 	],
-	"Secret" => [
-		0 => "Secret",
-	],
-	"Storage secret" => [
-		0 => "Storage secret",
-	],
-	"Username" => [
-		0 => "Vartotojo vardas",
-	],
-	"Hostname or IP of the storage server" => [
-		0 => "Hostname or IP of the storage server",
-	],
-	"Server path" => [
-		0 => "Server path",
-	],
 	"Server password" => [
 		0 => "Serverio slaptažodis",
-	],
-	"Storage capacity" => [
-		0 => "Storage capacity",
-	],
-	"Example: 20 GB, 1 TB, etc." => [
-		0 => "Example: 20 GB, 1 TB, etc.",
-	],
-	"This storage will be disabled when it reach this capacity. Leave it blank or zero for no limit." => [
-		0 => "This storage will be disabled when it reach this capacity. Leave it blank or zero for no limit.",
-	],
-	"Storage URL" => [
-		0 => "Storage URL",
-	],
-	"The system will map the images of this storage to this URL." => [
-		0 => "The system will map the images of this storage to this URL.",
 	],
 	"view more" => [
 		0 => "žiūrėti daugiau",
@@ -913,53 +784,23 @@ $translation_table = [
 	"Load more" => [
 		0 => "Įkelti daugiau",
 	],
+	"Get embed codes" => [
+		0 => "Gauti dalinimosi kodus",
+	],
+	"Flag as safe" => [
+		0 => "Žymėti kaip saugų",
+	],
 	"Select all" => [
 		0 => "Pasirinkti viską",
 	],
 	"Clear selection" => [
 		0 => "Išvalyti pažymėtus",
 	],
-	"Selection" => [
-		0 => "Pasirinkimas",
-	],
-	"Action" => [
-		0 => "Veiksmai",
-	],
-	"Get embed codes" => [
-		0 => "Gauti dalinimosi kodus",
-	],
-	"Assign category" => [
-		0 => "Priskirti kategoriją",
-	],
-	"Flag as safe" => [
-		0 => "Žymėti kaip saugų",
-	],
 	"Sign in with another account" => [
 		0 => "Prisijungti su kita paskyra",
 	],
 	"There's nothing to show here." => [
 		0 => "Nėra ką rodyti.",
-	],
-	"Edit image details" => [
-		0 => "Redaguoti paveikslėlio detales",
-	],
-	"Edit album details" => [
-		0 => "Albumo redagavimo detalės",
-	],
-	"All the images will be moved to this newly created album. You can also move the images to an <a class=\"modal-switch\" data-switch=\"move-existing-album\">existing album</a>." => [
-		0 => "Visi paveikslėliai bus perkelti į naujai sukurtą albumą. Taip pat galite perkelti paveikslėlius ir į jau <a class=\"modal-switch\" data-switch=\"move-existing-album\">esantį albumą</a>.",
-	],
-	"Select an existing album to move the image. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the image there." => [
-		0 => "Rinkitės jau esantį albumą ir perkelkite paveikslėlius. Taip pat galite <a class=\"modal-switch\" data-switch=\"move-new-album\">sukurti naują albumą</a> ir perkelti paveikslėlius ten.",
-	],
-	"Select an existing album to move the album contents. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the album contents there." => [
-		0 => "Rinkitės jau esantį albumą, jei norite perkelti ten savo pakeislėlius. Taip pat galite <a class=\"modal-switch\" data-switch=\"move-new-album\">sukurti naują albumą</a> ir perkelti paveikslėlius ten.",
-	],
-	"Select an existing album to move the images. You can also <a class=\"modal-switch\" data-switch=\"move-new-album\">create a new album</a> and move the images there." => [
-		0 => "Rinkitės jau esantį albumą, jei norite perkelti ten savo pakeislėlius. Taip pat galite <a class=\"modal-switch\" data-switch=\"move-new-album\">sukurti naują albumą</a> ir perkelti paveikslėlius ten.",
-	],
-	"All the selected images will be assigned to this category." => [
-		0 => "Visi atrinkti vaizdai bus priskirtas šiai kategorijai.",
 	],
 	"There is no categories." => [
 		0 => "Nėra kategorijų.",
@@ -979,26 +820,14 @@ $translation_table = [
 	"Confirm deletion" => [
 		0 => "Patvirtinti šalinimą",
 	],
-	"Do you really want to remove this content? This can't be undone." => [
-		0 => "Ar tikrai norite pašalinti šį turinį? Veiksmas vėliau negalės būti atšauktas",
-	],
-	"Do you really want to remove all the selected content? This can't be undone." => [
-		0 => "Ar tikrai norite pašalinti visą pasirinktą turinį? Veiksmas vėliau negalės būti atšauktas",
-	],
 	"Guest" => [
 		0 => "Svečiai",
 	],
-	"From %s" => [
-		0 => "Nuo %s",
-	],
-	"That page doesn't exist" => [
-		0 => "Puslapis neegzistuoja",
+	"Go to homepage" => [
+		0 => "Į namų puslapį",
 	],
 	"The requested page was not found." => [
 		0 => "Puslapis nerastas",
-	],
-	"Search something else" => [
-		0 => "Ko nors ieškoti",
 	],
 	"The user has been deleted" => [
 		0 => "Vartotojas buvo pašalintas",
@@ -1036,23 +865,47 @@ $translation_table = [
 	"Re-enter your new password" => [
 		0 => "Pakartotinai įrašyti naują slaptažodį",
 	],
-	"Delete album" => [
-		0 => "Pašalinti albumą",
+	"Status" => [
+		0 => "Statusas",
 	],
-	"Album link" => [
-		0 => "Albumo nuoroda",
+	"From email address" => [
+		0 => "Iš el.pašto",
+	],
+	"Sender email for emails sent to users." => [
+		0 => "Laiškų siuntimo vartotojams el.paštas",
+	],
+	"Incoming email address" => [
+		0 => "Įeinantis el. paštas",
+	],
+	"Recipient for contact form and system alerts." => [
+		0 => "Kontaktinės formos ir sistemos perspėjimų gavėjas.",
+	],
+	"Email mode" => [
+		0 => "El. pašto režimas",
+	],
+	"SMTP server" => [
+		0 => "SMTP serveris",
+	],
+	"SMTP username" => [
+		0 => "SMTP vartotojo vardas",
+	],
+	"SMTP password" => [
+		0 => "SMTP slaptažodis",
+	],
+	"%s API key" => [
+		0 => "%s API raktas",
 	],
 	"Disk used" => [
 		0 => "Užimta vietos",
 	],
-	"Status" => [
-		0 => "Statusas",
+	"Default language" => [
+		0 => "Kalba pagal nutylėjimą",
 	],
-	"Administrator" => [
-		0 => "Administratorius",
+	"Contact" => [
+		0 => "Kontaktai",
 	],
-	"Email address" => [
-		0 => "El.pašto adresas",
+	"Send test email" => [
+		0 => "Siųsti bandomąjį el. laišką",
 	],
 	"Website name" => [
 		0 => "Svetainės pavadinimas",
@@ -1060,26 +913,14 @@ $translation_table = [
 	"Website description" => [
 		0 => "Svetainės aprašymas",
 	],
-	"User ID" => [
-		0 => "Vartotojo ID",
+	"Website mode" => [
+		0 => "Svetainės režimas",
 	],
-	"Privacy" => [
-		0 => "Privatumas",
+	"You can switch the website mode anytime." => [
+		0 => "Svetainės režimą galite pakeisti bet kada.",
 	],
-	"Contact" => [
-		0 => "Kontaktai",
-	],
-	"Do you really want to delete this image? This can't be undone." => [
-		0 => "Ar tikrai norite pašalinti šį paveikslėlį? Veiksmo atšaukti nebus galima",
-	],
-	"Delete image" => [
-		0 => "Pašalinti paveikslėlį",
-	],
-	"Default language" => [
-		0 => "Kalba pagal nutylėjimą",
-	],
-	"Save changes" => [
-		0 => "Išsaugoti pakeitimus",
+	"Email address" => [
+		0 => "El.pašto adresas",
 	],
 	"Added to %s" => [
 		0 => "Įkelta į %s",
@@ -1087,35 +928,17 @@ $translation_table = [
 	"Uploaded %s" => [
 		0 => "Įkelta %s",
 	],
-	"Share image" => [
-		0 => "Dalintis paveikslėliu",
-	],
-	"In this album" => [
-		0 => "Šiame albume",
-	],
-	"Don't have an account? <a href='%s'>Sign up</a> now." => [
-		0 => "Dar neturite paskyros? <a href='%s'>Registruokitės</a> dabar.",
-	],
 	"Logged out" => [
 		0 => "Atsijungta",
 	],
-	"Go to homepage" => [
-		0 => "Į namų puslapį",
-	],
-	"Search results" => [
-		0 => "Paieškos rezultatai",
-	],
-	"Do you really want to delete this user? This can't be undone." => [
-		0 => "Ar tikrai norite pašalinti šį vartotoją? Veiksmo atšaukti nebus galima.",
-	],
-	"Delete user" => [
-		0 => "Pašalinti vartotoją",
-	],
-	"Register date" => [
-		0 => "Registracijos data",
+	"This content is password protected." => [
+		0 => "Šis turinys apsaugotas slaptažodžiu.",
 	],
 	"Newsletter" => [
 		0 => "Naujienlaiškis",
+	],
+	"Content settings" => [
+		0 => "Turinio nustatymai",
 	],
 	"Language" => [
 		0 => "Kalba",
@@ -1138,17 +961,14 @@ $translation_table = [
 	"Confirm password" => [
 		0 => "Pakartoti slaptažodį",
 	],
-	"Upload new image" => [
-		0 => "Įkelti naują paveikslėlį",
-	],
-	"http://yourwebsite.com" => [
-		0 => "http://jususvetaine.lt",
+	"Upload avatar" => [
+		0 => "Įkelti avatarą",
 	],
 	"Bio" => [
 		0 => "Biografija",
 	],
-	"View all my images" => [
-		0 => "Žiūrėti visus mano paveikslėlius",
+	"Login" => [
+		0 => "Prisijungti",
 	],
 	"Upload profile background" => [
 		0 => "Įkelti profilio fono paveikslėlį",
@@ -1156,20 +976,14 @@ $translation_table = [
 	"Change background" => [
 		0 => "Keisti fono paveikslėlį",
 	],
+	"Upload new image" => [
+		0 => "Įkelti naują paveikslėlį",
+	],
 	"Delete background" => [
 		0 => "Pašalinti fono paveikslėlį",
 	],
-	"Edit profile" => [
-		0 => "Redaguoti profilį",
-	],
 	"Follow" => [
 		0 => "Sekti",
-	],
-	"You have been forbidden to use this website." => [
-		0 => "Jums draudžiama naudotis šia svetaine.",
-	],
-	"Plugin" => [
-		0 => "Įskiepis",
 	],
 	"General questions/comments" => [
 		0 => "Bendrieji klausimai/komentarai",
@@ -1183,9 +997,6 @@ $translation_table = [
 	"Invalid subject" => [
 		0 => "Neteisinga tema",
 	],
-	"Mail error" => [
-		0 => "Pašto klaida",
-	],
 	"Message sent" => [
 		0 => "Žinutė išsiųsta",
 	],
@@ -1194,9 +1005,6 @@ $translation_table = [
 	],
 	"Subject" => [
 		0 => "Tema",
-	],
-	"information" => [
-		0 => "informacija",
 	],
 ];
 ?>
