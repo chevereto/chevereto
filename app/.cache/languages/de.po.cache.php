@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2023-05-22 15:49+0000',
-  'PO-Revision-Date' => '2023-05-22 15:49+0000',
+  'POT-Creation-Date' => '2023-07-26 22:08+0000',
+  'PO-Revision-Date' => '2023-07-26 22:08+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'de',
@@ -16,6 +16,12 @@ $translation_plural = array (
   'function' => '($n != 1)',
 );
 $translation_table = [
+	"Selection will be assigned to %t." => [
+		0 => "Die Auswahl wird %t zugewiesen.",
+	],
+	"Sets the minimum content count needed to show %t in %s." => [
+		0 => "Legt die minimale Inhaltsanzahl fest, die erforderlich ist, um %t in %s anzuzeigen.",
+	],
 	"You have been forbidden to use this website." => [
 		0 => "Die Nutzung dieser Seite ist dir nicht gestattet.",
 	],
@@ -214,6 +220,9 @@ $translation_table = [
 	"Upload plugin" => [
 		0 => "Upload-Plugin",
 	],
+	"Cookie compliance" => [
+		0 => "Cookie-Compliance",
+	],
 	"Consent screen" => [
 		0 => "Zustimmungsmitteilung",
 	],
@@ -226,14 +235,23 @@ $translation_table = [
 	"IP bans" => [
 		0 => "IP-Sperren",
 	],
+	"Guests %s" => [
+		0 => "Gäste %s",
+	],
 	"Watermarks" => [
 		0 => "Wasserzeichen",
 	],
 	"Documentation" => [
 		0 => "Dokumentation",
 	],
+	"Support" => [
+		0 => "Unterstützung",
+	],
 	"Releases" => [
 		0 => "Veröffentlichungen",
+	],
+	"Community" => [
+		0 => "Gemeinschaft",
 	],
 	"License" => [
 		0 => "Lizenz",
@@ -374,6 +392,15 @@ $translation_table = [
 	"Footer (image page)" => [
 		0 => "Fußzeile",
 	],
+	"%s page" => [
+		0 => "%s Seite",
+	],
+	"Before header (%s page)" => [
+		0 => "Vor dem Header (%s Seite)",
+	],
+	"After header (%s page)" => [
+		0 => "Nach dem Header (%s Seite)",
+	],
 	"User profile page" => [
 		0 => "Profilseite",
 	],
@@ -426,7 +453,7 @@ $translation_table = [
 		0 => "Ungültiger Wert",
 	],
 	"palette" => [
-		0 => "Farbenpalette",
+		0 => "Farben",
 	],
 	"Invalid %s" => [
 		0 => "Ungültige %s",
@@ -615,6 +642,9 @@ $translation_table = [
 		0 => "Bild",
 		1 => "Bilder",
 	],
+	"%s doesn't exists" => [
+		0 => "%s existiert nicht",
+	],
 	"%s edited" => [
 		0 => "%s bearbeitet",
 	],
@@ -666,6 +696,9 @@ $translation_table = [
 	"Downloading %s data" => [
 		0 => "Lade Daten von %s",
 	],
+	"%s cover updated" => [
+		0 => "%s Cover aktualisiert",
+	],
 	"Content liked" => [
 		0 => "Inhalt gefällt dir",
 	],
@@ -689,6 +722,9 @@ $translation_table = [
 	],
 	"Upload images" => [
 		0 => "Bilder hochladen",
+	],
+	"%t search results for %s" => [
+		0 => "%t Suchergebnisse für %s",
 	],
 	"Search" => [
 		0 => "Suche",
@@ -830,6 +866,9 @@ $translation_table = [
 	"Me" => [
 		0 => "Ich",
 	],
+	"CSAM content is forbidden" => [
+		0 => "CSAM-Inhalte sind verboten",
+	],
 	"After %n %t" => [
 		0 => "Nach %n %t",
 	],
@@ -953,11 +992,17 @@ $translation_table = [
 	"System database is outdated." => [
 		0 => "Die Systemdatenbank ist veraltet.",
 	],
+	"You need to %s." => [
+		0 => "Sie müssen %s.",
+	],
 	"Website is in maintenance mode." => [
 		0 => "Website befindet sich im Wartungsmodus.",
 	],
 	"To revert this setting go to %s." => [
 		0 => "Um diese Einstellung zurückzusetzen, gehe zu %s.",
+	],
+	"%s settings" => [
+		0 => "%s Einstellungen",
 	],
 	"You haven't changed the default email settings. Go to %emailSettings% to fix this." => [
 		0 => "Du hast die Standard-E-Mail-Einstellungen nicht geändert. Gehe zu %emailSettings%, um dies zu beheben.",
@@ -988,6 +1033,9 @@ $translation_table = [
 	],
 	"My Profile" => [
 		0 => "Mein Profil",
+	],
+	"Palette" => [
+		0 => "Farben",
 	],
 	"Manager" => [
 		0 => "Moderator",
@@ -1500,8 +1548,14 @@ $translation_table = [
 	"Unnamed %s" => [
 		0 => "Unbenannt %s",
 	],
+	"Enable call to action buttons" => [
+		0 => "Aktiviere die Call-to-Action-Schaltflächen",
+	],
 	"Call to action buttons will be displayed on the %s page and in content belonging to." => [
 		0 => "Call-to-Action-Buttons werden auf der Seite %s und in den dazugehörigen Inhalten angezeigt.",
+	],
+	"You can use %emoji% or %package% icons." => [
+		0 => "Du kannst die Symbole %emoji% oder %package% verwenden.",
 	],
 	"Buy now" => [
 		0 => "Jetzt kaufen",
@@ -3012,6 +3066,9 @@ $translation_table = [
 	"Allows to search images, albums and users based on a given search query." => [
 		0 => "Ermöglicht die Suche nach Bildern, Alben und Benutzern anhand der gegebenen Suchanfrage.",
 	],
+	"search" => [
+		0 => "suchen",
+	],
 	"Enables %s for guests." => [
 		0 => "Aktiviert %s für Gäste.",
 	],
@@ -3362,6 +3419,9 @@ $translation_table = [
 	],
 	"Do you really want to disable two-factor authentication?" => [
 		0 => "Möchtest du die Zwei-Faktor-Authentifizierung wirklich deaktivieren?",
+	],
+	"Disable" => [
+		0 => "Deaktivieren",
 	],
 	"Scan the QR code below with an authenticator application and enter the code displayed." => [
 		0 => "Scanne den unten stehenden QR-Code mit einer Authentifizierungsanwendung und gib den angezeigten Code ein.",

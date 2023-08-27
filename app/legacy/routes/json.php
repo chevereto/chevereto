@@ -555,7 +555,7 @@ return function (Handler $handler) {
                             throw new Exception("Edited album doesn't exists", 100);
                         }
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('%s edited', _('Content')), 'code' => 200];
+                        $json_array['success'] = ['message' => _s('%s edited', _s('Content')), 'code' => 200];
                         $json_array['album'] = $album_edited;
                         if (isset($album_move)) {
                             $json_array['old_album'] = Album::formatArray(
@@ -620,10 +620,6 @@ return function (Handler $handler) {
                         }
 
                         try {
-                            $ipAlreadyBanned = IpBan::getSingle(['ip' => $editing['ip']]);
-                            if (($ipAlreadyBanned['id'] ?? 0) !== $id) {
-                                throw new Exception(_s('IP address already banned'), 103);
-                            }
                             if (empty($editing['expires'])) {
                                 $editing['expires'] = null;
                             }

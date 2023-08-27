@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VERSION\n"
-"POT-Creation-Date: 2023-05-22 15:49+0000\n"
-"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"POT-Creation-Date: 2023-07-26 22:08+0000\n"
+"PO-Revision-Date: 2023-07-26 22:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
 "Language: vi\n"
@@ -48,7 +48,7 @@ msgid "I agree to the %terms_link and %privacy_link"
 msgstr "Tôi đồng ý với %terms_link và %privacy_link"
 
 msgid "That page doesn't exist"
-msgstr "404: Trng này không tồn tại"
+msgstr "404: Trang này không tồn tại"
 
 #, php-format
 msgid "Page %s"
@@ -178,6 +178,9 @@ msgstr "Hệ thống"
 msgid "Languages"
 msgstr "Ngôn ngữ"
 
+msgid "Email"
+msgstr "Email"
+
 msgid "Tools"
 msgstr "Công cụ"
 
@@ -202,6 +205,9 @@ msgstr "Chặn IP"
 msgid "Documentation"
 msgstr "Tài liệu"
 
+msgid "Admin"
+msgstr "Quản Trị Viên"
+
 msgid "Support"
 msgstr "Hỗ trợ"
 
@@ -213,6 +219,12 @@ msgstr "Cộng đồng"
 
 msgid "install update"
 msgstr "cài đặt cập nhật"
+
+msgid "Check updates"
+msgstr "Kiểm tra bản cập nhật"
+
+msgid "not running"
+msgstr "không chạy"
 
 msgid "Max. upload file size"
 msgstr "Tập tin tải lên tối đa"

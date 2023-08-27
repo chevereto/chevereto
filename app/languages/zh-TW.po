@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VERSION\n"
-"POT-Creation-Date: 2023-05-22 15:49+0000\n"
-"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"POT-Creation-Date: 2023-06-26 11:09+0000\n"
+"PO-Revision-Date: 2023-06-26 11:09+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
 "Language: zh_TW\n"
@@ -11,8 +11,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+msgid "Selection will be assigned to %t."
+msgstr "選擇將分配給 %t。"
+
+msgid "Sets the minimum content count needed to show %t in %s."
+msgstr "設置在 %s 中顯示 %t 所需的最小內容計數。"
+
 msgid "You have been forbidden to use this website."
-msgstr "你被禁止進入這個網站"
+msgstr "你被禁止進入這個網站。"
 
 msgid "Moderate"
 msgstr "審核"
@@ -244,6 +250,10 @@ msgstr "廣告"
 
 msgid "IP bans"
 msgstr "封鎖IP"
+
+#, php-format
+msgid "Guests %s"
+msgstr "來賓 %s"
 
 msgid "Watermarks"
 msgstr "浮水印"
@@ -2837,6 +2847,9 @@ msgstr "固定"
 msgid "Both methods use a fixed width but fluid method uses automatic heights."
 msgstr "首頁圖片列表樣式. 這兩種方法都使用固定寬度, 但“自動”的方法是使用自動圖片的高度."
 
+msgid "%t listing requirement"
+msgstr "%t 列表要求"
+
 msgid "Listing columns number"
 msgstr "頁面顯示列數"
 
@@ -3515,6 +3528,9 @@ msgstr "封面"
 
 msgid "This is the album cover"
 msgstr "這是專輯封面"
+
+msgid "Added to %a under %s %t"
+msgstr "添加到 %a 下的 %s %t"
 
 #, php-format
 msgid "Added to %s"

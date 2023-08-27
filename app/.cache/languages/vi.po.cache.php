@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2023-05-22 15:49+0000',
-  'PO-Revision-Date' => '2023-05-22 15:49+0000',
+  'POT-Creation-Date' => '2023-07-26 22:08+0000',
+  'PO-Revision-Date' => '2023-07-26 22:08+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'vi',
@@ -53,7 +53,7 @@ $translation_table = [
 		0 => "Tôi đồng ý với %terms_link và %privacy_link",
 	],
 	"That page doesn't exist" => [
-		0 => "404: Trng này không tồn tại",
+		0 => "404: Trang này không tồn tại",
 	],
 	"Page %s" => [
 		0 => "Trang %s",
@@ -175,6 +175,9 @@ $translation_table = [
 	"Languages" => [
 		0 => "Ngôn ngữ",
 	],
+	"Email" => [
+		0 => "Email",
+	],
 	"Tools" => [
 		0 => "Công cụ",
 	],
@@ -199,6 +202,9 @@ $translation_table = [
 	"Documentation" => [
 		0 => "Tài liệu",
 	],
+	"Admin" => [
+		0 => "Quản Trị Viên",
+	],
 	"Support" => [
 		0 => "Hỗ trợ",
 	],
@@ -210,6 +216,12 @@ $translation_table = [
 	],
 	"install update" => [
 		0 => "cài đặt cập nhật",
+	],
+	"Check updates" => [
+		0 => "Kiểm tra bản cập nhật",
+	],
+	"not running" => [
+		0 => "không chạy",
 	],
 	"Max. upload file size" => [
 		0 => "Tập tin tải lên tối đa",

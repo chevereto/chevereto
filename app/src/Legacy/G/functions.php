@@ -1327,7 +1327,7 @@ function get_bytes(string $size, ?int $cut = null): int
     return $number * pow(strlen($suffix) == 2 ? 1000 : 1024, $pow_factor);
 }
 
-function bytes_to_mb(int $bytes): float
+function bytes_to_mb(int|float $bytes): float
 {
     return round($bytes / pow(10, 6));
 }

@@ -179,7 +179,7 @@ class Search
 
             break;
         }
-        $this->wheres = $wheres;
+        $this->wheres = $wheres ?? '';
         $this->display = [
             'type' => $this->type,
             'q' => $this->q,

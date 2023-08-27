@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2023-05-22 15:49+0000',
-  'PO-Revision-Date' => '2023-05-22 15:49+0000',
+  'POT-Creation-Date' => '2023-06-26 11:09+0000',
+  'PO-Revision-Date' => '2023-06-26 11:09+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'zh_TW',
@@ -16,8 +16,14 @@ $translation_plural = array (
   'function' => '0',
 );
 $translation_table = [
+	"Selection will be assigned to %t." => [
+		0 => "選擇將分配給 %t。",
+	],
+	"Sets the minimum content count needed to show %t in %s." => [
+		0 => "設置在 %s 中顯示 %t 所需的最小內容計數。",
+	],
 	"You have been forbidden to use this website." => [
-		0 => "你被禁止進入這個網站",
+		0 => "你被禁止進入這個網站。",
 	],
 	"Moderate" => [
 		0 => "審核",
@@ -240,6 +246,9 @@ $translation_table = [
 	],
 	"IP bans" => [
 		0 => "封鎖IP",
+	],
+	"Guests %s" => [
+		0 => "來賓 %s",
 	],
 	"Watermarks" => [
 		0 => "浮水印",
@@ -2695,6 +2704,9 @@ $translation_table = [
 	"Both methods use a fixed width but fluid method uses automatic heights." => [
 		0 => "首頁圖片列表樣式. 這兩種方法都使用固定寬度, 但“自動”的方法是使用自動圖片的高度.",
 	],
+	"%t listing requirement" => [
+		0 => "%t 列表要求",
+	],
 	"Listing columns number" => [
 		0 => "頁面顯示列數",
 	],
@@ -3342,6 +3354,9 @@ $translation_table = [
 	],
 	"This is the album cover" => [
 		0 => "這是專輯封面",
+	],
+	"Added to %a under %s %t" => [
+		0 => "添加到 %a 下的 %s %t",
 	],
 	"Added to %s" => [
 		0 => "加入 %s",

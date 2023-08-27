@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VERSION\n"
-"POT-Creation-Date: 2023-05-22 15:49+0000\n"
-"PO-Revision-Date: 2023-05-22 15:49+0000\n"
+"POT-Creation-Date: 2023-07-26 22:08+0000\n"
+"PO-Revision-Date: 2023-07-26 22:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -10,6 +10,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Selection will be assigned to %t."
+msgstr "Die Auswahl wird %t zugewiesen."
+
+msgid "Sets the minimum content count needed to show %t in %s."
+msgstr "Legt die minimale Inhaltsanzahl fest, die erforderlich ist, um %t in %s anzuzeigen."
 
 msgid "You have been forbidden to use this website."
 msgstr "Die Nutzung dieser Seite ist dir nicht gestattet."
@@ -218,6 +224,9 @@ msgstr "Anmeldeanbieter"
 msgid "Upload plugin"
 msgstr "Upload-Plugin"
 
+msgid "Cookie compliance"
+msgstr "Cookie-Compliance"
+
 msgid "Consent screen"
 msgstr "Zustimmungsmitteilung"
 
@@ -230,14 +239,24 @@ msgstr "Werbung"
 msgid "IP bans"
 msgstr "IP-Sperren"
 
+#, php-format
+msgid "Guests %s"
+msgstr "Gäste %s"
+
 msgid "Watermarks"
 msgstr "Wasserzeichen"
 
 msgid "Documentation"
 msgstr "Dokumentation"
 
+msgid "Support"
+msgstr "Unterstützung"
+
 msgid "Releases"
 msgstr "Veröffentlichungen"
+
+msgid "Community"
+msgstr "Gemeinschaft"
 
 msgid "License"
 msgstr "Lizenz"
@@ -385,6 +404,18 @@ msgstr "Nach Kopfzeile"
 msgid "Footer (image page)"
 msgstr "Fußzeile"
 
+#, php-format
+msgid "%s page"
+msgstr "%s Seite"
+
+#, php-format
+msgid "Before header (%s page)"
+msgstr "Vor dem Header (%s Seite)"
+
+#, php-format
+msgid "After header (%s page)"
+msgstr "Nach dem Header (%s Seite)"
+
 msgid "User profile page"
 msgstr "Profilseite"
 
@@ -438,7 +469,7 @@ msgid "Invalid value"
 msgstr "Ungültiger Wert"
 
 msgid "palette"
-msgstr "Farbenpalette"
+msgstr "Farben"
 
 #, php-format
 msgid "Invalid %s"
@@ -634,6 +665,10 @@ msgstr[0] "Bild"
 msgstr[1] "Bilder"
 
 #, php-format
+msgid "%s doesn't exists"
+msgstr "%s existiert nicht"
+
+#, php-format
 msgid "%s edited"
 msgstr "%s bearbeitet"
 
@@ -693,6 +728,10 @@ msgstr "Test-E-Mail wurde an %s gesendet."
 msgid "Downloading %s data"
 msgstr "Lade Daten von %s"
 
+#, php-format
+msgid "%s cover updated"
+msgstr "%s Cover aktualisiert"
+
 msgid "Content liked"
 msgstr "Inhalt gefällt dir"
 
@@ -717,6 +756,9 @@ msgstr "Anmelden"
 
 msgid "Upload images"
 msgstr "Bilder hochladen"
+
+msgid "%t search results for %s"
+msgstr "%t Suchergebnisse für %s"
 
 msgid "Search"
 msgstr "Suche"
@@ -867,6 +909,9 @@ msgstr "Öffentlich (Alle)"
 msgid "Me"
 msgstr "Ich"
 
+msgid "CSAM content is forbidden"
+msgstr "CSAM-Inhalte sind verboten"
+
 msgid "After %n %t"
 msgstr "Nach %n %t"
 
@@ -1007,12 +1052,20 @@ msgstr "Gehen zu %s, um dieses Update herunterzuladen und zu installieren."
 msgid "System database is outdated."
 msgstr "Die Systemdatenbank ist veraltet."
 
+#, php-format
+msgid "You need to %s."
+msgstr "Sie müssen %s."
+
 msgid "Website is in maintenance mode."
 msgstr "Website befindet sich im Wartungsmodus."
 
 #, php-format
 msgid "To revert this setting go to %s."
 msgstr "Um diese Einstellung zurückzusetzen, gehe zu %s."
+
+#, php-format
+msgid "%s settings"
+msgstr "%s Einstellungen"
 
 msgid "You haven't changed the default email settings. Go to %emailSettings% to fix this."
 msgstr "Du hast die Standard-E-Mail-Einstellungen nicht geändert. Gehe zu %emailSettings%, um dies zu beheben."
@@ -1044,6 +1097,9 @@ msgstr "Du hast keine neuen Benachrichtigungen"
 
 msgid "My Profile"
 msgstr "Mein Profil"
+
+msgid "Palette"
+msgstr "Farben"
 
 msgid "Manager"
 msgstr "Moderator"
@@ -1585,9 +1641,15 @@ msgstr "IP-Adresse"
 msgid "Unnamed %s"
 msgstr "Unbenannt %s"
 
+msgid "Enable call to action buttons"
+msgstr "Aktiviere die Call-to-Action-Schaltflächen"
+
 #, php-format
 msgid "Call to action buttons will be displayed on the %s page and in content belonging to."
 msgstr "Call-to-Action-Buttons werden auf der Seite %s und in den dazugehörigen Inhalten angezeigt."
+
+msgid "You can use %emoji% or %package% icons."
+msgstr "Du kannst die Symbole %emoji% oder %package% verwenden."
 
 msgid "Buy now"
 msgstr "Jetzt kaufen"
@@ -3154,6 +3216,9 @@ msgstr "Region wählen"
 msgid "Allows to search images, albums and users based on a given search query."
 msgstr "Ermöglicht die Suche nach Bildern, Alben und Benutzern anhand der gegebenen Suchanfrage."
 
+msgid "search"
+msgstr "suchen"
+
 #, php-format
 msgid "Enables %s for guests."
 msgstr "Aktiviert %s für Gäste."
@@ -3526,6 +3591,9 @@ msgstr "Zwei-Faktoren-Authentifizierung ist aktiviert."
 
 msgid "Do you really want to disable two-factor authentication?"
 msgstr "Möchtest du die Zwei-Faktor-Authentifizierung wirklich deaktivieren?"
+
+msgid "Disable"
+msgstr "Deaktivieren"
 
 msgid "Scan the QR code below with an authenticator application and enter the code displayed."
 msgstr "Scanne den unten stehenden QR-Code mit einer Authentifizierungsanwendung und gib den angezeigten Code ein."

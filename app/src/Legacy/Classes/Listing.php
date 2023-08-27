@@ -575,7 +575,7 @@ class Listing
             }
         }
         if ($this->type === 'albums') {
-            $this->nsfw = true;
+            $this->nsfw = false;
         }
         $this->sfw = !$this->nsfw;
         Handler::setCond('show_viewer_zero', isset(request()['viewer']) && $this->count > 0);
