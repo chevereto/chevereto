@@ -590,6 +590,7 @@ $settings_updates = [
     ],
     '4.0.7' => null,
     '4.0.8' => null,
+    '4.0.9' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',

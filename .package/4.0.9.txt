@@ -1,9 +1,9 @@
 Chevereto 4.0.9 (2023-08-27)
 
+- 🌎 Updated translations: Chinese Simplified, Chinese Traditional, German, Portuguese (Brazil) and Vietnamese
 - 🐞 Fixed bug in category listing missing name
+- 🐞 Fixed bug in Dashboard stats
 - 🐞 Fixed bug in ip ban editing
-- 🐞 Fixed bug in user profile NSFW banner display
 - 🐞 Fixed bug in json route
 - 🐞 Fixed bug in Search class
-- 🐞 Fixed bug in Dashboard stats
-- 🌎 Updated translations: Chinese Simplified, Chinese Traditional, German, Portuguese (Brazil) and Vietnamese
+- 🐞 Fixed bug in user profile NSFW banner display
