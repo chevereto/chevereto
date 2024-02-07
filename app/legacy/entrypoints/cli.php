@@ -34,6 +34,7 @@ if ($opts === []) {
         'password-reset',
         'setting-get',
         'setting-update',
+        'version'
     ];
     if (!in_array($access, $options)) {
         echo "Invalid command\n";

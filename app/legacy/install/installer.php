@@ -429,7 +429,7 @@ $settings_updates = [
         'explore_albums_min_image_count' => '1',
         'upload_max_filesize_mb_guest' => '0.5',
         'notify_user_signups' => 0,
-        'listing_viewer' => 1,
+        // 'listing_viewer' => 1,
     ],
     '3.10.7' => null,
     '3.10.8' => null,
@@ -591,6 +591,9 @@ $settings_updates = [
     '4.0.7' => null,
     '4.0.8' => null,
     '4.0.9' => null,
+    '4.0.10' => [
+        'listing_viewer' => 0,
+    ],
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -1775,13 +1778,13 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                     SELECT login_user_id, max(login_date_gmt), login_secret
                     FROM `%table_prefix%logins`
                     WHERE login_type = "password"
-                    GROUP BY login_user_id;
+                    GROUP BY login_user_id, login_secret;
                     INSERT IGNORE INTO `%table_prefix%login_cookies` (login_cookie_user_id, login_cookie_connection_id, login_cookie_date_gmt,
                                                                login_cookie_ip, login_cookie_user_agent, login_cookie_hash)
                     SELECT login_user_id, 0, login_date_gmt, login_ip, login_hostname, login_secret
                     FROM `%table_prefix%logins`
                     WHERE login_type = "cookie"
-                    GROUP BY login_date_gmt
+                    GROUP BY login_date_gmt, login_user_id, login_ip, login_hostname, login_secret
                     ORDER BY login_date_gmt DESC;
                     INSERT IGNORE INTO `%table_prefix%login_connections` (login_connection_user_id, login_connection_provider_id, login_connection_date_gmt,
                                                                    login_connection_resource_id, login_connection_resource_name,
@@ -1790,7 +1793,7 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                     FROM `%table_prefix%logins`
                             JOIN `%table_prefix%login_providers` ON login_provider_name = login_type COLLATE utf8mb4_unicode_ci
                     WHERE login_type IN ('facebook', 'twitter', 'google', 'vk')
-                    GROUP BY login_user_id, login_provider_id;
+                    GROUP BY login_user_id, login_provider_id, login_resource_id, login_resource_name;
                     SQL
                     .
                     "\n"
@@ -2260,6 +2263,13 @@ EOT;
     }
 }
 if (PHP_SAPI === 'cli') {
+    if ($error === true) {
+        throw new LogicException(
+            message("$error_message: %errors%")
+                ->withTranslate('%error%', implode("\n", $input_errors))
+        );
+        die(255);
+    }
     switch ($doing) {
         case 'already':
             logger(

@@ -982,7 +982,7 @@ function getComments(): string
                         'id' => $logged_user['id_encoded'],
                         'username' => $logged_user['name'],
                         'email' => $logged_user['email'],
-                        'avatar' => $logged_user['avatar']['url'],
+                        'avatar' => $logged_user['avatar']['url'] ?? '',
                         'url' => $logged_user['url'],
                     ];
                 }

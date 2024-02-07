@@ -1466,7 +1466,7 @@ msgid "clicking"
 msgstr "hacer click"
 
 msgid "Customize upload by %action% on any preview"
-msgstr "Personaliza la subida al %acción% en cualquier vista previa"
+msgstr "Personaliza la subida al %action% en cualquier vista previa"
 
 msgid "touching"
 msgstr "tocar"

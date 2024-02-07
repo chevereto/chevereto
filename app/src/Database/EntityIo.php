@@ -75,7 +75,7 @@ abstract class EntityIo implements EntityIoInterface
         foreach ($values as $column => $value) {
             $column = (string) $column;
             $queryBuilder
-                ->set($column, ":${column}")
+                ->set($column, ":{$column}")
                 ->setParameter($column, $value);
         }
 
@@ -92,7 +92,7 @@ abstract class EntityIo implements EntityIoInterface
         foreach ($values as $column => $value) {
             $column = (string) $column;
             $queryBuilder
-                ->setValue($column, ":${column}")
+                ->setValue($column, ":{$column}")
                 ->setParameter($column, $value);
         }
         $result = $queryBuilder->execute();

@@ -1304,27 +1304,25 @@ function get_bytes(string $size, ?int $cut = null): int
     } else {
         $suffix = substr($size, $cut);
     }
-    $number = (int) str_replace($suffix, '', $size);
+    $number = (float) str_replace($suffix, '', $size);
     $suffix = strtoupper($suffix);
-
-    $units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // Default dec units
-
-    if (strlen($suffix) == 3) { // Convert units to bin
+    $units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    if (strlen($suffix) == 3) {
         foreach ($units as &$unit) {
             $split = str_split($unit);
             $unit = $split[0] . 'I' . $split[1];
         }
     }
-
     if (strlen($suffix) == 1) {
-        $suffix .= 'B'; // Adds missing "B" for shorthand ini notation (Turns 1G into 1GB)
+        $suffix .= 'B';
     }
     if (!in_array($suffix, $units)) {
-        return $number;
+        return (int) $number;
     }
     $pow_factor = array_search($suffix, $units) + 1;
+    $num = strlen($suffix) == 2 ? 1000 : 1024;
 
-    return $number * pow(strlen($suffix) == 2 ? 1000 : 1024, $pow_factor);
+    return (int) ($number * pow($num, $pow_factor));
 }
 
 function bytes_to_mb(int|float $bytes): float

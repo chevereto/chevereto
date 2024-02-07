@@ -144,6 +144,7 @@ focus:-ms-input-placeholder {
 
 body {
     min-height: 100vh;
+    min-height: 100dvh;
     min-height: -webkit-fill-available;
     -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -159,6 +160,7 @@ html {
 
 html, body {
     min-height: 100vh;
+    min-height: 100dvh;
     font-family: Helvetica, Arial, sans-serif;
     color: var(--bodyText);
     font-size: 16px;
@@ -2174,11 +2176,11 @@ body.landing .top-btn-text {
 }
 
 .top-bar-notifications-list li .user-image span.icon {
-    font-size: 30px;
-    width: 30px;
-    height: 30px;
-    margin-inline-start: -15px;
-    margin-top: -15px;
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-inline-start: -24px;
+    margin-top: -24px;
 }
 
 .top-bar-notifications-list li .how-long-ago {
@@ -3359,7 +3361,9 @@ html.menu-fullscreen-visible {
     bottom: 0;
     right: 0;
     height: 100vh;
+    height: 100dvh;
     width: 100vw;
+    width: 100dvw;
     overflow: auto;
 }
 
@@ -4439,6 +4443,7 @@ img.user-image.size-40, .default-user-image.size-40 {
     transform: translateY(-5px);
     transform-origin: top;
     max-height: 100vh;
+    max-height: 100dvh;
 }
 
 [role="menu"].opened>.menu-box {
@@ -4621,7 +4626,7 @@ img.user-image.size-40, .default-user-image.size-40 {
 }
 
 .arrow-navigator a {
-    color: var(--bodyBackground);
+    color: var(--colorAccent);
     display: block;
     text-decoration: none;
     text-align: center;

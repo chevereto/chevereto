@@ -40,7 +40,6 @@ use function Chevereto\Vars\sessionVar;
 use Exception;
 use Intervention\Image\ImageManagerStatic;
 use PHPExif\Exif;
-use stdClass;
 use Throwable;
 
 class Upload
@@ -59,7 +58,7 @@ class Upload
 
     private ImageConvert $ImageConvert;
 
-    private object $moderation;
+    private ?object $moderation = null;
 
     // filename => name.ext
     // file => /full/path/to/name.ext
@@ -91,11 +90,6 @@ class Upload
         'ftp'
     ];
 
-    public function __construct()
-    {
-        $this->moderation = new stdClass();
-    }
-
     public function uploaded(): array
     {
         return $this->uploaded;
@@ -106,7 +100,7 @@ class Upload
         return $this->source;
     }
 
-    public function moderation(): object
+    public function moderation(): ?object
     {
         return $this->moderation;
     }

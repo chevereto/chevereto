@@ -1,0 +1,17 @@
+Chevereto 4.0.10 (2024-02-07)
+
+✅ Added version CLI command
+✅ Improved error display on CLI install
+🐞 Fixed bug in AWS open_basedir restriction
+🐞 Fixed bug in banners settings page
+🐞 Fixed bug in comments implementation
+🐞 Fixed bug in file size handling
+🐞 Fixed bug in notifications missing links
+🐞 Fixed bug in NSFW display
+🐞 Fixed bug in Spanish translation
+🐞 Fixed bug in update database query
+🐞 Fixed bug in upload file title
+🐞 Fixed bug in user interface for iOS
+💅 Disabled listing viewer by default
+💅 Improved arrow style navigation
+💅 Improved notifications display (default avatar)

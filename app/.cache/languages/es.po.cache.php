@@ -1381,7 +1381,7 @@ $translation_table = [
 		0 => "hacer click",
 	],
 	"Customize upload by %action% on any preview" => [
-		0 => "Personaliza la subida al %acción% en cualquier vista previa",
+		0 => "Personaliza la subida al %action% en cualquier vista previa",
 	],
 	"touching" => [
 		0 => "tocar",

@@ -547,15 +547,12 @@ class Image
             $upload->detectFlood = false;
         }
         $upload->exec();
-        $return = [
+
+        return [
             'uploaded' => $upload->uploaded(),
             'source' => $upload->source(),
+            'moderation' => $upload->moderation(),
         ];
-        if (property_exists($upload, 'moderation') && $upload->moderation() !== null) {
-            $return['moderation'] = $upload->moderation();
-        }
-
-        return $return;
     }
 
     // Mostly for people uploading two times the same image to test or just bug you
@@ -985,22 +982,20 @@ class Image
                         : null
                 ]);
             }
+            $image_title = $params['title']
+                ?? preg_replace('/[-_\s]+/', ' ', trim($image_upload['source']['name']));
             /** @var ?Exif */
             $exifRead = $image_upload['source']['image_exif'];
             if ($exifRead instanceof Exif) {
                 if (!array_key_exists('title', $params)) {
-                    $title_from_exif = null;
-                    if ($exifRead->getTitle() !== false) {
-                        $title_from_exif = trim($exifRead->getTitle());
-                    }
-                    if ($title_from_exif !== null) {
+                    $exifTitle = $exifRead->getTitle();
+                    if ($exifTitle !== false) {
+                        $title_from_exif = trim($exifTitle);
                         $title_from_exif = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $title_from_exif);
-                        $image_title = $title_from_exif;
-                    } else {
-                        $title_from_filename = preg_replace('/[-_\s]+/', ' ', trim($image_upload['source']['name']));
-                        $image_title = $title_from_filename;
+                        if ($title_from_exif !== '') {
+                            $image_title = $title_from_exif;
+                        }
                     }
-                    $image_insert_values['title'] = $image_title;
                 }
                 if (!array_key_exists('description', $params)) {
                     $description_from_exif = null;
@@ -1013,6 +1008,7 @@ class Image
                     }
                 }
             }
+            $image_insert_values['title'] = $image_title;
             if ($filenaming == 'id' && isset($target_id)) { // Insert as a reserved ID
                 $image_insert_values['id'] = $target_id;
             }

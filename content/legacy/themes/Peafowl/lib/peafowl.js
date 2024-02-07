@@ -2403,10 +2403,9 @@ jQuery.fn.highlight = function (color) {
     $(this)
         .css({
             background: "",
-            backgroundColor: fadecolor,
-            borderColor: window.getComputedStyle(document.body).getPropertyValue('--colorAccent')
+            backgroundColor: fadecolor
         })
-        .animate({ backgroundColor: base_background_color, borderColor: "" }, 1000, function () {
+        .animate({ backgroundColor: base_background_color}, 1000, function () {
             $(this).css("background", "");
         });
     return this;

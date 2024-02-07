@@ -15,7 +15,9 @@ html.powered-by-footer .upload-box-inner {
 
 body.landing {
     min-height: 500px;
-    height: calc(100%);
+    height: 100%;
+    height: 100vh;
+    height: 100dvh;
     padding: 0;
     margin: 0;
 }
@@ -707,18 +709,22 @@ html.--idle .list-item-image-tools>div[data-action="viewer-close"], .list-item-i
     display: none;
 }
 
-.unsafe-blur-on [data-flag="unsafe"] .image-container, .unsafe-blur-on .list-item .list-item-thumbs div[data-flag="unsafe"] a {
+.unsafe-blur-on [data-flag="unsafe"]:not(.current) .image-container,
+.unsafe-blur-on .list-item .list-item-thumbs div[data-flag="unsafe"] a {
     filter: blur(8px);
     -webkit-filter: blur(8px);
 }
 
-.unsafe-blur-on [data-flag="unsafe"]:not(.selected):not(.ui-selecting) .image-container, .unsafe-blur-on .list-item .list-item-thumbs div[data-flag="unsafe"]:not(.selected):not(.ui-selecting) a {
+.unsafe-blur-on [data-flag="unsafe"]:not(.selected):not(.ui-selecting):not(.current) .image-container,
+.unsafe-blur-on .list-item .list-item-thumbs div[data-flag="unsafe"]:not(.selected):not(.ui-selecting) a {
     transform: scale(1.2);
 }
 
-.unsafe-blur-on [data-flag="unsafe"]:hover .image-container, .unsafe-blur-on .list-item:hover .list-item-thumbs div[data-flag="unsafe"] a {
+.unsafe-blur-on [data-flag="unsafe"]:hover:not(.selected):not(.ui-selecting):not(.current) .image-container,
+.unsafe-blur-on .list-item:hover .list-item-thumbs div[data-flag="unsafe"] a {
     filter: none;
     -webkit-filter: none;
+    transform: scale(1);
 }
 
 .list-item-buttons>div, .list-item-image-tools>div, .list-item-image-tools>div .btn-icon {
@@ -961,6 +967,7 @@ body.split #home-cover, body.landing #home-cover {
     margin: 0;
     padding: 0;
     height: 100vh;
+    height: 100dvh;
 }
 
 body.split #home-cover {
@@ -1232,6 +1239,7 @@ body#maintenance, body#consent-screen {
     background: rgba(0, 0, 0, 0.25);
     width: 100%;
     height: 100vh;
+    height: 100dvh;
 }
 
 #maintenance-cover-content, #consent-screen-cover-content {
@@ -1593,7 +1601,9 @@ body.--viewer-shown {
 .viewer-content img {
     position: absolute;
     max-height: 100vh;
+    max-height: 100dvh;
     max-width: 100vw;
+    max-width: 100dvw;
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
@@ -1601,7 +1611,9 @@ body.--viewer-shown {
 
 .viewer[data-cover="1"] .viewer-content img {
     width: 100vw;
+    width: 100dvw;
     height: 100vh;
+    height: 100dvh;
     -o-object-fit: cover;
     object-fit: contain;
 }
@@ -2258,7 +2270,9 @@ a.login-provider-button--qq {
 
 body.full--wh {
     height: 100vh;
+    height: 100dvh;
     width: 100vw;
+    width: 100dvw;
 }
 
 .display-flex #home-cover-slideshow {
