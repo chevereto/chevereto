@@ -1,6 +1,8 @@
 .DS_Store
 /.env
 /.idea
+/app/.upgrading
+/app/CHEVERETO_LICENSE_KEY
 /app/vendor
 /app/build
 /app/.phpunit.cache

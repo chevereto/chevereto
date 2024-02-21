@@ -2,6 +2,7 @@
 
 use Chevereto\Legacy\Classes\Stat;
 use function Chevereto\Legacy\G\bytes_to_mb;
+use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_client_ip;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_static_url;
@@ -12,6 +13,24 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
 ?>
+<div data-modal="modal-license-key" class="hidden" data-submit-fn="CHV.fn.license.set.submit" data-ajax-deferred="CHV.fn.license.set.complete" data-ajax-url="<?php echo get_base_url('json'); ?>">
+    <span class="modal-box-title"><i class="fas fa-key"></i> <?php _se('License key'); ?></span>
+    <p><?php _se(
+    "Provide Chevereto license key by assigning the environment variable %env% or by creating the %file% containing the license key.",
+    [
+        '%env%' => '<code class="code font-weight-bold">CHEVERETO_LICENSE_KEY</code>',
+        '%file%' => '<code class="code font-weight-bold">' . PATH_APP . 'CHEVERETO_LICENSE_KEY</code>',
+    ]
+); ?></p>
+    <p><?php _se('You can also set the license in the textarea below.'); ?></p>
+    <div class="modal-form margin-top-20">
+        <div class="input-label overflow-auto">
+            <label for="chevereto-license-key"><?php _se('Chevereto license key'); ?></label>
+            <textarea placeholder="<?php _se('PASTE LICENSE KEY HERE'); ?>" id="chevereto-license-key" class="r3 resize-vertical" name="chevereto-license-key" data-focus="select-all"><?php echo Handler::var('licenseKey'); ?></textarea>
+            <div class="input-below font-size-small"><?php _se('Get a license from %s to unlock all features and support.', '<a href="https://chevereto.com/pricing" target="_blank">chevereto.com</a>'); ?></div>
+        </div>
+    </div>
+</div>
 <div data-modal="modal-connecting-ip" class="hidden">
     <span class="modal-box-title"><i class="fas fa-question-circle"></i> <?php _se('Not your IP?'); ?></span>
     <div class="connecting-ip"><?php echo get_client_ip(); ?></div>

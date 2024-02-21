@@ -424,7 +424,7 @@ class Handler
             return false;
         }
 
-        return timing_safe_compare(session()['G_auth_token'], $token);
+        return hash_equals(session()['G_auth_token'], $token);
     }
 
     public static function setVar(string $var, mixed $value): void

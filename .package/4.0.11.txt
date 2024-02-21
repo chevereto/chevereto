@@ -1,0 +1,8 @@
+Chevereto 4.0.11 (2024-02-21)
+
+- ✅ Added one-click upgrade system
+- ✅ Added license key configuration
+- ✅ Added /dashboard/?license
+- ✅ Added /dashboard/?installed
+- ✅ Added /dashboard/?upgrade
+- 💅 Improved software version at dashboard

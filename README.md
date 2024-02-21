@@ -1,12 +1,14 @@
-# Chevereto: Ultimate image sharing software 🦄
+# Chevereto: Ultimate image sharing software
 
 > 🔔 [Subscribe](https://chv.to/newsletter) to don't miss any update regarding Chevereto.
 
 <p align="center">
-    <img alt="Chevereto" src="chevereto.svg" width="50%">
+    <a href="https://chevereto.com"><img alt="Chevereto" src="chevereto.svg" width="80%"></a>
 </p>
 
-![CHUISS](.github/banner/chevereto-ultimate.png)
+[![CHUISS](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
+
+[![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chv.to/community)
 
 [![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chv.to/community)
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)

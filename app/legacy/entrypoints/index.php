@@ -13,7 +13,17 @@ use function Chevereto\Legacy\loaderHandler;
 
 define('ACCESS', 'web');
 
-require_once __DIR__ . '/../load/php-boot.php';
+$appDir = __DIR__ . '/../..';
+$loadDir = __DIR__ . '/../load';
+require_once $loadDir . '/php-boot.php';
+$uri = $_SERVER['REQUEST_URI'] ?? '';
+$parseUri = parse_url($uri);
+if (in_array($parseUri['path'], ['/upgrading', '/upgrading/'])
+    && file_exists($appDir . '/.upgrading/upgrading.lock')) {
+    require $appDir . '/upgrading.php';
+    exit;
+}
+require_once $loadDir . '/loader.php';
 require_once loaderHandler(
     $_COOKIE,
     $_ENV,

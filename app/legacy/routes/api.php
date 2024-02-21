@@ -33,7 +33,6 @@ use function Chevereto\Legacy\G\is_url;
 use function Chevereto\Legacy\G\json_error;
 use function Chevereto\Legacy\G\json_output;
 use function Chevereto\Legacy\G\random_string;
-use function Chevereto\Legacy\G\timing_safe_compare;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\files;
@@ -66,7 +65,7 @@ return function (Handler $handler) {
             if ((getSetting('api_v1_key') ?? '') == '') {
                 throw new Exception("API V1 public key can't be null. Go to your dashboard and set the Guest API key.", 0);
             }
-            if (!timing_safe_compare(getSetting('api_v1_key'), $key)) {
+            if (!hash_equals(getSetting('api_v1_key'), $key)) {
                 throw new Exception("Invalid guest API key.", 100);
             }
         } else {
@@ -124,7 +123,7 @@ return function (Handler $handler) {
                     throw new Exception('Upload using base64 source must be done using POST method.', 130);
                 }
                 $source = trim(preg_replace('/\s+/', '', $source));
-                if (!timing_safe_compare(base64_encode(base64_decode($source)), $source)) {
+                if (!hash_equals(base64_encode(base64_decode($source)), $source)) {
                     throw new Exception('Invalid base64 string.', 120);
                 }
                 $api_temp_file = tempnam(sys_get_temp_dir(), 'chvtemp');

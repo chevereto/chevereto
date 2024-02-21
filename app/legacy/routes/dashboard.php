@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use function Chevere\String\randomString;
 use Chevereto\Config\Config;
 use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Akismet;
@@ -45,11 +46,11 @@ use function Chevereto\Legacy\G\is_valid_url;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\sanitize_relative_path;
 use function Chevereto\Legacy\G\starts_with;
-use function Chevereto\Legacy\G\timing_safe_compare;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\get_available_languages;
 use function Chevereto\Legacy\get_chv_default_setting;
 use function Chevereto\Legacy\get_share_links;
+use function Chevereto\Legacy\getLicenseKey;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\getSystemNotices;
@@ -73,6 +74,34 @@ return function (Handler $handler) {
 
         return;
     }
+    if (env()['CHEVERETO_CONTEXT'] !== 'saas'
+        && ($handler->request()[0] ?? null) === 'upgrade'
+    ) {
+        if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+            $handler->issueError(403);
+
+            return;
+        }
+        $upgradingDir = PATH_APP . '.upgrading/';
+        if (!is_dir($upgradingDir)) {
+            mkdir($upgradingDir);
+        }
+        $upgradingLock = $upgradingDir . 'upgrading.lock';
+        unlinkIfExists($upgradingLock);
+        $token = randomString(128);
+        touch($upgradingLock);
+        file_put_contents($upgradingLock, $token);
+        $params = [
+            'action' => 'download',
+            'token' => $token,
+            'return' => 'dashboard/?installed',
+        ];
+        $query = http_build_query($params);
+        redirect(
+            get_base_url('upgrading/?' . $query),
+            302,
+        );
+    }
     $doing = $handler->request()[0] ?? 'stats';
     $logged_user = Login::getUser();
     if ($logged_user === []) {
@@ -91,7 +120,7 @@ return function (Handler $handler) {
     }
     $route_prefix = 'dashboard';
     $routes = [
-        'stats' => _s('Stats'),
+        'stats' => _s('Home'),
         'images' => _s('Images'),
         'albums' => _n('Album', 'Albums', 20),
         'users' => _n('User', 'Users', 20),
@@ -118,7 +147,7 @@ return function (Handler $handler) {
         }
     }
     $icons = [
-        'stats' => 'fas fa-chart-bar',
+        'stats' => 'fas fa-home',
         'images' => 'fas fa-image',
         'albums' => 'fas fa-images',
         'users' => 'fas fa-users',
@@ -212,6 +241,7 @@ return function (Handler $handler) {
     if ($doing == '') {
         $doing = $default_route;
     }
+    $route_menu = [];
     foreach ($routes as $route => $label) {
         $aux = str_replace('_', '-', $route);
         $handler::setCond($route_prefix . '_' . $aux, $doing == $aux);
@@ -285,24 +315,34 @@ return function (Handler $handler) {
                 'files' => get_app_version(),
                 'db' => getSetting('chevereto_version_installed') ?? ''
             ];
+            $links = [];
             $linksButtons = '';
-            $links = [
-                [
-                    'label' => _s('Documentation'),
-                    'icon' => 'fas fa-book',
-                    'href' => $handler::var('docsBaseUrl')
-                ],
-                [
-                    'label' => _s('%s docs', _s('Admin')),
-                    'icon' => 'fas fa-user-tie',
-                    'href' => 'https://v4-admin.chevereto.com'
-                ],
-                [
-                    'label' => _s('%s docs', _n('User', 'Users', 1)),
-                    'icon' => 'fas fa-user',
-                    'href' => 'https://v4-user.chevereto.com'
-                ],
-            ];
+            $licenseKey = getLicenseKey();
+            $handler::setVar('licenseKey', $licenseKey);
+            if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
+                $upgradeClass = 'hidden';
+                $upgradeLink = get_base_url('dashboard/upgrade/?auth_token=' . $handler::getAuthToken());
+                if ($licenseKey !== '' && env()['CHEVERETO_EDITION'] === 'free') {
+                    $upgradeClass = '';
+                }
+                $upgradeTitle = '<i class=\"fa-solid fa-boxes-packing\"></i> ' . _s('Upgrade now');
+                $links = array_merge($links, [
+                    [
+                        'label' => _s('Upgrade now'),
+                        'icon' => 'fas fa-download',
+                        'class' => 'green ' . $upgradeClass,
+                        'attr' => 'data-action="upgrade" data-options=\'{"title":"' . $upgradeTitle . '"}\' href="' . $upgradeLink . '" data-confirm="' . _s("The latest release will be downloaded and extracted in the filesystem.") . '"',
+                    ],
+                ]);
+                $links = array_merge($links, [
+                    [
+                        'label' => _s("License key"),
+                        'icon' => 'fas fa-key',
+                        'class' => 'accent outline',
+                        'attr' => 'data-action="license" data-modal="edit" data-target="modal-license-key"'
+                    ],
+                ]);
+            }
             if (env()['CHEVERETO_CONTEXT'] === 'saas') {
                 $links = array_merge($links, [
                     [
@@ -311,33 +351,12 @@ return function (Handler $handler) {
                         'href' => 'https://chevereto.cloud/support'
                     ],
                 ]);
-            } else {
-                $links = array_merge($links, [
-                    [
-                        'label' => _s("Releases"),
-                        'icon' => 'fas fa-rocket',
-                        'href' => 'https://releases.chevereto.com'
-                    ],
-                    [
-                        'label' => _s('Support'),
-                        'icon' => 'fas fa-medkit',
-                        'href' => 'https://chevereto.com/support'
-                    ],
-                    [
-                        'label' => _s('Community'),
-                        'icon' => 'fas fa-users',
-                        'href' => 'https://chevereto.com/community'
-                    ],
-                    [
-                        'label' => _s("License"),
-                        'icon' => 'fas fa-key',
-                        'href' => 'https://chevereto.com/panel/license'
-                    ]
-                ]);
             }
             foreach ($links as $link) {
-                $linksButtons .= strtr('<a href="%href%" target="_blank" class="btn btn-small default margin-right-5 margin-top-5"><span class="btn-icon fa-btn-icon %icon%"></span> %label%</a>', [
-                    '%href%' => $link['href'],
+                $attr = $link['attr'] ?? 'href="%href%" target="_blank"';
+                $class = $link['class'] ?? 'default';
+                $linksButtons .= strtr('<a ' . $attr . ' class="btn btn-small ' . $class . ' margin-right-5"><span class="btn-icon fa-btn-icon %icon%"></span><span class="btn-text">%label%</span></a>', [
+                    '%href%' => $link['href'] ?? '',
                     '%icon%' => $link['icon'],
                     '%label%' => $link['label'],
                 ]);
@@ -351,7 +370,7 @@ return function (Handler $handler) {
                 if (version_compare($chv_version['files'], $chv_version['db'], '>')) {
                     $install_update_button = $chv_version['db'] . ' DB <span class="fas fa-database"></span> <a href="' . get_base_url('update') . '">' . _s('install update') . '</a>';
                 }
-                $version_check .= '<a data-action="check-for-updates" class="btn btn-small accent margin-right-5 margin-top-5"><span class="fas fa-arrow-alt-circle-up"></span> ' . _s("Check updates") . '</a>';
+                $version_check .= '<a data-action="check-for-updates" class="btn btn-small accent margin-right-5 margin-top-5"><span class="fas fa-circle-up"></span> ' . _s("Check upgrades") . '</a>';
                 if (datetime_diff($cron_last_ran, null, 'm') > 5) {
                     $cronRemark .= ' — <span class="color-fail"><span class="fas fa-exclamation-triangle"></span> ' . _s('not running') . '</span>';
                 }
@@ -365,11 +384,11 @@ return function (Handler $handler) {
             $chv_version_minor = $chv_versioning[0] . '.' . $chv_versioning[1];
             $system_values = [
                 'chv_version' => [
-                    'label' => '<div class="text-align-center"><a href="https://chevereto.com" target="_blank"><img src="' . absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg') . '" alt="" width="50%"></a></div>',
+                    'label' => '<div class="text-align-center"><a href="https://chevereto.com" target="_blank"><img src="' . absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg') . '" alt="" width="80%"></a></div>',
                     'content' => '<div class="phone-text-align-center">'
-                        . '<h3 class="margin-bottom-10"><a target="_blank" href="https://releases.chevereto.com/' . $chv_version_major . '/' . $chv_version_minor . '/' . $chv_version['files'] . '">'
+                        . '<h3 class="margin-bottom-10 version-display"><a target="_blank" href="https://releases.chevereto.com/' . $chv_version_major . '/' . $chv_version_minor . '/' . $chv_version['files'] . '">'
                         . $chv_version['files']
-                        . '<span class="btn-icon fas fas fa-code-branch"></span></a> <span class="software-version-name" title="' . APP_VERSION_AKA . '">' . APP_VERSION_AKA . '</span> </h3>'
+                        . '<span class="btn-icon fas fas fa-code-branch margin-left-5"></span></a><span class="software-version-name margin-left-10" title="' . APP_VERSION_AKA . '">' . APP_VERSION_AKA . '</span> </h3>'
                         . $install_update_button
                         . '<div class="margin-bottom-20">' . $version_check . $linksButtons . '</div>
                         </div>'
@@ -390,11 +409,48 @@ return function (Handler $handler) {
                     'content' => '<i class="fas fa-network-wired"></i> ' . get_client_ip() . ' <a data-modal="simple" data-target="modal-connecting-ip"><i class="fas fa-question-circle margin-right-5"></i>' . _s('Not your IP?') . '</a>'
                 ],
             ];
+
+            $cheveretoLinks = [
+                [
+                    'label' => _s('Docs'),
+                    'icon' => 'fas fa-book',
+                    'href' => $handler::var('docsBaseUrl')
+                ],
+                [
+                    'label' => _s("Releases"),
+                    'icon' => 'fas fa-rocket',
+                    'href' => 'https://releases.chevereto.com'
+                ],
+                [
+                    'label' => _s('Support'),
+                    'icon' => 'fas fa-medkit',
+                    'href' => 'https://chevereto.com/support'
+                ],
+                [
+                    'label' => _s('Community'),
+                    'icon' => 'fas fa-users',
+                    'href' => 'https://chevereto.com/community'
+                ],
+            ];
+            $cheveretoLinksButtons = '';
+            foreach ($cheveretoLinks as $link) {
+                $attr = $link['attr'] ?? 'href="%href%" target="_blank"';
+                $cheveretoLinksButtons .= strtr('<a ' . $attr . ' class="btn default btn-small margin-right-5"><span class="btn-icon fa-btn-icon %icon%"></span><span class="btn-text">%label%</span></a>', [
+                    '%href%' => $link['href'] ?? '',
+                    '%icon%' => $link['icon'],
+                    '%label%' => $link['label'],
+                ]);
+            }
+
             if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
                 $mysqlVersion = $db->getAttr(PDO::ATTR_SERVER_VERSION);
                 $db->closeCursor();
                 $mysqlServerInfo = $db->getAttr(PDO::ATTR_SERVER_INFO);
                 $system_values_more = [
+                    'links' => [
+                        'label' => _s('Links'),
+                        'content' => $cheveretoLinksButtons,
+                    ],
                     'cli' => [
                         'label' => 'CLI',
                         'content' => '<i class="fas fa-terminal"></i> <span data-click="select-all">' . PATH_PUBLIC . 'app/bin/legacy</span>',
@@ -1412,7 +1468,7 @@ return function (Handler $handler) {
                                     if (isset($page['id']) && $page['id'] == $v['page_id']) {
                                         continue; // Skip on same thing
                                     }
-                                    if (timing_safe_compare($v[$kk], $POST[$kk])) {
+                                    if (hash_equals($v[$kk], $POST[$kk])) {
                                         $input_errors[$kk] = sprintf($vv, $v['page_id']);
                                     }
                                 }
@@ -1427,7 +1483,7 @@ return function (Handler $handler) {
 
                             try {
                                 Page::writePage(['file_path' => $POST['page_file_path'], 'code' => $page_write_code]);
-                                if ($handler->request()[2] == 'edit' && isset($page['file_path']) && !timing_safe_compare($page['file_path'], $POST['page_file_path'])) {
+                                if ($handler->request()[2] == 'edit' && isset($page['file_path']) && !hash_equals($page['file_path'], $POST['page_file_path'])) {
                                     unlinkIfExists(Page::getPath($page['file_path']));
                                 }
                                 if (isset($page['id'])) {
@@ -1445,7 +1501,7 @@ return function (Handler $handler) {
                         foreach ($page_fields as $v) {
                             $postPage = $POST['page_' . $v];
                             if ($handler->request()[2] == 'edit') {
-                                if (timing_safe_compare($page[$v] ?? '', $postPage ?? '')) {
+                                if (hash_equals($page[$v] ?? '', $postPage ?? '')) {
                                     continue;
                                 } // Skip not updated values
                             }

@@ -43,6 +43,7 @@ if ($opts === []) {
 }
 define('ACCESS', $access);
 require_once __DIR__ . '/../load/php-boot.php';
+require_once __DIR__ . '/../load/loader.php';
 require_once loaderHandler(
     $_COOKIE,
     $_ENV,

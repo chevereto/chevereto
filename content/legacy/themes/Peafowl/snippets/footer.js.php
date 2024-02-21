@@ -15,6 +15,7 @@ use function Chevereto\Legacy\get_captcha_invisible_html;
 use function Chevereto\Legacy\get_translation_table;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getSettings;
+use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -116,7 +117,10 @@ if (Handler::cond('captcha_needed') && getSetting('captcha_api') == '3') {
 			CHV.obj.logged_user = <?php echo json_encode($logged_user_array); ?>;
 		<?php
             if (Login::isAdmin()) { ?>
-                CHV.obj.system_info = <?php echo json_encode(['version' => get_app_version()]); ?>;
+                CHV.obj.system_info = <?php echo json_encode([
+                    'version' => get_app_version(),
+                    'edition' => env()['CHEVERETO_EDITION'],
+                ]); ?>;
         <?php
             }
         }

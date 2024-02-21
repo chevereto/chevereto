@@ -2573,3 +2573,7 @@ body.full--wh {
 .btn-cta:hover .btn-icon {
     color: inherit;
 }
+
+.version-display {
+    font-size: 1.4em;
+}

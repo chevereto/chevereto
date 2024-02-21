@@ -87,4 +87,5 @@ return [
   'CHEVERETO_SERVICING' => 'server',
   'CHEVERETO_SESSION_SAVE_HANDLER' => 'files',
   'CHEVERETO_SESSION_SAVE_PATH' => '/tmp',
+  'CHEVERETO_EDITION' => 'pro',
 ];

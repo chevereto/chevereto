@@ -454,7 +454,6 @@ $(function () {
                     deferred: window[$target.data("ajax-deferred")]
                 };
 
-            // Window functions failed? Maybe those are named fn...
             if (typeof submit_function !== "function" && $target.data("submit-fn")) {
                 var submit_fn_split = $target.data("submit-fn").split(".");
                 submit_function = window;

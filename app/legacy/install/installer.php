@@ -594,6 +594,7 @@ $settings_updates = [
     '4.0.10' => [
         'listing_viewer' => 0,
     ],
+    '4.0.11' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',

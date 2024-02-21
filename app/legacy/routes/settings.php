@@ -31,7 +31,6 @@ use function Chevereto\Legacy\G\is_url_web;
 use function Chevereto\Legacy\G\nullify_string;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
-use function Chevereto\Legacy\G\timing_safe_compare;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_available_languages;
 use function Chevereto\Legacy\getIpButtonsArray;
@@ -251,11 +250,11 @@ return function (Handler $handler) {
                                     continue;
                                 }
                             }
-                            if (timing_safe_compare($row['user_username'], $POST['username']) and $user['username'] !== $row['user_username']) {
+                            if (hash_equals($row['user_username'], $POST['username']) and $user['username'] !== $row['user_username']) {
                                 $input_errors['username'] = 'Username already being used';
                             }
                             if (
-                                !empty($POST['email']) && timing_safe_compare($row['user_email'], $POST['email']) &&
+                                !empty($POST['email']) && hash_equals($row['user_email'], $POST['email']) &&
                                 $user['email'] !== $row['user_email']
                             ) {
                                 $input_errors['email'] = _s('Email already being used');
@@ -266,7 +265,7 @@ return function (Handler $handler) {
                         }
                     }
                 }
-                if (!$is_error && $is_email_required && !empty($POST['email']) && !timing_safe_compare($user['email'] ?? '', $POST['email'])) {
+                if (!$is_error && $is_email_required && !empty($POST['email']) && !hash_equals($user['email'] ?? '', $POST['email'])) {
                     Confirmation::delete(['type' => 'account-change-email', 'user_id' => $user['id']]);
                     $hashed_token = generate_hashed_token((int) $user['id']);
                     Confirmation::insert([

@@ -54,6 +54,7 @@ use function Chevereto\Legacy\isDebug;
 use function Chevereto\Legacy\isShowEmbedContent;
 use function Chevereto\Legacy\send_mail;
 use function Chevereto\Legacy\time_elapsed_string;
+use function Chevereto\Vars\env;
 use function Chevereto\Vars\files;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\request;
@@ -1535,6 +1536,24 @@ return function (Handler $handler) {
                 }
                 User::update($user_id, ['status' => $doing == 'user_ban' ? 'banned' : 'valid']);
                 $json_array['status_code'] = 200;
+
+                break;
+            case 'set-license-key':
+                if (env()['CHEVERETO_CONTEXT'] === 'saas') {
+                    throw new Exception('Not found', 404);
+                }
+                if (!Login::isAdmin()) {
+                    throw new Exception(_s('Request denied'), 403);
+                }
+                $licenseKey = $POST['key'] ?? '';
+                $licenseFile = PATH_APP . 'CHEVERETO_LICENSE_KEY';
+                touch($licenseFile);
+                if (file_put_contents($licenseFile, $licenseKey)) {
+                    $json_array['status_code'] = 200;
+                    $json_array['success'] = ['message' => _s('License key updated'), 'code' => 200];
+                } else {
+                    throw new Exception('Error updating license key', 500);
+                }
 
                 break;
             case 'deny':

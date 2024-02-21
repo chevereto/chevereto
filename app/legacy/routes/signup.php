@@ -23,7 +23,6 @@ use function Chevereto\Legacy\G\get_public_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
-use function Chevereto\Legacy\G\timing_safe_compare;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_email_body_str;
 use function Chevereto\Legacy\getSetting;
@@ -136,10 +135,10 @@ return function (Handler $handler) {
                             continue;
                         }
                     }
-                    if (timing_safe_compare($row['user_username'], $POST['username'])) {
+                    if (hash_equals($row['user_username'], $POST['username'])) {
                         $input_errors['username'] = 'Username already being used';
                     }
-                    if (timing_safe_compare($row['user_email'], $POST['email'])) {
+                    if (hash_equals($row['user_email'], $POST['email'])) {
                         $input_errors['email'] = _s('Email already being used');
                     }
                     if (!$show_resend_activation) {

@@ -2161,20 +2161,27 @@ $(function () {
                 ) == -1
             ) {
                 PF.fn.modal.simple({
-                    title: '<i class="fas fa-arrow-alt-circle-up"></i> ' + PF.fn._s("Update available v%s", data.current_version),
+                    title: '<i class="fas fa-arrow-alt-circle-up"></i> ' + PF.fn._s("Chevereto v%s available", data.current_version),
                     message: "<p>" +
-                        PF.fn._s("There is an update available for this system.") +
-                        "</p>" +
+                        PF.fn._s("There is a new Chevereto version available with the following release notes.") +
+                        ' ' +
+                        PF.fn._s("Check %s for a complete changelog since you last upgrade.", '<a href="https://releases.chevereto.com/4.X/4.0/' + CHV.obj.system_info.version + '" target="_blank">' + CHV.obj.system_info.version + '<span class="btn-icon fas fas fa-code-branch"></span></a>') +
+                        '</p>' +
                         '<textarea class="r4 resize-vertical">' +
-                        data.release_notes +
+                        data.release_notes.trim() +
                         "</textarea>" +
+                        '<p>' +
+                        PF.fn._s("Check the %s for alternative update methods.", '<a href="https://chv.to/v4update" target="_blank">' + PF.fn._s('documentation') + '</a>') +
+                        '</p>' +
                         '<div class="btn-container margin-bottom-0">' +
-                        '<a href="https://chv.to/v4update" target="_blank" class="btn btn-input accent">' +
-                        '<span class="btn-icon fas fa-external-link-alt user-select-none"></span>' +
+                        '<a href="' + PF.obj.config.base_url + 'dashboard/upgrade/?auth_token=' + PF.obj.config.auth_token
+                        + '" class="btn btn-input accent">' +
+                        '<span class="btn-icon fas fa-download user-select-none"></span>' +
                         '<span class="btn-text user-select-none">' +
-                        PF.fn._s("Update instructions") +
+                        PF.fn._s("Upgrade now") +
                         '</span>' +
-                        '</a></div>',
+                        '</a> ' +
+                        '</div>',
                     html: true,
                 });
             } else {
@@ -2189,7 +2196,30 @@ $(function () {
     });
 
     if (typeof PF.fn.get_url_var("checkUpdates") !== typeof undefined) {
-        $("[data-action=check-for-updates]").click();
+        $("[data-action=check-for-updates]").trigger("click");
+    }
+    if (typeof PF.fn.get_url_var("upgrade") !== typeof undefined) {
+        $("[data-action=upgrade]").trigger("click");
+    }
+    if (typeof PF.fn.get_url_var("license") !== typeof undefined) {
+        $("[data-action='license']").trigger("click");
+    }
+    if (typeof PF.fn.get_url_var("installed") !== typeof undefined) {
+        PF.fn.modal.simple({
+            title: '<i class="fas fa-code-branch"></i> ' + PF.fn._s("Chevereto v%s installed", CHV.obj.system_info.version),
+            message: "<p>" +
+                PF.fn._s('Usage of Chevereto Software must be in compliance with the software license terms known as "The Chevereto License".') +
+                '</p>' +
+                '<div class="btn-container margin-bottom-0">' +
+                '<a href="https://chevereto.com/license" target="_blank" class="btn btn-input accent">' +
+                '<span class="btn-icon fas fa-file-contract user-select-none"></span>' +
+                '<span class="btn-text user-select-none">' +
+                PF.fn._s("License agreement") +
+                '</span>' +
+                '</a> ' +
+                '</div>',
+            html: true,
+        });
     }
     $(document).on("click", "[data-action=system-update]", function (e) {
         if (!$("input#system-update").prop("checked")) {
@@ -2832,7 +2862,31 @@ $(function () {
         $icon.addClass(iconClass);
     });
 
-
+    $(document).on("click", "[href^='https://chevereto.com/']", function(e) {
+        let hasBadge = $(this).find(".badge--paid").exists();
+        if(!hasBadge) {
+            return;
+        }
+        let href = $(this).attr("href");
+        let buyFrom = PF.fn._s('Get a license from %s to unlock all features and support.', '<a href="'+href+'" target="_blank">chevereto.com</a>');
+        let instructions = PF.fn._s('You can enter your license key in the dashboard panel.');
+        e.preventDefault();
+        e.stopPropagation();
+        PF.fn.modal.simple({
+            html: true,
+            title: '<i class="fa-solid fa-boxes-packing"></i> Upgrade Chevereto',
+            message: "<p>" + buyFrom +
+            " " + instructions +  "</p>" +
+            '<div class="btn-container margin-bottom-0">' +
+            '<a href="' + PF.obj.config.base_url + 'dashboard/?license" class="btn btn-input accent">' +
+            '<span class="btn-icon fas fa-key user-select-none"></span>' +
+            '<span class="btn-text user-select-none">' +
+            PF.fn._s("Enter license") +
+            '</span>' +
+            '</a> ' +
+            '</div>',
+        });
+    })
 });
 
 if (typeof CHV == "undefined") {
@@ -3198,7 +3252,6 @@ CHV.fn.listingViewer = {
         var object = this.getObject(true);
         var template = this.getEl("template").html();
         var matches = template.match(/%(\S+)%/g);
-        console.log(object)
         if (matches) {
             $.each(matches, function (i, v) {
                 var handle = v.slice(1, -1).split(".");
@@ -4715,7 +4768,6 @@ CHV.fn.resource_privacy_toggle = function (privacy) {
     }
 };
 
-// Album stuff
 CHV.fn.submit_create_album = function () {
     var $modal = $(PF.obj.modal.selectors.root);
     if ($("[name=form-album-name]", $modal).val() == "") {
@@ -6424,3 +6476,43 @@ CHV.fn.Palettes = {
         }, 400);
     }
 }
+
+CHV.fn.license = {
+    set: {
+        submit: function () {
+            var $modal = $(PF.obj.modal.selectors.root),
+                submit = true;
+            $.each($(":input", $modal), function (i, v) {
+                if ($(this).val() == "" && $(this).attr("required")) {
+                    $(this).highlight();
+                    submit = false;
+                }
+            });
+            if (!submit) {
+                PF.fn.growl.call(PF.fn._s("Please fill all the required fields."));
+                return false;
+            }
+            PF.obj.modal.form_data = {
+                action: "set-license-key",
+                key: $("[name=chevereto-license-key]", $modal).val(),
+            };
+            return true;
+        },
+        complete: {
+            success: function (XHR) {
+                let response = XHR.responseJSON;
+                let $trigger = $("[data-action=upgrade]");
+                if(CHV.obj.system_info.edition === 'free') {
+                    $trigger.removeClass("hidden");
+                    $trigger.trigger("click");
+                    return;
+                }
+                PF.fn.growl.call(PF.fn._s(response.success.message));
+            },
+            error: function (XHR) {
+                var response = XHR.responseJSON;
+                PF.fn.growl.call(PF.fn._s(response.error.message));
+            },
+        },
+    },
+};

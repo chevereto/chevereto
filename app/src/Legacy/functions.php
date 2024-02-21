@@ -1032,6 +1032,7 @@ function loaderHandler(
       'CHEVERETO_ENABLE_UPLOAD_WATERMARK' => '0',
       'CHEVERETO_ENABLE_USERS' => '0',
       'CHEVERETO_MAX_USERS' => '1',
+      'CHEVERETO_EDITION' => 'free',
     ));
     new EnvVar($envVar);
     new ServerVar(array_merge($envDefault, $env, $_server));
@@ -1313,4 +1314,15 @@ function adjustBrightness(string $hexCode, float $adjustPercent)
     }
 
     return '#' . implode($hexCode);
+}
+
+function getLicenseKey(): string
+{
+    $licenseKey = env()['CHEVERETO_LICENSE_KEY'] ?? '';
+    $licenseFile = PATH_APP . 'CHEVERETO_LICENSE_KEY';
+    if ($licenseKey === '' && file_exists($licenseFile)) {
+        $licenseKey = file_get_contents($licenseFile);
+    }
+
+    return $licenseKey;
 }
