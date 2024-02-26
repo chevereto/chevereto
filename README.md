@@ -9,9 +9,8 @@
 [![CHUISS](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
 [![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chv.to/community)
-
-[![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chv.to/community)
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
+[![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
 Chevereto enables to create an image sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions.
 
