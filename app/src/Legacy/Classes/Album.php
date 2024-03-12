@@ -11,6 +11,10 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use function Chevereto\Encryption\decrypt;
+use function Chevereto\Encryption\encrypt;
+use function Chevereto\Encryption\encryptValues;
+use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\assertNotStopWords;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\G\check_value;
@@ -35,8 +39,8 @@ use Throwable;
 
 class Album
 {
-    public const HASHED_NAMES = [
-        'password',
+    public const ENCRYPTED_NAMES = [
+        'password'
     ];
 
     public static function getSingle(
@@ -83,6 +87,9 @@ class Album
             $album_db['album_liked'] = (bool) $album_db['like_user_id'];
         }
         $return = $album_db;
+        if (isset($return['album_password']) && hasEncryption()) {
+            $return['album_password'] = decrypt($return['album_password']);
+        }
 
         return $pretty
             ? self::formatArray($return)
@@ -104,6 +111,13 @@ class Album
         $db = DB::getInstance();
         $db->query($query);
         $db_rows = $db->fetchAll();
+        if (hasEncryption()) {
+            foreach ($db_rows as &$row) {
+                if (isset($row['album_password'])) {
+                    $row['album_password'] = decrypt($row['album_password']);
+                }
+            }
+        }
         if ($pretty) {
             $return = [];
             foreach ($db_rows as $k => $v) {
@@ -165,7 +179,9 @@ class Album
             if (!check_value($values['password'])) {
                 throw new Exception('Missing album password', 100);
             }
-            $values['password'] = password_hash($values['password'], PASSWORD_BCRYPT);
+            if (hasEncryption()) {
+                $values = encryptValues(self::ENCRYPTED_NAMES, $values);
+            }
         }
         $flood = self::handleFlood();
         if ($flood !== []) {
@@ -292,11 +308,8 @@ class Album
             nullify_string($values['description']);
         }
         assertNotStopWords($values['name'] ?? '', $values['description'] ?? '');
-        if (($values['privacy'] ?? null) !== 'password') {
-            $values['password'] = null;
-        }
-        if (isset($values['password'])) {
-            $values['password'] = password_hash($values['password'], PASSWORD_BCRYPT);
+        if (isset($values['password']) && hasEncryption()) {
+            $values = encryptValues(self::ENCRYPTED_NAMES, $values);
         }
 
         return DB::update('albums', $values, ['id' => $id]);
@@ -518,22 +531,23 @@ class Album
         return $output;
     }
 
-    public static function checkPassword(string $hash, string $user_password): bool
-    {
-        return password_verify($user_password, $hash);
-    }
-
-    public static function storeUserPasswordHash($album_id, $user_password): void
+    public static function storeUserPassword($album_id, $user_password): void
     {
         $addValue = session()['password'];
+        if (hasEncryption()) {
+            $user_password = encrypt($user_password);
+        }
         $addValue['album'][$album_id] = $user_password;
         sessionVar()->put('password', $addValue);
     }
 
     public static function checkSessionPassword($album = []): bool
     {
-        $user_password_hash = session()['password']['album'][$album['id']] ?? null;
-        if (!isset($user_password_hash) || !password_verify($user_password_hash, $album['password'])) {
+        $session_password = session()['password']['album'][$album['id']] ?? null;
+        if (isset($session_password) && hasEncryption()) {
+            $session_password = decrypt($session_password);
+        }
+        if (!isset($session_password) || !hash_equals($session_password, $album['password'])) {
             $removeValue = session()['password'] ?? null;
             unset($removeValue['album'][$album['id']]);
             sessionVar()->put('password', $removeValue);

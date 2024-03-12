@@ -46,7 +46,7 @@ if (!defined('ACCESS') || !ACCESS) {
 		<div class="input-label overflow-auto">
 			<div class="c8 grid-columns">
 				<label for="form-album-password"><?php _se('Password'); ?></label>
-				<input type="text" name="form-album-password" class="text-input" value="" placeholder="<?php _se('Set password'); ?>">
+				<input type="password" name="form-album-password" class="text-input" value="" placeholder="<?php _se('Set password'); ?>">
 			</div>
 		</div>
 	</div>

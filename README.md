@@ -8,21 +8,51 @@
 
 [![CHUISS](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
-[![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chv.to/community)
+[![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chevereto.com/community)
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
-Chevereto enables to create an image sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions.
+Chevereto enables to create an image sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions. ⭐️ [Live demo](https://demo.chevereto.com)
 
 ![screen](.github/screen/user-profile.jpeg)
+
+**Note:** This is the repository for Chevereto free edition. This software is intended for **personal usage** as it doesn't contain all the [features](https://chevereto.com/features) of the commercial edition.
+
+This edition doesn't include the following features:
+
+- Multiple users
+- Advanced search
+- Manage banners
+- Consent screen (age gate)
+- Bulk content importer
+- Custom homepage
+- Custom logo
+- Custom pages
+- Custom routing
+- Cookie consent
+- User followers
+- Like system
+- Guest API
+- IP banning
+- ModerateContent integration
+- Notifications
+- Queue handling
+- StopForumSpam integration
+- Upload moderation
+- Upload plugin
+- Watermarks
+- External Storage (AWS S3, Google Cloud Storage, SFTP, etc.)
+- External services (reCAPTCHA, Akismet, etc.)
+- Project Arachnid integration (CSAM)
+- Social login (OAuth2)
 
 ## Documentation
 
 We provide several layers of documentation covering all aspects of our software. Chevereto documentation is Open Source and your contribution is highly appreciated.
 
-* Software [v4-docs.chevereto.com](https://v4-docs.chevereto.com)
-* Admin [v4-admin.chevereto.com](https://v4-admin.chevereto.com)
-* User [v4-user.chevereto.com](https://v4-user.chevereto.com)
+- Software [v4-docs.chevereto.com](https://v4-docs.chevereto.com)
+- Admin [v4-admin.chevereto.com](https://v4-admin.chevereto.com)
+- User [v4-user.chevereto.com](https://v4-user.chevereto.com)
 
 ## License
 

@@ -424,7 +424,7 @@ class Handler
             return false;
         }
 
-        return hash_equals(session()['G_auth_token'], $token);
+        return hash_equals((string) session()['G_auth_token'], $token);
     }
 
     public static function setVar(string $var, mixed $value): void

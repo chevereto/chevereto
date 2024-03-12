@@ -250,12 +250,14 @@ return function (Handler $handler) {
                                     continue;
                                 }
                             }
-                            if (hash_equals($row['user_username'], $POST['username']) and $user['username'] !== $row['user_username']) {
+                            if (hash_equals((string) $row['user_username'], (string) $POST['username'])
+                                && $user['username'] !== $row['user_username']
+                            ) {
                                 $input_errors['username'] = 'Username already being used';
                             }
-                            if (
-                                !empty($POST['email']) && hash_equals($row['user_email'], $POST['email']) &&
-                                $user['email'] !== $row['user_email']
+                            if (!empty($POST['email'])
+                                && hash_equals((string) $row['user_email'], (string) $POST['email'])
+                                && $user['email'] !== $row['user_email']
                             ) {
                                 $input_errors['email'] = _s('Email already being used');
                             }
@@ -265,7 +267,14 @@ return function (Handler $handler) {
                         }
                     }
                 }
-                if (!$is_error && $is_email_required && !empty($POST['email']) && !hash_equals($user['email'] ?? '', $POST['email'])) {
+                if (!$is_error
+                    && $is_email_required
+                    && !empty($POST['email'])
+                    && !hash_equals(
+                        (string) ($user['email'] ?? ''),
+                        (string) $POST['email']
+                    )
+                ) {
                     Confirmation::delete(['type' => 'account-change-email', 'user_id' => $user['id']]);
                     $hashed_token = generate_hashed_token((int) $user['id']);
                     Confirmation::insert([

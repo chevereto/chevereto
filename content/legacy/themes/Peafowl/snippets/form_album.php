@@ -88,8 +88,7 @@ if (!defined('ACCESS') || !ACCESS) {
 		<div class="input-label overflow-auto">
 			<div class="c8 grid-columns">
 				<label for="form-album-password"><?php _se('Password'); ?></label>
-                <p></p>
-				<input type="text" name="form-album-password" class="text-input" placeholder="<?php isset($album['password']) ? _se('Change password') : _se('Set password'); ?>" data-required<?php echo($album['privacy'] ?? null) == 'password' ? ' required' : null; ?>>
+				<input type="password" name="form-album-password" class="text-input" value="<?php echo $album['password'] ?? null; ?>" placeholder="<?php isset($album['password']) ? _se('Change password') : _se('Set password'); ?>" data-required<?php echo($album['privacy'] ?? null) == 'password' ? ' required' : null; ?>>
 			</div>
 		</div>
 	</div>

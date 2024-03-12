@@ -164,9 +164,13 @@ function send_mail($to, $subject, $body): bool
     } else {
         $from = [getSettings()['email_from_email'], getSettings()['email_from_name']];
         $reply_to = null;
+        $fromEmail = $from[0];
+        if (str_ends_with($fromEmail, '@chevereto.com')) {
+            throw new Exception('Forbidden to send email from ' . $fromEmail, 600);
+        }
     }
     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
-        throw new Exception('Invalid email', 100);
+        throw new Exception('Invalid to email', 100);
     }
     foreach (['email_from_email', 'email_from_name'] as $v) {
         if (!getSettings()[$v]) {

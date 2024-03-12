@@ -11,6 +11,7 @@
 
 use function Chevere\String\randomString;
 use Chevereto\Config\Config;
+use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\Arachnid;
@@ -370,7 +371,7 @@ return function (Handler $handler) {
                 if (version_compare($chv_version['files'], $chv_version['db'], '>')) {
                     $install_update_button = $chv_version['db'] . ' DB <span class="fas fa-database"></span> <a href="' . get_base_url('update') . '">' . _s('install update') . '</a>';
                 }
-                $version_check .= '<a data-action="check-for-updates" class="btn btn-small accent margin-right-5 margin-top-5"><span class="fas fa-circle-up"></span> ' . _s("Check upgrades") . '</a>';
+                $version_check .= '<a data-action="check-for-updates" class="btn btn-small accent margin-right-5 margin-bottom-5"><span class="fas fa-circle-up"></span> ' . _s("Check upgrades") . '</a>';
                 if (datetime_diff($cron_last_ran, null, 'm') > 5) {
                     $cronRemark .= ' — <span class="color-fail"><span class="fas fa-exclamation-triangle"></span> ' . _s('not running') . '</span>';
                 }
@@ -408,6 +409,10 @@ return function (Handler $handler) {
                     'label' => _s('Connecting IP'),
                     'content' => '<i class="fas fa-network-wired"></i> ' . get_client_ip() . ' <a data-modal="simple" data-target="modal-connecting-ip"><i class="fas fa-question-circle margin-right-5"></i>' . _s('Not your IP?') . '</a>'
                 ],
+                'is_encrypted' => [
+                    'label' => _s('Encryption'),
+                    'content' => '<i class="fas fa-shield-halved"></i> ' . (hasEncryption() ? _s('Enabled') : _s('Disabled'))
+                ],
             ];
 
             $cheveretoLinks = [
@@ -435,7 +440,7 @@ return function (Handler $handler) {
             $cheveretoLinksButtons = '';
             foreach ($cheveretoLinks as $link) {
                 $attr = $link['attr'] ?? 'href="%href%" target="_blank"';
-                $cheveretoLinksButtons .= strtr('<a ' . $attr . ' class="btn default btn-small margin-right-5"><span class="btn-icon fa-btn-icon %icon%"></span><span class="btn-text">%label%</span></a>', [
+                $cheveretoLinksButtons .= strtr('<a ' . $attr . ' class="btn default btn-small margin-right-5 margin-bottom-5"><span class="btn-icon fa-btn-icon %icon%"></span><span class="btn-text">%label%</span></a>', [
                     '%href%' => $link['href'] ?? '',
                     '%icon%' => $link['icon'],
                     '%label%' => $link['label'],
@@ -1468,7 +1473,10 @@ return function (Handler $handler) {
                                     if (isset($page['id']) && $page['id'] == $v['page_id']) {
                                         continue; // Skip on same thing
                                     }
-                                    if (hash_equals($v[$kk], $POST[$kk])) {
+                                    if (hash_equals(
+                                        (string) $v[$kk],
+                                        (string) $POST[$kk]
+                                    )) {
                                         $input_errors[$kk] = sprintf($vv, $v['page_id']);
                                     }
                                 }
@@ -1483,7 +1491,10 @@ return function (Handler $handler) {
 
                             try {
                                 Page::writePage(['file_path' => $POST['page_file_path'], 'code' => $page_write_code]);
-                                if ($handler->request()[2] == 'edit' && isset($page['file_path']) && !hash_equals($page['file_path'], $POST['page_file_path'])) {
+                                if ($handler->request()[2] == 'edit'
+                                    && isset($page['file_path'])
+                                    && !hash_equals((string) $page['file_path'], (string) $POST['page_file_path'])
+                                ) {
                                     unlinkIfExists(Page::getPath($page['file_path']));
                                 }
                                 if (isset($page['id'])) {
@@ -1501,7 +1512,10 @@ return function (Handler $handler) {
                         foreach ($page_fields as $v) {
                             $postPage = $POST['page_' . $v];
                             if ($handler->request()[2] == 'edit') {
-                                if (hash_equals($page[$v] ?? '', $postPage ?? '')) {
+                                if (hash_equals(
+                                    (string) ($page[$v] ?? ''),
+                                    (string) ($postPage ?? '')
+                                )) {
                                     continue;
                                 } // Skip not updated values
                             }

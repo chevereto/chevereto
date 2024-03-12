@@ -135,10 +135,10 @@ return function (Handler $handler) {
                             continue;
                         }
                     }
-                    if (hash_equals($row['user_username'], $POST['username'])) {
+                    if (hash_equals((string) $row['user_username'], (string) $POST['username'])) {
                         $input_errors['username'] = 'Username already being used';
                     }
-                    if (hash_equals($row['user_email'], $POST['email'])) {
+                    if (hash_equals((string) $row['user_email'], (string) $POST['email'])) {
                         $input_errors['email'] = _s('Email already being used');
                     }
                     if (!$show_resend_activation) {

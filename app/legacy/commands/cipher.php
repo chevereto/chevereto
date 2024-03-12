@@ -11,6 +11,7 @@
 
 use Chevereto\Encryption\EncryptionInstance;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
+use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
@@ -110,4 +111,21 @@ foreach ($connections as $connection) {
     );
     $tokenString = serialize($token);
     feedback("- token: $tokenString");
+}
+feedbackSeparator();
+feedbackStep($doing, 'albums password');
+$albumsPassword = DB::queryFetchAll('SELECT album_id id, album_password password FROM ' . DB::getTable('albums') . ' WHERE album_password IS NOT NULL;');
+foreach ($albumsPassword as $album) {
+    new EncryptionInstance($fromEncryption);
+    feedback("> Album id #" . $album['id']);
+    new EncryptionInstance($toEncryption);
+    $password = $album['password'];
+    $values = [
+        'password' => $password,
+    ];
+    Album::update(
+        id: (int) $album['id'],
+        values: $values,
+    );
+    feedback("- password: $password");
 }

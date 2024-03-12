@@ -132,8 +132,8 @@ return function (Handler $handler) {
             }
         }
         if (!$is_error) {
-            if (isset(post()['content-password']) && Album::checkPassword($album['password'], post()['content-password'])) {
-                Album::storeUserPasswordHash($album['id'], post()['content-password']);
+            if (isset(post()['content-password']) && hash_equals($album['password'], post()['content-password'])) {
+                Album::storeUserPassword($album['id'], post()['content-password']);
             } elseif (!Album::checkSessionPassword($album)) {
                 $is_error = true;
                 if (isset(post()['content-password'])) {

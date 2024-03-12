@@ -24,7 +24,7 @@ class Search
 
     public string $wheres;
 
-    public string $q;
+    public string $q = '';
 
     public string $type;
 
@@ -64,13 +64,25 @@ class Search
             $this->q .= implode(' ', $operator) . ' ';
         }
         if (isset($this->q)) {
-            $this->q = preg_replace('/\s+/', ' ', trim($this->q));
+            $this->q = trim($this->q);
+            $this->q = preg_replace(
+                '/\s+/',
+                ' ',
+                trim($this->q)
+            ) ?? '';
         }
+        $this->q ??= '';
         $q_match = $this->q;
         $search_binds = [];
         $search_op_wheres = [];
         foreach ($search_op['named'] as $v) {
-            $q_match = trim(preg_replace('/\s+/', ' ', str_replace($v, '', $q_match)));
+            $q_match = trim(
+                preg_replace(
+                    '/\s+/',
+                    ' ',
+                    str_replace($v, '', $q_match)
+                )
+            );
             if ($q_match === '') {
                 $q_match = null;
             }

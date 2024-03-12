@@ -2886,7 +2886,13 @@ $(function () {
             '</a> ' +
             '</div>',
         });
-    })
+    });
+    $(document).on("focus", "input[name='form-album-password']", function() {
+        $(this).get(0).type = "text";
+    });
+    $(document).on("blur", "input[name='form-album-password']", function() {
+        $(this).get(0).type = "password";
+    });
 });
 
 if (typeof CHV == "undefined") {

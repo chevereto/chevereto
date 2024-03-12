@@ -16,17 +16,17 @@ if (!defined('ACCESS') || !ACCESS) {
 <div data-modal="modal-license-key" class="hidden" data-submit-fn="CHV.fn.license.set.submit" data-ajax-deferred="CHV.fn.license.set.complete" data-ajax-url="<?php echo get_base_url('json'); ?>">
     <span class="modal-box-title"><i class="fas fa-key"></i> <?php _se('License key'); ?></span>
     <p><?php _se(
-    "Provide Chevereto license key by assigning the environment variable %env% or by creating the %file% containing the license key.",
+    "Provide Chevereto license key by assigning the environment variable %env% or by creating the %file% file containing the license key.",
     [
-        '%env%' => '<code class="code font-weight-bold">CHEVERETO_LICENSE_KEY</code>',
-        '%file%' => '<code class="code font-weight-bold">' . PATH_APP . 'CHEVERETO_LICENSE_KEY</code>',
+        '%env%' => '<code class="code font-weight-bold word-break-break-all">CHEVERETO_LICENSE_KEY</code>',
+        '%file%' => '<code class="code font-weight-bold word-break-break-all">' . PATH_APP . 'CHEVERETO_LICENSE_KEY</code>',
     ]
 ); ?></p>
     <p><?php _se('You can also set the license in the textarea below.'); ?></p>
     <div class="modal-form margin-top-20">
         <div class="input-label overflow-auto">
             <label for="chevereto-license-key"><?php _se('Chevereto license key'); ?></label>
-            <textarea placeholder="<?php _se('PASTE LICENSE KEY HERE'); ?>" id="chevereto-license-key" class="r3 resize-vertical" name="chevereto-license-key" data-focus="select-all"><?php echo Handler::var('licenseKey'); ?></textarea>
+            <textarea placeholder="<?php _se('PASTE LICENSE KEY HERE'); ?>" id="chevereto-license-key" class="r3 resize-vertical" name="chevereto-license-key"><?php echo Handler::var('licenseKey'); ?></textarea>
             <div class="input-below font-size-small"><?php _se('Get a license from %s to unlock all features and support.', '<a href="https://chevereto.com/pricing" target="_blank">chevereto.com</a>'); ?></div>
         </div>
     </div>

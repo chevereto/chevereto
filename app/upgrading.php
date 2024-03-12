@@ -123,12 +123,15 @@ if (PHP_SAPI === 'cli') {
     }
 } else {
     $singleStep = false;
-    $action = $_GET['action'] ?? '';
-    $token = $_GET['token'] ?? '';
+    $action = (string) ($_GET['action'] ?? '');
+    $token = (string) ($_GET['token'] ?? '');
     if (!file_exists($lockUpgrading)) {
         abort('[!] Upgrade is not expected', 403);
     }
     $upgradeToken = file_get_contents($lockUpgrading);
+    if ($upgradeToken === false) {
+        abort('[!] Invalid token file', 403);
+    }
     if (!hash_equals($upgradeToken, $token)) {
         abort('[!] Invalid token', 403);
     }

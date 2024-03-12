@@ -1,0 +1,14 @@
+Chevereto 4.0.12 (2024-03-12)
+
+- ✅ Added cipher (encryption) to album password
+- ✅ Added hidden (click to show) album password
+- 🐞 Fixed bug in `entrypoints/index.php`
+- 🐞 Fixed bug in API route
+- 🐞 Fixed bug in Dashboard route
+- 🐞 Fixed bug in Settings route
+- 🐞 Fixed bug in Signup route
+- 🐞 Fixed bug in G\Handler
+- 🐞 Fixed bug in `app/upgrading.php`
+- 🐞 Fixed bug in empty search string
+- 💅 Improved license key handling (mobile) at Dashboard
+- 🆙 Updated dependencies

@@ -62,10 +62,12 @@ return function (Handler $handler) {
             if (!(bool) env()['CHEVERETO_ENABLE_API_GUEST']) {
                 throw new Exception("Guest API is disabled.", 400);
             }
-            if ((getSetting('api_v1_key') ?? '') == '') {
+            $apiV1Key = (string) (getSetting('api_v1_key') ?? '');
+            if ($apiV1Key == '') {
                 throw new Exception("API V1 public key can't be null. Go to your dashboard and set the Guest API key.", 0);
             }
-            if (!hash_equals(getSetting('api_v1_key'), $key)) {
+            // @var string $key
+            if (!hash_equals($apiV1Key, $key)) {
                 throw new Exception("Invalid guest API key.", 100);
             }
         } else {
@@ -123,7 +125,8 @@ return function (Handler $handler) {
                     throw new Exception('Upload using base64 source must be done using POST method.', 130);
                 }
                 $source = trim(preg_replace('/\s+/', '', $source));
-                if (!hash_equals(base64_encode(base64_decode($source)), $source)) {
+                $base64source = base64_encode(base64_decode($source));
+                if (!hash_equals($base64source, $source)) {
                     throw new Exception('Invalid base64 string.', 120);
                 }
                 $api_temp_file = tempnam(sys_get_temp_dir(), 'chvtemp');

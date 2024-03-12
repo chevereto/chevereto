@@ -18,7 +18,7 @@ $loadDir = __DIR__ . '/../load';
 require_once $loadDir . '/php-boot.php';
 $uri = $_SERVER['REQUEST_URI'] ?? '';
 $parseUri = parse_url($uri);
-if (in_array($parseUri['path'], ['/upgrading', '/upgrading/'])
+if (in_array($parseUri['path'] ?? null, ['/upgrading', '/upgrading/'])
     && file_exists($appDir . '/.upgrading/upgrading.lock')) {
     require $appDir . '/upgrading.php';
     exit;
