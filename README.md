@@ -8,7 +8,8 @@
 
 [![CHUISS](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
-[![Community](https://img.shields.io/badge/chv.to-community-blue?style=flat-square)](https://chevereto.com/community)
+[![Community](https://img.shields.io/badge/chevereto-community-blue?style=flat-square)](https://chevereto.com/community)
+[![Discord](https://img.shields.io/badge/chevereto-discord-5865F2?style=flat-square)](https://chevereto.com/go/discord)
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
