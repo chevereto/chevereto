@@ -1,4 +1,4 @@
-# Chevereto: Ultimate image sharing software
+# Chevereto: Ultimate image and video sharing software
 
 > 🔔 [Subscribe](https://chv.to/newsletter) to don't miss any update regarding Chevereto.
 
@@ -13,47 +13,116 @@
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
-Chevereto enables to create an image sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions. ⭐️ [Live demo](https://demo.chevereto.com)
+Chevereto enables to create a media sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions. ⭐️ [Live demo](https://demo.chevereto.com)
+
+Chevereto is a turnkey system which main use case is to provide a self-hosted platform for content creators, communities and businesses. It's features are all about media sharing, with a strong focus on user experience, privacy and security. On its pro edition Chevereto excels as a content management system with heavy business related features that you won't get on other systems.
 
 ![screen](.github/screen/user-profile.jpeg)
 
-**Note:** This is the repository for Chevereto free edition. This software is intended for **personal usage** as it doesn't contain all the [features](https://chevereto.com/features) of the commercial edition.
+**Note:** This is the repository for Chevereto free edition. This software is intended for **personal usage** as it doesn't contain [all the features](https://chevereto.com/features) of commercial editions. This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a free demo of the pro edition at [chevereto.com](https://chevereto.com) to see all the features in action.
 
-This edition doesn't include the following features:
+| Feature                                                                         | Free     | Pro                  |
+| ------------------------------------------------------------------------------- | -------- | -------------------- |
+| Image & Video uploads                                                           | ✅        | ✅                    |
+| Supports 360° images                                                            | ✅        | ✅                    |
+| User profiles                                                                   | ✅        | ✅                    |
+| Albums                                                                          | ✅        | ✅                    |
+| Categories                                                                      | ✅        | ✅                    |
+| Search                                                                          | ✅        | ✅                    |
+| Direct links                                                                    | ✅        | ✅                    |
+| Delete link                                                                     | ✅        | ✅                    |
+| Sharing                                                                         | ✅        | ✅                    |
+| Admin web interface                                                             | ✅        | ✅                    |
+| Listings                                                                        | ✅        | ✅                    |
+| EXIF data                                                                       | ✅        | ✅                    |
+| User-based API                                                                  | ✅        | ✅                    |
+| Two-Factor Authentication (2FA)                                                 | ✅        | ✅                    |
+| Call-to-action albums                                                           | ✅        | ✅                    |
+| Random button                                                                   | ✅        | ✅                    |
+| Encrypt secrets                                                                 | ✅        | ✅                    |
+| System stats & usage                                                            | ✅        | ✅                    |
+| Custom semantics                                                                | ✅        | ✅                    |
+| One-click upgrade (web & CLI)                                                   | ✅        | ✅                    |
+| Theme palettes (10)                                                             | ✅        | ✅                    |
+| Custom JS & CSS                                                                 | ✅        | ✅                    |
+| Supports GD & ImageMagick                                                       | ✅        | ✅                    |
+| Duplicate media detection                                                       | ✅        | ✅                    |
+| Docker support                                                                  | ✅        | ✅                    |
+| CLI commands                                                                    | ✅        | ✅                    |
+| Multiple languages (configurable)                                               | ✅        | ✅                    |
+| Website mode (public, private)                                                  | ✅        | ✅                    |
+| Default timezone selection                                                      | ✅        | ✅                    |
+| Enable/disable NSFW listings                                                    | ✅        | ✅                    |
+| Enable/disable blur NSFW content                                                | ✅        | ✅                    |
+| Classic + Endless scroll listings                                               | ✅        | ✅                    |
+| Configurable listings                                                           | ✅        | ✅                    |
+| Anywhere uploader                                                               | ✅        | ✅                    |
+| Embed codes on upload complete                                                  | ✅        | ✅                    |
+| Embed codes on selected media                                                   | ✅        | ✅                    |
+| Embed codes media view                                                          | ✅        | ✅                    |
+| Expirable uploads                                                               | ✅        | ✅                    |
+| Storage modes (date, direct)                                                    | ✅        | ✅                    |
+| Filenaming (original, id, random, mixed)                                        | ✅        | ✅                    |
+| Thumbs & medium sized images                                                    | ✅        | ✅                    |
+| CDN support (any)                                                               | ✅        | ✅                    |
+| Maintenance mode                                                                | ✅        | ✅                    |
+| Crypt-salted IDs (no public integer ids)                                        | ✅        | ✅                    |
+| Comments API (Disqus, any JS)                                                   | ✅        | ✅                    |
+| Email SMTP + phpmail()                                                          | ✅        | ✅                    |
+| Test-email tool                                                                 | ✅        | ✅                    |
+| Debugger included ([xrDebug](https://xrdebug.com))                              | ✅        | ✅                    |
+| REPL included ([PsySH](https://psysh.org), [Tinkerwel](https://tinkerwell.app)) | ✅        | ✅                    |
+| Source code available                                                           | ✅        | ✅                    |
+| Maximum resolution                                                              | No limit | No limit             |
+| License                                                                         | AGPLv3   | Not-AGPL limited     |
+| Roles                                                                           | admin    | admin, manager, user |
+| Multiple users & management                                                     | –        | ✅                    |
+| Multiple external storage servers                                               | –        | ✅                    |
+| Explore & Discovery                                                             | –        | ✅                    |
+| Advanced search                                                                 | –        | ✅                    |
+| Followers                                                                       | –        | ✅                    |
+| Guest API                                                                       | –        | ✅                    |
+| Likes                                                                           | –        | ✅                    |
+| Manage banners                                                                  | –        | ✅                    |
+| Consent screen (age gate)                                                       | –        | ✅                    |
+| Bulk content importer                                                           | –        | ✅                    |
+| Stop words                                                                      | –        | ✅                    |
+| Custom homepage                                                                 | –        | ✅                    |
+| Custom logo                                                                     | –        | ✅                    |
+| Custom pages                                                                    | –        | ✅                    |
+| Custom routing                                                                  | –        | ✅                    |
+| Cookie consent                                                                  | –        | ✅                    |
+| Notifications                                                                   | –        | ✅                    |
+| Queue handling                                                                  | –        | ✅                    |
+| IP banning                                                                      | –        | ✅                    |
+| Upload moderation                                                               | –        | ✅                    |
+| Upload plugin (PUP.js)                                                          | –        | ✅                    |
+| Image watermarks                                                                | –        | ✅                    |
+| External services support                                                       | –        | ✅                    |
+| StopForumSpam                                                                   | –        | ✅                    |
+| ModerateContent                                                                 | –        | ✅                    |
+| Project Arachnid                                                                | –        | ✅                    |
+| Auth providers (OAuth2)                                                         | –        | ✅                    |
 
-- Multiple users
-- Advanced search
-- Manage banners
-- Consent screen (age gate)
-- Bulk content importer
-- Custom homepage
-- Custom logo
-- Custom pages
-- Custom routing
-- Cookie consent
-- User followers
-- Like system
-- Guest API
-- IP banning
-- ModerateContent integration
-- Notifications
-- Queue handling
-- StopForumSpam integration
-- Upload moderation
-- Upload plugin
-- Watermarks
-- External Storage (AWS S3, Google Cloud Storage, SFTP, etc.)
-- External services (reCAPTCHA, Akismet, etc.)
-- Project Arachnid integration (CSAM)
-- Social login (OAuth2)
+## Files supported
+
+You can upload the following media types:
+
+- image/jpeg
+- image/gif
+- image/png
+- image/webp
+- image/bmp
+- video/mp4
+- video/webm
 
 ## Documentation
 
-We provide several layers of documentation covering all aspects of our software. Chevereto documentation is Open Source and your contribution is highly appreciated.
+Chevereto is so **feature-rich**, mature and robust that we need three layers of documentation for it. The project started on 2007 and it has been actively maintained since then.
 
-- Software [v4-docs.chevereto.com](https://v4-docs.chevereto.com)
-- Admin [v4-admin.chevereto.com](https://v4-admin.chevereto.com)
-- User [v4-user.chevereto.com](https://v4-user.chevereto.com)
+- [Documentation](https://v4-docs.chevereto.com)
+- [User manual](https://v4-user.chevereto.com/)
+- [Admin manual](https://v4-admin.chevereto.com/)
 
 ## License
 
