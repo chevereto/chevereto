@@ -10,11 +10,11 @@
 	</div>
 	<div class="list-item-desc">
 		<div class="list-item-desc-title">
-			<a href="%IMAGE_PATH_VIEWER%" class="list-item-desc-title-link" data-text="image-title" data-content="image-link">%IMAGE_TITLE%</a>
+			<a href="%IMAGE_PATH_VIEWER%" class="list-item-desc-title-link" data-text="image-title" data-content="image-link">%IMAGE_DISPLAY_TITLE%</a>
 		</div>
 	</div>
     <div class="list-item-image-tools --bottom --right">
-		%tpl_list_item/item_like%
         %tpl_list_item/item_share%
+		%tpl_list_item/item_like%
     </div>
 </div>

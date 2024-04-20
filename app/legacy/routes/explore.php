@@ -65,6 +65,9 @@ return function (Handler $handler) {
     if ($doing == 'animated') {
         $listingParams['params_hidden']['is_animated'] = 1;
     }
+    if ($doing == 'videos') {
+        $listingParams['params_hidden']['is_video'] = 1;
+    }
     $getParams = Listing::getParams(request());
     $tabs = Listing::getTabs($listingParams, $getParams, true);
     $currentKey = $tabs['currentKey'];

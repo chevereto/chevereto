@@ -81,13 +81,15 @@ class DB extends GDB
         string $clause = 'AND',
         array $sort = [],
         int $limit = null,
-        int $fetch_style = PDO::FETCH_ASSOC
+        int $fetch_style = PDO::FETCH_ASSOC,
+        array $valuesOperators = []
     ): mixed {
         $prefix = self::getFieldPrefix($table);
         $values = self::getPrefixedValues($prefix, $values);
+        $valuesOperators = self::getPrefixedValues($prefix, $valuesOperators);
         $sort = self::getPrefixedSort($prefix, $sort);
 
-        return GDB::get($table, $values, $clause, $sort, $limit, $fetch_style);
+        return GDB::get($table, $values, $clause, $sort, $limit, $fetch_style, $valuesOperators);
     }
 
     public static function update(

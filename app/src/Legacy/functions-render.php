@@ -93,14 +93,16 @@ function theme_file_exists($var)
 function get_html_tags()
 {
     $palette = Handler::var('theme_palette_handle');
+    $font = Handler::var('theme_font');
     $device = 'device-' . (Handler::cond('mobile_device') ? 'mobile' : 'nonmobile');
     $nsfwBlur = 'unsafe-blur-' . (getSetting('theme_nsfw_blur') ? 'on' : 'off');
     $classes = strtr(
-        '%device %palette %nsfwBlur',
+        '%device %palette %nsfwBlur %font',
         [
             '%device' => $device,
             '%palette' => 'palette-' . $palette,
             '%nsfwBlur' => $nsfwBlur,
+            '%font' => 'font-' . $font,
         ]
     );
     if (getSetting('captcha')) {
@@ -168,7 +170,7 @@ function get_captcha_invisible_html()
         .then(function(token) {
             fetch(recaptchaLocal + "/?action=" + recaptchaAction + "&token="+token).then(function(response) {
                 response.json().then(function(data) {
-                    console.log(data);
+                    // console.log(data);
                 });
             });
         });
@@ -514,14 +516,18 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
             $show_admin_tools = true;
         }
     }
+    if (($item['duration_time'] ?? '') === '') {
+        $template['tpl_list_item/item_duration_time'] = null;
+    }
+    $stock_tpl_lower = strtolower($stock_tpl);
     if (!$show_item_public_tools) {
-        $template['tpl_list_item/item_' . strtolower($stock_tpl) . '_public_tools'] = null;
+        $template['tpl_list_item/item_' . $stock_tpl_lower . '_public_tools'] = null;
     }
     if (!$show_item_edit_tools) {
-        $template['tpl_list_item/item_' . strtolower($stock_tpl) . '_edit_tools'] = null;
+        $template['tpl_list_item/item_' . $stock_tpl_lower . '_edit_tools'] = null;
     }
     if (!$show_admin_tools) {
-        $template['tpl_list_item/item_' . strtolower($stock_tpl) . '_admin_tools'] = null;
+        $template['tpl_list_item/item_' . $stock_tpl_lower . '_admin_tools'] = null;
     }
     foreach ($conditional_replaces as $k => $v) {
         $template[$k] = $v;
@@ -552,7 +558,7 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
         $placeholder = $stock_tpl == 'IMAGE' ? 'IMAGE_FLAG' : 'ALBUM_COVER_FLAG';
         $replacements[$placeholder] = $nsfw ? 'unsafe' : 'safe';
     }
-    $object = array_filter_array($item, ['id_encoded', 'image', 'medium', 'thumb', 'name', 'title', 'display_url', 'extension', 'filename', 'height', 'how_long_ago', 'size_formatted', 'url', 'path_viewer', 'url_viewer', 'url_short', 'width', 'is_360']);
+    $object = array_filter_array($item, ['id_encoded', 'image', 'medium', 'thumb', 'name', 'title', 'display_url', 'display_title', 'extension', 'filename', 'height', 'how_long_ago', 'size_formatted', 'url', 'path_viewer', 'url_viewer', 'url_frame', 'url_short', 'width', 'is_360', 'type']);
     if (isset($item['user'])) {
         $object['user'] = [];
         foreach (['avatar', 'url', 'username', 'name_short_html'] as $k) {
@@ -1034,26 +1040,41 @@ function getThemeLogo(): string
     }
 }
 
-function badgePaid(bool $isPaid = true): string
+function badgePaid(string $edition): string
 {
-    if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'] || $isPaid === false) {
+    if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+        return '';
+    }
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
         return '';
     }
 
-    return sprintf('<span class="badge badge--paid"><i class="fa-solid fa-dollar-sign"></i> %s</span>', _s('Pro'));
+    return sprintf('<span class="badge badge--paid"><i class="fa-solid fa-dollar-sign"></i> %s</span>', $edition);
 }
 
-function echoBadgePaid(bool $isPaid = true): void
+function linkPaid(string $edition): ?string
 {
-    echo badgePaid($isPaid);
-}
-
-function echoInputDisabledPaid(bool $disabled = true): void
-{
-    if ($disabled === false) {
-        return;
+    if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+        return null;
     }
-    echo ' disabled="disabled" title="' . _s('This is a paid feature') . '"';
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
+        return null;
+    }
+
+    return 'https://chevereto.com/pricing';
+}
+
+function inputDisabledPaid(string $edition): string
+{
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
+        return '';
+    }
+
+    return ' disabled="disabled" title="'
+        . _s('This is a paid feature (%s edition)', $edition)
+        . '"'
+        . ' rel="tooltip"'
+        . ' data-tiptip="right"';
 }
 
 function getIpButtonsArray(array $bannedIp, string $ip): array

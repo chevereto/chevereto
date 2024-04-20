@@ -28,6 +28,8 @@ Chevereto is so **feature-rich**, mature and robust that we need three layers of
 - [User manual](https://v4-user.chevereto.com/)
 - [Admin manual](https://v4-admin.chevereto.com/)
 
+## Compare features
+
 **Note:** This is the repository for Chevereto free edition. This software is intended for **personal usage** as it doesn't contain [all the features](https://chevereto.com/features) of commercial editions. This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a free demo of the pro edition at [chevereto.com](https://chevereto.com) to see all the features in action.
 
 | Feature                                                                         | Free     | Pro                   |

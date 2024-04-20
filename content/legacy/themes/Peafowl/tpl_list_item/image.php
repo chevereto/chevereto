@@ -5,6 +5,7 @@
 			%tpl_list_item/image_cover_image%
 		</a>
 		%tpl_list_item/item_privacy%
+		%tpl_list_item/item_duration_time%
 		%tpl_list_item/item_image_admin_tools%
 		%tpl_list_item/item_image_play_gif%
 	</div>

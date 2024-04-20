@@ -1,12 +1,12 @@
 <?php
 
+use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Settings;
-use function Chevereto\Legacy\echoBadgePaid;
-use function Chevereto\Legacy\echoInputDisabledPaid;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_available_languages;
 use function Chevereto\Legacy\get_enabled_languages;
 use function Chevereto\Legacy\get_select_options_html;
+use function Chevereto\Legacy\inputDisabledPaid;
 use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
@@ -26,16 +26,16 @@ echo read_the_docs_settings('languages', _s('Languages')); ?>
     <div class="input-below"><?php _se('Default base language to use.'); ?></div>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_LANGUAGE_CHOOSER']); ?><label for="auto_language"><?php _se('Auto language'); ?></label>
-    <div class="c5 phablet-c1"><select <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_LANGUAGE_CHOOSER']); ?> type="text" name="auto_language" id="auto_language" class="text-input">
+    <?php echo badgePaid('pro'); ?><label for="auto_language"><?php _se('Auto language'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('pro'); ?> type="text" name="auto_language" id="auto_language" class="text-input">
         <?php
                 echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('auto_language')); ?>
     </select></div>
     <div class="input-below"><?php _se('Enable this if you want to automatically detect and set the right language for each user.'); ?></div>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_LANGUAGE_CHOOSER']); ?><label for="language_chooser_enable"><?php _se('Language chooser'); ?></label>
-    <div class="c5 phablet-c1"><select <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_LANGUAGE_CHOOSER']); ?> type="text" name="language_chooser_enable" id="language_chooser_enable" class="text-input" data-combo="language-enable-combo">
+    <?php echo badgePaid('pro'); ?><label for="language_chooser_enable"><?php _se('Language chooser'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('pro'); ?> type="text" name="language_chooser_enable" id="language_chooser_enable" class="text-input" data-combo="language-enable-combo">
         <?php
                 echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('language_chooser_enable')); ?>
     </select></div>

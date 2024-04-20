@@ -63,15 +63,25 @@ return function (Handler $handler) {
     }
     $data = [
         'version' => '1.0',
-        'type' => 'photo',
         'provider_name' => safe_html(Settings::get('website_name')),
         'provider_url' => get_public_url(),
         'title' => safe_html($image['title']),
-        'url' => $image['display_url'],
         'web_page' => $image['url_viewer'],
         'width' => $image['width'],
         'height' => $image['height'],
     ];
+    switch ($image['type']) {
+        case 'video':
+            $data['html'] = '<video src="' . $image['url'] . '" width="' . $image['width'] . '" height="' . $image['height'] . '" controls poster="' . $image['url_frame'] . '"></video>';
+            $data['type'] = 'video';
+
+            break;
+        case 'image':
+            $data['url'] = $image['display_url'];
+            $data['type'] = 'photo';
+
+            break;
+    }
     if (isset($image['user'])) {
         $data = array_merge($data, [
             'author_name' => safe_html($image['user']['username']),

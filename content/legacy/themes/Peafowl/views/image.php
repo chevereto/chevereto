@@ -26,22 +26,28 @@ if (!defined('ACCESS') || !ACCESS) {
     }
     ?>
     <?php
-    $image_url = isset(Handler::var('image')['medium']) ? Handler::var('image')['medium']['url'] : Handler::var('image')['url'];
+    $image_url = Handler::var('image')['medium']['url']
+        ?? Handler::var('image')['frame']['url']
+        ?? Handler::var('image')['url'];
     ?>
     <div id="image-viewer-container" class="image-viewer-main image-viewer-container<?php echo isset(Handler::var('image')['album'], Handler::var('image_album_slice')['images']) ? ' --thumbs' : '';?>">
-        <img src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
+        <img data-type="<?php echo  Handler::var('image')['type']; ?>" class="media" src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
         ?> class="no-select" <?php
-    } ?> alt="<?php echo Handler::var('image')['alt']; ?>" width="<?php echo Handler::var('image')['width']; ?>" height="<?php echo Handler::var('image')['height']; ?>" data-is360="<?php echo Handler::var('image')['is_360']; ?>" <?php if (isset(Handler::var('image')['medium'])) {
+    } ?> alt="<?php echo Handler::var('image')['alt']; ?>" width="<?php echo Handler::var('image')['width']; ?>" height="<?php echo Handler::var('image')['height']; ?>" data-is360="<?php echo Handler::var('image')['is_360']; ?>" <?php if (isset(Handler::var('image')['medium']) || isset(Handler::var('image')['frame'])) {
         ?> data-load="full"<?php
     } ?>>
         <?php if (Handler::var('image')['is_use_loader']) {
         ?>
-        <div id="image-viewer-loader" data-size="<?php echo Handler::var('image')['size']; ?>"><?php if (Handler::var('image')['is_animated']) {
+        <div id="image-viewer-loader" data-size="<?php echo Handler::var('image')['size']; ?>"><?php if (Handler::var('image')['is_animated'] || Handler::var('image')['type'] === 'video') {
             ?><span class="btn-icon icon fas fa-play-circle"></span><?php
         } ?><span><?php
             switch (true) {
                 case Handler::var('image')['is_animated']:
-                    _se('Play GIF');
+                    _se('Play %s', 'GIF');
+
+                break;
+                case Handler::var('image')['type'] === 'video':
+                    _se('Play %s', 'video');
 
                 break;
                 case Handler::var('image')['is_360']:
@@ -177,8 +183,14 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
         <span class="icon far fa-eye-slash <?php if (!isset(Handler::var('image')['album']) or Handler::var('image')['album']['privacy'] == 'public') {
         echo 'soft-hidden';
     } ?>" data-content="privacy-private" title="<?php _se('This content is private'); ?>" rel="tooltip"></span>
-        <?php echo '<span class="far fa-image"></span>'
+        <?php
+         echo sprintf('<span class="fas fa-%s"></span>', Handler::var('image')['type'])
             . ' ' . Handler::var('image')['width'] . ' × ' . Handler::var('image')['height']
+            . (
+                Handler::var('image')['type'] === 'video'
+                ? (' — <i class="far fa-clock"></i> ' . Handler::var('image')['duration_time'])
+                : ''
+            )
             . ' — ' . strtoupper(Handler::var('image')['extension'])
             . ' ' . Handler::var('image')['size_formatted']; ?>
     </p>
@@ -190,7 +202,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
         if (isset($category)) {
             $category_link = '<a href="' . $category['url'] . '" rel="tag"><i class="fas fa-columns margin-right-5"></i>' . $category['name'] . '</a>';
         }
-        $time_elapsed_string = '<i class="far fa-clock"></i> <span title="' . Handler::var('image')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('image')['date_gmt']) . '</span>';
+        $time_elapsed_string = '<span title="' . Handler::var('image')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('image')['date_gmt']) . '</span>';
         if (isset(Handler::var('image')['album']['id']) && (Handler::var('image')['album']['privacy'] !== 'private_but_link' || Handler::cond('owner') || Handler::cond('content_manager'))) {
             $album_link = '<a href="' . Handler::var('image')['album']['url'] . '"' . (Handler::var('image')['album']['name'] !== Handler::var('image')['album']['name_truncated'] ? (' title="' . Handler::var('image')['album']['name_html'] . '"') : null) . '><i class="fas fa-images margin-right-5"></i>' . Handler::var('image')['album']['name_truncated_html'] . '</a>';
             if (isset($category_link)) {
@@ -290,7 +302,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 }
                 ?>
             </div>
-            <div class="c15 phablet-c1 fluid-column grid-columns margin-left-10 phablet-margin-left-0">
+            <div class="c8 phablet-c1 fluid-column grid-columns margin-left-10 phablet-margin-left-0">
                 <?php
                 if (Handler::var('image')['is_approved']) {
                     show_banner('content_tab-about_column', !Handler::var('image')['nsfw']);
@@ -314,7 +326,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 <div class="c24 margin-left-auto margin-right-auto">
                     <div class="margin-bottom-30 growl static text-align-center clear-both" data-content="privacy-private"><?php echo Handler::var('image')['album']['privacy_notes'] ?? ''; ?></div>
                 </div>
-                <div class="panel-share c16 phone-c1 phablet-c1 grid-columns margin-right-10">
+                <div class="panel-share c24 phone-c1 phablet-c1 grid-columns margin-right-10">
                     <?php
                     foreach (Handler::var('embed') as $embed) {
                         ?>
@@ -323,8 +335,8 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                             <?php foreach ($embed['entries'] as $entry) {
                             ?>
                                 <div class="panel-share-input-label">
-                                    <h4 class="title c5 grid-columns"><?php echo $entry['label']; ?></h4>
-                                    <div class="c10 phablet-c1 grid-columns">
+                                    <div class="title c5 grid-columns"><?php echo $entry['label']; ?></div>
+                                    <div class="c19 phablet-c1 grid-columns">
                                         <input id="<?php echo $entry['id']; ?>" type="text" class="text-input" value="<?php echo $entry['value']; ?>" data-focus="select-all" readonly>
                                         <button type="button" class="input-action" data-action="copy" data-action-target="#<?php echo $entry['id']; ?>"><i class="far fa-copy"></i> <?php _se('copy'); ?></button>
                                     </div>

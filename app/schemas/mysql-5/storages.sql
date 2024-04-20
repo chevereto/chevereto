@@ -16,6 +16,7 @@ CREATE TABLE `%table_prefix%storages` (
   `storage_is_active` tinyint(1) NOT NULL DEFAULT '0',
   `storage_capacity` bigint(32) DEFAULT NULL,
   `storage_space_used` bigint(32) DEFAULT '0',
+  `storage_type_chain` tinyint(3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`storage_id`),
   KEY `storage_api_id` (`storage_api_id`),
   KEY `storage_is_active` (`storage_is_active`)

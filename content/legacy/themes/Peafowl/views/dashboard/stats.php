@@ -1,6 +1,8 @@
 <?php
 
+use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Stat;
+use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\bytes_to_mb;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_client_ip;
@@ -13,6 +15,14 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
 ?>
+<div data-modal="welcome" id="modal-welcome" class="hidden">
+    <span class="modal-box-title"><i class="fas fa-hand"></i> <?php _se('Hello and welcome, %s', Login::getUser()['username']); ?></span>
+    <img src="<?php echo absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-ultimate-remix.png') ?>" alt="" width="100%%">
+    <p><?php _se("Whether you're an individual creator or a company looking for a powerful media sharing platform, Chevereto has you covered.") ?></p>
+    <p><?php _se("We're always looking for ways to improve, feel free to %s and suggestions.", '<a href="mailto:rodolfo@chevereto.com" target="_blank">' . _s('share your feedback') . '</a>'); ?> <?php _se('We are available for all your support and customization needs.'); ?></p>
+    <p><?php _se('Thank you for choosing Chevereto.'); ?></p>
+    <p class="font-style-italic">—<br><a href="https://rodolfoberrios.com" target="_blank">Rodolfo Berrios</a><br><?php _se('Chevereto creator'); ?></p>
+</div>
 <div data-modal="modal-license-key" class="hidden" data-submit-fn="CHV.fn.license.set.submit" data-ajax-deferred="CHV.fn.license.set.complete" data-ajax-url="<?php echo get_base_url('json'); ?>">
     <span class="modal-box-title"><i class="fas fa-key"></i> <?php _se('License key'); ?></span>
     <p><?php _se(
@@ -43,8 +53,14 @@ if (!defined('ACCESS') || !ACCESS) {
 ); ?></p>
     <p><?php _se("Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks."); ?></p>
 </div>
+
 <div class="dashboard-group">
 <script type="text/javascript" src="<?php echo get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'js/apexcharts.js'); ?>"></script>
+
+    <div class="header header-tabs no-select margin-top-20">
+        <h2><i class="header-icon fas fa-chart-line"></i> <?php _se('Stats'); ?></h2>
+    </div>
+
     <div id="dashboard-chart">
         <div class="toolbar">
             <button id="one_week">1W</button>
@@ -183,80 +199,80 @@ document.querySelector('#one_year').addEventListener('click', function(e) {
     );
 });
 </script>
-					<div class="overflow-auto text-align-center margin-top-20 margin-bottom-40">
-						<div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['images'] > 999999) {
+    <div class="overflow-auto text-align-center margin-top-20 margin-bottom-40">
+        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['images'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['images']) . '"';
 } ?>>
-							<span class="stats-big-number">
-								<strong class="number"><?php echo Handler::var('totals')['images'] > 999999 ? Handler::var('totals_display')['images'] : number_format((float) Handler::var('totals')['images']); ?></strong>
-								<span class="label"><span class="fas fa-image"></span> <?php _ne('Image', 'Images', Handler::var('totals')['images']); ?></span>
-							</span>
-						</div>
-						<div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['albums'] > 999999) {
+            <span class="stats-big-number">
+                <strong class="number"><?php echo Handler::var('totals')['images'] > 999999 ? Handler::var('totals_display')['images'] : number_format((float) Handler::var('totals')['images']); ?></strong>
+                <span class="label"><span class="fas fa-image"></span> <?php _ne('Image', 'Images', Handler::var('totals')['images']); ?></span>
+            </span>
+        </div>
+        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['albums'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['albums']) . '"';
 } ?>>
-							<span class="stats-big-number">
-								<strong class="number"><?php echo Handler::var('totals')['albums'] > 999999 ? Handler::var('totals_display')['albums'] : number_format((float) Handler::var('totals')['albums']); ?></strong>
-								<span class="label"><span class="fas fa-images"></span> <?php _ne('Album', 'Albums', Handler::var('totals')['albums']); ?></span>
-							</span>
-						</div>
-                        <?php if ((bool) env()['CHEVERETO_ENABLE_USERS']) { ?>
-						<div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['users'] > 999999) {
+            <span class="stats-big-number">
+                <strong class="number"><?php echo Handler::var('totals')['albums'] > 999999 ? Handler::var('totals_display')['albums'] : number_format((float) Handler::var('totals')['albums']); ?></strong>
+                <span class="label"><span class="fas fa-images"></span> <?php _ne('Album', 'Albums', Handler::var('totals')['albums']); ?></span>
+            </span>
+        </div>
+        <?php if ((bool) env()['CHEVERETO_ENABLE_USERS']) { ?>
+        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['users'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['users']) . '"';
 } ?>>
-							<span class="stats-big-number">
-								<strong class="number"><?php echo Handler::var('totals')['users'] > 999999 ? Handler::var('totals_display')['users'] : number_format((float) Handler::var('totals')['users']); ?></strong>
-								<span class="label"><span class="fas fa-users"></span> <?php _ne('User', 'Users', Handler::var('totals')['users']); ?></span>
-							</span>
-						</div>
-                        <?php } ?>
-						<div class="stats-block c6 fluid-column display-inline-block">
-							<div class="stats-big-number">
-								<strong class="number"><?php echo Handler::var('totals_display')['disk']['used']; ?> <span><?php echo Handler::var('totals_display')['disk']['unit']; ?></span></strong>
-								<span class="label"><span class="fas fa-hdd"></span> <?php _se('Disk used'); ?></span>
-							</div>
-						</div>
-					</div>
-
-                    <div class="header header-tabs no-select">
-                        <h2><i class="header-icon fas fa-rss"></i> <?php _se('%s News', 'Chevereto'); ?></h2>
-                    </div>
-
-                    <div class="card-wrapper margin-bottom-40">
-                        <div class="card-slider">
-                            <?php foreach (array_slice(Handler::var('chevereto_news'), 0, 8) as $k => $v) {
-    echo strtr('<article class="card-container">
-                                <div class="card">
-                                    <a class="card-header-image" href="%url%" target="_blank" style="background-image: url(%image%);">
-                                        <span class="animate card-header-image-mask"></span>
-                                        <span class="card-text">
-                                            <h3>%title%</h3>
-                                            <span>%summary%</span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </article>' . "\n", [
-                                    '%url%' => $v->url,
-                                    '%image%' => $v->image,
-                                    '%title%' => $v->title,
-                                    '%summary%' => $v->summary,
-                                ]);
-} ?>
+            <span class="stats-big-number">
+                <strong class="number"><?php echo Handler::var('totals')['users'] > 999999 ? Handler::var('totals_display')['users'] : number_format((float) Handler::var('totals')['users']); ?></strong>
+                <span class="label"><span class="fas fa-users"></span> <?php _ne('User', 'Users', Handler::var('totals')['users']); ?></span>
+            </span>
+        </div>
+        <?php } ?>
+        <div class="stats-block c6 fluid-column display-inline-block">
+            <div class="stats-big-number">
+                <strong class="number"><?php echo Handler::var('totals_display')['disk']['used']; ?> <span><?php echo Handler::var('totals_display')['disk']['unit']; ?></span></strong>
+                <span class="label"><span class="fas fa-hdd"></span> <?php _se('Disk used'); ?></span>
             </div>
         </div>
-
-        <div class="header header-tabs no-select">
-            <h2><i class="header-icon fas fa-server"></i> <?php _se('Installation details'); ?></h2>
-        </div>
-
-        <ul class="tabbed-content-list table-li margin-top-20 padding-bottom-20">
-            <?php
-            foreach (Handler::var('system_values') as $v) {
-                ?>
-                <li><span class="font-weight-bold c6 display-table-cell padding-right-10 phone-display-block"><?php echo $v['label']; ?><span style="opacity: 0;">:</span></span><span class="display-table-cell phone-display-block word-break-break-all"><?php echo $v['content']; ?></span></li>
-            <?php
-            }
-            ?>
-        </ul>
     </div>
+
+    <div class="header header-tabs no-select">
+        <h2><i class="header-icon fas fa-rss"></i> <?php _se('%s News', 'Chevereto'); ?></h2>
+    </div>
+    <div class="card-wrapper margin-bottom-40">
+        <div class="card-slider">
+            <?php foreach (array_slice(Handler::var('chevereto_news'), 0, 8) as $k => $v) {
+    echo strtr('<article class="card-container">
+                <div class="card">
+                    <a class="card-header-image" href="%url%" target="_blank" style="background-image: url(%image%);">
+                        <span class="animate card-header-image-mask"></span>
+                        <span class="card-text">
+                            <h3>%title%</h3>
+                            <span>%summary%</span>
+                        </span>
+                    </a>
+                </div>
+            </article>' . "\n", [
+                    '%url%' => $v->url,
+                    '%image%' => $v->image,
+                    '%title%' => $v->title,
+                    '%summary%' => $v->summary,
+                ]);
+} ?>
+        </div>
+    </div>
+
+    <div class="header header-tabs no-select">
+        <h2><i class="header-icon fas fa-server"></i> Chevereto <span class="edition-label"><?php _se('%s edition', ucfirst(env()['CHEVERETO_EDITION'])); ?></span></h2>
+    </div>
+
+    <ul class="tabbed-content-list table-li margin-top-20 padding-bottom-20">
+        <?php
+        foreach (Handler::var('system_values') as $v) {
+            ?>
+            <li><span class="font-weight-bold c6 display-table-cell padding-right-10 phone-display-block"><?php echo $v['label']; ?><span style="opacity: 0;">:</span></span><span class="display-table-cell phone-display-block word-break-break-all"><?php echo $v['content']; ?></span></li>
+        <?php
+        }
+        ?>
+    </ul>
+
+</div>
 <?php

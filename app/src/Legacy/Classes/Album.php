@@ -88,7 +88,11 @@ class Album
         }
         $return = $album_db;
         if (isset($return['album_password']) && hasEncryption()) {
-            $return['album_password'] = decrypt($return['album_password']);
+            try {
+                $return['album_password'] = decrypt($return['album_password']);
+            } catch (Throwable) {
+                $return['album_password'] = $return['album_password'];
+            }
         }
 
         return $pretty
@@ -114,7 +118,11 @@ class Album
         if (hasEncryption()) {
             foreach ($db_rows as &$row) {
                 if (isset($row['album_password'])) {
-                    $row['album_password'] = decrypt($row['album_password']);
+                    try {
+                        $row['album_password'] = decrypt($row['album_password']);
+                    } catch (Throwable) {
+                        $row['album_password'] = $row['album_password'];
+                    }
                 }
             }
         }

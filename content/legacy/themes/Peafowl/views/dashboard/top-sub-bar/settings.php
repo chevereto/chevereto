@@ -14,7 +14,7 @@ if (!defined('ACCESS') || !ACCESS) {
         <span class="header-icon fas fa-cog"></span>
         <span class="phone-hide"><?php echo Handler::var('dashboard_menu')[Handler::var('dashboard')]['label']; ?></span>
     </h1>
-    <div data-content="pop-selection" class="pop-btn pop-keep-click header-link float-left" data-action="settings-switch">
+    <div data-content="pop-selection" class="pop-btn pop-keep-click header-link float-left margin-left-5" data-action="settings-switch">
         <div class="pop-btn-text">
             <span class="icon <?php echo Handler::var('settings')['icon']; ?>"></span>
             <span class="btn-text"><?php echo Handler::var('settings')['label']; ?></span>

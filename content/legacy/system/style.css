@@ -340,6 +340,10 @@ code {
     opacity: 0;
 }
 
+.flex-box form input {
+    font-size: 0.83em;
+}
+
 .flex-box .loader--show,
 body.body--installing .flex-box .loader {
     opacity: 1;
@@ -588,6 +592,11 @@ body.body--installing .flex-box .loader {
     color: #d74634;
 }
 
+.input-password input[type="password"] {
+    -webkit-padding-end: 55px;
+    padding-inline-end: 55px;
+}
+
 .input-password {
     position: relative;
 }
@@ -597,6 +606,7 @@ body.body--installing .flex-box .loader {
     inset-inline-end: 0;
     top: 50%;
     margin-top: 5px;
+    z-index: -1;
 }
 
 .input-password-strength {

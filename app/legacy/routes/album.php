@@ -24,7 +24,6 @@ use function Chevereto\Legacy\G\url_to_relative;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Legacy\getIdFromURLComponent;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\is_max_invalid_request;
 use function Chevereto\Legacy\isShowEmbedContent;
 use function Chevereto\Legacy\must_use_captcha;
@@ -149,7 +148,7 @@ return function (Handler $handler) {
         $handler::setCond('error', $is_error);
         $handler::setVar('error', $error_message);
         if ($is_error) {
-            if (getSettings()['captcha'] && must_use_captcha($failed_access_requests['day'] + 1)) {
+            if ((getSetting('captcha') ?? false) && must_use_captcha($failed_access_requests['day'] + 1)) {
                 $captcha_needed = true;
             }
             $handler::setCond('captcha_needed', $captcha_needed);

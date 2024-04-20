@@ -22,7 +22,7 @@ $(function () {
             CHV.fn.listingViewer.placeholderSizing();
             prevWidth = $(window).width();
             prevHeight = $(window).height();
-        }, 250);
+        }, 10);
     });
 
     if (window.opener) {
@@ -330,7 +330,6 @@ $(function () {
         );
     }
 
-    //
     $(document).on("keyup change", "[data-action=resize-combo-input]", function (
         e
     ) {
@@ -349,7 +348,6 @@ $(function () {
         }
     });
 
-    // Edit item from queue
     $(document).on(
         "click",
         anywhere_upload_queue + " [data-action=edit]",
@@ -357,12 +355,10 @@ $(function () {
             var $item = $(this).closest("li"),
                 $queue = $item.closest("ul"),
                 id = $item.data("id"),
-                file = CHV.fn.uploader.files[id];
-
+                file = CHV.fn.uploader.files[id]
+                media = file.type.substring(0, file.type.indexOf("/"));
             var modal = PF.obj.modal.selectors.root;
             var queueObject = $.extend({}, file.formValues || file.parsedMeta);
-
-            // Inject global upload options if needed
             var injectKeys = ["album_id", "category_id", "nsfw"];
             for (var i = 0; i < injectKeys.length; i++) {
                 var key = injectKeys[i];
@@ -381,12 +377,11 @@ $(function () {
                         value;
                 }
             }
-
-            // Resize before upload
             PF.fn.modal.call({
                 type: "html",
                 template: $("#anywhere-upload-edit-item").html(),
                 callback: function () {
+                    $("[data-content=icon]", modal).addClass('fa-file-' + media);
                     var imageMaxCfg = {
                         width: CHV.obj.config.image.max_width != 0 ?
                             CHV.obj.config.image.max_width : queueObject.width,
@@ -435,6 +430,11 @@ $(function () {
                                 .prop("max", value)
                                 .data("initial", file.parsedMeta[i])
                                 .prop("value", value);
+                            if(media !== "image") {
+                                $input
+                                    .prop("disabled", true)
+                                    .closest("[data-action=resize-combo-input]").hide();
+                            }
                         }
                     });
 
@@ -447,9 +447,7 @@ $(function () {
                             class: "canvas checkered-background",
                         })
                     );
-                    var source_canvas = $(
-                        ".queue-item[data-id=" + id + "] .preview .canvas"
-                    )[0];
+                    var source_canvas = $(".queue-item[data-id=" + id + "] .preview .canvas")[0];
                     var target_canvas = $(".image-preview .canvas", modal)[0];
                     target_canvas.width = source_canvas.width;
                     target_canvas.height = source_canvas.height;
@@ -695,6 +693,9 @@ $(function () {
 
     $(document)
         .on("click", CHV.obj.image_viewer.container + " img", function (e) {
+            if($(CHV.obj.image_viewer.loader).exists()) {
+                $(CHV.obj.image_viewer.loader).trigger("click");
+            }
             if (!(
                 $(this).hasClass("cursor-zoom-in") ||
                 $(this).hasClass("cursor-zoom-out")
@@ -703,6 +704,7 @@ $(function () {
             }
             var zoom_in = $(this).hasClass("cursor-zoom-in");
             $(this).removeClass("cursor-zoom-in cursor-zoom-out");
+
             if (zoom_in) {
                 var width = $(this).attr('width'),
                     height = $(this).attr('height'),
@@ -902,7 +904,7 @@ $(function () {
         if ($list_item.exists()) {
             modal_tpl = CHV.fn.modal.getTemplateWithPreview(modal_sel, $list_item);
             if (typeof $list_item.attr("data-type") === "undefined") {
-                console.log("Error: data-type not defined");
+                console.error("Error: data-type not defined");
                 return;
             }
             link = $list_item.find('.list-item-desc-title-link').first();
@@ -959,7 +961,7 @@ $(function () {
         if (typeof $list_item.attr("data-type") !== "undefined") {
             dealing_with = $list_item.attr("data-type");
         } else {
-            console.log("Error: data-type not defined");
+            console.error("Error: data-type not defined");
             return;
         }
 
@@ -1364,7 +1366,7 @@ $(function () {
         if (typeof $content_listing.data("list") !== "undefined") {
             dealing_with = $content_listing.data("list");
         } else {
-            console.log("Error: data-list not defined");
+            console.error("Error: data-list not defined");
             return;
         }
 
@@ -2204,6 +2206,12 @@ $(function () {
     if (typeof PF.fn.get_url_var("license") !== typeof undefined) {
         $("[data-action='license']").trigger("click");
     }
+    if (typeof PF.fn.get_url_var("welcome") !== typeof undefined) {
+        PF.fn.modal.call({
+            template: $("[data-modal=welcome]").html(),
+            buttons: false,
+        });
+    }
     if (typeof PF.fn.get_url_var("installed") !== typeof undefined) {
         PF.fn.modal.simple({
             title: '<i class="fas fa-code-branch"></i> ' + PF.fn._s("Chevereto v%s installed", CHV.obj.system_info.version),
@@ -2713,14 +2721,13 @@ $(function () {
         PF.fn.keyFeedback.spawn(e);
         e.preventDefault();
         e.stopPropagation();
-
     }
     var selectableItemSelector = PF.obj.listing.selectors.list_item + ", .image-container";
     $(document).on("contextmenu click", selectableItemSelector, function (e) {
         if (!$(".list-selection:visible").exists()
+            || $(e.target).closest(".list-item-desc").exists()
             || $(this).closest(CHV.fn.listingViewer.selectors.root).exists()
-            || e.type == "click"
-            && !(e.ctrlKey || e.metaKey)
+            || (e.type == "click" && !(e.ctrlKey || e.metaKey))
         ) {
             return;
         }
@@ -3320,6 +3327,15 @@ CHV.fn.listingViewer = {
         var srcHtml = this.getEl("src").parent().html();
         var $src = $(srcHtml).attr("src", this.object.image.url);
         $src.insertBefore(this.getEl("src"));
+        var mediaTarget = $src.eq(0);
+        if(mediaTarget.attr('data-type') === 'video') {
+            mediaTarget.replaceWith(
+                '<video class="viewer-src no-select animate" controls autoplay src="'+this.object.image.url+'"></video>'
+            );
+            mediaTarget.src = this.object.image.url;
+        } else {
+            mediaTarget.attr("src", this.object.image.url);
+        }
         $src.imagesLoaded(function () {
             $src.next().remove();
         });
@@ -3465,36 +3481,43 @@ CHV.fn.viewerLoadImage = function () {
             autoLoad: true,
             type: "equirectangular",
             panorama: CHV.obj.image_viewer.image.url,
-            preview: CHV.obj.image_viewer.$container.find("img").eq(0).attr("src"),
+            preview: CHV.obj.image_viewer.$container.find(".media").eq(0).attr("src"),
             pitch: 2.3,
             yaw: -135.4,
             hfov: 120
         });
         $("#image-viewer-360").removeClass("soft-hidden");
-        CHV.obj.image_viewer.$container.find("img").eq(0).remove();
+        CHV.obj.image_viewer.$container.find(".media").eq(0).remove();
         return;
     }
-
     CHV.obj.image_viewer.image.html = CHV.obj.image_viewer.$container.html();
-    CHV.obj.image_viewer.$container.prepend(
-        $(CHV.obj.image_viewer.image.html).css({
-            top: 0,
-            zIndex: 0,
-            opacity: 0,
-            position: "absolute"
-        })
-    );
-    CHV.obj.image_viewer.$container.find("img").eq(0).css("zIndex", 1);
     CHV.obj.image_viewer.$container
-        .find("img")
-        .eq(1)
-        .attr("src", CHV.obj.image_viewer.image.url);
-    CHV.obj.image_viewer.$container
-        .find("img")
-        .eq(1)
+        .css("height", CHV.obj.image_viewer.$container.height())
+        .prepend(
+            $(CHV.obj.image_viewer.image.html).css({
+                top: 0,
+                zIndex: 0,
+                opacity: 0,
+                position: "absolute"
+            })
+        );
+    CHV.obj.image_viewer.$container.find(".media").eq(0).css("zIndex", 1);
+    var mediaTarget = CHV.obj.image_viewer.$container.find(".media").eq(1);
+    var width = mediaTarget.css("width");
+    var height = mediaTarget.css("height");
+    if(mediaTarget.attr('data-type') === 'video') {
+        mediaTarget.replaceWith(
+            '<video class="media animate" controls autoplay width="'+width+'" height="'+height+'" src="'+CHV.obj.image_viewer.image.url+'" style="opacity: 0;"></video>'
+        );
+        mediaTarget.src = CHV.obj.image_viewer.image.url;
+    } else {
+        mediaTarget.attr("src", CHV.obj.image_viewer.image.url);
+    }
+    mediaTarget
         .imagesLoaded(function () {
-            CHV.obj.image_viewer.$container.find("img").eq(1).css({ position: "", display: "" });
-            CHV.obj.image_viewer.$container.find("img").eq(0).remove();
+            CHV.obj.image_viewer.$container.find(".media").eq(1).css({ position: "", display: "", opacity: 1});
+            CHV.obj.image_viewer.$container.find(".media").eq(0).remove();
+            $(CHV.obj.image_viewer.container).css('height', '');
             PF.fn.loading.destroy(CHV.obj.image_viewer.$loading);
         });
 };
@@ -3769,7 +3792,7 @@ CHV.fn.uploader = {
                 "overflow-y": "scroll",
                 "overflow-x": "auto",
             });
-            $("body").addClass("overflow-hidden");
+            $("html").addClass("overflow-hidden");
         } else {
             $(this.selectors.root).css("overflow-y", "");
         }
@@ -3807,9 +3830,10 @@ CHV.fn.uploader = {
         if (items) {
             const files = new Array();
             const urls = new Array();
+            const regex = new RegExp("^(image|video)/", "i");
             let uploaderIsVisible = $(CHV.fn.uploader.selectors.root).data("shown");
             for (var i = 0; i < items.length; i++) {
-                if (items[i].type.indexOf("image") !== -1) {
+                if (regex.test(items[i].type)) {
                     let file = items[i].getAsFile();
                     files.push(file);
                 } else if (items[i].kind == 'string') {
@@ -3858,9 +3882,8 @@ CHV.fn.uploader = {
             return false;
         }
 
-        $fileinput = $(this.selectors.file);
-        $fileinput.replaceWith(($fileinput = $fileinput.clone(true)));
-
+        var $file_input = $(this.selectors.file);
+        $file_input.replaceWith(($file_input = $file_input.clone(true)));
         var item_queue_template = $(this.selectors.upload_item_template).html();
         let files = [];
         let directories = [];
@@ -3947,13 +3970,16 @@ CHV.fn.uploader = {
                         .substr(file.name.lastIndexOf(".") + 1)
                         .toLowerCase();
                 } else {
-                    image_type_str = file.type.replace("image/", "");
+                    image_type_str = file.type
+                        .replace("image/", "")
+                        .replace("video/", "");
                 }
                 // Size filter
                 if (file.size > CHV.obj.config.image.max_filesize.getBytes()) {
                     failed_files.push({
                         uid: i,
                         name: file.name.truncate_middle() + " - " + PF.fn._s("File too big."),
+                        error: 'MEDIA_ERR_FILE_SIZE',
                     });
                     continue;
                 }
@@ -3967,6 +3993,7 @@ CHV.fn.uploader = {
                         name: file.name.truncate_middle() +
                             " - " +
                             PF.fn._s("Invalid or unsupported file format."),
+                        error: 'MEDIA_ERR_FILETYPE',
                     });
                     continue;
                 }
@@ -3976,12 +4003,10 @@ CHV.fn.uploader = {
                 file.fromClipboard = e.clipboard == true;
                 file.uid = i;
             }
-
             for (var i = 0; i < failed_files.length; i++) {
                 var failed_file = failed_files[i];
                 files.splice(failed_file.id, 1);
             }
-
             if (failed_files.length > 0 && files.length == 0) {
                 var failed_message = "";
                 for (var i = 0; i < failed_files.length; i++) {
@@ -4026,17 +4051,17 @@ CHV.fn.uploader = {
              * This is basic but is the quickest way to do it
              * Note: it doesn't work on iOS for local files http://stackoverflow.com/questions/18412774/get-real-file-name-in-ios-6-x-filereader
              */
-            var currentfiles = [];
+            var current_files = [];
             for (var key in this.files) {
                 if (
                     typeof this.files[key] == "undefined" ||
                     typeof this.files[key] == "function"
                 )
                     continue;
-                currentfiles.push(encodeURI(this.files[key].name));
+                current_files.push(encodeURI(this.files[key].name));
             }
             files = $.map(files, function (file, i) {
-                if ($.inArray(encodeURI(file.name), currentfiles) != -1) {
+                if ($.inArray(encodeURI(file.name), current_files) != -1) {
                     return null;
                 }
                 file.uid = CHV.fn.uploader.filesAddId;
@@ -4072,18 +4097,14 @@ CHV.fn.uploader = {
             if (typeof i == typeof undefined) {
                 var i = 0;
             }
-
             if (!(i in files)) {
                 PF.fn.loading.destroy("fullscreen");
                 return;
             }
-
             var file = files[i];
-
             if (directories.includes(file.name)) {
                 return;
             }
-
             $(
                 CHV.fn.uploader.selectors.queue_item + ":not([data-id]) .load-url",
                 CHV.fn.uploader.selectors.queue
@@ -4100,174 +4121,237 @@ CHV.fn.uploader = {
                     .closest("li")
                     .attr("data-id", file.uid);
 
-                // Load the image (async)
-                loadImage(
-                    file.url ? file.url : file,
-                    function (img) {
-                        ++j;
+                function getQueueItem(uid) {
+                    return $(
+                        CHV.fn.uploader.selectors.queue_item +
+                        "[data-id=" + uid +"]",
+                        CHV.fn.uploader.selectors.queue
+                    );
+                }
 
-                        var $queue_item = $(
-                            CHV.fn.uploader.selectors.queue_item +
-                            "[data-id=" +
-                            file.uid +
-                            "]",
-                            CHV.fn.uploader.selectors.queue
+                function displayQueueIfNotVisible() {
+                    if (!$(
+                        "[data-group=upload-queue]",
+                        CHV.fn.uploader.selectors.root
+                    ).is(":visible")) {
+                        $(
+                            "[data-group=upload-queue]",
+                            CHV.fn.uploader.selectors.root
+                        ).css("display", "block");
+                    }
+                }
+
+                function getTitle(file) {
+                    var title = null;
+                    if (typeof file.name !== typeof undefined) {
+                        var basename = PF.fn.baseName(file.name);
+                        title = $.trim(
+                            basename
+                                .substring(0, 100)
+                                .capitalizeFirstLetter()
                         );
+                    }
+                    return title;
+                }
 
-                        if (
-                            img.type ===
-                            "error" /* || typeof data.imageHead == typeof undefined*/
-                        ) {
-                            // image parse error (png always return undefined data)
-                            failed_files.push({
-                                uid: file.uid,
-                                name: file.name.truncate_middle(),
-                            });
-                        } else {
-                            if (!$(
-                                "[data-group=upload-queue]",
-                                CHV.fn.uploader.selectors.root
-                            ).is(":visible")) {
-                                $(
-                                    "[data-group=upload-queue]",
-                                    CHV.fn.uploader.selectors.root
-                                ).css("display", "block");
-                            }
-
-                            // Detect true mimetype
-                            var mimetype = "image/jpeg"; // Default unknown mimetype
-
-                            if (typeof data.buffer !== typeof undefined) {
-                                var buffer = new Uint8Array(data.buffer).subarray(0, 4);
-                                var header = "";
-                                for (var i = 0; i < buffer.length; i++) {
-                                    header += buffer[i].toString(16);
-                                }
-                                var header_to_mime = {
-                                    "89504e47": "image/png",
-                                    "47494638": "image/gif",
-                                    ffd8ffe0: "image/jpeg",
-                                };
-                                $.each(["ffd8ffe1", "ffd8ffe2"], function (i, v) {
-                                    header_to_mime[v] = header_to_mime["ffd8ffe0"];
-                                });
-                                if (typeof header_to_mime[header] !== typeof undefined) {
-                                    mimetype = header_to_mime[header];
-                                }
-                            }
-
-                            var title = null;
-                            if (typeof file.name !== typeof undefined) {
-                                var basename = PF.fn.baseName(file.name);
-                                title = $.trim(
-                                    basename
-                                        .substring(0, 100)
-                                        .capitalizeFirstLetter() /*.replace(/\.[^/.]+$/g, "").replace(/[\W_]+/g, " ")*/
-                                );
-                            }
-
-                            // Set source image data
-                            CHV.fn.uploader.files[file.uid].parsedMeta = {
-                                title: title,
-                                width: img.originalWidth,
-                                height: img.originalHeight,
-                                mimetype: mimetype,
-                            };
-
-                            $queue_item.show();
-
-                            $(CHV.fn.uploader.selectors.root)
-                                .addClass("queueReady")
-                                .removeClass("queueEmpty");
-
-                            $(
-                                "[data-group=upload-queue-ready]",
-                                CHV.fn.uploader.selectors.root
-                            ).show();
-                            $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
-
-                            $queue_item.find(".load-url").remove();
-                            $queue_item
-                                .find(".preview")
-                                .removeClass("soft-hidden")
-                                .show()
-                                .append(img);
-
-                            $img = $queue_item.find(".preview").find("img,canvas");
-                            $img.attr("class", "canvas");
-
-                            queue_item_h = $queue_item.height();
-                            queue_item_w = $queue_item.width();
-
-                            var img_w = parseInt($img.attr("width")) || $img.width();
-                            var img_h = parseInt($img.attr("height")) || $img.height();
-                            var img_r = img_w / img_h;
-
-                            $img.hide();
-
-                            if (img_w > img_h || img_w == img_h) {
-                                // Landscape
-                                var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
-                                if (img_w > img_h) {
-                                    $img.height(queue_img_h).width(queue_img_h * img_r);
-                                }
-                            }
-                            if (img_w < img_h || img_w == img_h) {
-                                // Portrait
-                                var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
-                                if (img_w < img_h) {
-                                    $img.width(queue_img_w).height(queue_img_w / img_r);
-                                }
-                            }
-                            if (img_w == img_h) {
-                                $img.height(queue_img_h).width(queue_img_w);
-                            }
-
-                            $img
-                                .css({
-                                    marginTop: -$img.height() / 2,
-                                    marginLeft: -$img.width() / 2,
-                                })
-                                .show();
-
-                            CHV.fn.uploader.boxSizer();
+                function loadVideo(url, callback) {
+                    const video = document.createElement("video");
+                    video.addEventListener("loadedmetadata", function () {
+                        const seek = video.duration / 4;
+                        setTimeout(() => {
+                            video.currentTime = seek;
+                        }, 100);
+                        video.addEventListener("seeked", () => {
+                            const canvas = document.createElement("canvas");
+                            canvas.width = video.videoWidth;
+                            canvas.height = video.videoHeight;
+                            const ctx = canvas.getContext("2d");
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            ctx.canvas.toBlob(
+                                blob => {
+                                    callback(video, canvas)
+                                },
+                                "image/jpeg",
+                                0.90
+                            );
+                        }, false);
+                    });
+                    video.onerror = (e) => {
+                        const videoError = {
+                            1: "MEDIA_ERR_ABORTED",
+                            2: "MEDIA_ERR_NETWORK",
+                            3: "MEDIA_ERR_DECODE",
+                            4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
                         }
+                        var error = videoError[video.error.code];
+                        callback({ type: "error", error: error })
+                        console.error("Error loading video", error)
+                    }
+                    video.src = url;
+                }
 
-                        // Last one
-                        if (j == files.length) {
-                            if (typeof failed_before !== "undefined") {
-                                failed_files = failed_files.concat(failed_before);
-                            }
+                function setQueueReady($queue_item, img) {
+                    $queue_item.show();
+                    $(CHV.fn.uploader.selectors.root)
+                        .addClass("queueReady")
+                        .removeClass("queueEmpty");
+                    $("[data-group=upload-queue-ready]", CHV.fn.uploader.selectors.root).show();
+                    $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
+                    $queue_item.find(".load-url").remove();
+                    $queue_item
+                        .find(".preview")
+                        .removeClass("soft-hidden")
+                        .show()
+                        .append(img);
+                    $img = $queue_item.find(".preview").find("img,canvas");
+                    $img.attr("class", "canvas");
+                    queue_item_h = $queue_item.height();
+                    queue_item_w = $queue_item.width();
+                    var img_w = parseInt($img.attr("width")) || $img.width();
+                    var img_h = parseInt($img.attr("height")) || $img.height();
+                    var img_r = img_w / img_h;
+                    $img.hide();
+                    if (img_w > img_h || img_w == img_h) {
+                        // Landscape
+                        var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
+                        if (img_w > img_h) {
+                            $img.height(queue_img_h).width(queue_img_h * img_r);
+                        }
+                    }
+                    if (img_w < img_h || img_w == img_h) {
+                        // Portrait
+                        var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
+                        if (img_w < img_h) {
+                            $img.width(queue_img_w).height(queue_img_w / img_r);
+                        }
+                    }
+                    if (img_w == img_h) {
+                        $img.height(queue_img_h).width(queue_img_w);
+                    }
+                    $img
+                        .css({
+                            marginTop: -$img.height() / 2,
+                            marginLeft: -$img.width() / 2,
+                        })
+                        .show();
+                    displayQueueIfNotVisible();
+                    CHV.fn.uploader.boxSizer();
+                }
 
-                            PF.fn.loading.destroy("fullscreen");
-                            if (failed_files.length > 0) {
-                                var failed_message = "";
-                                for (var i = 0; i < failed_files.length; i++) {
-                                    failed_message +=
-                                        "<li>" + PF.fn.htmlEncode(failed_files[i].name) + "</li>";
-                                    delete CHV.fn.uploader.files[failed_files[i].uid];
-                                    $(
-                                        "li[data-id=" + failed_files[i].uid + "]",
-                                        CHV.fn.uploader.selectors.queue
-                                    )
-                                        .find("[data-action=cancel]")
-                                        .click();
-                                }
-                                PF.fn.modal.simple({
-                                    title: PF.fn._s("Some files couldn't be added"),
-                                    message: "<ul>" + failed_message + "</ul>",
+                function someFilesFailed(j, files, failed_files) {
+                    if (j !== files.length) {
+                        return;
+                    }
+                    if (typeof failed_before !== "undefined") {
+                        failed_files = failed_files.concat(failed_before);
+                    }
+                    PF.fn.loading.destroy("fullscreen");
+                    if (failed_files.length > 0) {
+                        var failed_message = "";
+                        for (var i = 0; i < failed_files.length; i++) {
+                            failed_message +=
+                                "<li>" +
+                                PF.fn.htmlEncode(failed_files[i].name) +
+                                " - " +
+                                PF.fn.htmlEncode(failed_files[i].error) +
+                                "</li>";
+                            delete CHV.fn.uploader.files[failed_files[i].uid];
+                            $(
+                                "li[data-id=" + failed_files[i].uid + "]",
+                                CHV.fn.uploader.selectors.queue
+                            )
+                                .find("[data-action=cancel]")
+                                .click();
+                        }
+                        PF.fn.modal.simple({
+                            title: PF.fn._s("Some files couldn't be loaded"),
+                            message: "<ul>" + failed_message + "</ul>",
+                        });
+                    } else {
+                        CHV.fn.uploader.focus();
+                    }
+                    CHV.fn.uploader.boxSizer();
+                }
+
+                // Load the image (async)
+                if(typeof file.type !== "undefined" && file.type.startsWith('video/')) {
+                    var $queue_item = getQueueItem(file.uid);
+                    var title = getTitle(file);
+                    var videoUrl = URL.createObjectURL(file);
+                    loadVideo(
+                        videoUrl,
+                        function(video, canvas) {
+                            ++j;
+                            // var $queue_item = getQueueItem(file.uid);
+                            if (video.type === "error") {
+                                failed_files.push({
+                                    uid: file.uid,
+                                    name: file.name.truncate_middle(),
+                                    error: video.error
                                 });
                             } else {
-                                CHV.fn.uploader.focus();
+                                CHV.fn.uploader.files[file.uid].parsedMeta = {
+                                    title: title,
+                                    width: video.videoWidth,
+                                    height: video.videoHeight,
+                                    mimetype: file.type,
+                                };
+                                setQueueReady($queue_item, canvas);
                             }
-
-                            CHV.fn.uploader.boxSizer();
+                            someFilesFailed(j, files, failed_files);
                         }
-                    },
-                    $.extend({}, default_options, {
-                        orientation: data.exif ? data.exif.get("Orientation") : 1,
-                    })
-                );
+                    )
+                } else {
+                    loadImage(
+                        file.url ? file.url : file,
+                        function (img) {
+                            ++j;
+                            var $queue_item = getQueueItem(file.uid);
+                            if (img.type === "error") {
+                                failed_files.push({
+                                    uid: file.uid,
+                                    name: file.name.truncate_middle(),
+                                    error: 'MEDIA_ERR_SRC_FORMAT'
+                                });
+                            } else {
+                                displayQueueIfNotVisible();
+                                // Detect true mimetype
+                                var mimetype = "image/jpeg"; // Default unknown mimetype
+                                if (typeof data.buffer !== typeof undefined) {
+                                    var buffer = new Uint8Array(data.buffer).subarray(0, 4);
+                                    var header = "";
+                                    for (var i = 0; i < buffer.length; i++) {
+                                        header += buffer[i].toString(16);
+                                    }
+                                    var header_to_mime = {
+                                        "89504e47": "image/png",
+                                        "47494638": "image/gif",
+                                        "ffd8ffe0": "image/jpeg",
+                                        "ffd8ffe1": "image/jpeg",
+                                        "ffd8ffe2": "image/jpeg",
+                                        "ffd8ffe3": "image/jpeg",
+                                        "ffd8ffe8": "image/jpeg"
+                                    };
+                                    if (typeof header_to_mime[header] !== typeof undefined) {
+                                        mimetype = header_to_mime[header];
+                                    }
+                                }
+                                var title = getTitle(file);
+                                CHV.fn.uploader.files[file.uid].parsedMeta = {
+                                    title: title,
+                                    width: img.originalWidth,
+                                    height: img.originalHeight,
+                                    mimetype: mimetype,
+                                };
+                                setQueueReady($queue_item, img);
+                            }
+                            someFilesFailed(j, files, failed_files);
+                        },
+                        $.extend({}, default_options, {
+                            orientation: data.exif ? data.exif.get("Orientation") : 1,
+                        })
+                    );
+                }
 
                 // Next one
                 setTimeout(function () {
@@ -4277,10 +4361,7 @@ CHV.fn.uploader = {
         }
 
         PF.fn.loading.fullscreen();
-
-        // Load all the target images starting from zero (null in this case, yeah I like to fuck around just because reasons)
         CHVLoadImage();
-
         this.queueSize();
     },
 
@@ -4352,7 +4433,6 @@ CHV.fn.uploader = {
 
         this.isUploading = true;
 
-        // HTML5 form
         var form = new FormData();
         var formData = {
             source: null,
@@ -4366,6 +4446,7 @@ CHV.fn.uploader = {
             nsfw: $("[name=upload-nsfw]", this.selectors.root).prop("checked") ?
                 1 : 0,
             album_id: $("[name=upload-album-id]", this.selectors.root).val() || null,
+            mimetype: f.type
         };
 
         // Append URL BLOB source
@@ -4710,13 +4791,11 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
         fn = "val";
     }
     var embed_tpl = CHV.fn.uploader.selectors.root == parent ? "embed_upload_tpl" : "embed_share_tpl";
+    var hasVideo = false;
     $.each(elements, function (key, value) {
         if (typeof value == typeof undefined) return;
-
         var image = "id_encoded" in value ? value : value.image;
-
         if (!image.medium) {
-            // Medium doesn't exists
             image.medium = {};
             var imageProp = [
                 "filename",
@@ -4731,15 +4810,26 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
             for (var i = 0; i < imageProp.length; i++) {
                 image.medium[imageProp[i]] = image[imageProp[i]];
             }
+            if(image.type === 'video') {
+                image.medium.url = image.url_frame;
+            }
         }
-
         var flatten_image = Object.flatten(image);
-
         $.each(CHV.obj[embed_tpl], function (key, value) {
             $.each(value.options, function (k, v) {
                 var embed = v,
                     $embed = $("textarea[name=" + k + "]", parent),
-                    template = embed.template;
+                    template = v.template;
+                if(typeof template === 'object' && template.hasOwnProperty(flatten_image["type"])
+                ) {
+                    template = template[flatten_image["type"]]
+                }
+                if(flatten_image["type"] === "video") {
+                    hasVideo = true;
+                }
+                if(flatten_image["type"] !== "video") {
+                    template = template.replaceAll("%URL_FRAME%", "");
+                }
                 for (var i in flatten_image) {
                     if (!flatten_image.hasOwnProperty(i)) {
                         continue;
@@ -4757,6 +4847,7 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
             });
         });
     });
+    $("option[value=frame-links]", parent).prop("hidden", !hasVideo);
     $.each(CHV.obj[embed_tpl], function (key, value) {
         $.each(value.options, function (k, v) {
             var $embed = $("textarea[name=" + k + "]", parent);
@@ -5454,6 +5545,14 @@ CHV.fn.storage = {
         "url",
         "account_id",
         "account_name",
+        "type_chain"
+    ],
+    chain: [
+        "other",
+        "document",
+        "audio",
+        "video",
+        "image",
     ],
     calling: false,
     validateForm: function () {
@@ -5514,7 +5613,6 @@ CHV.fn.storage = {
                 return false;
             }
         }
-
         if (
             /^https?:\/\/.+$/.test($("[name=form-storage-url]", modal).val()) == false
         ) {
@@ -5614,9 +5712,20 @@ CHV.fn.storage = {
                     }
                     $input.attr("value", v);
                 }
+                if(i === "form-storage-type_chain") {
+                    let chain = (parseInt(v) >>> 0)
+                        .toString(2)
+                        .paddingLeft(
+                            "0".repeat(CHV.fn.storage.chain.length)
+                        )
+                        .split("");
+                    CHV.fn.storage.chain.forEach(function(key, i) {
+                        $('#storage_type_enable_'+key, modal_source)
+                            .removeAttr("checked")
+                            .attr("checked", chain[i] == 1);
+                    });
+                }
             });
-
-            // Co-combo breaker
             $("[data-combo-value]").addClass("soft-hidden");
             $(combo).removeClass("soft-hidden");
         },
@@ -5628,7 +5737,6 @@ CHV.fn.storage = {
             if (!CHV.fn.storage.validateForm()) {
                 return false;
             }
-
             PF.obj.modal.form_data = {
                 action: "edit",
                 edit: "storage",
@@ -5642,6 +5750,10 @@ CHV.fn.storage = {
                 }
                 PF.obj.modal.form_data.editing[v] = $(sel, modal).val();
             });
+            let chain = CHV.fn.storage.chain.map(function(key) {
+                return $('#storage_type_enable_'+key, modal).prop("checked") ? 1 : 0;
+            });
+            PF.obj.modal.form_data.editing.type_chain = parseInt(chain.join(""), 2);
 
             return true;
         },
@@ -6380,7 +6492,7 @@ CHV.fn.import = {
             "readyState" in CHV.obj.import.working[id].stats &&
             CHV.obj.import.working[id].stats.readyState != 4
         ) {
-            console.log(
+            console.error(
                 "Aborting stats timeout call (previous call is still not ready)"
             );
             return;

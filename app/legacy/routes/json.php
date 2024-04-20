@@ -130,7 +130,7 @@ return function (Handler $handler) {
                 }
                 $uploaded_id = intval($uploadToWebsite[0]);
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => 'image uploaded', 'code' => 200];
+                $json_array['success'] = ['message' => 'file uploaded', 'code' => 200];
                 $image = Image::getSingle($uploaded_id);
                 if ($image === []) {
                     throw new LogicException(
@@ -421,7 +421,7 @@ return function (Handler $handler) {
                     'image' => ['category_id', 'title', 'description', 'album_id', 'nsfw'],
                     'album' => ['name', 'privacy', 'album_id', 'description', 'password'],
                     'category' => ['name', 'description', 'url_key'],
-                    'storage' => ['name', 'bucket', 'region', 'url', 'server', 'capacity', 'is_https', 'is_active', 'api_id', 'key', 'secret', 'account_id', 'account_name'],
+                    'storage' => ['name', 'bucket', 'region', 'url', 'server', 'capacity', 'is_https', 'is_active', 'api_id', 'key', 'secret', 'account_id', 'account_name', 'type_chain'],
                     'ip_ban' => ['ip', 'expires', 'message'],
                 ];
                 if (Handler::cond('content_manager')) {

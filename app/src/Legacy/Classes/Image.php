@@ -43,7 +43,7 @@ use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\truncate;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\G\url_to_relative;
-use function Chevereto\Legacy\get_image_fileinfo;
+use function Chevereto\Legacy\get_fileinfo;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\system_notification_email;
 use function Chevereto\Legacy\time_elapsed_string;
@@ -52,6 +52,8 @@ use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 use DateTimeZone;
 use Exception;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
 use Intervention\Image\ImageManagerStatic;
 use PHPExif\Exif;
 use function Safe\password_hash;
@@ -82,12 +84,15 @@ class Image
         'chain',
         'thumb_size',
         'medium_size',
+        'frame_size',
         'title',
         'expiration_date_gmt',
         'likes',
         'is_animated',
         'is_approved',
         'is_360',
+        'duration',
+        'type'
     ];
 
     protected static array $expirations = [
@@ -116,7 +121,19 @@ class Image
         ['year', 1, 31536000],
     ];
 
-    public static array $chain_sizes = ['original', 'image', 'medium', 'thumb'];
+    public static array $types = [
+        1 => 'image',
+        2 => 'video',
+        3 => 'audio',
+    ];
+
+    public static array $chain_sizes = [
+        'frame',    // 2^4
+        'original', // 2^3
+        'image',    // 2^2
+        'medium',   // 2^1
+        'thumb',    // 2^0
+    ];
 
     public static function getSingle(
         int $id,
@@ -285,36 +302,37 @@ class Image
         return $slice;
     }
 
-    public static function getSrcTargetSingle(array $filearray, bool $prefix = true): array
+    public static function getSrcTargetSingle(array $fileArray, bool $prefix = true): array
     {
         $prefix = $prefix ? 'image_' : null;
         $folder = CHV_PATH_IMAGES;
-        $pretty = !isset($filearray['image_id']);
-        $mode = $filearray[$prefix . 'storage_mode'];
+        $pretty = !isset($fileArray['image_id']);
+        $mode = $fileArray[$prefix . 'storage_mode'];
         $chain_mask = str_split(
             (string) str_pad(
-                decbin((int) ($filearray[$pretty ? 'chain' : 'image_chain'])),
-                4,
+                decbin((int) ($fileArray[$pretty ? 'chain' : 'image_chain'])),
+                5,
                 '0',
                 STR_PAD_LEFT
             )
         );
-        $chain_to_sufix = [
+        $chain_to_suffix = [
             'image' => '.',
+            'frame' => '.fr.',
+            'medium' => '.md.',
             'thumb' => '.th.',
-            'medium' => '.md.'
         ];
         if ($pretty) {
-            $type = isset($filearray['storage']['id']) ? 'url' : 'path';
+            $type = isset($fileArray['storage']['id']) ? 'url' : 'path';
         } else {
-            $type = isset($filearray['storage_id']) ? 'url' : 'path';
+            $type = isset($fileArray['storage_id']) ? 'url' : 'path';
         }
-        if ($type == 'url') { // URL resource folder
-            $folder = add_ending_slash($pretty ? $filearray['storage']['url'] : $filearray['storage_url']);
+        if ($type == 'url') {
+            $folder = add_ending_slash($pretty ? $fileArray['storage']['url'] : $fileArray['storage_url']);
         }
         switch ($mode) {
             case 'datefolder':
-                $datetime = $filearray[$prefix . 'date'];
+                $datetime = $fileArray[$prefix . 'date'];
                 $datefolder = preg_replace('/(.*)(\s.*)/', '$1', str_replace('-', '/', $datetime));
                 $folder .= add_ending_slash($datefolder); // Y/m/d/
 
@@ -327,20 +345,25 @@ class Image
                 // use direct $folder
                 break;
             case 'path':
-                $folder = add_ending_slash($filearray['path']);
+                $folder = add_ending_slash($fileArray['path']);
 
                 break;
         }
         $targets = [
             'type' => $type,
             'chain' => [
+                'frame' => null,
                 'image' => null,
                 'thumb' => null,
                 'medium' => null
             ]
         ];
         foreach (array_keys($targets['chain']) as $k) {
-            $targets['chain'][$k] = $folder . $filearray[$prefix . 'name'] . $chain_to_sufix[$k] . $filearray[$prefix . 'extension'];
+            $extension = $fileArray[$prefix . 'extension'];
+            if ($k !== 'image' && in_array($extension, ['mp4', 'webm'])) {
+                $extension = 'jpeg';
+            }
+            $targets['chain'][$k] = $folder . $fileArray[$prefix . 'name'] . $chain_to_suffix[$k] . $extension;
         }
         if ($type == 'path') {
             foreach ($targets['chain'] as $k => $v) {
@@ -557,7 +580,7 @@ class Image
 
     // Mostly for people uploading two times the same image to test or just bug you
     // $mixed => $_FILES or md5 string
-    public static function isDuplicatedUpload(array|string $source, string $time_frame = 'P1D'): bool
+    public static function isDuplicatedUpload(array|string $source, string $timePeriod = 'P1D'): bool
     {
         if (is_array($source) && isset($source['tmp_name'])) {
             $filename = $source['tmp_name'];
@@ -576,7 +599,7 @@ class Image
         $db->query('SELECT * FROM ' . DB::getTable('images') . ' WHERE (image_md5=:md5 OR image_source_md5=:md5) AND image_uploader_ip=:ip AND image_date_gmt > :date_gmt');
         $db->bind(':md5', $md5_file);
         $db->bind(':ip', get_client_ip());
-        $db->bind(':date_gmt', datetime_sub(datetimegmt(), $time_frame));
+        $db->bind(':date_gmt', datetime_sub(datetimegmt(), $timePeriod));
         $db->exec();
 
         return (bool) $db->fetchColumn();
@@ -591,7 +614,7 @@ class Image
     ): array {
         $params['use_file_date'] = $params['use_file_date'] ?? false;
         nullify_string($params['album_id']);
-        $datefolder = '';
+        $dateFolder = '';
 
         try {
             if ($user !== []
@@ -605,8 +628,20 @@ class Image
                 throw new Exception(_s('Duplicated upload'), 101);
             }
             $storage_id = null;
+            $upload_types = [
+                'image' => 1,
+                'video' => 2,
+                // 'audio' => 4,
+                // 'document' => 8,
+                // 'other' => 16,
+            ];
+            $mimetype = strtok($params['mimetype'], '/');
+            $type_chain = $upload_types[$mimetype] ?? 1;
             $get_active_storages = env()['CHEVERETO_ENABLE_EXTERNAL_STORAGE']
-                ? Storage::get(['is_active' => 1])
+                ? Storage::get([
+                    'is_active' => 1,
+                    'type_chain' => $type_chain
+                ])
                 : [];
             if ($get_active_storages !== []) {
                 if (count($get_active_storages) > 1) {
@@ -659,14 +694,14 @@ class Image
                         'date' => $stockDate,
                         'date_gmt' => $stockDateGmt,
                     ];
-                    $datefolder = date('Y/m/d/', strtotime($datefolder_stock['date']));
-                    $upload_path = CHV_PATH_IMAGES . $datefolder;
+                    $dateFolder = date('Y/m/d/', strtotime($datefolder_stock['date']));
+                    $upload_path = CHV_PATH_IMAGES . $dateFolder;
 
                     break;
             }
-            $filenaming = getSetting('upload_filenaming');
-            if ($filenaming !== 'id' && in_array($params['privacy'] ?? '', ['password', 'private', 'private_but_link'])) {
-                $filenaming = 'random';
+            $fileNaming = getSetting('upload_filenaming');
+            if ($fileNaming !== 'id' && in_array($params['privacy'] ?? '', ['password', 'private', 'private_but_link'])) {
+                $fileNaming = 'random';
             }
             $upload_options = [
                 'max_size' => get_bytes(getSetting('upload_max_filesize_mb') . ' MB'),
@@ -674,7 +709,7 @@ class Image
                     ? $user['image_keep_exif']
                     : getSetting('upload_image_exif'),
             ];
-            if ($filenaming == 'id') {
+            if ($fileNaming == 'id') {
                 try {
                     $dummy = [
                         'name' => '',
@@ -691,27 +726,29 @@ class Image
                         'chain' => 0,
                         'thumb_size' => 0,
                         'medium_size' => 0,
+                        'frame_size' => 0,
+                        'duration' => 0,
                     ];
                     $dummy_insert = DB::insert('images', $dummy);
                     DB::delete('images', ['id' => $dummy_insert]);
                     $target_id = $dummy_insert;
                 } catch (Throwable $e) {
-                    $filenaming = 'original';
+                    $fileNaming = 'original';
                 }
             }
-            $upload_options['filenaming'] = $filenaming;
-            $upload_options['allowed_formats'] = self::getEnabledImageFormats();
+            $upload_options['filenaming'] = $fileNaming;
+            $upload_options['allowed_formats'] = self::getEnabledImageExtensions();
             $image_upload = self::upload(
                 $source,
                 $upload_path,
-                ($filenaming == 'id' && isset($target_id))
+                ($fileNaming == 'id' && isset($target_id))
                     ? encodeID((int) $target_id)
                     : null,
                 $upload_options,
                 $storage_id,
                 $guestSessionHandle
             );
-            $chain_mask = [0, 1, 0, 1]; // original image medium thumb
+            $chain_mask = [0, 0, 1, 0, 1]; // frame, original, image, medium, thumb
             if ($do_dupe_check && self::isDuplicatedUpload($image_upload['uploaded']['fileinfo']['md5'])) {
                 throw new Exception(_s('Duplicated upload'), 102);
             }
@@ -751,6 +788,14 @@ class Image
             if (is_animated_image($image_upload['uploaded']['file'])) {
                 $must_resize = false;
             }
+            $resizeSourceImage = $image_upload['uploaded']['file'];
+            $uploadDir = dirname($resizeSourceImage);
+            if ($image_upload['source']['type'] === 'video') {
+                $frameImage = $uploadDir . '/' . $image_upload['uploaded']['name'] . '.fr.jpeg';
+                rename($image_upload['uploaded']['frame'], $frameImage);
+                $resizeSourceImage = $frameImage;
+                $chain_mask[0] = 1;
+            }
             if ($must_resize) {
                 $source_md5 = $image_upload['uploaded']['fileinfo']['md5'];
                 if ($do_dupe_check && self::isDuplicatedUpload($source_md5)) {
@@ -766,8 +811,8 @@ class Image
                     $image_resize_options = ['width' => $params['width']];
                 }
                 $image_upload['uploaded'] = self::resize(
-                    $image_upload['uploaded']['file'],
-                    dirname($image_upload['uploaded']['file']),
+                    $resizeSourceImage,
+                    dirname($resizeSourceImage),
                     null,
                     $image_resize_options
                 );
@@ -784,8 +829,8 @@ class Image
             $medium_fixed_dimension = getSetting('upload_medium_fixed_dimension');
             $is_animated_image = is_animated_image($image_upload['uploaded']['file']);
             $image_thumb = self::resize(
-                source: $image_upload['uploaded']['file'],
-                destination: dirname($image_upload['uploaded']['file']),
+                source: $resizeSourceImage,
+                destination: $uploadDir,
                 filename: $image_upload['uploaded']['name'] . '.th',
                 options: $image_thumb_options
             );
@@ -814,8 +859,8 @@ class Image
                     $apply_watermark = false;
                 }
             }
-            if ($apply_watermark && self::watermark($image_upload['uploaded']['file'])) {
-                $image_upload['uploaded']['fileinfo'] = GGet_image_fileinfo($image_upload['uploaded']['file']); // Remake the fileinfo array, new full array file info (todo: faster!)
+            if ($apply_watermark && self::watermark($resizeSourceImage)) {
+                $image_upload['uploaded']['fileinfo'] = GGet_image_fileinfo($resizeSourceImage); // Remake the fileinfo array, new full array file info (todo: faster!)
                 $image_upload['uploaded']['fileinfo']['md5'] = $original_md5; // Preserve original MD5 for watermarked images
             }
             if ($image_upload['uploaded']['fileinfo'][$medium_fixed_dimension] > $medium_size || $is_animated_image) {
@@ -826,12 +871,12 @@ class Image
                     $image_medium_options[$medium_fixed_dimension] = min($image_medium_options[$medium_fixed_dimension], $image_upload['uploaded']['fileinfo'][$medium_fixed_dimension]);
                 }
                 $image_medium = self::resize(
-                    $image_upload['uploaded']['file'],
-                    dirname($image_upload['uploaded']['file']),
+                    $resizeSourceImage,
+                    $uploadDir,
                     $image_upload['uploaded']['name'] . '.md',
                     $image_medium_options
                 );
-                $chain_mask[2] = 1;
+                $chain_mask[3] = 1;
             }
             $chain_value = bindec((string) implode('', $chain_mask));
             $disk_space_needed = $image_upload['uploaded']['fileinfo']['size'];
@@ -894,8 +939,9 @@ class Image
                     if (!($image_medium ?? false)) {
                         unset($chain_props['medium']);
                     }
+                    $dirChain = dirname($image_upload['uploaded']['file']);
                     foreach ($chain_props as $k => $v) {
-                        $chain_file = add_ending_slash(dirname($image_upload['uploaded']['file'])) . $image_upload['uploaded']['name'] . '.' . $v['suffix'] . '.' . ${"image_$k"}['fileinfo']['extension'];
+                        $chain_file = add_ending_slash($dirChain) . $image_upload['uploaded']['name'] . '.' . $v['suffix'] . '.' . ${"image_$k"}['fileinfo']['extension'];
 
                         try {
                             $renamed_chain = rename(${"image_$k"}['file'], $chain_file);
@@ -926,9 +972,11 @@ class Image
                 'chain' => $chain_value,
                 'thumb_size' => $image_thumb['fileinfo']['size'] ?? 0,
                 'medium_size' => $image_medium['fileinfo']['size'] ?? 0,
+                'frame_size' => $image_upload['uploaded']['frameinfo']['size'] ?? 0,
                 'is_animated' => $is_animated_image,
                 'source_md5' => $source_md5 ?? null,
-                'is_360' => $is_360
+                'is_360' => $is_360,
+                'duration' => $image_upload['uploaded']['fileinfo']['duration'] ?? 0,
             ];
             if (isset($datefolder_stock)) {
                 foreach ($datefolder_stock as $k => $v) {
@@ -965,6 +1013,14 @@ class Image
                             $prop = $image_upload['uploaded'];
 
                             break;
+                        case 'frame':
+                            $prop = [
+                                'file' => $frameImage,
+                                'filename' => basename($frameImage),
+                                'fileinfo' => $image_upload['uploaded']['frameinfo']
+                            ];
+
+                            break;
                         default:
                             $prop = ${"image_$v"};
 
@@ -978,7 +1034,7 @@ class Image
                 }
                 Storage::uploadFiles($toStorage, $storage, [
                     'keyprefix' => $storage_mode == 'datefolder'
-                        ? $datefolder
+                        ? $dateFolder
                         : null
                 ]);
             }
@@ -1009,7 +1065,7 @@ class Image
                 }
             }
             $image_insert_values['title'] = $image_title;
-            if ($filenaming == 'id' && isset($target_id)) { // Insert as a reserved ID
+            if ($fileNaming == 'id' && isset($target_id)) { // Insert as a reserved ID
                 $image_insert_values['id'] = $target_id;
             }
             $image_insert_values['title'] = mb_substr($image_insert_values['title'] ?? '', 0, 100, 'UTF-8');
@@ -1028,7 +1084,7 @@ class Image
             DB::insert('images_hash', ['image_id' => $uploaded_id, 'hash' => $deleteHash]);
             if (isset($toStorage)) {
                 foreach ($toStorage as $k => $v) {
-                    unlinkIfExists($v['file']); // Remove the source image
+                    unlinkIfExists($v['file']); // Remove files from local when doing external storage
                 }
             }
             $privacyTargets = ['private', 'private_but_link'];
@@ -1085,14 +1141,27 @@ class Image
         }
     }
 
-    public static function getEnabledImageFormats(): array
+    public static function getEnabledImageExtensions(): array
     {
         $formats = explode(',', Settings::get('upload_enabled_image_formats'));
-        if (in_array('jpg', $formats)) {
+        if (in_array('jpg', $formats) && !in_array('jpeg', $formats)) {
             $formats[] = 'jpeg';
         }
 
         return $formats;
+    }
+
+    public static function getEnabledImageAcceptAttribute(): string
+    {
+        $extensions = self::getEnabledImageExtensions();
+        $accept = [];
+        $videos = ['mp4', 'webm'];
+        foreach ($extensions as $extension) {
+            $type = in_array($extension, $videos) ? 'video' : 'image';
+            $accept[] = "$type/$extension";
+        }
+
+        return implode(',', $accept);
     }
 
     public static function resize(
@@ -1210,7 +1279,10 @@ class Image
             $values['is_approved'] = 1;
         }
         $insert = DB::insert('images', $values);
-        $disk_space_used = $values['size'] + $values['thumb_size'] + $values['medium_size'];
+        $disk_space_used = $values['size']
+            + $values['thumb_size']
+            + $values['medium_size']
+            + $values['frame_size'];
         Stat::track([
             'action' => 'insert',
             'table' => 'images',
@@ -1255,7 +1327,10 @@ class Image
     public static function delete(int $id, bool $update_user = true): int
     {
         $image = self::getSingle(id: $id, pretty: true);
-        $disk_space_used = $image['size'] + ($image['thumb']['size'] ?? 0) + ($image['medium']['size'] ?? 0);
+        $disk_space_used = $image['size']
+            + $image['thumb_size']
+            + $image['medium_size']
+            + $image['frame_size'];
         if ($image['file_resource']['type'] == 'path') {
             foreach ($image['file_resource']['chain'] as $file_delete) {
                 if (file_exists($file_delete) && !unlinkIfExists($file_delete)) {
@@ -1375,60 +1450,13 @@ class Image
         $medium_size = getSetting('upload_medium_size');
         $medium_fixed_dimension = getSetting('upload_medium_fixed_dimension');
         if ($targets['type'] == 'path') {
-            if ($image['size'] == 0) {
-                $get_image_fileinfo = GGet_image_fileinfo($targets['chain']['image']);
-                $update_missing_values = [
-                    'width' => $get_image_fileinfo['width'],
-                    'height' => $get_image_fileinfo['height'],
-                    'size' => $get_image_fileinfo['size'],
-                ];
-                foreach (['thumb', 'medium'] as $k) {
-                    if (!array_key_exists($k, $targets['chain'])) {
-                        continue;
-                    }
-                    if ($image[$k . '_size'] == 0) {
-                        $update_missing_values[$k . '_size'] = GGet_image_fileinfo($targets['chain'][$k])['size'];
-                    }
-                }
-                self::update($image['id'], $update_missing_values);
-                $image = array_merge($image, $update_missing_values);
-            }
-            $is_animated = isset($targets['chain']['image']) && is_animated_image($targets['chain']['image']);
-            if (count($targets['chain']) > 0 && !isset($targets['chain']['thumb'])) {
-                try {
-                    $targets['chain']['thumb'] = self::resize(
-                        $targets['chain']['image'],
-                        pathinfo($targets['chain']['image'], PATHINFO_DIRNAME),
-                        $image['name'] . '.th',
-                        [
-                            'width' => getSetting('upload_thumb_width'),
-                            'height' => getSetting('upload_thumb_height'),
-                            'forced' => $image['extension'] == 'gif' && $is_animated
-                        ]
-                    )['file'];
-                } catch (Exception $e) {
-                }
-            }
-            if ($image[$medium_fixed_dimension] > $medium_size
-                && count($targets['chain']) > 0
-                && !isset($targets['chain']['medium'])
-            ) {
-                try {
-                    $targets['chain']['medium'] = self::resize(
-                        $targets['chain']['image'],
-                        pathinfo($targets['chain']['image'], PATHINFO_DIRNAME),
-                        $image['name'] . '.md',
-                        [
-                            $medium_fixed_dimension => $medium_size,
-                            'forced' => $image['extension'] == 'gif' && $is_animated
-                        ]
-                    )['file'];
-                } catch (Throwable $e) {
-                }
+            $is_animated = $image['is_animated'];
+            if (!$is_animated) {
+                $is_animated = isset($targets['chain']['image']) && is_animated_image($targets['chain']['image']);
             }
             if (count($targets['chain']) > 0) {
                 $original_md5 = $image['md5'];
-                $image = array_merge($image, get_image_fileinfo($targets['chain']['image']));
+                $image = array_merge($image, get_fileinfo($targets['chain']['image']));
                 $image['md5'] = $original_md5;
             }
             if ($is_animated && !$image['is_animated']) {
@@ -1441,8 +1469,10 @@ class Image
                 'size' => (int) $image['size'],
                 'size_formatted' => format_bytes($image['size'])
             ];
-            $image = array_merge($image, get_image_fileinfo($targets['chain']['image']), $image_fileinfo);
+
+            $image = array_merge($image, get_fileinfo($targets['chain']['image']), $image_fileinfo);
         }
+
         $image['file_resource'] = $targets;
         $image['url_viewer'] = self::getUrlViewer(
             $image['id_encoded'],
@@ -1454,14 +1484,17 @@ class Image
         $image['url_short'] = self::getUrlViewer($image['id_encoded']);
         foreach ($targets['chain'] as $k => $v) {
             if ($targets['type'] == 'path') {
-                $image[$k] = file_exists($v) ? get_image_fileinfo($v) : null;
+                $image[$k] = file_exists($v) ? get_fileinfo($v) : null;
             } else {
-                $image[$k] = get_image_fileinfo($v);
+                $image[$k] = get_fileinfo($v);
             }
             $image[$k]['size'] = $image[($k == 'image' ? '' : $k . '_') . 'size'];
         }
+        $image['url_frame'] = $image['frame']['url'] ?? '';
         $image['size_formatted'] = format_bytes($image['size']);
-        $display_url = $image['url'] ?? '';
+        $display_url = $image['frame']['url']
+            ?? $image['url']
+            ?? '';
         $display_width = $image['width'];
         $display_height = $image['height'];
         if (!empty($image['medium'])) {
@@ -1479,15 +1512,24 @@ class Image
 
                 break;
             }
-            // if (!$image["is_animated"]) {
-            //     // $display_url = $image['url'] ?? '';
-            // }
-        } elseif ($image['size'] > get_bytes('200 KB')) {
+        } elseif (
+            $image['size'] > get_bytes('200 KB')
+            && $image['type'] === 1
+        ) {
             $display_url = $image['thumb']['url'] ?? '';
             $display_width = getSetting('upload_thumb_width');
             $display_height = getSetting('upload_thumb_height');
         }
-
+        $image['duration'] = (int) ($image['duration'] ?? 0);
+        $seconds = $image['duration'] ?? 0;
+        if ($seconds > 0) {
+            $minutes = floor($seconds / 60);
+            $duration_time = sprintf('%02d', $minutes) . ':' . sprintf('%02d', $seconds % 60);
+        } else {
+            $duration_time = '';
+        }
+        $image['duration_time'] = $duration_time;
+        $image['type'] = self::$types[$image['type']];
         $image['display_url'] = $display_url;
         $image['display_width'] = $display_width;
         $image['display_height'] = $display_height;
@@ -1500,6 +1542,8 @@ class Image
         $image['title_truncated'] = truncate($image['title'] ?? '', 28);
         $image['title_truncated_html'] = safe_html($image['title_truncated']);
         $image['is_use_loader'] = getSetting('image_load_max_filesize_mb') !== '' ? ($image['size'] > get_bytes(getSetting('image_load_max_filesize_mb') . 'MB')) : false;
+        $image['display_title'] = $image['title']
+            ?? ($image['name'] . '.' . $image['extension']);
     }
 
     public static function formatArray(array $dbRow, bool $safe = false): array
@@ -1529,5 +1573,17 @@ class Image
         }
 
         return $output;
+    }
+
+    public static function getVideoFrame(string $file, int $time): string
+    {
+        $frameFile = Upload::getTempNam(sys_get_temp_dir());
+        $ffmpeg = FFMpeg::create();
+        $video = $ffmpeg->open($file);
+        $video
+            ->frame(TimeCode::fromSeconds($time))
+            ->save($frameFile);
+
+        return $frameFile;
     }
 }

@@ -164,6 +164,7 @@ return function (Handler $handler) {
             'title' => $REQUEST['title'] ?? $REQUEST['name'] ?? null,
             'width' => $REQUEST['width'] ?? null,
             'expiration' => $expiration,
+            'mimetype' => $REQUEST['mimetype'] ?? 'image/jpeg',
         ];
         $params = array_filter($params);
         if (!$handler::cond('content_manager') && getSetting('akismet')) {
@@ -188,7 +189,7 @@ return function (Handler $handler) {
             $json_array['status'] = $json_array['status_code'];
             $image['id'] = $image['id_encoded'];
         }
-        $json_array['success'] = ['message' => 'image uploaded', 'code' => 200];
+        $json_array['success'] = ['message' => 'file uploaded', 'code' => 200];
         $json_array[$isImgBBSpec ? 'data' : 'image'] = $image;
 
         if ($version == 1) {

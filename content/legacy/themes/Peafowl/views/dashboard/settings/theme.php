@@ -42,6 +42,22 @@ foreach (array_keys($palettes->get()) as $id) {
         </select></div>
     <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['theme_palette'] ?? ''; ?></div>
 </div>
+<div class="input-label">
+<?php
+/** @var Fonts $palettes */
+$fonts = Handler::var('fonts');
+$fontsOptions = [];
+foreach (array_keys($fonts->get()) as $id) {
+    $fontsOptions[strval($id)] = $fonts->getName($id);
+}
+?>
+    <label for="theme_font"><?php _se('Default %s', _s('font')); ?></label>
+    <div class="c8 phablet-c1"><select type="text" name="theme_font" id="theme_font" class="text-input">
+            <?php
+            echo get_select_options_html($fontsOptions, Handler::var('safe_post') ? Handler::var('safe_post')['theme_font'] : Settings::get('theme_font')); ?>
+        </select></div>
+    <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['theme_font'] ?? ''; ?></div>
+</div>
 <hr class="line-separator">
 <div class="input-label">
     <label for="image_load_max_filesize_mb"><?php _se('Image load max. filesize'); ?> (MB)</label>

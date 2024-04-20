@@ -16,71 +16,67 @@ if (!defined('ACCESS') || !ACCESS) {
 global $embed_upload_tpl, $embed_unapproved_tpl, $embed_share_tpl;
 $embed_upload_tpl = [
     'links' => [
-        'label' => _s('Links'),
+        'label' => _s('Link'),
         'options' => [
             'viewer-links' => [
-                'label' => _s('%s links', _s('Viewer')),
+                'label' => _s('%s link', _s('Viewer')),
                 'template' => '%URL_VIEWER%',
                 'size' => 'viewer',
             ],
             'direct-links' => [
-                'label' => _s('%s links', _s('Direct')),
+                'label' => _s('%s link', _s('Direct')),
                 'template' => '%URL%',
                 'size' => 'full',
             ],
+            'frame-links' => [
+                'label' => _s('%s link', _s('Frame')),
+                'template' => '%URL_FRAME%',
+                'size' => 'full',
+            ],
+            'thumb-links' => [
+                'label' => _s('%s link', _s('Thumbnail')),
+                'template' => '%THUMB_URL%',
+                'size' => 'thumb',
+            ],
+            'medium-links' => [
+                'label' => _s('%s link', _s('Medium')),
+                'template' => '%MEDIUM_URL%',
+                'size' => 'medium',
+            ],
             'delete-links' => [
-                'label' => _s('%s links', _s('Delete')),
+                'label' => _s('%s link', _s('Delete')),
                 'template' => '%DELETE_URL%',
                 'size' => 'full',
             ],
         ],
     ],
     'html-codes' => [
-        'label' => _s('HTML Codes'),
+        'label' => _s('HTML'),
         'options' => [
             'html-embed' => [
-                'label' => _s('HTML image'),
-                'template' => '<img src="%URL%" alt="%FILENAME%" border="0">',
+                'label' => _s('HTML %s', _s('embed')),
+                'template' => [
+                    'image' => '<img src="%URL%" alt="%DISPLAY_TITLE%" border="0">',
+                    'video' => '<video src="%URL%" controls poster="%URL_FRAME%"></video>',
+                ],
                 'size' => 'full',
             ],
             'html-embed-full' => [
                 'label' => _s('HTML full linked'),
-                'template' => '<a href="%URL_VIEWER%"><img src="%URL%" alt="%FILENAME%" border="0"></a>',
+                'template' => [
+                    'image' => '<a href="%URL_VIEWER%"><img src="%URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
+                    'video' => '<a href="%URL_VIEWER%"><video src="%URL%" controls poster="%URL_FRAME%"></video></a>',
+                ],
                 'size' => 'full',
             ],
             'html-embed-medium' => [
                 'label' => _s('HTML medium linked'),
-                'template' => '<a href="%URL_VIEWER%"><img src="%MEDIUM_URL%" alt="%MEDIUM_FILENAME%" border="0"></a>',
+                'template' => '<a href="%URL_VIEWER%"><img src="%DISPLAY_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'medium',
             ],
             'html-embed-thumbnail' => [
                 'label' => _s('HTML thumbnail linked'),
-                'template' => '<a href="%URL_VIEWER%"><img src="%THUMB_URL%" alt="%THUMB_FILENAME%" border="0"></a>',
-                'size' => 'thumb',
-            ],
-        ],
-    ],
-    'bbcodes' => [
-        'label' => _s('BBCodes'),
-        'options' => [
-            'bbcode-embed' => [
-                'label' => _s('BBCode full'),
-                'template' => '[img]%URL%[/img]',
-                'size' => 'full',
-            ],
-            'bbcode-embed-full' => [
-                'label' => _s('BBCode full linked'),
-                'template' => '[url=%URL_VIEWER%][img]%URL%[/img][/url]',
-                'size' => 'full',
-            ],
-            'bbcode-embed-medium' => [
-                'label' => _s('BBCode medium linked'),
-                'template' => '[url=%URL_VIEWER%][img]%MEDIUM_URL%[/img][/url]',
-                'size' => 'medium',
-            ],
-            'bbcode-embed-thumbnail' => [
-                'label' => _s('BBCode thumbnail linked'),
-                'template' => '[url=%URL_VIEWER%][img]%THUMB_URL%[/img][/url]',
+                'template' => '<a href="%URL_VIEWER%"><img src="%THUMB_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'thumb',
             ],
         ],
@@ -90,22 +86,59 @@ $embed_upload_tpl = [
         'options' => [
             'markdown-embed' => [
                 'label' => _s('Markdown full'),
-                'template' => '![%FILENAME%](%URL%)',
+                'template' => [
+                    'image' => '![%DISPLAY_TITLE%](%URL%)',
+                    'video' => '[![%DISPLAY_TITLE%](%URL_FRAME%)](%URL_VIEWER%)',
+                ],
                 'size' => 'full',
             ],
             'markdown-embed-full' => [
                 'label' => _s('Markdown full linked'),
-                'template' => '[![%FILENAME%](%URL%)](%URL_VIEWER%)',
+                'template' => [
+                    'image' => '[![%DISPLAY_TITLE%](%URL%)](%URL_VIEWER%)',
+                    'video' => '[![%DISPLAY_TITLE%](%URL_FRAME%)](%URL_VIEWER%)',
+                ],
                 'size' => 'full',
             ],
             'markdown-embed-medium' => [
                 'label' => _s('Markdown medium linked'),
-                'template' => '[![%MEDIUM_FILENAME%](%MEDIUM_URL%)](%URL_VIEWER%)',
+                'template' => '[![%DISPLAY_TITLE%](%DISPLAY_URL%)](%URL_VIEWER%)',
                 'size' => 'medium',
             ],
             'markdown-embed-thumbnail' => [
                 'label' => _s('Markdown thumbnail linked'),
-                'template' => '[![%THUMB_FILENAME%](%THUMB_URL%)](%URL_VIEWER%)',
+                'template' => '[![%DISPLAY_TITLE%](%THUMB_URL%)](%URL_VIEWER%)',
+                'size' => 'thumb',
+            ],
+        ],
+    ],
+    'bbcodes' => [
+        'label' => _s('BBCode'),
+        'options' => [
+            'bbcode-embed' => [
+                'label' => _s('BBCode full'),
+                'template' => [
+                    'image' => '[img]%URL%[/img]',
+                    'video' => '[video]%URL%[/video]',
+                ],
+                'size' => 'full',
+            ],
+            'bbcode-embed-full' => [
+                'label' => _s('BBCode full linked'),
+                'template' => [
+                    'image' => '[url=%URL_VIEWER%][img]%URL%[/img][/url]',
+                    'video' => '[url=%URL_VIEWER%][video]%URL%[/video][/url]',
+                ],
+                'size' => 'full',
+            ],
+            'bbcode-embed-medium' => [
+                'label' => _s('BBCode medium linked'),
+                'template' => '[url=%URL_VIEWER%][img]%DISPLAY_URL%[/img][/url]',
+                'size' => 'medium',
+            ],
+            'bbcode-embed-thumbnail' => [
+                'label' => _s('BBCode thumbnail linked'),
+                'template' => '[url=%URL_VIEWER%][img]%THUMB_URL%[/img][/url]',
                 'size' => 'thumb',
             ],
         ],
@@ -113,10 +146,10 @@ $embed_upload_tpl = [
 ];
 $embed_unapproved_tpl = [
     'links' => [
-        'label' => _s('Links'),
+        'label' => _s('Link'),
         'options' => [
             'viewer-links' => [
-                'label' => _s('Viewer links'),
+                'label' => _s('%s link', _s('Viewer')),
                 'template' => '%URL_VIEWER%',
                 'size' => 'viewer',
             ],

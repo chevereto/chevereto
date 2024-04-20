@@ -258,7 +258,8 @@ class DB
         string $clause = 'AND',
         array $sort = [],
         int $limit = null,
-        int $fetch_style = PDO::FETCH_ASSOC
+        int $fetch_style = PDO::FETCH_ASSOC,
+        array $valuesOperators = []
     ): mixed {
         if (!is_array($values) && $values !== 'all') {
             throw new Exception('Expecting array values, ' . gettype($values) . ' given');
@@ -279,7 +280,8 @@ class DB
                 if (is_null($v)) {
                     $query .= '`' . $k . '` IS :' . $k . ' ' . $clause . ' ';
                 } else {
-                    $query .= '`' . $k . '`=:' . $k . ' ' . $clause . ' ';
+                    $operator = $valuesOperators[$k] ?? '=';
+                    $query .= '`' . $k . '`' . $operator . ':' . $k . ' ' . $clause . ' ';
                 }
             }
         }

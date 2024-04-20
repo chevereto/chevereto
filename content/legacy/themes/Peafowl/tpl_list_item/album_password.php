@@ -9,7 +9,7 @@
 	<div class="list-item-desc">
 		<div class="list-item-desc-title">
 			<a class="list-item-desc-title-link" href="%ALBUM_URL%"><?php _se('Private album'); ?></a>
-			<div class="list-item-from font-size-small phone-hide"><span class="fas fa-image margin-right-5"></span><?php _se('Password protected'); ?></div>
+			<div class="list-item-from font-size-small phone-hide"><span class="fas fa-photo-film margin-right-5"></span><?php _se('Password protected'); ?></div>
 		</div>
 	</div>
 </div>

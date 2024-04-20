@@ -38,7 +38,7 @@ $(function () {
         }
     });
 
-    let previousScrollPosition = 0;
+    var previousScrollPosition = 0;
     const supportPageOffset = window.pageXOffset !== undefined;
     const isCSS1Compat = (document.compatMode || "") === "CSS1Compat";
     const isScrollingDown = function () {
@@ -58,6 +58,7 @@ $(function () {
     };
     var scrollTimer;
     window.addEventListener("scroll", function () {
+        if(!$("html").hasScrollbar().vertical) return;
         if(scrollTimer) return;
         scrollTimer = true;
         setTimeout(function () {
@@ -977,7 +978,7 @@ $(function () {
                             if(!$(PF.obj.modal.selectors.root).exists()) {
                                 removeClasses += " overflow-hidden";
                             }
-                            $("body").removeClass(removeClasses);
+                            $("body,html").removeClass(removeClasses);
                         }
                         $pop_box.find(".pop-box-inner").css("height", "");
                     }, PF.obj.config.animation.normal);
@@ -1014,11 +1015,11 @@ $(function () {
                                 callback($pop_box);
                             }, PF.obj.config.animation.normal);
 
-                            if ($("body").hasClass("overflow-hidden")) {
-                                $("body").data("hasOverflowHidden", 1);
+                            if ($("html").hasClass("overflow-hidden")) {
+                                $("html").data("hasOverflowHidden", 1);
                             } else {
+                                $("html").addClass("overflow-hidden");
                                 $("body").addClass(
-                                    "overflow-hidden " +
                                     ($this.closest('.top-bar').exists()
                                         ? 'pop-box-show--top'
                                         : 'pop-box-show')
@@ -2331,7 +2332,6 @@ PF.fn.form_modal_has_changed = function () {
             break;
         }
     }
-
     return has_changed;
 };
 

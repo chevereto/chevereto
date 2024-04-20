@@ -14,7 +14,6 @@ use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\get_captcha_invisible_html;
 use function Chevereto\Legacy\get_translation_table;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
@@ -78,7 +77,7 @@ if (Handler::cond('captcha_needed') && getSetting('captcha_api') == '3') {
 				url: <?php echo json_encode(getSetting('enable_uploads_url')); ?>,
 				redirect_single_upload: <?php echo json_encode(getSetting('enable_redirect_single_upload')); ?>,
 				threads: <?php echo json_encode(getSetting('upload_threads')); ?>,
-                image_types: <?php echo json_encode(Image::getEnabledImageFormats()); ?>,
+                image_types: <?php echo json_encode(Image::getEnabledImageExtensions()); ?>,
                 moderation: <?php echo json_encode(Handler::cond('moderate_uploads')); ?>,
 				maxQueue: <?php echo json_encode(Handler::var('upload_max_queue')); ?>,
 			},
@@ -89,7 +88,7 @@ if (Handler::cond('captcha_needed') && getSetting('captcha_api') == '3') {
 			captcha: {
 				isNeeded: <?php echo json_encode(Handler::cond('captcha_needed')); ?>,
 				version: '<?php echo getSetting('captcha_api'); ?>',
-				enabled: <?php echo getSettings()['captcha'] ? 'true' : 'false'; ?>,
+				enabled: <?php echo (getSetting('captcha') ?? false) ? 'true' : 'false'; ?>,
 				sitekey: "<?php echo getSetting('captcha_sitekey'); ?>",
 			},
 			listing: {

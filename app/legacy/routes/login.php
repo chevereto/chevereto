@@ -17,7 +17,6 @@ use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\must_use_captcha;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\post;
@@ -111,7 +110,7 @@ return function (Handler $handler) {
             $request_log_insert['result'] = 'fail';
             RequestLog::insert($request_log_insert);
             $error_message = _s('Wrong Username/Email password combination');
-            if (getSettings()['captcha'] && must_use_captcha($failed_access_requests['day'] + 1)) {
+            if ((getSetting('captcha') ?? false) && must_use_captcha($failed_access_requests['day'] + 1)) {
                 $captcha_needed = true;
             }
         }

@@ -328,6 +328,10 @@ class Listing
             }
             if ($this->type == 'images' && isset($this->params_hidden['is_animated']) && $this->params_hidden['is_animated'] == 1) {
                 $whereClauses[] = 'image_is_animated = 1';
+                $whereClauses[] = 'image_type = 1';
+            }
+            if ($this->type == 'images' && isset($this->params_hidden['is_video']) && $this->params_hidden['is_video'] == 1) {
+                $whereClauses[] = 'image_type = 2';
             }
             if (!empty($whereClauses)) {
                 $whereClauses = implode(' AND ', $whereClauses);
@@ -646,7 +650,7 @@ class Listing
                 'sort' => 'date_desc',
             ],
             'trending' => [
-                'icon' => 'fas fa-poll',
+                'icon' => 'fas fa-chart-simple',
                 'label' => _s('Trending'),
                 'content' => 'all',
                 'sort' => 'views_desc',
@@ -736,8 +740,8 @@ class Listing
                 'content' => 'users',
             ],
             'images' => [
-                'icon' => 'fas fa-image',
-                'label' => _s('Images'),
+                'icon' => 'fas fa-photo-film',
+                'label' => _n('File', 'Files', 20),
                 'content' => 'images',
             ],
             'albums' => [
@@ -763,11 +767,11 @@ class Listing
         $contents = [
             'images' => [
                 'icon' => $listings['images']['icon'],
-                'label' => _s('Images'),
+                'label' => $listings['images']['label'],
             ],
             'albums' => [
                 'icon' => $listings['albums']['icon'],
-                'label' => _n('Album', 'Albums', 20),
+                'label' => $listings['albums']['label'],
             ],
         ];
         if ((bool) env()['CHEVERETO_ENABLE_USERS']) {

@@ -19,6 +19,7 @@ use CurlHandle;
 use DateInterval;
 use ErrorException;
 use Exception;
+use FFMpeg\FFProbe;
 use GdImage;
 use LogicException;
 use function Safe\curl_exec;
@@ -1933,6 +1934,8 @@ function mime_to_extension(string $mime): string
         'image/x-icon' => 'ico',
         'image/vnd.microsoft.icon' => 'ico',
         'image/webp' => 'webp',
+        'video/mp4' => 'mp4',
+        'video/webm' => 'webm',
     ][$mime] ?? '';
 }
 
@@ -1947,7 +1950,48 @@ function extension_to_mime(string $ext): string
         'tiff' => 'image/tiff',
         'ico' => 'image/vnd.microsoft.icon',
         'webp' => 'image/webp',
+        'mp4' => 'video/mp4',
+        'webm' => 'video/webm',
     ][$ext] ?? '';
+}
+
+function get_video_fileinfo(string $file): array
+{
+    clearstatcache(true, $file);
+    $ffprobe = FFProbe::create();
+    if (!$ffprobe->isValid($file)) {
+        throw new Exception("Invalid video file provided", 610);
+    }
+    $all = $ffprobe
+        ->streams($file)
+        ->videos()
+        ->first()
+        ->all();
+    $codecLong = strtolower($all['codec_long_name'] ?? '');
+    $extension = str_contains($codecLong, 'mpeg-4') ? 'mp4' : 'webm';
+    $filesize = filesize($file);
+    $duration = $all['duration'] ?? null;
+    if ($duration === null) {
+        $format = $ffprobe->format($file)->all();
+        $duration = $format['duration'] ?? null;
+    }
+
+    return [
+        'filename' => basename($file),
+        'name' => basename($file, '.' . $extension),
+        'width' => $all['width'],
+        'height' => $all['height'],
+        'ratio' => $all['width'] / $all['height'],
+        'size' => intval($filesize),
+        'size_formatted' => format_bytes($filesize),
+        'mime' => 'video/' . $extension,
+        'extension' => $extension,
+        'bits' => $all['bits_per_raw_sample'] ?? 0,
+        'channels' => '',
+        'url' => absolute_to_url($file),
+        'md5' => md5_file($file),
+        'duration' => (int) $duration,
+    ];
 }
 
 function get_image_fileinfo(string $file): array

@@ -7,7 +7,6 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
 $tabs = Handler::var('tabs') ?? [];
-
 foreach ($tabs as $tab) {
     if ($tab["current"]) {
         $current = $tab;

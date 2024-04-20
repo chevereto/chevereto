@@ -1,9 +1,5 @@
 <?php
 
-use function Chevereto\Legacy\adjustBrightness;
-use function Chevereto\Legacy\G\is_valid_hex_color;
-use function Chevereto\Legacy\getSetting;
-
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
@@ -295,17 +291,3 @@ if (!defined('ACCESS') || !ACCESS) {
     --viewerBackground: linear-gradient(180deg, rgba(26,28,35,1) 0%, rgba(11,13,18,1) 100%);
 }
 </style>
-<?php
-    // $color = getSetting('theme_main_color');
-    // if ($color !== null && is_valid_hex_color($color)) {
-    //     $colorStrong = adjustBrightness($color, -0.1);
-    //     echo <<<STYLE
-    //     <style>
-    //     :root {
-    //         --colorAccent: {$color};
-    //         --colorAccentStrong: {$colorStrong};
-    //     }
-    //     </style>
-    //     STYLE;
-    // }
-?>

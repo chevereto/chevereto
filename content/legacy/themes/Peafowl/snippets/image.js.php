@@ -12,6 +12,8 @@ if (!defined('ACCESS') || !ACCESS) {
     var panelThumbs = document.querySelector('.panel-thumbs');
     var panelThumbList = document.querySelectorAll('.panel-thumb-list > li');
 	image_viewer_full_fix = function() {
+        var isVideo = <?php echo Handler::var('image')["type"] === 2 ? 'true' : 'false'; ?>;
+        if(isVideo) return;
 		var viewer = document.getElementById("image-viewer"),
             container = document.getElementById("image-viewer-container"),
             zoomAble = viewer.getElementsByTagName('img')[0],

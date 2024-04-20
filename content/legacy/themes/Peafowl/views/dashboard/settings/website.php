@@ -1,14 +1,13 @@
 <?php
 
+use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
-use function Chevereto\Legacy\echoBadgePaid;
-use function Chevereto\Legacy\echoInputDisabledPaid;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Vars\env;
+use function Chevereto\Legacy\inputDisabledPaid;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -143,8 +142,8 @@ foreach ($regions ?? [] as $key => $region) {
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <?php echoBadgePaid((bool) env()['CHEVERETO_ENABLE_POWERED_BY_FOOTER_SITE_WIDE']); ?><label for="enable_powered_by"><?php _se('Powered by'); ?> Chevereto</label>
-    <div class="c5 phablet-c1"><select <?php echoInputDisabledPaid((bool) env()['CHEVERETO_ENABLE_POWERED_BY_FOOTER_SITE_WIDE']); ?> type="text" name="enable_powered_by" id="enable_powered_by" class="text-input">
+    <?php echo badgePaid('pro'); ?><label for="enable_powered_by"><?php _se('Powered by'); ?> Chevereto</label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('pro'); ?> type="text" name="enable_powered_by" id="enable_powered_by" class="text-input">
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_powered_by')); ?>
         </select></div>
@@ -152,8 +151,8 @@ foreach ($regions ?? [] as $key => $region) {
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_LIKES']); ?><label for="enable_likes"><?php _se('Likes'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="enable_likes" id="enable_likes" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
+    <?php echo badgePaid('lite'); ?><label for="enable_likes"><?php _se('Likes'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="enable_likes" id="enable_likes" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
                 echo ' disabled';
             } ?>>
             <?php
@@ -163,8 +162,8 @@ foreach ($regions ?? [] as $key => $region) {
     <?php personal_mode_warning(); ?>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_FOLLOWERS']); ?><label for="enable_followers"><?php _se('Followers'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="enable_followers" id="enable_followers" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
+    <?php echo badgePaid('lite'); ?><label for="enable_followers"><?php _se('Followers'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="enable_followers" id="enable_followers" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
                 echo ' disabled';
             } ?>>
             <?php
@@ -175,8 +174,8 @@ foreach ($regions ?? [] as $key => $region) {
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode"><?php _se('Website mode'); ?></label>
-    <div class="c5 phablet-c1"><select <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?> type="text" name="website_mode" id="website_mode" class="text-input" data-combo="website-mode-combo">
+    <?php echo badgePaid('lite'); ?><label for="website_mode"><?php _se('Website mode'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="website_mode" id="website_mode" class="text-input" data-combo="website-mode-combo">
             <?php
             echo get_select_options_html(['community' => _s('Multi-user'), 'personal' => _s('Single profile')], Settings::get('website_mode')); ?>
         </select></div>
@@ -191,14 +190,14 @@ foreach ($regions ?? [] as $key => $region) {
             } ?>">
         <hr class="line-separator">
         <div class="input-label">
-            <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode_personal_uid"><?php _se('%s target %t', ['%s' => _s('Single profile'), '%t' => _n('user', 'users', 1)]); ?></label>
-            <div class="c3"><input <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?> type="number" min="1" name="website_mode_personal_uid" id="website_mode_personal_uid" class="text-input" value="<?php echo Settings::get('website_mode_personal_uid'); ?>" placeholder="<?php _se('User ID'); ?>" rel="tooltip" title="<?php _se('Your user id is: %s', Login::getUser()['id']); ?>" data-tipTip="right" data-required></div>
+            <?php echo badgePaid('lite'); ?><label for="website_mode_personal_uid"><?php _se('%s target %t', ['%s' => _s('Single profile'), '%t' => _n('user', 'users', 1)]); ?></label>
+            <div class="c3"><input <?php echo inputDisabledPaid('lite'); ?> type="number" min="1" name="website_mode_personal_uid" id="website_mode_personal_uid" class="text-input" value="<?php echo Settings::get('website_mode_personal_uid'); ?>" placeholder="<?php _se('User ID'); ?>" rel="tooltip" title="<?php _se('Your user id is: %s', Login::getUser()['id']); ?>" data-tipTip="right" data-required></div>
             <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['website_mode_personal_uid'] ?? ''; ?></div>
             <div class="input-below"><?php _se('Numeric ID of the target %t for %s mode.', ['%s' => _s('Single profile'), '%t' => _n('user', 'users', 1)]); ?></div>
         </div>
         <div class="input-label">
-            <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="website_mode_personal_routing"><?php _se('%s routing', _s('Single profile')); ?></label>
-            <div class="c5"><input <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?> type="text" name="website_mode_personal_routing" id="website_mode_personal_routing" class="text-input" value="<?php echo Settings::get('website_mode_personal_routing'); ?>" placeholder="/"></div>
+            <?php echo badgePaid('lite'); ?><label for="website_mode_personal_routing"><?php _se('%s routing', _s('Single profile')); ?></label>
+            <div class="c5"><input <?php echo inputDisabledPaid('lite'); ?> type="text" name="website_mode_personal_routing" id="website_mode_personal_routing" class="text-input" value="<?php echo Settings::get('website_mode_personal_routing'); ?>" placeholder="/"></div>
             <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['website_mode_personal_routing'] ?? ''; ?></div>
             <div class="input-below"><?php _se('Custom route to map /username to /something. Use "/" to map to homepage.'); ?></div>
         </div>

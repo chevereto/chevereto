@@ -480,7 +480,7 @@ $settings_updates = [
     ],
     '3.13.5' => null,
     '3.14.0' => [
-        'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp',
+        // 'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp',
     ],
     '3.14.1' => null,
     '3.15.0' => [
@@ -596,6 +596,11 @@ $settings_updates = [
     ],
     '4.0.11' => null,
     '4.0.12' => null,
+    '4.1.0' => [
+        'twitter_account' => '',
+        'theme_font' => '0',
+        'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mp4,webm',
+    ],
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -1824,6 +1829,42 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'op' => 'ADD',
                         'type' => 'longtext',
                         'prop' => null,
+                    ],
+                ]
+            ],
+            '4.1.0' => [
+                'storages' => [
+                    'storage_type_chain' => [
+                        'op' => 'ADD',
+                        'type' => 'tinyint(3) UNSIGNED NOT NULL',
+                        'prop' => 'DEFAULT "1"',
+                    ]
+                ],
+                'images' => [
+                    'image_size' => [
+                        'op' => 'MODIFY',
+                        'type' => 'bigint(11)',
+                        'prop' => "UNSIGNED NOT NULL",
+                    ],
+                    'image_frame_size' => [
+                        'op' => 'ADD',
+                        'type' => 'int(11)',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                    'image_duration' => [
+                        'op' => 'ADD',
+                        'type' => 'int(11)',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                    'image_type' => [
+                        'op' => 'ADD',
+                        'type' => 'tinyint(3) UNSIGNED',
+                        'prop' => "as (case
+                        when `image_extension` in ('pdf', 'doc', 'md') then 4
+                        when `image_extension` in ('mp3', 'm4a', 'wav') then 3
+                        when `image_extension` in ('mp4', 'webm') then 2
+                        when `image_extension` in ('jpg', 'jpeg', 'gif', 'png', 'webp') then 1
+                        else 0 end) stored"
                     ],
                 ]
             ],

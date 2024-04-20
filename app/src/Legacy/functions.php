@@ -650,7 +650,7 @@ function get_users_image_url(string $filename): string
     return get_content_url('images/users/' . $filename);
 }
 
-function get_image_fileinfo(string $file): array
+function get_fileinfo(string $file): array
 {
     $extension = get_file_extension($file);
     $return = [
@@ -1329,4 +1329,14 @@ function getLicenseKey(): string
     }
 
     return $licenseKey;
+}
+
+function editionCombo(): array
+{
+    return [
+        'free' => ['free'],
+        'lite' => ['free', 'lite'],
+        'pro' => ['free', 'lite', 'pro'],
+        'enterprise' => ['free', 'lite', 'pro', 'enterprise'],
+    ];
 }

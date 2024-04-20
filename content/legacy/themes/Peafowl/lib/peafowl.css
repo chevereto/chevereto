@@ -3066,10 +3066,14 @@ body.landing .top-btn-text {
 }
 
 .viewer-title {
+    flex-grow: 1;
+    order: 2;
+    text-align: center;
     font-size: 1.43em;
     line-height: 1.43em;
-    padding-inline-end: 3em;
+    padding-inline-end: 2em;
 }
+
 
 .panel-description:empty {
     display: none;
@@ -3134,14 +3138,16 @@ body.landing .top-btn-text {
 }
 
 .panel-thumb-list li.current {
-    border-color: var(--bodyBackground);
+    border-color: var(--colorAccent);
 }
 
-.panel-thumb-list li.current img, .list-item-desc .panel-thumb-list li:hover img {
+.panel-thumb-list li.current img,
+.list-item-desc .panel-thumb-list li:hover img {
     opacity: 1;
 }
 
-.phone .panel-thumb-list li.more-link, .phablet .panel-thumb-list li.more-link {
+.phone .panel-thumb-list li.more-link,
+.phablet .panel-thumb-list li.more-link {
     clear: both;
     line-height: 100%;
     padding: 10px 0;
@@ -3167,23 +3173,24 @@ body.landing .top-btn-text {
     margin-bottom: 0;
 }
 
-.panel-share-item h4.pre-title {
+.panel-share-item .pre-title {
     padding-inline-start: 200px;
     line-height: 20px;
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--bodySeparator);
+    font-weight: bold;
 }
 
-.tone-dark .panel-share-item h4.pre-title {
+.tone-dark .panel-share-item .pre-title {
     border-color: #212121;
 }
 
-.phone .panel-share-item h4.pre-title, .phablet .panel-share-item h4.pre-title {
+.phone .panel-share-item .pre-title, .phablet .panel-share-item .pre-title {
     padding-inline-start: 0;
 }
 
-.panel-share-item h4.title {
+.panel-share-item .title {
     line-height: 32px;
 }
 
@@ -3679,7 +3686,9 @@ html:not(.--idle) .list-item:hover .hover-display {
 }
 
 .list-item-image .image-container img,
-.list-item-image .image-container svg {
+.list-item-image .image-container video,
+.list-item-image .image-container svg,
+.list-item-image .image-container .media {
     display: block;
     position: relative;
     width: 100% !important;
@@ -3765,6 +3774,9 @@ html:not(.--idle) .list-item:hover .hover-display {
 
 .list-item-desc-title>* {
     padding-bottom: 5px;
+    margin-bottom: -2.5px;
+    padding-inline-start: 5px;
+    margin-inline-start: -5px;
 }
 
 .list-item-from {
@@ -3796,11 +3808,6 @@ html:not(.--idle) .list-item:hover .hover-display {
         width: calc(100% - 20px);
     }
 }
-
-a.list-item-desc-title-link {
-    text-decoration: none;
-}
-
 .list-item-title {
     padding-top: 0;
     padding-bottom: 0;
@@ -3835,7 +3842,6 @@ a.list-item-desc-title-link {
 
 .list-item-desc {
     width: 100%;
-    top: 1;
     font-size: 0.93em;
     line-height: 1;
     box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1), 0 0 0 transparent;
@@ -3929,10 +3935,10 @@ a.list-item-desc-title-link {
     background: transparent;
     border: 0;
     box-shadow: none;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+    text-shadow: 1px 1px 5px rgba(0,0,0,.5);
     opacity: 0;
     transition: all 350ms ease;
-    bottom: 0;
+    bottom: 5px;
     position: absolute;
 }
 

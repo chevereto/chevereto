@@ -130,7 +130,7 @@ if (!defined('ACCESS') || !ACCESS) {
 		</div>
 		<div class="header-content-right phone-float-none">
 			<div class="text-align-right">
-				<a class="number-figures" href="<?php echo Handler::var('user')["url"]; ?>"><i class="icon far fa-image"></i> <b data-text="image-count"><?php echo Handler::var('user')["image_count"]; ?></b> <span data-text="image-label" data-label-single="<?php _ne('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('user')['image_count']); ?></span></a>
+				<a class="number-figures" href="<?php echo Handler::var('user')["url"]; ?>"><i class="icon fas fa-photo-film"></i> <b data-text="image-count"><?php echo Handler::var('user')["image_count"]; ?></b> <span data-text="image-label" data-label-single="<?php _ne('file', 'files', 1); ?>" data-label-plural="<?php _ne('file', 'files', 2); ?>"><?php _ne('file', 'files', Handler::var('user')['image_count']); ?></span></a>
 				<a class="number-figures" href="<?php echo Handler::var('user')["url_albums"]; ?>"><i class="icon far fa-images"></i> <b data-text="album-count"><?php echo Handler::var('user')["album_count"]; ?></b> <span data-text="album-label" data-label-single="<?php _ne('album', 'albums', 1); ?>" data-label-plural="<?php _ne('album', 'albums', 2); ?>"><?php _ne('album', 'albums', Handler::var('user')['album_count']); ?></span></a>
 				<?php if (getSetting('enable_likes') && Handler::var('user')['is_private'] == 0) {
                 ?>

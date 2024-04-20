@@ -97,7 +97,7 @@ if (!defined('ACCESS') || !ACCESS) {
             <span class="icon far fa-eye-slash <?php if (Handler::var('album')["privacy"] == "public") {
                 echo "soft-hidden";
             } ?>" data-content="privacy-private" title="<?php _se('This content is private'); ?>" rel="tooltip"></span>
-           <span class="far fa-images"></span> <span data-text="image-count"><?php echo Handler::var('album')["image_count"]; ?></span> <span data-text="image-label" data-label-single="<?php _ne('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('album')['image_count']); ?></span> — <span class="far fa-clock"></span> <?php echo '<span title="' . Handler::var('album')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('album')['date_gmt']) . '</span>'; ?> — <span class="far fa-views"></span><?php echo Handler::var('album')['views']; ?> <?php echo Handler::var('album')['views_label']; ?>
+           <span class="far fa-images"></span> <span data-text="image-count"><?php echo Handler::var('album')["image_count"]; ?></span> <span data-text="image-label" data-label-single="<?php _ne('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('album')['image_count']); ?></span> — <?php echo '<span title="' . Handler::var('album')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('album')['date_gmt']) . '</span>'; ?> — <span class="far fa-views"></span><?php echo Handler::var('album')['views']; ?> <?php echo Handler::var('album')['views_label']; ?>
         </div>
     </div>
 	<?php show_banner('album_after_header', Handler::var('listing')->sfw()); ?>

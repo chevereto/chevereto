@@ -1,5 +1,6 @@
 <?php
 
+use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Palettes;
 use function Chevereto\Legacy\G\get_base_url;
@@ -12,6 +13,7 @@ use function Chevereto\Legacy\G\is_route;
 use function Chevereto\Legacy\get_language_used;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getThemeLogo;
+use function Chevereto\Legacy\linkPaid;
 use function Chevereto\Vars\env;
 
 include_theme_file('head');
@@ -241,23 +243,23 @@ if (is_route('page') || is_route('plugin')) {
                         <div class="pop-box arrow-box arrow-box-top anchor-right">
                             <div class="pop-box-inner pop-box-menu">
                                 <ul>
-                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url']; ?>"><span class="btn-icon fas fa-id-card"></span><?php _se('My Profile'); ?></a></li>
-                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url_albums']; ?>"><span class="btn-icon fas fa-images"></span><?php _se('Albums'); ?></a></li>
-                                    <?php if (getSetting('enable_likes')) {
-                            ?>
-                                        <li class="with-icon"><a href="<?php echo Login::getUser()['url_liked']; ?>"><span class="btn-icon fas fa-heart"></span><?php _se('Liked'); ?></a></li>
-                                    <?php
-                        } ?>
-                                    <?php
-                                            if (getSetting('enable_followers')) {
-                                                ?>
-                                        <li class="with-icon"><a href="<?php echo Login::getUser()['url_following']; ?>"><span class="btn-icon fas fa-rss"></span><?php _se('Following'); ?></a></li>
-                                        <li class="with-icon"><a href="<?php echo Login::getUser()['url_followers']; ?>"><span class="btn-icon fas fa-users"></span><?php _se('Followers'); ?></a></li>
-                                    <?php
-                                            } ?>
                                     <li class="with-icon">
                                         <a href="<?php echo get_base_url('settings'); ?>"><span class="btn-icon fas fa-user-cog"></span><?php _se('Settings'); ?></a>
                                     </li>
+                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url']; ?>"><span class="btn-icon fas fa-id-card"></span><?php _se('My Profile'); ?></a></li>
+                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url_albums']; ?>"><span class="btn-icon fas fa-images"></span><?php _se('Albums'); ?></a></li>
+                                    <?php if (getSetting('enable_likes') || env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+                            ?>
+                                        <li class="with-icon"><a href="<?php echo linkPaid('lite') ?? Login::getUser()['url_liked']; ?>"><span class="btn-icon fas fa-heart"></span><?php echo _s('Liked') . badgePaid('lite'); ?></a></li>
+                                    <?php
+                        } ?>
+                                    <?php
+                                            if (getSetting('enable_followers') || env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+                                                ?>
+                                        <li class="with-icon"><a href="<?php echo linkPaid('lite') ?? Login::getUser()['url_following']; ?>"><span class="btn-icon fas fa-rss"></span><?php echo _s('Following') . badgePaid('lite'); ?></a></li>
+                                        <li class="with-icon"><a href="<?php echo linkPaid('lite') ?? Login::getUser()['url_followers']; ?>"><span class="btn-icon fas fa-users"></span><?php echo _s('Followers') . badgePaid('lite'); ?></a></li>
+                                    <?php
+                                            } ?>
                                     <div class="or-separator margin-top-5 margin-bottom-5"></div>
                                     <div class="pop-box-label"><i class="fas fa-swatchbook"></i> <?php _se('Palette'); ?></div>
                                     <li data-action="top-bar-tone">

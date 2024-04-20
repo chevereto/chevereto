@@ -16,8 +16,9 @@ use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\G\get_current_url;
+use function Chevereto\Legacy\G\get_global;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\html_to_bbcode;
+use function Chevereto\Legacy\G\include_theme_file;
 use function Chevereto\Legacy\G\is_animated_image;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
@@ -55,7 +56,6 @@ return function (Handler $handler) {
     if (!isset(session()['image_view_stock'])) {
         sessionVar()->put('image_view_stock', []);
     }
-
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
     $image = Image::getSingle($id, !in_array($id, session()['image_view_stock']), true, $logged_user);
@@ -149,7 +149,7 @@ return function (Handler $handler) {
         : $image_safe_html['name'] . '.' . $image['extension'] . ' hosted at ' . getSetting('website_name');
     $tabs = [];
     $tabs[] = [
-        'icon' => 'fas fa-image',
+        'icon' => 'fas fa-list-ul',
         'label' => _s('About'),
         'id' => 'tab-about',
         'current' => true,
@@ -273,124 +273,46 @@ return function (Handler $handler) {
     }
     $handler::setVar('share_links_array', get_share_links());
     $handler::setVar('privacy', $image['album']['privacy'] ?? '');
+    include_theme_file('snippets/embed');
+    $embed_share_tpl = get_global('embed_share_tpl');
+    $sharing = [
+        '%URL_VIEWER%' => $image['url_viewer'],
+        '%URL%' => $image['url'],
+        '%DISPLAY_URL%' => $image['display_url'],
+        '%DISPLAY_TITLE%' => $image['display_title'],
+        '%URL_FRAME%' => $image['url_frame'],
+        '%THUMB_URL%' => $image['thumb']['url'],
+        '%MEDIUM_URL%' => $image['medium']['url'] ?? '',
+    ];
     $embed = [];
-    $embed['direct-links'] = [
-        'label' => _s('Direct links'),
-        'entries' => [
-            [
-                'label' => _s('Image link'),
-                'value' => $image['url_short'],
-            ],
-            [
-                'label' => _s('Image URL'),
-                'value' => $image['url'],
-            ],
-            [
-                'label' => _s('Thumbnail URL'),
-                'value' => $image['thumb']['url'] ?? '',
-            ],
-        ],
-    ];
-    if (isset($image['medium'])) {
-        $embed['direct-links']['entries'][] = [
-            'label' => _s('Medium URL'),
-            'value' => $image['medium']['url'] ?? '',
-        ];
-    }
-    $image_full = [
-        'html' => '<img src="' . $image['url'] . '" alt="' . $image['filename'] . '" border="0" />',
-        'markdown' => '![' . $image['filename'] . '](' . $image['url'] . ')',
-    ];
-    $image_full['bbcode'] = html_to_bbcode($image_full['html']);
-    $embed['full-image'] = [
-        'label' => _s('Full image'),
-        'entries' => [
-            [
-                'label' => 'HTML',
-                'value' => htmlentities($image_full['html']),
-            ],
-            [
-                'label' => 'BBCode',
-                'value' => $image_full['bbcode'],
-            ],
-            [
-                'label' => 'Markdown',
-                'value' => $image_full['markdown'],
-            ],
-        ],
-    ];
-    $embed_full_linked['html'] = '<a href="' . $image['url_short'] . '">' . $image_full['html'] . '</a>';
-    $embed_full_linked['bbcode'] = html_to_bbcode($embed_full_linked['html']);
-    $embed_full_linked['markdown'] = '[![' . $image['filename'] . '](' . $image['url'] . ')](' . $image['url_short'] . ')';
-    $embed['full-linked'] = [
-        'label' => _s('Full image (linked)'),
-        'entries' => [
-            [
-                'label' => 'HTML',
-                'value' => htmlentities($embed_full_linked['html']),
-            ],
-            [
-                'label' => 'BBCode',
-                'value' => $embed_full_linked['bbcode'],
-            ],
-            [
-                'label' => 'Markdown',
-                'value' => $embed_full_linked['markdown'],
-            ],
-        ],
-    ];
-    if (isset($image['medium'])) {
-        $embed_medium_linked = [
-            'html' => '<a href="' . $image['url_short'] . '"><img src="' . $image['medium']['url'] . '" alt="' . $image['filename'] . '" border="0" /></a>',
-        ];
-        $embed_medium_linked['bbcode'] = html_to_bbcode($embed_medium_linked['html']);
-        $embed_medium_linked['markdown'] = '[![' . $image['medium']['filename'] . '](' . $image['medium']['url'] . ')](' . $image['url_short'] . ')';
-        $embed['medium-linked'] = [
-            'label' => _s('Medium image (linked)'),
-            'entries' => [
-                [
-                    'label' => 'HTML',
-                    'value' => htmlentities($embed_medium_linked['html']),
-                ],
-                [
-                    'label' => 'BBCode',
-                    'value' => $embed_medium_linked['bbcode'],
-                ],
-                [
-                    'label' => 'Markdown',
-                    'value' => $embed_medium_linked['markdown'],
-                ],
-            ],
-        ];
-    }
-    $embed_thumb_linked = [
-        'html' => '<a href="' . $image['url_short'] . '"><img src="' . $image['thumb']['url'] . '" alt="' . $image['filename'] . '" border="0" /></a>',
-    ];
-    $embed_thumb_linked['bbcode'] = html_to_bbcode($embed_thumb_linked['html']);
-    $embed_thumb_linked['markdown'] = '[![' . $image['thumb']['filename'] . '](' . $image['thumb']['url'] . ')](' . $image['url_short'] . ')';
-    $embed['thumb-linked'] = [
-        'label' => _s('Thumbnail image (linked)'),
-        'entries' => [
-            [
-                'label' => 'HTML',
-                'value' => htmlentities($embed_thumb_linked['html']),
-            ],
-            [
-                'label' => 'BBCode',
-                'value' => $embed_thumb_linked['bbcode'],
-            ],
-            [
-                'label' => 'Markdown',
-                'value' => $embed_thumb_linked['markdown'],
-            ],
-        ],
-    ];
-    $embed_id = 1;
-    foreach ($embed as &$v) {
-        foreach ($v['entries'] as &$entry) {
-            $entry['id'] = 'embed-code-' . $embed_id;
-            ++$embed_id;
+    foreach ($embed_share_tpl as $code => $group) {
+        $entries = [];
+        $groupLabel = $group['label'];
+        foreach ($group['options'] as $option => $optionValue) {
+            $value = $optionValue['template'];
+            if (is_array($value)) {
+                $value = $value[$image['type']];
+            }
+            $value = strtr($value, $sharing);
+            if ($value === '') {
+                continue;
+            }
+            if (str_contains($option, 'html')) {
+                $value = htmlentities($value);
+            }
+            $label = $optionValue['label'];
+            $label = str_ireplace($groupLabel, '', $label);
+            $label = ucfirst(trim($label));
+            $entries[] = [
+                'label' => $label,
+                'value' => $value,
+                'id' => $option
+            ];
         }
+        $embed[$code] = [
+            'label' => $group['label'],
+            'entries' => $entries
+        ];
     }
     $handler::setVar('embed', $embed);
     $addValue = session()['image_view_stock'] ?? [];

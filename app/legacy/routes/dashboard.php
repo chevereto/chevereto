@@ -15,6 +15,7 @@ use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\Arachnid;
+use Chevereto\Legacy\Classes\AssetStorage;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\L10n;
@@ -26,7 +27,9 @@ use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\Stat;
 use Chevereto\Legacy\Classes\Upload;
 use Chevereto\Legacy\Classes\User;
+use function Chevereto\Legacy\editionCombo;
 use function Chevereto\Legacy\G\abbreviate_number;
+use function Chevereto\Legacy\G\absolute_to_relative;
 use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\check_value;
 use function Chevereto\Legacy\G\datetime_diff;
@@ -122,44 +125,47 @@ return function (Handler $handler) {
     $route_prefix = 'dashboard';
     $routes = [
         'stats' => _s('Home'),
-        'images' => _s('Images'),
+        'images' => _n('File', 'Files', 20),
         'albums' => _n('Album', 'Albums', 20),
         'users' => _n('User', 'Users', 20),
         'bulk-importer' => _s('Bulk importer'),
         'settings' => _s('Settings'),
+        'run-cron' => _s('Run cron'),
     ];
     $routesLinkLabels = $routes;
     $paidRoutes = [];
     $paidRoutesEnv = [
-        'images' => 'CHEVERETO_ENABLE_USERS',
-        'albums' => 'CHEVERETO_ENABLE_USERS',
-        'users' => 'CHEVERETO_ENABLE_USERS',
-        'bulk-importer' => 'CHEVERETO_ENABLE_BULK_IMPORTER',
+        'albums' => ['lite', 'CHEVERETO_ENABLE_USERS'],
+        'bulk-importer' => ['pro', 'CHEVERETO_ENABLE_BULK_IMPORTER'],
+        'images' => ['lite', 'CHEVERETO_ENABLE_USERS'],
+        'users' => ['lite', 'CHEVERETO_ENABLE_USERS'],
     ];
     foreach ($paidRoutesEnv as $k => $v) {
-        if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'] && !(bool) env()[$v]) {
+        $isEnabled = in_array($v[0], editionCombo()[env()['CHEVERETO_EDITION']]);
+        if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'] && !$isEnabled) {
             unset($routes[$k]);
 
             continue;
         }
-        if (!(bool) env()[$v]) {
+        if (!$isEnabled) {
             array_push($paidRoutes, $k);
-            $routes[$k] .= ' ' . badgePaid();
+            $routes[$k] .= ' ' . badgePaid($v[0]);
         }
     }
     $icons = [
-        'stats' => 'fas fa-home',
-        'images' => 'fas fa-image',
         'albums' => 'fas fa-images',
-        'users' => 'fas fa-users',
-        'settings' => 'fas fa-cog',
         'bulk-importer' => 'fas fa-layer-group',
+        'images' => 'fas fa-photo-film',
+        'run-cron' => 'fas fa-bolt',
+        'settings' => 'fas fa-cog',
+        'stats' => 'fas fa-home',
+        'users' => 'fas fa-users',
     ];
     $settings_sections = [
         'website' => _s('Website'),
         'content' => _s('Content'),
         'listings' => _s('Listings'),
-        'image-upload' => _s('Image upload'),
+        'file-upload' => _s('File upload'),
         'semantics' => _s('Semantics'),
         'categories' => _s('Categories'),
         'theme' => _s('Theme'),
@@ -168,24 +174,23 @@ return function (Handler $handler) {
         'email' => _s('Email'),
         'tools' => _s('Tools'),
         'logo' => _s('Logo'),
-        'external-storage' => _s('External storage'),
         'homepage' => _s('Homepage'),
         'pages' => _s('Pages'),
+        'upload-plugin' => _s('Upload plugin'),
+        'consent-screen' => _s('Consent screen'),
+        'users' => _n('User', 'Users', 20),
+        'guest-api' => _s('Guests %s', 'API'),
+        'external-storage' => _s('External storage'),
         'routing' => _s('Routing'),
         'external-services' => _s('External services'),
         'login-providers' => _s('Login providers'),
-        'upload-plugin' => _s('Upload plugin'),
         'cookie-compliance' => _s('Cookie compliance'),
-        'consent-screen' => _s('Consent screen'),
         'flood-protection' => _s('Flood protection'),
         'banners' => _s('Banners'),
         'ip-bans' => _s('IP bans'),
-        'users' => _n('User', 'Users', 20),
-        'guest-api' => _s('Guests %s', 'API'),
         'watermarks' => _s('Watermarks'),
     ];
     $settings_sections_icons = [
-        'upload-plugin' => 'fas fa-plus',
         'banners' => 'fas fa-scroll',
         'categories' => 'fas fa-columns',
         'consent-screen' => 'fas fa-desktop',
@@ -194,43 +199,43 @@ return function (Handler $handler) {
         'email' => 'fas fa-at',
         'external-services' => 'fas fa-concierge-bell',
         'external-storage' => 'fas fa-hdd',
+        'file-upload' => 'fas fa-cloud-upload-alt',
         'flood-protection' => 'fas fa-faucet',
         'guest-api' => 'fas fa-project-diagram',
         'homepage' => 'fas fa-home',
-        'image-upload' => 'fas fa-cloud-upload-alt',
-        'semantics' => 'fas fa-sign-hanging',
         'ip-bans' => 'fas fa-ban',
         'languages' => 'fas fa-language',
         'listings' => 'fas fa-th-list',
-        'logo' => 'fas fa-gem',
         'login-providers' => 'fas fa-right-to-bracket',
+        'logo' => 'fas fa-gem',
         'pages' => 'fas fa-file',
         'routing' => 'fas fa-route',
+        'semantics' => 'fas fa-sign-hanging',
         'system' => 'fas fa-server',
         'theme' => 'fas fa-paint-brush',
         'tools' => 'fas fa-tools',
-        'users' => 'fas fa-users-cog',
-        'website' => 'fas fa-globe',
         'upload-plugin' => 'fas fa-plug',
+        'users' => 'fas fa-users-cog',
         'watermarks' => 'fas fa-tint',
+        'website' => 'fas fa-globe',
     ];
     $paidSettingsEnv = [
-        'banners' => 'CHEVERETO_ENABLE_BANNERS',
-        'consent-screen' => 'CHEVERETO_ENABLE_CONSENT_SCREEN',
-        'cookie-compliance' => 'CHEVERETO_ENABLE_COOKIE_COMPLIANCE',
-        'external-services' => 'CHEVERETO_ENABLE_EXTERNAL_SERVICES',
-        'external-storage' => 'CHEVERETO_ENABLE_EXTERNAL_STORAGE',
-        'flood-protection' => 'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION',
-        'guest-api' => 'CHEVERETO_ENABLE_API_GUEST',
-        'homepage' => 'CHEVERETO_ENABLE_USERS',
-        'ip-bans' => 'CHEVERETO_ENABLE_IP_BANS',
-        'logo' => 'CHEVERETO_ENABLE_LOGO',
-        'login-providers' => 'CHEVERETO_ENABLE_LOGIN_PROVIDERS',
-        'pages' => 'CHEVERETO_ENABLE_PAGES',
-        'routing' => 'CHEVERETO_ENABLE_ROUTING',
-        'upload-plugin' => 'CHEVERETO_ENABLE_UPLOAD_PLUGIN',
-        'users' => 'CHEVERETO_ENABLE_USERS',
-        'watermarks' => 'CHEVERETO_ENABLE_UPLOAD_WATERMARK',
+        'banners' => ['pro', 'CHEVERETO_ENABLE_BANNERS'],
+        'consent-screen' => ['lite', 'CHEVERETO_ENABLE_CONSENT_SCREEN'],
+        'cookie-compliance' => ['pro', 'CHEVERETO_ENABLE_COOKIE_COMPLIANCE'],
+        'external-services' => ['pro', 'CHEVERETO_ENABLE_EXTERNAL_SERVICES'],
+        'external-storage' => ['pro', 'CHEVERETO_ENABLE_EXTERNAL_STORAGE'],
+        'flood-protection' => ['pro', 'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION'],
+        'guest-api' => ['lite', 'CHEVERETO_ENABLE_API_GUEST'],
+        'homepage' => ['lite', 'CHEVERETO_ENABLE_USERS'],
+        'ip-bans' => ['pro', 'CHEVERETO_ENABLE_IP_BANS'],
+        'login-providers' => ['pro', 'CHEVERETO_ENABLE_LOGIN_PROVIDERS'],
+        'logo' => ['lite', 'CHEVERETO_ENABLE_LOGO'],
+        'pages' => ['lite', 'CHEVERETO_ENABLE_PAGES'],
+        'routing' => ['pro', 'CHEVERETO_ENABLE_ROUTING'],
+        'upload-plugin' => ['lite', 'CHEVERETO_ENABLE_UPLOAD_PLUGIN'],
+        'users' => ['lite', 'CHEVERETO_ENABLE_USERS'],
+        'watermarks' => ['pro', 'CHEVERETO_ENABLE_UPLOAD_WATERMARK'],
     ];
     $paidSettings = [];
     $default_route = 'stats';
@@ -261,6 +266,8 @@ return function (Handler $handler) {
     $handler::setVar('docsBaseUrl', 'https://v4-docs.chevereto.com/');
     $handler::setVar('adminDocsBaseUrl', 'https://v4-admin.chevereto.com/');
     $handler::setVar('userDocsBaseUrl', 'https://v4-user.chevereto.com/');
+    // hidden routes
+    unset($route_menu['run-cron'], $routes['run-cron'], $routesLinkLabels['run-cron']);
     $handler::setVar($route_prefix . '_menu', $route_menu);
     $handler::setVar('tabs', $route_menu);
     $is_error = false;
@@ -273,7 +280,33 @@ return function (Handler $handler) {
     if (in_array($doing, $paidRoutes)) {
         $handler->issueError(404);
     }
+
     switch ($doing) {
+        case 'run-cron':
+            if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+                $handler->issueError(403);
+
+                return;
+            }
+            ini_set('log_errors', true);
+            ini_set('display_errors', true);
+            ignore_user_abort(true);
+            @set_time_limit(0);
+            ini_set('default_charset', 'utf-8');
+            setlocale(LC_ALL, 'en_US.UTF8');
+            ini_set('output_buffering', 'off');
+            ini_set('zlib.output_compression', false);
+            echo <<<PLAIN
+            <pre>
+            Trigger cron tasks (HTTP API)
+            --
+
+            PLAIN;
+            require_once PATH_APP_LEGACY . 'commands/cron.php';
+            echo '</pre>';
+            die(0);
+
+        break;
         case 'stats':
             if (version_compare(getSetting('chevereto_version_installed'), '3.7.0', '<')) {
                 $totals = [];
@@ -364,7 +397,12 @@ return function (Handler $handler) {
             }
             $install_update_button = '';
             $version_check = '';
-            $cronRemark = '';
+            $cronRemark = '<a href="'
+            . get_base_url('dashboard/run-cron')
+            . '?auth_token=' . $handler::getAuthToken()
+            . '" target="_blank"><i class="icon fas fa-bolt margin-left-5 margin-right-5"></i>'
+                . _s('Run cron')
+                . '</a> ';
             $errorLogRemark = '';
             $cron_last_ran = Settings::get('cron_last_ran');
             if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
@@ -387,9 +425,9 @@ return function (Handler $handler) {
                 'chv_version' => [
                     'label' => '<div class="text-align-center"><a href="https://chevereto.com" target="_blank"><img src="' . absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg') . '" alt="" width="80%"></a></div>',
                     'content' => '<div class="phone-text-align-center">'
-                        . '<h3 class="margin-bottom-10 version-display"><a target="_blank" href="https://releases.chevereto.com/' . $chv_version_major . '/' . $chv_version_minor . '/' . $chv_version['files'] . '">'
+                        . '<h3 class="margin-bottom-10"><a target="_blank" href="https://releases.chevereto.com/' . $chv_version_major . '/' . $chv_version_minor . '/' . $chv_version['files'] . '">'
                         . $chv_version['files']
-                        . '<span class="btn-icon fas fas fa-code-branch margin-left-5"></span></a><span class="software-version-name margin-left-10" title="' . APP_VERSION_AKA . '">' . APP_VERSION_AKA . '</span> </h3>'
+                        . '<span class="btn-icon fas fa-code-branch margin-left-5"></span></a><span data-action="welcome" data-modal="simple" data-target="modal-welcome" class="software-version-name margin-left-10 cursor-pointer" title="' . APP_VERSION_AKA . '">' . APP_VERSION_AKA . '</span> </h3>'
                         . $install_update_button
                         . '<div class="margin-bottom-20">' . $version_check . $linksButtons . '</div>
                         </div>'
@@ -403,7 +441,7 @@ return function (Handler $handler) {
                 ],
                 'rebuild_stats' => [
                     'label' => _s('Stats'),
-                    'content' => '<a data-action="dashboardTool" data-tool="rebuildStats"><span class="fas fa-sync-alt"></span> ' . _s('Rebuild stats') . '</a>'
+                    'content' => '<a data-action="dashboardTool" data-tool="rebuildStats"><span class="fas fa-sync-alt margin-right-5"></span>' . _s('Rebuild stats') . '</a>'
                 ],
                 'connecting_ip' => [
                     'label' => _s('Connecting IP'),
@@ -413,9 +451,18 @@ return function (Handler $handler) {
                     'label' => _s('Encryption'),
                     'content' => '<i class="fas fa-shield-halved"></i> ' . (hasEncryption() ? _s('Enabled') : _s('Disabled'))
                 ],
+                'meta' => [
+                    'label' => _s('Meta'),
+                    'content' => '<a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://rodolfoberrios.com" target="_blank" rel="author"><span class="fas fa-address-card margin-right-5"></span>Rodolfo Berrios</a><a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://chevere.org" target="_blank"><span class="fas fa-sitemap margin-right-5"></span>Chevere</a><a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://xrdebug.com" target="_blank"><span class="fas fa-bug margin-right-5"></span>xrDebug</a>'
+                ],
             ];
 
             $cheveretoLinks = [
+                [
+                    'label' => _s('Blog'),
+                    'icon' => 'fas fa-blog',
+                    'href' => 'https://blog.chevereto.com'
+                ],
                 [
                     'label' => _s('Docs'),
                     'icon' => 'fas fa-book',
@@ -430,6 +477,11 @@ return function (Handler $handler) {
                     'label' => _s('Support'),
                     'icon' => 'fas fa-medkit',
                     'href' => 'https://chevereto.com/support'
+                ],
+                [
+                    'label' => _s('Chat'),
+                    'icon' => 'fas fa-comments',
+                    'href' => 'https://chevereto.com/go/discord'
                 ],
                 [
                     'label' => _s('Community'),
@@ -474,20 +526,30 @@ return function (Handler $handler) {
                     ],
                     'server' => [
                         'label' => _s('Server'),
-                        'content' => '<i class="fas fa-layer-group"></i> ' . ((server()['SERVER_SOFTWARE'] ?? '🐍') . ' ~ ' . gethostname() . ' ' . PHP_OS . '/' . PHP_SAPI . ((env()['CHEVERETO_SERVICING'] ?? null) === 'docker' ? ' <span class="fab fa-docker"></span> Docker' : ''))
+                        'content' => '<i class="fas fa-layer-group"></i> '
+                            . (
+                                (server()['SERVER_SOFTWARE'] ?? '🐍')
+                            . ' ~ ' . gethostname()
+                            . '<br>'
+                            . PHP_OS
+                            . '/'
+                            . PHP_SAPI
+                            . ((env()['CHEVERETO_SERVICING'] ?? null) === 'docker'
+                                ? ' <span class="fab fa-docker"></span> Docker'
+                                : '')
+                            )
                     ],
-                    'mysql_version' => [
-                        'label' => _s('MySQL version'),
-                        'content' => '<i class="fas fa-database"></i> ' . $mysqlVersion
-                    ],
-                    'mysql_server_info' => [
-                        'label' => _s('MySQL server info'),
-                        'content' => '<i class="fas fa-info-circle"></i> ' . $mysqlServerInfo
+                    'mysql' => [
+                        'label' => 'MySQL',
+                        'content' => '<i class="fas fa-database"></i> '
+                            . $mysqlVersion
+                            . '<br>'
+                            . $mysqlServerInfo
                     ],
                     'file_uploads' => [
                         'label' => _s('File uploads'),
                         'content' => (int) ini_get('file_uploads') == 1
-                            ? '<i class="fas fa-check-circle color-success"></i> ' . _s('Enabled')
+                            ? '<i class="fas fa-check-circle"></i> ' . _s('Enabled')
                             : '<i class="fas fa-times color-fail"></i> ' . _s('Disabled')
                     ],
                     'max_execution_time' => [
@@ -538,9 +600,10 @@ return function (Handler $handler) {
             $settingsSectionsTitles = $settings_sections;
             if ((bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
                 foreach ($paidSettingsEnv as $k => $v) {
-                    if (!(bool) env()[$v]) {
+                    $isEnabled = in_array($v[0], editionCombo()[env()['CHEVERETO_EDITION']]);
+                    if (!$isEnabled) {
                         array_push($paidSettings, $k);
-                        $settings_sections[$k] .= ' ' . badgePaid();
+                        $settings_sections[$k] .= ' ' . badgePaid($v[0]);
                     }
                 }
             }
@@ -576,10 +639,17 @@ return function (Handler $handler) {
                 if (in_array($requestSetting, $paidSettings)) {
                     $requestSetting = '';
                     $handler->issueError(404);
+
+                    return;
                 }
                 switch ($requestSetting) {
                     case 'homepage':
                         if ((get()['action'] ?? '') == 'delete-cover' && isset(get()['cover'])) {
+                            if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+                                $handler->issueError(403);
+
+                                return;
+                            }
                             $cover_index = get()['cover'] - 1;
                             $homecovers = getSetting('homepage_cover_images');
                             $cover_target = $homecovers[$cover_index];
@@ -595,7 +665,8 @@ return function (Handler $handler) {
                                 // Try to delete the image (disk)
                                 if (!starts_with('default/', $cover_target['basename'])) {
                                     $cover_file = PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . $cover_target['basename'];
-                                    unlinkIfExists($cover_file);
+                                    $storagePath = ltrim(absolute_to_relative($cover_file), '/');
+                                    AssetStorage::deleteFiles(['key' => $storagePath]);
                                 }
                                 unset($homecovers[$cover_index]);
                                 $homecovers = array_values($homecovers);
@@ -959,6 +1030,14 @@ return function (Handler $handler) {
                     [
                         'validate' => empty($POST['theme_logo_height']) ? (true) : is_integer($POST['theme_logo_height']),
                         'error_msg' => _s('Invalid value')
+                    ],
+                    'theme_font' =>
+                    [
+                        'validate' => isset($POST['theme_font']) && in_array(
+                            $POST['theme_font'],
+                            array_keys($handler::var('fonts')->get())
+                        ),
+                        'error_msg' => _s('Invalid %s', _s('font'))
                     ],
                     'theme_palette' =>
                     [
@@ -1573,9 +1652,10 @@ return function (Handler $handler) {
                             $is_changed = true;
                             $reset_notices = false;
                             $settings_to_vars = [
-                                    'website_doctitle' => 'doctitle',
-                                    'website_description' => 'meta_description',
-                                ];
+                                'website_doctitle' => 'doctitle',
+                                'website_description' => 'meta_description',
+                                'theme_font' => 'theme_font'
+                            ];
                             foreach (array_keys($update_settings) as $k) {
                                 if ($k == 'maintenance') {
                                     $reset_notices = true;

@@ -15,7 +15,6 @@ jobs:
     env:
       tools: composer
       ini-values: default_charset='UTF-8'
-      key: cache-1633608016315
     name: Release on PHP ${{ matrix.php-versions }} ${{ matrix.operating-system }}
     steps:
       - name: Checkout
@@ -58,20 +57,12 @@ jobs:
           mkdir importing/{parse-users,parse-albums,no-parse}
           mv .package ..
           ls -la ../.package
-      - name: Archive lite
-        uses: thedoctor0/zip-release@master
-        with:
-          directory: "."
-          type: "zip"
-          filename: "${{ github.ref_name}}-lite.zip"
-          exclusions: "/*app/vendor/*"
       - name: Archive release
         uses: thedoctor0/zip-release@master
         with:
           directory: "."
           type: "zip"
           filename: "${{ github.ref_name}}.zip"
-          exclusions: "${{ github.ref_name}}-lite.zip"
       - name: Upload artifacts
         uses: ncipollo/release-action@v1
         with:
@@ -80,6 +71,5 @@ jobs:
           bodyFile: "../.package/${{ github.ref_name}}.txt"
           artifacts: >
             ../.package/${{ github.ref_name}}.txt,
-            ${{ github.ref_name}}.zip,
-            ${{ github.ref_name}}-lite.zip
+            ${{ github.ref_name}}.zip
           token: ${{ secrets.GITHUB_TOKEN }}

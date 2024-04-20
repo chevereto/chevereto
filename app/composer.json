@@ -44,7 +44,8 @@
         "chillerlan/php-qrcode": "^4.3",
         "firebase/php-jwt": "^6.3",
         "lychee-org/php-exif": "^0.7.14",
-        "php-ds/php-ds": "^1.4"
+        "php-ds/php-ds": "^1.4",
+        "php-ffmpeg/php-ffmpeg": "^1.2"
     },
     "autoload": {
         "files": [

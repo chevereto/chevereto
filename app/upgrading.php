@@ -51,17 +51,15 @@ $workingDir = __DIR__ . '/.upgrading';
 if (is_file($workingDir)) {
     unlink($workingDir);
 }
-$runtimeTable = [
-    'log_errors' => ini_set('log_errors', true),
-    'display_errors' => ini_set('display_errors', true),
-    'error_log' => ini_set('error_log', $workingDir . '/error.log'),
-    'ignore_user_abort' => ignore_user_abort(true),
-    'time_limit' => @set_time_limit(0),
-    'ini_set' => ini_set('default_charset', 'utf-8'),
-    'setlocale' => setlocale(LC_ALL, 'en_US.UTF8'),
-    'output_buffering' => ini_set('output_buffering', 'off'),
-    'zlib.output_compression' => ini_set('zlib.output_compression', false),
-];
+ini_set('log_errors', true);
+ini_set('display_errors', true);
+ini_set('error_log', $workingDir . '/error.log');
+ignore_user_abort(true);
+@set_time_limit(0);
+ini_set('default_charset', 'utf-8');
+setlocale(LC_ALL, 'en_US.UTF8');
+ini_set('output_buffering', 'off');
+ini_set('zlib.output_compression', false);
 $logProcess = $workingDir . '/process.log';
 $lockUpgrading = $workingDir . '/upgrading.lock';
 $lockDownloading = $workingDir . '/downloading.lock';

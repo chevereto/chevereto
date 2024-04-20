@@ -1,23 +1,23 @@
 <?php
 
+use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\Upload;
-use function Chevereto\Legacy\echoBadgePaid;
 use function Chevereto\Legacy\G\bytes_to_mb;
 use function Chevereto\Legacy\G\format_bytes;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Vars\env;
+use function Chevereto\Legacy\inputDisabledPaid;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
+echo read_the_docs_settings('file-uploads', _s('Uploads')); ?>
 <div class="input-label">
-    <label><?php _se('Enabled image formats'); ?></label>
+    <label><?php _se('Enabled file extensions'); ?></label>
     <div class="checkbox-label">
         <ul class="c20 phablet-c1">
         <?php
@@ -26,13 +26,13 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
                 echo strtr('<li class="c5 display-inline-block margin-right-10"><label class="display-block" for="image_format_enable[%k]" %tip> <input type="checkbox" name="image_format_enable[]" id="image_format_enable[%k]" value="%k" %checked %disabled>%K</label></li>', [
                     '%k' => $k,
                     '%K' => strtoupper($k),
-                    '%checked' => (in_array($k, Upload::getEnabledImageFormats()) ? 'checked' : ''),
+                    '%checked' => (in_array($k, Image::getEnabledImageExtensions()) ? 'checked' : ''),
                     '%disabled' => $isFailing ? 'disabled' : '',
                     '%tip' => $isFailing ? 'title="' . _s('Unsupported in your server') . '" rel="tooltip"' : ''                                            ]);
             } ?>
         </ul>
         <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_enabled_image_formats'] ?? ''; ?></div>
-        <p class="margin-top-20"><i class="fas fa-check-square"></i> <?php _se("Only checked image formats will be allowed to be uploaded."); ?></p>
+        <p class="margin-top-20"><i class="fas fa-check-square"></i> <?php _se("Only checked file formats will be allowed to be uploaded."); ?></p>
     </div>
 </div>
 <hr class="line-separator">
@@ -42,7 +42,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_uploads')); ?>
         </select></div>
-    <div class="input-below"><?php _se("Enable this if you want to allow %s uploads.", _n('image', 'images', 1)); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
+    <div class="input-below"><?php _se("Enable this if you want to allow %s uploads.", _n('file', 'files', 1)); ?> <?php _se("This setting doesn't affect administrators."); ?></div>
 </div>
 <div class="input-label">
     <label for="enable_uploads_url"><?php _se('Enable uploads'); ?> (URL)</label>
@@ -51,7 +51,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_uploads_url')); ?>
         </select></div>
-        <div class="input-below"><?php _se("Enable this if you want to allow image upload from URLs."); ?></div>
+        <div class="input-below"><?php _se("Enable this if you want to allow file upload from URLs."); ?></div>
         <div class="input-below"><span class="highlight padding-5 display-inline-block"><i class="fas fa-exclamation-triangle"></i> <?php _se("Note that enabling this will expose your server IP."); ?> <?php _se("This feature is available only for administrators."); ?></span></div>
 </div>
 <div class="input-label">
@@ -62,8 +62,8 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
         </select></div>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="guest_uploads"><?php _se('Guest uploads'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="guest_uploads" id="guest_uploads" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
+    <?php echo badgePaid('lite'); ?><label for="guest_uploads"><?php _se('Guest uploads'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="guest_uploads" id="guest_uploads" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
                 echo ' disabled';
             } ?>>
             <?php
@@ -73,8 +73,8 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
     <?php personal_mode_warning(); ?>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_MODERATION']); ?><label for="moderate_uploads"><?php _se('Moderate uploads'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="moderate_uploads" id="moderate_uploads" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
+    <?php echo badgePaid('pro'); ?><label for="moderate_uploads"><?php _se('Moderate uploads'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="moderate_uploads" id="moderate_uploads" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
                 echo ' disabled';
             } ?>>
             <?php
@@ -109,7 +109,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_redirect_single_upload')); ?>
         </select></div>
-    <div class="input-below"><?php _se('Enable this if you want to redirect to image page on single upload.'); ?></div>
+    <div class="input-below"><?php _se('Enable this if you want to redirect to file viewer on single upload.'); ?></div>
 </div>
 <div class="input-label">
     <label for="enable_duplicate_uploads"><?php _se('Enable duplicate uploads'); ?></label>
@@ -190,10 +190,10 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <label for="upload_image_path"><?php _se('Image path'); ?></label>
+    <label for="upload_image_path"><?php _se('File path'); ?></label>
     <div class="c9 phablet-c1"><input type="text" name="upload_image_path" id="upload_image_path" class="text-input" value="<?php echo Handler::var('safe_post')['upload_image_path'] ?? Settings::get('upload_image_path'); ?>" placeholder="<?php _se('Relative to Chevereto root'); ?>" required></div>
     <span class="input-warning red-warning"><?php echo Handler::var('input_errors')['upload_image_path'] ?? ''; ?></span>
-    <div class="input-below"><?php _se('Where to store the images? Relative to Chevereto root.'); ?></div>
+    <div class="input-below"><?php _se('Where to store the uploaded files? Relative to Chevereto root.'); ?></div>
 </div>
 <div class="input-label">
     <label for="upload_storage_mode"><?php _se('Storage mode'); ?></label>
@@ -209,7 +209,7 @@ echo read_the_docs_settings('image-upload', _s('Image upload')); ?>
             <?php
             echo get_select_options_html(['original' => _s('Original'), 'random' => _s('Random'), 'mixed' => _s('Mix original + random'), 'id' => 'ID'], Settings::get('upload_filenaming')); ?>
         </select></div>
-    <div class="input-below"><?php _se('"Original" will try to keep the image source name while "Random" will generate a random name. "ID" will name the image just like the image ID.'); ?></div>
+    <div class="input-below"><?php _se('"Original" will try to keep the file source name while "Random" will generate a random name. "ID" will name the file just like the file ID.'); ?></div>
 </div>
 <hr class="line-separator">
 <div class="input-label">

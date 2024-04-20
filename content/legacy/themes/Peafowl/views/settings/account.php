@@ -121,7 +121,7 @@ if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
             </select>
         </div>
         <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')["image_expiration"] ?? ''; ?></div>
-        <div class="input-below"><?php _se('This setting will apply to all your image uploads by default. You can override this setting on each upload.'); ?></div>
+        <div class="input-below"><?php _se('This setting will apply to all your file uploads by default. You can override this setting on each upload.'); ?></div>
     </div>
     <hr class="line-separator">
     </hr>

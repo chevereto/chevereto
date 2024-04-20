@@ -111,7 +111,7 @@ return function (Handler $handler) {
     $keysToCheck = array_keys($keysToCheck);
     if (in_array($doing, $keysToCheck)) {
         $request_log = RequestLog::getCounts($request_db_field, 'fail');
-        $captcha_needed = getSettings()['captcha']
+        $captcha_needed = (getSetting('captcha') ?? false)
             ? must_use_captcha($request_log['day'])
             : false;
     }
@@ -264,7 +264,7 @@ return function (Handler $handler) {
                         'type' => $request_db_field,
                         'user_id' => $user['id'] ?? null
                     ]);
-                    if (getSettings()['captcha']
+                    if ((getSetting('captcha') ?? false)
                         && isset($request_log)
                         && must_use_captcha($request_log['day'] + 1)) {
                         $captcha_needed = true;
@@ -463,7 +463,7 @@ return function (Handler $handler) {
                             'user_id' => $user['id'] ?? null
                         ]
                     );
-                    if (getSettings()['captcha']
+                    if ((getSetting('captcha') ?? false)
                         && isset($request_log)
                         && must_use_captcha($request_log['day'] + 1)) {
                         $captcha_needed = true;
@@ -501,7 +501,7 @@ return function (Handler $handler) {
                         'result' => 'fail',
                         'user_id' => $logged_user['id']
                     ]);
-                    if (getSettings()['captcha']
+                    if ((getSetting('captcha') ?? false)
                         && isset($request_log)
                         && must_use_captcha($request_log['day'] + 1)) {
                         $captcha_needed = true;

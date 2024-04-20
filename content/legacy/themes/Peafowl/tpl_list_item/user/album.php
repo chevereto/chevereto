@@ -11,11 +11,11 @@
 	<div class="list-item-desc">
 		<div class="list-item-desc-title">
 			<a class="list-item-desc-title-link" href="%ALBUM_URL%">%ALBUM_NAME%</a>
-            <div class="list-item-from font-size-small phone-hide"><span class="fas fa-image margin-right-5"></span>%ALBUM_IMAGE_COUNT%</div>
+            <div class="list-item-from font-size-small phone-hide"><span class="fas fa-photo-film margin-right-5"></span>%ALBUM_IMAGE_COUNT%</div>
 		</div>
 	</div>
     <div class="list-item-image-tools --bottom --right">
-		%tpl_list_item/item_like%
         %tpl_list_item/item_share%
+		%tpl_list_item/item_like%
     </div>
 </div>

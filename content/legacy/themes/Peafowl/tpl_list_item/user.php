@@ -9,6 +9,6 @@
 		<div class="list-item-desc-title">
             <a class="list-item-desc-title-link" href="%USER_URL%">%USER_USERNAME%</a>
         </div>
-		<div class="position-absolute right-10 bottom-10 text-align-right phone-hide">%USER_IMAGE_COUNT%<span class="fas fa-image margin-left-5"></span></div>
+		<div class="position-absolute right-10 bottom-10 text-align-right phone-hide">%USER_IMAGE_COUNT%<span class="fas fa-photo-film margin-left-5"></span></div>
 	</div>
 </div>

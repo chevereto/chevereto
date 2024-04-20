@@ -9,5 +9,5 @@
  * file that was distributed with this source code.
  */
 
-const APP_VERSION = '4.0.12';
-const APP_VERSION_AKA = 'macanudo';
+const APP_VERSION = '4.1.0';
+const APP_VERSION_AKA = 'pulento';

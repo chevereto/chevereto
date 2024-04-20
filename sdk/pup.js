@@ -326,35 +326,34 @@
                     return !(this.getEditorFn() instanceof jQuery);
                 }
             },
-            // smf2: { // 2.1
-            //     settings: {
-            //         html: ' <a %x class="%bClass sceditor-button" unselectable="on" title="%text"><div unselectable="on"><span class="%iClass">%iconSvg</span></div></a> ',
-            //         css:
-            //             ".%bClass>div{background:none;font-size:inherit;color:initial;}",
-            //         sibling: ".sceditor-button-image",
-            //         siblingPos: "after",
-            //         fitEditor: 1
-            //     },
-            //     palettes: {
-            //         default: ["#E7E7E7", "#333", "#B0C4D6", "#333"]
-            //     },
-            //     check: "reqOverlayDiv",
-            //     getEditor: function () {
-            //         var editor = this.getEditorFn();
-            //         if (!editor) {
-            //             return null;
-            //         }
-            //         return editor;
-            //     },
-            //     getEditorFn: function () {
-            //         var editor = document.querySelector(".sceditor-container textarea");
-            //         if (editor) {
-            //             return editor;
-            //         }
-
-            //         return null;
-            //     }
-            // },
+            smf2: { // 2.1
+                settings: {
+                    html: ' <a %x class="%bClass sceditor-button" unselectable="on" title="%text"><div unselectable="on"><span class="%iClass">%iconSvg</span></div></a> ',
+                    css:
+                        ".%bClass>div{background:none;font-size:inherit;color:initial;}",
+                    sibling: ".sceditor-button-image",
+                    siblingPos: "after",
+                    fitEditor: 1
+                },
+                palettes: {
+                    default: ["#E7E7E7", "#333", "#B0C4D6", "#333"]
+                },
+                check: "reqOverlayDiv",
+                getEditor: function () {
+                    var editor = this.getEditorFn();
+                    if (!editor) {
+                        return null;
+                    }
+                    return editor;
+                },
+                getEditorFn: function () {
+                    var editor = document.querySelector(".sceditor-container textarea");
+                    if (editor) {
+                        return editor;
+                    }
+                    return null;
+                }
+            },
             smf: { // 2.0
                 settings: {
                     html:

@@ -25,7 +25,7 @@ if (!defined('ACCESS') || !ACCESS) {
         </div>
         <div class="p input-label input-password">
             <label for="password">Admin password</label>
-            <input type="password" name="password" id="password" class="width-100p" value="" placeholder="Admin password" title="Password to login" pattern="<?php echo getSetting('user_password_pattern'); ?>" required>
+            <input type="password" name="password" id="password" class="width-100p" value="" placeholder="Admin password" title="Password to login" pattern="<?php echo getSetting('user_password_pattern'); ?>" autocomplete="new-password" required>
             <div class="input-password-strength"><span style="width: 0%" data-content="password-meter-bar"></span></div>
             <div class="input-warning red-warning" data-text="password-meter-message"><?php echo $input_errors['password'] ?? ''; ?></div>
         </div>

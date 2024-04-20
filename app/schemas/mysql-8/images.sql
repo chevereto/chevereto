@@ -3,7 +3,7 @@ CREATE TABLE `%table_prefix%images` (
   `image_id` bigint(32) NOT NULL AUTO_INCREMENT,
   `image_name` varchar(255) NOT NULL,
   `image_extension` varchar(255) NOT NULL,
-  `image_size` int(11) NOT NULL,
+  `image_size` bigint(11) UNSIGNED NOT NULL,
   `image_width` int(11) NOT NULL,
   `image_height` int(11) NOT NULL,
   `image_date` datetime NOT NULL,
@@ -23,14 +23,22 @@ CREATE TABLE `%table_prefix%images` (
   `image_original_exifdata` longtext,
   `image_views` bigint(32) NOT NULL DEFAULT '0',
   `image_category_id` bigint(32) DEFAULT NULL,
-  `image_chain` tinyint(128) NOT NULL,
+  `image_chain` tinyint(3) NOT NULL,
   `image_thumb_size` int(11) NOT NULL,
   `image_medium_size` int(11) NOT NULL DEFAULT '0',
+  `image_frame_size` int(11) NOT NULL DEFAULT '0',
   `image_expiration_date_gmt` datetime DEFAULT NULL,
   `image_likes` bigint(32) NOT NULL DEFAULT '0',
   `image_is_animated` tinyint(1) NOT NULL DEFAULT '0',
   `image_is_approved` tinyint(1) NOT NULL DEFAULT '1',
   `image_is_360` tinyint(1) NOT NULL DEFAULT '0',
+  `image_duration` int(11) NOT NULL DEFAULT '0',
+  `image_type` tinyint(3) UNSIGNED as (case
+    when `image_extension` in ('pdf', 'doc', 'md') then 4
+    when `image_extension` in ('mp3', 'm4a', 'wav') then 3
+    when `image_extension` in ('mp4', 'webm') then 2
+    when `image_extension` in ('jpg', 'jpeg', 'gif', 'png', 'webp') then 1
+    else 0 end) stored,
   PRIMARY KEY (`image_id`),
   KEY `image_name` (`image_name`),
   KEY `image_extension` (`image_extension`),
@@ -56,5 +64,7 @@ CREATE TABLE `%table_prefix%images` (
   KEY `image_is_approved` (`image_is_approved`),
   KEY `image_is_360` (`image_is_360`),
   KEY `image_album_id_image_id` (`image_album_id`, `image_id`),
+  KEY `image_duration` (`image_duration`),
+  KEY `image_type` (`image_type`),
   FULLTEXT KEY `searchindex` (`image_name`,`image_title`,`image_description`,`image_original_filename`)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8mb4;

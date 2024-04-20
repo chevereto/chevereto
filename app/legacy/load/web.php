@@ -12,6 +12,7 @@
 use Chevereto\Config\Config;
 use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\Fonts;
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\L10n;
@@ -21,6 +22,7 @@ use Chevereto\Legacy\Classes\Palettes;
 use Chevereto\Legacy\Classes\RequestLog;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
+use function Chevereto\Legacy\editionCombo;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
 use Chevereto\Legacy\G\Handler;
@@ -130,10 +132,10 @@ $hook_before = function (Handler $handler) {
     if ($handler::cond('content_manager')) {
         $moderateLink = get_base_url('moderate');
         $moderateLabel = _s('Moderate');
-        if (!(bool) env()['CHEVERETO_ENABLE_MODERATION']) {
+        if (!in_array('pro', editionCombo()[env()['CHEVERETO_EDITION']])) {
             if ((bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
                 $moderateLink = 'https://chevereto.com/pricing';
-                $moderateLabel .= ' ' . badgePaid();
+                $moderateLabel .= ' ' . badgePaid('pro');
             } else {
                 $showContentManager = false;
             }
@@ -160,6 +162,10 @@ $hook_before = function (Handler $handler) {
     $handler::setVar('canonical', null);
     $palettes = new Palettes();
     $handler::setVar('palettes', $palettes);
+    $fonts = new Fonts();
+    $handler::setVar('fonts', $fonts);
+    $fontId = intval(getSetting('theme_font') ?? 0);
+    $handler::setVar('theme_font', $fontId);
     if (in_array($handler->request_array()[0], ['login', 'signup', 'account'])) {
         $paletteId = 0;
     } else {
@@ -353,11 +359,15 @@ $hook_before = function (Handler $handler) {
         ],
         'trending' => [
             'label' => _s('Trending'),
-            'icon' => 'fas fa-poll',
+            'icon' => 'fas fa-chart-simple',
         ],
         'popular' => [
             'label' => _s('Popular'),
             'icon' => 'fas fa-heart',
+        ],
+        'videos' => [
+            'label' => _s('Videos'),
+            'icon' => 'fas fa-video',
         ],
         'animated' => [
             'label' => _s('Animated'),
@@ -370,7 +380,7 @@ $hook_before = function (Handler $handler) {
     if (!getSetting('enable_likes')) {
         unset($explore_semantics['popular']);
     }
-    if (!in_array('gif', Image::getEnabledImageFormats())) {
+    if (!in_array('gif', Image::getEnabledImageExtensions())) {
         unset($explore_semantics['animated']);
     }
     foreach ($explore_semantics as $k => &$v) {

@@ -15,6 +15,8 @@ trusting our work. This software exists
 thanks to your ongoing support.
 
                   ~
+          Rodolfo Berrios A.
+      https://rodolfoberrios.com/
 
-               GRACIAS
+               GRACIAS!
              (Thank you!)

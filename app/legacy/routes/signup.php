@@ -226,7 +226,7 @@ return function (Handler $handler) {
                 'result' => 'fail'
             ]);
             $error_message = $error_message ?? _s('Check the errors in the form to continue.');
-            if (getSettings()['captcha'] && must_use_captcha($failed_access_requests['day'] + 1)) {
+            if ((getSetting('captcha') ?? false) && must_use_captcha($failed_access_requests['day'] + 1)) {
                 $captcha_needed = true;
             }
         }

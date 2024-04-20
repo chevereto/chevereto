@@ -104,7 +104,7 @@ return function (Handler $handler) {
     $user_routes = [];
     $user_views = [
         'images' => [
-            'title' => _s("%t by %s", ['%t' => _s('Images')]),
+            'title' => _s("%t by %s", ['%t' => _s('Media')]),
             'title_short' => _s("Images"),
         ],
         'albums' => [
@@ -270,9 +270,8 @@ return function (Handler $handler) {
 
         break;
     }
-    $icon = 'fas fa-id-card';
     $icon = [
-        'images' => 'fas fa-id-card',
+        'images' => 'fas fa-photo-film',
         'albums' => 'fas fa-images',
         'liked' => 'fas fa-heart',
         'following' => 'fas fa-rss',

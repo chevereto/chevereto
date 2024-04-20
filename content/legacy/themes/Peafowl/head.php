@@ -186,6 +186,7 @@ if (!defined('ACCESS') || !ACCESS) {
                 </script>
             <?php
             }
+            show_theme_inline_code('snippets/theme_fonts.css');
             show_theme_inline_code('snippets/theme_colors.css');
             if (theme_file_exists('custom_hooks/style.css')) {
                 ?>

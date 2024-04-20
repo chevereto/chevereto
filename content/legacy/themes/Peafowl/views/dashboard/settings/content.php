@@ -1,12 +1,11 @@
 <?php
 
+use function Chevereto\Legacy\badgePaid;
 use Chevereto\Legacy\Classes\Settings;
-use function Chevereto\Legacy\echoBadgePaid;
-use function Chevereto\Legacy\echoInputDisabledPaid;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Vars\env;
+use function Chevereto\Legacy\inputDisabledPaid;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -37,16 +36,16 @@ echo read_the_docs_settings('content', _s('Content')); ?>
         </select></div>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_BANNERS']); ?><label for="show_banners_in_nsfw"><?php _se('Show banners in not safe content'); ?></label>
-    <div class="c5 phablet-c1"><select <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_BANNERS']); ?> type="text" name="show_banners_in_nsfw" id="show_banners_in_nsfw" class="text-input">
+    <?php echo badgePaid('pro'); ?><label for="show_banners_in_nsfw"><?php _se('Show banners in not safe content'); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('pro'); ?> type="text" name="show_banners_in_nsfw" id="show_banners_in_nsfw" class="text-input">
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('show_banners_in_nsfw')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show banners in not safe content pages.'); ?></div>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_USERS']); ?><label for="image_lock_nsfw_editing"><?php _se('Lock %s editing', _s('NSFW')); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="image_lock_nsfw_editing" id="image_lock_nsfw_editing" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
+    <?php echo badgePaid('lite'); ?><label for="image_lock_nsfw_editing"><?php _se('Lock %s editing', _s('NSFW')); ?></label>
+    <div class="c5 phablet-c1"><select <?php echo inputDisabledPaid('lite'); ?> type="text" name="image_lock_nsfw_editing" id="image_lock_nsfw_editing" class="text-input" <?php if (getSetting('website_mode') == 'personal') {
                 echo ' disabled';
             } ?>>
             <?php
@@ -59,7 +58,7 @@ echo read_the_docs_settings('content', _s('Content')); ?>
     <?php personal_mode_warning(); ?>
 </div>
 <div class="input-label">
-    <?php echoBadgePaid(!(bool) env()['CHEVERETO_ENABLE_STOPWORDS']); ?><label for="stop_words"><?php _se('Stop words'); ?></label>
-    <div class="c14 phablet-c1"><textarea <?php echoInputDisabledPaid(!(bool) env()['CHEVERETO_ENABLE_STOPWORDS']); ?> name="stop_words" id="stop_words" class="r4 resize-none" placeholder="<?php _se('One rule per line'); ?>"><?php echo Settings::get('stop_words'); ?></textarea></div>
+    <?php echo badgePaid('pro'); ?><label for="stop_words"><?php _se('Stop words'); ?></label>
+    <div class="c14 phablet-c1"><textarea <?php echo inputDisabledPaid('pro'); ?> name="stop_words" id="stop_words" class="r4 resize-none" placeholder="<?php _se('One rule per line'); ?>"><?php echo Settings::get('stop_words'); ?></textarea></div>
     <div class="input-below"><?php _se("Define words that won't be allowed for content."); ?></div>
 </div>

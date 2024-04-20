@@ -26,6 +26,7 @@ use function Chevereto\Legacy\G\get_file_extension;
 use function Chevereto\Legacy\G\get_filename;
 use function Chevereto\Legacy\G\get_image_fileinfo;
 use function Chevereto\Legacy\G\get_public_url;
+use function Chevereto\Legacy\G\get_video_fileinfo;
 use function Chevereto\Legacy\G\is_animated_webp;
 use function Chevereto\Legacy\G\is_image_url;
 use function Chevereto\Legacy\G\is_url;
@@ -89,6 +90,8 @@ class Upload
         'https',
         'ftp'
     ];
+
+    public string $mediaType = 'image';
 
     public function uploaded(): array
     {
@@ -256,7 +259,9 @@ class Upload
          * External storage will be allocated to the temp directory
          */
         if (isset($this->storage_id)) {
-            $this->uploaded_file = forward_slash(dirname($this->downstream)) . '/' . Storage::getStorageValidFilename($this->fixed_filename, $this->storage_id, $this->options['filenaming'], $this->destination);
+            $this->uploaded_file = forward_slash(dirname($this->downstream))
+                . '/'
+                . Storage::getStorageValidFilename($this->fixed_filename, $this->storage_id, $this->options['filenaming'], $this->destination);
         } else {
             $this->uploaded_file = name_unique_file($this->destination, $this->fixed_filename, $this->options['filenaming']);
         }
@@ -265,7 +270,8 @@ class Upload
             'filename' => $this->source_filename, // file.ext
             'name' => $this->source_name, // file
             'image_exif' => $this->source_image_exif,
-            'fileinfo' => get_image_fileinfo($this->downstream),
+            'type' => $this->mediaType,
+            'fileinfo' => $this->source_image_fileinfo,
         ];
         if (stream_resolve_include_path($this->downstream) == false) {
             throw new Exception('Concurrency: Downstream gone, aborting operation', 666);
@@ -291,16 +297,28 @@ class Upload
             } catch (Throwable $e) {
             }
         }
-        $fileInfo = get_image_fileinfo($this->uploaded_file);
+        $fileInfo = $this->mediaType === 'video'
+            ? get_video_fileinfo($this->uploaded_file)
+            : get_image_fileinfo($this->uploaded_file);
         if ($fileInfo === []) {
             throw new Exception("Can't get uploaded info", 610);
         }
         $fileInfo['is_360'] = $is_360;
+        $frameFile = null;
+        if ($this->mediaType === 'video') {
+            $frameFile = Image::getVideoFrame(
+                $this->uploaded_file,
+                (int) ($fileInfo['duration'] / 4)
+            );
+        }
         $this->uploaded = [
             'file' => $this->uploaded_file,
             'filename' => get_filename($this->uploaded_file),
             'name' => get_basename_without_extension($this->uploaded_file),
+            'type' => $this->mediaType,
             'fileinfo' => $fileInfo,
+            'frame' => $frameFile,
+            'frameinfo' => $frameFile ? get_image_fileinfo($frameFile) : [],
         ];
     }
 
@@ -311,9 +329,16 @@ class Upload
         return explode(',', $formats);
     }
 
-    public static function getEnabledImageFormats(): array
+    public static function getAvailableTypes(): array
     {
-        return Image::getEnabledImageFormats();
+        // 0: all
+        return [
+            'image', // 2^0
+            'video', // 2^1
+            // 'audio', // 2^2
+            // 'document', // 2^3
+            // 'other' // 2^4
+        ];
     }
 
     /**
@@ -395,7 +420,7 @@ class Upload
             throw new Exception(sprintf('Unwanted extension for %s', $filename), 600);
         }
         $extension = get_file_extension($filename);
-        if (!in_array($extension, self::getEnabledImageFormats())) {
+        if (!in_array($extension, Image::getEnabledImageExtensions())) {
             throw new Exception(sprintf('Unable to handle upload for %s', $filename), 600);
         }
     }
@@ -463,7 +488,10 @@ class Upload
         if (!file_exists($this->downstream)) {
             throw new Exception("Can't fetch target upload source (downstream)", 600);
         }
-        $this->source_image_fileinfo = get_image_fileinfo($this->downstream);
+        $this->mediaType = str_starts_with($this->source['type'], 'video/') ? 'video' : 'image';
+        $this->source_image_fileinfo = $this->mediaType === 'video'
+            ? get_video_fileinfo($this->downstream)
+            : get_image_fileinfo($this->downstream);
         if ($this->source_image_fileinfo === []) {
             throw new Exception("Can't get target upload source info", 610);
         }
@@ -476,8 +504,8 @@ class Upload
         if (!in_array($this->source_image_fileinfo['extension'], $this->options['allowed_formats'])) {
             throw new Exception(sprintf('Disabled image format (%s)', $this->source_image_fileinfo['extension']), 614);
         }
-        if (!$this->isValidImageMime($this->source_image_fileinfo['mime'])) {
-            throw new Exception('Invalid image mimetype', 612);
+        if (!$this->isValidMime($this->source_image_fileinfo['mime'])) {
+            throw new Exception('Invalid mimetype', 612);
         }
         if (!$this->options['max_size']) {
             $this->options['max_size'] = self::getDefaultOptions()['max_size'];
@@ -495,6 +523,10 @@ class Upload
             && ImageManagerStatic::getManager()->config['driver'] === 'gd'
         ) {
             throw new Exception('Animated WebP is not supported', 400);
+        }
+
+        if ($this->mediaType === 'video') {
+            return;
         }
 
         if (Settings::get('arachnid')) {
@@ -594,9 +626,27 @@ class Upload
         return [];
     }
 
+    protected function isValidMime(string $mime): bool
+    {
+        if (str_starts_with($mime, 'video/')) {
+            return $this->isValidVideoMime($mime);
+        }
+
+        return $this->isValidImageMime($mime);
+    }
+
     protected function isValidImageMime(string $mime): bool
     {
+        if (str_starts_with($mime, 'video/')) {
+            return $this->isValidVideoMime($mime);
+        }
+
         return preg_match("#image\/(gif|pjpeg|jpeg|png|x-png|bmp|x-ms-bmp|x-windows-bmp|webp)$#", $mime) === 1;
+    }
+
+    protected function isValidVideoMime(string $mime): bool
+    {
+        return preg_match("#video\/(mp4|webm)$#", $mime) === 1;
     }
 
     protected function isValidNamingOption(string $string): bool
