@@ -16,3 +16,4 @@ Chevereto 4.1.1 (2024-04-27)
 - 🐞 Fixed bug with not working URL upload
 - 🐞 Fixed bug with video upload not working on iOS
 - 🐞 Fixed bug with file-upload documentation link
+- 🇨🇱 Updated Spanish translation

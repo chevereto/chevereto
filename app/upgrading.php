@@ -352,12 +352,13 @@ function downloadAction(string $workingDir, array $params): Response
     $zipBall = str_replace('%tag%', $tag, $zipBall);
     $isPost = true;
     $curl = downloadFile($zipBall, $params, $filePath, $isPost);
-
-    throw new RuntimeException(
-        $curl->json->error->message
-        . sprintf(' [%s]', $curl->json->error->code),
-        $curl->json->status_code
-    );
+    if (isset($curl->json->error)) {
+        throw new RuntimeException(
+            $curl->json->error->message
+            . sprintf(' [%s]', $curl->json->error->code),
+            $curl->json->status_code
+        );
+    }
     if ($curl->transfer['http_code'] !== 200) {
         $error = '[HTTP ' . $curl->transfer['http_code'] . '] ' . $zipBall;
 
