@@ -488,7 +488,9 @@ class Upload
         if (!file_exists($this->downstream)) {
             throw new Exception("Can't fetch target upload source (downstream)", 600);
         }
-        $this->mediaType = str_starts_with($this->source['type'], 'video/') ? 'video' : 'image';
+        $this->mediaType = str_starts_with($this->source['type'] ?? 'image/', 'video/')
+            ? 'video'
+            : 'image';
         $this->source_image_fileinfo = $this->mediaType === 'video'
             ? get_video_fileinfo($this->downstream)
             : get_image_fileinfo($this->downstream);
@@ -646,7 +648,7 @@ class Upload
 
     protected function isValidVideoMime(string $mime): bool
     {
-        return preg_match("#video\/(mp4|webm)$#", $mime) === 1;
+        return preg_match("#video\/(quicktime|mp4|webm)$#", $mime) === 1;
     }
 
     protected function isValidNamingOption(string $string): bool

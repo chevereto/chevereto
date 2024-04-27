@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2023-05-22 15:49+0000',
-  'PO-Revision-Date' => '2023-05-22 15:49+0000',
+  'POT-Creation-Date' => '2024-04-26 18:33+0000',
+  'PO-Revision-Date' => '2024-04-26 18:33+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'es',
@@ -16,12 +16,6 @@ $translation_plural = array (
   'function' => '($n != 1)',
 );
 $translation_table = [
-	"Selection will be assigned to %t." => [
-		0 => "La selección será asignada a %t.",
-	],
-	"Sets the minimum content count needed to show %t in %s." => [
-		0 => "Establece la cuenta mínima de contenido para mostrar %t en %s.",
-	],
 	"You have been forbidden to use this website." => [
 		0 => "Se te ha prohibido el acceso a este sitio web.",
 	],
@@ -42,6 +36,9 @@ $translation_table = [
 	],
 	"Popular" => [
 		0 => "Popular",
+	],
+	"Videos" => [
+		0 => "Vídeos",
 	],
 	"Animated" => [
 		0 => "Animado",
@@ -158,11 +155,12 @@ $translation_table = [
 		0 => "imagen",
 		1 => "imágenes",
 	],
-	"Stats" => [
-		0 => "Estadísticas",
+	"Home" => [
+		0 => "Principal",
 	],
-	"Images" => [
-		0 => "Imágenes",
+	"File" => [
+		0 => "Archivo",
+		1 => "Archivos",
 	],
 	"Album" => [
 		0 => "Álbum",
@@ -178,6 +176,9 @@ $translation_table = [
 	"Settings" => [
 		0 => "Ajustes",
 	],
+	"Run %s" => [
+		0 => "Correr %s",
+	],
 	"Website" => [
 		0 => "Sitio web",
 	],
@@ -187,8 +188,8 @@ $translation_table = [
 	"Listings" => [
 		0 => "Listados",
 	],
-	"Image upload" => [
-		0 => "Subida de imágenes",
+	"File uploads" => [
+		0 => "Subidas de archivos",
 	],
 	"Semantics" => [
 		0 => "Semántica",
@@ -214,14 +215,23 @@ $translation_table = [
 	"Logo" => [
 		0 => "Logo",
 	],
-	"External storage" => [
-		0 => "Almacenamiento externo",
-	],
 	"Homepage" => [
 		0 => "Página principal",
 	],
 	"Pages" => [
 		0 => "Páginas",
+	],
+	"Upload plugin" => [
+		0 => "Complemento de subida",
+	],
+	"Consent screen" => [
+		0 => "Pantalla de consentimiento",
+	],
+	"Guests %s" => [
+		0 => "%s de invitados",
+	],
+	"External storage" => [
+		0 => "Almacenamiento externo",
 	],
 	"Routing" => [
 		0 => "Enrutamiento",
@@ -232,14 +242,8 @@ $translation_table = [
 	"Login providers" => [
 		0 => "Proveedores de inicio de sesión",
 	],
-	"Upload plugin" => [
-		0 => "Complemento de subida",
-	],
 	"Cookie compliance" => [
 		0 => "Cumplimiento de cookies",
-	],
-	"Consent screen" => [
-		0 => "Pantalla de consentimiento",
 	],
 	"Flood protection" => [
 		0 => "Protección flood",
@@ -250,47 +254,41 @@ $translation_table = [
 	"IP bans" => [
 		0 => "Baneos de IP",
 	],
-	"Guests %s" => [
-		0 => "%s de invitados",
-	],
 	"Watermarks" => [
 		0 => "Marcas de agua",
 	],
-	"Documentation" => [
-		0 => "Documentación",
+	"Upgrade now" => [
+		0 => "Actualizar ahora",
 	],
-	"Admin" => [
-		0 => "Admin",
+	"The latest release will be downloaded and extracted in the filesystem." => [
+		0 => "La última versión se descargará y extraerá en el sistema de archivos.",
 	],
-	"%s docs" => [
-		0 => "Documentación %s",
+	"License key" => [
+		0 => "Llave de licencia",
 	],
 	"Support" => [
 		0 => "Soporte",
 	],
-	"Releases" => [
-		0 => "Lanzamientos",
-	],
-	"Community" => [
-		0 => "Comunidad",
-	],
-	"License" => [
-		0 => "Licencia",
-	],
 	"install update" => [
 		0 => "instalar actualización",
 	],
-	"Check updates" => [
+	"Check upgrades" => [
 		0 => "Comprobar actualizaciones",
 	],
 	"not running" => [
-		0 => "no corriendo",
+		0 => "no está corriendo",
+	],
+	"PHP function [%s] not available in this PHP installation" => [
+		0 => "Función PHP [%s] no disponible en esta instalación de PHP",
 	],
 	"Max. upload file size" => [
 		0 => "Tamaño máx. de archivo de subida",
 	],
-	"Graphics Library" => [
+	"Graphics library" => [
 		0 => "Libreria gráfica",
+	],
+	"Stats" => [
+		0 => "Estadísticas",
 	],
 	"Rebuild stats" => [
 		0 => "Reconstruir estadísticas",
@@ -301,6 +299,36 @@ $translation_table = [
 	"Not your IP?" => [
 		0 => "No es tu IP?",
 	],
+	"Encryption" => [
+		0 => "Cifrado",
+	],
+	"Enabled" => [
+		0 => "Habilitado",
+	],
+	"Disabled" => [
+		0 => "Deshabilitado",
+	],
+	"Meta" => [
+		0 => "Meta",
+	],
+	"Blog" => [
+		0 => "Blog",
+	],
+	"Docs" => [
+		0 => "Docs",
+	],
+	"Releases" => [
+		0 => "Lanzamientos",
+	],
+	"Chat" => [
+		0 => "Chat",
+	],
+	"Community" => [
+		0 => "Comunidad",
+	],
+	"Links" => [
+		0 => "Enlaces",
+	],
 	"Cron last ran" => [
 		0 => "Cron corrió por última vez",
 	],
@@ -309,21 +337,6 @@ $translation_table = [
 	],
 	"Server" => [
 		0 => "Servidor",
-	],
-	"MySQL version" => [
-		0 => "Versión de MySQL",
-	],
-	"MySQL server info" => [
-		0 => "Info servidor MySQL",
-	],
-	"File uploads" => [
-		0 => "Subidas de archivos",
-	],
-	"Enabled" => [
-		0 => "Habilitado",
-	],
-	"Disabled" => [
-		0 => "Deshabilitado",
 	],
 	"Max. execution time" => [
 		0 => "Tiempo máx. de ejecución",
@@ -366,7 +379,7 @@ $translation_table = [
 		0 => "La página ha sido eliminada.",
 	],
 	"homepage" => [
-		0 => "pagina principal",
+		0 => "Página principal",
 	],
 	"Before main title (%s)" => [
 		0 => "Antes del título principal (%s)",
@@ -393,7 +406,7 @@ $translation_table = [
 		0 => "Columna en pestaña sobre",
 	],
 	"Before comments" => [
-		0 => "Antes de los comentarios",
+		0 => "Antes de comentarios",
 	],
 	"Image page" => [
 		0 => "Página de imagen",
@@ -402,28 +415,28 @@ $translation_table = [
 		0 => "En el interior superior del visualizador (página de imagen)",
 	],
 	"Inside viewer foot (image page)" => [
-		0 => "En el interior inferior del visualizador (página de imagen)",
+		0 => "En el pie interior del visualizador (página de imagen)",
 	],
 	"After image viewer (image page)" => [
 		0 => "Después del visualizador de imagen (página de imagen)",
 	],
 	"Before header (image page)" => [
-		0 => "Antes del header (página de imagen)",
+		0 => "Antes del cabecera (página de imagen)",
 	],
 	"After header (image page)" => [
-		0 => "Después del header (página de imagen)",
+		0 => "Después de cabecera (página de imagen)",
 	],
 	"Footer (image page)" => [
-		0 => "Footer (página de imagen)",
+		0 => "Pie (página de imagen)",
 	],
 	"%s page" => [
 		0 => "Página de %s",
 	],
 	"Before header (%s page)" => [
-		0 => "Antes del header (página de %s)",
+		0 => "Antes de cabecera (página de %s)",
 	],
 	"After header (%s page)" => [
-		0 => "Después del header (página de %s)",
+		0 => "Después de la cabecera (página de %s)",
 	],
 	"User profile page" => [
 		0 => "Página de perfil de usuario",
@@ -482,11 +495,14 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "Valor inválido",
 	],
-	"palette" => [
-		0 => "paleta",
+	"font" => [
+		0 => "fuente",
 	],
 	"Invalid %s" => [
 		0 => "%s inválido(a)",
+	],
+	"palette" => [
+		0 => "paleta",
 	],
 	"Invalid theme image listing size" => [
 		0 => "Tamaño de imagen de listado inválido",
@@ -635,33 +651,6 @@ $translation_table = [
 	"Image %i hosted in %w" => [
 		0 => "Imagen %i alojada en %w",
 	],
-	"Direct links" => [
-		0 => "Enlaces directos",
-	],
-	"Image link" => [
-		0 => "Enlace a la imagen",
-	],
-	"Image URL" => [
-		0 => "URL imagen",
-	],
-	"Thumbnail URL" => [
-		0 => "URL miniatura",
-	],
-	"Medium URL" => [
-		0 => "URL media",
-	],
-	"Full image" => [
-		0 => "Imagen completa",
-	],
-	"Full image (linked)" => [
-		0 => "Imagen completa (enlazada)",
-	],
-	"Medium image (linked)" => [
-		0 => "Imagen media (enlazada)",
-	],
-	"Thumbnail image (linked)" => [
-		0 => "Imagen en miniatura (enlazada)",
-	],
 	"Start uploading" => [
 		0 => "Comienza a subir",
 	],
@@ -684,9 +673,6 @@ $translation_table = [
 	"%s URL key already being used." => [
 		0 => "Llave URL de %s actualmente en uso.",
 	],
-	"IP address already banned" => [
-		0 => "La dirección IP ya esta baneada",
-	],
 	"Missing values" => [
 		0 => "Faltan campos",
 	],
@@ -701,6 +687,9 @@ $translation_table = [
 	],
 	"%s added" => [
 		0 => "%s agregada",
+	],
+	"IP address already banned" => [
+		0 => "La dirección IP ya esta baneada",
 	],
 	"%s not found" => [
 		0 => "%s no encontrado",
@@ -752,6 +741,15 @@ $translation_table = [
 	],
 	"A private user" => [
 		0 => "Un usuario privado",
+	],
+	"Chevereto V%s license key used, required V%r or greater license key" => [
+		0 => "Llave de licencia Chevereto V%s utilizada, se requiere llave de licencia V%r o superior",
+	],
+	"License key removed" => [
+		0 => "Llave de licencia eliminada",
+	],
+	"License key updated" => [
+		0 => "Llave de licencia actualizada",
 	],
 	"Wrong Username/Email password combination" => [
 		0 => "Combinación Nombre de usuario / Email incorrecta",
@@ -840,6 +838,9 @@ $translation_table = [
 	],
 	"User ID" => [
 		0 => "ID usuario",
+	],
+	"Images" => [
+		0 => "Imágenes",
 	],
 	"Register date" => [
 		0 => "Fecha de registro",
@@ -1136,35 +1137,47 @@ $translation_table = [
 	"Error deleting profile background image." => [
 		0 => "Error eliminado la imagen de fondo de perfil.",
 	],
-	"Update available v%s" => [
-		0 => "Actualización disponible v%s",
+	"Chevereto v%s available" => [
+		0 => "Chevereto v%s disponible",
 	],
-	"There is an update available for this system." => [
-		0 => "Hay una actualización disponible para este sistema.",
+	"There is a new Chevereto version available with the following release notes." => [
+		0 => "Hay disponible una nueva versión de Chevereto con las siguientes notas de versión.",
 	],
-	"Update instructions" => [
-		0 => "Instrucciones de actualización",
+	"Check %s for a complete changelog since you last upgrade." => [
+		0 => "Consulta %s para obtener un completo registro de cambios desde tu última actualización.",
+	],
+	"documentation" => [
+		0 => "documentación",
+	],
+	"Check the %s for alternative update methods." => [
+		0 => "Consulta la %s para métodos de actualización alternativos.",
 	],
 	"This website is running latest %s version" => [
 		0 => "Este sitio web está corriendo la última versión de %s",
 	],
+	"Chevereto v%s installed" => [
+		0 => "Chevereto v%s instalado",
+	],
+	"Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"." => [
+		0 => "El uso del software Chevereto debe cumplir con los términos de la licencia de software conocidos como \"La licencia de Chevereto\".",
+	],
+	"License agreement" => [
+		0 => "Acuerdo de licencia",
+	],
 	"Please review the system requirements before proceeding" => [
 		0 => "Porfavor revisa los requerimientos de sistema antes de proceder",
 	],
-	"Toggle select" => [
-		0 => "Alternar selección",
+	"Get a license at %s to unlock all features and support." => [
+		0 => "Obtén una licencia en %s para desbloquear todas las funciones y soporte.",
 	],
-	"Like" => [
-		0 => "Me gusta",
+	"You can enter your license key in the dashboard panel." => [
+		0 => "Puede ingresar su llave de licencia en el panel de administración.",
+	],
+	"Enter license" => [
+		0 => "Ingresar licencia",
 	],
 	"Create album" => [
 		0 => "Crear álbum",
-	],
-	"Toggle flag" => [
-		0 => "Alternar marca",
-	],
-	"Edit" => [
-		0 => "Editar",
 	],
 	"Approve" => [
 		0 => "Aprobar",
@@ -1172,11 +1185,23 @@ $translation_table = [
 	"Delete" => [
 		0 => "Eliminar",
 	],
-	"Previous" => [
-		0 => "Anterior",
+	"Edit" => [
+		0 => "Editar",
+	],
+	"Toggle flag" => [
+		0 => "Alternar marca",
+	],
+	"Like" => [
+		0 => "Me gusta",
 	],
 	"Next" => [
 		0 => "Siguiente",
+	],
+	"Previous" => [
+		0 => "Anterior",
+	],
+	"Toggle select" => [
+		0 => "Alternar selección",
 	],
 	"Zoom" => [
 		0 => "Zoom",
@@ -1190,6 +1215,9 @@ $translation_table = [
 	"Some files couldn't be added" => [
 		0 => "Algunos archivos no se pudieron agregar",
 	],
+	"Some files couldn't be loaded" => [
+		0 => "Algunos archivos no se pudieron cargar",
+	],
 	"file" => [
 		0 => "archivo",
 		1 => "archivos",
@@ -1197,8 +1225,8 @@ $translation_table = [
 	"%s's Albums" => [
 		0 => "Álbumes de %s",
 	],
-	"Image edited successfully." => [
-		0 => "Imagen editada exitosamente.",
+	"File edited successfully." => [
+		0 => "Archivo editado exitosamente.",
 	],
 	"private" => [
 		0 => "privado",
@@ -1344,11 +1372,11 @@ $translation_table = [
 	"This email was sent from %w %u" => [
 		0 => "Este email fue enviado desde %w %u",
 	],
-	"Drag and drop or paste images here to upload" => [
-		0 => "Arrastra aquí o pega las imágenes para subir",
+	"Drag and drop or paste files here to upload" => [
+		0 => "Arrastra y suelta o pega archivos aquí para cargarlos",
 	],
-	"Select the images to upload" => [
-		0 => "Selecciona las imágenes a subir",
+	"Select the files to upload" => [
+		0 => "Selecciona los archivos a subir",
 	],
 	"You can also %i or %u." => [
 		0 => "También puedes %i o %u.",
@@ -1359,8 +1387,8 @@ $translation_table = [
 	"browse from your computer" => [
 		0 => "explorar desde tu computadora",
 	],
-	"add image URLs" => [
-		0 => "agregar URLs de imagen",
+	"add file URLs" => [
+		0 => "agregar URL de archivos",
 	],
 	"You can also %i, %c or %u." => [
 		0 => "También puedes %i, %c o %u.",
@@ -1368,11 +1396,14 @@ $translation_table = [
 	"You can also %i or %c." => [
 		0 => "También puedes %i o %c.",
 	],
-	"browse from your device" => [
-		0 => "explorar desde tu dispositivo",
+	"browse from device" => [
+		0 => "explorar desde dispositivo",
 	],
-	"take a picture" => [
-		0 => "tomar una foto",
+	"use camera" => [
+		0 => "usar cámara",
+	],
+	"max" => [
+		0 => "máx",
 	],
 	"Register to get %s" => [
 		0 => "Regístrate para obtener %s",
@@ -1518,11 +1549,11 @@ $translation_table = [
 	"Brief description of this %s" => [
 		0 => "Breve descripción de este %s",
 	],
-	"Add image URLs" => [
-		0 => "Agrega URLs de imagen",
+	"File URLs" => [
+		0 => "URLs de archivo",
 	],
-	"Add the image URLs here" => [
-		0 => "Agrega aquí las URLs de las imágenes",
+	"Add file URLs here" => [
+		0 => "Agregar URL de archivos aquí",
 	],
 	"Create %s" => [
 		0 => "Crear %s",
@@ -1542,62 +1573,38 @@ $translation_table = [
 	"Error report" => [
 		0 => "Reporte de error",
 	],
-	"Links" => [
-		0 => "Enlaces",
-	],
 	"Viewer" => [
 		0 => "Visualizador",
 	],
-	"%s links" => [
-		0 => "Enlaces %s",
+	"%s link" => [
+		0 => "%s enlace",
 	],
 	"Direct" => [
 		0 => "Directo",
 	],
-	"HTML Codes" => [
-		0 => "Códigos HTML",
+	"Frame" => [
+		0 => "Marco",
 	],
-	"HTML image" => [
-		0 => "HTML imagen",
+	"Thumbnail" => [
+		0 => "Miniatura",
 	],
-	"HTML full linked" => [
-		0 => "HTML completa enlazada",
+	"Medium" => [
+		0 => "Medio",
 	],
-	"HTML medium linked" => [
-		0 => "HTML media enlazada",
+	"embed" => [
+		0 => "incorporado",
 	],
-	"HTML thumbnail linked" => [
-		0 => "HTML miniatura enlazada",
+	"%s full linked" => [
+		0 => "%s completo enlazado",
 	],
-	"BBCodes" => [
-		0 => "Códigos BB",
+	"%s medium linked" => [
+		0 => "%s medio enlazado",
 	],
-	"BBCode full" => [
-		0 => "BBCode completa",
+	"%s thumbnail linked" => [
+		0 => "%s miniatura enlazada",
 	],
-	"BBCode full linked" => [
-		0 => "BBCode completa enlazada",
-	],
-	"BBCode medium linked" => [
-		0 => "BBCode media enlazada",
-	],
-	"BBCode thumbnail linked" => [
-		0 => "BBCode miniatura enlazada",
-	],
-	"Markdown full" => [
-		0 => "Markdown completo",
-	],
-	"Markdown full linked" => [
-		0 => "Markdown completa enlazada",
-	],
-	"Markdown medium linked" => [
-		0 => "Markdown media enlazada",
-	],
-	"Markdown thumbnail linked" => [
-		0 => "Markdown miniatura enlazada",
-	],
-	"Viewer links" => [
-		0 => "Enlaces de visualizador",
+	"%s full" => [
+		0 => "%s completo",
 	],
 	"All these words" => [
 		0 => "Todas estas palabras",
@@ -1743,11 +1750,11 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "Mensaje de texto, HTML o una URL de redirección",
 	],
-	"Storage name" => [
-		0 => "Nombre del almacenamiento",
-	],
 	"API" => [
 		0 => "API",
+	],
+	"Storage name" => [
+		0 => "Nombre del almacenamiento",
 	],
 	"This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API." => [
 		0 => "Esto es para la antigua API B2 en desuso. Para depósitos nuevos, debes usar la API compatible con S3.",
@@ -1854,6 +1861,12 @@ $translation_table = [
 	"The system will map the images of this storage to this URL." => [
 		0 => "El sistema asignará esta URL a las imágenes.",
 	],
+	"Enabled types" => [
+		0 => "Tipos habilitados",
+	],
+	"The storage will be used only for selected types." => [
+		0 => "El almacenamiento se utilizará sólo para tipos seleccionados.",
+	],
 	"view more" => [
 		0 => "ver más",
 	],
@@ -1893,11 +1906,11 @@ $translation_table = [
 	"Sign in with %label%" => [
 		0 => "Entrar con %label%",
 	],
-	"Home" => [
-		0 => "Principal",
-	],
 	"There's nothing to show here." => [
 		0 => "No hay nada que mostrar aquí.",
+	],
+	"Selection will be assigned to %t." => [
+		0 => "La selección será asignada a %t.",
 	],
 	"There is no categories." => [
 		0 => "No hay categorías.",
@@ -1934,9 +1947,6 @@ $translation_table = [
 	],
 	"Guest" => [
 		0 => "Invitado",
-	],
-	"Keyboard shortcuts" => [
-		0 => "Atajos de teclado",
 	],
 	"Private album" => [
 		0 => "Album privado",
@@ -2063,9 +2073,6 @@ $translation_table = [
 	],
 	"I Agree" => [
 		0 => "Estoy de acuerdo",
-	],
-	"documentation" => [
-		0 => "documentación",
 	],
 	"Learn about %s at our %d." => [
 		0 => "Aprende sobre %s en nuestra %d.",
@@ -2352,8 +2359,170 @@ $translation_table = [
 	"storage" => [
 		0 => "almacenamiento",
 	],
-	"Block image uploads by IP if the system notice a flood behavior based on the number of uploads per time period." => [
-		0 => "Bloquear la subida de imágenes por IP si el sistema detecta un comportamiento abusivo basado en el número de subidas por periodo de tiempo.",
+	"Enabled file extensions" => [
+		0 => "Extensiones de archivo habilitadas",
+	],
+	"Unsupported in your server" => [
+		0 => "No soportado en tu servidor",
+	],
+	"Only checked file extensions will be allowed to be uploaded." => [
+		0 => "Solo se permitirán cargar extensiones de archivos marcadas.",
+	],
+	"Enable uploads" => [
+		0 => "Habilitar subidas",
+	],
+	"Enable this if you want to allow %s uploads." => [
+		0 => "Habilita esto si deseas permitir subidas de archivo.",
+	],
+	"Enable this if you want to allow file upload from URLs." => [
+		0 => "Habilita esto si quieres permitir carga de archivos desde URLs.",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "Ten en cuenta que habilitar esto expondrá la IP del servidor.",
+	],
+	"This feature is available only for administrators." => [
+		0 => "Esta característica está disponible solo para administradores.",
+	],
+	"Upload user interface" => [
+		0 => "Interfaz de subida",
+	],
+	"On-page container" => [
+		0 => "Contenedor en página",
+	],
+	"route" => [
+		0 => "ruta",
+	],
+	"Guest uploads" => [
+		0 => "Subidas de invitados",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "Habilita esto si quieres permitir permitir que usuarios no registrados suban imágenes",
+	],
+	"Moderate uploads" => [
+		0 => "Moderar subidas",
+	],
+	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
+		0 => "Habilita esto para moderar las subidas entrantes. El contenido objetivo requerirá moderación para ser aprobado.",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "Habilitar códigos de inserción (subidas)",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "Habilita esto si quieres mostrar códigos de inserción al completar la subida.",
+	],
+	"Upload threads" => [
+		0 => "Hilos de subida",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "Numero de hilos de subida simultáneos (subidas paralelas)",
+	],
+	"Redirect on single upload" => [
+		0 => "Redireccionar en subida única",
+	],
+	"Enable this if you want to redirect to file viewer on single upload." => [
+		0 => "Habilita esto si quieres redirigir al visor de archivos en carga única.",
+	],
+	"Enable duplicate uploads" => [
+		0 => "Habilitar subidas duplicadas",
+	],
+	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs." => [
+		0 => "Habilita esto si quieres permitir cargas duplicadas desde la misma IP dentro de 24 horas.",
+	],
+	"Enable expirable uploads" => [
+		0 => "Habilitar subidas expirables",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "Habilita esto si quieres permitir la opción de eliminar imágenes automáticamente.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "Auto eliminar subidas de invitados",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "Habilita esto si quieres forzar la eliminación automática de las subidas de invitados después de cierto tiempo.",
+	],
+	"Maximum image size" => [
+		0 => "Tamaño máximo de imagen",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "Imágenes mayores de este tamaño se reducirán de tamaño automáticamente. Usa cero (0) para no establecer un límite.",
+	],
+	"Image Exif data" => [
+		0 => "Datos Exif de imagen",
+	],
+	"Keep" => [
+		0 => "Mantener",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "Selecciona la configuración predeterminada para los <a %s>datos Exif</a> al subir.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "Datos Exif imagen (configuración de usuario)",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "Habilita esto si quieres permitir que cada usuario pueda configurar como se manejarán los datos Exif.",
+	],
+	"Maximum upload file size" => [
+		0 => "Tamaño máximo de archivo de subida",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "Tamaño máximo permitido por el servidor es %s. Este límite es regido por %u y %p (valores %f).",
+	],
+	"guests" => [
+		0 => "invitados",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "Lo mismo que \"%s\" pero para invitados.",
+	],
+	"File path" => [
+		0 => "Ruta de archivo",
+	],
+	"Relative to Chevereto root" => [
+		0 => "Relativa a la raíz de Chevereto",
+	],
+	"Where to store the uploaded files? Relative to Chevereto root." => [
+		0 => "¿Dónde almacenar los archivos cargados? Relativo a la raíz de Chevereto.",
+	],
+	"Storage mode" => [
+		0 => "Modo de almacenamiento",
+	],
+	"Datefolders" => [
+		0 => "Carpetas por fecha",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "Datefolders crea una estructura %s",
+	],
+	"File naming method" => [
+		0 => "Método de nombramiento de archivos",
+	],
+	"Original" => [
+		0 => "Original",
+	],
+	"Mix original + random" => [
+		0 => "Combinar original + aleatorio",
+	],
+	"\"Original\" will try to keep the file source name while \"Random\" will generate a random name. \"ID\" will name the file just like the file ID." => [
+		0 => "\"Original\" intentará de mantener el nombre original mientras que  \"Aleatorio\" generará un nombre al azar. \"ID\" nombrará el archivo tal cual la ID del archivo.",
+	],
+	"Thumb size" => [
+		0 => "Tamaño de miniatura",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "Las miniaturas se ajustaran a este tamaño.",
+	],
+	"Medium image fixed dimension" => [
+		0 => "Dimension fija de la imagen media",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "Las imágenes medias se fijaran a esta dimension. Por ejemplo, si seleccionas \"ancho\" esta dimension será fija y el alto de la imagen se calculara automáticamente.",
+	],
+	"Medium image fixed size" => [
+		0 => "Tamaño fijo de la imagen media",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "El alto o ancho será calculado automáticamente",
+	],
+	"Block file uploads by IP if the system notice a flood behavior based on the number of uploads per time period." => [
+		0 => "Bloquear la carga de archivos por IP si el sistema detecta un comportamiento abusivo según la cantidad de cargas por período de tiempo.",
 	],
 	"Notify to email" => [
 		0 => "Notificar por email",
@@ -2493,165 +2662,6 @@ $translation_table = [
 	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
 		0 => "Lista separada por comas de las IDs de usuario a mostrar en la página principal. Dejar en blanco o en cero para mostrar todas las imágenes recientes.",
 	],
-	"Enabled image formats" => [
-		0 => "Formatos de imagen habilitados",
-	],
-	"Unsupported in your server" => [
-		0 => "No soportado en tu servidor",
-	],
-	"Only checked image formats will be allowed to be uploaded." => [
-		0 => "Solo se permitirá subir los formatos de imagen marcados.",
-	],
-	"Enable uploads" => [
-		0 => "Habilitar subidas",
-	],
-	"Enable this if you want to allow image upload from URLs." => [
-		0 => "Habilita esto si quieres permitir subidas de imágenes. Esta configuración no afecta a los administradores.",
-	],
-	"Note that enabling this will expose your server IP." => [
-		0 => "Ten en cuenta que habilitar esto expondrá la IP del servidor.",
-	],
-	"This feature is available only for administrators." => [
-		0 => "Esta característica está disponible solo para administradores.",
-	],
-	"Upload user interface" => [
-		0 => "Interfaz de subida",
-	],
-	"On-page container" => [
-		0 => "Contenedor en página",
-	],
-	"route" => [
-		0 => "ruta",
-	],
-	"Guest uploads" => [
-		0 => "Subidas de invitados",
-	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "Habilita esto si quieres permitir permitir que usuarios no registrados suban imágenes",
-	],
-	"Moderate uploads" => [
-		0 => "Moderar subidas",
-	],
-	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
-		0 => "Habilita esto para moderar las subidas entrantes. El contenido objetivo requerirá moderación para ser aprobado.",
-	],
-	"Enable embed codes (uploader)" => [
-		0 => "Habilitar códigos de inserción (subidas)",
-	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "Habilita esto si quieres mostrar códigos de inserción al completar la subida.",
-	],
-	"Upload threads" => [
-		0 => "Hilos de subida",
-	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "Numero de hilos de subida simultáneos (subidas paralelas)",
-	],
-	"Redirect on single upload" => [
-		0 => "Redireccionar en subida única",
-	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "Habilita esto si quieres redireccionar a la página de imagen en subida única.",
-	],
-	"Enable duplicate uploads" => [
-		0 => "Habilitar subidas duplicadas",
-	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs." => [
-		0 => "Habilita esto si quieres permitir cargas duplicadas desde la misma IP dentro de 24 horas.",
-	],
-	"Enable expirable uploads" => [
-		0 => "Habilitar subidas expirables",
-	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "Habilita esto si quieres permitir la opción de eliminar imágenes automáticamente.",
-	],
-	"Auto delete guest uploads" => [
-		0 => "Auto eliminar subidas de invitados",
-	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "Habilita esto si quieres forzar la eliminación automática de las subidas de invitados después de cierto tiempo.",
-	],
-	"Maximum image size" => [
-		0 => "Tamaño máximo de imagen",
-	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "Imágenes mayores de este tamaño se reducirán de tamaño automáticamente. Usa cero (0) para no establecer un límite.",
-	],
-	"Image Exif data" => [
-		0 => "Datos Exif de imagen",
-	],
-	"Keep" => [
-		0 => "Mantener",
-	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "Selecciona la configuración predeterminada para los <a %s>datos Exif</a> al subir.",
-	],
-	"Image Exif data (user setting)" => [
-		0 => "Datos Exif imagen (configuración de usuario)",
-	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "Habilita esto si quieres permitir que cada usuario pueda configurar como se manejarán los datos Exif.",
-	],
-	"Maximum upload file size" => [
-		0 => "Tamaño máximo de archivo de subida",
-	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "Tamaño máximo permitido por el servidor es %s. Este límite es regido por %u y %p (valores %f).",
-	],
-	"guests" => [
-		0 => "invitados",
-	],
-	"Same as \"%s\" but for guests." => [
-		0 => "Lo mismo que \"%s\" pero para invitados.",
-	],
-	"Image path" => [
-		0 => "Ruta de las imágenes",
-	],
-	"Relative to Chevereto root" => [
-		0 => "Relativa a la raíz de Chevereto",
-	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "¿Dónde almacenar las imágenes? Relativo a la raíz de Chevereto.",
-	],
-	"Storage mode" => [
-		0 => "Modo de almacenamiento",
-	],
-	"Datefolders" => [
-		0 => "Carpetas por fecha",
-	],
-	"Datefolders creates %s structure" => [
-		0 => "Datefolders crea una estructura %s",
-	],
-	"File naming method" => [
-		0 => "Método de nombramiento de archivos",
-	],
-	"Original" => [
-		0 => "Original",
-	],
-	"Mix original + random" => [
-		0 => "Combinar original + aleatorio",
-	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "\"Original\" intentará de mantener el nombre original mientras que  \"Aleatorio\" generará un nombre al azar. \"ID\"nombrará la imagen tal cual la ID de la imagen.",
-	],
-	"Thumb size" => [
-		0 => "Tamaño de miniatura",
-	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "Las miniaturas se ajustaran a este tamaño.",
-	],
-	"Medium image fixed dimension" => [
-		0 => "Dimension fija de la imagen media",
-	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "Las imágenes medias se fijaran a esta dimension. Por ejemplo, si seleccionas \"ancho\" esta dimension será fija y el alto de la imagen se calculara automáticamente.",
-	],
-	"Medium image fixed size" => [
-		0 => "Tamaño fijo de la imagen media",
-	],
-	"Width or height will be automatically calculated." => [
-		0 => "El alto o ancho será calculado automáticamente",
-	],
 	"Expires" => [
 		0 => "Expira",
 	],
@@ -2723,6 +2733,9 @@ $translation_table = [
 	],
 	"%t listing requirement" => [
 		0 => "Requerimiento de %a para listados",
+	],
+	"Sets the minimum content count needed to show %t in %s." => [
+		0 => "Establece la cuenta mínima de contenido para mostrar %t en %s.",
 	],
 	"Listing columns number" => [
 		0 => "Número de columnas en listado",
@@ -2838,9 +2851,6 @@ $translation_table = [
 	"Only alphanumerics, hyphens and forward slash" => [
 		0 => "Solo alfanuméricos, guiones y barra inclinada",
 	],
-	"File path" => [
-		0 => "Ruta de archivo",
-	],
 	"A %f file relative to %s" => [
 		0 => "Un archivo %f relativo a %s",
 	],
@@ -2951,6 +2961,9 @@ $translation_table = [
 	],
 	"Debug errors" => [
 		0 => "Depurar errores",
+	],
+	"Enable this if you want to debug errors." => [
+		0 => "Habilita esto si desea depurar errores.",
 	],
 	"Debug level" => [
 		0 => "Nivel de depuración",
@@ -3125,6 +3138,9 @@ $translation_table = [
 	],
 	"Enable user content delete" => [
 		0 => "Habilitar eliminación de contenido de usuario",
+	],
+	"Enable this if you want to allow users to delete their own content." => [
+		0 => "Habilita esto si quieres permitir que los usuarios eliminen su propio contenido.",
 	],
 	"Minimum age required" => [
 		0 => "Edad mínima requerida",
@@ -3330,8 +3346,41 @@ $translation_table = [
 	"Forced privacy modes will override user selected privacy." => [
 		0 => "Los modos forzados sobrescribirán la selección de privacidad del usuario.",
 	],
-	"If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %env% and when not set it fall-back to %var%." => [
-		0 => "Si la IP detectada no coincide con la tuya significa que tu servidor web está bajo un proxy. La IP de conexión se puede configurar utilizando el encabezado HTTP definido en la variable de entorno %env% y, cuando no se configura, recurre a %var%.",
+	"Hello and welcome, %s" => [
+		0 => "Hola y bienvenido, %s",
+	],
+	"Whether you're an individual creator or a company looking for a powerful media sharing platform, Chevereto has you covered." => [
+		0 => "Ya sea un creador individual o una empresa que busca una poderosa plataforma para compartir medios, Chevereto lo tiene cubierto.",
+	],
+	"share your feedback" => [
+		0 => "compartir sus comentarios",
+	],
+	"We're always looking for ways to improve, feel free to %s and suggestions." => [
+		0 => "Siempre estamos buscando formas de mejorar, no dude en %s y sugerencias.",
+	],
+	"We are available for all your support and customization needs." => [
+		0 => "Estamos disponibles para todas sus necesidades de soporte y personalización.",
+	],
+	"Thank you for choosing Chevereto." => [
+		0 => "Gracias por elegir Chevereto.",
+	],
+	"Chevereto creator" => [
+		0 => "Creador de Chevereto",
+	],
+	"Provide Chevereto license key by assigning the environment variable %e or by creating the %f file containing the license key." => [
+		0 => "Proporciona la llave de licencia de Chevereto asignando la variable de entorno %e o creando el archivo %f conteniendo la llave de licencia.",
+	],
+	"You can also set the license key in the textarea below." => [
+		0 => "También puedes configurar la llave de licencia en el área de texto a continuación.",
+	],
+	"Chevereto license key" => [
+		0 => "Llave de licencia Chevereto",
+	],
+	"PASTE LICENSE KEY HERE" => [
+		0 => "PEGAR LA LLAVE DE LICENCIA AQUÍ",
+	],
+	"If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %e and when not set it fall-back to %v." => [
+		0 => "Si la IP detectada no coincide con la tuya significa que tu servidor web está bajo un proxy. La IP de conexión se puede configurar utilizando el encabezado HTTP definido en la variable de entorno %e y, cuando no se configura, recurre a %v.",
 	],
 	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
 		0 => "Asegúrate de abordar este problema ya que el sistema depende de la detección precisa de la IP para proporcionar funcionalidades básicas y para proteger contra spam, flooding y ataques de fuerza bruta.",
@@ -3342,8 +3391,8 @@ $translation_table = [
 	"%s News" => [
 		0 => "Noticias %s",
 	],
-	"Installation details" => [
-		0 => "Detalles de instalación",
+	"%s edition" => [
+		0 => "Edición %s",
 	],
 	"Role" => [
 		0 => "Rol",
@@ -3351,8 +3400,8 @@ $translation_table = [
 	"Email address" => [
 		0 => "Email",
 	],
-	"Play GIF" => [
-		0 => "Reproducir GIF",
+	"Play %s" => [
+		0 => "Reproducir %s",
 	],
 	"Load 360° view" => [
 		0 => "Cargar vista 360°",
@@ -3402,11 +3451,14 @@ $translation_table = [
 	"Add IP ban" => [
 		0 => "Agregar baneo de IP",
 	],
-	"Upload and share your images." => [
-		0 => "Sube y comparte tus imágenes.",
+	"Upload and share your media" => [
+		0 => "Sube y comparte tus medios",
 	],
-	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
-		0 => "Arrastra y suelta donde quieras para comenzar a subir ahora tus imágenes. %s de límite. Enlace directo de imagen, miniaturas en BBCode y HTML.",
+	"Drag and drop anywhere to start uploading." => [
+		0 => "Arrastra y suelta en cualquier lugar para comenzar a cargar.",
+	],
+	"Get direct links, Markdown, BBCode and HTML thumbnails." => [
+		0 => "Obtén enlaces directos, Markdown, BBCode y miniaturas en HTML.",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "Registrate para desbloquear todas las funcionalidades",
@@ -3441,8 +3493,14 @@ $translation_table = [
 	"Unlock" => [
 		0 => "Desbloquear",
 	],
-	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
-		0 => "Agrega subida de imágenes a tu sitio web, blog o foro instalando nuestro complemento de subida. Proporciona subida de imágenes a cualquier sitio web mediante la colocación de un botón que permitirá a tus usuarios cargar directamente imágenes a nuestro servicio y se encargará automáticamente de los códigos necesarios para la inserción. Todas las características incluidas como arrastrar y soltar, subida remota, redimensionamiento de imágenes y mucho más.",
+	"Add media uploading and sharing to your website, blog or forum by installing our upload plugin." => [
+		0 => "Agrega carga y uso compartido de medios a su sitio web, blog o foro instalando nuestro complemento de carga.",
+	],
+	"It provides file uploading to any website by placing a button that will allow your users to directly upload to our service and it will automatically handle the codes needed for insertion." => [
+		0 => "Proporciona carga de archivos a cualquier sitio web colocando un botón que permitirá a tus usuarios cargarlos directamente a nuestro servicio y manejará automáticamente los códigos necesarios para la inserción.",
+	],
+	"All features included like drag and drop, remote upload, image resizing and more." => [
+		0 => "Todas las funciones incluidas, como arrastrar y soltar, carga remota, cambio de tamaño de imágenes y más.",
 	],
 	"Supported software" => [
 		0 => "Software soportado",
@@ -3513,8 +3571,8 @@ $translation_table = [
 	"Auto delete uploads" => [
 		0 => "Auto eliminar subidas",
 	],
-	"This setting will apply to all your image uploads by default. You can override this setting on each upload." => [
-		0 => "Este ajuste se aplicara en todas tus subidas de manera predeterminada. Podrás alterar este ajuste para cada subida.",
+	"This setting will apply to all your file uploads by default. You can override this setting on each upload." => [
+		0 => "Esta configuración se aplicará a todas las cargas de archivos de forma predeterminada. Puede anular esta configuración en cada carga.",
 	],
 	"Keep image <a %s>Exif data</a> on upload" => [
 		0 => "Mantener <a %s>datos Exif</a> de imagen al subir",
@@ -3617,9 +3675,6 @@ $translation_table = [
 	],
 	"This service is based on Chevereto self-hosted edition." => [
 		0 => "Este servicio se basa en la edición auto hospedada de Chevereto.",
-	],
-	"Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"." => [
-		0 => "El uso del software Chevereto debe cumplir con los términos de la licencia de software conocidos como \"La licencia de Chevereto\".",
 	],
 	"This instance is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this instance and it won't be responsible for this service neither the damages that this service may cause." => [
 		0 => "Esta instancia se encuentra alojada en una capa de servicio no provista por Chevereto Software, la cual declara no tener ningún control ni acceso a la capa de administración de esta instancia y no será responsable por este servicio ni por los daños que este servicio pueda ocasionar. .",

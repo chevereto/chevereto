@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'Chevereto V4',
-  'POT-Creation-Date' => '2023-05-03 20:29-0400',
-  'PO-Revision-Date' => '2023-05-03 20:29-0400',
+  'POT-Creation-Date' => '2024-04-26 14:18-0400',
+  'PO-Revision-Date' => '2024-04-26 14:18-0400',
   'Last-Translator' => 'Rodolfo Berríos <inbox@rodolfoberrios.com>',
   'Language-Team' => 'https://chevereto.com',
   'Language' => 'en_US',
@@ -10,7 +10,7 @@ $translation_header = array (
   'Content-Type' => 'text/plain; charset=UTF-8',
   'Content-Transfer-Encoding' => '8bit',
   'Plural-Forms' => 'nplurals=2; plural=(n != 1);',
-  'X-Generator' => 'Poedit 3.2.2',
+  'X-Generator' => 'Poedit 3.4.2',
   'X-Poedit-Basepath' => '../..',
   'X-Poedit-KeywordsList' => '_s;_se;_n:1,2;_ne:1,2;PF.fn._s;PF.fn._n:1,2',
   'X-Poedit-SourceCharset' => 'UTF-8',

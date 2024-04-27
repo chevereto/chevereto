@@ -1,0 +1,18 @@
+Chevereto 4.1.1 (2024-04-27)
+
+- 🎥 Added FFmpeg detection on Dashboard
+- 🎥 Added support for MOV files (video/quicktime)
+- 🎥 Improved detection of FFmpeg required functions proc_open and proc_close
+- 🎥 Improved FFprobe handling when processing video
+- 🎥 Improved video display for listing viewer
+- 💅 Added display title to listing viewer
+- 💅 Fixed files remark on Dashboard
+- 💅 Fixed file remarks on Bulk importer stats
+- 💅 Improved image viewer & natural zoom
+- 💅 Improved menu display for mobile
+- 💅 Updated homepage cover image
+- 🔑 Improved feedback on license key handling
+- 🐞 Fixed bug with missing scroll behavior
+- 🐞 Fixed bug with not working URL upload
+- 🐞 Fixed bug with video upload not working on iOS
+- 🐞 Fixed bug with file-upload documentation link

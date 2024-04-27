@@ -176,7 +176,7 @@ class Settings
             'enable_powered_by' => true,
             'akismet' => false,
             'stopforumspam' => false,
-            'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mp4,webm',
+            'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
             'hostname' => null,
             'theme_show_embed_content_for' => 'all',
             'moderatecontent' => false,
@@ -249,7 +249,7 @@ class Settings
             'listing_safe_count' => 100,
             'image_title_max_length' => 100,
             'album_name_max_length' => 100,
-            'upload_available_image_formats' => 'jpg,jpeg,png,bmp,gif,webp,mp4,webm',
+            'upload_available_image_formats' => 'jpg,jpeg,png,bmp,gif,webp,mov,mp4,webm',
         ]);
         if (!array_key_exists('active_storage', $settings)) {
             $settings['active_storage'] = null;

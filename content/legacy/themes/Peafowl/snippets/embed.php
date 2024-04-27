@@ -51,10 +51,10 @@ $embed_upload_tpl = [
         ],
     ],
     'html-codes' => [
-        'label' => _s('HTML'),
+        'label' => 'HTML',
         'options' => [
             'html-embed' => [
-                'label' => _s('HTML %s', _s('embed')),
+                'label' => sprintf('HTML %s', _s('embed')),
                 'template' => [
                     'image' => '<img src="%URL%" alt="%DISPLAY_TITLE%" border="0">',
                     'video' => '<video src="%URL%" controls poster="%URL_FRAME%"></video>',
@@ -62,7 +62,7 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'html-embed-full' => [
-                'label' => _s('HTML full linked'),
+                'label' => _s('%s full linked', 'HTML'),
                 'template' => [
                     'image' => '<a href="%URL_VIEWER%"><img src="%URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                     'video' => '<a href="%URL_VIEWER%"><video src="%URL%" controls poster="%URL_FRAME%"></video></a>',
@@ -70,12 +70,12 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'html-embed-medium' => [
-                'label' => _s('HTML medium linked'),
+                'label' => _s('%s medium linked', 'HTML'),
                 'template' => '<a href="%URL_VIEWER%"><img src="%DISPLAY_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'medium',
             ],
             'html-embed-thumbnail' => [
-                'label' => _s('HTML thumbnail linked'),
+                'label' => _s('%s thumbnail linked', 'HTML'),
                 'template' => '<a href="%URL_VIEWER%"><img src="%THUMB_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'thumb',
             ],
@@ -85,7 +85,7 @@ $embed_upload_tpl = [
         'label' => 'Markdown',
         'options' => [
             'markdown-embed' => [
-                'label' => _s('Markdown full'),
+                'label' => _s('%s full', 'Markdown'),
                 'template' => [
                     'image' => '![%DISPLAY_TITLE%](%URL%)',
                     'video' => '[![%DISPLAY_TITLE%](%URL_FRAME%)](%URL_VIEWER%)',
@@ -93,7 +93,7 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'markdown-embed-full' => [
-                'label' => _s('Markdown full linked'),
+                'label' => _s('%s full linked', 'Markdown'),
                 'template' => [
                     'image' => '[![%DISPLAY_TITLE%](%URL%)](%URL_VIEWER%)',
                     'video' => '[![%DISPLAY_TITLE%](%URL_FRAME%)](%URL_VIEWER%)',
@@ -101,22 +101,22 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'markdown-embed-medium' => [
-                'label' => _s('Markdown medium linked'),
+                'label' => _s('%s medium linked', 'Markdown'),
                 'template' => '[![%DISPLAY_TITLE%](%DISPLAY_URL%)](%URL_VIEWER%)',
                 'size' => 'medium',
             ],
             'markdown-embed-thumbnail' => [
-                'label' => _s('Markdown thumbnail linked'),
+                'label' => _s('%s thumbnail linked', 'Markdown'),
                 'template' => '[![%DISPLAY_TITLE%](%THUMB_URL%)](%URL_VIEWER%)',
                 'size' => 'thumb',
             ],
         ],
     ],
     'bbcodes' => [
-        'label' => _s('BBCode'),
+        'label' => 'BBCode',
         'options' => [
             'bbcode-embed' => [
-                'label' => _s('BBCode full'),
+                'label' => _s('%s full', 'BBCode'),
                 'template' => [
                     'image' => '[img]%URL%[/img]',
                     'video' => '[video]%URL%[/video]',
@@ -124,7 +124,7 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'bbcode-embed-full' => [
-                'label' => _s('BBCode full linked'),
+                'label' => _s('%s full linked', 'BBCode'),
                 'template' => [
                     'image' => '[url=%URL_VIEWER%][img]%URL%[/img][/url]',
                     'video' => '[url=%URL_VIEWER%][video]%URL%[/video][/url]',
@@ -132,12 +132,12 @@ $embed_upload_tpl = [
                 'size' => 'full',
             ],
             'bbcode-embed-medium' => [
-                'label' => _s('BBCode medium linked'),
+                'label' => _s('%s medium linked', 'BBCode'),
                 'template' => '[url=%URL_VIEWER%][img]%DISPLAY_URL%[/img][/url]',
                 'size' => 'medium',
             ],
             'bbcode-embed-thumbnail' => [
-                'label' => _s('BBCode thumbnail linked'),
+                'label' => _s('%s thumbnail linked', 'BBCode'),
                 'template' => '[url=%URL_VIEWER%][img]%THUMB_URL%[/img][/url]',
                 'size' => 'thumb',
             ],

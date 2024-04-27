@@ -24,7 +24,9 @@ class Stat
     public static function getTotals(): array
     {
         $res = DB::queryFetchSingle('SELECT * FROM ' . DB::getTable('stats') . ' WHERE stat_type = "total"');
-        unset($res['stat_id'], $res['stat_type'], $res['date_gmt']);
+        if (is_array($res)) {
+            unset($res['stat_id'], $res['stat_type'], $res['date_gmt']);
+        }
 
         return DB::formatRow($res, 'stat');
     }

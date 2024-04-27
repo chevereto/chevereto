@@ -34,8 +34,8 @@ if (Login::isLoggedUser()) {
 				<div class="upload-box-status">
 					<div data-group="upload">
 						<span class="icon fas fa-photo-video color-accent cursor-pointer" data-trigger="anywhere-upload-input"></span>
-						<div class="heading device-mobile--hide"><a data-trigger="anywhere-upload-input"><?php _se('Drag and drop or paste files here to upload', _s('files')); ?></a></div>
-						<div class="heading device-nonmobile--hide"><a data-trigger="anywhere-upload-input"><?php _se('Select the %s to upload', _s('files')); ?></a></div>
+						<div class="heading device-mobile--hide"><a data-trigger="anywhere-upload-input"><?php _se('Drag and drop or paste files here to upload'); ?></a></div>
+						<div class="heading device-nonmobile--hide"><a data-trigger="anywhere-upload-input"><?php _se('Select the files to upload'); ?></a></div>
                         <?php
                             $iconBrowse = '<i class="fas fa-folder-plus margin-right-5"></i>';
                             $iconUrl = '<i class="fas fa-link margin-right-5"></i>';
@@ -45,7 +45,7 @@ if (Login::isLoggedUser()) {
                                 : _s('You can also %s.');
                             $you_can_add_two_tr = [
                                 '%i' => '<a data-trigger="anywhere-upload-input">' . $iconBrowse . _s('browse from your computer') . '</a>',
-                                '%u' => '<a data-modal="form" data-target="anywhere-upload-paste-url">' . $iconUrl . _s('add %s URLs', _s('media')) . '</a>',
+                                '%u' => '<a data-modal="form" data-target="anywhere-upload-paste-url">' . $iconUrl . _s('add file URLs') . '</a>',
                             ];
                             $you_can_add_two_tr['%s'] = $you_can_add_two_tr['%i'];
                             $you_can_add_three = getSetting('enable_uploads_url')
@@ -54,9 +54,9 @@ if (Login::isLoggedUser()) {
                         ?>
 						<div class="device-mobile--hide upload-box-status-text"><?php echo strtr($you_can_add_two, $you_can_add_two_tr); ?></div>
 						<div class="device-nonmobile--hide upload-box-status-text"><?php echo strtr($you_can_add_three, [
-                            '%i' => '<a data-trigger="anywhere-upload-input">' . $iconBrowse . _s('browse from your device') . '</a>',
-                            '%c' => '<a data-trigger="anywhere-upload-input-camera">' . $iconCamera . _s('use your camera') . '</a>',
-                            '%u' => '<a data-modal="form" data-target="anywhere-upload-paste-url">' . $iconUrl . _s('add %s URLs', _s('media')) . '</a>',
+                            '%i' => '<a data-trigger="anywhere-upload-input">' . $iconBrowse . _s('browse from device') . '</a>',
+                            '%c' => '<a data-trigger="anywhere-upload-input-camera">' . $iconCamera . _s('use camera') . '</a>',
+                            '%u' => '<a data-modal="form" data-target="anywhere-upload-paste-url">' . $iconUrl . _s('add file URLs') . '</a>',
                         ]); ?></div>
                         <div class="upload-box-allowed-files margin-top-10 text-transform-uppercase">
                             <span><?php echo str_replace(',', ' ', strtoupper(getSetting('upload_enabled_image_formats'))); ?></span>
@@ -78,8 +78,8 @@ if (Login::isLoggedUser()) {
 						<div class="heading device-nonmobile--hide"><?php _se('Customize upload by %action% on any preview', ['%action%' => _s('touching')]); ?></div>
                         <div class="device-mobile--hide upload-box-status-text"><?php echo strtr($you_can_add_two, $you_can_add_two_tr); ?></div>
 						<div class="device-nonmobile--hide upload-box-status-text"><?php echo strtr($you_can_add_three, [
-                            '%i' => '<a data-trigger="anywhere-upload-input">' . $iconBrowse . _s('browse from your device') . '</a>',
-                            '%c' => '<a data-trigger="anywhere-upload-input-camera">' . $iconCamera . _s('use your camera') . '</a>',
+                            '%i' => '<a data-trigger="anywhere-upload-input">' . $iconBrowse . _s('browse from device') . '</a>',
+                            '%c' => '<a data-trigger="anywhere-upload-input-camera">' . $iconCamera . _s('use camera') . '</a>',
                             '%u' => '<a data-modal="form" data-target="anywhere-upload-paste-url">' . $iconUrl . _s('add file URLs') . '</a>',
                         ]); ?></div>
 					</div>
@@ -142,7 +142,7 @@ if (Login::isLoggedUser()) {
                             } ?> class="hidden-visibility" type="file" accept="<?php echo Image::getEnabledImageAcceptAttribute(); ?>" multiple>
 			<input id="anywhere-upload-input-camera" data-action="anywhere-upload-input"<?php if (!getSetting('guest_uploads')) {
                                 ?> data-login-needed="true"<?php
-                            } ?> class="hidden-visibility" type="file" capture="camera" accept="image/*">
+                            } ?> class="hidden-visibility" type="file" capture="camera" accept="image/*,video/*">
 			<ul id="anywhere-upload-queue" class="upload-box-queue content-width soft-hidden" data-group="upload-queue"></ul>
 			<div id="anywhere-upload-submit" class="btn-container text-align-center margin-bottom-0 soft-hidden" data-group="upload-queue-ready">
 				<div data-group="upload-queue-ready">
@@ -379,9 +379,9 @@ if (Login::isLoggedUser()) {
 		</div>
         <?php if (getSetting('enable_uploads_url')) { ?>
 		<div id="anywhere-upload-paste-url" data-submit-fn="CHV.fn.uploader.pasteURL">
-			<span class="modal-box-title"><?php echo $iconUrl; _se('Add %s URLs', _s('media')); ?></span>
+			<span class="modal-box-title"><?php echo $iconUrl; _se('File URLs'); ?></span>
 			<div class="modal-form">
-				<textarea class="resize-vertical" placeholder="<?php _se('Add the %s URLs here', _s('media')); ?>" name="urls"></textarea>
+				<textarea class="resize-vertical" placeholder="<?php _se('Add file URLs here'); ?>" name="urls"></textarea>
 			</div>
 		</div>
         <?php } ?>

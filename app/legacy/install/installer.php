@@ -599,7 +599,10 @@ $settings_updates = [
     '4.1.0' => [
         'twitter_account' => '',
         'theme_font' => '0',
-        'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mp4,webm',
+        // 'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mp4,webm',
+    ],
+    '4.1.1' => [
+        'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
     ],
 ];
 $cheveretoFreeMap = [

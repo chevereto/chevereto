@@ -1934,6 +1934,7 @@ function mime_to_extension(string $mime): string
         'image/x-icon' => 'ico',
         'image/vnd.microsoft.icon' => 'ico',
         'image/webp' => 'webp',
+        'video/quicktime' => 'mov',
         'video/mp4' => 'mp4',
         'video/webm' => 'webm',
     ][$mime] ?? '';
@@ -1950,6 +1951,7 @@ function extension_to_mime(string $ext): string
         'tiff' => 'image/tiff',
         'ico' => 'image/vnd.microsoft.icon',
         'webp' => 'image/webp',
+        'mov' => 'video/quicktime',
         'mp4' => 'video/mp4',
         'webm' => 'video/webm',
     ][$ext] ?? '';
@@ -1959,8 +1961,14 @@ function get_video_fileinfo(string $file): array
 {
     clearstatcache(true, $file);
     $ffprobe = FFProbe::create();
-    if (!$ffprobe->isValid($file)) {
-        throw new Exception("Invalid video file provided", 610);
+
+    try {
+        $format = $ffprobe->format($file);
+    } catch (Throwable $e) {
+        throw new Exception("FFprobe error: " . $e->getMessage(), 600);
+    }
+    if (!($format->get('duration') > 0)) {
+        throw new Exception("Invalid video file provided", 100);
     }
     $all = $ffprobe
         ->streams($file)

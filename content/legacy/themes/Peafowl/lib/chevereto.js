@@ -9,14 +9,12 @@
 
 $(function () {
     var resizedFinished;
-    var prevWidth = $(window).width();
-    var prevHeight = $(window).height();
     $(window).resize(function (e) {
         clearTimeout(resizedFinished);
         resizedFinished = setTimeout(function () {
-            if ($("body#image").exists() && prevWidth != $(window).width()) {
-                CHV.fn.image_viewer_full_fix();
-            }
+            // if ($("body#image").exists() && prevWidth != $(window).width()) {
+            //     CHV.fn.image_viewer_full_fix();
+            // }
             CHV.fn.uploader.boxSizer();
             CHV.fn.bindSelectableItems();
             CHV.fn.listingViewer.placeholderSizing();
@@ -695,41 +693,9 @@ $(function () {
         .on("click", CHV.obj.image_viewer.container + " img", function (e) {
             if($(CHV.obj.image_viewer.loader).exists()) {
                 $(CHV.obj.image_viewer.loader).trigger("click");
-            }
-            if (!(
-                $(this).hasClass("cursor-zoom-in") ||
-                $(this).hasClass("cursor-zoom-out")
-            )) {
                 return;
             }
-            var zoom_in = $(this).hasClass("cursor-zoom-in");
-            $(this).removeClass("cursor-zoom-in cursor-zoom-out");
-
-            if (zoom_in) {
-                var width = $(this).attr('width'),
-                    height = $(this).attr('height'),
-                    ratio = width / height,
-                    new_width;
-                if (width > $(window).width()) {
-                    $(this).css("width", "100%");
-                    new_width = $(this).width();
-                    $(this).css("width", width);
-                } else {
-                    new_width = $(this).attr("width");
-                }
-                $(this)
-                    .addClass("cursor-zoom-out")
-                    .css({
-                        width: new_width,
-                        height: new_width / ratio + "px",
-                    });
-                $("#image-viewer-container").css("height", "");
-            } else {
-                $(this).addClass("cursor-zoom-in");
-                image_viewer_full_fix();
-            }
-
-            e.preventDefault();
+            $(this).toggleClass("zoom-natural");
         })
         .on("contextmenu", CHV.obj.image_viewer.container, function (e) {
             if (!CHV.obj.config.image.right_click) {
@@ -2875,7 +2841,7 @@ $(function () {
             return;
         }
         let href = $(this).attr("href");
-        let buyFrom = PF.fn._s('Get a license from %s to unlock all features and support.', '<a href="'+href+'" target="_blank">chevereto.com</a>');
+        let buyFrom = PF.fn._s('Get a license at %s to unlock all features and support.', '<a href="'+href+'" target="_blank">chevereto.com</a>');
         let instructions = PF.fn._s('You can enter your license key in the dashboard panel.');
         e.preventDefault();
         e.stopPropagation();
@@ -3330,7 +3296,7 @@ CHV.fn.listingViewer = {
         var mediaTarget = $src.eq(0);
         if(mediaTarget.attr('data-type') === 'video') {
             mediaTarget.replaceWith(
-                '<video class="viewer-src no-select animate" controls autoplay src="'+this.object.image.url+'"></video>'
+                '<video class="viewer-src no-select" playsinline controls autoplay src="'+this.object.image.url+'"></video>'
             );
             mediaTarget.src = this.object.image.url;
         } else {
@@ -3397,7 +3363,7 @@ CHV.fn.listingViewer = {
 
 CHV.obj.image_viewer = {
     selector: "#image-viewer",
-    container: "#image-viewer-container",
+    container: "#image-viewer",
     navigation: ".image-viewer-navigation",
     loading: "#image-viewer-loading",
     loader: "#image-viewer-loader",
@@ -4156,11 +4122,23 @@ CHV.fn.uploader = {
 
                 function loadVideo(url, callback) {
                     const video = document.createElement("video");
+                    video.onerror = (e) => {
+                        const videoError = {
+                            1: "MEDIA_ERR_ABORTED",
+                            2: "MEDIA_ERR_NETWORK",
+                            3: "MEDIA_ERR_DECODE",
+                            4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
+                        }
+                        var error = videoError[video.error.code];
+                        callback({ type: "error", error: error })
+                        console.error("Error loading video", error)
+                    }
                     video.addEventListener("loadedmetadata", function () {
-                        const seek = video.duration / 4;
+                        const seek = parseInt(video.duration / 4);
                         setTimeout(() => {
                             video.currentTime = seek;
-                        }, 100);
+                            video.pause();
+                        }, 200);
                         video.addEventListener("seeked", () => {
                             const canvas = document.createElement("canvas");
                             canvas.width = video.videoWidth;
@@ -4176,17 +4154,12 @@ CHV.fn.uploader = {
                             );
                         }, false);
                     });
-                    video.onerror = (e) => {
-                        const videoError = {
-                            1: "MEDIA_ERR_ABORTED",
-                            2: "MEDIA_ERR_NETWORK",
-                            3: "MEDIA_ERR_DECODE",
-                            4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
-                        }
-                        var error = videoError[video.error.code];
-                        callback({ type: "error", error: error })
-                        console.error("Error loading video", error)
+                    if (/iPad|iPhone|iPod|Safari/.test(navigator.userAgent)) {
+                        video.autoplay = true;
+                        video.playsInline = true;
+                        video.muted = true;
                     }
+                    video.preload = "metadata";
                     video.src = url;
                 }
 
@@ -5073,7 +5046,7 @@ CHV.fn.complete_image_edit = {
 
         CHV.fn.common.updateDoctitle(response.title);
 
-        PF.fn.growl.expirable(PF.fn._s("Image edited successfully."));
+        PF.fn.growl.expirable(PF.fn._s("File edited successfully."));
 
         // Add album to modals
         CHV.fn.list_editor.addAlbumtoModals(response.album);

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Chevereto V4\n"
-"POT-Creation-Date: 2023-05-03 20:29-0400\n"
-"PO-Revision-Date: 2023-05-03 20:29-0400\n"
+"POT-Creation-Date: 2024-04-26 14:18-0400\n"
+"PO-Revision-Date: 2024-04-26 14:18-0400\n"
 "Last-Translator: Rodolfo Berríos <inbox@rodolfoberrios.com>\n"
 "Language-Team: https://chevereto.com\n"
 "Language: en_US\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: _s;_se;_n:1,2;_ne:1,2;PF.fn._s;PF.fn._n:1,2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -19,75 +19,79 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-1: app/vendor\n"
 "X-Poedit-SearchPathExcluded-2: app/.cache\n"
 
-#: app/legacy/load/web.php:60
+#: app/legacy/load/web.php:62
 msgid "You have been forbidden to use this website."
 msgstr ""
 
-#: app/legacy/load/web.php:132 app/legacy/routes/moderate.php:31
+#: app/legacy/load/web.php:134 app/legacy/routes/moderate.php:31
 #: app/legacy/routes/moderate.php:71
 msgid "Moderate"
 msgstr ""
 
-#: app/legacy/load/web.php:237
+#: app/legacy/load/web.php:243
 #: content/legacy/themes/Peafowl/views/settings/homepage.php:22
 msgid "View all my images"
 msgstr ""
 
-#: app/legacy/load/web.php:243
+#: app/legacy/load/web.php:249
 #: content/legacy/themes/Peafowl/views/settings/homepage.php:17
 msgid "Feel free to browse and discover all my shared images and albums."
 msgstr ""
 
-#: app/legacy/load/web.php:351 app/src/Legacy/Classes/Listing.php:644
+#: app/legacy/load/web.php:357 app/src/Legacy/Classes/Listing.php:648
 msgid "Recent"
 msgstr ""
 
-#: app/legacy/load/web.php:355 app/src/Legacy/Classes/Listing.php:650
+#: app/legacy/load/web.php:361 app/src/Legacy/Classes/Listing.php:654
 msgid "Trending"
 msgstr ""
 
-#: app/legacy/load/web.php:359 app/src/Legacy/Classes/Listing.php:686
+#: app/legacy/load/web.php:365 app/src/Legacy/Classes/Listing.php:690
 msgid "Popular"
 msgstr ""
 
-#: app/legacy/load/web.php:363 app/src/Legacy/Classes/Listing.php:724
+#: app/legacy/load/web.php:369
+msgid "Videos"
+msgstr ""
+
+#: app/legacy/load/web.php:373 app/src/Legacy/Classes/Listing.php:728
 msgid "Animated"
 msgstr ""
 
-#: app/legacy/load/web.php:400
+#: app/legacy/load/web.php:410
 msgid "Plugin"
 msgstr ""
 
-#: app/legacy/load/web.php:459 app/legacy/routes/api.php:95
-#: app/legacy/routes/dashboard.php:527 app/legacy/routes/json.php:69
-#: app/legacy/routes/json.php:83 app/legacy/routes/json.php:90
-#: app/legacy/routes/json.php:151 app/legacy/routes/json.php:220
-#: app/legacy/routes/json.php:301 app/legacy/routes/json.php:319
-#: app/legacy/routes/json.php:664 app/legacy/routes/json.php:717
-#: app/legacy/routes/json.php:754 app/legacy/routes/json.php:786
-#: app/legacy/routes/json.php:1545
+#: app/legacy/load/web.php:469 app/legacy/routes/api.php:96
+#: app/legacy/routes/dashboard.php:688 app/legacy/routes/json.php:71
+#: app/legacy/routes/json.php:85 app/legacy/routes/json.php:92
+#: app/legacy/routes/json.php:153 app/legacy/routes/json.php:222
+#: app/legacy/routes/json.php:303 app/legacy/routes/json.php:321
+#: app/legacy/routes/json.php:662 app/legacy/routes/json.php:715
+#: app/legacy/routes/json.php:752 app/legacy/routes/json.php:784
+#: app/legacy/routes/json.php:1547 app/legacy/routes/json.php:1595
 #: content/legacy/themes/Peafowl/views/403.php:14
 #: content/pages/default/contact.php:33
 msgid "Request denied"
 msgstr ""
 
-#: app/legacy/load/web.php:463
+#: app/legacy/load/web.php:473
 msgid "terms"
 msgstr ""
 
-#: app/legacy/load/web.php:464
+#: app/legacy/load/web.php:474
 msgid "privacy policy"
 msgstr ""
 
-#: app/legacy/load/web.php:462
+#: app/legacy/load/web.php:472
 msgid "I agree to the %terms_link and %privacy_link"
 msgstr ""
 
-#: app/legacy/load/web.php:482 content/legacy/themes/Peafowl/views/404.php:14
+#: app/legacy/load/web.php:492 content/legacy/themes/Peafowl/views/404.php:14
 msgid "That page doesn't exist"
 msgstr ""
 
-#: app/legacy/load/web.php:486
+#: app/legacy/load/web.php:496
 #, php-format
 msgid "Page %s"
 msgstr ""
@@ -130,8 +134,8 @@ msgstr ""
 msgid "Email changed"
 msgstr ""
 
-#: app/legacy/routes/account.php:126 app/legacy/routes/album.php:131
-#: app/legacy/routes/login.php:54 app/legacy/routes/signup.php:72
+#: app/legacy/routes/account.php:126 app/legacy/routes/album.php:130
+#: app/legacy/routes/login.php:53 app/legacy/routes/signup.php:71
 #: content/pages/default/contact.php:50
 #, php-format
 msgid "%s says you are a robot"
@@ -168,24 +172,24 @@ msgid "Reset your password at %s"
 msgstr ""
 
 #: app/legacy/routes/account.php:241 app/legacy/routes/account.php:448
-#: app/legacy/routes/settings.php:293 app/legacy/routes/signup.php:196
+#: app/legacy/routes/settings.php:301 app/legacy/routes/signup.php:195
 #, php-format
 msgid "Confirmation required at %s"
 msgstr ""
 
-#: app/legacy/routes/account.php:352 app/legacy/routes/signup.php:209
+#: app/legacy/routes/account.php:352 app/legacy/routes/signup.php:208
 #, php-format
 msgid "Welcome to %s"
 msgstr ""
 
-#: app/legacy/routes/account.php:364 app/legacy/routes/album.php:145
-#: app/legacy/routes/json.php:679 app/legacy/routes/settings.php:331
-#: app/legacy/routes/signup.php:95
+#: app/legacy/routes/account.php:364 app/legacy/routes/album.php:144
+#: app/legacy/routes/json.php:677 app/legacy/routes/settings.php:339
+#: app/legacy/routes/signup.php:94
 msgid "Invalid password"
 msgstr ""
 
-#: app/legacy/routes/account.php:367 app/legacy/routes/settings.php:334
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2137
+#: app/legacy/routes/account.php:367 app/legacy/routes/settings.php:342
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2106
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #: content/legacy/themes/Peafowl/views/account/password-reset.php:30
 #: content/legacy/themes/Peafowl/views/settings/password.php:34
@@ -194,129 +198,130 @@ msgstr ""
 msgid "Passwords don't match"
 msgstr ""
 
-#: app/legacy/routes/account.php:419 app/legacy/routes/json.php:676
-#: app/legacy/routes/settings.php:214 app/legacy/routes/signup.php:89
-#: app/legacy/routes/signup.php:98 content/pages/default/contact.php:45
+#: app/legacy/routes/account.php:419 app/legacy/routes/json.php:674
+#: app/legacy/routes/settings.php:213 app/legacy/routes/signup.php:88
+#: app/legacy/routes/signup.php:97 content/pages/default/contact.php:45
 msgid "Invalid email"
 msgstr ""
 
-#: app/legacy/routes/account.php:425 app/legacy/routes/json.php:688
-#: app/legacy/routes/settings.php:261 app/legacy/routes/signup.php:143
+#: app/legacy/routes/account.php:425 app/legacy/routes/json.php:686
+#: app/legacy/routes/settings.php:262 app/legacy/routes/signup.php:142
 msgid "Email already being used"
 msgstr ""
 
-#: app/legacy/routes/account.php:498 app/legacy/routes/settings.php:345
+#: app/legacy/routes/account.php:498 app/legacy/routes/settings.php:353
 msgid "Invalid code"
 msgstr ""
 
-#: app/legacy/routes/account.php:522 app/legacy/routes/signup.php:229
-#: content/legacy/themes/Peafowl/lib/chevereto.js:481
+#: app/legacy/routes/account.php:522 app/legacy/routes/signup.php:228
+#: content/legacy/themes/Peafowl/lib/chevereto.js:477
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
-#: content/legacy/themes/Peafowl/lib/peafowl.js:264
+#: content/legacy/themes/Peafowl/lib/peafowl.js:265
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:1
 #: content/pages/default/contact.php:160
 msgid "Check the errors in the form to continue."
 msgstr ""
 
-#: app/legacy/routes/album.php:157
+#: app/legacy/routes/album.php:156
 msgid "Password required"
 msgstr ""
 
-#: app/legacy/routes/album.php:227 app/legacy/routes/image.php:169
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:245
+#: app/legacy/routes/album.php:226 app/legacy/routes/image.php:169
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:247
 #: content/legacy/themes/Peafowl/snippets/embed_tpl.php:25
 #: content/legacy/themes/Peafowl/views/album.php:136
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:82
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:98
 #: content/legacy/themes/Peafowl/views/plugin.php:56
 msgid "Embed codes"
 msgstr ""
 
-#: app/legacy/routes/album.php:241
+#: app/legacy/routes/album.php:240
 msgid "albums"
 msgstr ""
 
-#: app/legacy/routes/album.php:241
+#: app/legacy/routes/album.php:240
 #, php-format
 msgid "Sub %s"
 msgstr ""
 
-#: app/legacy/routes/album.php:254 app/legacy/routes/image.php:177
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:85
+#: app/legacy/routes/album.php:253 app/legacy/routes/image.php:177
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:101
 msgid "Info"
 msgstr ""
 
-#: app/legacy/routes/album.php:284
+#: app/legacy/routes/album.php:283
 msgid "%a album hosted in %w"
 msgstr ""
 
-#: app/legacy/routes/album.php:294 app/src/Legacy/Classes/Listing.php:604
-#: app/src/Legacy/Classes/Upload.php:345 app/src/Legacy/Classes/User.php:91
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:374
+#: app/legacy/routes/album.php:293 app/src/Legacy/Classes/Listing.php:608
+#: app/src/Legacy/Classes/Upload.php:364 app/src/Legacy/Classes/User.php:91
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:376
 #: content/legacy/themes/Peafowl/snippets/form_image.php:14
 #: content/legacy/themes/Peafowl/snippets/form_image.php:43
 #: content/legacy/themes/Peafowl/views/album.php:52
 #: content/legacy/themes/Peafowl/views/album.php:100
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:45
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:91
-#: content/legacy/themes/Peafowl/views/image.php:123
-#: content/legacy/themes/Peafowl/views/image.php:361
-#: content/legacy/themes/Peafowl/views/user.php:133
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:107
+#: content/legacy/themes/Peafowl/views/image.php:127
+#: content/legacy/themes/Peafowl/views/image.php:371
 msgid "image"
 msgid_plural "images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/dashboard.php:94 app/legacy/routes/dashboard.php:385
-msgid "Stats"
+#: app/legacy/routes/dashboard.php:128
+#: content/legacy/themes/Peafowl/snippets/quickty/top_left.php:19
+msgid "Home"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:95 app/legacy/routes/settings.php:552
-#: app/legacy/routes/user.php:107 app/legacy/routes/user.php:108
-#: app/legacy/routes/user.php:248 app/src/Legacy/Classes/Listing.php:740
-#: app/src/Legacy/Classes/Listing.php:766 app/src/Legacy/Classes/User.php:192
+#: app/legacy/routes/dashboard.php:129 app/legacy/routes/user.php:110
+#: app/src/Legacy/Classes/Listing.php:744 app/src/Legacy/Classes/User.php:195
 #: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:32
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:62
-msgid "Images"
-msgstr ""
+#: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:72
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:208
+msgid "File"
+msgid_plural "Files"
+msgstr[0] ""
+msgstr[1] ""
 
-#: app/legacy/routes/dashboard.php:96 app/legacy/routes/dashboard.php:730
-#: app/legacy/routes/dashboard.php:733 app/legacy/routes/dashboard.php:736
-#: app/legacy/routes/json.php:522 app/legacy/routes/json.php:1347
-#: app/legacy/routes/json.php:1361 app/legacy/routes/search.php:113
-#: app/legacy/routes/settings.php:556 app/legacy/routes/user.php:111
-#: app/legacy/routes/user.php:255 app/src/Legacy/Classes/Listing.php:745
-#: app/src/Legacy/Classes/Listing.php:770
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:151
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:309
+#: app/legacy/routes/dashboard.php:130 app/legacy/routes/dashboard.php:892
+#: app/legacy/routes/dashboard.php:895 app/legacy/routes/dashboard.php:898
+#: app/legacy/routes/json.php:524 app/legacy/routes/json.php:1345
+#: app/legacy/routes/json.php:1359 app/legacy/routes/search.php:113
+#: app/legacy/routes/settings.php:564 app/legacy/routes/user.php:116
+#: app/legacy/routes/user.php:260 app/src/Legacy/Classes/Listing.php:749
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:153
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:311
 #: content/legacy/themes/Peafowl/snippets/form_move_existing_album.php:11
 #: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:31
+#: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:73
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:52
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:31
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:45
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:74
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:181
-#: content/legacy/themes/Peafowl/views/image.php:264
-#: content/legacy/themes/Peafowl/views/image.php:270
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:109
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:216
+#: content/legacy/themes/Peafowl/views/image.php:274
+#: content/legacy/themes/Peafowl/views/image.php:280
 msgid "Album"
 msgid_plural "Albums"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/dashboard.php:97 app/legacy/routes/dashboard.php:153
-#: app/legacy/routes/dashboard.php:301 app/legacy/routes/json.php:712
-#: app/legacy/routes/json.php:1034 app/legacy/routes/json.php:1320
-#: app/legacy/routes/json.php:1321 app/legacy/routes/json.php:1538
-#: app/legacy/routes/search.php:117 app/legacy/routes/user.php:131
-#: app/legacy/routes/user.php:135 app/src/Legacy/Classes/Listing.php:776
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5737
+#: app/legacy/routes/dashboard.php:131 app/legacy/routes/dashboard.php:182
+#: app/legacy/routes/json.php:710 app/legacy/routes/json.php:1032
+#: app/legacy/routes/json.php:1318 app/legacy/routes/json.php:1319
+#: app/legacy/routes/json.php:1536 app/legacy/routes/search.php:117
+#: app/legacy/routes/user.php:136 app/legacy/routes/user.php:140
+#: app/src/Legacy/Classes/Listing.php:780
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5883
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:155
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:157
 #: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:30
+#: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:74
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:15
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:44
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:14
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:70
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:190
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:105
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:225
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:35
 #: content/legacy/themes/Peafowl/views/settings/account.php:68
 msgid "User"
@@ -324,253 +329,237 @@ msgid_plural "Users"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/dashboard.php:98
+#: app/legacy/routes/dashboard.php:132
 msgid "Bulk importer"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:99 app/legacy/routes/settings.php:520
-#: content/legacy/themes/Peafowl/header.php:259
-#: content/legacy/themes/Peafowl/header.php:290
+#: app/legacy/routes/dashboard.php:133 app/legacy/routes/settings.php:528
+#: content/legacy/themes/Peafowl/header.php:247
+#: content/legacy/themes/Peafowl/header.php:292
 #: content/legacy/themes/Peafowl/views/settings.php:17
 msgid "Settings"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:129
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:17
+#: app/legacy/routes/dashboard.php:134 app/legacy/routes/dashboard.php:402
+#, php-format
+msgid "Run %s"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:166
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:16
 #: content/legacy/themes/Peafowl/views/settings/profile.php:51
 #: content/legacy/themes/Peafowl/views/user.php:83
 msgid "Website"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:130 app/legacy/routes/json.php:558
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:15
+#: app/legacy/routes/dashboard.php:167 app/legacy/routes/json.php:560
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:14
 msgid "Content"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:131 app/legacy/routes/dashboard.php:685
+#: app/legacy/routes/dashboard.php:168 app/legacy/routes/dashboard.php:847
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:11
 msgid "Listings"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:132
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:18
-msgid "Image upload"
+#: app/legacy/routes/dashboard.php:169 app/legacy/routes/dashboard.php:580
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:18
+msgid "File uploads"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:133
+#: app/legacy/routes/dashboard.php:170
 #: content/legacy/themes/Peafowl/views/dashboard/settings/semantics.php:19
 msgid "Semantics"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:134
-#: content/legacy/themes/Peafowl/header.php:121
+#: app/legacy/routes/dashboard.php:171
+#: content/legacy/themes/Peafowl/header.php:123
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:13
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:15
 msgid "Categories"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:135
+#: app/legacy/routes/dashboard.php:172
 #: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:12
 #: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:14
 msgid "Theme"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:136 app/src/Legacy/functions.php:332
+#: app/legacy/routes/dashboard.php:173 app/src/Legacy/functions.php:336
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:12
 msgid "System"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:137
+#: app/legacy/routes/dashboard.php:174
 #: content/legacy/themes/Peafowl/views/dashboard/settings/languages.php:16
 msgid "Languages"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:138 app/src/Legacy/functions.php:345
+#: app/legacy/routes/dashboard.php:175 app/src/Legacy/functions.php:349
 #: content/legacy/themes/Peafowl/views/dashboard/settings/email.php:12
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:46
 msgid "Email"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:139
+#: app/legacy/routes/dashboard.php:176
 #: content/legacy/themes/Peafowl/views/dashboard/settings/email.php:17
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:12
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:11
 msgid "Tools"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:140
+#: app/legacy/routes/dashboard.php:177
 #: content/legacy/themes/Peafowl/views/dashboard/settings/logo.php:13
 #: content/legacy/themes/Peafowl/views/dashboard/settings/logo.php:15
 msgid "Logo"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:141
-#: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:13
-msgid "External storage"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:142 app/legacy/routes/dashboard.php:668
-#: app/legacy/routes/settings.php:101
+#: app/legacy/routes/dashboard.php:178 app/legacy/routes/dashboard.php:830
+#: app/legacy/routes/settings.php:100
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:14
 msgid "Homepage"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:143
+#: app/legacy/routes/dashboard.php:179
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:233
 msgid "Pages"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:144
-#: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:12
-msgid "Routing"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:145
-#: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:11
-msgid "External services"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:146
-#: content/legacy/themes/Peafowl/views/dashboard/settings/login-providers.php:20
-msgid "Login providers"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:147 app/legacy/routes/plugin.php:109
+#: app/legacy/routes/dashboard.php:180 app/legacy/routes/plugin.php:109
 #: content/legacy/themes/Peafowl/views/plugin.php:16
 msgid "Upload plugin"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:148
-#: content/legacy/themes/Peafowl/views/dashboard/settings/cookie-compliance.php:11
-msgid "Cookie compliance"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:149
+#: app/legacy/routes/dashboard.php:181
 #: content/legacy/themes/Peafowl/views/dashboard/settings/consent-screen.php:13
 msgid "Consent screen"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:150
-#: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:12
-#: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:14
-msgid "Flood protection"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:151
-#: content/legacy/themes/Peafowl/views/dashboard/settings/banners.php:10
-msgid "Banners"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:152
-#: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:18
-msgid "IP bans"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:154
+#: app/legacy/routes/dashboard.php:183
 #: content/legacy/themes/Peafowl/views/dashboard/settings/guest-api.php:10
 #, php-format
 msgid "Guests %s"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:155
+#: app/legacy/routes/dashboard.php:184
+#: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:13
+msgid "External storage"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:185
+#: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:12
+msgid "Routing"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:186
+#: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:11
+msgid "External services"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:187
+#: content/legacy/themes/Peafowl/views/dashboard/settings/login-providers.php:20
+msgid "Login providers"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:188
+#: content/legacy/themes/Peafowl/views/dashboard/settings/cookie-compliance.php:11
+msgid "Cookie compliance"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:189
+#: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:12
+#: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:14
+msgid "Flood protection"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:190
+#: content/legacy/themes/Peafowl/views/dashboard/settings/banners.php:10
+msgid "Banners"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:191
+#: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:18
+msgid "IP bans"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:192
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:14
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:16
 msgid "Watermarks"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:291
-msgid "Documentation"
+#: app/legacy/routes/dashboard.php:360 app/legacy/routes/dashboard.php:363
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2149
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+msgid "Upgrade now"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:296
-msgid "Admin"
+#: app/legacy/routes/dashboard.php:366
+msgid "The latest release will be downloaded and extracted in the filesystem."
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:296 app/legacy/routes/dashboard.php:301
-#, php-format
-msgid "%s docs"
+#: app/legacy/routes/dashboard.php:371
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:27
+msgid "License key"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:309 app/legacy/routes/dashboard.php:322
+#: app/legacy/routes/dashboard.php:381 app/legacy/routes/dashboard.php:507
 msgid "Support"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:317
-msgid "Releases"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:327
-msgid "Community"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:332
-msgid "License"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:352
+#: app/legacy/routes/dashboard.php:408
 msgid "install update"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:354
-msgid "Check updates"
+#: app/legacy/routes/dashboard.php:410
+msgid "Check upgrades"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:356
+#: app/legacy/routes/dashboard.php:412
 msgid "not running"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:378
+#: app/legacy/routes/dashboard.php:431
+#, php-format
+msgid "PHP function [%s] not available in this PHP installation"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:462
 msgid "Max. upload file size"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:382
-msgid "Graphics Library"
+#: app/legacy/routes/dashboard.php:466
+msgid "Graphics library"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:386
+#: app/legacy/routes/dashboard.php:473
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:61
+msgid "Stats"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:474
 msgid "Rebuild stats"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:389
+#: app/legacy/routes/dashboard.php:477
 msgid "Connecting IP"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:390
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:16
+#: app/legacy/routes/dashboard.php:478
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:45
 msgid "Not your IP?"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:403
-msgid "Cron last ran"
+#: app/legacy/routes/dashboard.php:481
+msgid "Encryption"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:411
-msgid "PHP version"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:415
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:142
-msgid "Server"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:419
-msgid "MySQL version"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:423
-msgid "MySQL server info"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:427
-msgid "File uploads"
-msgstr ""
-
-#: app/legacy/routes/dashboard.php:429
+#: app/legacy/routes/dashboard.php:482 app/legacy/routes/dashboard.php:582
 #: content/legacy/themes/Peafowl/views/dashboard/settings/consent-screen.php:18
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:20
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:28
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:36
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:43
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:55
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:19
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:27
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:35
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:42
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:54
 #: content/legacy/themes/Peafowl/views/dashboard/settings/cookie-compliance.php:16
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:65
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:87
@@ -579,17 +568,17 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:158
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:178
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:194
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:43
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:52
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:70
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:95
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:110
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:118
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:127
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:172
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:17
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:28
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:99
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:43
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:52
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:70
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:95
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:110
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:118
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:127
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:172
 #: content/legacy/themes/Peafowl/views/dashboard/settings/languages.php:32
 #: content/legacy/themes/Peafowl/views/dashboard/settings/languages.php:40
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:31
@@ -602,11 +591,11 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:64
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:79
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:102
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:56
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:64
 #: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:72
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:98
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:119
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:80
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:88
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:114
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:135
 #: content/legacy/themes/Peafowl/views/dashboard/settings/upload-plugin.php:17
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:21
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:30
@@ -614,25 +603,25 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:60
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:71
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:19
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:80
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:92
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:103
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:115
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:126
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:138
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:149
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:160
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:171
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:79
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:91
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:102
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:114
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:125
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:137
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:148
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:159
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:170
 msgid "Enabled"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:430
+#: app/legacy/routes/dashboard.php:482 app/legacy/routes/dashboard.php:583
 #: content/legacy/themes/Peafowl/views/dashboard/settings/consent-screen.php:18
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:20
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:28
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:36
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:43
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:54
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:19
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:27
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:35
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:42
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:53
 #: content/legacy/themes/Peafowl/views/dashboard/settings/cookie-compliance.php:16
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:65
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:87
@@ -643,18 +632,18 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:194
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:201
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-services.php:207
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:43
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:52
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:70
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:82
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:95
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:110
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:118
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:127
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:173
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:17
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:28
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:99
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:43
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:52
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:70
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:82
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:95
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:110
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:118
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:127
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:173
 #: content/legacy/themes/Peafowl/views/dashboard/settings/languages.php:32
 #: content/legacy/themes/Peafowl/views/dashboard/settings/languages.php:40
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:31
@@ -667,12 +656,12 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:64
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:79
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:102
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:56
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:64
 #: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:72
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:98
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:109
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:119
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:80
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:88
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:114
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:125
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:135
 #: content/legacy/themes/Peafowl/views/dashboard/settings/upload-plugin.php:17
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:21
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:30
@@ -680,455 +669,501 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:60
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:71
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:19
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:80
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:92
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:103
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:115
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:126
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:138
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:149
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:160
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:171
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:79
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:91
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:102
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:114
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:125
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:137
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:148
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:159
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:170
 msgid "Disabled"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:433
+#: app/legacy/routes/dashboard.php:485
+msgid "Meta"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:492
+msgid "Blog"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:497
+msgid "Docs"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:502
+msgid "Releases"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:512
+msgid "Chat"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:517
+msgid "Community"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:538
+msgid "Links"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:546
+msgid "Cron last ran"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:554
+msgid "PHP version"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:558
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:144
+msgid "Server"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:586
 msgid "Max. execution time"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:434
+#: app/legacy/routes/dashboard.php:587
 #, php-format
 msgid "%d second"
 msgid_plural "%d seconds"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/dashboard.php:437
+#: app/legacy/routes/dashboard.php:590
 msgid "Memory limit"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:531
+#: app/legacy/routes/dashboard.php:692
 msgid "Can't delete all homepage cover images"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:552
+#: app/legacy/routes/dashboard.php:714
 msgid "Homepage cover image deleted"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:568
+#: app/legacy/routes/dashboard.php:730
 msgid "Local"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:572
+#: app/legacy/routes/dashboard.php:734
 msgid "External"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:577
-#: content/legacy/themes/Peafowl/header.php:79
+#: app/legacy/routes/dashboard.php:739
+#: content/legacy/themes/Peafowl/header.php:81
 #: content/legacy/themes/Peafowl/snippets/form_advanced_search.php:48
 #: content/legacy/themes/Peafowl/snippets/form_advanced_search.php:71
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:27
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:84
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:84
 msgid "All"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:584
+#: app/legacy/routes/dashboard.php:746
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:54
 msgid "search content"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:598
+#: app/legacy/routes/dashboard.php:760
 msgid "Add page"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:622
+#: app/legacy/routes/dashboard.php:784
 #, php-format
 msgid "Edit page ID %s"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:627
+#: app/legacy/routes/dashboard.php:789
 msgid "The page has been added successfully."
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:655
+#: app/legacy/routes/dashboard.php:817
 msgid "The page has been deleted."
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:671 app/legacy/routes/dashboard.php:674
-#: app/legacy/routes/dashboard.php:677 app/legacy/routes/dashboard.php:680
+#: app/legacy/routes/dashboard.php:833 app/legacy/routes/dashboard.php:836
+#: app/legacy/routes/dashboard.php:839 app/legacy/routes/dashboard.php:842
 msgid "homepage"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:671
+#: app/legacy/routes/dashboard.php:833
 #, php-format
 msgid "Before main title (%s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:674
+#: app/legacy/routes/dashboard.php:836
 #, php-format
 msgid "After call to action (%s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:677
+#: app/legacy/routes/dashboard.php:839
 #, php-format
 msgid "After cover (%s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:680
+#: app/legacy/routes/dashboard.php:842
 #, php-format
 msgid "After listing (%s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:688
+#: app/legacy/routes/dashboard.php:850
 msgid "Before pagination"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:691
+#: app/legacy/routes/dashboard.php:853
 msgid "After pagination"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:696
+#: app/legacy/routes/dashboard.php:858
 msgid "Content (image and album)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:699
+#: app/legacy/routes/dashboard.php:861
 msgid "Tab about column"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:702
+#: app/legacy/routes/dashboard.php:864
 msgid "Before comments"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:707
+#: app/legacy/routes/dashboard.php:869
 msgid "Image page"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:710
+#: app/legacy/routes/dashboard.php:872
 msgid "Inside viewer top (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:713
+#: app/legacy/routes/dashboard.php:875
 msgid "Inside viewer foot (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:716
+#: app/legacy/routes/dashboard.php:878
 msgid "After image viewer (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:719
+#: app/legacy/routes/dashboard.php:881
 msgid "Before header (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:722
+#: app/legacy/routes/dashboard.php:884
 msgid "After header (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:725
+#: app/legacy/routes/dashboard.php:887
 msgid "Footer (image page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:730 app/legacy/routes/dashboard.php:752
+#: app/legacy/routes/dashboard.php:892 app/legacy/routes/dashboard.php:914
 #, php-format
 msgid "%s page"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:733
+#: app/legacy/routes/dashboard.php:895
 #, php-format
 msgid "Before header (%s page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:736
+#: app/legacy/routes/dashboard.php:898
 #, php-format
 msgid "After header (%s page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:741
+#: app/legacy/routes/dashboard.php:903
 msgid "User profile page"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:744
+#: app/legacy/routes/dashboard.php:906
 msgid "After top (user profile)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:747
+#: app/legacy/routes/dashboard.php:909
 msgid "Before listing (user profile)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:752 app/legacy/routes/dashboard.php:755
-#: app/legacy/routes/explore.php:54 app/legacy/routes/explore.php:97
-#: app/src/Legacy/Classes/Listing.php:720
-#: content/legacy/themes/Peafowl/header.php:86
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:100
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:112
+#: app/legacy/routes/dashboard.php:914 app/legacy/routes/dashboard.php:917
+#: app/legacy/routes/explore.php:54 app/legacy/routes/explore.php:100
+#: app/src/Legacy/Classes/Listing.php:724
+#: content/legacy/themes/Peafowl/header.php:88
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:99
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:111
 msgid "Explore"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:755
+#: app/legacy/routes/dashboard.php:917
 #, php-format
 msgid "After top (%s page)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:764
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:48
+#: app/legacy/routes/dashboard.php:926
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:47
 msgid "NSFW"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:830
+#: app/legacy/routes/dashboard.php:992
 msgid "Invalid website name"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:835
+#: app/legacy/routes/dashboard.php:997
 msgid "Invalid language"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:840
+#: app/legacy/routes/dashboard.php:1002
 msgid "Invalid timezone"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:845 app/legacy/routes/dashboard.php:850
-#: app/legacy/routes/dashboard.php:855 app/legacy/routes/dashboard.php:1055
-#: app/legacy/routes/dashboard.php:1060 app/legacy/routes/dashboard.php:1065
-#: app/legacy/routes/dashboard.php:1072
+#: app/legacy/routes/dashboard.php:1007 app/legacy/routes/dashboard.php:1012
+#: app/legacy/routes/dashboard.php:1017 app/legacy/routes/dashboard.php:1225
+#: app/legacy/routes/dashboard.php:1230 app/legacy/routes/dashboard.php:1235
+#: app/legacy/routes/dashboard.php:1242
 #, php-format
 msgid "Invalid value: %s"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:860
+#: app/legacy/routes/dashboard.php:1022
 msgid "Invalid upload storage mode"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:865
+#: app/legacy/routes/dashboard.php:1027
 msgid "Invalid upload filenaming"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:870
+#: app/legacy/routes/dashboard.php:1032
 msgid "Invalid thumb width"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:875
+#: app/legacy/routes/dashboard.php:1037
 msgid "Invalid thumb height"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:880
+#: app/legacy/routes/dashboard.php:1042
 msgid "Invalid medium size"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:885
+#: app/legacy/routes/dashboard.php:1047
 msgid "Invalid watermark percentage"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:890
+#: app/legacy/routes/dashboard.php:1052
 msgid "Invalid watermark opacity"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:895
+#: app/legacy/routes/dashboard.php:1057
 msgid "Invalid theme"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:900 app/legacy/routes/dashboard.php:1167
-#: app/legacy/routes/dashboard.php:1387
+#: app/legacy/routes/dashboard.php:1062 app/legacy/routes/dashboard.php:1337
+#: app/legacy/routes/dashboard.php:1557
 msgid "Invalid value"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:908
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:38
-msgid "palette"
+#: app/legacy/routes/dashboard.php:1070
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:54
+msgid "font"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:908
+#: app/legacy/routes/dashboard.php:1070 app/legacy/routes/dashboard.php:1078
 #, php-format
 msgid "Invalid %s"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:913
+#: app/legacy/routes/dashboard.php:1078
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:38
+msgid "palette"
+msgstr ""
+
+#: app/legacy/routes/dashboard.php:1083
 msgid "Invalid theme image listing size"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:918
+#: app/legacy/routes/dashboard.php:1088
 msgid "Invalid user id"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:923
+#: app/legacy/routes/dashboard.php:1093
 msgid "Invalid email mode"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:928
+#: app/legacy/routes/dashboard.php:1098
 msgid "Invalid SMTP port"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:933
+#: app/legacy/routes/dashboard.php:1103
 msgid "Invalid SMTP security"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:938
+#: app/legacy/routes/dashboard.php:1108
 msgid "Invalid website mode"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:943 app/legacy/routes/dashboard.php:1249
+#: app/legacy/routes/dashboard.php:1113 app/legacy/routes/dashboard.php:1419
 msgid "Invalid personal mode user ID"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:948
+#: app/legacy/routes/dashboard.php:1118
 msgid "Invalid or reserved route"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:953
+#: app/legacy/routes/dashboard.php:1123
 msgid "Invalid website privacy mode"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:958
+#: app/legacy/routes/dashboard.php:1128
 msgid "Invalid website content privacy mode"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:963
+#: app/legacy/routes/dashboard.php:1133
 msgid "Invalid homepage style"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:968
+#: app/legacy/routes/dashboard.php:1138
 msgid "Invalid homepage call to action button color"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:975
+#: app/legacy/routes/dashboard.php:1145
 msgid "Invalid homepage call to action functionality"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:980
+#: app/legacy/routes/dashboard.php:1150
 msgid "Invalid title"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:985
+#: app/legacy/routes/dashboard.php:1155
 msgid "Invalid status"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:990
+#: app/legacy/routes/dashboard.php:1160
 msgid "Invalid type"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:995
+#: app/legacy/routes/dashboard.php:1165
 msgid "Invalid visibility"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1000
+#: app/legacy/routes/dashboard.php:1170
 msgid "Invalid internal type"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1005
+#: app/legacy/routes/dashboard.php:1175
 msgid "Invalid target attribute"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1010
+#: app/legacy/routes/dashboard.php:1180
 msgid "Invalid rel attribute"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1015
+#: app/legacy/routes/dashboard.php:1185
 msgid "Invalid icon"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1020
+#: app/legacy/routes/dashboard.php:1190
 msgid "Invalid URL key"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1025
+#: app/legacy/routes/dashboard.php:1195
 msgid "Invalid file path"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1030
+#: app/legacy/routes/dashboard.php:1200
 msgid "Invalid link URL"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1035
+#: app/legacy/routes/dashboard.php:1205
 msgid "Invalid user minimum age"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1040 app/legacy/routes/dashboard.php:1045
-#: app/legacy/routes/dashboard.php:1050
+#: app/legacy/routes/dashboard.php:1210 app/legacy/routes/dashboard.php:1215
+#: app/legacy/routes/dashboard.php:1220
 msgid "Only alphanumeric, hyphen and underscore characters are allowed"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1077 app/legacy/routes/dashboard.php:1371
+#: app/legacy/routes/dashboard.php:1247 app/legacy/routes/dashboard.php:1541
 msgid "Invalid URL"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1083 app/legacy/routes/dashboard.php:1089
-#: app/legacy/routes/dashboard.php:1095 app/legacy/routes/dashboard.php:1359
+#: app/legacy/routes/dashboard.php:1253 app/legacy/routes/dashboard.php:1259
+#: app/legacy/routes/dashboard.php:1265 app/legacy/routes/dashboard.php:1529
 msgid "Invalid key"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1105
+#: app/legacy/routes/dashboard.php:1275
 msgid "Routes can't be the same"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1143
+#: app/legacy/routes/dashboard.php:1313
 msgid "Invalid upload image path"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1159
+#: app/legacy/routes/dashboard.php:1329
 msgid "Invalid call to action URL"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1169
+#: app/legacy/routes/dashboard.php:1339
 #, php-format
 msgid "Max. allowed %s"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1182
+#: app/legacy/routes/dashboard.php:1352
 msgid "Can't map %m to an existing folder (%f)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1191
+#: app/legacy/routes/dashboard.php:1361
 msgid "Can't map %m to an existing route (%r)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1198
+#: app/legacy/routes/dashboard.php:1368
 msgid "Can't map %m to %r (username collision)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1304
+#: app/legacy/routes/dashboard.php:1474
 msgid "Invalid SMTP server"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1305
+#: app/legacy/routes/dashboard.php:1475
 msgid "Invalid SMTP username"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1409
+#: app/legacy/routes/dashboard.php:1579
 #, php-format
 msgid "This URL key is already being used by another page (ID %s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1410
+#: app/legacy/routes/dashboard.php:1580
 #, php-format
 msgid "This file path is already being used by another page (ID %s)"
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1437
+#: app/legacy/routes/dashboard.php:1613
 #, php-format
 msgid "Can't save page contents: %s."
 msgstr ""
 
-#: app/legacy/routes/dashboard.php:1590 app/src/Legacy/functions.php:307
-#: content/legacy/themes/Peafowl/header.php:289
+#: app/legacy/routes/dashboard.php:1770 app/src/Legacy/functions.php:311
+#: content/legacy/themes/Peafowl/header.php:291
 #: content/legacy/themes/Peafowl/views/dashboard.php:33
 msgid "Dashboard"
 msgstr ""
 
-#: app/legacy/routes/following.php:60 app/legacy/routes/user.php:132
-#: content/legacy/themes/Peafowl/header.php:99
-#: content/legacy/themes/Peafowl/header.php:254
+#: app/legacy/routes/following.php:60 app/legacy/routes/user.php:137
+#: content/legacy/themes/Peafowl/header.php:101
+#: content/legacy/themes/Peafowl/header.php:259
 #: content/legacy/themes/Peafowl/views/following.php:16
 #: content/legacy/themes/Peafowl/views/user.php:93
 #: content/legacy/themes/Peafowl/views/user.php:109
 msgid "Following"
 msgstr ""
 
-#: app/legacy/routes/image.php:153 content/legacy/themes/Peafowl/header.php:340
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:83
+#: app/legacy/routes/image.php:153 content/legacy/themes/Peafowl/header.php:342
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:99
 #: content/legacy/themes/Peafowl/views/dashboard/settings/upload-plugin.php:21
 msgid "About"
 msgstr ""
 
 #: app/legacy/routes/image.php:161
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:84
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:100
 msgid "Comments"
 msgstr ""
 
@@ -1152,79 +1187,42 @@ msgstr ""
 msgid "Image %i hosted in %w"
 msgstr ""
 
-#: app/legacy/routes/image.php:278
-msgid "Direct links"
-msgstr ""
-
-#: app/legacy/routes/image.php:281
-msgid "Image link"
-msgstr ""
-
-#: app/legacy/routes/image.php:285
-msgid "Image URL"
-msgstr ""
-
-#: app/legacy/routes/image.php:289
-msgid "Thumbnail URL"
-msgstr ""
-
-#: app/legacy/routes/image.php:296
-msgid "Medium URL"
-msgstr ""
-
-#: app/legacy/routes/image.php:306
-msgid "Full image"
-msgstr ""
-
-#: app/legacy/routes/image.php:326
-msgid "Full image (linked)"
-msgstr ""
-
-#: app/legacy/routes/image.php:349
-msgid "Medium image (linked)"
-msgstr ""
-
-#: app/legacy/routes/image.php:372
-msgid "Thumbnail image (linked)"
-msgstr ""
-
 #: app/legacy/routes/index.php:248
 msgid "Start uploading"
 msgstr ""
 
-#: app/legacy/routes/json.php:97 app/legacy/routes/json.php:404
-#: app/legacy/routes/json.php:800 app/legacy/routes/json.php:967
-#: app/legacy/routes/json.php:1142
+#: app/legacy/routes/json.php:99 app/legacy/routes/json.php:406
+#: app/legacy/routes/json.php:798 app/legacy/routes/json.php:965
+#: app/legacy/routes/json.php:1140
 msgid "Login needed"
 msgstr ""
 
-#: app/legacy/routes/json.php:450 app/legacy/routes/json.php:496
-#: app/legacy/routes/json.php:1346 app/legacy/routes/search.php:109
+#: app/legacy/routes/json.php:452 app/legacy/routes/json.php:498
+#: app/legacy/routes/json.php:1344 app/legacy/routes/search.php:109
 #: content/legacy/themes/Peafowl/views/dashboard/settings/logo.php:19
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:23
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:46
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:77
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:173
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:93
 msgid "Image"
 msgid_plural "Images"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/json.php:450 app/legacy/routes/json.php:522
+#: app/legacy/routes/json.php:452 app/legacy/routes/json.php:524
 #, php-format
 msgid "%s doesn't exists"
 msgstr ""
 
-#: app/legacy/routes/json.php:496 app/legacy/routes/json.php:558
-#: app/legacy/routes/json.php:608
+#: app/legacy/routes/json.php:498 app/legacy/routes/json.php:560
+#: app/legacy/routes/json.php:610
 #, php-format
 msgid "%s edited"
 msgstr ""
 
-#: app/legacy/routes/json.php:597 app/legacy/routes/json.php:608
-#: app/legacy/routes/json.php:739 app/legacy/routes/json.php:748
-#: app/src/Legacy/Classes/Import.php:750 app/src/Legacy/Classes/Import.php:760
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:173
+#: app/legacy/routes/json.php:599 app/legacy/routes/json.php:610
+#: app/legacy/routes/json.php:737 app/legacy/routes/json.php:746
+#: app/src/Legacy/Classes/Import.php:752 app/src/Legacy/Classes/Import.php:762
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:175
 #: content/legacy/themes/Peafowl/snippets/form_advanced_search.php:51
 #: content/legacy/themes/Peafowl/snippets/form_category.php:11
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:8
@@ -1232,121 +1230,133 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: app/legacy/routes/json.php:597 app/legacy/routes/json.php:739
+#: app/legacy/routes/json.php:599 app/legacy/routes/json.php:737
 #, php-format
 msgid "%s URL key already being used."
 msgstr ""
 
-#: app/legacy/routes/json.php:625 app/legacy/routes/json.php:764
-msgid "IP address already banned"
-msgstr ""
-
-#: app/legacy/routes/json.php:669 app/legacy/routes/json.php:723
+#: app/legacy/routes/json.php:667 app/legacy/routes/json.php:721
 msgid "Missing values"
 msgstr ""
 
-#: app/legacy/routes/json.php:673 app/legacy/routes/json.php:1272
-#: app/legacy/routes/json.php:1276 app/legacy/routes/settings.php:211
-#: app/legacy/routes/signup.php:92
+#: app/legacy/routes/json.php:671 app/legacy/routes/json.php:1270
+#: app/legacy/routes/json.php:1274 app/legacy/routes/settings.php:210
+#: app/legacy/routes/signup.php:91
 msgid "Invalid username"
 msgstr ""
 
-#: app/legacy/routes/json.php:682
+#: app/legacy/routes/json.php:680
 msgid "Invalid role"
 msgstr ""
 
-#: app/legacy/routes/json.php:685
+#: app/legacy/routes/json.php:683
 msgid "Username already being used"
 msgstr ""
 
-#: app/legacy/routes/json.php:712 app/legacy/routes/json.php:748
+#: app/legacy/routes/json.php:710 app/legacy/routes/json.php:746
 #, php-format
 msgid "%s added"
 msgstr ""
 
-#: app/legacy/routes/json.php:1034 app/legacy/routes/json.php:1538
+#: app/legacy/routes/json.php:762
+msgid "IP address already banned"
+msgstr ""
+
+#: app/legacy/routes/json.php:1032 app/legacy/routes/json.php:1536
 #, php-format
 msgid "%s not found"
 msgstr ""
 
-#: app/legacy/routes/json.php:1162
+#: app/legacy/routes/json.php:1160
 #, php-format
 msgid "Add a password or another social connection before deleting %s"
 msgstr ""
 
-#: app/legacy/routes/json.php:1174
+#: app/legacy/routes/json.php:1172
 #, php-format
 msgid "Add an email or another social connection before deleting %s"
 msgstr ""
 
-#: app/legacy/routes/json.php:1185
+#: app/legacy/routes/json.php:1183
 #, php-format
 msgid "%s has been disconnected."
 msgstr ""
 
-#: app/legacy/routes/json.php:1231
+#: app/legacy/routes/json.php:1229
 msgid "Test email from %s @ %t"
 msgstr ""
 
-#: app/legacy/routes/json.php:1231
+#: app/legacy/routes/json.php:1229
 msgid "This is just a test"
 msgstr ""
 
-#: app/legacy/routes/json.php:1234
+#: app/legacy/routes/json.php:1232
 #, php-format
 msgid "Test email sent to %s."
 msgstr ""
 
-#: app/legacy/routes/json.php:1281
+#: app/legacy/routes/json.php:1279
 #, php-format
 msgid "Downloading %s data"
 msgstr ""
 
-#: app/legacy/routes/json.php:1320
+#: app/legacy/routes/json.php:1318
 #, php-format
 msgid "%s %u followed"
 msgstr ""
 
-#: app/legacy/routes/json.php:1321
+#: app/legacy/routes/json.php:1319
 #, php-format
 msgid "%s %u unfollowed"
 msgstr ""
 
-#: app/legacy/routes/json.php:1345
+#: app/legacy/routes/json.php:1343
 msgid "%s doesn't belong to this %t"
 msgstr ""
 
-#: app/legacy/routes/json.php:1361
+#: app/legacy/routes/json.php:1359
 #, php-format
 msgid "%s cover updated"
 msgstr ""
 
-#: app/legacy/routes/json.php:1381
+#: app/legacy/routes/json.php:1379
 msgid "Content liked"
 msgstr ""
 
-#: app/legacy/routes/json.php:1381
+#: app/legacy/routes/json.php:1379
 msgid "Content disliked"
 msgstr ""
 
-#: app/legacy/routes/json.php:1435
+#: app/legacy/routes/json.php:1433
 msgid "%u liked your %t %c"
 msgstr ""
 
-#: app/legacy/routes/json.php:1444
+#: app/legacy/routes/json.php:1442
 #, php-format
 msgid "%u is now following you"
 msgstr ""
 
-#: app/legacy/routes/json.php:1453
+#: app/legacy/routes/json.php:1451
 msgid "A private user"
 msgstr ""
 
-#: app/legacy/routes/login.php:113
+#: app/legacy/routes/json.php:1568
+msgid "Chevereto V%s license key used, required V%r or greater license key"
+msgstr ""
+
+#: app/legacy/routes/json.php:1583
+msgid "License key removed"
+msgstr ""
+
+#: app/legacy/routes/json.php:1584
+msgid "License key updated"
+msgstr ""
+
+#: app/legacy/routes/login.php:112
 msgid "Wrong Username/Email password combination"
 msgstr ""
 
-#: app/legacy/routes/login.php:121 content/legacy/themes/Peafowl/header.php:193
+#: app/legacy/routes/login.php:120 content/legacy/themes/Peafowl/header.php:195
 #: content/legacy/themes/Peafowl/snippets/quickty/top_left.php:25
 msgid "Sign in"
 msgstr ""
@@ -1360,29 +1370,29 @@ msgstr ""
 msgid "%t search results for %s"
 msgstr ""
 
-#: app/legacy/routes/search.php:121 app/legacy/routes/user.php:115
-#: app/legacy/routes/user.php:116 app/src/Legacy/Classes/Listing.php:730
-#: content/legacy/themes/Peafowl/header.php:147
-#: content/legacy/themes/Peafowl/header.php:152
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:77
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:89
+#: app/legacy/routes/search.php:121 app/legacy/routes/user.php:120
+#: app/legacy/routes/user.php:121 app/src/Legacy/Classes/Listing.php:734
+#: content/legacy/themes/Peafowl/header.php:149
+#: content/legacy/themes/Peafowl/header.php:154
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:76
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:88
 msgid "Search"
 msgstr ""
 
-#: app/legacy/routes/settings.php:95
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:73
+#: app/legacy/routes/settings.php:94
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:75
 msgid "Account"
 msgstr ""
 
-#: app/legacy/routes/settings.php:96
+#: app/legacy/routes/settings.php:95
 msgid "Profile"
 msgstr ""
 
-#: app/legacy/routes/settings.php:97 app/src/Legacy/Classes/Album.php:425
+#: app/legacy/routes/settings.php:96 app/src/Legacy/Classes/Album.php:446
 #: content/legacy/themes/Peafowl/snippets/form_album.php:90
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:102
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:103
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:159
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:104
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:105
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:161
 #: content/legacy/themes/Peafowl/snippets/form_sub_album.php:48
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:51
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:52
@@ -1393,40 +1403,40 @@ msgstr ""
 msgid "Password"
 msgstr ""
 
-#: app/legacy/routes/settings.php:98
+#: app/legacy/routes/settings.php:97
 msgid "Security"
 msgstr ""
 
-#: app/legacy/routes/settings.php:100
+#: app/legacy/routes/settings.php:99
 msgid "Connections"
 msgstr ""
 
-#: app/legacy/routes/settings.php:102
+#: app/legacy/routes/settings.php:101
 #: content/legacy/themes/Peafowl/footer.php:30
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:146
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:151
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:145
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:150
 msgid "Powered by"
 msgstr ""
 
-#: app/legacy/routes/settings.php:218
+#: app/legacy/routes/settings.php:217
 #, php-format
 msgid "Invalid image expiration: %s"
 msgstr ""
 
-#: app/legacy/routes/settings.php:283
+#: app/legacy/routes/settings.php:291
 #, php-format
 msgid "An email has been sent to %s with instructions to activate this email"
 msgstr ""
 
-#: app/legacy/routes/settings.php:302 content/pages/default/contact.php:36
+#: app/legacy/routes/settings.php:310 content/pages/default/contact.php:36
 msgid "Invalid name"
 msgstr ""
 
-#: app/legacy/routes/settings.php:306
+#: app/legacy/routes/settings.php:314
 msgid "Invalid website"
 msgstr ""
 
-#: app/legacy/routes/settings.php:313 app/legacy/routes/signup.php:112
+#: app/legacy/routes/settings.php:321 app/legacy/routes/signup.php:111
 #: app/src/Legacy/Classes/Akismet.php:584
 #: app/src/Legacy/Classes/Akismet.php:595
 #: app/src/Legacy/Classes/Akismet.php:616
@@ -1434,41 +1444,41 @@ msgstr ""
 msgid "Spam detected"
 msgstr ""
 
-#: app/legacy/routes/settings.php:322
+#: app/legacy/routes/settings.php:330
 msgid "Wrong password"
 msgstr ""
 
-#: app/legacy/routes/settings.php:325
+#: app/legacy/routes/settings.php:333
 msgid "Use a new password"
 msgstr ""
 
-#: app/legacy/routes/settings.php:456
+#: app/legacy/routes/settings.php:464
 #: content/legacy/themes/Peafowl/views/dashboard.php:88
 #: content/legacy/themes/Peafowl/views/settings.php:81
 msgid "Changes have been saved."
 msgstr ""
 
-#: app/legacy/routes/settings.php:464
+#: app/legacy/routes/settings.php:472
 msgid "Password has been changed"
 msgstr ""
 
-#: app/legacy/routes/settings.php:467
+#: app/legacy/routes/settings.php:475
 msgid "Password has been created."
 msgstr ""
 
-#: app/legacy/routes/settings.php:486
+#: app/legacy/routes/settings.php:494
 msgid "Wrong Username/Email values"
 msgstr ""
 
-#: app/legacy/routes/settings.php:519
+#: app/legacy/routes/settings.php:527
 #, php-format
 msgid "Settings for %s"
 msgstr ""
 
-#: app/legacy/routes/settings.php:540
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:98
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:99
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:37
+#: app/legacy/routes/settings.php:548
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:100
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:101
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:36
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:41
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:42
 #: content/legacy/themes/Peafowl/views/settings/account.php:86
@@ -1477,9 +1487,9 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-#: app/legacy/routes/settings.php:543
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:194
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:197
+#: app/legacy/routes/settings.php:551
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:193
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:196
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:26
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:30
 #: content/legacy/themes/Peafowl/views/user.php:123
@@ -1488,14 +1498,14 @@ msgid_plural "users"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/legacy/routes/settings.php:543
-#: content/legacy/themes/Peafowl/views/image.php:123
+#: app/legacy/routes/settings.php:551
+#: content/legacy/themes/Peafowl/views/image.php:127
 #: content/legacy/themes/Peafowl/views/user.php:123
 #, php-format
 msgid "Do you really want to delete this %s?"
 msgstr ""
 
-#: app/legacy/routes/settings.php:543
+#: app/legacy/routes/settings.php:551
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:98
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:103
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:108
@@ -1505,97 +1515,103 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:44
 #: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:30
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:249
-#: content/legacy/themes/Peafowl/views/image.php:123
+#: content/legacy/themes/Peafowl/views/image.php:127
 #: content/legacy/themes/Peafowl/views/user.php:44
 #: content/legacy/themes/Peafowl/views/user.php:123
 msgid "This can't be undone."
 msgstr ""
 
-#: app/legacy/routes/settings.php:543
+#: app/legacy/routes/settings.php:551
 msgid "Delete user"
 msgstr ""
 
-#: app/legacy/routes/settings.php:548
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:195
+#: app/legacy/routes/settings.php:556
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:194
 msgid "User ID"
 msgstr ""
 
-#: app/legacy/routes/settings.php:560 app/legacy/routes/settings.php:564
+#: app/legacy/routes/settings.php:560 app/legacy/routes/user.php:113
+#: app/legacy/routes/user.php:253
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:97
+msgid "Images"
+msgstr ""
+
+#: app/legacy/routes/settings.php:568 app/legacy/routes/settings.php:572
 msgid "Register date"
 msgstr ""
 
-#: app/legacy/routes/signup.php:101
+#: app/legacy/routes/signup.php:100
 msgid "You must agree to the terms and privacy policy"
 msgstr ""
 
-#: app/legacy/routes/signup.php:104
+#: app/legacy/routes/signup.php:103
 #, php-format
 msgid "You must be at least %s years old to use this website."
 msgstr ""
 
-#: app/legacy/routes/signup.php:237
+#: app/legacy/routes/signup.php:236
 #: content/legacy/themes/Peafowl/views/index.php:83
 #: content/legacy/themes/Peafowl/views/signup.php:21
 #: content/legacy/themes/Peafowl/views/signup.php:65
 msgid "Create account"
 msgstr ""
 
-#: app/legacy/routes/upload.php:45 content/legacy/themes/Peafowl/header.php:182
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:220
+#: app/legacy/routes/upload.php:45 content/legacy/themes/Peafowl/header.php:184
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:222
 msgid "Upload"
 msgstr ""
 
-#: app/legacy/routes/user.php:107 app/legacy/routes/user.php:111
-#: app/src/Legacy/Classes/User.php:192
+#: app/legacy/routes/user.php:108 app/legacy/routes/user.php:116
+#: app/src/Legacy/Classes/User.php:193
 msgid "%t by %s"
 msgstr ""
 
-#: app/legacy/routes/user.php:112 content/legacy/themes/Peafowl/header.php:245
+#: app/legacy/routes/user.php:117 content/legacy/themes/Peafowl/header.php:250
 msgid "Albums"
 msgstr ""
 
-#: app/legacy/routes/user.php:124
+#: app/legacy/routes/user.php:129
 #, php-format
 msgid "Liked by %s"
 msgstr ""
 
-#: app/legacy/routes/user.php:125 content/legacy/themes/Peafowl/header.php:248
+#: app/legacy/routes/user.php:130 content/legacy/themes/Peafowl/header.php:253
 msgid "Liked"
 msgstr ""
 
-#: app/legacy/routes/user.php:131
+#: app/legacy/routes/user.php:136
 msgid "%t followed by %s"
 msgstr ""
 
-#: app/legacy/routes/user.php:135
+#: app/legacy/routes/user.php:140
 msgid "%t following %s"
 msgstr ""
 
-#: app/legacy/routes/user.php:136 content/legacy/themes/Peafowl/header.php:255
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:166
+#: app/legacy/routes/user.php:141 content/legacy/themes/Peafowl/header.php:260
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:165
 msgid "Followers"
 msgstr ""
 
-#: app/legacy/routes/user.php:391
+#: app/legacy/routes/user.php:395
 #: content/legacy/themes/Peafowl/views/search.php:15
 #, php-format
 msgid "Search results for %s"
 msgstr ""
 
-#: app/legacy/routes/user.php:409
+#: app/legacy/routes/user.php:413
 msgid "%n (%u) albums on %w"
 msgstr ""
 
-#: app/legacy/routes/user.php:413
+#: app/legacy/routes/user.php:417
 msgid "%n (%u) on %w"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:176
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:112
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:113
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:123
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:396
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:426
+#: app/src/Legacy/Classes/Album.php:200
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:114
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:115
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:125
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:398
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:428
 #: content/legacy/themes/Peafowl/snippets/form_album.php:17
 #: content/legacy/themes/Peafowl/snippets/form_album.php:30
 #: content/legacy/themes/Peafowl/snippets/form_album.php:65
@@ -1621,53 +1637,55 @@ msgid_plural "albums"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Album.php:174 app/src/Legacy/Classes/Upload.php:343
+#: app/src/Legacy/Classes/Album.php:198 app/src/Legacy/Classes/Upload.php:362
 msgid "Flooding detected. You can only upload %limit% %content% per %time%"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:185
+#: app/src/Legacy/Classes/Album.php:209
 msgid "Unnamed"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:404
-#: content/legacy/themes/Peafowl/lib/chevereto.js:923
+#: app/src/Legacy/Classes/Album.php:425
+#: content/legacy/themes/Peafowl/lib/chevereto.js:892
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid ""
 "Note: This content is private but anyone with the link will be able to see "
 "this."
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:408
-#: content/legacy/themes/Peafowl/lib/chevereto.js:926
+#: app/src/Legacy/Classes/Album.php:429
+#: content/legacy/themes/Peafowl/lib/chevereto.js:895
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid ""
 "Note: This content is password protected. Remember to pass the content "
 "password to share."
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:412
-#: content/legacy/themes/Peafowl/lib/chevereto.js:929
+#: app/src/Legacy/Classes/Album.php:433
+#: content/legacy/themes/Peafowl/lib/chevereto.js:898
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid "Note: This content is private. Change privacy to \"public\" to share."
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:420 app/src/Legacy/Classes/User.php:87
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:212
+#: app/src/Legacy/Classes/Album.php:441 app/src/Legacy/Classes/User.php:87
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:211
 msgid "Private"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:422
+#: app/src/Legacy/Classes/Album.php:443
 #: content/legacy/themes/Peafowl/snippets/form_album.php:75
 #: content/legacy/themes/Peafowl/snippets/form_sub_album.php:30
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:212
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:211
 msgid "Public"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:423
+#: app/src/Legacy/Classes/Album.php:444
 msgid "Me"
 msgstr ""
 
-#: app/src/Legacy/Classes/Album.php:424 app/src/Legacy/Classes/Page.php:122
+#: app/src/Legacy/Classes/Album.php:445 app/src/Legacy/Classes/Page.php:122
+#: content/legacy/themes/Peafowl/snippets/embed.php:19
+#: content/legacy/themes/Peafowl/snippets/embed.php:149
 #: content/legacy/themes/Peafowl/snippets/modal_share.php:19
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:85
 msgid "Link"
@@ -1677,104 +1695,104 @@ msgstr ""
 msgid "CSAM content is forbidden"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:384
+#: app/src/Legacy/Classes/Image.php:407
 msgid "After %n %t"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:386 app/src/Legacy/functions.php:103
+#: app/src/Legacy/Classes/Image.php:409 app/src/Legacy/functions.php:103
 #: app/src/Legacy/functions.php:117
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:387 app/src/Legacy/functions.php:102
+#: app/src/Legacy/Classes/Image.php:410 app/src/Legacy/functions.php:102
 #: app/src/Legacy/functions.php:116
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:388 app/src/Legacy/functions.php:101
+#: app/src/Legacy/Classes/Image.php:411 app/src/Legacy/functions.php:101
 #: app/src/Legacy/functions.php:115
 msgid "day"
 msgid_plural "days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:389 app/src/Legacy/functions.php:100
+#: app/src/Legacy/Classes/Image.php:412 app/src/Legacy/functions.php:100
 #: app/src/Legacy/functions.php:114
 msgid "week"
 msgid_plural "weeks"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:390 app/src/Legacy/functions.php:99
+#: app/src/Legacy/Classes/Image.php:413 app/src/Legacy/functions.php:99
 #: app/src/Legacy/functions.php:113
 msgid "month"
 msgid_plural "months"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:391 app/src/Legacy/functions.php:98
+#: app/src/Legacy/Classes/Image.php:414 app/src/Legacy/functions.php:98
 #: app/src/Legacy/functions.php:112
 msgid "year"
 msgid_plural "years"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:394
+#: app/src/Legacy/Classes/Image.php:417
 msgid "Don't autodelete"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:451 app/src/Legacy/Classes/Page.php:111
+#: app/src/Legacy/Classes/Image.php:474 app/src/Legacy/Classes/Page.php:111
 #, php-format
 msgid "Can't open %s for writing"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:608 app/src/Legacy/Classes/Image.php:719
-#: app/src/Legacy/Classes/Image.php:760
+#: app/src/Legacy/Classes/Image.php:628 app/src/Legacy/Classes/Image.php:753
+#: app/src/Legacy/Classes/Image.php:802
 msgid "Duplicated upload"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:1050
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:220
+#: app/src/Legacy/Classes/Image.php:1102
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:222
 msgid "Private upload"
 msgstr ""
 
-#: app/src/Legacy/Classes/Image.php:1498
+#: app/src/Legacy/Classes/Image.php:1542
 msgid "view"
 msgid_plural "views"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Image.php:1499
+#: app/src/Legacy/Classes/Image.php:1543
 msgid "like"
 msgid_plural "likes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/src/Legacy/Classes/Listing.php:660
+#: app/src/Legacy/Classes/Listing.php:664
 msgid "Top"
 msgstr ""
 
-#: app/src/Legacy/Classes/Listing.php:666
+#: app/src/Legacy/Classes/Listing.php:670
 msgid "Most recent"
 msgstr ""
 
-#: app/src/Legacy/Classes/Listing.php:672
+#: app/src/Legacy/Classes/Listing.php:676
 msgid "Oldest"
 msgstr ""
 
-#: app/src/Legacy/Classes/Listing.php:678
+#: app/src/Legacy/Classes/Listing.php:682
 msgid "Most viewed"
 msgstr ""
 
-#: app/src/Legacy/Classes/Listing.php:692
+#: app/src/Legacy/Classes/Listing.php:696
 msgid "Most liked"
 msgstr ""
 
-#: app/src/Legacy/Classes/Listing.php:735
+#: app/src/Legacy/Classes/Listing.php:739
 msgid "People"
 msgstr ""
 
@@ -1801,18 +1819,18 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
-#: app/src/Legacy/Classes/Storage.php:480
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5446
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: app/src/Legacy/Classes/Storage.php:481
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5579
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format, php-format
 msgid "Storage capacity can't be lower than its current usage (%s)."
 msgstr ""
 
-#: app/src/Legacy/Classes/Storage.php:759
+#: app/src/Legacy/Classes/Storage.php:761
 msgid "Unlimited"
 msgstr ""
 
-#: app/src/Legacy/Classes/Storage.php:763
+#: app/src/Legacy/Classes/Storage.php:765
 msgid "used"
 msgstr ""
 
@@ -1821,25 +1839,27 @@ msgstr ""
 msgid "Private profile"
 msgstr ""
 
-#: app/src/Legacy/functions-render.php:207
+#: app/src/Legacy/functions-render.php:209
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3113
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #: content/legacy/themes/Peafowl/snippets/modal_share.php:12
 #: content/legacy/themes/Peafowl/snippets/viewer_template.php:59
 #: content/legacy/themes/Peafowl/tpl_list_item/item_share.php:1
 #: content/legacy/themes/Peafowl/views/album.php:74
-#: content/legacy/themes/Peafowl/views/image.php:143
+#: content/legacy/themes/Peafowl/views/image.php:147
 msgid "Share"
 msgstr ""
 
-#: app/src/Legacy/functions-render.php:223
+#: app/src/Legacy/functions-render.php:225
 #, php-format
 msgid "view on %s"
 msgstr ""
 
-#: app/src/Legacy/functions-render.php:319
+#: app/src/Legacy/functions-render.php:321
 msgid "cookie policy"
 msgstr ""
 
-#: app/src/Legacy/functions-render.php:319
+#: app/src/Legacy/functions-render.php:321
 #, php-format
 msgid ""
 "We use our own and third party cookies to improve your browsing experience "
@@ -1847,7 +1867,7 @@ msgid ""
 "accept this %cookie_policy_link."
 msgstr ""
 
-#: app/src/Legacy/functions-render.php:319
+#: app/src/Legacy/functions-render.php:321
 msgid "I understand"
 msgstr ""
 
@@ -1866,278 +1886,302 @@ msgstr ""
 msgid "moments ago"
 msgstr ""
 
-#: app/src/Legacy/functions.php:300
+#: app/src/Legacy/functions.php:304
 msgid "There is an update available for your system."
 msgstr ""
 
-#: app/src/Legacy/functions.php:303
+#: app/src/Legacy/functions.php:307
 #, php-format
 msgid "Go to %s to download and install this update."
 msgstr ""
 
-#: app/src/Legacy/functions.php:312
+#: app/src/Legacy/functions.php:316
 msgid "System database is outdated."
 msgstr ""
 
-#: app/src/Legacy/functions.php:319
+#: app/src/Legacy/functions.php:323
 msgid "Update"
 msgstr ""
 
-#: app/src/Legacy/functions.php:315
+#: app/src/Legacy/functions.php:319
 #, php-format
 msgid "You need to %s."
 msgstr ""
 
-#: app/src/Legacy/functions.php:325
+#: app/src/Legacy/functions.php:329
 msgid "Website is in maintenance mode."
 msgstr ""
 
-#: app/src/Legacy/functions.php:328
+#: app/src/Legacy/functions.php:332
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:15
 #, php-format
 msgid "To revert this setting go to %s."
 msgstr ""
 
-#: app/src/Legacy/functions.php:345
+#: app/src/Legacy/functions.php:349
 #, php-format
 msgid "%s settings"
 msgstr ""
 
-#: app/src/Legacy/functions.php:340
+#: app/src/Legacy/functions.php:344
 msgid ""
 "You haven't changed the default email settings. Go to %emailSettings% to fix "
 "this."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:104
+#: content/legacy/themes/Peafowl/header.php:106
 msgid "Discovery"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:139
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:210
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:123
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:135
+#: content/legacy/themes/Peafowl/header.php:141
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:210
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:122
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:134
 msgid "Random"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:154
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3075
+#: content/legacy/themes/Peafowl/header.php:156
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3104
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #: content/legacy/themes/Peafowl/snippets/viewer_template.php:19
 msgid "Close"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:154
-#: content/legacy/themes/Peafowl/header.php:158
+#: content/legacy/themes/Peafowl/header.php:156
+#: content/legacy/themes/Peafowl/header.php:160
 msgid "Advanced search"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:171
-#: content/legacy/themes/Peafowl/header.php:367
+#: content/legacy/themes/Peafowl/header.php:173
+#: content/legacy/themes/Peafowl/header.php:369
 #, php-format
 msgid "Notices (%s)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:204
-#: content/legacy/themes/Peafowl/header.php:210
+#: content/legacy/themes/Peafowl/header.php:206
+#: content/legacy/themes/Peafowl/header.php:212
 msgid "Notifications"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:217
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2470
+#: content/legacy/themes/Peafowl/header.php:219
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2475
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/lib/peafowl.js:4275
+#: content/legacy/themes/Peafowl/lib/peafowl.js:4277
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:3
 #: content/legacy/themes/Peafowl/views/settings/profile.php:19
 msgid "loading"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:220
+#: content/legacy/themes/Peafowl/header.php:222
 msgid "You don't have notifications"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:244
+#: content/legacy/themes/Peafowl/header.php:249
 msgid "My Profile"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:262
+#: content/legacy/themes/Peafowl/header.php:264
 msgid "Palette"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:280
+#: content/legacy/themes/Peafowl/header.php:282
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:37
 #: content/legacy/themes/Peafowl/views/settings/account.php:70
 msgid "Administrator"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:280
+#: content/legacy/themes/Peafowl/header.php:282
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:36
 #: content/legacy/themes/Peafowl/views/settings/account.php:69
 msgid "Manager"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/header.php:297
+#: content/legacy/themes/Peafowl/header.php:299
 msgid "Sign out"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1069
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1209
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1488
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4719
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4758
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4828
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4972
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1038
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1178
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1457
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4844
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4883
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4953
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5097
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "You must enter the album name."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1270
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1299
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1550
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1582
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1681
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1239
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1268
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1519
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1551
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1650
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
-#: content/legacy/themes/Peafowl/lib/peafowl.js:2858
+#: content/legacy/themes/Peafowl/lib/peafowl.js:2860
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Confirm"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1277
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1557
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1246
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1526
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid "The content has been approved."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1447
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1416
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid "Select existing album"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1793
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1874
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1969
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2151
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2288
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2330
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2378
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2434
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2483
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1762
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1843
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1938
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2120
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2293
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2335
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2383
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2439
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2488
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3136
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3813
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3138
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3815
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "An error occurred. Please try again later."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1814
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1902
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1783
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1871
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Please select a valid image file type."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1822
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1911
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1791
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1880
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #, javascript-format
 msgid "Please select a picture of at most %s size."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1871
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1840
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:1
 msgid "Profile image updated."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:1962
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1931
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Profile background image updated."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2007
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1976
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Profile background image deleted."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2014
+#: content/legacy/themes/Peafowl/lib/chevereto.js:1983
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Error deleting profile background image."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2163
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2132
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #, javascript-format
-msgid "Update available v%s"
+msgid "Chevereto v%s available"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2165
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2134
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-msgid "There is an update available for this system."
+msgid ""
+"There is a new Chevereto version available with the following release notes."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2174
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2136
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-msgid "Update instructions"
+#, javascript-format
+msgid "Check %s for a complete changelog since you last upgrade."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2182
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2142
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#: content/legacy/themes/Peafowl/views/dashboard.php:16
+#: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:109
+#: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:91
+#: content/legacy/themes/Peafowl/views/plugin.php:91
+#: content/legacy/themes/Peafowl/views/settings/api.php:16
+msgid "documentation"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2142
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#, javascript-format
+msgid "Check the %s for alternative update methods."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2158
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #, javascript-format
 msgid "This website is running latest %s version"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:2196
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2183
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#, javascript-format
+msgid "Chevereto v%s installed"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2185
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#: content/legacy/themes/Peafowl/views/settings/powered.php:25
+msgid ""
+"Usage of Chevereto Software must be in compliance with the software license "
+"terms known as \"The Chevereto License\"."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2191
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+msgid "License agreement"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2201
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Please review the system requirements before proceeding"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3067
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2844
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-msgid "Toggle select"
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:40
+#, javascript-format, php-format
+msgid "Get a license at %s to unlock all features and support."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3068
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2845
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/snippets/viewer_template.php:50
-#: content/legacy/themes/Peafowl/tpl_list_item/item_like.php:1
-#: content/legacy/themes/Peafowl/views/album.php:81
-#: content/legacy/themes/Peafowl/views/image.php:148
-msgid "Like"
+msgid "You can enter your license key in the dashboard panel."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3069
+#: content/legacy/themes/Peafowl/lib/chevereto.js:2857
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+msgid "Enter license"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3102
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Create album"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3070
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-msgid "Toggle flag"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3071
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:290
-#: content/legacy/themes/Peafowl/tpl_list_item/item_album_edit_tools.php:10
-#: content/legacy/themes/Peafowl/tpl_list_item/item_image_edit_tools.php:19
-#: content/legacy/themes/Peafowl/views/album.php:47
-#: content/legacy/themes/Peafowl/views/image.php:115
-#: content/legacy/themes/Peafowl/views/user.php:115
-msgid "Edit"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3073
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3103
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:64
 #: content/legacy/themes/Peafowl/tpl_list_item/item_image_admin_tools.php:20
-#: content/legacy/themes/Peafowl/views/image.php:118
+#: content/legacy/themes/Peafowl/views/image.php:122
 msgid "Approve"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3074
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3105
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/snippets/embed.php:32
+#: content/legacy/themes/Peafowl/snippets/embed.php:47
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:71
 #: content/legacy/themes/Peafowl/tpl_list_item/item_album_admin_tools.php:5
 #: content/legacy/themes/Peafowl/tpl_list_item/item_album_edit_tools.php:18
@@ -2148,153 +2192,188 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:34
 #: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:30
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:249
-#: content/legacy/themes/Peafowl/views/image.php:123
+#: content/legacy/themes/Peafowl/views/image.php:127
 #: content/legacy/themes/Peafowl/views/settings/connections.php:43
 #: content/legacy/themes/Peafowl/views/settings/profile.php:25
 #: content/legacy/themes/Peafowl/views/user.php:123
 msgid "Delete"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3076
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3106
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/views/image.php:80
-msgid "Previous"
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:292
+#: content/legacy/themes/Peafowl/tpl_list_item/item_album_edit_tools.php:10
+#: content/legacy/themes/Peafowl/tpl_list_item/item_image_edit_tools.php:19
+#: content/legacy/themes/Peafowl/views/album.php:47
+#: content/legacy/themes/Peafowl/views/image.php:119
+#: content/legacy/themes/Peafowl/views/user.php:115
+msgid "Edit"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3077
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3107
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/views/image.php:85
+msgid "Toggle flag"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3108
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#: content/legacy/themes/Peafowl/snippets/viewer_template.php:50
+#: content/legacy/themes/Peafowl/tpl_list_item/item_like.php:1
+#: content/legacy/themes/Peafowl/views/album.php:81
+#: content/legacy/themes/Peafowl/views/image.php:152
+msgid "Like"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3110
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+#: content/legacy/themes/Peafowl/views/image.php:89
 msgid "Next"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3078
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3111
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
-#: content/legacy/themes/Peafowl/snippets/viewer_template.php:39
+#: content/legacy/themes/Peafowl/views/image.php:84
+msgid "Previous"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3112
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
+msgid "Toggle select"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3114
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:2
 msgid "Zoom"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3894
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3947
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "File too big."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3907
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3961
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "Invalid or unsupported file format."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:3930
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4195
+#: content/legacy/themes/Peafowl/lib/chevereto.js:3983
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "Some files couldn't be added"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4228
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4240
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:88
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:133
+msgid "Some files couldn't be loaded"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4344
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:90
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:135
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:45
+#: content/legacy/themes/Peafowl/views/user.php:133
 msgid "file"
 msgid_plural "files"
 msgstr[0] ""
 msgstr[1] ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4584
+#: content/legacy/themes/Peafowl/lib/chevereto.js:4700
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 #, javascript-format
 msgid "%s's Albums"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:4924
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5049
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
-msgid "Image edited successfully."
+msgid "File edited successfully."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5012
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5137
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "private"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5017
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5111
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6141
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5142
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5236
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6287
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "The content has been edited."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5037
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5162
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "Invalid URL key."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5052
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5177
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "Category URL key already being used."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5137
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5262
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
 msgid "Category successfully deleted."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5188
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5313
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format
 msgid "Category %s added."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5214
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5339
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Invalid expiration date."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5229
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5354
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format
 msgid "IP %s already banned."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5281
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5406
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format
 msgid "IP %s banned."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5371
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5496
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "IP ban successfully deleted."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5424
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5688
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5718
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5557
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5834
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5864
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6583
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Please fill all the required fields."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5439
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5572
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Invalid storage capacity value. Make sure to use a valid format."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5460
-#: content/legacy/themes/Peafowl/lib/chevereto.min.js:3
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5592
+#: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Invalid URL."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5511
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5643
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Storage successfully edited."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:5737
+#: content/legacy/themes/Peafowl/lib/chevereto.js:5883
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format
 msgid "%s added successfully."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6001
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6147
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #: content/legacy/themes/Peafowl/views/404.php:22
 #: content/legacy/themes/Peafowl/views/album.php:198
@@ -2302,15 +2381,15 @@ msgstr ""
 msgid "The content has been deleted."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6012
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6142
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6242
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6246
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6158
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6288
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6388
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6392
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "The content has been moved."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6035
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6181
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #: content/legacy/themes/Peafowl/tpl_list_item/item_album_admin_tools.php:2
 #: content/legacy/themes/Peafowl/tpl_list_item/item_album_edit_tools.php:6
@@ -2320,12 +2399,12 @@ msgstr ""
 msgid "Select"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6043
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6189
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 msgid "Unselect"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/chevereto.js:6359
+#: content/legacy/themes/Peafowl/lib/chevereto.js:6505
 #: content/legacy/themes/Peafowl/lib/chevereto.min.js:4
 #, javascript-format
 msgid "Import ID %s removed"
@@ -2345,7 +2424,7 @@ msgid "Save changes"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/lib/peafowl.js:527
-#: content/legacy/themes/Peafowl/lib/peafowl.js:2821
+#: content/legacy/themes/Peafowl/lib/peafowl.js:2823
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:1
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 #: content/legacy/themes/Peafowl/views/account/email-needed.php:31
@@ -2367,10 +2446,10 @@ msgid "Go back to form"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/lib/peafowl.js:635
-#: content/legacy/themes/Peafowl/lib/peafowl.js:2822
+#: content/legacy/themes/Peafowl/lib/peafowl.js:2824
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:1
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:223
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:225
 msgid "or"
 msgstr ""
 
@@ -2379,39 +2458,39 @@ msgstr ""
 msgid "continue anyway"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:2823
+#: content/legacy/themes/Peafowl/lib/peafowl.js:2825
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:223
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:232
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:225
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:234
 msgid "cancel"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3067
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3069
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Saving"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3072
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3074
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Sending"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3173
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3175
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Confirm action"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3185
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3187
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "information"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3268
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3270
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Paste"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/lib/peafowl.js:3275
+#: content/legacy/themes/Peafowl/lib/peafowl.js:3277
 #: content/legacy/themes/Peafowl/lib/peafowl.min.js:2
 msgid "Right click"
 msgstr ""
@@ -2497,11 +2576,11 @@ msgid "This email was sent from %w %u"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:37
-msgid "Drag and drop or paste images here to upload"
+msgid "Drag and drop or paste files here to upload"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:38
-msgid "Select the images to upload"
+msgid "Select the files to upload"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:44
@@ -2520,8 +2599,8 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:48
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:59
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:81
-msgid "add image URLs"
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:83
+msgid "add file URLs"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:52
@@ -2533,101 +2612,105 @@ msgid "You can also %i or %c."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:57
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:79
-msgid "browse from your device"
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:81
+msgid "browse from device"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:58
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:80
-msgid "take a picture"
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:82
+msgid "use camera"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:67
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:64
+msgid "max"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:69
 #, php-format
 msgid "Register to get %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:75
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:77
 msgid "clicking"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:75
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:76
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:77
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:78
 msgid "Customize upload by %action% on any preview"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:76
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:78
 msgid "touching"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:86
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:88
 msgid "Uploading %q %o"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:89
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:91
 msgid "complete"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:90
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:92
 msgid ""
 "The queue is being uploaded, it should take just a few seconds to complete."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:94
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:96
 msgid "Upload complete"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:104
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:117
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:106
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:119
 #, php-format
 msgid "Uploaded content added to %s."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:106
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:108
 msgid "You can %c with the content just uploaded or %m."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:108
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:121
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:110
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:123
 #, php-format
 msgid "You can %c with the content just uploaded."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:112
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:123
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:114
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:125
 #, php-format
 msgid "create new %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:113
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:115
 #, php-format
 msgid "move it to an existing %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:121
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:123
 msgid "You must %s or %l to save this content into your account."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:124
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:402
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:126
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:404
 msgid "create an account"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:125
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:403
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:127
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:405
 msgid "sign in"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:133
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:135
 #, php-format
 msgid "No %s have been uploaded"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:134
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:136
 msgid "Some errors have occurred and the system couldn't process your request."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:175
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:177
 #: content/legacy/themes/Peafowl/snippets/form_category.php:17
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:16
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:53
@@ -2635,114 +2718,114 @@ msgstr ""
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:75
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:50
 #: content/legacy/themes/Peafowl/views/explore.php:21
-#: content/legacy/themes/Peafowl/views/image.php:197
+#: content/legacy/themes/Peafowl/views/image.php:207
 msgid "category"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:175
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:177
 #: content/legacy/themes/Peafowl/snippets/form_category.php:17
 #, php-format
 msgid "Select %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:191
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:341
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:193
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:343
 msgid "Auto delete"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:203
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:355
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:205
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:357
 #: content/legacy/themes/Peafowl/snippets/quickty/top_left.php:31
 #: content/legacy/themes/Peafowl/views/login.php:24
 msgid "Sign up"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:203
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:355
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:205
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:357
 #, php-format
 msgid "%s to be able to customize or disable image auto delete."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:212
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:214
 msgid "Mark this if the upload is not family safe"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:212
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:214
 msgid "Not family safe upload"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:223
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:225
 msgid "Uploading"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:223
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:233
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:225
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:235
 msgid "cancel remaining"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:227
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:229
 msgid "Note: Some files couldn't be uploaded."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:227
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:229
 msgid "learn more"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:228
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:230
 msgid ""
 "Check the <a data-modal=\"simple\" data-target=\"failed-upload-"
 "result\">error report</a> for more information."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:231
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:233
 msgid "reset"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:242
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:244
 msgid "Note"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:242
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:244
 msgid "We must approve the uploaded content before being able to share."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:266
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:268
 #: content/legacy/themes/Peafowl/snippets/embed_tpl.php:51
 #: content/legacy/themes/Peafowl/snippets/modal_share.php:22
 #: content/legacy/themes/Peafowl/views/album.php:156
 #: content/legacy/themes/Peafowl/views/dashboard/settings/guest-api.php:15
-#: content/legacy/themes/Peafowl/views/image.php:329
+#: content/legacy/themes/Peafowl/views/image.php:339
 #: content/legacy/themes/Peafowl/views/plugin.php:33
 #: content/legacy/themes/Peafowl/views/settings/api.php:25
 msgid "copy"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:267
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:269
 msgid "insert"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:292
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:162
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:294
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:162
 msgid "Remove"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:298
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:300
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:23
 msgid "upload"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:298
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:300
 #: content/legacy/themes/Peafowl/snippets/modal_edit_album.php:11
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:24
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:50
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:91
 #: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:45
-#: content/legacy/themes/Peafowl/views/image.php:361
+#: content/legacy/themes/Peafowl/views/image.php:371
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:302
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:304
 #: content/legacy/themes/Peafowl/snippets/form_image.php:13
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:64
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:68
@@ -2751,17 +2834,17 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:302
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:373
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:304
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:375
 #: content/legacy/themes/Peafowl/snippets/form_album.php:64
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:15
 #: content/legacy/themes/Peafowl/snippets/form_image.php:13
 #: content/legacy/themes/Peafowl/snippets/form_image.php:42
 #: content/legacy/themes/Peafowl/snippets/form_ip_ban_edit.php:19
 #: content/legacy/themes/Peafowl/snippets/form_ip_ban_edit.php:25
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:114
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:118
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:130
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:116
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:120
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:132
 #: content/legacy/themes/Peafowl/snippets/form_sub_album.php:19
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:151
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:156
@@ -2771,40 +2854,40 @@ msgstr ""
 msgid "optional"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:327
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:329
 msgid "Resize image"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:330
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:145
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:219
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:233
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:332
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:145
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:219
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:233
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:59
 msgid "Width"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:333
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:148
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:222
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:233
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:335
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:148
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:222
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:233
 #: content/legacy/themes/Peafowl/views/dashboard/settings/watermarks.php:62
 msgid "Height"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:336
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:338
 msgid "Note: Animated GIF images won't be resized."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:364
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:366
 msgid "Mark this if the image is not family safe"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:366
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:368
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:60
 msgid "Flag as unsafe"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:373
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:375
 #: content/legacy/themes/Peafowl/snippets/form_album.php:64
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:15
 #: content/legacy/themes/Peafowl/snippets/form_image.php:42
@@ -2813,7 +2896,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:374
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:376
 #: content/legacy/themes/Peafowl/snippets/form_album.php:65
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:16
 #: content/legacy/themes/Peafowl/snippets/form_image.php:43
@@ -2822,15 +2905,15 @@ msgstr ""
 msgid "Brief description of this %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:380
-msgid "Add image URLs"
-msgstr ""
-
 #: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:382
-msgid "Add the image URLs here"
+msgid "File URLs"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:396
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:384
+msgid "Add file URLs here"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:398
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:43
 #: content/legacy/themes/Peafowl/snippets/modal_create_sub_album.php:10
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:37
@@ -2841,15 +2924,15 @@ msgstr ""
 msgid "Create %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:398
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:400
 msgid "The uploaded content will be moved to this newly created album."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:401
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:403
 msgid "You must %s or %l if you want to edit this album later on."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:426
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:428
 #: content/legacy/themes/Peafowl/snippets/listing_tools_editor.php:44
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:48
 #: content/legacy/themes/Peafowl/snippets/user_items_editor.php:58
@@ -2859,93 +2942,76 @@ msgstr ""
 msgid "Move to %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:427
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:429
 msgid "Select an existing album to move the uploaded content."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:441
+#: content/legacy/themes/Peafowl/snippets/anywhere_upload.php:443
 msgid "Error report"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:19
-#: content/legacy/themes/Peafowl/snippets/embed.php:116
-msgid "Links"
-msgstr ""
-
 #: content/legacy/themes/Peafowl/snippets/embed.php:22
+#: content/legacy/themes/Peafowl/snippets/embed.php:152
 msgid "Viewer"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/embed.php:22
 #: content/legacy/themes/Peafowl/snippets/embed.php:27
 #: content/legacy/themes/Peafowl/snippets/embed.php:32
+#: content/legacy/themes/Peafowl/snippets/embed.php:37
+#: content/legacy/themes/Peafowl/snippets/embed.php:42
+#: content/legacy/themes/Peafowl/snippets/embed.php:47
+#: content/legacy/themes/Peafowl/snippets/embed.php:152
 #, php-format
-msgid "%s links"
+msgid "%s link"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/embed.php:27
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:202
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:202
 msgid "Direct"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:39
-msgid "HTML Codes"
+#: content/legacy/themes/Peafowl/snippets/embed.php:32
+msgid "Frame"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/embed.php:37
+msgid "Thumbnail"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/embed.php:42
-msgid "HTML image"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:47
-msgid "HTML full linked"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:52
-msgid "HTML medium linked"
+msgid "Medium"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/embed.php:57
-msgid "HTML thumbnail linked"
+msgid "embed"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:64
-msgid "BBCodes"
+#: content/legacy/themes/Peafowl/snippets/embed.php:65
+#: content/legacy/themes/Peafowl/snippets/embed.php:96
+#: content/legacy/themes/Peafowl/snippets/embed.php:127
+#, php-format
+msgid "%s full linked"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:67
-msgid "BBCode full"
+#: content/legacy/themes/Peafowl/snippets/embed.php:73
+#: content/legacy/themes/Peafowl/snippets/embed.php:104
+#: content/legacy/themes/Peafowl/snippets/embed.php:135
+#, php-format
+msgid "%s medium linked"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:72
-msgid "BBCode full linked"
+#: content/legacy/themes/Peafowl/snippets/embed.php:78
+#: content/legacy/themes/Peafowl/snippets/embed.php:109
+#: content/legacy/themes/Peafowl/snippets/embed.php:140
+#, php-format
+msgid "%s thumbnail linked"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/embed.php:77
-msgid "BBCode medium linked"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:82
-msgid "BBCode thumbnail linked"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:92
-msgid "Markdown full"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:97
-msgid "Markdown full linked"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:102
-msgid "Markdown medium linked"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/embed.php:107
-msgid "Markdown thumbnail linked"
-msgstr ""
-
+#: content/legacy/themes/Peafowl/snippets/embed.php:88
 #: content/legacy/themes/Peafowl/snippets/embed.php:119
-msgid "Viewer links"
+#, php-format
+msgid "%s full"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/form_advanced_search.php:17
@@ -2984,7 +3050,7 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/form_album.php:16
 #: content/legacy/themes/Peafowl/snippets/form_category_edit.php:7
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:10
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:27
 #: content/legacy/themes/Peafowl/snippets/form_sub_album.php:15
 #: content/legacy/themes/Peafowl/views/dashboard/settings/categories.php:25
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:37
@@ -3058,11 +3124,11 @@ msgstr ""
 msgid "Private (password protected)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_album.php:92
+#: content/legacy/themes/Peafowl/snippets/form_album.php:91
 msgid "Change password"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_album.php:92
+#: content/legacy/themes/Peafowl/snippets/form_album.php:91
 #: content/legacy/themes/Peafowl/snippets/form_sub_album.php:49
 msgid "Set password"
 msgstr ""
@@ -3102,8 +3168,8 @@ msgid "Flag not safe"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/form_import_add.php:7
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:146
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:165
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:148
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:167
 msgid "Path"
 msgstr ""
 
@@ -3181,171 +3247,179 @@ msgstr ""
 msgid "Text message, HTML or a redirect URL"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:11
-msgid "Storage name"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:14
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:12
 #: content/legacy/themes/Peafowl/views/settings/api.php:20
 #: content/legacy/themes/Peafowl/views/settings/api.php:22
 #: content/legacy/themes/Peafowl/views/settings/api.php:33
 msgid "API"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:29
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:28
+msgid "Storage name"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:31
 msgid ""
 "This is for the old deprecated B2 API. For new buckets you have to use S3 "
 "Compatible API."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:31
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:41
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:106
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:33
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:43
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:108
 msgid "Region"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:42
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:107
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:44
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:109
 msgid "Storage region"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:47
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:49
 msgid "Storage bucket"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:52
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:63
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:77
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:54
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:65
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:79
 msgid "Key"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:53
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:55
 msgid "Storage key"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:56
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:67
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:58
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:69
 msgid "Secret"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:57
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:59
 msgid "Storage secret"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:83
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:85
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:126
 msgid "Private key"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:84
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:86
 msgid "Google Cloud JSON key"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:85
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:87
 #, php-format
 msgid "You will need a <a %s>service account</a> for this."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:90
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:92
 msgid "Service name"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:94
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:96
 msgid "Identity URL"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:95
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:97
 msgid "Identity API endpoint"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:95
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:97
 msgid "API endpoint for OpenStack identity"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:110
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:112
 msgid "Container"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:111
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:113
 msgid "Storage container"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:114
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:116
 msgid "Tenant id"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:115
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:117
 msgid "Tenant id (account id)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:118
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:120
 msgid "Tenant name"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:119
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:121
 msgid "Tenant name (account name)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:125
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:131
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:137
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:127
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:133
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:139
 msgid "Storage endpoint"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:143
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:145
 msgid "Server address"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:143
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:145
 msgid "Hostname or IP of the storage server"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:148
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:150
 msgid "Server path"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:148
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:150
 msgid ""
 "Absolute path where the files will be stored in the context of the %p login. "
 "Use %s for root path."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:156
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:158
 msgid "Server login"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:160
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:162
 msgid "Server password"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:166
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:168
 msgid "Local path"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:166
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:168
 msgid "Local path where the files will be stored"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:171
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:173
 msgid "Storage capacity"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:172
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:174
 msgid "Example: 20 GB, 1 TB, etc."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:174
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:176
 msgid ""
 "This storage will be disabled when it reach this capacity. Leave it blank or "
 "zero for no limit."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:178
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:180
 msgid "Storage URL"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:179
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:181
 msgid "The system will map the images of this storage to this URL."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:184
+msgid "Enabled types"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/snippets/form_storage_edit.php:198
+msgid "The storage will be used only for selected types."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/snippets/image_album_slice.php:19
@@ -3409,10 +3483,6 @@ msgstr ""
 msgid "Sign in with %label%"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/quickty/top_left.php:19
-msgid "Home"
-msgstr ""
-
 #: content/legacy/themes/Peafowl/snippets/template_content_empty.php:8
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:260
 msgid "There's nothing to show here."
@@ -3468,13 +3538,9 @@ msgstr ""
 msgid "Do you really want to remove all the selected content?"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/snippets/viewer_template.php:35
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:83
+#: content/legacy/themes/Peafowl/snippets/viewer_template.php:40
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:83
 msgid "Guest"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/snippets/viewer_template.php:38
-msgid "Keyboard shortcuts"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/tpl_list_item/album_password.php:11
@@ -3663,12 +3729,12 @@ msgid "Upload to album"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/album.php:82
-#: content/legacy/themes/Peafowl/views/image.php:149
+#: content/legacy/themes/Peafowl/views/image.php:153
 msgid "You like this"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/album.php:99
-#: content/legacy/themes/Peafowl/views/image.php:179
+#: content/legacy/themes/Peafowl/views/image.php:183
 msgid "This content is private"
 msgstr ""
 
@@ -3717,14 +3783,6 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/views/consent-screen.php:26
 msgid "I Agree"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard.php:16
-#: content/legacy/themes/Peafowl/views/dashboard/bulk-importer.php:109
-#: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:91
-#: content/legacy/themes/Peafowl/views/plugin.php:91
-#: content/legacy/themes/Peafowl/views/settings/api.php:16
-msgid "documentation"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard.php:14
@@ -3814,10 +3872,10 @@ msgid "Read the %s for more information about this feature."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/settings.php:14
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:181
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:194
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:197
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:200
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:180
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:193
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:196
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:199
 msgid "Single profile"
 msgstr ""
 
@@ -3854,70 +3912,70 @@ msgstr ""
 msgid "Consent screen cover image"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:17
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:16
 msgid "Show not safe content in listings"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:22
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:21
 msgid "Enable this if you want to show not safe content in listings."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:22
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:21
 msgid "Can be overridden by user own settings."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:22
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:21
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:45
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:120
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:11
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:45
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:120
 #: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:66
 #: content/legacy/themes/Peafowl/views/dashboard/settings/upload-plugin.php:22
 #: content/legacy/themes/Peafowl/views/dashboard/settings/users.php:32
 msgid "This setting doesn't affect administrators."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:25
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:24
 msgid "Blur NSFW content in listings"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:30
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:29
 msgid ""
 "Enable this if you want to apply a blur effect on the NSFW images in "
 "listings."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:33
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:32
 msgid "Show not safe content in random mode"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:40
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:39
 msgid "Show banners in not safe content"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:45
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:44
 msgid "Enable this if you want to show banners in not safe content pages."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:48
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:47
 #, php-format
 msgid "Lock %s editing"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:58
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:57
 msgid ""
 "Enable this to prevent users from changing the NSFW flag. When enabled, only "
 "admin and managers will have this permission."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:62
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:61
 msgid "Stop words"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:63
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:62
 msgid "One rule per line"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:64
+#: content/legacy/themes/Peafowl/views/dashboard/settings/content.php:63
 msgid "Define words that won't be allowed for content."
 msgstr ""
 
@@ -4148,7 +4206,7 @@ msgid "Storage method"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/settings/external-storage.php:74
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:197
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:232
 msgid "Disk used"
 msgstr ""
 
@@ -4160,9 +4218,256 @@ msgstr ""
 msgid "storage"
 msgstr ""
 
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:20
+msgid "Enabled file extensions"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:31
+msgid "Unsupported in your server"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:35
+msgid "Only checked file extensions will be allowed to be uploaded."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:40
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:48
+msgid "Enable uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:45
+#, php-format
+msgid "Enable this if you want to allow %s uploads."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:54
+msgid "Enable this if you want to allow file upload from URLs."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:55
+msgid "Note that enabling this will expose your server IP."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:55
+#: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:81
+msgid "This feature is available only for administrators."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:58
+msgid "Upload user interface"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:61
+msgid "On-page container"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:61
+msgid "route"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:65
+msgid "Guest uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:72
+msgid "Enable this if you want to allow non registered users to upload."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:76
+msgid "Moderate uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:87
+msgid ""
+"Enable this to moderate incoming uploads. Target content will require "
+"moderation for approval."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:92
+msgid "Enable embed codes (uploader)"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:97
+msgid "Enable this if you want to show embed codes when upload gets completed."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:101
+msgid "Upload threads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:104
+msgid "Number of simultaneous upload threads (parallel uploads)"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:107
+msgid "Redirect on single upload"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:112
+msgid "Enable this if you want to redirect to file viewer on single upload."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:115
+msgid "Enable duplicate uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:120
+msgid ""
+"Enable this if you want to allow duplicate uploads from the same IP within "
+"24hrs."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:124
+msgid "Enable expirable uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:129
+msgid ""
+"Enable this if you want to allow uploads with an automatic delete option."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:132
+msgid "Auto delete guest uploads"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:138
+msgid ""
+"Enable this if you want to force guest uploads to be auto deleted after "
+"certain time."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:142
+msgid "Maximum image size"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:153
+msgid ""
+"Images greater than this size will get automatically downsized. Use zero (0) "
+"to don't set a limit."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:157
+#: content/legacy/themes/Peafowl/views/settings/account.php:133
+msgid "Image Exif data"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:161
+msgid "Keep"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:165
+#, php-format
+msgid "Select the default setting for image <a %s>Exif data</a> on upload."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:168
+msgid "Image Exif data (user setting)"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:176
+msgid ""
+"Enable this if you want to allow each user to configure how image Exif data "
+"will be handled."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:180
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:186
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:189
+msgid "Maximum upload file size"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:183
+msgid ""
+"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f "
+"values)."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:186
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:88
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:111
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:134
+msgid "guests"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:189
+#, php-format
+msgid "Same as \"%s\" but for guests."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:193
+#: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:143
+msgid "File path"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:194
+msgid "Relative to Chevereto root"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:196
+msgid "Where to store the uploaded files? Relative to Chevereto root."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:199
+msgid "Storage mode"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:202
+msgid "Datefolders"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:204
+#, php-format
+msgid "Datefolders creates %s structure"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:207
+msgid "File naming method"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:210
+msgid "Original"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:210
+msgid "Mix original + random"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:212
+msgid ""
+"\"Original\" will try to keep the file source name while \"Random\" will "
+"generate a random name. \"ID\" will name the file just like the file ID."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:216
+msgid "Thumb size"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:227
+msgid "Thumbnails will be fixed to this size."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:230
+msgid "Medium image fixed dimension"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:235
+msgid ""
+"Medium sized images will be fixed to this dimension. For example, if you "
+"select \"width\" that dimension will be fixed and image height will be "
+"automatically calculated."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:238
+msgid "Medium image fixed size"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/settings/file-uploads.php:243
+msgid "Width or height will be automatically calculated."
+msgstr ""
+
 #: content/legacy/themes/Peafowl/views/dashboard/settings/flood-protection.php:11
 msgid ""
-"Block image uploads by IP if the system notice a flood behavior based on the "
+"Block file uploads by IP if the system notice a flood behavior based on the "
 "number of uploads per time period."
 msgstr ""
 
@@ -4222,7 +4527,7 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:22
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:52
 #: content/legacy/themes/Peafowl/views/dashboard/settings/listings.php:57
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:117
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:116
 msgid "explore"
 msgstr ""
 
@@ -4302,7 +4607,7 @@ msgid "White"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:85
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:226
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:225
 msgid "Default"
 msgstr ""
 
@@ -4364,7 +4669,7 @@ msgid "Empty"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/settings/homepage.php:137
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:195
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:194
 #, php-format
 msgid "Your user id is: %s"
 msgstr ""
@@ -4375,254 +4680,8 @@ msgid ""
 "images on homepage. Leave it empty to display trending images."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:20
-msgid "Enabled image formats"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:31
-msgid "Unsupported in your server"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:35
-msgid "Only checked image formats will be allowed to be uploaded."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:40
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:48
-msgid "Enable uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:45
-#, php-format
-msgid "Enable this if you want to allow %s uploads."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:54
-msgid "Enable this if you want to allow image upload from URLs."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:55
-msgid "Note that enabling this will expose your server IP."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:55
-#: content/legacy/themes/Peafowl/views/dashboard/settings/system.php:81
-msgid "This feature is available only for administrators."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:58
-msgid "Upload user interface"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:61
-msgid "On-page container"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:61
-msgid "route"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:65
-msgid "Guest uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:72
-msgid "Enable this if you want to allow non registered users to upload."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:76
-msgid "Moderate uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:87
-msgid ""
-"Enable this to moderate incoming uploads. Target content will require "
-"moderation for approval."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:92
-msgid "Enable embed codes (uploader)"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:97
-msgid "Enable this if you want to show embed codes when upload gets completed."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:101
-msgid "Upload threads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:104
-msgid "Number of simultaneous upload threads (parallel uploads)"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:107
-msgid "Redirect on single upload"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:112
-msgid "Enable this if you want to redirect to image page on single upload."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:115
-msgid "Enable duplicate uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:120
-msgid ""
-"Enable this if you want to allow duplicate uploads from the same IP within "
-"24hrs."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:124
-msgid "Enable expirable uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:129
-msgid ""
-"Enable this if you want to allow uploads with an automatic delete option."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:132
-msgid "Auto delete guest uploads"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:138
-msgid ""
-"Enable this if you want to force guest uploads to be auto deleted after "
-"certain time."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:142
-msgid "Maximum image size"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:153
-msgid ""
-"Images greater than this size will get automatically downsized. Use zero (0) "
-"to don't set a limit."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:157
-#: content/legacy/themes/Peafowl/views/settings/account.php:133
-msgid "Image Exif data"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:161
-msgid "Keep"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:165
-#, php-format
-msgid "Select the default setting for image <a %s>Exif data</a> on upload."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:168
-msgid "Image Exif data (user setting)"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:176
-msgid ""
-"Enable this if you want to allow each user to configure how image Exif data "
-"will be handled."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:180
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:186
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:189
-msgid "Maximum upload file size"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:183
-msgid ""
-"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f "
-"values)."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:186
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:89
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:112
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:135
-msgid "guests"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:189
-#, php-format
-msgid "Same as \"%s\" but for guests."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:193
-msgid "Image path"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:194
-msgid "Relative to Chevereto root"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:196
-msgid "Where to store the images? Relative to Chevereto root."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:199
-msgid "Storage mode"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:202
-msgid "Datefolders"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:204
-#, php-format
-msgid "Datefolders creates %s structure"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:207
-msgid "File naming method"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:210
-msgid "Original"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:210
-msgid "Mix original + random"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:212
-msgid ""
-"\"Original\" will try to keep the image source name while \"Random\" will "
-"generate a random name. \"ID\" will name the image just like the image ID."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:216
-msgid "Thumb size"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:227
-msgid "Thumbnails will be fixed to this size."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:230
-msgid "Medium image fixed dimension"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:235
-msgid ""
-"Medium sized images will be fixed to this dimension. For example, if you "
-"select \"width\" that dimension will be fixed and image height will be "
-"automatically calculated."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:238
-msgid "Medium image fixed size"
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/dashboard/settings/image-upload.php:243
-msgid "Width or height will be automatically calculated."
-msgstr ""
-
 #: content/legacy/themes/Peafowl/views/dashboard/settings/ip-bans.php:22
-#: content/legacy/themes/Peafowl/views/image.php:211
+#: content/legacy/themes/Peafowl/views/image.php:221
 msgid "Expires"
 msgstr ""
 
@@ -4887,10 +4946,6 @@ msgstr ""
 msgid "Only alphanumerics, hyphens and forward slash"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:143
-msgid "File path"
-msgstr ""
-
 #: content/legacy/themes/Peafowl/views/dashboard/settings/pages.php:148
 #, php-format
 msgid "A %f file relative to %s"
@@ -4988,7 +5043,7 @@ msgstr ""
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:23
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:31
 #: content/legacy/themes/Peafowl/views/dashboard/settings/routing.php:40
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:200
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:199
 #, php-format
 msgid "%s routing"
 msgstr ""
@@ -5124,187 +5179,188 @@ msgid "%s Key"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:38
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:54
 #, php-format
 msgid "Default %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:47
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:63
 msgid "Image load max. filesize"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:50
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:66
 msgid ""
 "Images greater than this size will show a button to load full resolution "
 "image."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:53
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:69
 msgid "Enable download button"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:58
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:74
 msgid "Enable this if you want to show the image download button."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:61
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:77
 msgid "Enable right click on image"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:66
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:82
 msgid "Enable this if you want to allow right click on image viewer page."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:69
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:85
 msgid "Enable show Exif data"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:74
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:90
 msgid "Enable this if you want to show image Exif data."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:77
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:93
 #, php-format
 msgid "%s first tab"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:91
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:107
 #, php-format
 msgid "Determine the first tab on %s page."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:95
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:111
 msgid "Enable social share"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:100
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:116
 msgid ""
 "Enable this if you want to show social network buttons to share content."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:103
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:119
 msgid "Enable embed codes (content)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:107
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:123
 msgid "Everybody"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:108
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:124
 msgid "Users only"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:112
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:128
 msgid "Enable this if you want to show embed codes for the content."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:116
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:132
 msgid "Not safe content checkbox in uploader"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:121
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:137
 msgid ""
 "Enable this if you want to show a checkbox to indicate not safe content "
 "upload."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:125
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:141
 msgid "Custom CSS code"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:126
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:142
 msgid ""
 "Put your custom CSS code here. It will be placed as <style> just before the "
 "closing </head> tag."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:129
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:145
 msgid "Custom JS code"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:130
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:146
 msgid ""
 "Put your custom JS code here. It will be placed as <script> just before the "
 "closing </head> tag."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:131
+#: content/legacy/themes/Peafowl/views/dashboard/settings/theme.php:147
 #, php-format
 msgid ""
 "Do not use %s markup here. This is for plain JS code, not for HTML script "
 "tags. If you use script tags here you will break your website."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:14
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:16
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:13
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:15
 msgid "Decode ID"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:20
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:22
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:19
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:21
 msgid "Encode ID"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:27
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:29
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:26
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:28
 msgid "Send test email"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:31
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:30
 #, php-format
 msgid ""
 "Use this to test how your emails are being delivered. We recommend you to "
 "use %s."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:35
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:34
 msgid "Export a user"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:37
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:36
 msgid "Export user"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:39
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:38
 msgid ""
 "This will allow you to download a user's standard personal information in "
 "JSON format."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:43
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:42
 msgid "Regenerate external storage stats"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:45
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:44
 msgid "Storage id"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:46
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:45
 msgid "Regenerate"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:48
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:47
 msgid ""
 "This will re-calculate the sum of all the image records associated to the "
 "target external storage."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:51
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:50
 msgid "Migrate external storage records"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:53
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:52
 msgid "Source storage id"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:54
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:53
 msgid "Target storage id"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:57
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:56
 msgid "Migrate"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:60
+#: content/legacy/themes/Peafowl/views/dashboard/settings/tools.php:59
 msgid ""
 "This only updates the database. You must transfer the actual files to target "
 "storage container on your own. URL rewriting is strongly recommended. Use "
@@ -5528,146 +5584,199 @@ msgid ""
 "Opacity of the watermark in the final watermarked image. Values 0 to 100."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:19
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:18
 msgid "Website name"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:24
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:23
 msgid "Website doctitle"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:28
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:27
 msgid "Website description"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:42
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:41
 msgid "Default time zone"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:46
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:45
 #: content/legacy/themes/Peafowl/views/settings/account.php:190
 msgid "Select region"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:82
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:81
 msgid ""
 "Allows to search images, albums and users based on a given search query."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:94
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:93
 msgid "search"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:94
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:117
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:140
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:93
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:116
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:139
 #, php-format
 msgid "Enables %s for guests."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:105
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:104
 msgid "Enables to browse public uploaded images. It also enables categories."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:128
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:127
 msgid "Enables to browse images randomly."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:140
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:139
 msgid "random"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:151
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:150
 #, php-format
 msgid "Enable this if you want to show a \"%s\" link at the footer."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:155
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:154
 msgid "Likes"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:162
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:161
 msgid "Allows users to like content and populate \"Most liked\" listings."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:173
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:172
 msgid "Followers allows users to follow each other."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:178
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:177
 msgid "Website mode"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:181
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:180
 msgid "Multi-user"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:184
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:183
 msgid "You can switch the website mode anytime."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:194
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:193
 msgid "%s target %t"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:197
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:196
 msgid "Numeric ID of the target %t for %s mode."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:203
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:202
 msgid ""
 "Custom route to map /username to /something. Use \"/\" to map to homepage."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:209
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:208
 msgid "Website privacy mode"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:215
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:214
 msgid "Private mode will make the website only available for registered users."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:222
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:221
 msgid "Content privacy mode"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:227
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:226
 msgid "Force private (self)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:228
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:227
 msgid "Force private (anyone with the link)"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:232
+#: content/legacy/themes/Peafowl/views/dashboard/settings/website.php:231
 msgid "Forced privacy modes will override user selected privacy."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/stats.php:19
+#, php-format
+msgid "Hello and welcome, %s"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:21
+msgid ""
+"Whether you're an individual creator or a company looking for a powerful "
+"media sharing platform, Chevereto has you covered."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:22
+msgid "share your feedback"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:22
+#, php-format
+msgid ""
+"We're always looking for ways to improve, feel free to %s and suggestions."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:22
+msgid "We are available for all your support and customization needs."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:23
+msgid "Thank you for choosing Chevereto."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:24
+msgid "Chevereto creator"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:29
+#, php-format
+msgid ""
+"Provide Chevereto license key by assigning the environment variable %e or by "
+"creating the %f file containing the license key."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:35
+msgid "You can also set the license key in the textarea below."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:38
+msgid "Chevereto license key"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:39
+msgid "PASTE LICENSE KEY HERE"
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:48
 msgid ""
 "If the detected IP doesn't match yours it means that your web server is "
 "under a proxy. The connecting IP can be set using the HTTP header defined in "
-"the environment variable %env% and when not set it fall-back to %var%."
+"the environment variable %e and when not set it fall-back to %v."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:25
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:54
 msgid ""
 "Make sure that you address this issue as the system relies on accurate IP "
 "detections to provide basic functionalities and to protect against spam, "
 "flooding, and brute force attacks."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:66
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:101
 msgid "Disk"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:203
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:238
 #, php-format
 msgid "%s News"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/dashboard/stats.php:230
-msgid "Installation details"
+#: content/legacy/themes/Peafowl/views/dashboard/stats.php:264
+#, php-format
+msgid "%s edition"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/dashboard/top-sub-bar/images-albums-users.php:33
@@ -5682,94 +5791,97 @@ msgstr ""
 msgid "Email address"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:44
-msgid "Play GIF"
+#: content/legacy/themes/Peafowl/views/image.php:45
+#: content/legacy/themes/Peafowl/views/image.php:49
+#, php-format
+msgid "Play %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:48
+#: content/legacy/themes/Peafowl/views/image.php:53
 msgid "Load 360° view"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:80
-#: content/legacy/themes/Peafowl/views/image.php:85
+#: content/legacy/themes/Peafowl/views/image.php:84
+#: content/legacy/themes/Peafowl/views/image.php:89
 #, php-format
 msgid "%s image"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:118
+#: content/legacy/themes/Peafowl/views/image.php:122
 msgid ""
 "Do you really want to approve this image? The image will go public if you "
 "approve it."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:130
+#: content/legacy/themes/Peafowl/views/image.php:134
 msgid "Download"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:135
+#: content/legacy/themes/Peafowl/views/image.php:139
 msgid "Cover"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:136
+#: content/legacy/themes/Peafowl/views/image.php:140
 msgid "This is the album cover"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:197
+#: content/legacy/themes/Peafowl/views/image.php:207
 msgid "Added to %a under %s %t"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:199
+#: content/legacy/themes/Peafowl/views/image.php:209
 #, php-format
 msgid "Added to %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:204
+#: content/legacy/themes/Peafowl/views/image.php:214
 #, php-format
 msgid "Uploaded to %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:206
+#: content/legacy/themes/Peafowl/views/image.php:216
 #, php-format
 msgid "Uploaded %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:211
+#: content/legacy/themes/Peafowl/views/image.php:221
 #, php-format
 msgid "This content will be removed on %s"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:227
+#: content/legacy/themes/Peafowl/views/image.php:237
 msgid "No description provided."
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:235
+#: content/legacy/themes/Peafowl/views/image.php:245
 msgid "Less Exif data"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:235
+#: content/legacy/themes/Peafowl/views/image.php:245
 msgid "More Exif data"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:264
-#: content/legacy/themes/Peafowl/views/image.php:270
+#: content/legacy/themes/Peafowl/views/image.php:274
+#: content/legacy/themes/Peafowl/views/image.php:280
 #, php-format
 msgid "%s ID"
 msgstr ""
 
-#: content/legacy/themes/Peafowl/views/image.php:283
+#: content/legacy/themes/Peafowl/views/image.php:293
 #: content/legacy/themes/Peafowl/views/settings/account.php:29
 msgid "Add IP ban"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/index.php:32
-msgid "Upload and share your images."
+msgid "Upload and share your media"
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/index.php:33
-#, php-format
-msgid ""
-"Drag and drop anywhere you want and start uploading your images now. %s "
-"limit. Direct image links, BBCode and HTML thumbnails."
+msgid "Drag and drop anywhere to start uploading."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/index.php:33
+msgid "Get direct links, Markdown, BBCode and HTML thumbnails."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/index.php:81
@@ -5822,11 +5934,21 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/views/plugin.php:19
 msgid ""
-"Add image uploading to your website, blog or forum by installing our upload "
-"plugin. It provides image uploading to any website by placing a button that "
-"will allow your users to directly upload images to our service and it will "
-"automatically handle the codes needed for insertion. All features included "
-"like drag and drop, remote upload, image resizing and more."
+"Add media uploading and sharing to your website, blog or forum by installing "
+"our upload plugin."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/plugin.php:19
+msgid ""
+"It provides file uploading to any website by placing a button that will "
+"allow your users to directly upload to our service and it will automatically "
+"handle the codes needed for insertion."
+msgstr ""
+
+#: content/legacy/themes/Peafowl/views/plugin.php:19
+msgid ""
+"All features included like drag and drop, remote upload, image resizing and "
+"more."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/plugin.php:20
@@ -5940,7 +6062,7 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/views/settings/account.php:124
 msgid ""
-"This setting will apply to all your image uploads by default. You can "
+"This setting will apply to all your file uploads by default. You can "
 "override this setting on each upload."
 msgstr ""
 
@@ -6097,12 +6219,6 @@ msgstr ""
 
 #: content/legacy/themes/Peafowl/views/settings/powered.php:24
 msgid "This service is based on Chevereto self-hosted edition."
-msgstr ""
-
-#: content/legacy/themes/Peafowl/views/settings/powered.php:25
-msgid ""
-"Usage of Chevereto Software must be in compliance with the software license "
-"terms known as \"The Chevereto License\"."
 msgstr ""
 
 #: content/legacy/themes/Peafowl/views/settings/powered.php:26

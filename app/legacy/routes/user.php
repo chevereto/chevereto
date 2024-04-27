@@ -104,7 +104,12 @@ return function (Handler $handler) {
     $user_routes = [];
     $user_views = [
         'images' => [
-            'title' => _s("%t by %s", ['%t' => _s('Media')]),
+            'title' => _s(
+                "%t by %s",
+                [
+                    '%t' => _n('File', 'Files', 20)
+                ]
+            ),
             'title_short' => _s("Images"),
         ],
         'albums' => [

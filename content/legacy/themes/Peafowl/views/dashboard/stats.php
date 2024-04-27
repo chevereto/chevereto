@@ -26,18 +26,18 @@ if (!defined('ACCESS') || !ACCESS) {
 <div data-modal="modal-license-key" class="hidden" data-submit-fn="CHV.fn.license.set.submit" data-ajax-deferred="CHV.fn.license.set.complete" data-ajax-url="<?php echo get_base_url('json'); ?>">
     <span class="modal-box-title"><i class="fas fa-key"></i> <?php _se('License key'); ?></span>
     <p><?php _se(
-    "Provide Chevereto license key by assigning the environment variable %env% or by creating the %file% file containing the license key.",
+    "Provide Chevereto license key by assigning the environment variable %e or by creating the %f file containing the license key.",
     [
-        '%env%' => '<code class="code font-weight-bold word-break-break-all">CHEVERETO_LICENSE_KEY</code>',
-        '%file%' => '<code class="code font-weight-bold word-break-break-all">' . PATH_APP . 'CHEVERETO_LICENSE_KEY</code>',
+        '%e' => '<code class="code font-weight-bold word-break-break-all">CHEVERETO_LICENSE_KEY</code>',
+        '%f' => '<code class="code font-weight-bold word-break-break-all">' . PATH_APP . 'CHEVERETO_LICENSE_KEY</code>',
     ]
 ); ?></p>
-    <p><?php _se('You can also set the license in the textarea below.'); ?></p>
+    <p><?php _se('You can also set the license key in the textarea below.'); ?></p>
     <div class="modal-form margin-top-20">
         <div class="input-label overflow-auto">
             <label for="chevereto-license-key"><?php _se('Chevereto license key'); ?></label>
             <textarea placeholder="<?php _se('PASTE LICENSE KEY HERE'); ?>" id="chevereto-license-key" class="r3 resize-vertical" name="chevereto-license-key"><?php echo Handler::var('licenseKey'); ?></textarea>
-            <div class="input-below font-size-small"><?php _se('Get a license from %s to unlock all features and support.', '<a href="https://chevereto.com/pricing" target="_blank">chevereto.com</a>'); ?></div>
+            <div class="input-below font-size-small"><?php _se('Get a license at %s to unlock all features and support.', '<a href="https://chevereto.com/pricing" target="_blank">chevereto.com</a>'); ?></div>
         </div>
     </div>
 </div>
@@ -45,10 +45,10 @@ if (!defined('ACCESS') || !ACCESS) {
     <span class="modal-box-title"><i class="fas fa-question-circle"></i> <?php _se('Not your IP?'); ?></span>
     <div class="connecting-ip"><?php echo get_client_ip(); ?></div>
     <p><?php _se(
-    "If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %env% and when not set it fall-back to %var%.",
+    "If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %e and when not set it fall-back to %v.",
     [
-        '%var%' => '<code class="code font-weight-bold">$_SERVER[\'REMOTE_ADDR\']</code>',
-        '%env%' => '<code class="code font-weight-bold">CHEVERETO_HEADER_CLIENT_IP</code>',
+        '%v' => '<code class="code font-weight-bold">$_SERVER[\'REMOTE_ADDR\']</code>',
+        '%e' => '<code class="code font-weight-bold">CHEVERETO_HEADER_CLIENT_IP</code>',
     ]
 ); ?></p>
     <p><?php _se("Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks."); ?></p>
@@ -205,7 +205,7 @@ document.querySelector('#one_year').addEventListener('click', function(e) {
 } ?>>
             <span class="stats-big-number">
                 <strong class="number"><?php echo Handler::var('totals')['images'] > 999999 ? Handler::var('totals_display')['images'] : number_format((float) Handler::var('totals')['images']); ?></strong>
-                <span class="label"><span class="fas fa-image"></span> <?php _ne('Image', 'Images', Handler::var('totals')['images']); ?></span>
+                <span class="label"><span class="fas fa-photo-film"></span> <?php _ne('File', 'Files', Handler::var('totals')['images']); ?></span>
             </span>
         </div>
         <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['albums'] > 999999) {

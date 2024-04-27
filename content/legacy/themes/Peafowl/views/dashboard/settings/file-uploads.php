@@ -15,7 +15,7 @@ use function Chevereto\Legacy\inputDisabledPaid;
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-echo read_the_docs_settings('file-uploads', _s('Uploads')); ?>
+echo read_the_docs_settings('file-uploads', _s('File uploads')); ?>
 <div class="input-label">
     <label><?php _se('Enabled file extensions'); ?></label>
     <div class="checkbox-label">
@@ -23,7 +23,7 @@ echo read_the_docs_settings('file-uploads', _s('Uploads')); ?>
         <?php
             foreach (Upload::getAvailableImageFormats() as $k) {
                 $isFailing = in_array($k, IMAGE_FORMATS_FAILING);
-                echo strtr('<li class="c5 display-inline-block margin-right-10"><label class="display-block" for="image_format_enable[%k]" %tip> <input type="checkbox" name="image_format_enable[]" id="image_format_enable[%k]" value="%k" %checked %disabled>%K</label></li>', [
+                echo strtr('<li class="c5 display-inline-block margin-right-10 phone-margin-top-10"><label class="display-block" for="image_format_enable[%k]" %tip> <input type="checkbox" name="image_format_enable[]" id="image_format_enable[%k]" value="%k" %checked %disabled>%K</label></li>', [
                     '%k' => $k,
                     '%K' => strtoupper($k),
                     '%checked' => (in_array($k, Image::getEnabledImageExtensions()) ? 'checked' : ''),
@@ -32,7 +32,7 @@ echo read_the_docs_settings('file-uploads', _s('Uploads')); ?>
             } ?>
         </ul>
         <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_enabled_image_formats'] ?? ''; ?></div>
-        <p class="margin-top-20"><i class="fas fa-check-square"></i> <?php _se("Only checked file formats will be allowed to be uploaded."); ?></p>
+        <p class="margin-top-20"><i class="fas fa-check-square"></i> <?php _se("Only checked file extensions will be allowed to be uploaded."); ?></p>
     </div>
 </div>
 <hr class="line-separator">

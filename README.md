@@ -6,7 +6,7 @@
     <a href="https://chevereto.com"><img alt="Chevereto" src="chevereto.svg" width="80%"></a>
 </p>
 
-[![CHUISS](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
+[![Chevereto](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
 [![Community](https://img.shields.io/badge/chevereto-community-blue?style=flat-square)](https://chevereto.com/community)
 [![Discord](https://img.shields.io/badge/chevereto-discord-5865F2?style=flat-square)](https://chevereto.com/go/discord)
@@ -19,6 +19,19 @@ Chevereto enables to create a media sharing website on your own server. It's you
 Chevereto is a turnkey system which main use case is to provide a self-hosted platform for content creators, communities and businesses. It's features are all about media sharing, with a strong focus on user experience, privacy and security. On its pro edition Chevereto excels as a content management system with heavy business related features that you won't get on other systems.
 
 ![screen](.github/screen/user-profile.jpeg)
+
+## Files supported
+
+With Chevereto you can upload and share the following media types from device file browser, drag and drop, on-the-fly device camera (video and photos), clipboard, URL, ShareX and via API.
+
+- image/jpeg
+- image/gif
+- image/png
+- image/webp
+- image/bmp
+- video/quicktime
+- video/mp4
+- video/webm
 
 ## Documentation
 
@@ -50,7 +63,7 @@ Chevereto is so **feature-rich**, mature and robust that we need three layers of
 | EXIF data                                                                       | ✅        | ✅                     |
 | User-based API                                                                  | ✅        | ✅                     |
 | Two-Factor Authentication (2FA)                                                 | ✅        | ✅                     |
-| Call-to-action albums                                                           | ✅        | ✅                     |
+| Call-to-action album buttons                                                    | ✅        | ✅                     |
 | Random button                                                                   | ✅        | ✅                     |
 | Encrypt secrets                                                                 | ✅        | ✅                     |
 | System stats & usage                                                            | ✅        | ✅                     |
@@ -117,25 +130,13 @@ Chevereto is so **feature-rich**, mature and robust that we need three layers of
 | Project Arachnid                                                                | –        | ✅                     |
 | Auth providers (OAuth2)                                                         | –        | ✅                     |
 
-## Files supported
-
-With Chevereto you can upload and share the following media types:
-
-- image/jpeg
-- image/gif
-- image/png
-- image/webp
-- image/bmp
-- video/mp4
-- video/webm
-
 ## Supported servers
 
-Chevereto works anywhere:
+Chevereto runs anywhere, system requirements are minimal and it can run on any server.
 
-- Shared hosting ([cPanel](https://v4-docs.chevereto.com/guides/cpanel/), [Plesk](https://v4-docs.chevereto.com/guides/plesk/), DirectAdmin, etc)
+- Shared hosting ([cPanel](https://v4-docs.chevereto.com/guides/cpanel/), [Plesk](https://v4-docs.chevereto.com/guides/plesk/), DirectAdmin, Installatron, Softaculous, etc)
 - [VPS](https://v4-docs.chevereto.com/guides/server/vps) (DigitalOcean, Linode, Vultr, etc)
-- [Docker](https://github.com/chevereto/docker) (x86_64, arm64)
+- [Docker](https://github.com/chevereto/docker) (Multi-arch image compatible with `x86_64` and `arm64`)
   - [PURE DOCKER](https://v4-docs.chevereto.com/guides/docker/pure-docker)
   - [Chevereto Docker](https://v4-docs.chevereto.com/guides/docker/)
 

@@ -19,7 +19,7 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 ?>
 <?php include_theme_header(); ?>
-<div id="image-viewer" class="image-viewer full-viewer">
+<div id="image-viewer" class="image-viewer full-viewer<?php echo isset(Handler::var('image')['album'], Handler::var('image_album_slice')['images']) ? ' --thumbs' : '';?>">
     <?php
     if (Handler::var('image')['is_approved']) {
         show_banner('image_image-viewer_top', !Handler::var('image')['nsfw']);
@@ -30,8 +30,7 @@ if (!defined('ACCESS') || !ACCESS) {
         ?? Handler::var('image')['frame']['url']
         ?? Handler::var('image')['url'];
     ?>
-    <div id="image-viewer-container" class="image-viewer-main image-viewer-container<?php echo isset(Handler::var('image')['album'], Handler::var('image_album_slice')['images']) ? ' --thumbs' : '';?>">
-        <img data-type="<?php echo  Handler::var('image')['type']; ?>" class="media" src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
+        <img draggable="false" data-type="<?php echo  Handler::var('image')['type']; ?>" class="media" src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
         ?> class="no-select" <?php
     } ?> alt="<?php echo Handler::var('image')['alt']; ?>" width="<?php echo Handler::var('image')['width']; ?>" height="<?php echo Handler::var('image')['height']; ?>" data-is360="<?php echo Handler::var('image')['is_360']; ?>" <?php if (isset(Handler::var('image')['medium']) || isset(Handler::var('image')['frame'])) {
         ?> data-load="full"<?php
@@ -63,7 +62,6 @@ if (!defined('ACCESS') || !ACCESS) {
     } if (Handler::var('image')['is_360']) { ?>
     <div id="image-viewer-360" class="soft-hidden"></div>
     <?php } ?>
-    </div>
     <?php
     if (Handler::var('image')['is_approved']) {
         show_banner('image_image-viewer_foot', !Handler::var('image')['nsfw']);

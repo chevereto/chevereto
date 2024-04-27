@@ -152,7 +152,7 @@ if ($singleStep || $action === 'download') {
     if ($params['license'] === '') {
         logger('Using free version [no CHEVERETO_LICENSE_KEY provided]');
     } else {
-        logger('Using licensed version [CHEVERETO_LICENSE_KEY provided]');
+        logger('Attempt to use licensed version [CHEVERETO_LICENSE_KEY provided]');
     }
     logger(sprintf('About to download Chevereto %s', $params['tag']));
 
@@ -352,9 +352,12 @@ function downloadAction(string $workingDir, array $params): Response
     $zipBall = str_replace('%tag%', $tag, $zipBall);
     $isPost = true;
     $curl = downloadFile($zipBall, $params, $filePath, $isPost);
-    if (isset($curl->json->error)) {
-        throw new RuntimeException($curl->json->error->message, $curl->json->status_code);
-    }
+
+    throw new RuntimeException(
+        $curl->json->error->message
+        . sprintf(' [%s]', $curl->json->error->code),
+        $curl->json->status_code
+    );
     if ($curl->transfer['http_code'] !== 200) {
         $error = '[HTTP ' . $curl->transfer['http_code'] . '] ' . $zipBall;
 
@@ -416,7 +419,7 @@ function extractAction(string $pathTo, string $filePath): Response
 
 function abort(string $message)
 {
-    logger($message);
+    logger('[ERROR] ' . $message);
     die(255);
 }
 

@@ -122,14 +122,17 @@ ul>li {
 
 .highlight {
     background: rgba(255, 255, 255, .5);
-    border-inline-start: 4px solid #8e44ad;
+    -webkit-border-start: 4px solid #8e44ad;
+            border-inline-start: 4px solid #8e44ad;
 }
 
 .alert {
     position: relative;
     background: rgba(241, 196, 15, .3);
-    border-inline-start: 4px solid #f1c40f;
-    padding-inline-end: 2em;
+    -webkit-border-start: 4px solid #f1c40f;
+            border-inline-start: 4px solid #f1c40f;
+    -webkit-padding-end: 2em;
+            padding-inline-end: 2em;
 }
 
 .alert pre {
@@ -198,7 +201,8 @@ input {
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    padding-inline-start: 0;
+    -webkit-padding-start: 0;
+            padding-inline-start: 0;
     transition: border-width 1s linear;
 }
 
@@ -227,8 +231,10 @@ button,
     display: inline-block;
     font-size: 0.83em;
     font-weight: bold;
-    padding-inline-end: 15px;
-    padding-inline-start: 15px;
+    -webkit-padding-end: 15px;
+            padding-inline-end: 15px;
+    -webkit-padding-start: 15px;
+            padding-inline-start: 15px;
     line-height: 0.83em;
     outline: 0;
     cursor: pointer;
@@ -495,7 +501,8 @@ body.body--installing .flex-box .loader {
 
     .flex-box+.flex-box {
         margin-top: 20px;
-        margin-inline-start: 0;
+        -webkit-margin-start: 0;
+                margin-inline-start: 0;
     }
 }
 

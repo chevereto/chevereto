@@ -68,6 +68,7 @@ use function Chevereto\Vars\request;
 use function Chevereto\Vars\server;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
+use FFMpeg\FFMpeg;
 use Intervention\Image\ImageManagerStatic;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -130,7 +131,7 @@ return function (Handler $handler) {
         'users' => _n('User', 'Users', 20),
         'bulk-importer' => _s('Bulk importer'),
         'settings' => _s('Settings'),
-        'run-cron' => _s('Run cron'),
+        'run-cron' => _s('Run %s', 'CRON'),
     ];
     $routesLinkLabels = $routes;
     $paidRoutes = [];
@@ -165,7 +166,7 @@ return function (Handler $handler) {
         'website' => _s('Website'),
         'content' => _s('Content'),
         'listings' => _s('Listings'),
-        'file-upload' => _s('File upload'),
+        'file-uploads' => _s('File uploads'),
         'semantics' => _s('Semantics'),
         'categories' => _s('Categories'),
         'theme' => _s('Theme'),
@@ -199,7 +200,7 @@ return function (Handler $handler) {
         'email' => 'fas fa-at',
         'external-services' => 'fas fa-concierge-bell',
         'external-storage' => 'fas fa-hdd',
-        'file-upload' => 'fas fa-cloud-upload-alt',
+        'file-uploads' => 'fas fa-cloud-upload-alt',
         'flood-protection' => 'fas fa-faucet',
         'guest-api' => 'fas fa-project-diagram',
         'homepage' => 'fas fa-home',
@@ -266,7 +267,6 @@ return function (Handler $handler) {
     $handler::setVar('docsBaseUrl', 'https://v4-docs.chevereto.com/');
     $handler::setVar('adminDocsBaseUrl', 'https://v4-admin.chevereto.com/');
     $handler::setVar('userDocsBaseUrl', 'https://v4-user.chevereto.com/');
-    // hidden routes
     unset($route_menu['run-cron'], $routes['run-cron'], $routesLinkLabels['run-cron']);
     $handler::setVar($route_prefix . '_menu', $route_menu);
     $handler::setVar('tabs', $route_menu);
@@ -280,9 +280,9 @@ return function (Handler $handler) {
     if (in_array($doing, $paidRoutes)) {
         $handler->issueError(404);
     }
-
     switch ($doing) {
         case 'run-cron':
+
             if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
                 $handler->issueError(403);
 
@@ -296,12 +296,11 @@ return function (Handler $handler) {
             setlocale(LC_ALL, 'en_US.UTF8');
             ini_set('output_buffering', 'off');
             ini_set('zlib.output_compression', false);
-            echo <<<PLAIN
-            <pre>
-            Trigger cron tasks (HTTP API)
-            --
-
-            PLAIN;
+            echo '<pre>'
+                . 'Trigger cron tasks (HTTP API)'
+                . PHP_EOL
+                . '--'
+                . PHP_EOL;
             require_once PATH_APP_LEGACY . 'commands/cron.php';
             echo '</pre>';
             die(0);
@@ -401,7 +400,7 @@ return function (Handler $handler) {
             . get_base_url('dashboard/run-cron')
             . '?auth_token=' . $handler::getAuthToken()
             . '" target="_blank"><i class="icon fas fa-bolt margin-left-5 margin-right-5"></i>'
-                . _s('Run cron')
+                . _s('Run %s', 'CRON')
                 . '</a> ';
             $errorLogRemark = '';
             $cron_last_ran = Settings::get('cron_last_ran');
@@ -418,6 +417,34 @@ return function (Handler $handler) {
                     $errorLogRemark .= '<div><code class="code code--command  display-inline-block" data-click="select-all" style="white-space: pre-wrap;">docker logs ' . (gethostname() ?: 'chv-container') . ' -f 1>/dev/null</code></div>';
                 }
             }
+
+            $ffmpegContent = '<i class="fas fa-video"></i> ';
+
+            try {
+                $missing = [
+                    'proc_open' => !function_exists('proc_open'),
+                    'proc_close' => !function_exists('proc_close'),
+                ];
+                $missing = array_filter($missing);
+                if ($missing) {
+                    throw new Exception(
+                        _s(
+                            'PHP function [%s] not available in this PHP installation',
+                            implode(', ', array_keys($missing))
+                        )
+                    );
+                }
+                $ffmpegContent .= FFMpeg::create()->getFFMpegDriver()->getVersion();
+            } catch (Throwable $e) {
+                $previous = $e->getPrevious() ?
+                    ': ' . $e->getPrevious()->getMessage() :
+                    '';
+                $ffmpegContent = '<span class="color-fail"><i class="fas fa-warning"></i> Error: '
+                    . $e->getMessage()
+                    . $previous
+                    . '</span>';
+            }
+
             $chv_versioning = explode('.', APP_VERSION);
             $chv_version_major = $chv_versioning[0] . '.X';
             $chv_version_minor = $chv_versioning[0] . '.' . $chv_versioning[1];
@@ -437,7 +464,11 @@ return function (Handler $handler) {
                     'content' => '<i class="fas fa-upload"></i> ' . format_bytes(get_ini_bytes(ini_get('upload_max_filesize')))
                 ],
                 'graphics' => [
-                    'label' => _s('Graphics Library'),
+                    'label' => _s('Graphics library'),
+                ],
+                'video' => [
+                    'label' => 'FFmpeg',
+                    'content' => $ffmpegContent
                 ],
                 'rebuild_stats' => [
                     'label' => _s('Stats'),

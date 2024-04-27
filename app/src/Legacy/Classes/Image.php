@@ -360,7 +360,7 @@ class Image
         ];
         foreach (array_keys($targets['chain']) as $k) {
             $extension = $fileArray[$prefix . 'extension'];
-            if ($k !== 'image' && in_array($extension, ['mp4', 'webm'])) {
+            if ($k !== 'image' && in_array($extension, ['mov', 'mp4', 'webm'])) {
                 $extension = 'jpeg';
             }
             $targets['chain'][$k] = $folder . $fileArray[$prefix . 'name'] . $chain_to_suffix[$k] . $extension;
@@ -635,7 +635,7 @@ class Image
                 // 'document' => 8,
                 // 'other' => 16,
             ];
-            $mimetype = strtok($params['mimetype'], '/');
+            $mimetype = strtok($params['mimetype'] ?? 'image', '/');
             $type_chain = $upload_types[$mimetype] ?? 1;
             $get_active_storages = env()['CHEVERETO_ENABLE_EXTERNAL_STORAGE']
                 ? Storage::get([
@@ -1147,6 +1147,9 @@ class Image
         if (in_array('jpg', $formats) && !in_array('jpeg', $formats)) {
             $formats[] = 'jpeg';
         }
+        if (in_array('mov', $formats) && !in_array('quicktime', $formats)) {
+            $formats[] = 'quicktime';
+        }
 
         return $formats;
     }
@@ -1155,9 +1158,12 @@ class Image
     {
         $extensions = self::getEnabledImageExtensions();
         $accept = [];
-        $videos = ['mp4', 'webm'];
+        $videos = ['mov', 'mp4', 'webm'];
         foreach ($extensions as $extension) {
             $type = in_array($extension, $videos) ? 'video' : 'image';
+            if ($extension === 'mov') {
+                $extension = 'quicktime';
+            }
             $accept[] = "$type/$extension";
         }
 

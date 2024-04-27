@@ -8,7 +8,7 @@ if (!defined('ACCESS') || !ACCESS) {
 <script id="viewer-template" type="text/x-chv-template">
 	<div class="viewer viewer--hide list-item" data-cover="1">
 		<div class="viewer-content no-select">
-			<img class="viewer-src no-select animate" src="%display_url%" alt="%filename%" width="%width%" height="%height%" data-type="%type%">
+			<img class="viewer-src no-select" src="%display_url%" alt="%filename%" width="%width%" height="%height%" data-type="%type%">
             <div id="image-viewer-360" class="soft-hidden"></div>
 		</div>
 		<div class="viewer-wheel phone-hide phablet-hide tablet-hide hover-display">
@@ -20,24 +20,25 @@ if (!defined('ACCESS') || !ACCESS) {
 				<span class="btn-icon fas fa-times"></span>
 			</div>
 		</ul>
+		<div class="viewer-top hover-display">
+			<a href="%path_viewer%" target="_blank">
+				<i class="fa-solid fa-arrow-up-right-from-square margin-right-5"></i><span class="txt">%display_title%</span>
+			</a>
+		</div>
 		<div class="viewer-foot hover-display hover-display--flex">
-			<div class="viewer-title phone-hide">
-				<a href="%path_viewer%" target="_blank">%display_title%</a>
-			</div>
 			<div class="viewer-owner viewer-owner--user">
 				<a href="%user.url%" class="user-image">
 					<span class="user-image default-user-image"><span class="icon fas fa-user-circle"></span></span>
 					<img class="user-image" src="%user.avatar.url%" alt="%user.username%">
 				</a>
 			</div>
-			<!-- <div class="viewer-owner header-content" data-contains="cta-album">
+			<div class="viewer-owner header-content" data-contains="cta-album">
 				%album.cta_html%
-			</div> -->
+			</div>
 			<div class="viewer-owner viewer-owner--guest">
 				<div class="user-image default-user-image"><span class="icon fas fa-user-circle"></span></div>
 				<span class="user-name"><?php _se('Guest'); ?></span>
 			</div>
-
 		</div>
 		<div class="list-item-privacy list-item-image-tools --top --left">
 			<div class="btn-icon btn-lock fas fa-eye-slash"></div>

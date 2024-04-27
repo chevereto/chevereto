@@ -1315,6 +1315,10 @@ $(function () {
         $target.highlight();
         e.clearSelection();
     });
+
+    $(window).on("fullscreenchange", function () {
+        $("html").toggleClass("--fullscreen", document.fullscreenElement);
+    });
 });
 
 /**
@@ -3226,7 +3230,7 @@ PF.fn.modal = {
             }
             $("html").css({ marginRight: "" });
             if (!$("body").data("hasOverflowHidden")) {
-                $("body").removeClass("overflow-hidden");
+                $("html,body").removeClass("overflow-hidden");
             }
             $("body").removeData("hasOverflowHidden");
             $(PF.obj.modal.selectors.root).remove();

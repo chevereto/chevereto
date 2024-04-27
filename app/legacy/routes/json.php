@@ -41,6 +41,7 @@ use function Chevereto\Legacy\G\array_filter_array;
 use function Chevereto\Legacy\G\check_value;
 use function Chevereto\Legacy\G\datetime;
 use function Chevereto\Legacy\G\datetimegmt;
+use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_public_url;
@@ -1546,11 +1547,45 @@ return function (Handler $handler) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $licenseKey = $POST['key'] ?? '';
+                if ($licenseKey !== '') {
+                    $check = fetch_url(
+                        url: 'https://chevereto.com/api/license/check',
+                        options: [CURLOPT_POSTFIELDS => http_build_query(
+                            ['license' => $licenseKey]
+                        )]
+                    );
+                    $check = json_decode($check);
+                    if (isset($check->error)) {
+                        throw new Exception(
+                            $check->error->message,
+                            $check->error->code
+                        );
+                    }
+                    $checkVersion = $check->data->version;
+                    if (version_compare($checkVersion, '4', '>=') === false) {
+                        throw new Exception(
+                            _s(
+                                'Chevereto V%s license key used, required V%r or greater license key',
+                                [
+                                    '%s' => $checkVersion,
+                                    '%r' => '4'
+                                ]
+                            ),
+                            403
+                        );
+                    }
+                }
                 $licenseFile = PATH_APP . 'CHEVERETO_LICENSE_KEY';
                 touch($licenseFile);
-                if (file_put_contents($licenseFile, $licenseKey)) {
+                if (file_put_contents($licenseFile, $licenseKey) !== false) {
                     $json_array['status_code'] = 200;
-                    $json_array['success'] = ['message' => _s('License key updated'), 'code' => 200];
+                    $licenseAction = $licenseKey === ''
+                        ? _s('License key removed')
+                        : _s('License key updated');
+                    $json_array['success'] = [
+                        'message' => $licenseAction,
+                        'code' => 200
+                    ];
                 } else {
                     throw new Exception('Error updating license key', 500);
                 }
