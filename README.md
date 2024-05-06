@@ -1,7 +1,5 @@
 # Chevereto: Ultimate image and video sharing software
 
-> 🔔 [Subscribe](https://chv.to/newsletter) to don't miss any update regarding Chevereto.
-
 <p align="center">
     <a href="https://chevereto.com"><img alt="Chevereto" src="chevereto.svg" width="80%"></a>
 </p>
@@ -15,6 +13,8 @@
 [![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
 [![Legacy stars](https://img.shields.io/github/stars/rodber/chevereto-free?style=flat-square&logo=github&label=Legacy%20stars&color=red)](https://github.com/rodber/chevereto-free)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
+
+> 🔔 [Subscribe](https://chv.to/newsletter) to don't miss any update regarding Chevereto.
 
 Chevereto enables to create a media sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions. ⭐️ [Live demo](https://demo.chevereto.com)
 
@@ -134,108 +134,111 @@ Chevereto is so **feature-rich**, mature and robust that we need three layers of
 
 ### Admin features
 
-| Feature                                               | Free  | Lite  |  Pro  |
-| ----------------------------------------------------- | :---: | :---: | :---: |
-| Dashboard (admin UI)                                  |   ✅   |   ✅   |   ✅   |
-| System stats & usage                                  |   ✅   |   ✅   |   ✅   |
-| Website privacy mode (public, private)                |   ✅   |   ✅   |   ✅   |
-| Default timezone selection                            |   ✅   |   ✅   |   ✅   |
-| Uploadable file extensions                            |   ✅   |   ✅   |   ✅   |
-| Guest uploads auto delete                             |   ✅   |   ✅   |   ✅   |
-| Upload threads                                        |   ✅   |   ✅   |   ✅   |
-| Upload maximum image size                             |   ✅   |   ✅   |   ✅   |
-| Upload Exif removal                                   |   ✅   |   ✅   |   ✅   |
-| Upload max file size (users and guest)                |   ✅   |   ✅   |   ✅   |
-| Upload path                                           |   ✅   |   ✅   |   ✅   |
-| Upload file naming                                    |   ✅   |   ✅   |   ✅   |
-| Upload thumb size                                     |   ✅   |   ✅   |   ✅   |
-| Upload medium size and dimension                      |   ✅   |   ✅   |   ✅   |
-| Semantics                                             |   ✅   |   ✅   |   ✅   |
-| Default palette                                       |   ✅   |   ✅   |   ✅   |
-| Default font                                          |   ✅   |   ✅   |   ✅   |
-| Image load max file size                              |   ✅   |   ✅   |   ✅   |
-| Image first tab                                       |   ✅   |   ✅   |   ✅   |
-| Embed codes (content)                                 |   ✅   |   ✅   |   ✅   |
-| Custom JS & CSS                                       |   ✅   |   ✅   |   ✅   |
-| Universal CDN support                                 |   ✅   |   ✅   |   ✅   |
-| Default language                                      |   ✅   |   ✅   |   ✅   |
-| Homepage style                                        |   –   |   ✅   |   ✅   |
-| Homepage cover images                                 |   –   |   ✅   |   ✅   |
-| Homepage title & paragraph                            |   –   |   ✅   |   ✅   |
-| Homepage call to action                               |   –   |   ✅   |   ✅   |
-| Pages                                                 |   –   |   ✅   |   ✅   |
-| Lock NSFW editing                                     |   –   |   ✅   |   ✅   |
-| User min age required                                 |   –   |   ✅   |   ✅   |
-| User avatar max file size                             |   –   |   ✅   |   ✅   |
-| User background max file size                         |   –   |   ✅   |   ✅   |
-| Guest API key                                         |   –   |   ✅   |   ✅   |
-| Available languages (configurable)                    |   –   |   –   |   ✅   |
-| Hide "Powered by Chevereto"                           |   –   |   –   |   ✅   |
-| Logo & branding                                       |   –   |   –   |   ✅   |
-| Logo type (vector, image, text)                       |   –   |   –   |   ✅   |
-| Logo height                                           |   –   |   –   |   ✅   |
-| Logo favicon image                                    |   –   |   –   |   ✅   |
-| Routing (user, image, album)                          |   –   |   –   |   ✅   |
-| Routing root                                          |   –   |   –   |   ✅   |
-| External services                                     |   –   |   –   |   ✅   |
-| Comments API (Disqus, JS)                             |   –   |   –   |   ✅   |
-| Analytics code                                        |   –   |   –   |   ✅   |
-| Akismet spam protection                               |   –   |   –   |   ✅   |
-| StopForumSpam spam protection                         |   –   |   –   |   ✅   |
-| CAPTCHA (reCAPTCHA, hCaptcha)                         |   –   |   –   |   ✅   |
-| CAPTCHA threshold                                     |   –   |   –   |   ✅   |
-| Project Arachnid                                      |   –   |   –   |   ✅   |
-| ModerateContent (auto approve, block, flag)           |   –   |   –   |   ✅   |
-| OAuth2 login providers (Amazon, Google, Discord, etc) |   –   |   –   |   ✅   |
-| Banners                                               |   –   |   –   |   ✅   |
-| Watermark uploads (guest, user, admin)                |   –   |   –   |   ✅   |
-| Watermark file toggles                                |   –   |   –   |   ✅   |
-| Watermark size requirement                            |   –   |   –   |   ✅   |
-| Watermark custom image                                |   –   |   –   |   ✅   |
-| Watermark position                                    |   –   |   –   |   ✅   |
-| Watermark percentage                                  |   –   |   –   |   ✅   |
-| Watermark margin                                      |   –   |   –   |   ✅   |
-| Watermark opacity                                     |   –   |   –   |   ✅   |
+| Feature                                                                                       | Free  | Lite  |  Pro  |
+| --------------------------------------------------------------------------------------------- | :---: | :---: | :---: |
+| Dashboard (admin UI)                                                                          |   ✅   |   ✅   |   ✅   |
+| System stats & usage                                                                          |   ✅   |   ✅   |   ✅   |
+| Website name                                                                                  |   ✅   |   ✅   |   ✅   |
+| Website doctitle                                                                              |   ✅   |   ✅   |   ✅   |
+| Website description                                                                           |   ✅   |   ✅   |   ✅   |
+| Website privacy mode (public, private)                                                        |   ✅   |   ✅   |   ✅   |
+| Default timezone                                                                              |   ✅   |   ✅   |   ✅   |
+| Uploadable file extensions                                                                    |   ✅   |   ✅   |   ✅   |
+| Guest uploads auto delete                                                                     |   ✅   |   ✅   |   ✅   |
+| Upload threads                                                                                |   ✅   |   ✅   |   ✅   |
+| Upload maximum image size                                                                     |   ✅   |   ✅   |   ✅   |
+| Upload Exif removal                                                                           |   ✅   |   ✅   |   ✅   |
+| Upload max file size (users and guest)                                                        |   ✅   |   ✅   |   ✅   |
+| Upload path                                                                                   |   ✅   |   ✅   |   ✅   |
+| Upload file naming                                                                            |   ✅   |   ✅   |   ✅   |
+| Upload thumb size                                                                             |   ✅   |   ✅   |   ✅   |
+| Upload medium size and dimension                                                              |   ✅   |   ✅   |   ✅   |
+| Semantics                                                                                     |   ✅   |   ✅   |   ✅   |
+| Default palette                                                                               |   ✅   |   ✅   |   ✅   |
+| Default font                                                                                  |   ✅   |   ✅   |   ✅   |
+| Image load max file size                                                                      |   ✅   |   ✅   |   ✅   |
+| Image first tab                                                                               |   ✅   |   ✅   |   ✅   |
+| Embed codes (content)                                                                         |   ✅   |   ✅   |   ✅   |
+| Custom JS & CSS                                                                               |   ✅   |   ✅   |   ✅   |
+| Universal CDN support                                                                         |   ✅   |   ✅   |   ✅   |
+| [Default language](https://v4-admin.chevereto.com/settings/languages.html#default-language)   |   ✅   |   ✅   |   ✅   |
+| Homepage style                                                                                |   –   |   ✅   |   ✅   |
+| Homepage cover images                                                                         |   –   |   ✅   |   ✅   |
+| Homepage title & paragraph                                                                    |   –   |   ✅   |   ✅   |
+| Homepage call to action                                                                       |   –   |   ✅   |   ✅   |
+| Pages                                                                                         |   –   |   ✅   |   ✅   |
+| Lock NSFW editing                                                                             |   –   |   ✅   |   ✅   |
+| User min age required                                                                         |   –   |   ✅   |   ✅   |
+| User avatar max file size                                                                     |   –   |   ✅   |   ✅   |
+| User background max file size                                                                 |   –   |   ✅   |   ✅   |
+| Guest API key                                                                                 |   –   |   ✅   |   ✅   |
+| [Enabled languages](https://v4-admin.chevereto.com/settings/languages.html#enabled-languages) |   –   |   –   |   ✅   |
+| Hide "Powered by Chevereto"                                                                   |   –   |   –   |   ✅   |
+| Logo & branding                                                                               |   –   |   –   |   ✅   |
+| Logo type (vector, image, text)                                                               |   –   |   –   |   ✅   |
+| Logo height                                                                                   |   –   |   –   |   ✅   |
+| Logo favicon image                                                                            |   –   |   –   |   ✅   |
+| Routing (user, image, album)                                                                  |   –   |   –   |   ✅   |
+| Routing root                                                                                  |   –   |   –   |   ✅   |
+| External services                                                                             |   –   |   –   |   ✅   |
+| Comments API (Disqus, JS)                                                                     |   –   |   –   |   ✅   |
+| Analytics code                                                                                |   –   |   –   |   ✅   |
+| Akismet spam protection                                                                       |   –   |   –   |   ✅   |
+| StopForumSpam spam protection                                                                 |   –   |   –   |   ✅   |
+| CAPTCHA (reCAPTCHA, hCaptcha)                                                                 |   –   |   –   |   ✅   |
+| CAPTCHA threshold                                                                             |   –   |   –   |   ✅   |
+| Project Arachnid                                                                              |   –   |   –   |   ✅   |
+| ModerateContent (auto approve, block, flag)                                                   |   –   |   –   |   ✅   |
+| OAuth2 login providers (Amazon, Google, Discord, etc)                                         |   –   |   –   |   ✅   |
+| Banners                                                                                       |   –   |   –   |   ✅   |
+| Watermark uploads (guest, user, admin)                                                        |   –   |   –   |   ✅   |
+| Watermark file toggles                                                                        |   –   |   –   |   ✅   |
+| Watermark size requirement                                                                    |   –   |   –   |   ✅   |
+| Watermark custom image                                                                        |   –   |   –   |   ✅   |
+| Watermark position                                                                            |   –   |   –   |   ✅   |
+| Watermark percentage                                                                          |   –   |   –   |   ✅   |
+| Watermark margin                                                                              |   –   |   –   |   ✅   |
+| Watermark opacity                                                                             |   –   |   –   |   ✅   |
 
 ### Admin toggles
 
-| Feature                     | Free  | Lite  |  Pro  |
-| --------------------------- | :---: | :---: | :---: |
-| Search (users and guest)    |   ✅   |   ✅   |   ✅   |
-| Explore (users and guest)   |   ✅   |   ✅   |   ✅   |
-| Random (users and guest)    |   ✅   |   ✅   |   ✅   |
-| NSFW listings               |   ✅   |   ✅   |   ✅   |
-| Blur NSFW content           |   ✅   |   ✅   |   ✅   |
-| NSFW on random mode         |   ✅   |   ✅   |   ✅   |
-| Banners on NSFW             |   ✅   |   ✅   |   ✅   |
-| Uploads (users and guest)   |   ✅   |   ✅   |   ✅   |
-| Uploads (URL)               |   ✅   |   ✅   |   ✅   |
-| Upload moderation           |   ✅   |   ✅   |   ✅   |
-| Upload embed codes          |   ✅   |   ✅   |   ✅   |
-| Upload redirection          |   ✅   |   ✅   |   ✅   |
-| Upload duplication          |   ✅   |   ✅   |   ✅   |
-| Upload expiration           |   ✅   |   ✅   |   ✅   |
-| Upload NSFW checkbox        |   ✅   |   ✅   |   ✅   |
-| Download button             |   ✅   |   ✅   |   ✅   |
-| Right click                 |   ✅   |   ✅   |   ✅   |
-| Show Exif data              |   ✅   |   ✅   |   ✅   |
-| Social share buttons        |   ✅   |   ✅   |   ✅   |
-| Automatic updates check     |   ✅   |   ✅   |   ✅   |
-| Dump update query           |   ✅   |   ✅   |   ✅   |
-| Debug errors                |   ✅   |   ✅   |   ✅   |
-| Consent screen (age gate)   |   –   |   ✅   |   ✅   |
-| User sign up                |   –   |   ✅   |   ✅   |
-| User content delete         |   –   |   ✅   |   ✅   |
-| User notify sign up         |   –   |   ✅   |   ✅   |
-| User email confirmation     |   –   |   ✅   |   ✅   |
-| User email for social login |   –   |   ✅   |   ✅   |
-| Auto language               |   –   |   –   |   ✅   |
-| Language chooser            |   –   |   –   |   ✅   |
-| SEO URLs (media and album)  |   –   |   –   |   ✅   |
-| Cookie law compliance       |   –   |   –   |   ✅   |
-| Flood protection            |   –   |   –   |   ✅   |
-| Flood protection notify     |   –   |   –   |   ✅   |
-| Watermarks                  |   –   |   –   |   ✅   |
+| Feature                                                                                     | Free  | Lite  |  Pro  |
+| ------------------------------------------------------------------------------------------- | :---: | :---: | :---: |
+| Search (users and guest)                                                                    |   ✅   |   ✅   |   ✅   |
+| Explore (users and guest)                                                                   |   ✅   |   ✅   |   ✅   |
+| Random (users and guest)                                                                    |   ✅   |   ✅   |   ✅   |
+| NSFW listings                                                                               |   ✅   |   ✅   |   ✅   |
+| Blur NSFW content                                                                           |   ✅   |   ✅   |   ✅   |
+| NSFW on random mode                                                                         |   ✅   |   ✅   |   ✅   |
+| Banners on NSFW                                                                             |   ✅   |   ✅   |   ✅   |
+| Uploads (users and guest)                                                                   |   ✅   |   ✅   |   ✅   |
+| Uploads (URL)                                                                               |   ✅   |   ✅   |   ✅   |
+| Upload moderation                                                                           |   ✅   |   ✅   |   ✅   |
+| Upload embed codes                                                                          |   ✅   |   ✅   |   ✅   |
+| Upload redirection                                                                          |   ✅   |   ✅   |   ✅   |
+| Upload duplication                                                                          |   ✅   |   ✅   |   ✅   |
+| Upload expiration                                                                           |   ✅   |   ✅   |   ✅   |
+| Upload NSFW checkbox                                                                        |   ✅   |   ✅   |   ✅   |
+| Download button                                                                             |   ✅   |   ✅   |   ✅   |
+| Right click                                                                                 |   ✅   |   ✅   |   ✅   |
+| Show Exif data                                                                              |   ✅   |   ✅   |   ✅   |
+| Social share buttons                                                                        |   ✅   |   ✅   |   ✅   |
+| Automatic updates check                                                                     |   ✅   |   ✅   |   ✅   |
+| Dump update query                                                                           |   ✅   |   ✅   |   ✅   |
+| Debug errors                                                                                |   ✅   |   ✅   |   ✅   |
+| Consent screen (age gate)                                                                   |   –   |   ✅   |   ✅   |
+| User sign up                                                                                |   –   |   ✅   |   ✅   |
+| User content delete                                                                         |   –   |   ✅   |   ✅   |
+| User notify sign up                                                                         |   –   |   ✅   |   ✅   |
+| User email confirmation                                                                     |   –   |   ✅   |   ✅   |
+| User email for social login                                                                 |   –   |   ✅   |   ✅   |
+| [Auto language](https://v4-admin.chevereto.com/settings/languages.html#auto-language)       |   –   |   –   |   ✅   |
+| [Language chooser](https://v4-admin.chevereto.com/settings/languages.html#language-chooser) |   –   |   –   |   ✅   |
+| SEO URLs (media and album)                                                                  |   –   |   –   |   ✅   |
+| Cookie law compliance                                                                       |   –   |   –   |   ✅   |
+| Flood protection                                                                            |   –   |   –   |   ✅   |
+| Flood protection notify                                                                     |   –   |   –   |   ✅   |
+| Watermarks                                                                                  |   –   |   –   |   ✅   |
 
 ### System features
 

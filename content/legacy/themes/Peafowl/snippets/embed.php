@@ -61,7 +61,7 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'html-embed-full' => [
+            'full-html-embed' => [
                 'label' => _s('%s full linked', 'HTML'),
                 'template' => [
                     'image' => '<a href="%URL_VIEWER%"><img src="%URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
@@ -69,12 +69,12 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'html-embed-medium' => [
+            'medium-html-embed' => [
                 'label' => _s('%s medium linked', 'HTML'),
-                'template' => '<a href="%URL_VIEWER%"><img src="%DISPLAY_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
+                'template' => '<a href="%URL_VIEWER%"><img src="%MEDIUM_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'medium',
             ],
-            'html-embed-thumbnail' => [
+            'thumbnail-html-embed' => [
                 'label' => _s('%s thumbnail linked', 'HTML'),
                 'template' => '<a href="%URL_VIEWER%"><img src="%THUMB_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'thumb',
@@ -92,7 +92,7 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'markdown-embed-full' => [
+            'full-markdown-embed' => [
                 'label' => _s('%s full linked', 'Markdown'),
                 'template' => [
                     'image' => '[![%DISPLAY_TITLE%](%URL%)](%URL_VIEWER%)',
@@ -100,12 +100,12 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'markdown-embed-medium' => [
+            'medium-markdown-embed' => [
                 'label' => _s('%s medium linked', 'Markdown'),
-                'template' => '[![%DISPLAY_TITLE%](%DISPLAY_URL%)](%URL_VIEWER%)',
+                'template' => '[![%DISPLAY_TITLE%](%MEDIUM_URL%)](%URL_VIEWER%)',
                 'size' => 'medium',
             ],
-            'markdown-embed-thumbnail' => [
+            'thumbnail-markdown-embed' => [
                 'label' => _s('%s thumbnail linked', 'Markdown'),
                 'template' => '[![%DISPLAY_TITLE%](%THUMB_URL%)](%URL_VIEWER%)',
                 'size' => 'thumb',
@@ -123,7 +123,7 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'bbcode-embed-full' => [
+            'full-bbcode-embed' => [
                 'label' => _s('%s full linked', 'BBCode'),
                 'template' => [
                     'image' => '[url=%URL_VIEWER%][img]%URL%[/img][/url]',
@@ -131,12 +131,12 @@ $embed_upload_tpl = [
                 ],
                 'size' => 'full',
             ],
-            'bbcode-embed-medium' => [
+            'medium-bbcode-embed' => [
                 'label' => _s('%s medium linked', 'BBCode'),
-                'template' => '[url=%URL_VIEWER%][img]%DISPLAY_URL%[/img][/url]',
+                'template' => '[url=%URL_VIEWER%][img]%MEDIUM_URL%[/img][/url]',
                 'size' => 'medium',
             ],
-            'bbcode-embed-thumbnail' => [
+            'thumbnail-bbcode-embed' => [
                 'label' => _s('%s thumbnail linked', 'BBCode'),
                 'template' => '[url=%URL_VIEWER%][img]%THUMB_URL%[/img][/url]',
                 'size' => 'thumb',

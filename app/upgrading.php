@@ -200,13 +200,14 @@ if ($singleStep || $action === 'extract') {
     logger('Chevereto filesystem upgraded');
     unlinkIfExists($lockUpgrading);
     $safeResult = false;
-    $command = $rootDir . '/app/bin/legacy -C update';
     if (passthruEnabled()) {
-        logger('Command passthru');
+        logger('Update command passthru');
+        $command = $rootDir . '/app/bin/legacy -C update';
         $safeResult = passthru($command);
     }
     if ($safeResult === false) {
-        logger('Continue with database update');
+        logger('Continuing with database update at /update');
+        $return = 'update';
     }
     if (PHP_SAPI !== 'cli') {
         $continueUri = $rootUrl . $return;

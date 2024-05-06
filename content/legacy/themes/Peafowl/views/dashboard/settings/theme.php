@@ -129,15 +129,6 @@ foreach (array_keys($fonts->get()) as $id) {
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <label for="theme_nsfw_upload_checkbox"><?php _se('Not safe content checkbox in uploader'); ?></label>
-    <div class="c5 phablet-c1"><select type="text" name="theme_nsfw_upload_checkbox" id="theme_nsfw_upload_checkbox" class="text-input">
-            <?php
-            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_nsfw_upload_checkbox')); ?>
-        </select></div>
-    <div class="input-below"><?php _se('Enable this if you want to show a checkbox to indicate not safe content upload.'); ?></div>
-</div>
-<hr class="line-separator">
-<div class="input-label">
     <label for="theme_custom_css_code"><?php _se('Custom CSS code'); ?></label>
     <div class="c12 phablet-c1"><textarea type="text" name="theme_custom_css_code" id="theme_custom_css_code" class="text-input r4" placeholder="<?php _se('Put your custom CSS code here. It will be placed as <style> just before the closing </head> tag.'); ?>"><?php echo Settings::get('theme_custom_css_code'); ?></textarea></div>
 </div>

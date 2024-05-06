@@ -39,6 +39,7 @@ use function Chevereto\Legacy\G\get_app_version;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
+use function Chevereto\Legacy\G\get_ffmpeg_error;
 use function Chevereto\Legacy\G\get_ini_bytes;
 use function Chevereto\Legacy\G\get_regex_match;
 use Chevereto\Legacy\G\Handler;
@@ -69,6 +70,7 @@ use function Chevereto\Vars\server;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 use FFMpeg\FFMpeg;
+use FFMpeg\FFProbe;
 use Intervention\Image\ImageManagerStatic;
 use PHPMailer\PHPMailer\SMTP;
 
@@ -174,13 +176,13 @@ return function (Handler $handler) {
         'languages' => _s('Languages'),
         'email' => _s('Email'),
         'tools' => _s('Tools'),
-        'logo' => _s('Logo'),
         'homepage' => _s('Homepage'),
         'pages' => _s('Pages'),
         'upload-plugin' => _s('Upload plugin'),
         'consent-screen' => _s('Consent screen'),
         'users' => _n('User', 'Users', 20),
         'guest-api' => _s('Guests %s', 'API'),
+        'logo' => _s('Logo'),
         'external-storage' => _s('External storage'),
         'routing' => _s('Routing'),
         'external-services' => _s('External services'),
@@ -231,7 +233,7 @@ return function (Handler $handler) {
         'homepage' => ['lite', 'CHEVERETO_ENABLE_USERS'],
         'ip-bans' => ['pro', 'CHEVERETO_ENABLE_IP_BANS'],
         'login-providers' => ['pro', 'CHEVERETO_ENABLE_LOGIN_PROVIDERS'],
-        'logo' => ['lite', 'CHEVERETO_ENABLE_LOGO'],
+        'logo' => ['pro', 'CHEVERETO_ENABLE_LOGO'],
         'pages' => ['lite', 'CHEVERETO_ENABLE_PAGES'],
         'routing' => ['pro', 'CHEVERETO_ENABLE_ROUTING'],
         'upload-plugin' => ['lite', 'CHEVERETO_ENABLE_UPLOAD_PLUGIN'],
@@ -417,7 +419,6 @@ return function (Handler $handler) {
                     $errorLogRemark .= '<div><code class="code code--command  display-inline-block" data-click="select-all" style="white-space: pre-wrap;">docker logs ' . (gethostname() ?: 'chv-container') . ' -f 1>/dev/null</code></div>';
                 }
             }
-
             $ffmpegContent = '<i class="fas fa-video"></i> ';
 
             try {
@@ -434,14 +435,43 @@ return function (Handler $handler) {
                         )
                     );
                 }
-                $ffmpegContent .= FFMpeg::create()->getFFMpegDriver()->getVersion();
+                $ffmpegErrors = [];
+
+                try {
+                    $ffmpeg = FFMpeg::create(
+                        [
+                            'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
+                            'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                        ]
+                    );
+                } catch (Throwable $e) {
+                    $ffmpegErrors[] = get_ffmpeg_error($e);
+                }
+
+                try {
+                    $ffprobe = FFProbe::create(
+                        [
+                            'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                        ]
+                    );
+                } catch (Throwable $e) {
+                    $ffmpegErrors[] = get_ffmpeg_error($e);
+                }
+                if ($ffmpegErrors !== []) {
+                    throw new Exception(implode(', ', $ffmpegErrors));
+                }
+
+                $ffprobe->getFFProbeDriver()->getName();
+                $ffmpegContent .= 'FFmpeg bin:'
+                    . env()['CHEVERETO_BINARY_FFMPEG']
+                    . ' version '
+                    . $ffmpeg->getFFMpegDriver()->getVersion()
+                    . '<br>'
+                    . '<i class="fas fa-circle-check"></i> FFprobe bin:'
+                    . env()['CHEVERETO_BINARY_FFPROBE'];
             } catch (Throwable $e) {
-                $previous = $e->getPrevious() ?
-                    ': ' . $e->getPrevious()->getMessage() :
-                    '';
                 $ffmpegContent = '<span class="color-fail"><i class="fas fa-warning"></i> Error: '
-                    . $e->getMessage()
-                    . $previous
+                    . get_ffmpeg_error($e)
                     . '</span>';
             }
 
@@ -534,6 +564,16 @@ return function (Handler $handler) {
                 $mysqlVersion = $db->getAttr(PDO::ATTR_SERVER_VERSION);
                 $db->closeCursor();
                 $mysqlServerInfo = $db->getAttr(PDO::ATTR_SERVER_INFO);
+                $phpIniLoaded = php_ini_loaded_file();
+                $phpIniFiles = php_ini_scanned_files() ?: 'N/A';
+                $phpIniFiles = explode(',', $phpIniFiles);
+                if ($phpIniLoaded) {
+                    array_unshift($phpIniFiles, $phpIniLoaded);
+                }
+                $phpIniFiles = array_map(function ($v) {
+                    return '<div data-click="select-all">' . $v . '</div>';
+                }, $phpIniFiles);
+                $phpIniFiles = implode('', $phpIniFiles);
                 $system_values_more = [
                     'links' => [
                         'label' => _s('Links'),
@@ -550,10 +590,6 @@ return function (Handler $handler) {
                     'error_log' => [
                         'label' => 'Error log',
                         'content' => '<i class="fas fa-scroll"></i> <span data-click="select-all">' . Config::system()->errorLog() . '</span>' . $errorLogRemark,
-                    ],
-                    'php_version' => [
-                        'label' => _s('PHP version'),
-                        'content' => '<span class="fab fa-php"></span> ' . PHP_VERSION . ' ' . php_ini_loaded_file()
                     ],
                     'server' => [
                         'label' => _s('Server'),
@@ -576,6 +612,12 @@ return function (Handler $handler) {
                             . $mysqlVersion
                             . '<br>'
                             . $mysqlServerInfo
+                    ],
+                    'php_version' => [
+                        'label' => _s('PHP version'),
+                        'content' => '<span class="fab fa-php"></span> '
+                            . PHP_VERSION
+                            . $phpIniFiles
                     ],
                     'file_uploads' => [
                         'label' => _s('File uploads'),

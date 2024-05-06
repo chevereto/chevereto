@@ -49,7 +49,7 @@ if (!defined('ACCESS') || !ACCESS) {
 					<?php
                     if (Handler::cond('allowed_to_delete_content')) {
                         ?>
-							<a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %a and all of its %i?", ['%a' => _n('album', 'albums', 1), '%i' => _n('image', 'images', 20)]); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span></a>
+							<a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %a and all of its %i?", ['%a' => _n('album', 'albums', 1), '%i' => _n('file', 'files', 20)]); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url("json"); ?>"><span class="icon fas fa-trash-alt"></span></a>
 					<?php
                     } ?>
 				<?php
@@ -97,7 +97,7 @@ if (!defined('ACCESS') || !ACCESS) {
             <span class="icon far fa-eye-slash <?php if (Handler::var('album')["privacy"] == "public") {
                 echo "soft-hidden";
             } ?>" data-content="privacy-private" title="<?php _se('This content is private'); ?>" rel="tooltip"></span>
-           <span class="far fa-images"></span> <span data-text="image-count"><?php echo Handler::var('album')["image_count"]; ?></span> <span data-text="image-label" data-label-single="<?php _ne('image', 'images', 1); ?>" data-label-plural="<?php _ne('image', 'images', 2); ?>"><?php _ne('image', 'images', Handler::var('album')['image_count']); ?></span> — <?php echo '<span title="' . Handler::var('album')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('album')['date_gmt']) . '</span>'; ?> — <span class="far fa-views"></span><?php echo Handler::var('album')['views']; ?> <?php echo Handler::var('album')['views_label']; ?>
+           <span class="fas fa-photo-film"></span> <span data-text="image-count"><?php echo Handler::var('album')["image_count"]; ?></span> <span data-text="image-label" data-label-single="<?php _ne('file', 'files', 1); ?>" data-label-plural="<?php _ne('file', 'files', 20); ?>"><?php _ne('file', 'files', Handler::var('album')['image_count']); ?></span> — <?php echo '<span title="' . Handler::var('album')['date_fixed_peer'] . '">' . time_elapsed_string(Handler::var('album')['date_gmt']) . '</span>'; ?> — <span class="far fa-views"></span><?php echo Handler::var('album')['views']; ?> <?php echo Handler::var('album')['views_label']; ?>
         </div>
     </div>
 	<?php show_banner('album_after_header', Handler::var('listing')->sfw()); ?>

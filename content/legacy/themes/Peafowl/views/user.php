@@ -112,7 +112,7 @@ if (!defined('ACCESS') || !ACCESS) {
             <?php
                 if (Handler::cond('owner') || Handler::cond('admin') || (Handler::cond('content_manager') && !Handler::var('user')['is_content_manager'])) {
                     ?>
-				<a class="btn btn-small default" href="<?php echo get_base_url(Handler::cond('owner') ? 'settings/profile' : 'dashboard/user/' . Handler::var('user')['id']); ?>"><span class="icon fas fa-edit"></span><span class="margin-left-5 phone-hide"><?php _se('Edit'); ?></span></a>
+				<a class="btn btn-small default" href="<?php echo get_base_url(Handler::cond('owner') ? 'settings' : 'dashboard/user/' . Handler::var('user')['id']); ?>"><span class="icon fas fa-user-cog"></span><span class="margin-left-5 phone-hide"><?php _se('Settings'); ?></span></a>
 			<?php
                     if (!Handler::cond('owner') && Handler::cond('content_manager')) {
                         ?>

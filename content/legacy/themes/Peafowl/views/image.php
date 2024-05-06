@@ -30,7 +30,7 @@ if (!defined('ACCESS') || !ACCESS) {
         ?? Handler::var('image')['frame']['url']
         ?? Handler::var('image')['url'];
     ?>
-        <img draggable="false" data-type="<?php echo  Handler::var('image')['type']; ?>" class="media" src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
+        <img draggable="false" data-media="<?php echo  Handler::var('image')['type']; ?>" class="media" src="<?php echo $image_url; ?>" <?php if (!getSetting('theme_download_button')) {
         ?> class="no-select" <?php
     } ?> alt="<?php echo Handler::var('image')['alt']; ?>" width="<?php echo Handler::var('image')['width']; ?>" height="<?php echo Handler::var('image')['height']; ?>" data-is360="<?php echo Handler::var('image')['is_360']; ?>" <?php if (isset(Handler::var('image')['medium']) || isset(Handler::var('image')['frame'])) {
         ?> data-load="full"<?php
@@ -124,7 +124,7 @@ if (isset(Handler::var('image')['album'], Handler::var('image_album_slice')['ima
                 }
                         if (Handler::cond('allowed_to_delete_content')) {
                             ?>
-                    <a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %s?", _n('image', 'images', 1)); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url('json'); ?>"><span class="icon fas fa-trash-alt"></span></a>
+                    <a data-action="delete" title="<?php _se('Delete'); ?> (Del)" class="btn btn-small default" data-confirm="<?php _se("Do you really want to delete this %s?", _n('file', 'files', 1)); ?> <?php _se("This can't be undone."); ?>" data-submit-fn="CHV.fn.submit_resource_delete" data-ajax-deferred="CHV.fn.complete_resource_delete" data-ajax-url="<?php echo get_base_url('json'); ?>"><span class="icon fas fa-trash-alt"></span></a>
             <?php
                         }
                     }

@@ -86,18 +86,10 @@ class Album
         if ($requester !== []) {
             $album_db['album_liked'] = (bool) $album_db['like_user_id'];
         }
-        $return = $album_db;
-        if (isset($return['album_password']) && hasEncryption()) {
-            try {
-                $return['album_password'] = decrypt($return['album_password']);
-            } catch (Throwable) {
-                $return['album_password'] = $return['album_password'];
-            }
-        }
 
         return $pretty
-            ? self::formatArray($return)
-            : $return;
+            ? self::formatArray($album_db)
+            : self::cipherAwareDbRow($album_db);
     }
 
     public static function getMultiple(array $ids, bool $pretty = false): array
@@ -514,8 +506,22 @@ class Album
         $album['cta'] = $album['cta'] ?? '[]';
     }
 
+    public static function cipherAwareDbRow(array &$dbrow): array
+    {
+        if (isset($dbrow['album_password']) && hasEncryption()) {
+            try {
+                $dbrow['album_password'] = decrypt($dbrow['album_password']);
+            } catch (Throwable) {
+                $dbrow['album_password'] = $dbrow['album_password'];
+            }
+        }
+
+        return $dbrow;
+    }
+
     public static function formatArray(array $dbrow, bool $safe = false): array
     {
+        self::cipherAwareDbRow($dbrow);
         $output = DB::formatRow($dbrow);
         if (!isset($output['user'])) {
             $output['user'] = [];
@@ -555,7 +561,7 @@ class Album
         if (isset($session_password) && hasEncryption()) {
             $session_password = decrypt($session_password);
         }
-        if (!isset($session_password) || !hash_equals($session_password, $album['password'])) {
+        if (!isset($session_password) || !hash_equals($album['password'], $session_password)) {
             $removeValue = session()['password'] ?? null;
             unset($removeValue['album'][$album['id']]);
             sessionVar()->put('password', $removeValue);

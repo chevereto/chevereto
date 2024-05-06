@@ -115,7 +115,7 @@ function removeDeleteLog(): void
 }
 function checkForNews(): void
 {
-    if (!checkoutUpdate('news_check_datetimegmt')) {
+    if (!checkoutUpdate('news_check_datetimegmt', 'PT4H')) {
         feedbackAlert('Skipping news check');
 
         return;
@@ -133,7 +133,7 @@ function checkForNews(): void
 }
 function checkForUpdates(): void
 {
-    if (!checkoutUpdate('update_check_datetimegmt')) {
+    if (!checkoutUpdate('update_check_datetimegmt', 'P1D')) {
         feedbackAlert('Skipping updates check');
 
         return;
@@ -149,10 +149,10 @@ function checkForUpdates(): void
     }
     echoLocked($job);
 }
-function checkoutUpdate(string $datetimeSetting): bool
+function checkoutUpdate(string $datetimeSetting, string $past): bool
 {
     return is_null(Settings::get($datetimeSetting))
-    || datetime_add(Settings::get($datetimeSetting), 'P1D') < datetimegmt();
+    || datetime_add(Settings::get($datetimeSetting), $past) < datetimegmt();
 }
 function checkHtaccess()
 {

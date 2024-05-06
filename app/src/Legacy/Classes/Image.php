@@ -14,6 +14,8 @@ namespace Chevereto\Legacy\Classes;
 use function Chevere\Message\message;
 use function Chevere\String\randomString;
 use Chevere\Throwable\Exceptions\LogicException;
+use function Chevereto\Encryption\decrypt;
+use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\assertNotStopWords;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\encodeID;
@@ -31,6 +33,7 @@ use function Chevereto\Legacy\G\format_bytes;
 use function Chevereto\Legacy\G\get_basename_without_extension;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
+use function Chevereto\Legacy\G\get_ffmpeg_error;
 use function Chevereto\Legacy\G\get_filename;
 use function Chevereto\Legacy\G\get_image_fileinfo as GGet_image_fileinfo;
 use function Chevereto\Legacy\G\get_public_url;
@@ -790,9 +793,16 @@ class Image
             }
             $resizeSourceImage = $image_upload['uploaded']['file'];
             $uploadDir = dirname($resizeSourceImage);
+            $chainExtension = $image_upload['uploaded']['extension'];
             if ($image_upload['source']['type'] === 'video') {
-                $frameImage = $uploadDir . '/' . $image_upload['uploaded']['name'] . '.fr.jpeg';
+                $chainExtension = 'jpeg';
+                $frameImage = $uploadDir
+                    . '/'
+                    . $image_upload['uploaded']['name']
+                    . '.fr.'
+                    . $chainExtension;
                 rename($image_upload['uploaded']['frame'], $frameImage);
+                chmod($frameImage, 0644);
                 $resizeSourceImage = $frameImage;
                 $chain_mask[0] = 1;
             }
@@ -810,11 +820,12 @@ class Image
                 } else {
                     $image_resize_options = ['width' => $params['width']];
                 }
+                $image_resize_options['extension'] = $image_upload['uploaded']['extension'];
                 $image_upload['uploaded'] = self::resize(
-                    $resizeSourceImage,
-                    dirname($resizeSourceImage),
-                    null,
-                    $image_resize_options
+                    source: $resizeSourceImage,
+                    destination: dirname($resizeSourceImage),
+                    filename: null,
+                    options: $image_resize_options
                 );
                 $image_upload['uploaded']['fileinfo']['is_360'] = $is_360;
             }
@@ -824,6 +835,7 @@ class Image
                 'fitted' => true,
                 'width' => getSetting('upload_thumb_width'),
                 'height' => getSetting('upload_thumb_height'),
+                'extension' => $chainExtension
             ];
             $medium_size = getSetting('upload_medium_size');
             $medium_fixed_dimension = getSetting('upload_medium_fixed_dimension');
@@ -870,11 +882,12 @@ class Image
                     $image_medium_options['forced'] = true;
                     $image_medium_options[$medium_fixed_dimension] = min($image_medium_options[$medium_fixed_dimension], $image_upload['uploaded']['fileinfo'][$medium_fixed_dimension]);
                 }
+                $image_medium_options['extension'] = $chainExtension;
                 $image_medium = self::resize(
-                    $resizeSourceImage,
-                    $uploadDir,
-                    $image_upload['uploaded']['name'] . '.md',
-                    $image_medium_options
+                    source: $resizeSourceImage,
+                    destination: $uploadDir,
+                    filename: $image_upload['uploaded']['name'] . '.md',
+                    options: $image_medium_options
                 );
                 $chain_mask[3] = 1;
             }
@@ -1246,6 +1259,7 @@ class Image
             'original_filename' => $image_upload['source']['filename'],
             'original_exifdata' => $original_exifdata,
             'is_360' => $is360,
+            'extension' => $image_upload['uploaded']['extension'],
         ];
         if (!isset($values['date'])) {
             $populate_values = array_merge($populate_values, [
@@ -1478,7 +1492,6 @@ class Image
 
             $image = array_merge($image, get_fileinfo($targets['chain']['image']), $image_fileinfo);
         }
-
         $image['file_resource'] = $targets;
         $image['url_viewer'] = self::getUrlViewer(
             $image['id_encoded'],
@@ -1518,6 +1531,7 @@ class Image
 
                 break;
             }
+            $displaySize = $image['medium']['size'];
         } elseif (
             $image['size'] > get_bytes('200 KB')
             && $image['type'] === 1
@@ -1525,6 +1539,14 @@ class Image
             $display_url = $image['thumb']['url'] ?? '';
             $display_width = getSetting('upload_thumb_width');
             $display_height = getSetting('upload_thumb_height');
+            $displaySize = $image['thumb']['size'];
+        }
+        if (isset($image['frame']['size'], $displaySize)
+            && $image['frame']['size'] < $displaySize
+        ) {
+            $display_url = $image['frame']['url'];
+            $display_width = $image['width'];
+            $display_height = $image['height'];
         }
         $image['duration'] = (int) ($image['duration'] ?? 0);
         $seconds = $image['duration'] ?? 0;
@@ -1534,6 +1556,13 @@ class Image
         } else {
             $duration_time = '';
         }
+        $image['medium'] = $image['medium'] ?? [
+            'filename' => null,
+            'name' => null,
+            'mime' => null,
+            'extension' => null,
+            'url' => null,
+        ];
         $image['duration_time'] = $duration_time;
         $image['type'] = self::$types[$image['type']];
         $image['display_url'] = $display_url;
@@ -1562,6 +1591,13 @@ class Image
         }
         if (isset($output['album']['id']) || isset($output['user']['id'])) {
             $output['user'] = $output['user'] ?? [];
+            if (isset($output['album']['password']) && hasEncryption()) {
+                try {
+                    $output['album']['password'] = decrypt($output['album']['password']);
+                } catch (Throwable) {
+                    $output['album']['password'] = $output['album']['password'];
+                }
+            }
             Album::fill($output['album'], $output['user']);
         } else {
             unset($output['album']);
@@ -1584,7 +1620,18 @@ class Image
     public static function getVideoFrame(string $file, int $time): string
     {
         $frameFile = Upload::getTempNam(sys_get_temp_dir());
-        $ffmpeg = FFMpeg::create();
+
+        try {
+            $ffmpeg = FFMpeg::create(
+                [
+                    'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
+                    'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                ]
+            );
+        } catch (Throwable $e) {
+            throw new Exception("FFprobe error: " . get_ffmpeg_error($e), 600);
+        }
+
         $video = $ffmpeg->open($file);
         $video
             ->frame(TimeCode::fromSeconds($time))

@@ -8,7 +8,7 @@ if (!defined('ACCESS') || !ACCESS) {
 <script id="viewer-template" type="text/x-chv-template">
 	<div class="viewer viewer--hide list-item" data-cover="1">
 		<div class="viewer-content no-select">
-			<img class="viewer-src no-select" src="%display_url%" alt="%filename%" width="%width%" height="%height%" data-type="%type%">
+			<img draggable="false" class="viewer-src no-select animate" src="%display_url%" alt="%filename%" width="%width%" height="%height%" data-media="%type%">
             <div id="image-viewer-360" class="soft-hidden"></div>
 		</div>
 		<div class="viewer-wheel phone-hide phablet-hide tablet-hide hover-display">

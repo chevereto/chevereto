@@ -111,6 +111,7 @@ if (!defined('ACCESS') || !ACCESS) {
 			medium: {
 				url: "<?php echo Handler::var('image')["medium"]["url"] ?? ''; ?>"
 			},
+            display_url: "<?php echo Handler::var('image')["display_url"]; ?>",
             url_viewer: "<?php echo Handler::var('image')["url_viewer"]; ?>",
             path_viewer: "<?php echo Handler::var('image')["path_viewer"]; ?>",
             is_360: <?php echo Handler::var('image')["is_360"] ? 'true' : 'false'; ?>,

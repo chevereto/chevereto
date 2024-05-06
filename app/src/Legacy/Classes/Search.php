@@ -83,9 +83,6 @@ class Search
                     str_replace($v, '', $q_match)
                 )
             );
-            if ($q_match === '') {
-                $q_match = null;
-            }
             $op = explode(':', $v);
             if (!in_array($op[0], ['category', 'ip', 'storage'])) {
                 continue;
@@ -134,7 +131,7 @@ class Search
                 break;
             }
         }
-        if (isset($q_match)) {
+        if ($q_match !== '') {
             $q_value = $q_match;
             if ($this->DBEngine == 'InnoDB') {
                 $q_value = trim($q_value, '><');
@@ -146,7 +143,7 @@ class Search
         $wheres = null;
         switch ($this->type) {
             case 'images':
-                if (isset($q_match)) {
+                if ($q_match !== '') {
                     $wheres = 'WHERE MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)';
                 }
                 if ($search_op_wheres !== []) {

@@ -350,11 +350,10 @@ $(function () {
         "click",
         anywhere_upload_queue + " [data-action=edit]",
         function () {
-            var $item = $(this).closest("li"),
-                $queue = $item.closest("ul"),
-                id = $item.data("id"),
-                file = CHV.fn.uploader.files[id]
-                media = file.type.substring(0, file.type.indexOf("/"));
+            var $item = $(this).closest("li");
+            var id = $item.data("id");
+            var file = CHV.fn.uploader.files[id];
+            var media = file.type.substring(0, file.type.indexOf("/"));
             var modal = PF.obj.modal.selectors.root;
             var queueObject = $.extend({}, file.formValues || file.parsedMeta);
             var injectKeys = ["album_id", "category_id", "nsfw"];
@@ -2720,14 +2719,12 @@ $(function () {
             });
     }
 
-    if (
-        typeof CHV.obj.config !== typeof undefined &&
+    if (typeof CHV.obj.config !== typeof undefined &&
         CHV.obj.config.listing.viewer
     ) {
         $(document).on(
             "click",
-            PF.obj.listing.selectors.list_item +
-            "[data-type=image] .image-container",
+            PF.obj.listing.selectors.list_item + "[data-type=image] .image-container",
             function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -2745,14 +2742,16 @@ $(function () {
         );
     }
 
-    $(document).on("contextmenu", CHV.fn.listingViewer.selectors.root, function (
-        e
-    ) {
-        e.preventDefault();
-        CHV.fn.listingViewer.zoom();
-        PF.fn.keyFeedback.spawn(e);
-        return false;
-    });
+    $(document).on(
+        "contextmenu",
+        CHV.fn.listingViewer.selectors.root,
+        function (e) {
+            e.preventDefault();
+            CHV.fn.listingViewer.zoom();
+            PF.fn.keyFeedback.spawn(e);
+            return false;
+        }
+    );
 
     var UrlParams = PF.fn.deparam(window.location.search);
     if (UrlParams && "viewer" in UrlParams) {
@@ -3294,16 +3293,22 @@ CHV.fn.listingViewer = {
         var $src = $(srcHtml).attr("src", this.object.image.url);
         $src.insertBefore(this.getEl("src"));
         var mediaTarget = $src.eq(0);
-        if(mediaTarget.attr('data-type') === 'video') {
+        var isVideo = mediaTarget.attr("data-media") == "video";
+        if(isVideo) {
             mediaTarget.replaceWith(
-                '<video class="viewer-src no-select" playsinline controls autoplay src="'+this.object.image.url+'"></video>'
+                '<video draggable="false" class="viewer-src no-select animate" playsinline autoplay controls src="'+this.object.image.url+'" poster="'+this.object.display_url+'"></video>'
             );
-            mediaTarget.src = this.object.image.url;
+            $src.next().css("opacity", 0);
+            setTimeout(function() {
+                $src.next().remove();
+            }, 200);
         } else {
             mediaTarget.attr("src", this.object.image.url);
         }
         $src.imagesLoaded(function () {
-            $src.next().remove();
+            if(!isVideo) {
+                $src.next().remove();
+            }
         });
     },
     close: function () {
@@ -3471,9 +3476,9 @@ CHV.fn.viewerLoadImage = function () {
     var mediaTarget = CHV.obj.image_viewer.$container.find(".media").eq(1);
     var width = mediaTarget.css("width");
     var height = mediaTarget.css("height");
-    if(mediaTarget.attr('data-type') === 'video') {
+    if(mediaTarget.attr('data-media') === 'video') {
         mediaTarget.replaceWith(
-            '<video class="media animate" controls autoplay width="'+width+'" height="'+height+'" src="'+CHV.obj.image_viewer.image.url+'" style="opacity: 0;"></video>'
+            '<video class="media animate" controls autoplay width="'+width+'" height="'+height+'" src="'+CHV.obj.image_viewer.image.url+'" poster="'+CHV.obj.image_viewer.image.display_url+'" style="opacity: 0;"></video>'
         );
         mediaTarget.src = CHV.obj.image_viewer.image.url;
     } else {
@@ -4288,8 +4293,12 @@ CHV.fn.uploader = {
                                 });
                             } else {
                                 displayQueueIfNotVisible();
-                                // Detect true mimetype
-                                var mimetype = "image/jpeg"; // Default unknown mimetype
+                                var mimetype = "image/jpeg"; // default for URL uploads
+                                if(file.hasOwnProperty("type")) {
+                                    mimetype = file.type;
+                                } else {
+                                    file.type = mimetype;
+                                }
                                 if (typeof data.buffer !== typeof undefined) {
                                     var buffer = new Uint8Array(data.buffer).subarray(0, 4);
                                     var header = "";
@@ -4316,6 +4325,7 @@ CHV.fn.uploader = {
                                     height: img.originalHeight,
                                     mimetype: mimetype,
                                 };
+
                                 setQueueReady($queue_item, img);
                             }
                             someFilesFailed(j, files, failed_files);
@@ -4764,41 +4774,33 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
         fn = "val";
     }
     var embed_tpl = CHV.fn.uploader.selectors.root == parent ? "embed_upload_tpl" : "embed_share_tpl";
-    var hasVideo = false;
+    var hasFrame = false;
+    var hasMedium = false;
     $.each(elements, function (key, value) {
         if (typeof value == typeof undefined) return;
         var image = "id_encoded" in value ? value : value.image;
-        if (!image.medium) {
-            image.medium = {};
-            var imageProp = [
-                "filename",
-                "name",
-                "width",
-                "height",
-                "extension",
-                "size",
-                "size_formatted",
-                "url",
-            ];
-            for (var i = 0; i < imageProp.length; i++) {
-                image.medium[imageProp[i]] = image[imageProp[i]];
-            }
-            if(image.type === 'video') {
-                image.medium.url = image.url_frame;
-            }
-        }
         var flatten_image = Object.flatten(image);
+        let itemHasFrame = image.url_frame !== "";
+        let itemHasMedium = image.medium.url !== null;
+        if(itemHasFrame) {
+            hasFrame = true;
+        }
+        if(itemHasMedium) {
+            hasMedium = true;
+        }
         $.each(CHV.obj[embed_tpl], function (key, value) {
             $.each(value.options, function (k, v) {
-                var embed = v,
-                    $embed = $("textarea[name=" + k + "]", parent),
-                    template = v.template;
+                if(!itemHasFrame && k.startsWith('frame-')) {
+                    return;
+                }
+                if(!itemHasMedium && k.startsWith('medium-')) {
+                    return;
+                }
+                var $embed = $("textarea[name=" + k + "]", parent);
+                var template = v.template;
                 if(typeof template === 'object' && template.hasOwnProperty(flatten_image["type"])
                 ) {
                     template = template[flatten_image["type"]]
-                }
-                if(flatten_image["type"] === "video") {
-                    hasVideo = true;
                 }
                 if(flatten_image["type"] !== "video") {
                     template = template.replaceAll("%URL_FRAME%", "");
@@ -4812,15 +4814,17 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
                         PF.fn.htmlEncode(PF.fn.htmlEncode(flatten_image[i]))
                     );
                 }
+                let useWhitespace = $embed.data("size") == "thumb" && k !== "thumb-links";
                 $embed[fn](
                     $embed.val() +
                     template +
-                    ($embed.data("size") == "thumb" ? " " : "\n")
+                    (useWhitespace ? " " : "\n")
                 );
             });
         });
     });
-    $("option[value=frame-links]", parent).prop("hidden", !hasVideo);
+    $("option[value^=frame]", parent).prop("disabled", !hasFrame);
+    $("option[value^=medium-]", parent).prop("disabled", !hasMedium);
     $.each(CHV.obj[embed_tpl], function (key, value) {
         $.each(value.options, function (k, v) {
             var $embed = $("textarea[name=" + k + "]", parent);

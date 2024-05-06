@@ -386,6 +386,16 @@ class Settings
                     'watermark_target_min_width' => '100',
                 ]
             ],
+            'CHEVERETO_ENABLE_SEO_IMAGE_URL' => ['0',
+                [
+                    'seo_image_urls' => false,
+                ]
+            ],
+            'CHEVERETO_ENABLE_SEO_ALBUM_URL' => ['0',
+                [
+                    'seo_album_urls' => false,
+                ]
+            ],
         ] as $envKey => $settingValues) {
             if (env()[$envKey] == $settingValues[0]) {
                 foreach ($settingValues[1] as $k => $v) {

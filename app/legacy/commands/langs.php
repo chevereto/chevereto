@@ -52,6 +52,9 @@ foreach ($languages as $lang) {
         ]);
     }
     echo "$lang\n";
+    if (file_exists($language_override_file)) {
+        echo "$lang [override]\n";
+    }
 }
 echo "---\n";
 echo L10n::LOCALES_AVAILABLE_FILEPATH . "\n";

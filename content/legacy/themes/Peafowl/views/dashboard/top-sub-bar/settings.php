@@ -32,7 +32,7 @@ if (!defined('ACCESS') || !ACCESS) {
                             : '';
                         echo <<<TPL
                             <li class="with-icon$class">
-                                <a{$aHref} title="{$item['title']}"><span class="btn-icon {$item['icon']}"></span><span class="btn-text">{$item['label']}</span></a>
+                                <a{$aHref}><span class="btn-icon {$item['icon']}"></span><span class="btn-text">{$item['label']}</span></a>
                             </li>
                         TPL;
                     }

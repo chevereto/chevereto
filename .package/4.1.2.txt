@@ -1,0 +1,20 @@
+Chevereto 4.1.2 (2024-05-06)
+
+- 🎥 Added support for custom FFmpeg and FFprobe binaries
+- 🎥 Improved video display on listings and viewer
+- ✅ Improved embed codes display
+- ✅ Improved upgrading in systems without passthru
+- 🖼️ Improved compatibility with jpg extension
+- 🐘 Added Dashboard section for PHP configuration (ini files)
+- 💅 Added feedback on CLI update command
+- 💅 Added remark on Homepage settings when conflicts with single profile routing
+- 💅 Fixed file references on /album
+- 💅 Improved style for user settings button
+- 💅 Improved style for user top menu
+- 🐞 Fixed bug affecting album password when using encryption
+- 🐞 Fixed bug affecting full screen video behavior
+- 🐞 Fixed bug affecting not working URL upload editing
+- 🐞 Fixed bug affecting wrong video image frame permissions
+- 🐞 Fixed bug in album embed codes
+- 🐞 Fixed bug in password protected album editing on listings
+- 🐞 Fixed bug in Search class

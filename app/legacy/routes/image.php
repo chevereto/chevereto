@@ -15,6 +15,7 @@ use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\encodeID;
+use function Chevereto\Legacy\flatten_array;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_global;
 use Chevereto\Legacy\G\Handler;
@@ -275,20 +276,23 @@ return function (Handler $handler) {
     $handler::setVar('privacy', $image['album']['privacy'] ?? '');
     include_theme_file('snippets/embed');
     $embed_share_tpl = get_global('embed_share_tpl');
-    $sharing = [
-        '%URL_VIEWER%' => $image['url_viewer'],
-        '%URL%' => $image['url'],
-        '%DISPLAY_URL%' => $image['display_url'],
-        '%DISPLAY_TITLE%' => $image['display_title'],
-        '%URL_FRAME%' => $image['url_frame'],
-        '%THUMB_URL%' => $image['thumb']['url'],
-        '%MEDIUM_URL%' => $image['medium']['url'] ?? '',
-    ];
+    $sharing = [];
+    foreach (flatten_array($image) as $imageKey => $imageValue) {
+        $sharing['%' . strtoupper($imageKey) . '%'] = $imageValue;
+    }
     $embed = [];
+    $hasFrame = $image['url_frame'] !== '';
+    $hasMedium = $image['medium']['url'] !== null;
     foreach ($embed_share_tpl as $code => $group) {
         $entries = [];
         $groupLabel = $group['label'];
         foreach ($group['options'] as $option => $optionValue) {
+            if (!$hasFrame && str_starts_with($option, 'frame-')) {
+                continue;
+            }
+            if (!$hasMedium && str_starts_with($option, 'medium-')) {
+                continue;
+            }
             $value = $optionValue['template'];
             if (is_array($value)) {
                 $value = $value[$image['type']];

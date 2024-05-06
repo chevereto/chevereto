@@ -604,6 +604,7 @@ $settings_updates = [
     '4.1.1' => [
         'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
     ],
+    '4.1.2' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -2053,6 +2054,7 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
         xr($sql_update);
 
         try {
+            logger("[STATUS] Updating Chevereto database (this may take a while)...\n");
             $updated = $db->exec();
             if ($updated) {
                 $chevereto_version_installed = DB::get('settings', ['name' => 'chevereto_version_installed'])[0]['setting_value'];

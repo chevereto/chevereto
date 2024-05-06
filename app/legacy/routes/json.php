@@ -391,7 +391,7 @@ return function (Handler $handler) {
                     $json_array['album'] = array_filter_array($album, ['id', 'creation_ip', 'password', 'user', 'privacy_extra', 'privacy_notes'], 'rest');
                     $contents = [];
                     foreach ($listing->outputAssoc() as $v) {
-                        $contents[] = array_filter_array($v, ['title', 'id_encoded', 'url', 'url_short', 'path_viewer', 'url_viewer', 'filename', 'medium', 'thumb'], 'exclusion');
+                        $contents[] = array_filter_array($v, ['title', 'id_encoded', 'url', 'url_short', 'path_viewer', 'url_viewer', 'filename', 'medium', 'thumb', 'type', 'url_frame'], 'exclusion');
                     }
                     $json_array['is_output_truncated'] = $album['image_count'] > $album_fetch ? 1 : 0;
                     $json_array['contents'] = $contents;

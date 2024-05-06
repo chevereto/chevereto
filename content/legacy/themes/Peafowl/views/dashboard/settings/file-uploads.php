@@ -87,6 +87,14 @@ echo read_the_docs_settings('file-uploads', _s('File uploads')); ?>
     <div class="input-below"><?php _se('Enable this to moderate incoming uploads. Target content will require moderation for approval.'); ?></div>
     <?php personal_mode_warning(); ?>
 </div>
+<div class="input-label">
+    <label for="theme_nsfw_upload_checkbox"><?php _se('Not safe content checkbox in uploader'); ?></label>
+    <div class="c5 phablet-c1"><select type="text" name="theme_nsfw_upload_checkbox" id="theme_nsfw_upload_checkbox" class="text-input">
+            <?php
+            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_nsfw_upload_checkbox')); ?>
+        </select></div>
+    <div class="input-below"><?php _se('Enable this if you want to show a checkbox to indicate not safe content upload.'); ?></div>
+</div>
 <hr class="line-separator">
 <div class="input-label">
     <label for="theme_show_embed_uploader"><?php _se('Enable embed codes (uploader)'); ?></label>

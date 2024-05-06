@@ -16,7 +16,7 @@ foreach ($tabs as $tab) {
     if ((isset($tab['list']) && $tab['list'] === false) || isset($tab['tools']) && $tab['tools'] === false) {
         continue;
     } ?>
-<div data-content="list-selection" data-tab="<?php echo $tab['id']; ?>" class="header--height header--centering list-selection <?php $class = [];
+<div data-content="list-selection" data-tab="<?php echo $tab['id']; ?>" class="header--height header--centering list-selection margin-right-5 <?php $class = [];
     if (isset($listing) && (is_array($listing->output) == false || count($listing->output) == 0)) {
         $class[] = 'disabled';
     }

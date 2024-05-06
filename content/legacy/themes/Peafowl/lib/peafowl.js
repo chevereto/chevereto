@@ -1317,7 +1317,7 @@ $(function () {
     });
 
     $(window).on("fullscreenchange", function () {
-        $("html").toggleClass("--fullscreen", document.fullscreenElement);
+        $("html").toggleClass("--fullscreen", document.fullscreenElement !== null);
     });
 });
 
@@ -1703,13 +1703,12 @@ Object.size = function (obj) {
  * Flatten an object
  */
 Object.flatten = function (obj, prefix) {
-    if (typeof prefix == "undefined") var prefix = "";
-
+    if (typeof prefix == "undefined") {
+        var prefix = "";
+    }
     var result = {};
-
     $.each(obj, function (key, value) {
-        if (!value) return;
-        if (typeof value == "object") {
+        if (value !== null && typeof value == "object") {
             result = $.extend({}, result, Object.flatten(value, prefix + key + "_"));
         } else {
             result[prefix + key] = value;

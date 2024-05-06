@@ -1114,7 +1114,6 @@ textarea {
 }
 
 .btn-icon {
-    /* font-size: 14px; */
     width: 18px;
     display: inline-block;
     text-align: center;
@@ -1775,12 +1774,9 @@ html:not(.phone) .pop-box-menu a:hover, .pop-box-menu a.focus {
     color: var(--menuItemHoverText);
 }
 
-.pop-box-menu li.current a {
-    background: rgba(0, 0, 0, .05);
-}
-
-.pop-box-menu li.current a:not(:hover) .btn-icon {
-    color: var(--colorAccent);
+.pop-box-menu li.current a, .pop-box-menu li.current a:hover {
+    color: var(--buttonDefaultText);
+    background: var(--buttonDefaultBackground);
 }
 
 .pop-box-menu ul {
@@ -5258,9 +5254,9 @@ a.cookie-law-close:hover {
 }
 
 .pop-box-menu li:hover .badge {
-    color: var(--menuItemHoverBackground);
+    /* color: var(--menuItemHoverBackground);
     background-color: var(--menuItemHoverText);
-    border-color: transparent;
+    border-color: transparent; */
 }
 
 .r1 {

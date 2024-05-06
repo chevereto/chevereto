@@ -1957,15 +1957,28 @@ function extension_to_mime(string $ext): string
     ][$ext] ?? '';
 }
 
+function get_ffmpeg_error(Throwable $e): string
+{
+    $previous = $e->getPrevious() ?
+        (': ' . $e->getPrevious()->getMessage()) :
+        '';
+
+    return $e->getMessage() . $previous;
+}
+
 function get_video_fileinfo(string $file): array
 {
     clearstatcache(true, $file);
-    $ffprobe = FFProbe::create();
 
     try {
+        $ffprobe = FFProbe::create(
+            [
+                'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+            ]
+        );
         $format = $ffprobe->format($file);
     } catch (Throwable $e) {
-        throw new Exception("FFprobe error: " . $e->getMessage(), 600);
+        throw new Exception("FFprobe error: " . get_ffmpeg_error($e), 600);
     }
     if (!($format->get('duration') > 0)) {
         throw new Exception("Invalid video file provided", 100);

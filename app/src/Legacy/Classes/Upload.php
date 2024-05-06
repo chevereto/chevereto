@@ -67,6 +67,8 @@ class Upload
 
     private array|string $source;
 
+    private string $source_extension;
+
     private array $uploaded = [];
 
     public bool $detectFlood = true;
@@ -145,6 +147,10 @@ class Upload
         $this->type = (is_image_url($this->source) || is_url($this->source))
             ? 'url'
             : 'file';
+        $this->source_extension = $this->type === 'url'
+            ? pathinfo($this->source, PATHINFO_EXTENSION)
+            : pathinfo($this->source['name'], PATHINFO_EXTENSION);
+        $this->source_extension = strtolower($this->source_extension);
         if ($this->type === 'url') {
             if (Settings::get('enable_uploads_url') === false) {
                 throw new LogicException(
@@ -202,6 +208,9 @@ class Upload
         }
         $this->source_name = get_basename_without_extension($this->type == 'url' ? $this->source : $this->source['name']);
         $this->extension = $this->source_image_fileinfo['extension'];
+        if ($this->extension === 'jpeg' && $this->source_extension === 'jpg') {
+            $this->extension = 'jpg';
+        }
         if (!isset($this->name)) {
             $this->name = $this->source_name;
         }
@@ -211,7 +220,7 @@ class Upload
         }
         $this->fixed_filename = preg_replace('/(.*)\.(th|md|original|lg)\.([\w]+)$/', '$1.$3', $this->name . '.' . $this->extension);
         $is_360 = false;
-        if ($this->extension == 'jpeg') {
+        if (in_array($this->extension, ['jpg', 'jpeg'])) {
             $xmpDataExtractor = new XmpMetadataExtractor();
             $xmpData = $xmpDataExtractor->extractFromFile($this->downstream);
             $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
@@ -319,6 +328,7 @@ class Upload
             'fileinfo' => $fileInfo,
             'frame' => $frameFile,
             'frameinfo' => $frameFile ? get_image_fileinfo($frameFile) : [],
+            'extension' => $this->extension,
         ];
     }
 

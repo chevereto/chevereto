@@ -105,7 +105,8 @@ class ImageResize
     {
         $this->validateInput(); // Exception 1xx
         $source_filename = get_basename_without_extension($this->source);
-        $this->file_extension = $this->source_image_fileinfo['extension'];
+        $this->file_extension = $this->options['extension']
+            ?? $this->source_image_fileinfo['extension'];
         if (!isset($this->filename)) {
             $this->filename = $source_filename;
         }

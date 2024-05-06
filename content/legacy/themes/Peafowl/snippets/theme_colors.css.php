@@ -199,7 +199,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --buttonDefaultBackground: #464b57;
     --buttonDefaultHoverBackground: var(--colorAccent);
     --buttonDefaultHoverText: var(--buttonAccentText);
-    --buttonDefaultText: #b4b9c2;
+    --buttonDefaultText: #FFF;
     --colorAccent: #1bb76e;
     --colorAccentStrong: #31be7c;
     --inputBackground: #191919;
@@ -207,7 +207,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --inputText: #f2f2f2;
     --linkText: var(--colorAccent);
     --menuBackground: hsl(222deg 6% 35% / 80%);
-    --menuItemHoverBackground: hsla(0,0%,80%,.29);
+    --menuItemHoverBackground: #4a58fb;
     --menuItemHoverText: var(--buttonAccentText);
     --menuItemText: var(--buttonAccentText);
     --menuSeparator: rgb(11 14 15 / 10%);
