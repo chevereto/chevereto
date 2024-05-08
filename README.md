@@ -22,26 +22,54 @@ Chevereto is a turnkey system which main use case is to provide a self-hosted pl
 
 ![screen](.github/screen/user-profile.jpeg)
 
+## Install
+
+Chevereto runs anywhere, system requirements are minimal and it can run on any server.
+
+Install Chevereto following our guides for:
+
+* [Docker](https://github.com/chevereto/docker) (Multi-arch image compatible with `x86_64` and `arm64`)
+  * [Pure Docker](https://v4-docs.chevereto.com/guides/docker/pure-docker)
+  * [Chevereto Docker](https://v4-docs.chevereto.com/guides/docker/)
+* [VPS](https://v4-docs.chevereto.com/guides/server/vps) (DigitalOcean, Linode, Vultr, etc)
+* [cPanel](https://v4-docs.chevereto.com/guides/cpanel/)
+* [Plesk](https://v4-docs.chevereto.com/guides/plesk/)
+
+Chevereto is also available at [DigitalOcean Marketplace](https://chevereto.com/go/digitalocean), [Vultr Marketplace](https://chevereto.com/go/vultr), [Installatron](https://installatron.com/chevereto) and [Softaculous](https://www.softaculous.com/apps/galleries/Chevereto). Review our [Installation docs](https://v4-docs.chevereto.com/application/installing/installation.html) for all alternatives.
+
+## Updating
+
+For Chevereto V4 users:
+
+* Follow the [Updating guide](https://v4-docs.chevereto.com/application/installing/updating.html) to keep your Chevereto V4 system updated.
+
+## Upgrading
+
+For Chevereto V3 users:
+
+* Follow the [Upgrading guide](https://v4-docs.chevereto.com/application/installing/upgrading.html) to upgrade to Chevereto V4.
+* Check the [Welcome Back](https://v4-docs.chevereto.com/introduction/changelog/welcome-back.html#from-chevereto-v3) reference.
+
 ## Files supported
 
 With Chevereto you can upload and share the following media types from device file browser, drag and drop, on-the-fly device camera (video and photos), clipboard, URL, ShareX and via API.
 
-- image/jpeg
-- image/gif
-- image/png
-- image/webp
-- image/bmp
-- video/quicktime
-- video/mp4
-- video/webm
+* image/jpeg
+* image/gif
+* image/png
+* image/webp
+* image/bmp
+* video/quicktime
+* video/mp4
+* video/webm
 
 ## Documentation
 
 Chevereto is so **feature-rich**, mature and robust that we need three layers of documentation for it. The Chevereto software project started on **2007** and it has been actively maintained since then.
 
-- [Documentation](https://v4-docs.chevereto.com)
-- [User manual](https://v4-user.chevereto.com/)
-- [Admin manual](https://v4-admin.chevereto.com/)
+* [Documentation](https://v4-docs.chevereto.com)
+* [User manual](https://v4-user.chevereto.com/)
+* [Admin manual](https://v4-admin.chevereto.com/)
 
 ## Features
 
@@ -262,16 +290,6 @@ Chevereto is so **feature-rich**, mature and robust that we need three layers of
 | Built-in REPL (PsySH)                              |   ✅   |           ✅           |           ✅           |
 | Supports Tinkerwel REPL                            |   ✅   |           ✅           |           ✅           |
 | Queue handling                                     |   –   |           –           |           ✅           |
-
-## Supported servers
-
-Chevereto runs anywhere, system requirements are minimal and it can run on any server.
-
-- Shared hosting ([cPanel](https://v4-docs.chevereto.com/guides/cpanel/), [Plesk](https://v4-docs.chevereto.com/guides/plesk/), DirectAdmin, Installatron, Softaculous, etc)
-- [VPS](https://v4-docs.chevereto.com/guides/server/vps) (DigitalOcean, Linode, Vultr, etc)
-- [Docker](https://github.com/chevereto/docker) (Multi-arch image compatible with `x86_64` and `arm64`)
-  - [PURE DOCKER](https://v4-docs.chevereto.com/guides/docker/pure-docker)
-  - [Chevereto Docker](https://v4-docs.chevereto.com/guides/docker/)
 
 ## License
 
