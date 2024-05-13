@@ -231,7 +231,7 @@ class Upload
             if (array_key_exists('exif', $this->options)) {
                 try {
                     $this->source_image_exif = $reader->read($this->downstream);
-                } catch (Throwable $e) {
+                } catch (Throwable) {
                 }
                 if ($this->source_image_exif instanceof Exif) {
                     $this->source_image_exif->setFileName($this->source_filename);
@@ -291,7 +291,7 @@ class Upload
 
         try {
             $uploaded = rename($this->downstream, $this->uploaded_file);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             $uploaded = file_exists($this->uploaded_file);
         }
         unlinkIfExists($this->downstream);
@@ -303,7 +303,7 @@ class Upload
         if (!isset($this->storage_id)) {
             try {
                 chmod($this->uploaded_file, 0644);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
             }
         }
         $fileInfo = $this->mediaType === 'video'
@@ -481,7 +481,7 @@ class Upload
 
             try {
                 $renamed = rename($this->source['tmp_name'], $this->downstream);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 $renamed = file_exists($this->downstream);
             }
             if (!$renamed) {
@@ -589,7 +589,7 @@ class Upload
 				COUNT(IF(image_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH), 1, NULL)) AS month
 			FROM ' . DB::getTable('images') . " WHERE image_uploader_ip='" . get_client_ip() . "' AND image_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH)"
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
             $flood_db = [];
         } // Silence
         if ($flood_db === false) {
@@ -623,7 +623,7 @@ class Upload
                     $addValues = session()['flood_uploads_notify'] ?? [];
                     $addValues[$flood_by] = true;
                     sessionVar()->put('flood_uploads_notify', $addValues);
-                } catch (Exception $e) {
+                } catch (Exception) {
                 } // Silence
             }
 

@@ -244,14 +244,21 @@ if (is_route('page') || is_route('plugin')) {
                             <div class="pop-box-inner pop-box-menu">
                                 <ul>
                                     <li class="with-icon"><a href="<?php echo Login::getUser()['url']; ?>"><span class="btn-icon fas fa-id-card"></span><?php _se('My Profile'); ?></a></li>
-                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url_albums']; ?>"><span class="btn-icon fas fa-images"></span><?php _se('Albums'); ?></a></li>
-                                    <?php if (getSetting('enable_likes') || env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
-                            ?>
+                                    <?php
+                                    if (Login::getUser()['home'] === 'files') {
+                                        ?>
+                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url_albums']; ?>"><span class="btn-icon fas fa-images"></span><?php _ne('Album', 'Albums', 20); ?></a></li>
+                                    <?php
+                                    } else { ?>
+                                    <li class="with-icon"><a href="<?php echo Login::getUser()['url_images']; ?>"><span class="btn-icon fas fa-photo-film"></span><?php _ne('File', 'Files', 20); ?></a></li>
+                                    <?php } ?>
+                                    <?php if (getSetting('enable_likes') || (env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'] && in_array(env()['CHEVERETO_EDITION'], ['free', 'lite']))) {
+                                        ?>
                                         <li class="with-icon"><a href="<?php echo linkPaid('pro') ?? Login::getUser()['url_liked']; ?>"><span class="btn-icon fas fa-heart"></span><?php echo _s('Liked') . badgePaid('pro'); ?></a></li>
                                     <?php
-                        } ?>
+                                    } ?>
                                     <?php
-                                            if (getSetting('enable_followers') || env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+                                            if (getSetting('enable_followers') || (env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'] && in_array(env()['CHEVERETO_EDITION'], ['free', 'lite']))) {
                                                 ?>
                                         <li class="with-icon"><a href="<?php echo linkPaid('pro') ?? Login::getUser()['url_following']; ?>"><span class="btn-icon fas fa-rss"></span><?php echo _s('Following') . badgePaid('pro'); ?></a></li>
                                         <li class="with-icon"><a href="<?php echo linkPaid('pro') ?? Login::getUser()['url_followers']; ?>"><span class="btn-icon fas fa-users"></span><?php echo _s('Followers') . badgePaid('pro'); ?></a></li>

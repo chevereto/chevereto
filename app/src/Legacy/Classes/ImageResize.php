@@ -113,11 +113,15 @@ class ImageResize
         $this->destination = add_ending_slash($this->destination);
         $this->resized_file = $this->destination . $this->filename . '.' . $this->file_extension;
         $this->resize();
+        if ($this->options['chmod'] ?? false) {
+            chmod($this->resized_file, $this->options['chmod']);
+        }
         $this->resized = [
             'file' => $this->resized_file,
             'filename' => get_filename($this->resized_file),
             'name' => get_basename_without_extension($this->resized_file),
             'fileinfo' => get_image_fileinfo($this->resized_file),
+            'extension' => $this->file_extension,
         ];
     }
 

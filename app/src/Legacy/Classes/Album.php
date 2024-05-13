@@ -596,7 +596,7 @@ class Album
 			COUNT(IF(album_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH), 1, NULL)) AS month
 			FROM " . DB::getTable('albums') . " WHERE album_creation_ip='" . get_client_ip() . "' AND album_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH)"
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
             $flood_db = false;
         } // Silence
         if ($flood_db === false) {
@@ -630,7 +630,7 @@ class Album
                     $addValue = session()['flood_albums_notify'];
                     $addValue[$flood_by] = true;
                     sessionVar()->put('flood_albums_notify', $addValue);
-                } catch (Exception $e) {
+                } catch (Exception) {
                 } // Silence
             }
 

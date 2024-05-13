@@ -91,7 +91,7 @@ return function (Handler $handler) {
         $listing->setOutputTpl($search->type);
         $listing->exec();
         $handler::setVar('listing', $listing);
-    } catch (Exception $e) {
+    } catch (Exception) {
         $getParams = [];
     }
     $tabs = Listing::getTabs([

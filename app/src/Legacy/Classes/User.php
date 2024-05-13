@@ -213,9 +213,9 @@ class User
         return get_base_url($url);
     }
 
-    public static function getUrlAlbums(string $user_url): string
+    public static function getUrlPath(string $user_url, string $path): string
     {
-        return rtrim($user_url, '/') . '/albums';
+        return rtrim($user_url, '/') . '/' . $path;
     }
 
     public static function insert(array $values): int
@@ -318,20 +318,23 @@ class User
         );
         /** @var array $uploaded */
         $uploaded = $image_upload['uploaded'];
+        $extension = $uploaded['extension'];
         if ($type == 'avatar') {
-            $max_res = ['width' => 500, 'height' => 500, 'fitted' => true];
-            $must_resize = $uploaded['fileinfo']['width'] > $max_res['width']
-                || $uploaded['fileinfo']['height'] > $max_res['height'];
+            $options = ['width' => 500, 'height' => 500, 'fitted' => true];
+            $must_resize = $uploaded['fileinfo']['width'] > $options['width']
+                || $uploaded['fileinfo']['height'] > $options['height'];
         } else {
-            $max_res = ['width' => 1920];
-            $must_resize = $uploaded['fileinfo']['width'] > $max_res['width'];
+            $options = ['width' => 1920];
+            $must_resize = $uploaded['fileinfo']['width'] > $options['width'];
             $medium = Image::resize(
-                $uploaded['file'],
-                null,
-                $uploaded['name'] . '.md',
-                [
+                source: $uploaded['file'],
+                destination: null,
+                filename: $uploaded['name'] . '.md',
+                options: [
                     'width' => 500,
                     'over_resize' => true,
+                    'extension' => $extension,
+                    'chmod' => 0644
                 ]
             );
             $toStorage[] = [
@@ -341,7 +344,14 @@ class User
             ];
         }
         if ($must_resize) {
-            $uploaded = Image::resize($uploaded['file'], null, null, $max_res);
+            $options['extension'] = $extension;
+            $options['chmod'] = 0644;
+            $uploaded = Image::resize(
+                source: $uploaded['file'],
+                destination: null,
+                filename: null,
+                options: $options
+            );
         }
         $toStorage[] = [
             'file' => $uploaded['file'],
@@ -535,16 +545,22 @@ class User
 
     public static function fill(array &$user): void
     {
+        $user['home'] = getSetting('user_profile_view');
         $user['palette_id'] = (int) ($user['palette_id'] ?? 0);
         $user['id_encoded'] = encodeID((int) ($user['id'] ?? 0));
         $user['image_count_display'] = isset($user['image_count']) ? abbreviate_number($user['image_count']) : 0;
         $user['album_count_display'] = isset($user['album_count']) ? abbreviate_number($user['album_count']) : 0;
         $user['url'] = self::getUrl($user);
         $user['public_url'] = get_public_url($user['url']);
-        $user['url_albums'] = self::getUrlAlbums($user['url']);
-        $user['url_liked'] = $user['url'] . '/liked';
-        $user['url_following'] = $user['url'] . '/following';
-        $user['url_followers'] = $user['url'] . '/followers';
+        $user['url_images'] = $user['home'] !== 'files'
+            ? self::getUrlPath($user['url'], 'files')
+            : $user['url'];
+        $user['url_albums'] = $user['home'] !== 'albums'
+            ? self::getUrlPath($user['url'], 'albums')
+            : $user['url'];
+        $user['url_liked'] = get_base_url($user['url'] . '/liked');
+        $user['url_following'] = get_base_url($user['url'] . '/following');
+        $user['url_followers'] = get_base_url($user['url'] . '/followers');
         if (isset($user['website']) && !is_url_web($user['website'])) {
             unset($user['website']);
         }

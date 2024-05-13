@@ -128,7 +128,7 @@ function random_values(int $min, int $max, int $limit): array
     }
     $array = [];
     for ($i = 0; $i < $limit; ++$i) {
-        $rand = rand($min, $max);
+        $rand = random_int($min, $max);
         while (in_array($rand, $array)) {
             $rand = mt_rand($min, $max);
         }
@@ -209,7 +209,7 @@ function str_replace_last(string $search, string $replace, string $subject): str
 /** @deprecated V4 */
 function starts_with(string $needle, string $haystack): bool
 {
-    return substr($haystack, 0, strlen($needle)) === $needle;
+    return str_starts_with($haystack, $needle);
 }
 
 /** @deprecated V4 */
@@ -316,8 +316,9 @@ function abbreviate_number(string|int $number): string
         0 => null,
     ];
     foreach ($abbreviations as $exponent => $abbreviation) {
-        if ($number >= pow(10, $exponent)) {
-            return round(floatval($number / pow(10, $exponent))) . $abbreviation;
+        if ($number >= 10 ** $exponent) {
+            return round(floatval($number / 10 ** $exponent))
+                . $abbreviation;
         }
     }
 
@@ -458,7 +459,7 @@ function linkify(string $text, array $options = []): string
         }
     }
 
-    return implode($chunks);
+    return implode('', $chunks);
 }
 
 function linkify_emails(string $text, array $options = ['attr' => '']): string
@@ -634,7 +635,7 @@ function exception_to_error(Throwable $e, bool $print = true): string
             "#%s %s(%s): %s(%s)\n",
             $count,
             isset($frame['file']) ? absolute_to_relative($frame['file']) : 'unknown file',
-            isset($frame['line']) ? $frame['line'] : 'unknown line',
+            $frame['line'] ?? 'unknown line',
             (isset($frame['class'])) ? $frame['class'] . $frame['type'] . $frame['function'] : $frame['function'],
             $args
         );
@@ -758,7 +759,7 @@ function datetime_alter(string $datetime, string $var, $action = 'add'): string
     } else {
         try {
             $interval = new DateInterval($var);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return $datetime;
         }
         $DateTime->$action($interval);
@@ -771,7 +772,7 @@ function dateinterval(string $duration): DateInterval|bool
 {
     try {
         return new DateInterval($duration);
-    } catch (Exception $e) {
+    } catch (Exception) {
     }
 
     return false;
@@ -931,7 +932,7 @@ function parse_user_agent(?string $u_agent = null): array
         $find('Version', $key);
 
         $version = $result['version'][$key];
-    } elseif ($browser == 'MSIE' || strpos($browser, 'Trident') !== false) {
+    } elseif ($browser == 'MSIE' || str_contains($browser, 'Trident')) {
         if ($find('IEMobile', $key)) {
             $browser = 'IEMobile';
         } else {
@@ -1285,7 +1286,7 @@ function format_bytes(mixed $bytes, int $round = 1): string
     }
     $units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     foreach ($units as $k => $v) {
-        $multiplier = pow(1000, $k + 1);
+        $multiplier = 1000 ** ($k + 1);
         $threshold = $multiplier * 1000;
         if ($bytes < $threshold) {
             $size = round($bytes / $multiplier, $round);
@@ -1323,12 +1324,12 @@ function get_bytes(string $size, ?int $cut = null): int
     $pow_factor = array_search($suffix, $units) + 1;
     $num = strlen($suffix) == 2 ? 1000 : 1024;
 
-    return (int) ($number * pow($num, $pow_factor));
+    return (int) ($number * $num ** $pow_factor);
 }
 
 function bytes_to_mb(int|float $bytes): float
 {
-    return round($bytes / pow(10, 6));
+    return round($bytes / 10 ** 6);
 }
 
 function get_ini_bytes(string $size): int
@@ -1773,7 +1774,7 @@ function is_url(mixed $string, array $protocols = []): bool
 
 function is_https(string $string): bool
 {
-    return strpos($string, 'https://') !== false;
+    return str_starts_with($string, 'https://');
 }
 
 function is_valid_url(string $string): bool
@@ -1826,18 +1827,12 @@ function is_windows_os(): bool
 
 function is_animated_image($filename): bool
 {
-    switch (get_file_extension($filename)) {
-        case 'gif':
-            return is_animated_gif($filename);
-
-        case 'png':
-            return is_animated_png($filename);
-
-        case 'webp':
-            return is_animated_webp($filename);
-    }
-
-    return false;
+    return match (get_file_extension($filename)) {
+        'gif' => is_animated_gif($filename),
+        'png' => is_animated_png($filename),
+        'webp' => is_animated_webp($filename),
+        default => false,
+    };
 }
 
 function is_animated_gif($filename): bool
@@ -1898,7 +1893,7 @@ function is_writable(string $path): bool
     try {
         $handle = fopen($testFile, 'w');
         fclose($handle);
-    } catch (Throwable $e) {
+    } catch (Throwable) {
         return false;
     }
 
@@ -2293,7 +2288,9 @@ function imagecreatefrombmp(string $file): GdImage|bool
             }
         }
     }
-    $meta['colors'] = !$meta['colors'] ? pow(2, $meta['bits']) : $meta['colors'];
+    $meta['colors'] = !$meta['colors']
+        ? 2 ** $meta['bits']
+        : $meta['colors'];
     $palette = [];
     if ($meta['bits'] < 16) {
         $palette = unpack('l' . $meta['colors'], fread($fh, $meta['colors'] * 4));
@@ -2650,7 +2647,7 @@ function getQsParams(): array
     $a = [];
     foreach (explode("&", server()["QUERY_STRING"]) as $q) {
         $p = explode('=', $q, 2);
-        $a[$p[0]] = isset($p[1]) ? $p[1] : '';
+        $a[$p[0]] = $p[1] ?? '';
     }
 
     return $a;

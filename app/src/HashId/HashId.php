@@ -50,7 +50,7 @@ final class HashId
             $this->table[] = substr($this->hash, $n, 1);
         }
         array_multisort($this->table, SORT_DESC, $index);
-        $this->index = implode($index);
+        $this->index = implode('', $index);
         $this->base = strlen($this->index);
         $this->baseString = (string) $this->base;
     }

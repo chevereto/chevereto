@@ -236,16 +236,16 @@ function get_share_links(array $share_element = [])
                 'label' => '分享到微信',
             ],
             'weibo' => [
-                'url' => 'https://service.weibo.com/share/share.php?url=%URL%&title=%TITLE%&pic=%PHOTO_URL%&searchPic=true',
+                'url' => 'https://service.weibo.com/share/share.php?url=%URL%&title=%TITLE%&pic=%IMAGE%&searchPic=true',
                 'label' => '分享到微博',
             ],
             'qzone' => [
-                'url' => 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=%URL%&pics=%PHOTO_URL%&title=%TITLE%',
+                'url' => 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=%URL%&pics=%IMAGE%&title=%TITLE%',
                 'label' => '分享到QQ空间',
                 'icon' => 'star'
             ],
             'qq' => [
-                'url' => 'https://connect.qq.com/widget/shareqq/index.html?url=%URL%&summary=%DESCRIPTION%&title=%TITLE%&pics=%PHOTO_URL%',
+                'url' => 'https://connect.qq.com/widget/shareqq/index.html?url=%URL%&summary=%DESCRIPTION%&title=%TITLE%&pics=%IMAGE%',
                 'label' => '分享到QQ',
             ],
             'reddit' => [
@@ -261,17 +261,17 @@ function get_share_links(array $share_element = [])
                 'label' => 'Blogger',
             ],
             'tumblr' => [
-                'url' => 'http://www.tumblr.com/share/photo?source=%PHOTO_URL%&caption=%TITLE%&clickthru=%URL%&title=%TITLE%',
+                'url' => 'https://www.tumblr.com/widgets/share/tool/?canonicalUrl=%URL%&posttype=photo&content=%IMAGE%&caption=%TITLE%',
                 'label' => 'Tumblr.',
             ],
             'pinterest' => [
-                'url' => 'http://www.pinterest.com/pin/create/bookmarklet/?media=%PHOTO_URL%&url=%URL%&is_video=false&description=%DESCRIPTION%&title=%TITLE%',
+                'url' => 'http://www.pinterest.com/pin/create/bookmarklet/?media=%IMAGE%&url=%URL%&is_video=false&description=%DESCRIPTION%&title=%TITLE%',
                 'label' => 'Pinterest',
             ],
         ];
     }
     $return = [];
-    $search = ['%URL%', '%TITLE%', '%DESCRIPTION%', '%HTML%', '%PHOTO_URL%', '%TWITTER%'];
+    $search = ['%URL%', '%TITLE%', '%DESCRIPTION%', '%HTML%', '%IMAGE%', '%TWITTER%'];
     $replace = ['url', 'title', 'description', 'HTML', 'image', 'twitter'];
     foreach ($share_links_networks as $key => $value) {
         for ($i = 0; $i < count($replace); ++$i) {
@@ -279,6 +279,7 @@ function get_share_links(array $share_element = [])
                 $replace[$i] = $elements[$replace[$i]];
             }
         }
+
         $value['url'] = str_replace($search, $replace, $value['url']);
         $icon = "fab";
         switch ($key) {
@@ -554,7 +555,9 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
         $replacements['IMAGE_ALBUM_PRIVACY'] = 'public';
     }
     if (in_array($stock_tpl, ['IMAGE', 'ALBUM'])) {
-        $nsfw = $stock_tpl == 'IMAGE' ? $item['nsfw'] : (isset($item['images_slice'][0]['nsfw']) ? $item['images_slice'][0]['nsfw'] : '');
+        $nsfw = $stock_tpl == 'IMAGE'
+            ? $item['nsfw']
+            : ($item['images_slice'][0]['nsfw'] ?? '');
         $placeholder = $stock_tpl == 'IMAGE' ? 'IMAGE_FLAG' : 'ALBUM_COVER_FLAG';
         $replacements[$placeholder] = $nsfw ? 'unsafe' : 'safe';
     }
@@ -1020,7 +1023,7 @@ var disqus_config = function () {
                 '%page_id' => str_replace_first(get_route_path(), get_route_name(), get_route_path(true)), // image.ID
                 '%shortname' => getSetting('disqus_shortname'),
                 '%language_code' => get_language_used()['base'],
-                '%auth' => isset($auth) ? $auth : null,
+                '%auth' => $auth ?? null,
                 '%api_key' => $disqus_public,
             ]);
 

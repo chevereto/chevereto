@@ -113,18 +113,9 @@ return function (Handler $handler) {
             'thumbnail_height' => $display_height,
         ]);
     }
-
-    switch (get()['format'] ?? '') {
-        case 'xml':
-            xml_output(['oembed' => $data]);
-
-        break;
-        case 'json':
-        default:
-            json_output($data);
-
-        break;
-    }
-
+    match (get()['format'] ?? '') {
+        'xml' => xml_output(['oembed' => $data]),
+        default => json_output($data),
+    };
     die();
 };

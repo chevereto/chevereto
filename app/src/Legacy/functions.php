@@ -276,7 +276,7 @@ function getStorages(): array|bool
 
 function get_banner_code(string $banner, bool $safe_html = true): string
 {
-    if (strpos($banner, 'banner_') !== 0) {
+    if (!str_starts_with($banner, 'banner_')) {
         $banner = 'banner_' . $banner;
     }
     $banner_code = Settings::get($banner);
@@ -367,7 +367,7 @@ function hashed_token_info(string $public_token_format): array
 
 function generate_hashed_token(int $id, string $token = ''): array
 {
-    $token = random_string(rand(128, 256));
+    $token = random_string(random_int(128, 256));
     $hash = password_hash($token, PASSWORD_BCRYPT);
 
     return [
@@ -509,7 +509,7 @@ function cheveretoID(string|int $in, string $action = 'encode'): string|int
         ];
     }
     array_multisort($p, SORT_DESC, $i);
-    $index = implode($i);
+    $index = implode('', $i);
     $base = strlen($index);
     if ($action == 'decode') {
         $out = 0;
@@ -770,7 +770,8 @@ function upload_to_content_images(array $source, string $what): void
         if (!$file_contents) {
             throw new Exception("Can't read uploaded file content", 600);
         }
-        if (strpos($file_contents, '<!DOCTYPE svg PUBLIC') === false and strpos($file_contents, '<svg') === false) {
+        if (!str_contains($file_contents, '<!DOCTYPE svg PUBLIC')
+            && !str_contains($file_contents, '<svg')) {
             throw new Exception("Uploaded file isn't SVG.", 300);
         }
         $filename = $name . random_string(8) . '.svg';
@@ -808,9 +809,14 @@ function upload_to_content_images(array $source, string $what): void
         $what = 'homepage_cover_image';
         $homepage_cover_image = getSetting($what);
         if ($cover_handle == 'add') {
-            $filename = (isset($homepage_cover_image) ? $homepage_cover_image : getSetting('homepage_cover_images')[0]['basename']) . ',' . $filename;
+            $filename = (
+                $homepage_cover_image
+                    ?? getSetting('homepage_cover_images')[0]['basename']
+            ) . ',' . $filename;
         } else {
-            $filename = isset($homepage_cover_image) ? str_replace($db_filename, $filename, getSetting('homepage_cover_image')) : $filename;
+            $filename = isset($homepage_cover_image)
+                ? str_replace($db_filename, $filename, getSetting('homepage_cover_image'))
+                : $filename;
         }
         $filename = trim($filename, ',');
 
@@ -898,7 +904,7 @@ function updateCheveretoNews()
             'chevereto_news' => serialize($chevereto_news),
             'news_check_datetimegmt' => datetimegmt(),
         ]);
-    } catch (Throwable $e) {
+    } catch (Throwable) {
         $chevereto_news = [];
     }
 
@@ -918,20 +924,11 @@ function obfuscate(string $string): string
 
 function isShowEmbedContent(): bool
 {
-    switch (getSetting('theme_show_embed_content_for')) {
-        case 'none':
-            $showEmbed = false;
-
-        break;
-        case 'users':
-            $showEmbed = Login::isLoggedUser();
-
-        break;
-        default:
-            $showEmbed = true;
-
-        break;
-    }
+    $showEmbed = match (getSetting('theme_show_embed_content_for')) {
+        'none' => false,
+        'users' => Login::isLoggedUser(),
+        default => true,
+    };
 
     return $showEmbed;
 }
@@ -1123,7 +1120,7 @@ function loaderHandler(
             'key' => Settings::get('xr_key'),
         ]);
         new XrInstance(new Xr(...$xrArguments));
-    } catch (Throwable $e) {
+    } catch (Throwable) {
         // Silent failover
     }
     $uploadImageFolder = Settings::get('chevereto_version_installed') !== null
@@ -1319,7 +1316,7 @@ function adjustBrightness(string $hexCode, float $adjustPercent)
         $color = str_pad(dechex(intval($color + $adjustAmount)), 2, '0', STR_PAD_LEFT);
     }
 
-    return '#' . implode($hexCode);
+    return '#' . implode('', $hexCode);
 }
 
 function getLicenseKey(): string

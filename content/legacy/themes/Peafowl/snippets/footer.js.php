@@ -119,6 +119,7 @@ if (Handler::cond('captcha_needed') && getSetting('captcha_api') == '3') {
                 CHV.obj.system_info = <?php echo json_encode([
                     'version' => get_app_version(),
                     'edition' => env()['CHEVERETO_EDITION'],
+                    'servicing' => env()['CHEVERETO_SERVICING'] ?? 'server'
                 ]); ?>;
         <?php
             }

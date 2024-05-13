@@ -281,17 +281,19 @@ return function (Handler $handler) {
         $sharing['%' . strtoupper($imageKey) . '%'] = $imageValue;
     }
     $embed = [];
-    $hasFrame = $image['url_frame'] !== '';
-    $hasMedium = $image['medium']['url'] !== null;
+    $hasSizes = [
+        'frame' => $image['url_frame'] !== '',
+        'medium' => $image['medium']['url'] !== null,
+        'thumb' => $image['thumb']['url'] !== null,
+    ];
     foreach ($embed_share_tpl as $code => $group) {
         $entries = [];
         $groupLabel = $group['label'];
         foreach ($group['options'] as $option => $optionValue) {
-            if (!$hasFrame && str_starts_with($option, 'frame-')) {
-                continue;
-            }
-            if (!$hasMedium && str_starts_with($option, 'medium-')) {
-                continue;
+            foreach ($hasSizes as $sizeKey => $sizeValue) {
+                if (!$sizeValue && str_starts_with($option, $sizeKey . '-')) {
+                    continue 2;
+                }
             }
             $value = $optionValue['template'];
             if (is_array($value)) {

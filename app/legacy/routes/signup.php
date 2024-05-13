@@ -208,7 +208,7 @@ return function (Handler $handler) {
                             $mail['subject'] = _s('Welcome to %s', getSetting('website_name'));
                             $mail['message'] = get_email_body_str('mails/account-welcome');
                             send_mail($logged_user['email'], $mail['subject'], $mail['message']);
-                        } catch (Exception $e) {
+                        } catch (Exception) {
                         } // Silence
                         redirect($user['url']);
                     }
@@ -225,7 +225,7 @@ return function (Handler $handler) {
                 'type' => 'signup',
                 'result' => 'fail'
             ]);
-            $error_message = $error_message ?? _s('Check the errors in the form to continue.');
+            $error_message ??= _s('Check the errors in the form to continue.');
             if ((getSetting('captcha') ?? false) && must_use_captcha($failed_access_requests['day'] + 1)) {
                 $captcha_needed = true;
             }

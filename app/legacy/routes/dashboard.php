@@ -93,11 +93,15 @@ return function (Handler $handler) {
         if (!is_dir($upgradingDir)) {
             mkdir($upgradingDir);
         }
-        $upgradingLock = $upgradingDir . 'upgrading.lock';
-        unlinkIfExists($upgradingLock);
+        $lockUpgrading = $upgradingDir . 'upgrading.lock';
+        $lockDownloading = $upgradingDir . 'downloading.lock';
+        $lockExtracting = $upgradingDir . 'extracting.lock';
+        unlinkIfExists($lockUpgrading);
+        unlinkIfExists($lockDownloading);
+        unlinkIfExists($lockExtracting);
         $token = randomString(128);
-        touch($upgradingLock);
-        file_put_contents($upgradingLock, $token);
+        touch($lockUpgrading);
+        file_put_contents($lockUpgrading, $token);
         $params = [
             'action' => 'download',
             'token' => $token,
@@ -352,9 +356,11 @@ return function (Handler $handler) {
             ];
             $links = [];
             $linksButtons = '';
-            $licenseKey = getLicenseKey();
-            $handler::setVar('licenseKey', $licenseKey);
-            if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
+            $licenseKey = '';
+            if (env()['CHEVERETO_CONTEXT'] !== 'saas'
+                && (env()['CHEVERETO_SERVICING'] ?? null) !== 'docker'
+            ) {
+                $licenseKey = getLicenseKey();
                 $upgradeClass = 'hidden';
                 $upgradeLink = get_base_url('dashboard/upgrade/?auth_token=' . $handler::getAuthToken());
                 if ($licenseKey !== '' && env()['CHEVERETO_EDITION'] === 'free') {
@@ -378,6 +384,7 @@ return function (Handler $handler) {
                     ],
                 ]);
             }
+            $handler::setVar('licenseKey', $licenseKey);
             if (env()['CHEVERETO_CONTEXT'] === 'saas') {
                 $links = array_merge($links, [
                     [
@@ -1453,9 +1460,8 @@ return function (Handler $handler) {
                 }
                 if (isset($POST['website_mode']) && $POST['website_mode'] == 'personal' && isset($POST['website_mode_personal_routing'])) {
                     if ($logged_user['id'] == $POST['website_mode_personal_uid']) {
-                        $new_user_url = get_base_url($POST['website_mode_personal_routing'] !== '/' ? $POST['website_mode_personal_routing'] : '');
                         Login::setUser('url', get_base_url($POST['website_mode_personal_routing'] !== '/' ? $POST['website_mode_personal_routing'] : ''));
-                        Login::setUser('url_albums', User::getUrlAlbums(Login::getUser()['url']));
+                        Login::setUser('url_albums', User::getUrlPath(Login::getUser()['url'], 'albums'));
                     } elseif (User::getSingle($POST['website_mode_personal_uid']) === []) { // Is a valid user id anyway?
                         $validations['website_mode_personal_uid'] = [
                             'validate' => false,
@@ -1564,7 +1570,7 @@ return function (Handler $handler) {
 
                     try {
                         $verifyAkismet = $akismet->verifyKey();
-                    } catch (Throwable $e) {
+                    } catch (Throwable) {
                         $verifyAkismet = false;
                     }
                     $validations['akismet_api_key'] = [
@@ -1799,15 +1805,11 @@ return function (Handler $handler) {
 
             break;
     }
-    if ($doing != 'stats') {
+    if ($doing !== 'stats') {
         $pre_doctitle[] = $routesLinkLabels[$doing];
         if ($doing == 'settings' && isset($settings_sections)) {
-            reset($settings_sections);
-            $firstKey = key($settings_sections);
             $dashSettingsProp = $handler::var('settings');
-            if ($dashSettingsProp['key'] != $firstKey) {
-                $pre_doctitle[] = $dashSettingsProp['title'];
-            }
+            $pre_doctitle[] = $dashSettingsProp['title'];
         }
     }
     $pre_doctitle[] = _s('Dashboard');

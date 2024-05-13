@@ -1,8 +1,8 @@
 <?php
 $translation_header = array (
   'Project-Id-Version' => 'VERSION',
-  'POT-Creation-Date' => '2023-05-21 15:42+0000',
-  'PO-Revision-Date' => '2023-05-21 15:42+0000',
+  'POT-Creation-Date' => '2024-05-13 17:28+0000',
+  'PO-Revision-Date' => '2024-05-13 17:28+0000',
   'Last-Translator' => 'FULL NAME <EMAIL@ADDRESS>',
   'Language-Team' => 'LANGUAGE TEAM <EMAIL@ADDRESS>',
   'Language' => 'zh_CN',
@@ -36,6 +36,9 @@ $translation_table = [
 	],
 	"Popular" => [
 		0 => "最爱",
+	],
+	"Videos" => [
+		0 => "视频",
 	],
 	"Animated" => [
 		0 => "动图",
@@ -151,11 +154,11 @@ $translation_table = [
 	"image" => [
 		0 => "图片",
 	],
-	"Stats" => [
-		0 => "统计",
+	"Home" => [
+		0 => "首页",
 	],
-	"Images" => [
-		0 => "图片",
+	"File" => [
+		0 => "文件",
 	],
 	"Album" => [
 		0 => "相册",
@@ -169,6 +172,9 @@ $translation_table = [
 	"Settings" => [
 		0 => "设置",
 	],
+	"Run %s" => [
+		0 => "运行 %s",
+	],
 	"Website" => [
 		0 => "网站",
 	],
@@ -178,8 +184,8 @@ $translation_table = [
 	"Listings" => [
 		0 => "页面列表",
 	],
-	"Image upload" => [
-		0 => "图片上传",
+	"File uploads" => [
+		0 => "文件上传",
 	],
 	"Semantics" => [
 		0 => "语义",
@@ -205,14 +211,23 @@ $translation_table = [
 	"Logo" => [
 		0 => "Logo",
 	],
-	"External storage" => [
-		0 => "外部存储",
-	],
 	"Homepage" => [
 		0 => "主页",
 	],
 	"Pages" => [
 		0 => "页面",
+	],
+	"Upload plugin" => [
+		0 => "上传插件",
+	],
+	"Consent screen" => [
+		0 => "内容警告",
+	],
+	"Guests %s" => [
+		0 => "公共 %s",
+	],
+	"External storage" => [
+		0 => "外部存储",
 	],
 	"Routing" => [
 		0 => "路径",
@@ -223,14 +238,8 @@ $translation_table = [
 	"Login providers" => [
 		0 => "登录提供商",
 	],
-	"Upload plugin" => [
-		0 => "上传插件",
-	],
 	"Cookie compliance" => [
 		0 => "Cookie 合规性",
-	],
-	"Consent screen" => [
-		0 => "内容警告",
 	],
 	"Flood protection" => [
 		0 => "防洪保护",
@@ -244,41 +253,38 @@ $translation_table = [
 	"Watermarks" => [
 		0 => "水印",
 	],
-	"Documentation" => [
-		0 => "文档",
+	"Upgrade now" => [
+		0 => "立即升级",
 	],
-	"Admin" => [
-		0 => "管理员",
+	"The latest release will be downloaded and extracted in the filesystem." => [
+		0 => "最新版本将被下载并解压到文件系统中。",
 	],
-	"%s docs" => [
-		0 => "%s 文档",
+	"License key" => [
+		0 => "许可证密钥",
 	],
 	"Support" => [
 		0 => "客服支持",
 	],
-	"Releases" => [
-		0 => "已发行版本",
-	],
-	"Community" => [
-		0 => "社区",
-	],
-	"License" => [
-		0 => "许可证",
-	],
 	"install update" => [
 		0 => "安装更新",
 	],
-	"Check updates" => [
+	"Check upgrades" => [
 		0 => "检查更新",
 	],
 	"not running" => [
 		0 => "未运行",
 	],
-	"Max. upload file size" => [
-		0 => "最大的文件上传",
+	"PHP function [%s] not available in this PHP installation" => [
+		0 => "PHP 函数 [%s] 在你安装的 PHP 中不可用",
 	],
-	"Graphics Library" => [
+	"Max. upload file size" => [
+		0 => "最大上传文件大小",
+	],
+	"Graphics library" => [
 		0 => "图形库",
+	],
+	"Stats" => [
+		0 => "统计",
 	],
 	"Rebuild stats" => [
 		0 => "重建统计信息",
@@ -289,23 +295,8 @@ $translation_table = [
 	"Not your IP?" => [
 		0 => "这不是我的IP？",
 	],
-	"Cron last ran" => [
-		0 => "上次运行Cron",
-	],
-	"PHP version" => [
-		0 => "PHP版本",
-	],
-	"Server" => [
-		0 => "服务器",
-	],
-	"MySQL version" => [
-		0 => "MySQL数据库版本",
-	],
-	"MySQL server info" => [
-		0 => "MySQL数据库服务器信息",
-	],
-	"File uploads" => [
-		0 => "文件上传",
+	"Encryption" => [
+		0 => "加密",
 	],
 	"Enabled" => [
 		0 => "启用",
@@ -313,8 +304,38 @@ $translation_table = [
 	"Disabled" => [
 		0 => "禁用",
 	],
+	"Meta" => [
+		0 => "相关链接",
+	],
+	"Blog" => [
+		0 => "博客",
+	],
+	"Docs" => [
+		0 => "文档",
+	],
+	"Releases" => [
+		0 => "发行版",
+	],
+	"Chat" => [
+		0 => "聊天室",
+	],
+	"Community" => [
+		0 => "社区",
+	],
+	"Links" => [
+		0 => "链接",
+	],
+	"Cron last ran" => [
+		0 => "Cron 上次运行",
+	],
+	"PHP version" => [
+		0 => "PHP版本",
+	],
+	"Server" => [
+		0 => "服务器",
+	],
 	"Max. execution time" => [
-		0 => "最大的执行时间",
+		0 => "脚本最大执行时间",
 	],
 	"%d second" => [
 		0 => "%d 秒",
@@ -326,7 +347,7 @@ $translation_table = [
 		0 => "不能删除所有的首页封面图片",
 	],
 	"Homepage cover image deleted" => [
-		0 => "删除首页封面图片",
+		0 => "首页封面图片已删除",
 	],
 	"Local" => [
 		0 => "本地",
@@ -347,25 +368,16 @@ $translation_table = [
 		0 => "编辑页面ID %s",
 	],
 	"The page has been added successfully." => [
-		0 => "该页面已成功添加.",
+		0 => "页面已添加成功。",
 	],
 	"The page has been deleted." => [
-		0 => "该页面已被删除.",
+		0 => "该页面已被删除。",
 	],
 	"homepage" => [
 		0 => "主页",
 	],
 	"Before main title (%s)" => [
 		0 => "之前的主标题(%s)",
-	],
-	"After call to action (%s)" => [
-		0 => "呼吁行动后(%s)",
-	],
-	"After cover (%s)" => [
-		0 => "封面后(%s)",
-	],
-	"After listing (%s)" => [
-		0 => "列表下方(%s)",
 	],
 	"Before pagination" => [
 		0 => "分页前",
@@ -375,9 +387,6 @@ $translation_table = [
 	],
 	"Content (image and album)" => [
 		0 => "内容（图像和相册）",
-	],
-	"Tab about column" => [
-		0 => "标签相关",
 	],
 	"Before comments" => [
 		0 => "评论前",
@@ -394,32 +403,11 @@ $translation_table = [
 	"After image viewer (image page)" => [
 		0 => "图像浏览器后（图像页）",
 	],
-	"Before header (image page)" => [
-		0 => "图像信息前（图像页）",
-	],
-	"After header (image page)" => [
-		0 => "图像信息前（图像页）",
-	],
 	"Footer (image page)" => [
 		0 => "页脚（图像页）",
 	],
-	"%s page" => [
-		0 => "%s 页面",
-	],
-	"Before header (%s page)" => [
-		0 => "标题前（%s 页）",
-	],
-	"After header (%s page)" => [
-		0 => "标题后（%s 页）",
-	],
 	"User profile page" => [
-		0 => "个人信息页",
-	],
-	"After top (user profile)" => [
-		0 => "头前（个人信息页）",
-	],
-	"Before listing (user profile)" => [
-		0 => "列表（个人信息页）",
+		0 => "用户个人资料页面",
 	],
 	"Explore" => [
 		0 => "探索",
@@ -469,35 +457,38 @@ $translation_table = [
 	"Invalid value" => [
 		0 => "无效的值",
 	],
+	"font" => [
+		0 => "字体",
+	],
+	"Invalid %s" => [
+		0 => "无效的 %s",
+	],
 	"palette" => [
 		0 => "调色板",
 	],
-	"Invalid %s" => [
-		0 => "无效 %s",
-	],
 	"Invalid theme image listing size" => [
-		0 => "无效的主题图片列表样式",
+		0 => "无效的主题图像尺寸",
 	],
 	"Invalid user id" => [
-		0 => "无效的用户ID",
+		0 => "无效的用户 ID",
 	],
 	"Invalid email mode" => [
-		0 => "无效的电子邮件地址",
+		0 => "无效的邮件发送方式",
 	],
 	"Invalid SMTP port" => [
-		0 => "无效的SMTP端口",
+		0 => "无效的 SMTP 端口",
 	],
 	"Invalid SMTP security" => [
-		0 => "无效的SMTP安全模式",
+		0 => "无效的 SMTP 安全模式",
 	],
 	"Invalid website mode" => [
 		0 => "无效的网站模式",
 	],
 	"Invalid personal mode user ID" => [
-		0 => "无效的个人模式用户ID",
+		0 => "无效的个人模式用户 ID",
 	],
 	"Invalid or reserved route" => [
-		0 => "无效的路由或已保留",
+		0 => "无效路由或保留路由",
 	],
 	"Invalid website privacy mode" => [
 		0 => "无效的网站隐私模式",
@@ -506,58 +497,58 @@ $translation_table = [
 		0 => "无效的网站内容隐私模式",
 	],
 	"Invalid homepage style" => [
-		0 => "无效的主页风格",
+		0 => "无效的主页样式",
 	],
 	"Invalid homepage call to action button color" => [
 		0 => "无效的按钮颜色",
 	],
 	"Invalid homepage call to action functionality" => [
-		0 => "无效的主页\"开始上传\"按钮功能",
+		0 => "无效的主页按钮功能",
 	],
 	"Invalid title" => [
-		0 => "无效标题",
+		0 => "无效的标题",
 	],
 	"Invalid status" => [
-		0 => "无效的状态",
+		0 => "无效状态",
 	],
 	"Invalid type" => [
-		0 => "无效的类型",
+		0 => "无效的文件类型",
 	],
 	"Invalid visibility" => [
-		0 => "无效的可见度",
+		0 => "无效的页面可见性",
 	],
 	"Invalid internal type" => [
-		0 => "内部类型无效",
+		0 => "无效的内部页面类型",
 	],
 	"Invalid target attribute" => [
-		0 => "无效的目标属性",
+		0 => "无效的 target 属性",
 	],
 	"Invalid rel attribute" => [
-		0 => "无效的rel属性",
+		0 => "无效的 rel 属性",
 	],
 	"Invalid icon" => [
 		0 => "无效的图标",
 	],
 	"Invalid URL key" => [
-		0 => "无效的链接值",
+		0 => "无效的 URL 关键字",
 	],
 	"Invalid file path" => [
 		0 => "无效的文件路径",
 	],
 	"Invalid link URL" => [
-		0 => "无效的链接网址",
+		0 => "无效的链接 URL",
 	],
 	"Invalid user minimum age" => [
 		0 => "无效的用户最低年龄",
 	],
 	"Only alphanumeric, hyphen and underscore characters are allowed" => [
-		0 => "只允许字母, 连字符和下划线字符是允许的",
+		0 => "只允许使用字母数字、连字符和下划线字符",
 	],
 	"Invalid URL" => [
-		0 => "无效URL",
+		0 => "无效的 URL",
 	],
 	"Invalid key" => [
-		0 => "无效的密钥",
+		0 => "无效的值",
 	],
 	"Routes can't be the same" => [
 		0 => "路径不能是相同的",
@@ -566,10 +557,10 @@ $translation_table = [
 		0 => "无效的图像上传路径",
 	],
 	"Invalid call to action URL" => [
-		0 => "无效的主页\"开始上传\"按钮网址",
+		0 => "无效的按钮 URL",
 	],
 	"Max. allowed %s" => [
-		0 => "超过最大允许的 %s",
+		0 => "最大允许%s",
 	],
 	"Can't map %m to an existing folder (%f)" => [
 		0 => "无法将 %m 映射到现有文件夹 (%f)",
@@ -581,19 +572,19 @@ $translation_table = [
 		0 => "无法将 %m 映射到 %r（用户名冲突）",
 	],
 	"Invalid SMTP server" => [
-		0 => "无效的SMTP服务器",
+		0 => "无效的 SMTP 服务器地址",
 	],
 	"Invalid SMTP username" => [
-		0 => "无效的SMTP用户名",
+		0 => "无效的 SMTP 用户名",
 	],
 	"This URL key is already being used by another page (ID %s)" => [
-		0 => "此链接值已被另一个页面使用 (ID %s)",
+		0 => "此 URL 关键字已被另一个页面使用 (ID %s)",
 	],
 	"This file path is already being used by another page (ID %s)" => [
-		0 => "此文件路径已被另一个页面使用 (ID %s)",
+		0 => "此文件路径已被其他页面使用 (ID %s)",
 	],
 	"Can't save page contents: %s." => [
-		0 => "无法保存页面内容: %s.",
+		0 => "无法保存页面内容： %s。",
 	],
 	"Dashboard" => [
 		0 => "仪表盘",
@@ -608,7 +599,7 @@ $translation_table = [
 		0 => "评论",
 	],
 	"Image ID" => [
-		0 => "图片ID",
+		0 => "图片 ID",
 	],
 	"Upload date" => [
 		0 => "上传时间",
@@ -621,33 +612,6 @@ $translation_table = [
 	],
 	"Image %i hosted in %w" => [
 		0 => "图片 %i 托管在 %w",
-	],
-	"Direct links" => [
-		0 => "直接（源文件）链接",
-	],
-	"Image link" => [
-		0 => "图片链接",
-	],
-	"Image URL" => [
-		0 => "图片URL链接",
-	],
-	"Thumbnail URL" => [
-		0 => "缩略图URL链接",
-	],
-	"Medium URL" => [
-		0 => "中等图片大小的URL链接",
-	],
-	"Full image" => [
-		0 => "完整图片",
-	],
-	"Full image (linked)" => [
-		0 => "完整图片（链接）",
-	],
-	"Medium image (linked)" => [
-		0 => "中等图片（链接）",
-	],
-	"Thumbnail image (linked)" => [
-		0 => "缩略图（链接）",
 	],
 	"Start uploading" => [
 		0 => "开始上传",
@@ -670,9 +634,6 @@ $translation_table = [
 	"%s URL key already being used." => [
 		0 => "%s URL已被使用",
 	],
-	"IP address already banned" => [
-		0 => "IP地址已被禁止",
-	],
 	"Missing values" => [
 		0 => "遗漏值",
 	],
@@ -687,6 +648,9 @@ $translation_table = [
 	],
 	"%s added" => [
 		0 => "%s 已添加",
+	],
+	"IP address already banned" => [
+		0 => "IP地址已被禁止",
 	],
 	"%s not found" => [
 		0 => "%s 未找到",
@@ -738,6 +702,15 @@ $translation_table = [
 	],
 	"A private user" => [
 		0 => "私人用户",
+	],
+	"Chevereto V%s license key used, required V%r or greater license key" => [
+		0 => "已使用 Chevereto V%s 许可证密钥，需要 V%r 或更高版本的许可证密钥",
+	],
+	"License key removed" => [
+		0 => "许可证密钥已删除",
+	],
+	"License key updated" => [
+		0 => "许可证密钥已更新",
 	],
 	"Wrong Username/Email password combination" => [
 		0 => "错误的用户名或密码",
@@ -825,6 +798,9 @@ $translation_table = [
 	],
 	"User ID" => [
 		0 => "用户ID",
+	],
+	"Images" => [
+		0 => "图片",
 	],
 	"Register date" => [
 		0 => "注册日期",
@@ -986,7 +962,7 @@ $translation_table = [
 		0 => "已使用",
 	],
 	"Private profile" => [
-		0 => "私隐设置",
+		0 => "私人档案",
 	],
 	"Share" => [
 		0 => "分享",
@@ -1111,35 +1087,47 @@ $translation_table = [
 	"Error deleting profile background image." => [
 		0 => "删除个人信息的背景图片时出错。",
 	],
-	"Update available v%s" => [
-		0 => "有可用更新v%s",
+	"Chevereto v%s available" => [
+		0 => "Chevereto 有可用的新版本 v%s",
 	],
-	"There is an update available for this system." => [
-		0 => "有适用于您的系统更新。",
+	"There is a new Chevereto version available with the following release notes." => [
+		0 => "Chevereto 有了新版本，发布说明如下：",
 	],
-	"Update instructions" => [
-		0 => "更新说明",
+	"Check %s for a complete changelog since you last upgrade." => [
+		0 => "查看 %s 了解至上次升级后的完整更新日志。",
+	],
+	"documentation" => [
+		0 => "文档",
+	],
+	"Check the %s for alternative update methods." => [
+		0 => "查看 %s 以了解其它更新方法。",
 	],
 	"This website is running latest %s version" => [
-		0 => "此网站正在运行最新版%s",
+		0 => "本网站正在运行最新的 %s 版本",
+	],
+	"Chevereto v%s installed" => [
+		0 => "Chevereto v%s 已安装",
+	],
+	"Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"." => [
+		0 => "Chevereto 软件的使用必须遵守“The Chevereto License”软件许可条款。",
+	],
+	"License agreement" => [
+		0 => "许可协议",
 	],
 	"Please review the system requirements before proceeding" => [
 		0 => "请在继续之前查看系统要求",
 	],
-	"Toggle select" => [
-		0 => "选中/取消选中",
+	"Get a license at %s to unlock all features and support." => [
+		0 => "在 %s 获取许可证，即可解锁所有功能和支持。",
 	],
-	"Like" => [
-		0 => "喜欢",
+	"You can enter your license key in the dashboard panel." => [
+		0 => "您可以在仪表盘面板中输入许可证密钥。",
+	],
+	"Enter license" => [
+		0 => "输入许可证",
 	],
 	"Create album" => [
 		0 => "创建相册",
-	],
-	"Toggle flag" => [
-		0 => "标记或取消标记",
-	],
-	"Edit" => [
-		0 => "编辑",
 	],
 	"Approve" => [
 		0 => "批准",
@@ -1147,11 +1135,23 @@ $translation_table = [
 	"Delete" => [
 		0 => "删除",
 	],
-	"Previous" => [
-		0 => "上一页",
+	"Edit" => [
+		0 => "编辑",
+	],
+	"Toggle flag" => [
+		0 => "标记或取消标记",
+	],
+	"Like" => [
+		0 => "喜欢",
 	],
 	"Next" => [
 		0 => "下一页",
+	],
+	"Previous" => [
+		0 => "上一页",
+	],
+	"Toggle select" => [
+		0 => "选中/取消选中",
 	],
 	"Zoom" => [
 		0 => "缩放",
@@ -1165,14 +1165,17 @@ $translation_table = [
 	"Some files couldn't be added" => [
 		0 => "有些文件无法添加",
 	],
+	"Some files couldn't be loaded" => [
+		0 => "某些文件无法加载",
+	],
 	"file" => [
 		0 => "文件",
 	],
 	"%s's Albums" => [
 		0 => "%s 的相册",
 	],
-	"Image edited successfully." => [
-		0 => "图片编辑成功。",
+	"File edited successfully." => [
+		0 => "文件编辑成功。",
 	],
 	"private" => [
 		0 => "私密",
@@ -1318,11 +1321,11 @@ $translation_table = [
 	"This email was sent from %w %u" => [
 		0 => "这封电子邮件是由 %w  %u 发送",
 	],
-	"Drag and drop or paste images here to upload" => [
-		0 => "拖放或粘贴图像在这里上传",
+	"Drag and drop or paste files here to upload" => [
+		0 => "将文件拖放或粘贴到此处进行上传",
 	],
-	"Select the images to upload" => [
-		0 => "选择需要上传的图片",
+	"Select the files to upload" => [
+		0 => "选择需要上传的文件",
 	],
 	"You can also %i or %u." => [
 		0 => "您也可以%i或者%u。",
@@ -1333,8 +1336,8 @@ $translation_table = [
 	"browse from your computer" => [
 		0 => "浏览您的计算机",
 	],
-	"add image URLs" => [
-		0 => "添加图像的URL",
+	"add file URLs" => [
+		0 => "添加文件 URL",
 	],
 	"You can also %i, %c or %u." => [
 		0 => "您也可以%i,%c或者%u.",
@@ -1342,11 +1345,14 @@ $translation_table = [
 	"You can also %i or %c." => [
 		0 => "您也可以 %i 或 %c。",
 	],
-	"browse from your device" => [
-		0 => "浏览您的计算机",
+	"browse from device" => [
+		0 => "浏览您的设备",
 	],
-	"take a picture" => [
-		0 => "拍照",
+	"use camera" => [
+		0 => "使用照相机",
+	],
+	"max" => [
+		0 => "最大",
 	],
 	"Register to get %s" => [
 		0 => "注册之后可上传大小:%s",
@@ -1492,11 +1498,11 @@ $translation_table = [
 	"Brief description of this %s" => [
 		0 => "此 %s 的简要说明",
 	],
-	"Add image URLs" => [
-		0 => "增加图片的URL",
+	"File URLs" => [
+		0 => "文件 URL",
 	],
-	"Add the image URLs here" => [
-		0 => "添加图片到这里",
+	"Add file URLs here" => [
+		0 => "在此处添加文件 URL",
 	],
 	"Create %s" => [
 		0 => "创建 %s",
@@ -1516,62 +1522,38 @@ $translation_table = [
 	"Error report" => [
 		0 => "错误报告",
 	],
-	"Links" => [
-		0 => "链接",
-	],
 	"Viewer" => [
-		0 => "检视器",
+		0 => "预览",
 	],
-	"%s links" => [
+	"%s link" => [
 		0 => "%s 链接",
 	],
 	"Direct" => [
-		0 => "默认格式",
+		0 => "源文件",
 	],
-	"HTML Codes" => [
-		0 => "HTML代码",
+	"Frame" => [
+		0 => "框架",
 	],
-	"HTML image" => [
-		0 => "HTML图像",
+	"Thumbnail" => [
+		0 => "缩略图",
 	],
-	"HTML full linked" => [
-		0 => "HTML详细链接",
+	"Medium" => [
+		0 => "中等图片",
 	],
-	"HTML medium linked" => [
-		0 => "HTML中等大小图片链接",
+	"embed" => [
+		0 => "嵌入代码",
 	],
-	"HTML thumbnail linked" => [
-		0 => "HTML缩略图链接",
+	"%s full linked" => [
+		0 => "%s 完整图片（链接）",
 	],
-	"BBCodes" => [
-		0 => "BBCode代码",
+	"%s medium linked" => [
+		0 => "%s 中等图片（链接）",
 	],
-	"BBCode full" => [
-		0 => "BBCode详细",
+	"%s thumbnail linked" => [
+		0 => "%s 缩略图（链接）",
 	],
-	"BBCode full linked" => [
-		0 => "BBCode详细链接",
-	],
-	"BBCode medium linked" => [
-		0 => "中等大小的图片的BBCode链接",
-	],
-	"BBCode thumbnail linked" => [
-		0 => "BBCode 缩略图链接",
-	],
-	"Markdown full" => [
-		0 => "Markdown 详细信息",
-	],
-	"Markdown full linked" => [
-		0 => "Markdown 详细链接",
-	],
-	"Markdown medium linked" => [
-		0 => "Markdown 中等大小图片链接",
-	],
-	"Markdown thumbnail linked" => [
-		0 => "Markdown 缩略图链接",
-	],
-	"Viewer links" => [
-		0 => "查看链接",
+	"%s full" => [
+		0 => "%s 原图（链接）",
 	],
 	"All these words" => [
 		0 => "搜索全部关键字内容",
@@ -1717,11 +1699,11 @@ $translation_table = [
 	"Text message, HTML or a redirect URL" => [
 		0 => "文本消息, HTML或重定向URL",
 	],
-	"Storage name" => [
-		0 => "存储名称",
-	],
 	"API" => [
 		0 => "API",
+	],
+	"Storage name" => [
+		0 => "存储名称",
 	],
 	"This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API." => [
 		0 => "这是针对旧的已弃用的 B2 API。对于新存储桶，您必须使用 S3 兼容 API。",
@@ -1828,6 +1810,12 @@ $translation_table = [
 	"The system will map the images of this storage to this URL." => [
 		0 => "该系统将存储的图像映射到该URL.",
 	],
+	"Enabled types" => [
+		0 => "已启用的文件类型",
+	],
+	"The storage will be used only for selected types." => [
+		0 => "该存储空间将仅用于您选定的文件类型。",
+	],
 	"view more" => [
 		0 => "查看更多",
 	],
@@ -1867,11 +1855,11 @@ $translation_table = [
 	"Sign in with %label%" => [
 		0 => "使用 %label% 登录",
 	],
-	"Home" => [
-		0 => "首页",
-	],
 	"There's nothing to show here." => [
 		0 => "没有要显示的内容",
+	],
+	"Selection will be assigned to %t." => [
+		0 => "选择的图片将会分到此%t",
 	],
 	"There is no categories." => [
 		0 => "没有此分类.",
@@ -1908,9 +1896,6 @@ $translation_table = [
 	],
 	"Guest" => [
 		0 => "访客",
-	],
-	"Keyboard shortcuts" => [
-		0 => "键盘快捷键",
 	],
 	"Private album" => [
 		0 => "私人相册",
@@ -2037,9 +2022,6 @@ $translation_table = [
 	],
 	"I Agree" => [
 		0 => "我同意",
-	],
-	"documentation" => [
-		0 => "文档",
 	],
 	"Learn about %s at our %d." => [
 		0 => "了解关于 %s 在我们的 %d.",
@@ -2234,7 +2216,7 @@ $translation_table = [
 		0 => "%s 公共密钥",
 	],
 	"Comment code" => [
-		0 => "评论社会化代码",
+		0 => "评论代码",
 	],
 	"Disqus, Facebook or anything you want. It will be used in image view." => [
 		0 => "DISQUS, Facebook或其他. 它将在图像视图中使用.",
@@ -2294,7 +2276,7 @@ $translation_table = [
 		0 => "成人",
 	],
 	"Teen and adult" => [
-		0 => "儿童和成人",
+		0 => "青少年和成人",
 	],
 	"Flag NSFW" => [
 		0 => "标记 NSFW",
@@ -2326,8 +2308,170 @@ $translation_table = [
 	"storage" => [
 		0 => "存储",
 	],
-	"Block image uploads by IP if the system notice a flood behavior based on the number of uploads per time period." => [
-		0 => "如果系统根据每个时间段的上传数量发现泛洪行为，则按IP阻止上传图片。",
+	"Enabled file extensions" => [
+		0 => "已启用的文件扩展名",
+	],
+	"Unsupported in your server" => [
+		0 => "您的服务器不支持",
+	],
+	"Only checked file extensions will be allowed to be uploaded." => [
+		0 => "只允许上传已选中的文件扩展名。",
+	],
+	"Enable uploads" => [
+		0 => "启用上传",
+	],
+	"Enable this if you want to allow %s uploads." => [
+		0 => "如果您想允许 %s 上传，请启用此选项。",
+	],
+	"Enable this if you want to allow file upload from URLs." => [
+		0 => "如果您想允许从 URL 上传文件，请启用此选项。",
+	],
+	"Note that enabling this will expose your server IP." => [
+		0 => "请注意，启用此功能将暴露您的服务器 IP。",
+	],
+	"This feature is available only for administrators." => [
+		0 => "此功能仅供管理员使用。",
+	],
+	"Upload user interface" => [
+		0 => "上传用户界面",
+	],
+	"On-page container" => [
+		0 => "页面容器",
+	],
+	"route" => [
+		0 => "路由",
+	],
+	"Guest uploads" => [
+		0 => "访客（不需注册）上传",
+	],
+	"Enable this if you want to allow non registered users to upload." => [
+		0 => "启用它则允许未注册的用户上传图片",
+	],
+	"Moderate uploads" => [
+		0 => "上传审核",
+	],
+	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
+		0 => "启用后，需要对上传内容进行审核。目标内容被通过审核后才会予以展示。",
+	],
+	"Enable embed codes (uploader)" => [
+		0 => "启用嵌入代码（上传者）",
+	],
+	"Enable this if you want to show embed codes when upload gets completed." => [
+		0 => "如果您想图片上传完成后显示嵌入代码请启用这个功能.",
+	],
+	"Upload threads" => [
+		0 => "上传线程",
+	],
+	"Number of simultaneous upload threads (parallel uploads)" => [
+		0 => "最大同时上传的线程数(并行上传)",
+	],
+	"Redirect on single upload" => [
+		0 => "单张图片上传跳转",
+	],
+	"Enable this if you want to redirect to file viewer on single upload." => [
+		0 => "如果想在上传单个文件后自动跳转到该文件浏览页面，请启用此选项。",
+	],
+	"Enable duplicate uploads" => [
+		0 => "启用重复上传",
+	],
+	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs." => [
+		0 => "如果你希望允许同一IP在24小时内重复上传，请启用此选项。",
+	],
+	"Enable expirable uploads" => [
+		0 => "启用可过期上传",
+	],
+	"Enable this if you want to allow uploads with an automatic delete option." => [
+		0 => "如果您想允许上传与自动删除选项启用它.",
+	],
+	"Auto delete guest uploads" => [
+		0 => "自动删除访客图片",
+	],
+	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
+		0 => "如果要强制访客上传的图片在某段时间后自动删除，请启用此功能.",
+	],
+	"Maximum image size" => [
+		0 => "最大图片大小",
+	],
+	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
+		0 => "大于此尺寸的图片将自动缩小尺寸.默认(0)则不设置限制.",
+	],
+	"Image Exif data" => [
+		0 => "图像的Exif数据",
+	],
+	"Keep" => [
+		0 => "保留",
+	],
+	"Select the default setting for image <a %s>Exif data</a> on upload." => [
+		0 => "选择默认的图片 <a %s>Exif数据</a> 上传.",
+	],
+	"Image Exif data (user setting)" => [
+		0 => "图像的Exif数据（用户设定）",
+	],
+	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
+		0 => "启用它, 如果您允许每个用户设置是否删除图像的Exif数据.",
+	],
+	"Maximum upload file size" => [
+		0 => "最大上传文件大小（MB）",
+	],
+	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
+		0 => "服务器最大允许上传%s.因为参数%u和%p(文件:%f)",
+	],
+	"guests" => [
+		0 => "游客",
+	],
+	"Same as \"%s\" but for guests." => [
+		0 => "跟\"%s\"一样，限制游客上传的最大文件大小.",
+	],
+	"File path" => [
+		0 => "文件路径",
+	],
+	"Relative to Chevereto root" => [
+		0 => "相对于Chevereto的root",
+	],
+	"Where to store the uploaded files? Relative to Chevereto root." => [
+		0 => "上传的文件存放在哪里？相对于 Chevereto 根目录。",
+	],
+	"Storage mode" => [
+		0 => "存储方式",
+	],
+	"Datefolders" => [
+		0 => "日期文件夹",
+	],
+	"Datefolders creates %s structure" => [
+		0 => "日期文件夹创建 %s 结构",
+	],
+	"File naming method" => [
+		0 => "文件的命名格式",
+	],
+	"Original" => [
+		0 => "原始的",
+	],
+	"Mix original + random" => [
+		0 => "原始的 + 随机",
+	],
+	"\"Original\" will try to keep the file source name while \"Random\" will generate a random name. \"ID\" will name the file just like the file ID." => [
+		0 => "“原始 ”会尽量保留文件的源文件名，而 “随机 ”则会生成一个随机文件名，“ID ”将按照文件 ID 命名文件。",
+	],
+	"Thumb size" => [
+		0 => "缩略图大小",
+	],
+	"Thumbnails will be fixed to this size." => [
+		0 => "固定大小的缩略图",
+	],
+	"Medium image fixed dimension" => [
+		0 => "中等图片尺寸固定",
+	],
+	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
+		0 => "中等图像将被固定至此分辨率. 例如, 如果您选择\"宽度\", 这方面将是固定的, 图像的高度将自动计算.",
+	],
+	"Medium image fixed size" => [
+		0 => "中等图片大小固定",
+	],
+	"Width or height will be automatically calculated." => [
+		0 => "宽度或高度将自动计算.",
+	],
+	"Block file uploads by IP if the system notice a flood behavior based on the number of uploads per time period." => [
+		0 => "系统将根据每个时间段内的文件上传数量及时发现泛洪行为，并阻止该 IP 继续上传文件。",
 	],
 	"Notify to email" => [
 		0 => "以电子邮件通知",
@@ -2467,165 +2611,6 @@ $translation_table = [
 	"Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images." => [
 		0 => "指定的用户ID显示在主页最新图片上, 多个用户用逗号分隔. 留空则显示所有全站最新的图片.",
 	],
-	"Enabled image formats" => [
-		0 => "启用的图像格式",
-	],
-	"Unsupported in your server" => [
-		0 => "您的服务器不支持",
-	],
-	"Only checked image formats will be allowed to be uploaded." => [
-		0 => "只允许上传选中的图片格式。",
-	],
-	"Enable uploads" => [
-		0 => "启用上传",
-	],
-	"Enable this if you want to allow image upload from URLs." => [
-		0 => "如果您想允许上传图片，请启用此选项。此设置不会影响管理员。",
-	],
-	"Note that enabling this will expose your server IP." => [
-		0 => "请注意，启用此功能将暴露您的服务器 IP。",
-	],
-	"This feature is available only for administrators." => [
-		0 => "此功能仅供管理员使用。",
-	],
-	"Upload user interface" => [
-		0 => "上传用户界面",
-	],
-	"On-page container" => [
-		0 => "页面容器",
-	],
-	"route" => [
-		0 => "路由",
-	],
-	"Guest uploads" => [
-		0 => "访客（不需注册）上传",
-	],
-	"Enable this if you want to allow non registered users to upload." => [
-		0 => "启用它则允许未注册的用户上传图片",
-	],
-	"Moderate uploads" => [
-		0 => "上传审核",
-	],
-	"Enable this to moderate incoming uploads. Target content will require moderation for approval." => [
-		0 => "启用后，需要对上传内容进行审核。目标内容被通过审核后才会予以展示。",
-	],
-	"Enable embed codes (uploader)" => [
-		0 => "启用嵌入代码（上传者）",
-	],
-	"Enable this if you want to show embed codes when upload gets completed." => [
-		0 => "如果您想图片上传完成后显示嵌入代码请启用这个功能.",
-	],
-	"Upload threads" => [
-		0 => "上传线程",
-	],
-	"Number of simultaneous upload threads (parallel uploads)" => [
-		0 => "最大同时上传的线程数(并行上传)",
-	],
-	"Redirect on single upload" => [
-		0 => "单张图片上传跳转",
-	],
-	"Enable this if you want to redirect to image page on single upload." => [
-		0 => "启用后上传单张图片后跳转到该图片的图片页面.",
-	],
-	"Enable duplicate uploads" => [
-		0 => "启用重复上传",
-	],
-	"Enable this if you want to allow duplicate uploads from the same IP within 24hrs." => [
-		0 => "如果你希望允许同一IP在24小时内重复上传，请启用此选项。",
-	],
-	"Enable expirable uploads" => [
-		0 => "启用可过期上传",
-	],
-	"Enable this if you want to allow uploads with an automatic delete option." => [
-		0 => "如果您想允许上传与自动删除选项启用它.",
-	],
-	"Auto delete guest uploads" => [
-		0 => "自动删除访客图片",
-	],
-	"Enable this if you want to force guest uploads to be auto deleted after certain time." => [
-		0 => "如果要强制访客上传的图片在某段时间后自动删除，请启用此功能.",
-	],
-	"Maximum image size" => [
-		0 => "最大图片大小",
-	],
-	"Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit." => [
-		0 => "大于此尺寸的图片将自动缩小尺寸.默认(0)则不设置限制.",
-	],
-	"Image Exif data" => [
-		0 => "图像的Exif数据",
-	],
-	"Keep" => [
-		0 => "保留",
-	],
-	"Select the default setting for image <a %s>Exif data</a> on upload." => [
-		0 => "选择默认的图片 <a %s>Exif数据</a> 上传.",
-	],
-	"Image Exif data (user setting)" => [
-		0 => "图像的Exif数据（用户设定）",
-	],
-	"Enable this if you want to allow each user to configure how image Exif data will be handled." => [
-		0 => "启用它, 如果您允许每个用户设置是否删除图像的Exif数据.",
-	],
-	"Maximum upload file size" => [
-		0 => "最大上传文件大小（MB）",
-	],
-	"Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)." => [
-		0 => "服务器最大允许上传%s.因为参数%u和%p(文件:%f)",
-	],
-	"guests" => [
-		0 => "游客",
-	],
-	"Same as \"%s\" but for guests." => [
-		0 => "跟\"%s\"一样，限制游客上传的最大文件大小.",
-	],
-	"Image path" => [
-		0 => "图像路径",
-	],
-	"Relative to Chevereto root" => [
-		0 => "相对于Chevereto的root",
-	],
-	"Where to store the images? Relative to Chevereto root." => [
-		0 => "在哪里存储图像? 相对于Chevereto根目录.",
-	],
-	"Storage mode" => [
-		0 => "存储方式",
-	],
-	"Datefolders" => [
-		0 => "日期文件夹",
-	],
-	"Datefolders creates %s structure" => [
-		0 => "日期文件夹创建 %s 结构",
-	],
-	"File naming method" => [
-		0 => "文件的命名格式",
-	],
-	"Original" => [
-		0 => "原始的",
-	],
-	"Mix original + random" => [
-		0 => "原始的 + 随机",
-	],
-	"\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID." => [
-		0 => "\"原始的\"会尽量保持图像源名称, 而\"随机\"则生成一个随机名称. \"ID\"则使用生成的图像ID来命名.",
-	],
-	"Thumb size" => [
-		0 => "缩略图大小",
-	],
-	"Thumbnails will be fixed to this size." => [
-		0 => "固定大小的缩略图",
-	],
-	"Medium image fixed dimension" => [
-		0 => "中等图片尺寸固定",
-	],
-	"Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated." => [
-		0 => "中等图像将被固定至此分辨率. 例如, 如果您选择\"宽度\", 这方面将是固定的, 图像的高度将自动计算.",
-	],
-	"Medium image fixed size" => [
-		0 => "中等图片大小固定",
-	],
-	"Width or height will be automatically calculated." => [
-		0 => "宽度或高度将自动计算.",
-	],
 	"Expires" => [
 		0 => "到期",
 	],
@@ -2695,6 +2680,12 @@ $translation_table = [
 	"Both methods use a fixed width but fluid method uses automatic heights." => [
 		0 => "首页图片列表样式. 这两种方法都使用固定宽度, 但“自动”的方法是使用自动图片的高度.",
 	],
+	"%t listing requirement" => [
+		0 => "%t被列出最低所需图片数量",
+	],
+	"Sets the minimum content count needed to show %t in %s." => [
+		0 => "%s中%t被列出最低所需图片数量",
+	],
 	"Listing columns number" => [
 		0 => "页面显示列数",
 	],
@@ -2723,7 +2714,7 @@ $translation_table = [
 		0 => "%s id",
 	],
 	"%s secret" => [
-		0 => "%s 秘密",
+		0 => "%s secret",
 	],
 	"Vector" => [
 		0 => "矢量",
@@ -2795,7 +2786,7 @@ $translation_table = [
 		0 => "您可以有多个额外页面，但只有一个内部页面类型。",
 	],
 	"Page visibility" => [
-		0 => "页面可见度",
+		0 => "页面可见性",
 	],
 	"Visible page" => [
 		0 => "可见页面",
@@ -2808,9 +2799,6 @@ $translation_table = [
 	],
 	"Only alphanumerics, hyphens and forward slash" => [
 		0 => "只允许字母数字, 连接符和正斜杠.",
-	],
-	"File path" => [
-		0 => "文件路径",
 	],
 	"A %f file relative to %s" => [
 		0 => "%f 文件相对于 %s",
@@ -2906,7 +2894,7 @@ $translation_table = [
 		0 => "转储更新查询",
 	],
 	"Enable this if you want to dump the update query to run it manually." => [
-		0 => "启用此选项，可以为每个用户自动检测和设置正确的语言。",
+		0 => "如果你想转储更新命令并手动运行，请启用这个选项。",
 	],
 	"Maintenance" => [
 		0 => "维护模式",
@@ -2922,6 +2910,9 @@ $translation_table = [
 	],
 	"Debug errors" => [
 		0 => "调试错误",
+	],
+	"Enable this if you want to debug errors." => [
+		0 => "如果想调试错误，请启用此选项。",
 	],
 	"Debug level" => [
 		0 => "调试级别",
@@ -2990,7 +2981,7 @@ $translation_table = [
 		0 => "确定 %s 页上的第一个选项卡。",
 	],
 	"Enable social share" => [
-		0 => "启用社会网站分享",
+		0 => "启用社交网站分享",
 	],
 	"Enable this if you want to show social network buttons to share content." => [
 		0 => "启用此选项, 以启用社交网站分享功能.",
@@ -3096,6 +3087,9 @@ $translation_table = [
 	],
 	"Enable user content delete" => [
 		0 => "用户内容删除",
+	],
+	"Enable this if you want to allow users to delete their own content." => [
+		0 => "如果要允许用户删除自己的内容，请启用此项。",
 	],
 	"Minimum age required" => [
 		0 => "最低年龄要求",
@@ -3301,8 +3295,41 @@ $translation_table = [
 	"Forced privacy modes will override user selected privacy." => [
 		0 => "全局隐私模式将覆盖用户选择的隐私.",
 	],
-	"If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %env% and when not set it fall-back to %var%." => [
-		0 => "如果检测到的IP与你的IP不符，这意味着你的Web服务器正在使用代理。连接IP可以使用环境变量 %env% 中定义的HTTP标头进行设置，当未进行设置时，它将回退到 %var% 。",
+	"Hello and welcome, %s" => [
+		0 => "您好，欢迎您，%s",
+	],
+	"Whether you're an individual creator or a company looking for a powerful media sharing platform, Chevereto has you covered." => [
+		0 => "无论您是个人创作者还是正在寻找强大媒体共享平台的公司，Chevereto 都能满足您的需求。",
+	],
+	"share your feedback" => [
+		0 => "分享您的反馈意见",
+	],
+	"We're always looking for ways to improve, feel free to %s and suggestions." => [
+		0 => "我们一直在寻找改进的方法，请随时提出 %s 和建议。",
+	],
+	"We are available for all your support and customization needs." => [
+		0 => "我们可以满足您的所有支持和定制需求。",
+	],
+	"Thank you for choosing Chevereto." => [
+		0 => "感谢您选择 Chevereto。",
+	],
+	"Chevereto creator" => [
+		0 => "Chevereto 作者",
+	],
+	"Provide Chevereto license key by assigning the environment variable %e or by creating the %f file containing the license key." => [
+		0 => "通过指定环境变量 %e 或创建包含许可证密钥的 %f 文件来提供 Chevereto 许可证密钥。",
+	],
+	"You can also set the license key in the textarea below." => [
+		0 => "您也可以在下面的文本框中设置许可证密钥。",
+	],
+	"Chevereto license key" => [
+		0 => "Chevereto 许可证密钥",
+	],
+	"PASTE LICENSE KEY HERE" => [
+		0 => "将许可证密钥粘贴在此处",
+	],
+	"If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %e and when not set it fall-back to %v." => [
+		0 => "如果检测到的 IP 与你实际 IP 不符，这意味着你的 Web 服务器正处于代理下。连接 IP 可以使用环境变量 %e 中定义的 HTTP 标头来设置，如果未设置，则会回退到 %v。",
 	],
 	"Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks." => [
 		0 => "请确保解决此问题，因为系统依靠准确的IP检测来提供基本功能，并能防止垃圾邮件、洪水攻击和暴力破解攻击。",
@@ -3313,8 +3340,8 @@ $translation_table = [
 	"%s News" => [
 		0 => "%s 新闻",
 	],
-	"Installation details" => [
-		0 => "安装详情",
+	"%s edition" => [
+		0 => "%s 版本",
 	],
 	"Role" => [
 		0 => "角色",
@@ -3322,8 +3349,8 @@ $translation_table = [
 	"Email address" => [
 		0 => "Email地址",
 	],
-	"Play GIF" => [
-		0 => "播放 GIF",
+	"Play %s" => [
+		0 => "播放 %s",
 	],
 	"Load 360° view" => [
 		0 => "加载 360° 视图",
@@ -3342,6 +3369,9 @@ $translation_table = [
 	],
 	"This is the album cover" => [
 		0 => "这是相册的封面",
+	],
+	"Added to %a under %s %t" => [
+		0 => "在相册 %a 中并%t为 %s",
 	],
 	"Added to %s" => [
 		0 => "加入 %s",
@@ -3370,11 +3400,14 @@ $translation_table = [
 	"Add IP ban" => [
 		0 => "添加IP",
 	],
-	"Upload and share your images." => [
-		0 => "上传与分享您的照片",
+	"Upload and share your media" => [
+		0 => "上传和分享您的媒体",
 	],
-	"Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails." => [
-		0 => "任意拖放图片到这里, 即开始上传您的图片. 最大 %s 图片大小. 直接的源图片链接, BBCode代码和HTML缩略图显示.",
+	"Drag and drop anywhere to start uploading." => [
+		0 => "拖放到任意位置即可开始上传，",
+	],
+	"Get direct links, Markdown, BBCode and HTML thumbnails." => [
+		0 => "获取文件直链、Markdown、BBCode 和 HTML 缩略图。",
 	],
 	"Sign up to unlock all the features" => [
 		0 => "注册即可解锁并体验所有的功能",
@@ -3409,8 +3442,14 @@ $translation_table = [
 	"Unlock" => [
 		0 => "解锁",
 	],
-	"Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more." => [
-		0 => "通过安装我们的上传插件，将图像上传到您的网站，博客或论坛。 它提供图像上传到任何网站，放置一个按钮，将允许您的用户直接上传图像到我们的服务，它将自动处理插入所需的代码。 所有功能包括拖放，远程上传，图像调整大小等。",
+	"Add media uploading and sharing to your website, blog or forum by installing our upload plugin." => [
+		0 => "安装我们的上传插件，为您的网站、博客或论坛添加媒体上传和共享功能。",
+	],
+	"It provides file uploading to any website by placing a button that will allow your users to directly upload to our service and it will automatically handle the codes needed for insertion." => [
+		0 => "它可将文件上传到任何网站，只需放置一个按钮，用户就可以直接将文件上传到我们的服务，它还会自动处理插入所需的代码。",
+	],
+	"All features included like drag and drop, remote upload, image resizing and more." => [
+		0 => "包括拖放、远程上传、调整图片大小等所有功能。",
 	],
 	"Supported software" => [
 		0 => "支持的项目",
@@ -3481,8 +3520,8 @@ $translation_table = [
 	"Auto delete uploads" => [
 		0 => "自动删除上传内容",
 	],
-	"This setting will apply to all your image uploads by default. You can override this setting on each upload." => [
-		0 => "默认情况下，此设置将应用于您上传的所有图像。您可以在每次上传时覆盖此设置。",
+	"This setting will apply to all your file uploads by default. You can override this setting on each upload." => [
+		0 => "此设置默认适用于所有文件上传。您可以在每次上传时覆盖此设置。",
 	],
 	"Keep image <a %s>Exif data</a> on upload" => [
 		0 => "在上传时, 保留图像的<a %s>Exif数据</a>",
@@ -3586,9 +3625,6 @@ $translation_table = [
 	"This service is based on Chevereto self-hosted edition." => [
 		0 => "此服务基于 Chevereto 自托管版本.",
 	],
-	"Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"." => [
-		0 => "Chevereto 软件的使用必须遵守“The Chevereto License”软件许可条款。",
-	],
 	"This instance is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this instance and it won't be responsible for this service neither the damages that this service may cause." => [
 		0 => "本实例托管在非Chevereto Software提供的服务层,在此声明对本实例的管理层没有任何控制权和访问权,不对本服务负责,也不对该服务可能造成的损害负责.",
 	],
@@ -3626,7 +3662,7 @@ $translation_table = [
 		0 => "登录",
 	],
 	"Already have an account? %s now." => [
-		0 => "已经有账户了？ %s 现在。",
+		0 => "已经有账户了？现在 %s。",
 	],
 	"resend account activation" => [
 		0 => "重新激活帐户",

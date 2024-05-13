@@ -50,7 +50,7 @@ return function (Handler $handler) {
         $action = $handler->request()[1] ?? null;
         $key = $SERVER['HTTP_X_API_KEY'] ?? $REQUEST['key'] ?? null;
         foreach (['version', 'action', 'key'] as $var) {
-            if ($$var === null) {
+            if (${$var} === null) {
                 throw new Exception("No $var provided", 100);
             }
         }

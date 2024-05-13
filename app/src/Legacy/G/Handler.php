@@ -12,7 +12,6 @@
 namespace Chevereto\Legacy\G;
 
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Config\Config;
 use function Chevereto\Legacy\get_captcha_component;
 use function Chevereto\Legacy\getSetting;
@@ -24,6 +23,7 @@ use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 use Closure;
 use Exception;
+use LogicException;
 
 /** @deprecate V4 */
 class Handler
@@ -84,18 +84,18 @@ class Handler
             $this->request_uri = str_replace($query_string, '/', $this->request_uri);
         }
         $this->valid_request = '/' . ltrim(rtrim(sanitize_path_slashes($this->request_uri), '/'), '/');
+        $theRequest = rtrim(PATH_PUBLIC, '/') . $this->valid_request;
+        if ($this->valid_request !== '/' && file_exists($theRequest)) {
+            throw new LogicException('Invalid PHP front controller setup. Review your web server configuration.');
+        }
         if (!empty(server()['QUERY_STRING'])) {
             $this->request_uri = server()['REQUEST_URI'];
             $this->valid_request .= $query_string;
         }
         $this->canonical_request = $this->valid_request;
-        if ((is_dir(PATH_PUBLIC . $this->valid_request)
-            || is_dir(dirname(PATH_PUBLIC) . $this->valid_request))
-            && $this->valid_request !== '/'
-        ) {
-            $this->canonical_request .= '/';
-        }
-        $this->handled_request = strtok($this->relative_root == '/' ? $this->valid_request : preg_replace('#' . $this->relative_root . '#', '/', $this->request_uri, 1), '?');
+        $this->handled_request = strtok($this->relative_root == '/'
+            ? $this->valid_request
+            : preg_replace('#' . $this->relative_root . '#', '/', $this->request_uri, 1), '?');
         $this->request_array = explode('/', rtrim(str_replace('//', '/', ltrim($this->handled_request, '/')), '/'));
         if ($this->request_array[0] == '') {
             $this->request_array[0] = '/';
@@ -226,9 +226,9 @@ class Handler
         }
         if (is_array($routes) && array_key_exists(self::$base_request, $routes)) {
             $magic = [
-                'post' => post() ? post() : null,
-                'get' => get() ? get() : null,
-                'request' => request() ? request() : null,
+                'post' => post() ?: null,
+                'get' => get() ?: null,
+                'request' => request() ?: null,
                 'safe_post' => post() ? safe_html(post()) : null,
                 'safe_get' => get() ? safe_html(get()) : null,
                 'safe_request' => request() ? safe_html(request()) : null,
@@ -306,6 +306,7 @@ class Handler
         throw new LogicException(
             message('Missing route file %file%')
                 ->withCode('%file%', $route_file)
+                ->__toString()
         );
     }
 

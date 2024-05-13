@@ -87,6 +87,9 @@ if (file_exists($envFile)) {
     $env = require $envFile;
 }
 $env = array_merge($_ENV, $_SERVER, $env);
+if (($env['CHEVERETO_SERVICING'] ?? null) === 'docker') {
+    abort('[!] This feature is not available when using Docker', 403);
+}
 if (!class_exists('ZipArchive')) {
     abort('[!] ZipArchive is not available');
 }

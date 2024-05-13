@@ -685,7 +685,7 @@ class Image
                     if (is_array($source) && $params['use_file_date'] && $source['type'] === 'image/jpeg') {
                         try {
                             $exifSource = \exif_read_data($source['tmp_name']);
-                        } catch (Throwable $e) {
+                        } catch (Throwable) {
                         }
                         if (isset($exifSource['DateTime'])) {
                             $stockDateGmt = date_create_from_format("Y:m:d H:i:s", $exifSource['DateTime'], new DateTimeZone('UTC'));
@@ -735,7 +735,7 @@ class Image
                     $dummy_insert = DB::insert('images', $dummy);
                     DB::delete('images', ['id' => $dummy_insert]);
                     $target_id = $dummy_insert;
-                } catch (Throwable $e) {
+                } catch (Throwable) {
                     $fileNaming = 'original';
                 }
             }
@@ -821,6 +821,7 @@ class Image
                     $image_resize_options = ['width' => $params['width']];
                 }
                 $image_resize_options['extension'] = $image_upload['uploaded']['extension'];
+                $image_resize_options['chmod'] = 0644;
                 $image_upload['uploaded'] = self::resize(
                     source: $resizeSourceImage,
                     destination: dirname($resizeSourceImage),
@@ -835,7 +836,8 @@ class Image
                 'fitted' => true,
                 'width' => getSetting('upload_thumb_width'),
                 'height' => getSetting('upload_thumb_height'),
-                'extension' => $chainExtension
+                'extension' => $chainExtension,
+                'chmod' => 0644,
             ];
             $medium_size = getSetting('upload_medium_size');
             $medium_fixed_dimension = getSetting('upload_medium_fixed_dimension');
@@ -876,7 +878,9 @@ class Image
                 $image_upload['uploaded']['fileinfo']['md5'] = $original_md5; // Preserve original MD5 for watermarked images
             }
             if ($image_upload['uploaded']['fileinfo'][$medium_fixed_dimension] > $medium_size || $is_animated_image) {
-                $image_medium_options = [];
+                $image_medium_options = [
+                    'chmod' => 0644,
+                ];
                 $image_medium_options[$medium_fixed_dimension] = $medium_size;
                 if ($is_animated_image) {
                     $image_medium_options['forced'] = true;
@@ -933,7 +937,7 @@ class Image
 
                     try {
                         $renamed_uploaded = rename($downstream, $uploaded_file);
-                    } catch (Throwable $e) {
+                    } catch (Throwable) {
                         $renamed_uploaded = file_exists($uploaded_file);
                     }
                     if (!$renamed_uploaded) {
@@ -958,7 +962,7 @@ class Image
 
                         try {
                             $renamed_chain = rename(${"image_$k"}['file'], $chain_file);
-                        } catch (Throwable $e) {
+                        } catch (Throwable) {
                             $renamed_chain = file_exists($chain_file);
                         }
                         if (!$renamed_chain) {
@@ -1012,7 +1016,7 @@ class Image
                         $expirable_diff = datetime_diff(datetimegmt(), $params['expiration_date_gmt'], 'm');
                         $image_insert_values['expiration_date_gmt'] = $expirable_diff < 5 ? datetime_modify(datetimegmt(), '+5 minutes') : $params['expiration_date_gmt'];
                     }
-                } catch (Exception $e) {
+                } catch (Exception) {
                 } // Silence
             }
             if (isset($storage_id, $storage)) {
@@ -1503,7 +1507,9 @@ class Image
         $image['url_short'] = self::getUrlViewer($image['id_encoded']);
         foreach ($targets['chain'] as $k => $v) {
             if ($targets['type'] == 'path') {
-                $image[$k] = file_exists($v) ? get_fileinfo($v) : null;
+                $image[$k] = file_exists($v)
+                    ? get_fileinfo($v)
+                    : null;
             } else {
                 $image[$k] = get_fileinfo($v);
             }
@@ -1516,7 +1522,7 @@ class Image
             ?? '';
         $display_width = $image['width'];
         $display_height = $image['height'];
-        if (!empty($image['medium'])) {
+        if (isset($image['medium']['url'])) {
             $display_url = $image['medium']['url'];
             $image_ratio = $image['width'] / $image['height'];
             switch ($medium_fixed_dimension) {
@@ -1533,10 +1539,11 @@ class Image
             }
             $displaySize = $image['medium']['size'];
         } elseif (
-            $image['size'] > get_bytes('200 KB')
-            && $image['type'] === 1
+            isset($image['thumb']['url'], $image['thumb']['size'])
+            && $image['size'] > get_bytes('200 KB')
+            && ($image['type'] ?? 1) === 1
         ) {
-            $display_url = $image['thumb']['url'] ?? '';
+            $display_url = $image['thumb']['url'];
             $display_width = getSetting('upload_thumb_width');
             $display_height = getSetting('upload_thumb_height');
             $displaySize = $image['thumb']['size'];
@@ -1563,8 +1570,15 @@ class Image
             'extension' => null,
             'url' => null,
         ];
+        $image['thumb'] = $image['thumb'] ?? [
+            'filename' => null,
+            'name' => null,
+            'mime' => null,
+            'extension' => null,
+            'url' => null,
+        ];
         $image['duration_time'] = $duration_time;
-        $image['type'] = self::$types[$image['type']];
+        $image['type'] = self::$types[$image['type'] ?? 1];
         $image['display_url'] = $display_url;
         $image['display_width'] = $display_width;
         $image['display_height'] = $display_height;

@@ -49,7 +49,7 @@ return function (Handler $handler) {
         sessionVar()->put('isHuman', $isSuccess);
         sessionVar()->put('isBot', !$isSuccess);
         die($fetch);
-    } catch (Exception $e) {
+    } catch (Exception) {
     }
     die();
 };

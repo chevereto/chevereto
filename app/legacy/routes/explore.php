@@ -30,9 +30,13 @@ return function (Handler $handler) {
         return;
     }
     $doing = $handler->request()[0] ?? null;
-    if (!isset($doing) && getSetting('homepage_style') == 'route_explore' && strpos(get_current_url(), get_base_url(get_route_name())) !== false) {
-        $redir = str_replace_first(get_base_url(get_route_name()), get_base_url(), get_current_url());
-        redirect($redir);
+    $baseUrlRouteName = get_base_url(get_route_name());
+    if (!isset($doing)
+        && getSetting('homepage_style') == 'route_explore'
+        && str_contains(get_current_url(), $baseUrlRouteName)
+    ) {
+        $redirect = str_replace_first($baseUrlRouteName, get_base_url(), get_current_url());
+        redirect($redirect);
     }
     $explore_semantics = $handler::var('explore_semantics');
     if (isset($doing) && !array_key_exists($doing, $explore_semantics)) {

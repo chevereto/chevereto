@@ -605,6 +605,9 @@ $settings_updates = [
         'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
     ],
     '4.1.2' => null,
+    '4.1.3' => [
+        'user_profile_view' => 'files',
+    ],
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -2154,7 +2157,7 @@ EOT;
                         $envDotPhp->file()->create();
                         $envDotPhp->file()->put($envDotPhpContents);
                         $doing = 'ready';
-                    } catch (Throwable $e) {
+                    } catch (Throwable) {
                         $doing = 'env';
                     }
                 }

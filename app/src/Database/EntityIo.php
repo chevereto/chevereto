@@ -24,13 +24,10 @@ abstract class EntityIo implements EntityIoInterface
 {
     use GetWhereEqualsTrait;
 
-    protected Database $database;
-
     protected string $whereIdClause;
 
-    public function __construct(Database $database)
+    public function __construct(protected Database $database)
     {
-        $this->database = $database;
         $this->whereIdClause = $this->getWhereEquals($this->id());
     }
 

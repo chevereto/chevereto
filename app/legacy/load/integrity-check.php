@@ -54,8 +54,10 @@ function filesystemPermissionsCheck(): void
         if (!file_exists($v)) {
             try {
                 mkdir($v);
-            } catch (Throwable $e) {
-                $errors[] = "<code>" . absolute_to_relative($v) . "</code> doesn't exists. Make sure to upload it.";
+            } catch (Throwable) {
+                $errors[] = "<code>"
+                    . absolute_to_relative($v)
+                    . "</code> doesn't exists and can't be created.";
             }
         } else {
             if (!is_writable($v)) {

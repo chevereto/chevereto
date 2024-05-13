@@ -74,7 +74,7 @@ $embed_upload_tpl = [
                 'template' => '<a href="%URL_VIEWER%"><img src="%MEDIUM_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'medium',
             ],
-            'thumbnail-html-embed' => [
+            'thumb-html-embed' => [
                 'label' => _s('%s thumbnail linked', 'HTML'),
                 'template' => '<a href="%URL_VIEWER%"><img src="%THUMB_URL%" alt="%DISPLAY_TITLE%" border="0"></a>',
                 'size' => 'thumb',
@@ -105,7 +105,7 @@ $embed_upload_tpl = [
                 'template' => '[![%DISPLAY_TITLE%](%MEDIUM_URL%)](%URL_VIEWER%)',
                 'size' => 'medium',
             ],
-            'thumbnail-markdown-embed' => [
+            'thumb-markdown-embed' => [
                 'label' => _s('%s thumbnail linked', 'Markdown'),
                 'template' => '[![%DISPLAY_TITLE%](%THUMB_URL%)](%URL_VIEWER%)',
                 'size' => 'thumb',
@@ -136,7 +136,7 @@ $embed_upload_tpl = [
                 'template' => '[url=%URL_VIEWER%][img]%MEDIUM_URL%[/img][/url]',
                 'size' => 'medium',
             ],
-            'thumbnail-bbcode-embed' => [
+            'thumb-bbcode-embed' => [
                 'label' => _s('%s thumbnail linked', 'BBCode'),
                 'template' => '[url=%URL_VIEWER%][img]%THUMB_URL%[/img][/url]',
                 'size' => 'thumb',

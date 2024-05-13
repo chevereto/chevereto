@@ -104,7 +104,7 @@ class Settings
                 $settings[$v['name']] = $value;
                 $defaults[$v['name']] = $default;
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
             $settings = [];
             $defaults = [];
         }
@@ -202,6 +202,7 @@ class Settings
             'website_random_guest' => true,
             'website_search_guest' => true,
             'debug_errors' => false,
+            'user_profile_view' => 'files',
         ];
         if (env()['CHEVERETO_SERVICING'] === 'docker') {
             $stock['xr_host'] = 'host.docker.internal';

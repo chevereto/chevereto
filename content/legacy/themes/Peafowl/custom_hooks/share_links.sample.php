@@ -28,11 +28,11 @@ $share_links_networks = [
         'label' => 'Blogger'
     ],
     'tumblr' => [
-        'url' => 'http://www.tumblr.com/share/photo?source=%PHOTO_URL%&caption=%TITLE%&clickthru=%URL%&title=%TITLE%',
+        'url' => 'https://www.tumblr.com/widgets/share/tool/?canonicalUrl=%URL%&posttype=photo&content=%IMAGE%&caption=%TITLE%',
         'label' => 'Tumblr.'
     ],
     'pinterest' => [
-        'url' => 'http://www.pinterest.com/pin/create/bookmarklet/?media=%PHOTO_URL%&url=%URL%&is_video=false&description=%DESCRIPTION%&title=%TITLE%',
+        'url' => 'http://www.pinterest.com/pin/create/bookmarklet/?media=%IMAGE%&url=%URL%&is_video=false&description=%DESCRIPTION%&title=%TITLE%',
         'label' => 'Pinterest'
     ],
     'reddit' => [

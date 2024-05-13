@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VERSION\n"
-"POT-Creation-Date: 2023-07-26 22:08+0000\n"
-"PO-Revision-Date: 2023-07-26 22:08+0000\n"
+"POT-Creation-Date: 2024-05-07 15:11+0000\n"
+"PO-Revision-Date: 2024-05-07 15:11+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
 "Language: vi\n"
@@ -12,7 +12,10 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "You have been forbidden to use this website."
-msgstr "Bạn bị bắt buộc dùng website này"
+msgstr "Bạn đã bị cấm sử dụng trang web này."
+
+msgid "Moderate"
+msgstr "Kiểm duyệt"
 
 msgid "View all my images"
 msgstr "Xem tất cả ảnh của tôi"
@@ -69,6 +72,9 @@ msgstr "Thêm email của bạn"
 msgid "Awaiting confirmation"
 msgstr "Chờ xác nhận"
 
+msgid "Two-factor authentication"
+msgstr "Xác thực hai lớp"
+
 msgid "Email changed"
 msgstr "Email đã đổi"
 
@@ -77,7 +83,7 @@ msgid "%s says you are a robot"
 msgstr "%s cho rằng bạn là robot"
 
 msgid "Invalid Username/Email"
-msgstr "Sai Tên / Email"
+msgstr "Username/Email không đúng"
 
 msgid "User doesn't have an email."
 msgstr "Người dùng chưa có email"
@@ -86,10 +92,10 @@ msgid "Account needs to be activated to use this feature"
 msgstr "Phải kích hoạt tài khoản để dùng tính năng này"
 
 msgid "Account already activated"
-msgstr "Tài khoản đã kích hoạt"
+msgstr "Tài khoản đã được kích hoạt"
 
 msgid "Account banned"
-msgstr "Tài khoản bị cấm"
+msgstr "Tài khoản đã bị cấm"
 
 msgid "Allow up to 15 minutes for the email. You can try again later."
 msgstr "Hãy đợi email trong vòng 15 phút. Hoặc bạn có thể thử lại sau."
@@ -116,10 +122,13 @@ msgid "Invalid email"
 msgstr "Email không hợp lệ"
 
 msgid "Email already being used"
-msgstr "Email đã sử dụng"
+msgstr "Email đã được sử dụng"
+
+msgid "Invalid code"
+msgstr "Mã không hợp lệ"
 
 msgid "Check the errors in the form to continue."
-msgstr "Kiểm tra lỗi trong biểu mẫu để tiếp tục."
+msgstr "Hãy kiểm tra lại các lỗi trong biểu mẫu để tiếp tục."
 
 msgid "Password required"
 msgstr "Yêu cầu mật khẩu"
@@ -127,21 +136,25 @@ msgstr "Yêu cầu mật khẩu"
 msgid "Embed codes"
 msgstr "Mã nhúng"
 
+msgid "albums"
+msgstr "album"
+
+#, php-format
+msgid "Sub %s"
+msgstr "%s phụ"
+
 msgid "Info"
-msgstr "thông tin"
+msgstr "Thông tin"
 
 msgid "%a album hosted in %w"
-msgstr "%a album được chia sẻ tại  %w"
+msgstr "Album %a được lưu trữ trên %w"
 
 msgid "image"
 msgid_plural "images"
 msgstr[0] "ảnh"
 
-msgid "Stats"
-msgstr "Thống kê"
-
-msgid "Images"
-msgstr "Ảnh"
+msgid "Home"
+msgstr "Trang chủ"
 
 msgid "Album"
 msgid_plural "Albums"
@@ -152,10 +165,17 @@ msgid_plural "Users"
 msgstr[0] "Người dùng"
 
 msgid "Bulk importer"
-msgstr "Công cụ import số lượng lớn"
+msgstr "Nhập hàng loạt"
 
 msgid "Settings"
 msgstr "Cài đặt"
+
+#, php-format
+msgid "Run %s"
+msgstr "Chạy %s"
+
+msgid "Website"
+msgstr "Website"
 
 msgid "Content"
 msgstr "Nội dung"
@@ -163,11 +183,14 @@ msgstr "Nội dung"
 msgid "Listings"
 msgstr "Danh sách"
 
-msgid "Image upload"
-msgstr "Hình upload"
+msgid "File uploads"
+msgstr "Tải lên tệp"
+
+msgid "Semantics"
+msgstr "Thuật ngữ"
 
 msgid "Categories"
-msgstr "Chuyên mục"
+msgstr "Danh mục"
 
 msgid "Theme"
 msgstr "Giao diện"
@@ -184,8 +207,8 @@ msgstr "Email"
 msgid "Tools"
 msgstr "Công cụ"
 
-msgid "External storage"
-msgstr "Nguồn lưu trữ ngoài"
+msgid "Logo"
+msgstr "Logo"
 
 msgid "Homepage"
 msgstr "Trang chủ"
@@ -193,44 +216,63 @@ msgstr "Trang chủ"
 msgid "Pages"
 msgstr "Trang"
 
-msgid "External services"
-msgstr "Dịch vụ bên ngoài"
+msgid "Upload plugin"
+msgstr "Upload plugin"
 
 msgid "Consent screen"
-msgstr "Màn hình ban đầu"
+msgstr "Màn hình đồng ý"
+
+#, php-format
+msgid "Guests %s"
+msgstr "Khách %s"
+
+msgid "External storage"
+msgstr "Kho lưu trữ bổ sung"
+
+msgid "Routing"
+msgstr "Định tuyến"
+
+msgid "External services"
+msgstr "Dịch vụ tích hợp"
+
+msgid "Login providers"
+msgstr "Tùy chọn đăng nhập"
+
+msgid "Cookie compliance"
+msgstr "Tuân thủ quy định về cookie"
+
+msgid "Flood protection"
+msgstr "Chống spam hình ảnh"
+
+msgid "Banners"
+msgstr "Quảng cáo"
 
 msgid "IP bans"
 msgstr "Chặn IP"
 
-msgid "Documentation"
-msgstr "Tài liệu"
+msgid "Watermarks"
+msgstr "Đóng dấu hình ảnh"
 
-msgid "Admin"
-msgstr "Quản Trị Viên"
+msgid "Upgrade now"
+msgstr "Nâng cấp ngay"
 
 msgid "Support"
 msgstr "Hỗ trợ"
 
-msgid "Releases"
-msgstr "Bản phát hành"
-
-msgid "Community"
-msgstr "Cộng đồng"
-
 msgid "install update"
 msgstr "cài đặt cập nhật"
-
-msgid "Check updates"
-msgstr "Kiểm tra bản cập nhật"
 
 msgid "not running"
 msgstr "không chạy"
 
 msgid "Max. upload file size"
-msgstr "Tập tin tải lên tối đa"
+msgstr "Kích thước tệp tải lên tối đa"
 
-msgid "Graphics Library"
-msgstr "Thư Viện Đồ Họa"
+msgid "Graphics library"
+msgstr "Thư viện đồ hoạ"
+
+msgid "Stats"
+msgstr "Thống kê"
 
 msgid "Rebuild stats"
 msgstr "Xây dựng lại số liệu thống kê"
@@ -241,20 +283,8 @@ msgstr "Địa chỉ IP kết nối"
 msgid "Not your IP?"
 msgstr "Không phải IP của bạn?"
 
-msgid "PHP version"
-msgstr "Phiên bản PHP"
-
-msgid "Server"
-msgstr "Máy chủ"
-
-msgid "MySQL version"
-msgstr "Phiên bản MySQL"
-
-msgid "MySQL server info"
-msgstr "Thông tin MySQL server"
-
-msgid "File uploads"
-msgstr "Ảnh upload"
+msgid "Encryption"
+msgstr "Mã hoá"
 
 msgid "Enabled"
 msgstr "Đã bật"
@@ -262,8 +292,26 @@ msgstr "Đã bật"
 msgid "Disabled"
 msgstr "Đã tắt"
 
+msgid "Releases"
+msgstr "Bản phát hành"
+
+msgid "Community"
+msgstr "Cộng đồng"
+
+msgid "Links"
+msgstr "Đường dẫn"
+
+msgid "Cron last ran"
+msgstr "Cron lần cuối"
+
+msgid "PHP version"
+msgstr "Phiên bản PHP"
+
+msgid "Server"
+msgstr "Máy chủ"
+
 msgid "Max. execution time"
-msgstr "Thời gian thi hành tối đa"
+msgstr "Thời gian thực thi tối đa"
 
 #, php-format
 msgid "%d second"
@@ -274,84 +322,35 @@ msgid "Memory limit"
 msgstr "Giới hạn bộ nhớ"
 
 msgid "Can't delete all homepage cover images"
-msgstr "Không thể xoá tất cả ảnh trang chủ"
+msgstr "Không thể xoá tất cả ảnh bìa trang chủ"
 
 msgid "Homepage cover image deleted"
-msgstr "Ảnh đại diện trang chủ đã được xoá"
-
-msgid "External"
-msgstr "Bên ngoài"
+msgstr "Đã xoá ảnh bìa trang chủ"
 
 msgid "All"
 msgstr "Tất cả"
 
 msgid "search content"
-msgstr "nội dung tìm kiếm"
+msgstr "tìm kiếm nội dung"
 
 msgid "Add page"
 msgstr "Thêm trang"
 
-#, php-format
-msgid "Edit page ID %s"
-msgstr "Chỉnh sửa page ID %s"
-
 msgid "The page has been added successfully."
-msgstr "Trang được thêm vào thành công"
+msgstr "Đã thêm trang thành công"
 
 msgid "The page has been deleted."
-msgstr "Trang đã được xoá"
+msgstr "Đã xoá trang"
 
 msgid "homepage"
 msgstr "trang chủ"
 
-#, php-format
-msgid "Before main title (%s)"
-msgstr "Trước tiêu đề chính (%s)"
-
-#, php-format
-msgid "After call to action (%s)"
-msgstr "Sau nút CTA (%s)"
-
-#, php-format
-msgid "After cover (%s)"
-msgstr "Sau ảnh (%s)"
-
-#, php-format
-msgid "After listing (%s)"
-msgstr "Sau danh sách (%s)"
-
-msgid "Before pagination"
-msgstr "Trước phân trang"
-
-msgid "After pagination"
-msgstr "Phía sau phân trang"
-
-msgid "Content (image and album)"
-msgstr "Nội dung (trong xem ảnh và album)"
-
-msgid "Tab about column"
-msgstr "Tab cột giới thiệu"
-
-msgid "Before comments"
-msgstr "Phía dưới bình luận"
-
-msgid "Image page"
-msgstr "Tranh hình ảnh"
-
-msgid "Inside viewer top (image page)"
-msgstr "Trong phần trên của trình duyệt ảnh (trang xem ảnh)"
-
-msgid "Inside viewer foot (image page)"
-msgstr "Trong phần chân của trình duyệt ảnh (trang xem ảnh)"
-
-msgid "Before header (image page)"
-msgstr "Trước đầu trang (trang ảnh)"
-
-msgid "User profile page"
-msgstr "Trang thông tin thành viên"
-
 msgid "Explore"
 msgstr "Khám phá ảnh"
+
+#, php-format
+msgid "After top (%s page)"
+msgstr "Sau phần đầu trang (trang %s)"
 
 msgid "NSFW"
 msgstr "Ảnh nhạy cảm"
@@ -376,124 +375,86 @@ msgid "Invalid upload filenaming"
 msgstr "Đặt tên upload sai"
 
 msgid "Invalid thumb width"
-msgstr "Chiều rộng thumb bị sai"
+msgstr "Chiều rộng hình thu nhỏ bị sai"
 
 msgid "Invalid thumb height"
-msgstr "Chiều cao thumb bị sai"
+msgstr "Chiều cao hình thu nhỏ bị sai"
 
 msgid "Invalid medium size"
-msgstr "Kích thước trung bình không hợp lệ"
+msgstr "Kích thước ảnh trung bình không hợp lệ"
 
 msgid "Invalid watermark percentage"
-msgstr "Phần trăm vị trí của ảnh đóng dấu không hợp lệ"
+msgstr "Phần trăm kích thước đóng dấu không hợp lệ"
 
 msgid "Invalid watermark opacity"
-msgstr "Chỉ số trong suốt của ảnh đóng dấu không hợp lệ"
+msgstr "Chỉ số trong suốt của đóng dấu không hợp lệ"
 
 msgid "Invalid theme"
-msgstr "Sai theme"
+msgstr "Sai giao diện"
 
 msgid "Invalid value"
 msgstr "Sai giá trị"
 
-msgid "Invalid theme image listing size"
-msgstr "sai size của danh sách hình ảnh"
+msgid "font"
+msgstr "phông chữ"
 
-msgid "Invalid user id"
-msgstr "User ID không tồn tại"
+#, php-format
+msgid "Invalid %s"
+msgstr "%s không hợp lệ"
 
-msgid "Invalid email mode"
-msgstr "Sai chế độ email"
-
-msgid "Invalid SMTP port"
-msgstr "Sai cổng SMTP"
-
-msgid "Invalid SMTP security"
-msgstr "Sai bảo mật SMTP"
-
-msgid "Invalid website mode"
-msgstr "Chế độ website bị sai"
-
-msgid "Invalid personal mode user ID"
-msgstr "ID người dùng chế độ cá nhân không hợp lệ"
-
-msgid "Invalid website privacy mode"
-msgstr "Chế độ bảo mật website không hợp lệ"
-
-msgid "Invalid website content privacy mode"
-msgstr "sai chết độ riêng tư"
-
-msgid "Invalid homepage style"
-msgstr "sai style trang chủ"
-
-msgid "Invalid homepage call to action button color"
-msgstr "Sai màu của nút nhấp trên trang chủ"
-
-msgid "Invalid homepage call to action functionality"
-msgstr "Hàm gọi hành động trên homepage không hợp lệ"
-
-msgid "Invalid title"
-msgstr "Tiêu đề không hợp lệ"
+msgid "palette"
+msgstr "bảng màu"
 
 msgid "Invalid type"
-msgstr "nhập không hợp lệ"
+msgstr "Loại không hợp lệ"
 
 msgid "Invalid visibility"
-msgstr "Hiển thị không hợp lệ"
+msgstr "Chế độ hiển thị không hợp lệ"
+
+msgid "Invalid internal type"
+msgstr "Loại nội bộ không hợp lệ"
+
+msgid "Invalid target attribute"
+msgstr "Thuộc tính target không hợp lệ"
 
 msgid "Invalid rel attribute"
 msgstr "Thuộc tính rel không hợp lệ"
 
 msgid "Invalid icon"
-msgstr "icon không hợp lệ"
+msgstr "Icon không hợp lệ"
 
 msgid "Invalid URL key"
-msgstr "URL key không hợp lệ"
+msgstr "Khoá URL không hợp lệ"
 
 msgid "Invalid file path"
-msgstr "Đường dẫn file không hợp lệ"
+msgstr "Đường dẫn tập tin không hợp lệ"
 
 msgid "Invalid link URL"
-msgstr "URL liên kết không hợp lệ"
+msgstr "Liên kết URL không hợp lệ"
 
 msgid "Invalid user minimum age"
-msgstr "Độ tuổi tối thiểu của người dùng không hợp lệ"
+msgstr "Độ tuổi tối thiểu không hợp lệ"
 
 msgid "Only alphanumeric, hyphen and underscore characters are allowed"
-msgstr "Chỉ chữ cái a-z, dấu gạch dưới và kí tự gạch ngang được chấp nhận"
+msgstr "Chỉ cho phép các ký tự chữ, số, dấu gạch nối và dấu gạch dưới"
 
 msgid "Invalid URL"
-msgstr "Sai URL"
+msgstr "URL không hợp lệ"
 
-msgid "Invalid upload image path"
-msgstr "Sai đường dẫn ảnh upload"
-
-msgid "Invalid call to action URL"
-msgstr "Địa chỉ đường dẫn của nút CTA không chính xác"
-
-#, php-format
-msgid "Max. allowed %s"
-msgstr "Cho phép tối đa %s"
-
-msgid "Invalid SMTP server"
-msgstr "Sai máy chủ SMTP"
-
-msgid "Invalid SMTP username"
-msgstr "Sai tên người dùng SMTP"
-
-#, php-format
-msgid "This URL key is already being used by another page (ID %s)"
-msgstr "URL key này đã được một trang khác sử dụng (ID %s)"
-
-#, php-format
-msgid "This file path is already being used by another page (ID %s)"
-msgstr "Đường dẫn file này đã được một trang khác sử dụng (ID %s)"
+msgid "Invalid key"
+msgstr "Khoá không hợp lệ"
 
 msgid "Dashboard"
 msgstr "Bảng chính"
 
+msgid "Following"
+msgstr "Đang theo dõi"
+
 msgid "About"
 msgstr "Giới thiệu"
+
+msgid "Comments"
+msgstr "Bình luận"
 
 msgid "Image ID"
 msgstr "ID ảnh"
@@ -510,32 +471,8 @@ msgstr "Ảnh %i trong %c chuyên mục"
 msgid "Image %i hosted in %w"
 msgstr "Ảnh %i lưu trữ tại %w"
 
-msgid "Direct links"
-msgstr "Link trực tiếp"
-
-msgid "Image link"
-msgstr "Link ảnh"
-
-msgid "Image URL"
-msgstr "URL ảnh"
-
-msgid "Thumbnail URL"
-msgstr "URL ảnh thumbnail"
-
-msgid "Medium URL"
-msgstr "URL ảnh trung bình"
-
-msgid "Full image"
-msgstr "Ảnh gốc"
-
-msgid "Full image (linked)"
-msgstr "Ảnh gốc (có liên kết)"
-
-msgid "Medium image (linked)"
-msgstr "Ảnh cỡ vừa (có liên kết)"
-
-msgid "Thumbnail image (linked)"
-msgstr "Ảnh thu nhỏ (có liên kết)"
+msgid "Start uploading"
+msgstr "Bắt đầu upload"
 
 msgid "Login needed"
 msgstr "Cần đăng nhập"
@@ -544,11 +481,20 @@ msgid "Image"
 msgid_plural "Images"
 msgstr[0] "Ảnh"
 
+#, php-format
+msgid "%s doesn't exists"
+msgstr "%s không tồn tại"
+
+#, php-format
+msgid "%s edited"
+msgstr "Đã sửa %s"
+
 msgid "Category"
 msgstr "Danh sách"
 
-msgid "IP address already banned"
-msgstr "Địa chỉ IP đã bị cấm"
+#, php-format
+msgid "%s URL key already being used."
+msgstr "URL %s đã được sử dụng"
 
 msgid "Missing values"
 msgstr "Thiếu dữ liệu"
@@ -556,8 +502,22 @@ msgstr "Thiếu dữ liệu"
 msgid "Invalid username"
 msgstr "Sai tên tài khoản"
 
+msgid "Invalid role"
+msgstr "Vai trò không hợp lệ"
+
 msgid "Username already being used"
 msgstr "Tên tài khoản đã có người sử dụng"
+
+#, php-format
+msgid "%s added"
+msgstr "Đã thêm %s"
+
+msgid "IP address already banned"
+msgstr "Địa chỉ IP đã bị cấm"
+
+#, php-format
+msgid "%s not found"
+msgstr "Không tìm thấy %s"
 
 #, php-format
 msgid "Add a password or another social connection before deleting %s"
@@ -585,6 +545,21 @@ msgstr "Email kiểm tra đã gửi đến %s."
 msgid "Downloading %s data"
 msgstr "Đang tải %s dữ liệu"
 
+#, php-format
+msgid "%s %u followed"
+msgstr "Đã theo dõi %s %u"
+
+#, php-format
+msgid "%s %u unfollowed"
+msgstr "Đã bỏ theo dõi %s %u"
+
+msgid "%s doesn't belong to this %t"
+msgstr "%s không thuộc %t"
+
+#, php-format
+msgid "%s cover updated"
+msgstr "Đã cập nhật ảnh bìa của %s"
+
 msgid "Content liked"
 msgstr "Đã like"
 
@@ -610,6 +585,9 @@ msgstr "Đăng nhập"
 msgid "Upload images"
 msgstr "Upload ảnh"
 
+msgid "%t search results for %s"
+msgstr "%t kết quả tìm kiếm cho %s"
+
 msgid "Search"
 msgstr "Tìm kiếm"
 
@@ -621,6 +599,19 @@ msgstr "Hồ sơ cá nhân"
 
 msgid "Password"
 msgstr "Mật khẩu"
+
+msgid "Security"
+msgstr "Bảo mật"
+
+msgid "Connections"
+msgstr "Kết nối tài khoản"
+
+msgid "Powered by"
+msgstr "Được cung cấp bởi"
+
+#, php-format
+msgid "Invalid image expiration: %s"
+msgstr "Hạn xoá hình ảnh không hợp lệ: %s"
 
 #, php-format
 msgid "An email has been sent to %s with instructions to activate this email"
@@ -660,8 +651,25 @@ msgstr "Thiết lập cho %s"
 msgid "Username"
 msgstr "Tên tài khoản"
 
+msgid "user"
+msgid_plural "users"
+msgstr[0] "người dùng"
+
+#, php-format
+msgid "Do you really want to delete this %s?"
+msgstr "Bạn có thực sự muốn xóa %s không?"
+
+msgid "This can't be undone."
+msgstr "Hành động này không thể vãn hồi"
+
 msgid "Delete user"
 msgstr "Xóa tài khoản"
+
+msgid "User ID"
+msgstr "ID Người dùng"
+
+msgid "Images"
+msgstr "Ảnh"
 
 msgid "Register date"
 msgstr "Ngày đăng ký"
@@ -676,6 +684,15 @@ msgstr "Bạn phải có ít nhất %s tuổi để sử dụng website này"
 msgid "Create account"
 msgstr "Đăng kí"
 
+msgid "Upload"
+msgstr "Tải lên"
+
+msgid "%t by %s"
+msgstr "%t bởi %s"
+
+msgid "Albums"
+msgstr "Albums"
+
 #, php-format
 msgid "Liked by %s"
 msgstr "Được thích bởi %s"
@@ -683,8 +700,18 @@ msgstr "Được thích bởi %s"
 msgid "Liked"
 msgstr "Đã thích"
 
+msgid "%t followed by %s"
+msgstr "%t được theo dõi bởi %s"
+
+msgid "%t following %s"
+msgstr "%t đang theo dõi %s"
+
 msgid "Followers"
 msgstr "Người quan tâm"
+
+#, php-format
+msgid "Search results for %s"
+msgstr "Kết quả tìm kiếm của %s"
 
 msgid "%n (%u) albums on %w"
 msgstr "%n (%u) albums trên %w"
@@ -698,6 +725,9 @@ msgstr[0] "album"
 
 msgid "Flooding detected. You can only upload %limit% %content% per %time%"
 msgstr "Phát hiện spam. Bạn chỉ có thể tải lên %limit% %content% trong %time%"
+
+msgid "Unnamed"
+msgstr "Vô danh"
 
 msgid "Note: This content is private but anyone with the link will be able to see this."
 msgstr "Lưu ý: Nội dung này là riêng tư, nhưng bất kỳ ai có địa chỉ liên kết đều sẽ có thể vào xem."
@@ -719,6 +749,9 @@ msgstr "Tôi"
 
 msgid "Link"
 msgstr "Liên kết"
+
+msgid "CSAM content is forbidden"
+msgstr "Nghiêm cấm nội dung lạm dụng trẻ em"
 
 msgid "After %n %t"
 msgstr "Sau %n %t"
@@ -767,6 +800,9 @@ msgstr[0] "lượt xem"
 msgid "like"
 msgid_plural "likes"
 msgstr[0] "thích"
+
+msgid "Top"
+msgstr "Hàng đầu"
 
 msgid "Most recent"
 msgstr "Gần đây nhất"
@@ -841,6 +877,37 @@ msgstr "cách đây %s"
 msgid "moments ago"
 msgstr "mới đây"
 
+msgid "There is an update available for your system."
+msgstr "Hệ thống của bạn có bản cập nhật mới."
+
+#, php-format
+msgid "Go to %s to download and install this update."
+msgstr "Vui lòng truy cập %s để tải xuống và cài đặt bản cập nhật này."
+
+msgid "System database is outdated."
+msgstr "Cơ sở dữ liệu hệ thống đã lỗi thời."
+
+msgid "Update"
+msgstr "Cập nhật"
+
+#, php-format
+msgid "You need to %s."
+msgstr "Bạn cần phải %s"
+
+msgid "Website is in maintenance mode."
+msgstr "Trang web đang ở chế độ bảo trì."
+
+#, php-format
+msgid "To revert this setting go to %s."
+msgstr "Để khôi phục cài đặt này, hãy truy cập %s"
+
+#, php-format
+msgid "%s settings"
+msgstr "Cài đặt %s"
+
+msgid "You haven't changed the default email settings. Go to %emailSettings% to fix this."
+msgstr "Bạn chưa thay đổi các cài đặt email mặc định. Hãy vào %emailSettings% để chỉnh sửa."
+
 msgid "Discovery"
 msgstr "Khám phá"
 
@@ -868,6 +935,15 @@ msgstr "Bạn chưa có thông báo nào"
 
 msgid "My Profile"
 msgstr "Thông tin cá nhân"
+
+msgid "Palette"
+msgstr "Bảng màu"
+
+msgid "Administrator"
+msgstr "Quản trị viên"
+
+msgid "Manager"
+msgstr "Người kiểm duyệt"
 
 msgid "Sign out"
 msgstr "Thoát"
@@ -906,31 +982,31 @@ msgstr "Hình nền cá nhân đã xóa."
 msgid "Error deleting profile background image."
 msgstr "Xóa hình nền bị lỗi."
 
-#, javascript-format
-msgid "Update available v%s"
-msgstr "Cập nhật có sẵn v%s"
+msgid "documentation"
+msgstr "tài liệu"
 
 #, javascript-format
 msgid "This website is running latest %s version"
 msgstr "Website này đang chạy phiên bản %s mới nhất"
 
+msgid "Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"."
+msgstr "Việc sử dụng Phần mềm Chevereto phải tuân thủ các điều khoản cấp phép phần mềm được gọi là \"Giấy phép Chevereto\"."
+
+msgid "License agreement"
+msgstr "Thỏa thuận cấp phép"
+
 msgid "Please review the system requirements before proceeding"
 msgstr "Xin hãy kiểm tra yêu cầu hệ thống trước khi tiếp tục"
 
-msgid "Toggle select"
-msgstr "Chọn chuyển đổi"
+#, javascript-format, php-format
+msgid "Get a license at %s to unlock all features and support."
+msgstr "Nhận giấy phép tại %s để mở khóa tất cả các tính năng và hỗ trợ."
 
-msgid "Like"
-msgstr "Thích"
+msgid "You can enter your license key in the dashboard panel."
+msgstr "Bạn có thể nhập mã bản quyền của mình vào bảng điều khiển."
 
 msgid "Create album"
 msgstr "Tạo Album"
-
-msgid "Toggle flag"
-msgstr "Chỉnh sửa cờ"
-
-msgid "Edit"
-msgstr "Sửa"
 
 msgid "Approve"
 msgstr "Chấp thuận"
@@ -938,11 +1014,26 @@ msgstr "Chấp thuận"
 msgid "Delete"
 msgstr "Xóa"
 
-msgid "Previous"
-msgstr "Trước"
+msgid "Edit"
+msgstr "Sửa"
+
+msgid "Toggle flag"
+msgstr "Chỉnh sửa cờ"
+
+msgid "Like"
+msgstr "Thích"
 
 msgid "Next"
 msgstr "Tiếp"
+
+msgid "Previous"
+msgstr "Trước"
+
+msgid "Toggle select"
+msgstr "Chọn chuyển đổi"
+
+msgid "Zoom"
+msgstr "Phóng to"
 
 msgid "File too big."
 msgstr "Hình quá lớn"
@@ -953,12 +1044,13 @@ msgstr "Định dạng tệp không hợp lệ hoặc không được hỗ trợ
 msgid "Some files couldn't be added"
 msgstr "Một số tệp không thêm được."
 
+msgid "file"
+msgid_plural "files"
+msgstr[0] "tệp tin"
+
 #, javascript-format
 msgid "%s's Albums"
 msgstr "Album của %s"
-
-msgid "Image edited successfully."
-msgstr "Sửa ảnh thành công."
 
 msgid "private"
 msgstr "riêng tư"
@@ -1004,6 +1096,10 @@ msgstr "URL không hợp lệ."
 
 msgid "Storage successfully edited."
 msgstr "Đã chỉnh sửa kho lưu trữ thành công."
+
+#, javascript-format
+msgid "%s added successfully."
+msgstr "Đã thêm %s thành công"
 
 msgid "The content has been deleted."
 msgstr "Nội dung đã bị xóa"
@@ -1057,6 +1153,12 @@ msgstr "Xác nhận hành động"
 msgid "information"
 msgstr "thông tin"
 
+msgid "Paste"
+msgstr "Dán"
+
+msgid "Right click"
+msgstr "Nhấp chuột phải"
+
 msgid "We received a request to change the email of your <a href=\"%u\">%n</a> account at %w."
 msgstr "Chúng tôi nhận được yêu cầu thay đổi email <a href=\"%u\">%n</a> tài khoản của bạn tại %w."
 
@@ -1104,12 +1206,6 @@ msgstr "Cảm ơn bạn đã tham gia với chúng tôi."
 msgid "This email was sent from %w %u"
 msgstr "Email này được gửi từ %w %u"
 
-msgid "Drag and drop or paste images here to upload"
-msgstr "Kéo thả hoặc paste (Ctrl + V) ảnh vào đây để upload"
-
-msgid "Select the images to upload"
-msgstr "Chọn ảnh để upload"
-
 msgid "You can also %i or %u."
 msgstr "Bạn có thể %i hoặc %u."
 
@@ -1120,20 +1216,33 @@ msgstr "Bạn cũng có thể %s."
 msgid "browse from your computer"
 msgstr "tải lên từ máy tính"
 
-msgid "add image URLs"
-msgstr "thêm địa chỉ ảnh"
-
 msgid "You can also %i, %c or %u."
 msgstr "Bạn còn có thể %i, %c hoặc %u."
 
 msgid "You can also %i or %c."
 msgstr "Bạn cũng có thể %i hoặc %c."
 
-msgid "browse from your device"
-msgstr "tải từ thiết bị"
+msgid "browse from device"
+msgstr "chọn từ thiết bị"
 
-msgid "take a picture"
-msgstr "chụp ảnh"
+msgid "use camera"
+msgstr "máy ảnh"
+
+msgid "max"
+msgstr "tối đa"
+
+#, php-format
+msgid "Register to get %s"
+msgstr "Đăng ký để nhận %s"
+
+msgid "clicking"
+msgstr "Nhấp chuột"
+
+msgid "Customize upload by %action% on any preview"
+msgstr "Tùy chỉnh tải lên theo %action% trên bất kỳ bản xem trước nào"
+
+msgid "touching"
+msgstr "chạm"
 
 msgid "Uploading %q %o"
 msgstr "Đang tải lên %q %o"
@@ -1151,14 +1260,53 @@ msgstr "Upload xong rồi!"
 msgid "Uploaded content added to %s."
 msgstr "Đã tải nội dung lên %s."
 
+msgid "You can %c with the content just uploaded or %m."
+msgstr "Bạn có thể %c với nội dung vừa tải lên hoặc %m."
+
+#, php-format
+msgid "You can %c with the content just uploaded."
+msgstr "Với nội dung vừa được tải lên, bạn có thể %c."
+
+#, php-format
+msgid "create new %s"
+msgstr "tạo %s mới"
+
+#, php-format
+msgid "move it to an existing %s"
+msgstr "chuyển nó đến %s đã có sẵn"
+
+msgid "You must %s or %l to save this content into your account."
+msgstr "Bạn phải %s hoặc %l để lưu nội dung này vào tài khoản của bạn."
+
 msgid "create an account"
 msgstr "tạo tài khoản"
 
 msgid "sign in"
 msgstr "đăng nhập"
 
+#, php-format
+msgid "No %s have been uploaded"
+msgstr "Chưa có %s nào được tải lên"
+
+msgid "Some errors have occurred and the system couldn't process your request."
+msgstr "Một vài lỗi đã xảy ra và hệ thống không thể xử lý yêu cầu của bạn."
+
+msgid "category"
+msgstr "danh mục"
+
+#, php-format
+msgid "Select %s"
+msgstr "Chọn %s"
+
+msgid "Auto delete"
+msgstr "Tự động xoá"
+
 msgid "Sign up"
 msgstr "Đăng ký"
+
+#, php-format
+msgid "%s to be able to customize or disable image auto delete."
+msgstr "%s có thể tùy chỉnh hoặc tắt tính năng tự động xóa hình ảnh."
 
 msgid "Mark this if the upload is not family safe"
 msgstr "Stick chọn cái này nếu tải lên là ảnh 18+. Không sẽ bị xoá không thương tiếc mà không cần báo trước nhé!!!"
@@ -1172,17 +1320,39 @@ msgstr "Đang đăng"
 msgid "cancel remaining"
 msgstr "Ngưng upload những ảnh còn lại"
 
+msgid "Note: Some files couldn't be uploaded."
+msgstr "Lưu ý: Một số tệp không thể tải lên."
+
 msgid "learn more"
 msgstr "xem tiếp"
 
 msgid "Check the <a data-modal=\"simple\" data-target=\"failed-upload-result\">error report</a> for more information."
 msgstr "Chọn <a data-modal=\"simple\" data-target=\"failed-upload-result\">thông báo lỗi</a> để biết thêm chi tiết."
 
+msgid "reset"
+msgstr "reset"
+
+msgid "Note"
+msgstr "Lưu ý"
+
+msgid "We must approve the uploaded content before being able to share."
+msgstr "Chúng tôi cần phải phê duyệt nội dung đã tải lên trước khi có thể chia sẻ."
+
 msgid "copy"
 msgstr "sao chép"
 
 msgid "insert"
 msgstr "chèn"
+
+msgid "Remove"
+msgstr "Xoá"
+
+msgid "upload"
+msgstr "tải lên"
+
+#, php-format
+msgid "Edit %s"
+msgstr "Chỉnh sửa %s"
 
 msgid "Title"
 msgstr "Tiêu đề"
@@ -1211,32 +1381,66 @@ msgstr "Đánh dấu 18+"
 msgid "Description"
 msgstr "Chú thích"
 
-msgid "Add image URLs"
-msgstr "Thêm URLs ảnh"
+#, php-format
+msgid "Brief description of this %s"
+msgstr "Mô tả ngắn gọn về %s"
 
-msgid "Add the image URLs here"
-msgstr "Thêm URLs ảnh vào đây"
+msgid "File URLs"
+msgstr "Liên kết tệp tin"
+
+msgid "Add file URLs here"
+msgstr "Nhập liên kết tập tin tại đây"
+
+#, php-format
+msgid "Create %s"
+msgstr "Tạo %s"
+
+msgid "The uploaded content will be moved to this newly created album."
+msgstr "Nội dung đã tải lên sẽ được chuyển vào album mới tạo này."
+
+msgid "You must %s or %l if you want to edit this album later on."
+msgstr "Bạn cần phải %s hoặc %l nếu bạn muốn chỉnh sửa album sau này."
+
+#, php-format
+msgid "Move to %s"
+msgstr "Chuyển vào %s"
+
+msgid "Select an existing album to move the uploaded content."
+msgstr "Chọn một album có sẵn để di chuyển nội dung đã tải lên."
 
 msgid "Error report"
 msgstr "Thông báo lỗi"
 
-msgid "Links"
-msgstr "Đường dẫn"
+msgid "Viewer"
+msgstr "Trình xem"
+
+#, php-format
+msgid "%s link"
+msgstr "Liên kết %s"
 
 msgid "Direct"
 msgstr "Trực tiếp"
 
-msgid "HTML Codes"
-msgstr "Mã HTML"
+msgid "Frame"
+msgstr "Khung hình"
 
-msgid "BBCode full"
-msgstr "Nhúng diễn đàn BBCode"
+msgid "All these words"
+msgstr "Toàn bộ những từ này"
 
-msgid "BBCode full linked"
-msgstr "Nhúng diễn đàn BBCode kèm liên kết"
+msgid "Type the important words: tri-colour rat terrier"
+msgstr "Gõ những từ quan trọng: Chó sục ba màu"
 
-msgid "Viewer links"
-msgstr "Link người xem"
+msgid "This exact word or phrase"
+msgstr "Từ ngữ hoặc cụm từ chính xác này"
+
+msgid "Put exact words in quotes: \"rat terrier\""
+msgstr "Đặt từ chính xác trong dấu ngoặc kép: \"Chó sục bắt chuột\""
+
+msgid "None of these words"
+msgstr "Không có từ nào trong này"
+
+msgid "Put a minus sign just before words you don't want: -rodent -\"Jack Russell\""
+msgstr "Đặt dấu trừ trước những từ bạn không muốn: -gặm nhấm -Jack Russell"
 
 msgid "Storage"
 msgstr "Lưu trữ"
@@ -1247,6 +1451,35 @@ msgstr "Địa chỉ IP"
 msgid "Name"
 msgstr "Tên"
 
+#, php-format
+msgid "Unnamed %s"
+msgstr "%s vô danh"
+
+msgid "Call to action"
+msgstr "Nút hành động"
+
+msgid "Enable call to action buttons"
+msgstr "Bật nút hành động"
+
+#, php-format
+msgid "Call to action buttons will be displayed on the %s page and in content belonging to."
+msgstr "Bạn sẽ thấy nút kêu gọi hành động trên trang %s và trong nội dung liên quan."
+
+msgid "You can use %emoji% or %package% icons."
+msgstr "Bạn có thể dùng %emoji% hoặc icon từ bộ %package%."
+
+msgid "Label"
+msgstr "Nhãn"
+
+msgid "Buy now"
+msgstr "Mua ngay"
+
+msgid "Icon"
+msgstr "Biểu tượng"
+
+msgid "Privacy"
+msgstr "Sự riêng tư"
+
 msgid "Who can view this content"
 msgstr "Ai xem được nội dung này"
 
@@ -1256,11 +1489,81 @@ msgstr "Riêng tư (chỉ bạn thấy)"
 msgid "Private (anyone with the link)"
 msgstr "Riêng tư (Có link sẽ xem được)"
 
+msgid "Private (password protected)"
+msgstr "Bí mật (kèm mật khẩu bảo vệ)"
+
+msgid "Change password"
+msgstr "Thay đổi mật khẩu"
+
+msgid "Set password"
+msgstr "Đặt mật khẩu"
+
+#, php-format
+msgid "%s name"
+msgstr "Tên %s"
+
 msgid "URL key"
 msgstr "Từ khóa URL"
 
+#, php-format
+msgid "%s URL key"
+msgstr "Khoá URL %s"
+
+msgid "Only letters, numbers, and hyphens"
+msgstr "Chỉ bao gồm chữ cái, số và dấu gạch ngang."
+
+#, php-format
+msgid "Untitled %s"
+msgstr "%s không tiêu đề"
+
+msgid "Mark this if the image is not safe for work"
+msgstr "Đánh dấu nếu đây là hình ảnh nhạy cảm"
+
+msgid "Flag not safe"
+msgstr "Gắn cờ nội dung nhạy cảm"
+
 msgid "Path"
 msgstr "Đường dẫn"
+
+msgid "Local path (absolute)"
+msgstr "Đường dẫn cục bộ (tuyệt đối)"
+
+msgid "Directory structure"
+msgstr "Cấu trúc thư mục"
+
+msgid "Parse top level folders as users (username)"
+msgstr "Phân tích thư mục gốc theo người dùng (tên đăng nhập)"
+
+msgid "Parse top level folders as albums"
+msgstr "Phân tích thư mục gốc theo albums"
+
+msgid "Don't parse folders"
+msgstr "Không phân tích thư mục"
+
+msgid "When parsing top level folders as users, second level folders will be parsed as user albums. Parsing top level folders as albums adds these as guest albums."
+msgstr "Khi phân tích các thư mục cấp cao nhất thành người dùng, các thư mục cấp hai sẽ được phân tích thành album của người dùng. Phân tích các thư mục cấp cao nhất thành album sẽ thêm chúng dưới dạng album khách."
+
+msgid "Threads"
+msgstr "Luồng"
+
+msgid "Select number of threads"
+msgstr "Lựa chọn số luồng"
+
+#, php-format
+msgid "This determines how intensive and fast will be the import process. Don't use more than %s threads on a shared server."
+msgstr "Số này quyết định mức độ mạnh và tốc độ của quá trình nhập dữ liệu. Không sử dụng quá %s luồng trên máy chủ dùng chung."
+
+msgid "You can use wildcard * characters."
+msgstr "Bạn có thể sử dụng ký tự đại diện dấu sao (*)."
+
+msgid "Expiration date"
+msgstr "Ngày hết hạn"
+
+msgid "YYYY-MM-DD HH:MM:SS"
+msgstr "Năm - Tháng - Ngày Giờ:Phút:Giây"
+
+msgid "Example"
+msgstr "Ví dụ"
 
 msgid "Until which date this IP address will be banned? Leave it empty for no expiration."
 msgstr "Đến ngày nào sẽ cấm IP này? để trống nếu muốn không thời hạn"
@@ -1271,27 +1574,114 @@ msgstr "Nội dung"
 msgid "Text message, HTML or a redirect URL"
 msgstr "Tin nhắn Text, HTML hoặc URL chuyển hướng"
 
+msgid "API"
+msgstr "API"
+
 msgid "Storage name"
 msgstr "Tên bộ nhớ"
+
+msgid "This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API."
+msgstr "Dành cho giao thức API B2 cũ, đã bị loại bỏ. Với các bucket mới, bạn cần sử dụng S3 Compatible API"
 
 msgid "Region"
 msgstr "Khu vực"
 
+msgid "Storage region"
+msgstr "Storage region"
+
 msgid "Storage bucket"
 msgstr "Storage bucket\n"
+
+msgid "Key"
+msgstr "Key"
+
+msgid "Storage key"
+msgstr "Storage key"
+
+msgid "Secret"
+msgstr "Secret"
+
+msgid "Storage secret"
+msgstr "Storage secret"
+
+msgid "Private key"
+msgstr "Private key"
+
+msgid "Google Cloud JSON key"
+msgstr "Google Cloud JSON key"
 
 #, php-format
 msgid "You will need a <a %s>service account</a> for this."
 msgstr "Bạn cần một <a %s>service account</a> cho việc này"
 
+msgid "Service name"
+msgstr "Tên dịch vụ"
+
+msgid "Identity URL"
+msgstr "Identity URL"
+
+msgid "Identity API endpoint"
+msgstr "Identity API endpoint"
+
+msgid "API endpoint for OpenStack identity"
+msgstr "API endpoint for OpenStack identity"
+
+msgid "Container"
+msgstr "Container"
+
+msgid "Storage container"
+msgstr "Storage container"
+
+msgid "Tenant id"
+msgstr "Tenant id"
+
+msgid "Tenant id (account id)"
+msgstr "Tenant id (account id)"
+
+msgid "Tenant name"
+msgstr "Tenant name"
+
+msgid "Tenant name (account name)"
+msgstr "Tenant name (account name)"
+
+msgid "Storage endpoint"
+msgstr "Storage endpoint"
+
+msgid "Server address"
+msgstr "Địa chỉ máy chủ"
+
+msgid "Hostname or IP of the storage server"
+msgstr "Tên miền hoặc địa chỉ IP của máy chủ"
+
 msgid "Server path"
 msgstr "Đường dẫn Server"
+
+msgid "Absolute path where the files will be stored in the context of the %p login. Use %s for root path."
+msgstr "Đường dẫn tuyệt đối nơi các tập tin sẽ được lưu trữ trong ngữ cảnh của thông tin đăng nhập %p. Sử dụng %s cho đường dẫn gốc."
+
+msgid "Server login"
+msgstr "Server login"
+
+msgid "Server password"
+msgstr "Server password"
+
+msgid "Local path"
+msgstr "Đường dẫn nội bộ"
+
+msgid "Local path where the files will be stored"
+msgstr "Đường dẫn cục bộ nơi các tập tin sẽ được lưu trữ"
+
+msgid "Storage capacity"
+msgstr "Dung lượng lưu trữ"
 
 msgid "Example: 20 GB, 1 TB, etc."
 msgstr "Ví dụ: 20 GB, 1 TB, v.v."
 
 msgid "This storage will be disabled when it reach this capacity. Leave it blank or zero for no limit."
 msgstr "Bộ nhớ sẽ bị disabled khi nó đạt đến dung lượng này. Để trống hoặc điền 0 nếu không giới hạn."
+
+msgid "Storage URL"
+msgstr "Storage URL"
 
 msgid "The system will map the images of this storage to this URL."
 msgstr "Hệ thống sẽ sử dụng địa chỉ này khi tạo link đến hình ảnh từ storage này."
@@ -1302,8 +1692,18 @@ msgstr "xem thêm"
 msgid "Load more"
 msgstr "Hiện thêm"
 
+msgid "Clear"
+msgstr "Xoá"
+
+msgid "Actions"
+msgstr "Hành động"
+
 msgid "Get embed codes"
 msgstr "Tạo mã nhúng"
+
+#, php-format
+msgid "Assign %s"
+msgstr "Gán %s"
 
 msgid "Flag as safe"
 msgstr "Ảnh an toàn"
@@ -1314,11 +1714,25 @@ msgstr "Chọn tất cả"
 msgid "Clear selection"
 msgstr "Bỏ chọn"
 
+#, php-format
+msgid "Create new %s"
+msgstr "Tạo %s mới"
+
+#, php-format
+msgid "sub %s"
+msgstr "%s phụ"
+
 msgid "Sign in with another account"
 msgstr "Đăng nhập với tài khoản khác"
 
+msgid "Sign in with %label%"
+msgstr "Đăng nhập bằng %label%"
+
 msgid "There's nothing to show here."
 msgstr "Không có gì để hiện."
+
+msgid "Selection will be assigned to %t."
+msgstr "Lựa chọn sẽ được gán cho %t."
 
 msgid "There is no categories."
 msgstr "Không có danh mục nào."
@@ -1335,14 +1749,32 @@ msgstr "Xác nhận đánh dấu hình ảnh 18+"
 msgid "Do you really want to flag this content as unsafe?"
 msgstr "Chắc chán muốn đánh dấu hình ảnh 18+?"
 
+msgid "Confirm approval"
+msgstr "Xác nhận phê duyệt"
+
+msgid "Do you really want to approve this content?"
+msgstr "Bạn có thực sự muốn duyệt nội dung này?"
+
 msgid "Confirm deletion"
 msgstr "Xác nhận xóa"
+
+msgid "Do you really want to remove this content?"
+msgstr "Bạn có thực sự muốn xoá nội dung này?"
+
+msgid "Do you really want to approve all the selected content?"
+msgstr "Bạn có thực sự muốn duyệt tất cả nội dung đã chọn?"
+
+msgid "Do you really want to remove all the selected content?"
+msgstr "Bạn có thực sự muốn xoá tất cả nội dung đã chọn?"
 
 msgid "Guest"
 msgstr "Khách"
 
-msgid "Keyboard shortcuts"
-msgstr "Phím tắt"
+msgid "Private album"
+msgstr "Album bí mật"
+
+msgid "Password protected"
+msgstr "Được bảo vệ bởi mật khẩu"
 
 msgid "Uploaded by guest"
 msgstr "Upload by khách"
@@ -1401,6 +1833,10 @@ msgstr "Chúng tôi đã gửi email chứa mã reset mật khẩu và hướng 
 msgid "Resend instructions"
 msgstr "Gửi lại hướng dẫn"
 
+#, php-format
+msgid "Enter your username or email address to continue. You may need to check your spam folder or whitelist %s"
+msgstr "Nhập tên người dùng hoặc email của bạn để tiếp tục. Có thể bạn cần kiểm tra thư mục spam hoặc thêm %s vào danh sách an toàn."
+
 msgid "Username or Email address"
 msgstr "Tên người dùng hoặc Email"
 
@@ -1417,12 +1853,33 @@ msgstr "Nhập mật khẩu mới của bạn"
 msgid "%d characters min"
 msgstr "tối thiểu phải %d ký tự"
 
+msgid "Password strength"
+msgstr "Độ mạnh mật khẩu"
+
 msgid "Re-enter your new password"
 msgstr "Nhập lại mật khẩu mới"
 
 #, php-format
 msgid "An email to %s has been sent with instructions to activate your account. If you don't receive the instructions try checking your junk or spam filters."
 msgstr "Email đã gửi đến %s kèm theo hướng dẫn để kích hoạt tài khoản của bạn. Nếu bạn không nhận được hướng dẫn, hãy thử kiểm tra thư mục spam của bạn."
+
+msgid "Unable to authenticate?"
+msgstr "Không thể xác thực?"
+
+msgid "If you lost your authentication device you must contact the system administrator."
+msgstr "Nếu bạn bị mất thiết bị xác thực, bạn phải liên hệ với quản trị viên hệ thống."
+
+msgid "Enter the security code from your authenticator app."
+msgstr "Nhập mã bảo mật từ ứng dụng xác thực của bạn."
+
+msgid "Security code"
+msgstr "Mã bảo mật"
+
+msgid "Sub album"
+msgstr "Album phụ"
+
+msgid "Do you really want to delete this %a and all of its %i?"
+msgstr "Bạn có thực sự muốn xóa %a này và tất cả %i của nó?"
 
 msgid "Upload to album"
 msgstr "Tải lên album"
@@ -1446,17 +1903,154 @@ msgstr "Bằng việc đánh dấu \"Tôi đồng ý\", bạn xác nhận rằng
 msgid "I Agree"
 msgstr "Tôi đồng ý"
 
+#, php-format
+msgid "Learn about %s at our %d."
+msgstr "Tìm hiểu về %s tại %d của chúng tôi."
+
+msgid "Check the errors to proceed."
+msgstr "Kiểm tra lỗi trước khi tiếp tục."
+
+msgid "Queued"
+msgstr "Đã vào hàng đợi"
+
+msgid "Working"
+msgstr "Đang chạy"
+
+msgid "Paused"
+msgstr "Đã tạm dừng"
+
+msgid "Canceled"
+msgstr "Đã huỷ"
+
+msgid "Completed"
+msgstr "Đã hoàn thành"
+
+#, php-format
+msgid "Top level folders as %s"
+msgstr "Thư mục cấp cao là %s"
+
+msgid "Process"
+msgstr "Tiến trình"
+
+msgid "Pause"
+msgstr "Tạm dừng"
+
+msgid "Cancel"
+msgstr "Huỷ bỏ"
+
+msgid "Process log"
+msgstr "Nhật kí quá trình"
+
+msgid "Errors"
+msgstr "Lỗi"
+
+#, php-format
+msgid "Do you really want to remove the import ID %s?"
+msgstr "Bạn có chắc muốn xoá import ID %s không?"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Resume"
+msgstr "Tiếp tục"
+
 msgid "Status"
 msgstr "Tình trạng"
 
+msgid "Run the following command to import content to Chevereto:"
+msgstr "Chạy lệnh sau để nhập nội dung vào Chevereto:"
+
+#, php-format
+msgid "Read the %s for more information about this feature."
+msgstr "Đọc %s để biết thêm thông tin về tính năng này."
+
+msgid "Single profile"
+msgstr "Cá nhân"
+
+#, php-format
+msgid "This setting is always disabled when using %s website mode."
+msgstr "Cài đặt này luôn bị vô hiệu hóa khi sử dụng chế độ trang web %s."
+
+#, php-format
+msgid "%s won't work when the explorer feature is turned off."
+msgstr "%s sẽ không hoạt động khi tính năng khám phá bị tắt."
+
+msgid "Dashboard > Settings > Website"
+msgstr "Trang tổng quan > Cài đặt > Trang web"
+
+#, php-format
+msgid "Do you really want to delete %s?"
+msgstr "Bạn có thực sự muốn xoá %s không?"
+
+msgid "Shows a consent screen before accessing the website. Useful for adult content websites where minors shouldn't be allowed."
+msgstr "Hiển thị màn hình xác nhận trước khi truy cập website. Tính năng hữu ích cho các trang web có nội dung người lớn nhằm hạn chế người chưa đủ tuổi vị thành niên tiếp cận."
+
+msgid "Enable consent screen"
+msgstr "Màn hình xác nhận"
+
+msgid "Consent screen cover image"
+msgstr "Ảnh bìa màn hình xác nhận"
+
 msgid "Show not safe content in listings"
 msgstr "Hiển thị hình ảnh 18+ trong danh sách"
+
+msgid "Enable this if you want to show not safe content in listings."
+msgstr "Bật nếu bạn muốn hiển thị ảnh nhạy cảm trong danh sách"
+
+msgid "Can be overridden by user own settings."
+msgstr "Có thể được thay đổi bởi cài đặt cá nhân của người dùng."
+
+msgid "This setting doesn't affect administrators."
+msgstr "Cài đặt này không ảnh hưởng đến quản trị viên."
+
+msgid "Blur NSFW content in listings"
+msgstr "Làm mờ nội dung nhạy cảm trong danh sách"
+
+msgid "Enable this if you want to apply a blur effect on the NSFW images in listings."
+msgstr "Bật tính năng này nếu bạn muốn áp dụng hiệu ứng làm mờ trên hình ảnh nhạy cảm trong danh sách."
 
 msgid "Show not safe content in random mode"
 msgstr "Hiển thị ảnh 18+ trong chế độ ngẫu nhiên"
 
 msgid "Show banners in not safe content"
 msgstr "Hiển thị banner trong hình ảnh 18+"
+
+msgid "Enable this if you want to show banners in not safe content pages."
+msgstr "Bật tùy chọn này nếu bạn muốn hiển thị quảng cáo trên các trang có nội dung không an toàn."
+
+#, php-format
+msgid "Lock %s editing"
+msgstr "Khóa chỉnh sửa %s"
+
+msgid "Enable this to prevent users from changing the NSFW flag. When enabled, only admin and managers will have this permission."
+msgstr "Bật tính năng này để ngăn người dùng có thể tự ý đánh dấu nội dung nhạy cảm. Khi được kích hoạt, chỉ quản trị viên và người kiểm duyệt mới có quyền này."
+
+msgid "Stop words"
+msgstr "Từ khoá bị cấm"
+
+msgid "One rule per line"
+msgstr "Một quy tắc trên mỗi dòng"
+
+msgid "Define words that won't be allowed for content."
+msgstr "Xác định những từ không được phép sử dụng trong nội dung."
+
+msgid "Cookie law compliance"
+msgstr "Tuân thủ luật cookie"
+
+msgid "Enable this to display a message that complies with the EU Cookie law requirements. Note: You only need this if your website is hosted in the EU and if you add tracking cookies."
+msgstr "Bật tính năng này để hiển thị thông báo tuân thủ các yêu cầu của Luật Cookie EU. Lưu ý: Bạn chỉ cần thực hiện việc này nếu trang web của bạn được lưu trữ ở EU và bạn thêm các cookie theo dõi."
+
+msgid "email delivery"
+msgstr "gửi email"
+
+msgid "Don't forget to test %t at %s"
+msgstr "Đừng quên kiểm tra %t tại %s"
+
+msgid "From name"
+msgstr "Tên người gửi"
+
+msgid "Sender name for emails sent to users."
+msgstr "Tên người gửi sẽ hiển thị trong email gửi đến người dùng."
 
 msgid "From email address"
 msgstr "Địa chỉ email gửi"
@@ -1470,32 +2064,169 @@ msgstr "Có thư tới"
 msgid "Recipient for contact form and system alerts."
 msgstr "Email để nhận cho đơn liên lạc và báo động hệ thống"
 
+msgid "Email mode"
+msgstr "Chế độ email"
+
+msgid "How to send emails? SMTP recommended."
+msgstr "Phương pháp gửi email? Khuyến khích dùng SMTP."
+
+msgid "SMTP server and port"
+msgstr "SMTP server và port"
+
+msgid "SMTP server"
+msgstr "SMTP server"
+
+msgid "SMTP username"
+msgstr "Tài khoản SMTP"
+
+msgid "SMTP password"
+msgstr "Mật khẩu SMTP"
+
 msgid "SMTP security"
 msgstr "Chế độ bảo mật của SMTP"
+
+msgid "Unsecured"
+msgstr "Không bảo mật"
+
+msgid "Comments API"
+msgstr "API Chức năng bình luận"
+
+#, php-format
+msgid "Disqus API works with %s."
+msgstr "Disqus API hoạt động với %s."
+
+msgid "Disqus shortname"
+msgstr "Disqus shortname"
+
+#, php-format
+msgid "%s secret key"
+msgstr "Khoá bí mật %s"
+
+#, php-format
+msgid "%s public key"
+msgstr "Khoá công khai %s"
+
+msgid "Comment code"
+msgstr "Mã code comment"
+
+msgid "Disqus, Facebook or anything you want. It will be used in image view."
+msgstr "Disqus, Facebook hoặc bất cứ điều gì bạn muốn. Nó sẽ được sử dụng trong chế độ xem hình ảnh."
+
+msgid "Analytics code"
+msgstr "Mã phân tích"
 
 msgid "Google Analytics or anything you want. It will be added to the theme footer."
 msgstr "Google Analytics hoặc bất cứ mã thống kê nào khác."
 
+#, php-format
+msgid "%s spam protection"
+msgstr "Chống spam %s"
+
+msgid "user generated content"
+msgstr "nội dung do người dùng tạo ra"
+
+msgid "Enable this to use %l to block spam on %c."
+msgstr "Kích hoạt tính năng này để sử dụng %l nhằm chặn thư rác trên %c."
+
+#, php-format
+msgid "%s API key"
+msgstr "Khoá API %s"
+
+msgid "user signup"
+msgstr "người dùng đăng ký"
+
+#, php-format
+msgid "%s site key"
+msgstr "%s site key"
+
+#, php-format
+msgid "%s threshold"
+msgstr "Ngưỡng %s"
+
+msgid "How many failed attempts are needed to ask for CAPTCHA? Use zero (0) to always show CAPTCHA."
+msgstr "Sau bao nhiêu lần thử thất bại thì CAPTCHA sẽ xuất hiện? Chọn 0 nếu bạn muốn CAPTCHA luôn hiển thị."
+
+#, php-format
+msgid "Force %s on contact page"
+msgstr "Buộc %s trên trang liên hệ"
+
+#, php-format
+msgid "Enable this to always show %s on contact page."
+msgstr "Bật chức năng này để luôn hiển thị %s trên trang liên hệ"
+
+#, php-format
+msgid "Use %s to combat child sexual abuse material (CSAM)."
+msgstr "Sử dụng %s để ngăn chặn tài liệu lạm dụng tình dục trẻ em (CSAM)."
+
+#, php-format
+msgid "Automatically moderate the content using the %s service."
+msgstr "Sử dụng dịch vụ %s để tự động kiểm duyệt nội dung"
+
+msgid "Automatic approve"
+msgstr "Tự động phê duyệt"
+
+msgid "Enable this to automatically approve content moderated by this service."
+msgstr "Bật chức năng này để tự động chấp thuận nội dung đã được kiểm duyệt bởi dịch vụ này."
+
+msgid "Block content"
+msgstr "Chặn nội dung"
+
+msgid "Adult"
+msgstr "Người lớn"
+
+msgid "Teen and adult"
+msgstr "Vị thành niên và người lớn"
+
+msgid "Flag NSFW"
+msgstr "Gắn cờ nhạy cảm (NSFW)"
+
 msgid "Twitter account"
 msgstr "Tài khoản Twitter"
+
+msgid "Toggle this to enable or disable HTTPS"
+msgstr "Chuyển đổi để bật hoặc tắt HTTPS"
+
+msgid "Toggle this to enable or disable this storage"
+msgstr "Chuyển đổi để bật hoặc tắt kho lưu trữ này"
+
+msgid "Quota"
+msgstr "Hạn mức"
+
+msgid "Active"
+msgstr "Kích hoạt"
+
+msgid "Storage method"
+msgstr "Phương thức lưu trữ"
 
 msgid "Disk used"
 msgstr "Dung lượng đã sử dụng"
 
-msgid "Notify to email"
-msgstr "Thông báo tới email"
+msgid "Local storage is used by default or when no external storage is active."
+msgstr "Lưu trữ cục bộ được sử dụng theo mặc định hoặc khi không có kho lưu trữ ngoài nào được kích hoạt."
 
-msgid "Default"
-msgstr "Mặc định"
+msgid "storage"
+msgstr "lưu trữ"
+
+msgid "Unsupported in your server"
+msgstr "Không hỗ trợ trên máy chủ của bạn"
 
 msgid "Enable uploads"
 msgstr "Bật upload"
 
-msgid "Enable this if you want to allow image upload from URLs."
-msgstr "Kích hoạt điều này nếu bạn muốn cho phép tải lên hình ảnh. Cài đặt này sẽ không ảnh hưởng đến người dùng có quyền quản trị."
-
 msgid "Note that enabling this will expose your server IP."
 msgstr "Lưu ý rằng kích hoạt điều này sẽ khiến địa chỉ IP máy chủ của bạn bị lộ."
+
+msgid "This feature is available only for administrators."
+msgstr "Tính năng này chỉ quản trị viên mới được sử dụng"
+
+msgid "Upload user interface"
+msgstr "Giao diện tải lên"
+
+msgid "On-page container"
+msgstr "Tích hợp trực tiếp trên trang"
+
+msgid "route"
+msgstr "đường dẫn"
 
 msgid "Guest uploads"
 msgstr "Khách upload"
@@ -1503,14 +2234,85 @@ msgstr "Khách upload"
 msgid "Enable this if you want to allow non registered users to upload."
 msgstr "Bật nếu muốn cho phép người dùng chưa đăng ký có thể upload."
 
-msgid "Image path"
-msgstr "Đường dẫn ảnh"
+msgid "Moderate uploads"
+msgstr "Kiểm duyệt tải lên"
+
+msgid "Enable this to moderate incoming uploads. Target content will require moderation for approval."
+msgstr "Kích hoạt chức năng kiểm duyệt nội dung tải lên. Nội dung cần được duyệt trước khi được phép hiển thị."
+
+msgid "Enable embed codes (uploader)"
+msgstr "Hiển thị mã nhúng sau khi tải lên"
+
+msgid "Enable this if you want to show embed codes when upload gets completed."
+msgstr "Kích hoạt tùy chọn này để hiển thị mã nhúng ngay sau khi hoàn thành tải lên."
+
+msgid "Upload threads"
+msgstr "Số luồng tải lên"
+
+msgid "Number of simultaneous upload threads (parallel uploads)"
+msgstr "Số lượng luồng tải lên đồng thời (tải lên song song)"
+
+msgid "Redirect on single upload"
+msgstr "Chuyển hướng sau khi tải lên đơn lẻ"
+
+msgid "Enable duplicate uploads"
+msgstr "Cho phép tải lên trùng lặp"
+
+msgid "Enable this if you want to allow duplicate uploads from the same IP within 24hrs."
+msgstr "Bật tính năng này nếu bạn muốn cho phép các bản tải lên giống nhau từ cùng một địa chỉ IP trong vòng 24 giờ."
+
+msgid "Enable expirable uploads"
+msgstr "Cho phép tải lên có thời hạn"
+
+msgid "Enable this if you want to allow uploads with an automatic delete option."
+msgstr "Bật tùy chọn này nếu bạn cho phép người dùng lựa chọn thời gian tự động xoá ảnh."
+
+msgid "Auto delete guest uploads"
+msgstr "Tự động xóa các tệp tải lên của khách"
+
+msgid "Enable this if you want to force guest uploads to be auto deleted after certain time."
+msgstr "Bật tính năng này nếu bạn muốn ảnh của khách bị xóa tự động sau một khoảng thời gian nhất định."
+
+msgid "Maximum image size"
+msgstr "Kích thước ảnh tối đa"
+
+msgid "Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit."
+msgstr "Ảnh vượt quá kích thước cho phép sẽ tự động được thu nhỏ. Sử dụng số 0 để bỏ giới hạn kích thước."
+
+msgid "Image Exif data"
+msgstr "Dữ liệu Exif ảnh"
+
+msgid "Keep"
+msgstr "Giữ lại"
+
+#, php-format
+msgid "Select the default setting for image <a %s>Exif data</a> on upload."
+msgstr "Chọn chế độ mặc định cho <a %s>dữ liệu Exif </a>của ảnh khi tải lên hệ thống."
+
+msgid "Image Exif data (user setting)"
+msgstr "Cấu hình dữ liệu Exif hình ảnh (cài đặt người dùng)"
+
+msgid "Enable this if you want to allow each user to configure how image Exif data will be handled."
+msgstr "Bật tùy chọn này để cho phép mỗi người dùng quyết định cách xử lý thông tin Exif trong ảnh của họ."
+
+msgid "Maximum upload file size"
+msgstr "Kích thước tải lên tối đa"
+
+msgid "Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)."
+msgstr "Kích thước tối đa mà máy chủ cho phép là %s. Giới hạn này được đặt bởi %u và %p (giá trị %f)."
+
+msgid "guests"
+msgstr "khách"
+
+#, php-format
+msgid "Same as \"%s\" but for guests."
+msgstr "Tương tự như \"%s\" nhưng dành cho khách."
+
+msgid "File path"
+msgstr "Đường dẫn tệp tin"
 
 msgid "Relative to Chevereto root"
 msgstr "Đến thư mục gốc của Chevereto"
-
-msgid "Where to store the images? Relative to Chevereto root."
-msgstr "Muốn lưu hình? Đến thư mục gốc của Chevereto"
 
 msgid "Storage mode"
 msgstr "Chế độ lưu trữ"
@@ -1518,14 +2320,190 @@ msgstr "Chế độ lưu trữ"
 msgid "Datefolders"
 msgstr "Thư mục theo ngày"
 
+#, php-format
+msgid "Datefolders creates %s structure"
+msgstr "Datefolders tạo cấu trúc %s"
+
+msgid "File naming method"
+msgstr "Cách đặt tên file"
+
 msgid "Original"
 msgstr "Gốc"
+
+msgid "Mix original + random"
+msgstr "Trộn tên gốc + ngẫu nhiên"
 
 msgid "Thumb size"
 msgstr "Kích thước ảnh nhỏ"
 
 msgid "Thumbnails will be fixed to this size."
 msgstr "Ảnh nhỏ sẽ được giữ nguyên ở kích thước này"
+
+msgid "Medium image fixed dimension"
+msgstr "Chiều cố định kích thước cho ảnh cỡ vừa"
+
+msgid "Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated."
+msgstr "Chức năng này giúp bạn chọn một kích thước chuẩn cho ảnh cỡ vừa. Ví dụ, nếu bạn chọn cố định \"chiều rộng\" thì chiều cao sẽ tự động được điều chỉnh phù hợp để giữ tỷ lệ ảnh.\""
+
+msgid "Medium image fixed size"
+msgstr "Kích thước cố định cho ảnh cỡ vừa"
+
+msgid "Width or height will be automatically calculated."
+msgstr "Hệ thống sẽ tự động tính toán chiều rộng hoặc chiều cao."
+
+msgid "Notify to email"
+msgstr "Thông báo tới email"
+
+msgid "If enabled the system will send an email on flood incidents."
+msgstr "Nếu bật, hệ thống sẽ gửi email thông báo nếu phát hiện sự cố."
+
+msgid "Minute limit"
+msgstr "Giới hạn theo phút"
+
+msgid "Hourly limit"
+msgstr "Giới hạn theo giờ"
+
+msgid "Daily limit"
+msgstr "Giới hạn theo ngày"
+
+msgid "Weekly limit"
+msgstr "Giới hạn theo tuần"
+
+msgid "Monthly limit"
+msgstr "Giới hạn theo tháng"
+
+msgid "Public API key"
+msgstr "Khoá API công khai"
+
+msgid "This key is for guest usage."
+msgstr "Khoá này dành cho người dùng chưa đăng ký"
+
+#, php-format
+msgid "Check the %s documentation."
+msgstr "Xem tài liệu về %s"
+
+msgid "Style"
+msgstr "Kiểu"
+
+msgid "Landing page"
+msgstr "Landing page"
+
+msgid "Split landing + images"
+msgstr "Chia làm trang landing + ảnh"
+
+msgid "explore"
+msgstr "khám phá"
+
+#, php-format
+msgid "Route %s"
+msgstr "Định tuyến %s"
+
+#, php-format
+msgid "Select the homepage style. To customize it further edit app/themes/%s/views/index.php"
+msgstr "Chọn kiểu trang chủ. Để tùy chỉnh chi tiết hơn, chỉnh sửa file app/themes/%s/views/index.php"
+
+msgid "Cover image"
+msgstr "Ảnh bìa"
+
+msgid "Do you really want to delete?"
+msgstr "Bạn có thực sự muốn xoá không?"
+
+#, php-format
+msgid "Delete %s"
+msgstr "Xoá %s"
+
+msgid "Add new cover image"
+msgstr "Thêm ảnh bìa mới"
+
+#, php-format
+msgid "This will be added inside the homepage %s tag. Leave it blank to use the default contents."
+msgstr "Nội dung này sẽ được thêm vào bên trong thẻ %s trên trang chủ. Để trống nếu muốn sử dụng nội dung mặc định."
+
+msgid "Paragraph"
+msgstr "Đoạn văn"
+
+msgid "Call to action button color"
+msgstr "Màu nút hành động"
+
+msgid "Blue"
+msgstr "Xanh lam"
+
+msgid "Green"
+msgstr "Xanh lá"
+
+msgid "Orange"
+msgstr "Cam"
+
+msgid "Red"
+msgstr "Đỏ"
+
+msgid "Grey"
+msgstr "Xám"
+
+msgid "Black"
+msgstr "Đen"
+
+msgid "White"
+msgstr "Trắng"
+
+msgid "Default"
+msgstr "Mặc định"
+
+msgid "Color of the homepage call to action button."
+msgstr "Màu của nút hành động trên trang chủ"
+
+msgid "Call to action outline style button"
+msgstr "Nút hành động dạng viền"
+
+msgid "Enable this to use outline style for the homepage call to action button."
+msgstr "Bật tùy chọn này để sử dụng khung viền cho nút hành động trên trang chủ."
+
+msgid "Call to action functionality"
+msgstr "Chức năng nút hành động"
+
+msgid "Trigger uploader"
+msgstr "Kích hoạt trình tải lên"
+
+msgid "Open URL"
+msgstr "Mở liên kết"
+
+msgid "Call to action URL"
+msgstr "Liên kết của nút hành động"
+
+msgid "Enter an absolute or relative URL"
+msgstr "Nhập URL hoàn chỉnh hoặc tương đối"
+
+msgid "A relative URL like %r will be mapped to %l"
+msgstr "Một URL tương đối như %r sẽ được ánh xạ tới %l"
+
+msgid "Call to action HTML"
+msgstr "HTML nút hành động"
+
+msgid "This will be added inside the call to action <a> tag. Leave it blank to use the default contents."
+msgstr "Nội dung này sẽ nằm bên trong thẻ <a> của nút hành động. Để trống nếu bạn muốn dùng nội dung mặc định."
+
+msgid "User IDs"
+msgstr "ID người dùng"
+
+msgid "Empty"
+msgstr "Trống"
+
+#, php-format
+msgid "Your user id is: %s"
+msgstr "ID người dùng của bạn là: %s"
+
+msgid "Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images."
+msgstr "Nhập ID người dùng cách nhau bởi dấu phẩy để xem ảnh mới nhất của họ trên trang chủ. Bỏ trống để xem ảnh nổi bật."
+
+msgid "Expires"
+msgstr "Thời hạn"
+
+#, php-format
+msgid "Do you really want to remove the ban to the IP %s?"
+msgstr "Bạn có thực sự muốn gỡ bỏ lệnh cấm đối với địa chỉ IP %s?"
+
+msgid "Banned IP address will be forbidden to use the entire website."
+msgstr "Địa chỉ IP bị cấm sẽ không được phép sử dụng toàn bộ trang web."
 
 msgid "Default language"
 msgstr "Ngôn ngữ mặc định"
@@ -1535,6 +2513,21 @@ msgstr "Ngôn ngữ sử dụng"
 
 msgid "Auto language"
 msgstr "Ngôn ngữ tự động"
+
+msgid "Enable this if you want to automatically detect and set the right language for each user."
+msgstr "Bật tính năng này để tự động phát hiện và chọn ngôn ngữ phù hợp cho mỗi người dùng."
+
+msgid "Language chooser"
+msgstr "Cho phép chọn ngôn ngữ"
+
+msgid "Enable this if you want to allow language selection."
+msgstr "Bật tùy chọn này để cho phép người dùng chọn ngôn ngữ."
+
+msgid "Enabled languages"
+msgstr "Ngôn ngữ đã bật"
+
+msgid "Only checked languages will be used in your website."
+msgstr "Trang web chỉ sử dụng các ngôn ngữ đã được chọn."
 
 msgid "List items per page"
 msgstr "Số ảnh trên mỗi trang"
@@ -1554,11 +2547,91 @@ msgstr "Phân trang bình thường"
 msgid "What pagination method should be used."
 msgstr "Chọn chế độ phân trang"
 
+msgid "Listing viewer"
+msgstr "Trình xem danh sách"
+
+msgid "Enable this to use the listing viewer when clicking on an image."
+msgstr "Bật chức năng này để xem ảnh to hơn khi bạn click vào ảnh trong danh sách"
+
+msgid "Image listing size"
+msgstr "Kích thước ảnh trong danh sách"
+
+msgid "Fluid"
+msgstr "Linh hoạt"
+
+msgid "Fixed"
+msgstr "Cố định"
+
+msgid "Both methods use a fixed width but fluid method uses automatic heights."
+msgstr "Cả hai phương pháp này đều sử dụng chiều rộng cố định, nhưng phương pháp linh hoạt sẽ điều chỉnh chiều cao tự động."
+
+msgid "%t listing requirement"
+msgstr "Yêu cầu về danh sách trong %s"
+
+msgid "Sets the minimum content count needed to show %t in %s."
+msgstr "Đặt số lượng nội dung tối thiểu cần thiết để hiển thị %t trong %s."
+
+msgid "Listing columns number"
+msgstr "Số lượng cột trong danh sách"
+
+msgid "Here you can set how many columns are used based on each target device."
+msgstr "Thiết lập số cột hiển thị phù hợp với từng thiết bị."
+
+msgid "Phone"
+msgstr "Điện thoại"
+
+msgid "Phablet"
+msgstr "Điện thoại màn hình lớn"
+
+msgid "Tablet"
+msgstr "Máy tính bảng"
+
+msgid "Laptop"
+msgstr "Laptop"
+
+msgid "Desktop"
+msgstr "Máy tính để bàn"
+
+msgid "Application"
+msgstr "Ứng dụng"
+
+#, php-format
+msgid "%s id"
+msgstr "%s id"
+
+#, php-format
+msgid "%s secret"
+msgstr "%s secret"
+
+msgid "Vector"
+msgstr "Vector"
+
+msgid "Text"
+msgstr "Văn bản"
+
+msgid "Text option uses the website name as logo."
+msgstr "Tuỳ chọn văn bản sẽ dùng tên trang web làm logo."
+
+msgid "Logo vector"
+msgstr "Logo vector"
+
+msgid "Vector version or your website logo in SVG format."
+msgstr "Phiên bản vector hoặc logo trang web của bạn ở định dạng SVG."
+
+msgid "Logo image"
+msgstr "Ảnh logo"
+
 msgid "Bitmap version or your website logo. PNG format is recommended."
 msgstr "Logo định dạng Bitmap. Nên sử dụng ảnh PNG"
 
+msgid "Logo height"
+msgstr "Chiều cao logo"
+
 msgid "No value"
 msgstr "Không có giá trị"
+
+msgid "Use this to set the logo height if needed."
+msgstr "Sử dụng tùy chọn này để đặt chiều cao logo nếu cần."
 
 msgid "Favicon image"
 msgstr "Hình favicon"
@@ -1566,17 +2639,249 @@ msgstr "Hình favicon"
 msgid "Favicon image. Image must have same width and height."
 msgstr "Hình favicon. Chiều cao và chiều rộng phải bằng nhau"
 
+msgid "Page title"
+msgstr "Tiêu đề trang"
+
+msgid "Page status"
+msgstr "Trạng thái trang"
+
+msgid "Active page"
+msgstr "Trang đang hoạt động"
+
+#, php-format
+msgid "Inactive page (%s)"
+msgstr "Trang không hoạt động (%s)"
+
+msgid "Only active pages will be accessible."
+msgstr "Chỉ những trang đang hoạt động mới có thể truy cập."
+
+msgid "Type"
+msgstr "Loại"
+
+msgid "Terms of service"
+msgstr "Điều khoản dịch vụ"
+
 msgid "Contact"
 msgstr "Liên hệ"
 
+msgid "Extra page"
+msgstr "Trang bổ sung"
+
+msgid "Internal page type"
+msgstr "Trang nội bộ"
+
+msgid "You can have multiple extra pages, but only one of the other special internal types."
+msgstr "Có thể có nhiều trang bổ sung, nhưng chỉ được thêm một trong các loại trang nội bộ đặc biệt khác."
+
+msgid "Page visibility"
+msgstr "Trạng thái hiển thị trang"
+
+msgid "Visible page"
+msgstr "Trang công khai"
+
+msgid "Hidden page"
+msgstr "Trang ẩn"
+
+msgid "Hidden pages won't be show in system menus, but anyone can access to it with the link."
+msgstr "Mặc dù ẩn trong menu, mọi người vẫn có thể truy cập các trang này bằng cách vào liên kết trực tiếp."
+
+msgid "Only alphanumerics, hyphens and forward slash"
+msgstr "Chỉ bao gồm chữ cái, số, dấu gạch ngang và dấu gạch chéo"
+
+#, php-format
+msgid "A %f file relative to %s"
+msgstr "Tệp %f liên quan đến %s"
+
+msgid "Meta keywords"
+msgstr "Từ khoá meta"
+
+msgid "Meta description"
+msgstr "Mô tả meta"
+
+msgid "Source code"
+msgstr "Mã nguồn"
+
+#, php-format
+msgid "No write permission in %s path you will need to add this file using an external editor."
+msgstr "Bạn không có quyền ghi vào đường dẫn %s. Bạn sẽ cần sử dụng một trình soạn thảo bên ngoài để thêm tập tin này."
+
+#, php-format
+msgid "No write permission in %s you will need to edit the contents of this file using an external editor."
+msgstr "Bạn không có quyền ghi vào đường dẫn %s. Bạn sẽ cần sử dụng một trình soạn thảo bên ngoài để chỉnh sửa tập tin này."
+
+#, php-format
+msgid "Taken from: %s"
+msgstr "Lấy từ: %s"
+
+msgid "Link URL"
+msgstr "Liên kết URL"
+
+msgid "Link target attribute"
+msgstr "Thuộc tính target của liên kết"
+
+#, php-format
+msgid "Select %s to open the page or link in a new window."
+msgstr "Chọn %s để mở trang hoặc liên kết trong một cửa sổ mới."
+
+msgid "Link rel attribute"
+msgstr "Thuộc tính rel của liên kết"
+
+msgid "Only alphanumerics, hyphens and whitespaces"
+msgstr "Chỉ cho phép ký tự chữ cái, số, dấu gạch ngang và khoảng trắng"
+
+#, php-format
+msgid "HTML %s attribute"
+msgstr "Thuộc tính %s HTML"
+
+msgid "Link icon"
+msgstr "Liên kết icon"
+
+#, php-format
+msgid "Check the <a %s>icon reference</a> for the complete list of supported icons."
+msgstr "Bạn có thể tìm thấy danh sách đầy đủ các biểu tượng được hỗ trợ trong <a %s>hướng dẫn về biểu tượng.</a>"
+
+msgid "Sort order display"
+msgstr "Thứ tự hiển thị"
+
+msgid "Page sort order display for menus and listings. Use \"1\" for top priority."
+msgstr "Cách sắp xếp trang hiển thị cho menu và danh sách. Sử dụng \"1\" cho mục tiêu ưu tiên hàng đầu."
+
+#, php-format
+msgid "Do you really want to delete the page ID %s?"
+msgstr "Bạn có thực sự muốn xóa trang ID %s không?"
+
+msgid "Routing allows you to customize default route binds on the fly. Only alphanumeric, hyphen and underscore characters are allowed."
+msgstr "Định tuyến giúp bạn thay đổi các đường dẫn mặc định một cách dễ dàng. Chỉ được dùng chữ cái, số, dấu gạch ngang và gạch dưới."
+
+#, php-format
+msgid "%s routing"
+msgstr "Định tuyến %s"
+
+#, php-format
+msgid "Routing for %s"
+msgstr "Định tuyến cho %s"
+
+msgid "Root"
+msgstr "Gốc"
+
+msgid "Determine which content to resolve on root route."
+msgstr "Lựa chọn nội dung xử lý cho tuyến gốc."
+
+#, php-format
+msgid "SEO %s URLs"
+msgstr "SEO URL %s"
+
+#, php-format
+msgid "Enable this if you want to use SEO %s URLs."
+msgstr "Kích hoạt chức năng này để sử dụng URL %s thân thiện với SEO."
+
+msgid "Semantics allows you to define the nouns used for content to customize your content driven experience."
+msgstr "Ngữ nghĩa cho phép bạn định nghĩa các danh từ sử dụng trong nội dung để tạo ra trải nghiệm được điều chỉnh riêng theo ý thích."
+
+msgid "Automatic updates check"
+msgstr "Tự động kiểm tra cập nhật"
+
+msgid "When enabled the system will automatically check for new updates."
+msgstr "Khi được kích hoạt, hệ thống sẽ tự động kiểm tra các bản cập nhật mới."
+
+msgid "Display available updates notification"
+msgstr "Hiển thị thông báo khi có cập nhật mới"
+
+msgid "Enable this to show a notice on top warning you about new available system updates."
+msgstr "Kích hoạt tính năng này để nhận thông báo về các bản cập nhật hệ thống mới ở đầu màn hình."
+
+msgid "Dump update query"
+msgstr "Xuất truy vấn cập nhật"
+
+msgid "Enable this if you want to dump the update query to run it manually."
+msgstr "Bật tùy chọn này nếu bạn muốn xuất truy vấn cập nhật để chạy nó theo cách thủ công."
+
+msgid "Maintenance"
+msgstr "Bảo trì"
+
+msgid "When enabled the website will show a maintenance message."
+msgstr "Khi được kích hoạt, trang web sẽ hiển thị thông báo bảo trì."
+
+msgid "Crypt salt"
+msgstr "Khóa salt"
+
 msgid "This is the salt used to convert numeric ID to alphanumeric. It was generated on install."
 msgstr "Đây là mã salt dùng để chuyển đổi chữ số của ID sang dạng chữ cái. Mã này được tạo khi cài đặt."
+
+msgid "Debug errors"
+msgstr "Gỡ lỗi"
+
+msgid "Debug level"
+msgstr "Mức độ gỡ lỗi"
+
+msgid "None"
+msgstr "Không có gì"
+
+msgid "Error log"
+msgstr "Nhật ký lỗi"
+
+msgid "Print errors without error log"
+msgstr "Hiển lỗi trực tiếp mà không ghi nhật ký"
+
+msgid "Print and log errors"
+msgstr "Hiển lỗi trực tiếp và ghi nhật ký"
+
+msgid "To configure the debug level check the %docs%."
+msgstr "Để thiết lập mức độ gỡ lỗi, vui lòng tham khảo %docs%."
+
+msgid "Enable %service%"
+msgstr "Kích hoạt %service%"
+
+msgid "Enable this if you want to send debug messages to %xr%."
+msgstr "Bật tính năng này nếu bạn muốn gửi thông báo gỡ lỗi tới %xr%."
+
+#, php-format
+msgid "%s Host"
+msgstr "Host %s"
+
+#, php-format
+msgid "%s Port"
+msgstr "Port %s"
+
+#, php-format
+msgid "%s Key"
+msgstr "Khoá %s"
+
+#, php-format
+msgid "Default %s"
+msgstr "%s mặc định"
+
+msgid "Image load max. filesize"
+msgstr "Kích thước tối đa khi tải ảnh"
+
+msgid "Images greater than this size will show a button to load full resolution image."
+msgstr "Ảnh có kích thước lớn hơn sẽ có nút để tải độ phân giải gốc."
 
 msgid "Enable download button"
 msgstr "Mở nút download"
 
 msgid "Enable this if you want to show the image download button."
 msgstr "Mở chức năng này để hiển thị nút download ảnh."
+
+msgid "Enable right click on image"
+msgstr "Cho phép chuột phải trên ảnh"
+
+msgid "Enable this if you want to allow right click on image viewer page."
+msgstr "Bật tính năng này để cho phép thao tác chuột phải trên trang xem ảnh."
+
+msgid "Enable show Exif data"
+msgstr "Hiển thị Exif data"
+
+msgid "Enable this if you want to show image Exif data."
+msgstr "Bật tính năng này nếu bạn muốn hiển thị Exif data của ảnh"
+
+#, php-format
+msgid "%s first tab"
+msgstr "Tab đầu tiên của %s"
+
+#, php-format
+msgid "Determine the first tab on %s page."
+msgstr "Xác định tab đầu tiên trên trang %s."
 
 msgid "Enable social share"
 msgstr "Mở chức năng chia sẻ mạng xã hội"
@@ -1587,8 +2892,20 @@ msgstr "Mở chức năng hiện nút chia sẻ mạng xã hội"
 msgid "Enable embed codes (content)"
 msgstr "Mở mã nhúng"
 
+msgid "Everybody"
+msgstr "Mọi người"
+
+msgid "Users only"
+msgstr "Chỉ người dùng"
+
 msgid "Enable this if you want to show embed codes for the content."
 msgstr "Mở chức năng hiện mã nhúng cho nội dung"
+
+msgid "Not safe content checkbox in uploader"
+msgstr "Ô đánh dấu nội dung nhạy cảm trong trình upload"
+
+msgid "Enable this if you want to show a checkbox to indicate not safe content upload."
+msgstr "Bật tùy chọn này để người dùng có thể gắn cờ nội dung nhạy cảm khi tải lên."
 
 msgid "Custom CSS code"
 msgstr "Mã CSS tùy chỉnh"
@@ -1602,14 +2919,92 @@ msgstr "Mã JS tùy chỉnh"
 msgid "Put your custom JS code here. It will be placed as <script> just before the closing </head> tag."
 msgstr "Thêm tùy chỉnh JS ở đây. Sẽ được thêm vào thẻ <script> và trước </head>"
 
+#, php-format
+msgid "Do not use %s markup here. This is for plain JS code, not for HTML script tags. If you use script tags here you will break your website."
+msgstr "Đừng dùng thẻ %s ở đây. Đoạn này dành riêng cho mã JavaScript thuần, không phải thẻ script HTML. Thêm thẻ script vào đây sẽ làm hỏng website của bạn."
+
+msgid "Decode ID"
+msgstr "Giải mã ID"
+
+msgid "Encode ID"
+msgstr "Mã hoá ID"
+
+msgid "Send test email"
+msgstr "Gửi email test"
+
+#, php-format
+msgid "Use this to test how your emails are being delivered. We recommend you to use %s."
+msgstr "Dùng công cụ này để kiểm tra cách thức email của bạn được gửi đi. Chúng tôi khuyến nghị sử dụng %s."
+
+msgid "Export a user"
+msgstr "Xuất một người dùng"
+
+msgid "Export user"
+msgstr "Xuất người dùng"
+
+msgid "This will allow you to download a user's standard personal information in JSON format."
+msgstr "Điều này sẽ cho phép bạn tải xuống thông tin cá nhân cơ bản của người dùng ở định dạng JSON."
+
+msgid "Regenerate external storage stats"
+msgstr "Tái tạo số liệu thống kê cho kho lưu trữ ngoài"
+
+msgid "Storage id"
+msgstr "Storage id"
+
+msgid "Regenerate"
+msgstr "Tái tạo"
+
+msgid "This will re-calculate the sum of all the image records associated to the target external storage."
+msgstr "Thao tác này sẽ tính toán lại tổng số dữ liệu ảnh được liên kết tới kho lưu trữ ngoài đã chọn."
+
+msgid "Migrate external storage records"
+msgstr "Di chuyển bản ghi kho lưu trữ ngoài"
+
+msgid "Source storage id"
+msgstr "ID kho lưu trữ nguồn"
+
+msgid "Target storage id"
+msgstr "ID kho lưu trữ mục tiêu"
+
+msgid "Migrate"
+msgstr "Di chuyển"
+
+msgid "This only updates the database. You must transfer the actual files to target storage container on your own. URL rewriting is strongly recommended. Use zero (0) for local storage."
+msgstr "Thao tác này chỉ cập nhật cơ sở dữ liệu. Bạn phải tự tay chuyển các tập tin thực sang kho lưu trữ mục tiêu. Việc viết lại URL được khuyến nghị. Sử dụng số không (0) để chỉ định lưu trữ cục bộ."
+
 msgid "Additional settings"
 msgstr "Thiết lập khác"
+
+msgid "Plugin route"
+msgstr "Định tuyến plugin"
+
+#, php-format
+msgid "Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu."
+msgstr "Kích hoạt tùy chọn này để hiển thị hướng dẫn sử dụng plugin tại %u. Đường dẫn đến hướng dẫn sẽ được thêm vào menu %s."
+
+msgid "Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL."
+msgstr "Dùng tuỳ chọn này để thiết lập một URL tuỳ chỉnh cho %p. Lưu ý, bạn cần tự sao chép %s vào URL này."
 
 msgid "Enable signups"
 msgstr "Cho phép đăng ký"
 
 msgid "Enable this if you want to allow users to signup."
 msgstr "Mở chức năng này để cho phép người dùng đăng ký"
+
+msgid "Enable user content delete"
+msgstr "Cho phép người dùng tự xoá nội dung"
+
+msgid "Minimum age required"
+msgstr "Độ tuổi tối thiểu"
+
+msgid "Leave it empty to don't require a minimum age to use the website."
+msgstr "Để trống nếu bạn không muốn yêu cầu độ tuổi tối thiểu để sử dụng trang web."
+
+msgid "Notify on user signup"
+msgstr "Thông báo khi có người dùng mới"
+
+msgid "Enable this if you want to get an email notification for each new user signup."
+msgstr "Bật tuỳ chọn này nếu bạn muốn nhận thông báo mỗi khi có người dùng mới đăng ký."
 
 msgid "Require email confirmation"
 msgstr "Yêu cầu xác nhận email"
@@ -1623,11 +3018,56 @@ msgstr "Yêu cầu email cho đăng kí qua mạng xã hội"
 msgid "Enable this if users using social networks to register must provide an email address."
 msgstr "Chọn cái này để bắt buộc người đăng kí dùng mạng xã hội phải xác nhận email"
 
+msgid "User avatar max. filesize"
+msgstr "Dung lượng tối đa cho ảnh đại diện"
+
+#, php-format
+msgid "Max. allowed filesize for user avatar image. (Max allowed by server is %s)"
+msgstr "Kích thước tối đa cho ảnh đại diện người dùng. (Kích thước tối đa do máy chủ cho phép là %s)"
+
+msgid "User background max. filesize"
+msgstr "Dung lượng tối đa cho ảnh nền"
+
+#, php-format
+msgid "Max. allowed filesize for user background image. (Max allowed by server is %s)"
+msgstr "Kích thước tối đa cho ảnh nền của người dùng. (Kích thước tối đa do máy chủ cho phép là %s)"
+
 msgid "Enable this to put a logo or anything you want in image uploads."
 msgstr "Chọn cái này để bỏ logo hoặc bất cứ thứ gì bạn muốn lên ảnh được upload"
 
+msgid "Watermark user toggles"
+msgstr "Tùy chọn đóng dấu"
+
+msgid "Enable watermark on guest uploads"
+msgstr "Đóng dấu ảnh do khách tải lên"
+
+msgid "Enable watermark on user uploads"
+msgstr "Đóng dấu ảnh do người dùng tải lên"
+
+msgid "Enable watermark on admin uploads"
+msgstr "Đóng dấu ảnh do quản trị viên tải lên"
+
+msgid "Watermark file toggles"
+msgstr "Chức năng đóng dấu"
+
+msgid "Enable watermark on GIF image uploads"
+msgstr "Bật chế độ đóng dấu cho ảnh GIF khi tải lên."
+
+msgid "Animated images won't be watermarked."
+msgstr "Lưu ý: Ảnh động sẽ không được đóng dấu."
+
+msgid "Minimum image size needed to apply watermark"
+msgstr "Kích thước ảnh tối thiểu cần thiết để đóng dấu"
+
+msgid "Images smaller than this won't be watermarked. Use zero (0) to don't set a minimum image size limit."
+msgstr "Ảnh nhỏ hơn kích thước này sẽ không được đóng dấu. Sử dụng số không (0) để không đặt giới hạn kích thước ảnh tối thiểu."
+
 msgid "Watermark image"
 msgstr "Hình đóng dấu"
+
+#, php-format
+msgid "Max size %s."
+msgstr "Dung lượng tối đa %s."
 
 msgid "Watermark position"
 msgstr "Vị trí hình đóng dấu"
@@ -1659,6 +3099,15 @@ msgstr "phải - giữa"
 msgid "right bottom"
 msgstr "phải - dưới"
 
+msgid "Relative position of the watermark image. First horizontal align then vertical align."
+msgstr "Vị trí đóng dấu tương đối. Căn chỉnh theo chiều ngang trước, sau đó căn chỉnh theo chiều dọc."
+
+msgid "Watermark percentage"
+msgstr "Tỉ lệ hình đóng dấu"
+
+msgid "Watermark percentual size relative to the target image area. Values 1 to 100."
+msgstr "Tỷ lệ phần trăm hình đóng dấu so với diện tích ảnh gốc. Giá trị từ 1 đến 100."
+
 msgid "Watermark margin"
 msgstr "Khoảng cách watermark"
 
@@ -1667,6 +3116,9 @@ msgstr "Khoảng cách từ bìa ảnh đến ảnh watermark"
 
 msgid "Watermark opacity"
 msgstr "Độ mờ của watermark"
+
+msgid "Opacity of the watermark in the final watermarked image. Values 0 to 100."
+msgstr "Độ trong suốt của hình đóng dấu. Giá trị từ 0 đến 100."
 
 msgid "Website name"
 msgstr "Tên trang web"
@@ -1683,11 +3135,58 @@ msgstr "Múi giờ mặc định"
 msgid "Select region"
 msgstr "Chọn vùng"
 
+msgid "Allows to search images, albums and users based on a given search query."
+msgstr "Cho phép tìm kiếm hình ảnh, album và người dùng dựa trên truy vấn tìm kiếm được chỉ định."
+
+msgid "search"
+msgstr "tìm kiếm"
+
+#, php-format
+msgid "Enables %s for guests."
+msgstr "Cho phép %s đối với khách."
+
+msgid "Enables to browse public uploaded images. It also enables categories."
+msgstr "Khách có thể duyệt các hình ảnh được tải lên công khai. Tính năng này cũng kích hoạt các danh mục."
+
+msgid "Enables to browse images randomly."
+msgstr "Cho phép duyệt hình ảnh ngẫu nhiên."
+
+msgid "random"
+msgstr "ngẫu nhiên"
+
+#, php-format
+msgid "Enable this if you want to show a \"%s\" link at the footer."
+msgstr "Bật tính năng này nếu bạn muốn hiển thị liên kết \"%s\" ở cuối trang."
+
+msgid "Likes"
+msgstr "Thích"
+
+msgid "Allows users to like content and populate \"Most liked\" listings."
+msgstr "Cho phép người dùng thích nội dung và hiển thị danh sách \"Được thích nhiều nhất\"."
+
+msgid "Followers allows users to follow each other."
+msgstr "Theo dõi cho phép người dùng theo dõi nhau."
+
 msgid "Website mode"
 msgstr "Chế độ website"
 
+msgid "Multi-user"
+msgstr "Nhiều người dùng"
+
 msgid "You can switch the website mode anytime."
 msgstr "Bạn có thể đổi chế độ website bất cứ lúc nào."
+
+msgid "%s target %t"
+msgstr "%t mục tiêu của %s"
+
+msgid "Numeric ID of the target %t for %s mode."
+msgstr "Số ID của %t mục tiêu cho chế độ %s"
+
+msgid "Custom route to map /username to /something. Use \"/\" to map to homepage."
+msgstr "Thiết lập đường dẫn riêng cho /username thành /something. Dùng \"/\" để thiết lập đường dẫn cho trang chủ."
+
+msgid "Website privacy mode"
+msgstr "Chế độ riêng tư của trang web"
 
 msgid "Private mode will make the website only available for registered users."
 msgstr "Trang web sẽ chỉ hoạt động đối với thành viên trong chế độ riêng tư"
@@ -1701,11 +3200,56 @@ msgstr "Bắt buộc bí mật (bản thân)"
 msgid "Force private (anyone with the link)"
 msgstr "Bắt buộc bí mất (bất cứ ai có link)"
 
+msgid "Forced privacy modes will override user selected privacy."
+msgstr "Chế độ riêng tư bắt buộc sẽ ghi đè lên quyền riêng tư do người dùng chọn."
+
+msgid "Thank you for choosing Chevereto."
+msgstr "Cám ơn bạn đã sử dụng Chevereto."
+
+msgid "Chevereto creator"
+msgstr "Người tạo ra Chevereto"
+
+msgid "If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %e and when not set it fall-back to %v."
+msgstr "Nếu IP được phát hiện không khớp với IP của bạn, điều đó cho thấy máy chủ web của bạn đang hoạt động thông qua một proxy. Bạn có thể thiết lập IP kết nối thật bằng tiêu đề HTTP nằm trong biến môi trường %e. Nếu biến này trống, hệ thống sẽ dùng giá trị trong %v."
+
+msgid "Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks."
+msgstr "Hãy đảm bảo giải quyết vấn đề này thật kỹ lưỡng. Toàn bộ hệ thống phụ thuộc vào khả năng phát hiện địa chỉ IP chính xác để tự bảo vệ trước spam, tấn công tràn ngập dữ liệu, hay các cuộc tấn công dò mật khẩu."
+
+msgid "Disk"
+msgstr "Dung lượng"
+
+#, php-format
+msgid "%s News"
+msgstr "%s News"
+
 msgid "Role"
 msgstr "Quyền"
 
 msgid "Email address"
 msgstr "Địa chỉ email"
+
+#, php-format
+msgid "Play %s"
+msgstr "Phát %s"
+
+msgid "Load 360° view"
+msgstr "Tải chế độ xem 360°"
+
+#, php-format
+msgid "%s image"
+msgstr "Ảnh %s"
+
+msgid "Do you really want to approve this image? The image will go public if you approve it."
+msgstr "Bạn có thật sự muốn duyệt hình ảnh này không? Nó sẽ được công khai ngay khi bạn chấp thuận."
+
+msgid "Download"
+msgstr "Tải xuống"
+
+msgid "Cover"
+msgstr "Ảnh bìa"
+
+msgid "This is the album cover"
+msgstr "Đây ảnh bìa của album"
 
 #, php-format
 msgid "Added to %s"
@@ -1715,8 +3259,14 @@ msgstr "Hoàn thành thêm vào %s"
 msgid "Uploaded %s"
 msgstr "Đã up lên %s"
 
-msgid "Upload and share your images."
-msgstr "Đăng và chia sẻ những bức ảnh của bạn"
+msgid "Less Exif data"
+msgstr "Ẩn Exif"
+
+msgid "More Exif data"
+msgstr "Hiện Exif"
+
+msgid "Upload and share your media"
+msgstr "Đăng tải và chia sẻ media của bạn"
 
 msgid "Sign up to unlock all the features"
 msgstr "Đăng ký để sử dụng mọi chức năng của website"
@@ -1730,6 +3280,15 @@ msgstr "Đã đăng xuất"
 #, php-format
 msgid "You have been logged off %s. Hope to see you soon."
 msgstr "Bạn đã thoát khỏi tài khoản %s. Hẹn gặp lại sau!"
+
+msgid "Website under maintenance"
+msgstr "Website đang bảo trì"
+
+msgid "We're performing scheduled maintenance tasks in the website. Please come back in a few minutes."
+msgstr "Chúng tôi đang thực hiện bảo trì theo lịch trình trên trang web.  Vui lòng quay lại sau vài phút."
+
+msgid "This content is password protected."
+msgstr "Nội dung này cần mật khẩu để xem"
 
 msgid "Valid"
 msgstr "Hoạt động"

@@ -879,7 +879,7 @@ $(function () {
             modal_tpl = $(modal_sel).html();
             dealing_with = CHV.obj.resource.type;
             url = window.location.href;
-            image = $('#image-viewer-container').find('img').first().attr('src');
+            image = CHV.obj.image_viewer.image.display_url;
             link = $(".header > h1 > a");
         }
         title = PF.fn.htmlEncode(link.text());
@@ -2127,12 +2127,25 @@ $(function () {
                     data.current_version
                 ) == -1
             ) {
+                let splitVersion = CHV.obj.system_info.version.split(".");
+                let majorVersion = splitVersion[0];
+                let minorVersion = majorVersion + '.' + splitVersion[1];
+                let upgradeButtonTarget = "_self";
+                let upgradeButtonSrc = PF.obj.config.base_url + 'dashboard/upgrade/?auth_token=' + PF.obj.config.auth_token;
+                let upgradeButtonText = PF.fn._s("Upgrade");
+                let upgradeButtonIcon = "fas fa-download";
+                if(CHV.obj.system_info.servicing === 'docker') {
+                    upgradeButtonTarget = "_blank";
+                    upgradeButtonSrc = 'https://v4-docs.chevereto.com/guides/docker/#upgrading';
+                    upgradeButtonText = PF.fn._s("Instructions");
+                    upgradeButtonIcon = "fa-brands fa-docker";
+                }
                 PF.fn.modal.simple({
                     title: '<i class="fas fa-arrow-alt-circle-up"></i> ' + PF.fn._s("Chevereto v%s available", data.current_version),
                     message: "<p>" +
                         PF.fn._s("There is a new Chevereto version available with the following release notes.") +
                         ' ' +
-                        PF.fn._s("Check %s for a complete changelog since you last upgrade.", '<a href="https://releases.chevereto.com/4.X/4.0/' + CHV.obj.system_info.version + '" target="_blank">' + CHV.obj.system_info.version + '<span class="btn-icon fas fas fa-code-branch"></span></a>') +
+                        PF.fn._s("Check %s for a complete changelog since you last upgrade.", '<a href="https://releases.chevereto.com/' + majorVersion + '.X/' + minorVersion + '/' + CHV.obj.system_info.version + '" target="_blank">' + CHV.obj.system_info.version + '<span class="btn-icon fas fas fa-code-branch"></span></a>') +
                         '</p>' +
                         '<textarea class="r4 resize-vertical">' +
                         data.release_notes.trim() +
@@ -2141,11 +2154,16 @@ $(function () {
                         PF.fn._s("Check the %s for alternative update methods.", '<a href="https://chv.to/v4update" target="_blank">' + PF.fn._s('documentation') + '</a>') +
                         '</p>' +
                         '<div class="btn-container margin-bottom-0">' +
-                        '<a href="' + PF.obj.config.base_url + 'dashboard/upgrade/?auth_token=' + PF.obj.config.auth_token
-                        + '" class="btn btn-input accent">' +
-                        '<span class="btn-icon fas fa-download user-select-none"></span>' +
+                        '<a href="' +
+                        upgradeButtonSrc +
+                        '" class="btn btn-input accent" target="' +
+                        upgradeButtonTarget +
+                        '">' +
+                        '<span class="btn-icon ' +
+                        upgradeButtonIcon +
+                        ' user-select-none"></span>' +
                         '<span class="btn-text user-select-none">' +
-                        PF.fn._s("Upgrade now") +
+                        upgradeButtonText +
                         '</span>' +
                         '</a> ' +
                         '</div>',
@@ -4776,17 +4794,22 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
     var embed_tpl = CHV.fn.uploader.selectors.root == parent ? "embed_upload_tpl" : "embed_share_tpl";
     var hasFrame = false;
     var hasMedium = false;
+    var hasThumb = false;
     $.each(elements, function (key, value) {
         if (typeof value == typeof undefined) return;
         var image = "id_encoded" in value ? value : value.image;
         var flatten_image = Object.flatten(image);
         let itemHasFrame = image.url_frame !== "";
         let itemHasMedium = image.medium.url !== null;
+        let itemHasThumb = image.thumb.url !== null;
         if(itemHasFrame) {
             hasFrame = true;
         }
         if(itemHasMedium) {
             hasMedium = true;
+        }
+        if(itemHasThumb) {
+            hasThumb = true;
         }
         $.each(CHV.obj[embed_tpl], function (key, value) {
             $.each(value.options, function (k, v) {
@@ -4794,6 +4817,9 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
                     return;
                 }
                 if(!itemHasMedium && k.startsWith('medium-')) {
+                    return;
+                }
+                if(!itemHasThumb && k.startsWith('thumb-')) {
                     return;
                 }
                 var $embed = $("textarea[name=" + k + "]", parent);
@@ -4825,6 +4851,7 @@ CHV.fn.fillEmbedCodes = function (elements, parent, fn) {
     });
     $("option[value^=frame]", parent).prop("disabled", !hasFrame);
     $("option[value^=medium-]", parent).prop("disabled", !hasMedium);
+    $("option[value^=thumb-]", parent).prop("disabled", !hasThumb);
     $.each(CHV.obj[embed_tpl], function (key, value) {
         $.each(value.options, function (k, v) {
             var $embed = $("textarea[name=" + k + "]", parent);

@@ -213,7 +213,7 @@ class L10n
             if (!file_exists($cache_path)) {
                 try {
                     mkdir($cache_path);
-                } catch (Throwable $e) {
+                } catch (Throwable) {
                     $cache_path = dirname($cache_path);
                 }
             }

@@ -216,6 +216,10 @@ $hook_before = function (Handler $handler) {
         }
     }
     if (getSetting('website_mode') == 'personal') {
+        $userMapPaths = ['search'];
+        $userMapPaths[] = getSetting('user_profile_view') == 'files'
+            ? 'albums'
+            : 'files';
         if ($handler->request_array()[0] == '/'
             && getSetting('website_mode_personal_routing') == '/'
             && in_array(key($querystr), ['random'])
@@ -227,7 +231,7 @@ $hook_before = function (Handler $handler) {
             $handler->mapRoute('search');
         } elseif ($handler->request_array()[0] == getSetting('website_mode_personal_routing')
             || (getSetting('website_mode_personal_routing') == '/'
-            && in_array($handler->request_array()[0], ['albums', 'search']))
+            && in_array($handler->request_array()[0], $userMapPaths))
         ) {
             $handler->mapRoute('user', [
                 'id' => getSetting('website_mode_personal_uid'),
@@ -342,7 +346,7 @@ $hook_before = function (Handler $handler) {
                     $categories[$key] = DB::formatRow($categories[$key]);
                 }
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
     }
     if ($handler::cond('explore_enabled')

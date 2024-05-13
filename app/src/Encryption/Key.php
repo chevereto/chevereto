@@ -32,7 +32,7 @@ final class Key implements KeyInterface
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->key;
     }

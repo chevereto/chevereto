@@ -30,7 +30,13 @@ if ($hasPrev == false) { ?>
 	<div id="home-cover-content" class="c20 phone-c1 phablet-c1 fluid-column center-box padding-left-10 padding-right-10">
 		<?php show_banner('home_before_title', (Handler::var('listing') !== null ? Handler::var('listing')->sfw() : true)); ?>
 		<h1><?php echo getSetting('homepage_title_html') ?: _s('Upload and share your media'); ?></h1>
-        <p class="c20 center-box text-align-center"><?php echo getSetting('homepage_paragraph_html') ?? _s('Drag and drop anywhere to start uploading.'); ?> <?php _se('Get direct links, Markdown, BBCode and HTML thumbnails.'); ?></p>
+        <p class="c20 center-box text-align-center"><?php echo
+            getSetting('homepage_paragraph_html') ?? (
+                _s('Drag and drop anywhere to start uploading.')
+                . ' '
+                . _s('Get direct links, Markdown, BBCode and HTML thumbnails.')
+            ); ?>
+        </p>
 		<div class="home-buttons">
 			<?php echo Handler::var('homepage_cta'); ?>
 		</div>
@@ -40,7 +46,7 @@ if ($hasPrev == false) { ?>
 <?php } ?>
 <?php show_banner('home_after_cover', (Handler::var('listing') !== null ? Handler::var('listing')->sfw() : true)); ?>
 <?php if (Settings::get('homepage_style') == 'split') {
-    ?>
+                ?>
 
 <div class="top-sub-bar follow-scroll margin-bottom-5 margin-top-5">
     <div class="content-width">
@@ -86,5 +92,5 @@ if ($hasPrev == false) { ?>
         } ?>
 </div>
 <?php
-} ?>
+            } ?>
 <?php include_theme_footer(); ?>

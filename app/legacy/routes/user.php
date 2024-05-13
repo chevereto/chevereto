@@ -40,16 +40,25 @@ return function (Handler $handler) {
     $request_handle = $userIndex === 0
         ? $handler->requestArray()
         : $handler->request();
+    $userMapPaths = ['search', 'following', 'followers'];
+    $userMapPaths[] = getSetting('user_profile_view') == 'files'
+        ? 'albums'
+        : 'files';
     if (getSetting('website_mode') == 'personal'
         && getSetting('website_mode_personal_routing') == '/'
-        && in_array($request_handle[0], ['albums', 'search', 'following', 'followers'])
+        && $request_handle[0] !== '/'
     ) {
+        if (!in_array($request_handle[0], $userMapPaths)) {
+            $handler->issueError(404);
+
+            return;
+        }
         $personal_mode_user = User::getSingle(getSetting('website_mode_personal_uid'));
         if ($personal_mode_user !== []) {
             $request_handle = [
-                0 => $personal_mode_user['username'],
-                1 => $request_handle[0]
-            ];
+                    0 => $personal_mode_user['username'],
+                    1 => $request_handle[0]
+                ];
         }
     }
     if ($request_handle[0] === getSetting('route_user') && getSetting('root_route') !== 'user') {
@@ -70,7 +79,8 @@ return function (Handler $handler) {
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
     $userHandle = isset($id) ? 'id' : 'username';
-    $user = $personal_mode_user ?? User::getSingle($$userHandle, $userHandle);
+    $user = $personal_mode_user
+        ?? User::getSingle(${$userHandle}, $userHandle);
     $is_owner = false;
     if (isset($user['id'], $logged_user['id'])) {
         $is_owner = $user['id'] == $logged_user['id'];
@@ -102,8 +112,11 @@ return function (Handler $handler) {
     }
     $pre_doctitle = '';
     $user_routes = [];
+    $userHome = $user['home'] === 'files'
+        ? 'files'
+        : $user['home'];
     $user_views = [
-        'images' => [
+        'files' => [
             'title' => _s(
                 "%t by %s",
                 [
@@ -121,9 +134,13 @@ return function (Handler $handler) {
             'title_short' => _s('Search'),
         ],
     ];
-    foreach (array_keys($user_views) as $k) { // Need to use $k => $v to fetch array key easily
-        $user_routes[] = $k == 'images' ? $username : $k;
+    foreach (array_keys($user_views) as $k) {
+        $user_routes[] = $k == $userHome
+            ? $username
+            : $k;
     }
+    // albums: images, admin, search
+    // images: admin, albums, search
     if (getSetting('enable_likes')) {
         $user_views['liked'] = [
             'title' => _s("Liked by %s"),
@@ -183,7 +200,7 @@ return function (Handler $handler) {
             $user_views[$request_handle[1]]['current'] = true;
         }
     } else {
-        $user_views['images']['current'] = true;
+        $user_views[$userHome]['current'] = true;
     }
     $user['followed'] = false;
     $show_follow_button = false;
@@ -203,14 +220,14 @@ return function (Handler $handler) {
     }
     $handler::setCond('show_follow_button', $show_follow_button);
     $base_user_url = $user['url'];
-    $type = 'images';
+    $type = $userHome;
     $current_view = $type;
     $tools = false;
     foreach ($user_views as $k => $v) {
         $handler::setCond('user_' . $k, (bool) $v['current']);
         if ($v['current']) {
             $current_view = $k;
-            if ($current_view !== 'images') {
+            if ($current_view !== $userHome) {
                 $base_user_url .= "/$k";
             }
         }
@@ -218,7 +235,7 @@ return function (Handler $handler) {
     $currentKey = 0;
     $safe_html_user = safe_html($user);
     switch ($current_view) {
-        case 'images':
+        case 'files':
         case 'liked':
             $type = "images";
             $tools = $is_owner || $handler::cond('content_manager');
@@ -276,7 +293,7 @@ return function (Handler $handler) {
         break;
     }
     $icon = [
-        'images' => 'fas fa-photo-film',
+        'files' => 'fas fa-photo-film',
         'albums' => 'fas fa-images',
         'liked' => 'fas fa-heart',
         'following' => 'fas fa-rss',
@@ -304,7 +321,7 @@ return function (Handler $handler) {
         if (!array_key_exists('params_hidden', $tabs)) {
             $tabs[$k]['params_hidden'] = http_build_query($params_hidden);
         }
-        $v['disabled'] = $user[($user_views['images']['current'] ? 'image' : 'album') . '_count'] == 0 ? !$v['current'] : false;
+        $v['disabled'] = $user[($user_views['files']['current'] ? 'image' : 'album') . '_count'] == 0 ? !$v['current'] : false;
     }
     $listing = new Listing();
     if ($user["image_count"] > 0
@@ -386,7 +403,7 @@ return function (Handler $handler) {
             }
             $listing->setOutputTpl($output_tpl);
             $listing->exec();
-        } catch (Exception $e) {
+        } catch (Exception) {
         } // Silence to avoid wrong input queries
     }
     $title = sprintf($user_views[$current_view]['title'], $user['name_short_html']);

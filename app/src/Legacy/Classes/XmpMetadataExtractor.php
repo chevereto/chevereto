@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Chevereto\Legacy\Classes;
 
 use DOMDocument;
@@ -32,7 +31,7 @@ class XmpMetadataExtractor extends Base
             $output['@root'] = $root->tagName;
 
             return $output;
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return [];
         }
     }
@@ -45,7 +44,7 @@ class XmpMetadataExtractor extends Base
         }
         $xmpDataEnd = (int) strpos($content, '</x:xmpmeta>');
         $xmpLength = $xmpDataEnd - $xmpDataStart;
-        
+
         return substr($content, $xmpDataStart, $xmpLength + 12);
     }
 }

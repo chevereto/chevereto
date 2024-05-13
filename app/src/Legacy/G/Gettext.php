@@ -531,7 +531,7 @@ class Gettext
 
             try {
                 include_once $this->cache_file;
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 return false;
             }
             if (isset($translation_table)) {
@@ -547,7 +547,7 @@ class Gettext
 
                 return true;
             }
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
 
         $this->is_cached = false;
@@ -594,8 +594,7 @@ class Gettext
 
         try {
             touch($this->source_file);
-        } catch (Throwable $e) {
-            // Shhh
+        } catch (Throwable) {
         }
         fclose($fh);
     }
