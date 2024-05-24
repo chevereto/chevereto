@@ -16,7 +16,7 @@
             "composer/package-versions-deprecated": true
         },
         "platform": {
-            "php": "8.0.26"
+            "php": "8.0.30"
         }
     },
     "require": {

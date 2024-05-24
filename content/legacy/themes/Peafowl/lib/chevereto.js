@@ -2860,6 +2860,17 @@ $(function () {
         let href = $(this).attr("href");
         let buyFrom = PF.fn._s('Get a license at %s to unlock all features and support.', '<a href="'+href+'" target="_blank">chevereto.com</a>');
         let instructions = PF.fn._s('You can enter your license key in the dashboard panel.');
+        let buttonHref = PF.obj.config.base_url + 'dashboard/?license';
+        let buttonTarget = "_self";
+        let buttonIcon = "fas fa-key";
+        let buttonText = PF.fn._s("Enter license");
+        if(CHV.obj.system_info.servicing === 'docker') {
+            instructions = PF.fn._s('You can upgrade by following the instructions in the documentation.');
+            buttonHref = 'https://v4-docs.chevereto.com/guides/docker/#upgrading';
+            buttonTarget = "_blank";
+            buttonIcon = "fa-brands fa-docker";
+            buttonText = PF.fn._s("Instructions");
+        }
         e.preventDefault();
         e.stopPropagation();
         PF.fn.modal.simple({
@@ -2868,11 +2879,9 @@ $(function () {
             message: "<p>" + buyFrom +
             " " + instructions +  "</p>" +
             '<div class="btn-container margin-bottom-0">' +
-            '<a href="' + PF.obj.config.base_url + 'dashboard/?license" class="btn btn-input accent">' +
-            '<span class="btn-icon fas fa-key user-select-none"></span>' +
-            '<span class="btn-text user-select-none">' +
-            PF.fn._s("Enter license") +
-            '</span>' +
+            '<a href="' + buttonHref + '" target="' + buttonTarget + '" class="btn btn-input accent">' +
+            '<span class="btn-icon ' + buttonIcon + ' user-select-none"></span>' +
+            '<span class="btn-text user-select-none">' + buttonText + '</span>' +
             '</a> ' +
             '</div>',
         });

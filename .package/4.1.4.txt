@@ -1,0 +1,9 @@
+Chevereto 4.1.4 (2024-05-24)
+
+- ✅ Added checking for CHEVERETO_HOSTNAME_PATH setting
+- 🌎 Updated Chinese Traditional translation
+- 🌎 Updated French translation
+- 🐋 Improved upgrading instructions when using Docker
+- 🐞 Fixed bug affecting video uploads when using max image size
+- 🐞 Removed album hashing when upgrading from V3
+- 🐞 Removed login providers encryption when upgrading from V3

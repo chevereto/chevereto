@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VERSION\n"
-"POT-Creation-Date: 2023-06-26 11:09+0000\n"
-"PO-Revision-Date: 2023-06-26 11:09+0000\n"
+"POT-Creation-Date: 2024-05-20 18:55+0000\n"
+"PO-Revision-Date: 2024-05-20 18:55+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE TEAM <EMAIL@ADDRESS>\n"
 "Language: zh_TW\n"
@@ -10,12 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid "Selection will be assigned to %t."
-msgstr "選擇將分配給 %t。"
-
-msgid "Sets the minimum content count needed to show %t in %s."
-msgstr "設置在 %s 中顯示 %t 所需的最小內容計數。"
 
 msgid "You have been forbidden to use this website."
 msgstr "你被禁止進入這個網站。"
@@ -37,6 +31,9 @@ msgstr "最熱門"
 
 msgid "Popular"
 msgstr "最喜歡"
+
+msgid "Videos"
+msgstr "影片"
 
 msgid "Animated"
 msgstr "動圖"
@@ -159,11 +156,12 @@ msgid "image"
 msgid_plural "images"
 msgstr[0] "圖片"
 
-msgid "Stats"
-msgstr "統計"
+msgid "Home"
+msgstr "主頁"
 
-msgid "Images"
-msgstr "圖片"
+msgid "File"
+msgid_plural "Files"
+msgstr[0] "檔案"
 
 msgid "Album"
 msgid_plural "Albums"
@@ -179,6 +177,10 @@ msgstr "批量導入工具"
 msgid "Settings"
 msgstr "設定"
 
+#, php-format
+msgid "Run %s"
+msgstr "運行 %s"
+
 msgid "Website"
 msgstr "網站名稱"
 
@@ -188,8 +190,8 @@ msgstr "內容"
 msgid "Listings"
 msgstr "佇列"
 
-msgid "Image upload"
-msgstr "圖片上傳"
+msgid "File uploads"
+msgstr "檔案上傳"
 
 msgid "Semantics"
 msgstr "語義"
@@ -215,14 +217,24 @@ msgstr "工具"
 msgid "Logo"
 msgstr "Logo"
 
-msgid "External storage"
-msgstr "外部儲存空間"
-
 msgid "Homepage"
 msgstr "首頁"
 
 msgid "Pages"
 msgstr "頁面"
+
+msgid "Upload plugin"
+msgstr "上載插件"
+
+msgid "Consent screen"
+msgstr "內容警告"
+
+#, php-format
+msgid "Guests %s"
+msgstr "來賓 %s"
+
+msgid "External storage"
+msgstr "外部儲存空間"
 
 msgid "Routing"
 msgstr "路徑"
@@ -233,14 +245,8 @@ msgstr "外部服務"
 msgid "Login providers"
 msgstr "登錄提供商"
 
-msgid "Upload plugin"
-msgstr "上載插件"
-
 msgid "Cookie compliance"
 msgstr "Cookie合規性"
-
-msgid "Consent screen"
-msgstr "內容警告"
 
 msgid "Flood protection"
 msgstr "流量攻擊防護"
@@ -251,49 +257,42 @@ msgstr "廣告"
 msgid "IP bans"
 msgstr "封鎖IP"
 
-#, php-format
-msgid "Guests %s"
-msgstr "來賓 %s"
-
 msgid "Watermarks"
 msgstr "浮水印"
 
-msgid "Documentation"
-msgstr "文件"
+msgid "Upgrade now"
+msgstr "現在升級"
 
-msgid "Admin"
-msgstr "管理員"
+msgid "The latest release will be downloaded and extracted in the filesystem."
+msgstr "最新版本將被下載並提取到檔案系統中。"
 
-#, php-format
-msgid "%s docs"
-msgstr "%s 文檔"
+msgid "License key"
+msgstr "許可證密鑰"
 
 msgid "Support"
 msgstr "支援"
 
-msgid "Releases"
-msgstr "發布"
-
-msgid "Community"
-msgstr "社群"
-
-msgid "License"
-msgstr "許可證"
-
 msgid "install update"
 msgstr "安裝更新"
 
-msgid "Check updates"
-msgstr "檢查更新"
+msgid "Check upgrades"
+msgstr "檢查升級"
 
 msgid "not running"
 msgstr "沒有運行"
 
+#, php-format
+msgid "PHP function [%s] not available in this PHP installation"
+msgstr "PHP 函數 [%s] 在此 PHP 安裝中不可用"
+
 msgid "Max. upload file size"
 msgstr "最大上傳檔案大小"
 
-msgid "Graphics Library"
+msgid "Graphics library"
 msgstr "圖形庫"
+
+msgid "Stats"
+msgstr "統計"
 
 msgid "Rebuild stats"
 msgstr "重建統計"
@@ -304,6 +303,36 @@ msgstr "連接中的IP"
 msgid "Not your IP?"
 msgstr "不是您的IP ?"
 
+msgid "Encryption"
+msgstr "加密"
+
+msgid "Enabled"
+msgstr "啟用"
+
+msgid "Disabled"
+msgstr "禁用"
+
+msgid "Meta"
+msgstr "相關鏈接"
+
+msgid "Blog"
+msgstr "部落格"
+
+msgid "Docs"
+msgstr "文檔"
+
+msgid "Releases"
+msgstr "發布"
+
+msgid "Chat"
+msgstr "在線聯繫"
+
+msgid "Community"
+msgstr "社群"
+
+msgid "Links"
+msgstr "連結"
+
 msgid "Cron last ran"
 msgstr "Cron 上次運行"
 
@@ -312,21 +341,6 @@ msgstr "PHP版本"
 
 msgid "Server"
 msgstr "伺服器"
-
-msgid "MySQL version"
-msgstr "MySQL版本"
-
-msgid "MySQL server info"
-msgstr "MySQL伺服器資訊"
-
-msgid "File uploads"
-msgstr "檔案上傳"
-
-msgid "Enabled"
-msgstr "啟用"
-
-msgid "Disabled"
-msgstr "禁用"
 
 msgid "Max. execution time"
 msgstr "最大執行時間"
@@ -371,23 +385,23 @@ msgid "The page has been deleted."
 msgstr "該頁面已被刪除."
 
 msgid "homepage"
-msgstr "首頁"
+msgstr "主頁"
 
 #, php-format
 msgid "Before main title (%s)"
-msgstr "在主標題前 %s"
+msgstr "在主標題前 (%s)"
 
 #, php-format
 msgid "After call to action (%s)"
-msgstr "在按鈕後 %s"
+msgstr "在按鈕後 (%s)"
 
 #, php-format
 msgid "After cover (%s)"
-msgstr "在封面後 %s"
+msgstr "在封面後 (%s)"
 
 #, php-format
 msgid "After listing (%s)"
-msgstr "在列表後 %s"
+msgstr "在列表後 (%s)"
 
 msgid "Before pagination"
 msgstr "分頁前"
@@ -417,17 +431,17 @@ msgid "After image viewer (image page)"
 msgstr "圖像瀏覽器後（圖像頁）"
 
 msgid "Before header (image page)"
-msgstr "頭前（圖像頁）"
+msgstr "標題之前（圖像頁）"
 
 msgid "After header (image page)"
-msgstr "頭後（圖像頁）"
+msgstr "標題後（圖像頁）"
 
 msgid "Footer (image page)"
 msgstr "頁尾（圖像頁）"
 
 #, php-format
 msgid "%s page"
-msgstr "%s 頁面"
+msgstr "第 %s 頁"
 
 #, php-format
 msgid "Before header (%s page)"
@@ -435,13 +449,13 @@ msgstr "標題前（%s頁）"
 
 #, php-format
 msgid "After header (%s page)"
-msgstr "標題前（%s頁）"
+msgstr "標題後（%s頁）"
 
 msgid "User profile page"
 msgstr "個人主頁"
 
 msgid "After top (user profile)"
-msgstr "頭後（個人主頁）"
+msgstr "頁頂後（個人主頁）"
 
 msgid "Before listing (user profile)"
 msgstr "列表前（個人主頁）"
@@ -496,12 +510,15 @@ msgstr "無效的主題"
 msgid "Invalid value"
 msgstr "無效的值"
 
-msgid "palette"
-msgstr "調色板"
+msgid "font"
+msgstr "字體"
 
 #, php-format
 msgid "Invalid %s"
 msgstr "無效的 %s"
+
+msgid "palette"
+msgstr "調色板"
 
 msgid "Invalid theme image listing size"
 msgstr "無效的主題圖片佇列大小"
@@ -525,7 +542,7 @@ msgid "Invalid personal mode user ID"
 msgstr "無效的個人模式使用者ID"
 
 msgid "Invalid or reserved route"
-msgstr "無效的路徑"
+msgstr "無效或預留的路由"
 
 msgid "Invalid website privacy mode"
 msgstr "無效的網站隱私模式"
@@ -540,7 +557,7 @@ msgid "Invalid homepage call to action button color"
 msgstr "無效的按鈕顏色"
 
 msgid "Invalid homepage call to action functionality"
-msgstr "無效的主頁「開始上傳」按鈕功能"
+msgstr "無效的主頁按鈕功能"
 
 msgid "Invalid title"
 msgstr "無效標題"
@@ -552,10 +569,10 @@ msgid "Invalid type"
 msgstr "無效的類型"
 
 msgid "Invalid visibility"
-msgstr "无效的可见度"
+msgstr "無效的可見性"
 
 msgid "Invalid internal type"
-msgstr "內部類型無效"
+msgstr "無效的內部類型"
 
 msgid "Invalid target attribute"
 msgstr "無效的目標屬性"
@@ -567,13 +584,13 @@ msgid "Invalid icon"
 msgstr "無效的圖標"
 
 msgid "Invalid URL key"
-msgstr "無效的鏈接值"
+msgstr "無效的URL key"
 
 msgid "Invalid file path"
-msgstr "無效的文件路徑"
+msgstr "無效的檔案路徑"
 
 msgid "Invalid link URL"
-msgstr "無效的鏈接網址"
+msgstr "無效的連結URL"
 
 msgid "Invalid user minimum age"
 msgstr "無效的使用者最低年齡"
@@ -588,7 +605,7 @@ msgid "Invalid key"
 msgstr "無效的密鑰"
 
 msgid "Routes can't be the same"
-msgstr "路徑是不能相同的"
+msgstr "路由是不能相同的"
 
 msgid "Invalid upload image path"
 msgstr "無效的圖像上傳路徑"
@@ -617,15 +634,15 @@ msgstr "無效的SMTP用戶名"
 
 #, php-format
 msgid "This URL key is already being used by another page (ID %s)"
-msgstr "此鏈接值已被另壹個頁面使用 (ID %s)"
+msgstr "此URL key已被另一個頁面使用 (ID %s)"
 
 #, php-format
 msgid "This file path is already being used by another page (ID %s)"
-msgstr "此文件路徑已被另壹個頁面使用 (ID %s)"
+msgstr "此檔案路徑已被另一個頁面使用 (ID %s)"
 
 #, php-format
 msgid "Can't save page contents: %s."
-msgstr "无法保存页面内容: %s"
+msgstr "無法儲存頁面內容：%s。"
 
 msgid "Dashboard"
 msgstr "主控台"
@@ -654,33 +671,6 @@ msgstr "圖片 %i 在 %c 分類"
 msgid "Image %i hosted in %w"
 msgstr "圖片 %i 儲存在 %w"
 
-msgid "Direct links"
-msgstr "直連URL"
-
-msgid "Image link"
-msgstr "圖片連結"
-
-msgid "Image URL"
-msgstr "圖片URL"
-
-msgid "Thumbnail URL"
-msgstr "縮圖URL"
-
-msgid "Medium URL"
-msgstr "中型圖片URL"
-
-msgid "Full image"
-msgstr "全等圖像"
-
-msgid "Full image (linked)"
-msgstr "全等圖像 (關聯)"
-
-msgid "Medium image (linked)"
-msgstr "中等圖像 (關聯)"
-
-msgid "Thumbnail image (linked)"
-msgstr "縮圖圖像 (關聯)"
-
 msgid "Start uploading"
 msgstr "開始上傳"
 
@@ -706,9 +696,6 @@ msgstr "分類"
 msgid "%s URL key already being used."
 msgstr "%s URL 已被使用。"
 
-msgid "IP address already banned"
-msgstr "IP位置已經被禁止訪問"
-
 msgid "Missing values"
 msgstr "遺失的值"
 
@@ -724,6 +711,9 @@ msgstr "該使用者名稱已經被使用"
 #, php-format
 msgid "%s added"
 msgstr "%s 已添加"
+
+msgid "IP address already banned"
+msgstr "IP位置已經被禁止訪問"
 
 #, php-format
 msgid "%s not found"
@@ -785,6 +775,15 @@ msgstr "%u 關註了你"
 
 msgid "A private user"
 msgstr "私人用戶"
+
+msgid "Chevereto V%s license key used, required V%r or greater license key"
+msgstr "已使用 Chevereto V%s 許可證密鑰，需要 V%r 或更高許可證密鑰"
+
+msgid "License key removed"
+msgstr "許可證密鑰已刪除"
+
+msgid "License key updated"
+msgstr "許可證密鑰已更新"
 
 msgid "Wrong Username/Email password combination"
 msgstr "錯誤的用戶名或密碼"
@@ -877,6 +876,9 @@ msgstr "刪除用戶"
 
 msgid "User ID"
 msgstr "使用者ID"
+
+msgid "Images"
+msgstr "圖片"
 
 msgid "Register date"
 msgstr "註冊日期"
@@ -1190,36 +1192,52 @@ msgid "Error deleting profile background image."
 msgstr "在刪除個人主頁背景時發生錯誤"
 
 #, javascript-format
-msgid "Update available v%s"
-msgstr "更新 v%s 已開放"
+msgid "Chevereto v%s available"
+msgstr "Chevereto v%s 可用"
 
-msgid "There is an update available for this system."
-msgstr "有適用於您的系統的更新。"
+msgid "There is a new Chevereto version available with the following release notes."
+msgstr "新的 Chevereto 版本具有以下發行說明。"
 
-msgid "Update instructions"
-msgstr "更新說明"
+#, javascript-format
+msgid "Check %s for a complete changelog since you last upgrade."
+msgstr "檢查 %s 以取得自上次升級以來的完整變更日誌。"
+
+msgid "documentation"
+msgstr "文件"
+
+#, javascript-format
+msgid "Check the %s for alternative update methods."
+msgstr "檢查 %s 以取得替代更新方法。"
 
 #, javascript-format
 msgid "This website is running latest %s version"
 msgstr "網站正在使用最新的%s版本"
 
+#, javascript-format
+msgid "Chevereto v%s installed"
+msgstr "Chevereto v%s 已安裝"
+
+msgid "Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"."
+msgstr "使用 Chevereto 軟體必須遵守被稱為「Chevereto 授權」的軟體授權條款。"
+
+msgid "License agreement"
+msgstr "許可協議"
+
 msgid "Please review the system requirements before proceeding"
 msgstr "請在繼續之前查看系統要求"
 
-msgid "Toggle select"
-msgstr "切換選擇"
+#, javascript-format, php-format
+msgid "Get a license at %s to unlock all features and support."
+msgstr "在 %s 取得許可證以解鎖所有功能和支援。"
 
-msgid "Like"
-msgstr "喜歡"
+msgid "You can enter your license key in the dashboard panel."
+msgstr "您可以在儀表板面板中輸入您的許可證密鑰。"
+
+msgid "Enter license"
+msgstr "輸入許可證"
 
 msgid "Create album"
 msgstr "建立相簿"
-
-msgid "Toggle flag"
-msgstr "切換標誌"
-
-msgid "Edit"
-msgstr "編輯"
 
 msgid "Approve"
 msgstr "批准"
@@ -1227,34 +1245,49 @@ msgstr "批准"
 msgid "Delete"
 msgstr "刪除"
 
-msgid "Previous"
-msgstr "前一個"
+msgid "Edit"
+msgstr "編輯"
+
+msgid "Toggle flag"
+msgstr "切換標誌"
+
+msgid "Like"
+msgstr "喜歡"
 
 msgid "Next"
 msgstr "下一個"
+
+msgid "Previous"
+msgstr "前一個"
+
+msgid "Toggle select"
+msgstr "切換選擇"
 
 msgid "Zoom"
 msgstr "Zoom"
 
 msgid "File too big."
-msgstr "文件超出允許上傳的大小"
+msgstr "檔案超出允許上傳的大小"
 
 msgid "Invalid or unsupported file format."
 msgstr "無效或是不支援的檔案格式."
 
 msgid "Some files couldn't be added"
-msgstr "有些文件無法加入"
+msgstr "有些檔案無法加入"
+
+msgid "Some files couldn't be loaded"
+msgstr "某些檔案無法載入"
 
 msgid "file"
 msgid_plural "files"
-msgstr[0] "文件"
+msgstr[0] "檔案"
 
 #, javascript-format
 msgid "%s's Albums"
 msgstr "%s 的相簿"
 
-msgid "Image edited successfully."
-msgstr "圖片編輯成功"
+msgid "File edited successfully."
+msgstr "檔案編輯成功。"
 
 msgid "private"
 msgstr "私密"
@@ -1410,11 +1443,11 @@ msgstr "感謝您的加入"
 msgid "This email was sent from %w %u"
 msgstr "這封電子郵件是由 %w  %u 發送"
 
-msgid "Drag and drop or paste images here to upload"
-msgstr "拖拉或是直接貼上圖像在此進行上傳"
+msgid "Drag and drop or paste files here to upload"
+msgstr "將檔案拖放到或貼到此處即可上傳"
 
-msgid "Select the images to upload"
-msgstr "選擇需要上傳的圖片"
+msgid "Select the files to upload"
+msgstr "選擇要上傳的檔案"
 
 msgid "You can also %i or %u."
 msgstr "你可以從%i或%u"
@@ -1426,8 +1459,8 @@ msgstr "您也可以 %s 。"
 msgid "browse from your computer"
 msgstr "從電腦內選擇"
 
-msgid "add image URLs"
-msgstr "加入圖片連結"
+msgid "add file URLs"
+msgstr "新增檔案 URL"
 
 msgid "You can also %i, %c or %u."
 msgstr "你也可以 %i, %c 或者 %u."
@@ -1435,11 +1468,14 @@ msgstr "你也可以 %i, %c 或者 %u."
 msgid "You can also %i or %c."
 msgstr "您也可以 %i 或 %c。"
 
-msgid "browse from your device"
-msgstr "從您的設備瀏覽"
+msgid "browse from device"
+msgstr "從設備瀏覽"
 
-msgid "take a picture"
-msgstr "截圖"
+msgid "use camera"
+msgstr "使用相機"
+
+msgid "max"
+msgstr "最大"
 
 #, php-format
 msgid "Register to get %s"
@@ -1531,7 +1567,7 @@ msgid "cancel remaining"
 msgstr "取消剩下的"
 
 msgid "Note: Some files couldn't be uploaded."
-msgstr "注意：部分文件無法上傳。"
+msgstr "注意：部分檔案無法上傳。"
 
 msgid "learn more"
 msgstr "了解更多"
@@ -1595,11 +1631,11 @@ msgstr "描述"
 msgid "Brief description of this %s"
 msgstr "此 %s 的簡要說明"
 
-msgid "Add image URLs"
-msgstr "加入圖片URL"
+msgid "File URLs"
+msgstr "檔案連結"
 
-msgid "Add the image URLs here"
-msgstr "在此加入圖片URL"
+msgid "Add file URLs here"
+msgstr "在此新增檔案連結"
 
 #, php-format
 msgid "Create %s"
@@ -1621,63 +1657,43 @@ msgstr "選擇現有相冊以移動上傳的內容。"
 msgid "Error report"
 msgstr "錯誤報告"
 
-msgid "Links"
-msgstr "連結"
-
 msgid "Viewer"
 msgstr "檢視器"
 
 #, php-format
-msgid "%s links"
-msgstr "%s 鏈接"
+msgid "%s link"
+msgstr "%s 連結"
 
 msgid "Direct"
 msgstr "直接儲存"
 
-msgid "HTML Codes"
-msgstr "HTML代碼"
+msgid "Frame"
+msgstr "框架"
 
-msgid "HTML image"
-msgstr "HTML圖片"
+msgid "Thumbnail"
+msgstr "縮圖"
 
-msgid "HTML full linked"
-msgstr "HTML完整大小連結"
+msgid "Medium"
+msgstr "中型圖片"
 
-msgid "HTML medium linked"
-msgstr "HTML中等圖片連結"
+msgid "embed"
+msgstr "嵌入代碼"
 
-msgid "HTML thumbnail linked"
-msgstr "HTML縮圖連結"
+#, php-format
+msgid "%s full linked"
+msgstr "%s 完整圖片連結"
 
-msgid "BBCodes"
-msgstr "BBCode代碼"
+#, php-format
+msgid "%s medium linked"
+msgstr "%s 中型圖片連結"
 
-msgid "BBCode full"
-msgstr "BBCode完整大小"
+#, php-format
+msgid "%s thumbnail linked"
+msgstr "%s 縮圖連結"
 
-msgid "BBCode full linked"
-msgstr "BBCode完整大小連結"
-
-msgid "BBCode medium linked"
-msgstr "BBCode中等圖片連結"
-
-msgid "BBCode thumbnail linked"
-msgstr "BBCode縮圖連結"
-
-msgid "Markdown full"
-msgstr "Markdown 詳細訊息"
-
-msgid "Markdown full linked"
-msgstr "Markdown 詳細連結"
-
-msgid "Markdown medium linked"
-msgstr "Markdown 中等大小圖像連結"
-
-msgid "Markdown thumbnail linked"
-msgstr "Markdown 縮圖連結"
-
-msgid "Viewer links"
-msgstr "觀看者連結"
+#, php-format
+msgid "%s full"
+msgstr "%s 完整圖片"
 
 msgid "All these words"
 msgstr "全部關鍵字"
@@ -1829,11 +1845,11 @@ msgstr "訊息"
 msgid "Text message, HTML or a redirect URL"
 msgstr "文字訊息, HTML或重導向至URL"
 
-msgid "Storage name"
-msgstr "儲存空間名稱"
-
 msgid "API"
 msgstr "API"
+
+msgid "Storage name"
+msgstr "儲存空間名稱"
 
 msgid "This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API."
 msgstr "這是針對舊的已棄用的 B2 API。 對於新存儲桶，您必須使用 S3 兼容 API。"
@@ -1924,7 +1940,7 @@ msgid "Local path"
 msgstr "本地路徑"
 
 msgid "Local path where the files will be stored"
-msgstr "文件存儲的本地路徑"
+msgstr "檔案存儲的本地路徑"
 
 msgid "Storage capacity"
 msgstr "儲存容量"
@@ -1940,6 +1956,12 @@ msgstr "儲存空間URL"
 
 msgid "The system will map the images of this storage to this URL."
 msgstr "該系統將儲存空間的圖片映射到該URL."
+
+msgid "Enabled types"
+msgstr "啟用類型"
+
+msgid "The storage will be used only for selected types."
+msgstr "儲存將僅用於選定的類型。"
 
 msgid "view more"
 msgstr "查看更多"
@@ -1983,11 +2005,11 @@ msgstr "登入其他帳號"
 msgid "Sign in with %label%"
 msgstr "使用 %label% 登錄"
 
-msgid "Home"
-msgstr "主頁"
-
 msgid "There's nothing to show here."
 msgstr "沒有顯示的內容"
+
+msgid "Selection will be assigned to %t."
+msgstr "選擇將分配給 %t。"
 
 msgid "There is no categories."
 msgstr "沒有分類."
@@ -2024,9 +2046,6 @@ msgstr "您真的要刪除所有選定的內容嗎？"
 
 msgid "Guest"
 msgstr "訪客"
-
-msgid "Keyboard shortcuts"
-msgstr "鍵盤快捷鍵"
 
 msgid "Private album"
 msgstr "私人相簿"
@@ -2160,9 +2179,6 @@ msgstr "點擊 \"我同意\" 後您可申明自己已閱讀並理解上述的所
 
 msgid "I Agree"
 msgstr "我同意"
-
-msgid "documentation"
-msgstr "文件"
 
 #, php-format
 msgid "Learn about %s at our %d."
@@ -2468,8 +2484,174 @@ msgstr "預設情況下使用本地儲存空間, 或在外部儲存空間處於�
 msgid "storage"
 msgstr "存儲"
 
-msgid "Block image uploads by IP if the system notice a flood behavior based on the number of uploads per time period."
-msgstr "如果系統根據每個時間段的上傳數量發現泛洪行為，則阻止按 IP 上傳圖片。"
+msgid "Enabled file extensions"
+msgstr "啟用檔案副檔名"
+
+msgid "Unsupported in your server"
+msgstr "您的服務器不支持"
+
+msgid "Only checked file extensions will be allowed to be uploaded."
+msgstr "只允許上傳選中的檔案副檔名。"
+
+msgid "Enable uploads"
+msgstr "啟動上傳"
+
+#, php-format
+msgid "Enable this if you want to allow %s uploads."
+msgstr "如果您想允許 %s 上傳，請啟用此選項。"
+
+msgid "Enable this if you want to allow file upload from URLs."
+msgstr "如果您想允許從 URL 上傳檔案，請啟用此選項。"
+
+msgid "Note that enabling this will expose your server IP."
+msgstr "請注意，啟用此功能會暴露您的服務器 IP。"
+
+msgid "This feature is available only for administrators."
+msgstr "此功能僅供管理員使用。"
+
+msgid "Upload user interface"
+msgstr "上載使用者介面"
+
+msgid "On-page container"
+msgstr "相同頁面中的上傳工具"
+
+msgid "route"
+msgstr "路由"
+
+msgid "Guest uploads"
+msgstr "訪客上傳"
+
+msgid "Enable this if you want to allow non registered users to upload."
+msgstr "允許非註冊用戶上傳"
+
+msgid "Moderate uploads"
+msgstr "審核上載"
+
+msgid "Enable this to moderate incoming uploads. Target content will require moderation for approval."
+msgstr "啟用此選項可審核傳入的上載。 目標內容需要經過審核才能獲得批准。"
+
+msgid "Enable embed codes (uploader)"
+msgstr "啟用嵌入代碼（上傳者）"
+
+msgid "Enable this if you want to show embed codes when upload gets completed."
+msgstr "如果你想圖片上傳完成後顯示嵌入代碼請啟用這個功能."
+
+msgid "Upload threads"
+msgstr "上傳序列"
+
+msgid "Number of simultaneous upload threads (parallel uploads)"
+msgstr "同時上傳連線數量（並行上傳）"
+
+msgid "Redirect on single upload"
+msgstr "跳轉單張上傳"
+
+msgid "Enable this if you want to redirect to file viewer on single upload."
+msgstr "如果您想在單次上傳時重定向到檔案檢視器，請啟用此選項。"
+
+msgid "Enable duplicate uploads"
+msgstr "啟用重複上傳"
+
+msgid "Enable this if you want to allow duplicate uploads from the same IP within 24hrs."
+msgstr "如果您希望允許在 24 小時內從同一 IP 重複上傳，請啟用此選項。"
+
+msgid "Enable expirable uploads"
+msgstr "啟用限時上傳"
+
+msgid "Enable this if you want to allow uploads with an automatic delete option."
+msgstr "如果您想允許上傳與自動刪除選項請啟用它."
+
+msgid "Auto delete guest uploads"
+msgstr "自動刪除訪客上傳"
+
+msgid "Enable this if you want to force guest uploads to be auto deleted after certain time."
+msgstr "開啟後可再一定時間後自動刪除訪客上傳的圖片"
+
+msgid "Maximum image size"
+msgstr "最大圖片大小"
+
+msgid "Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit."
+msgstr "大於此尺寸的圖片將自動縮小尺寸,使用(0)則不設置限制"
+
+msgid "Image Exif data"
+msgstr "圖像Exif資料"
+
+msgid "Keep"
+msgstr "保留"
+
+#, php-format
+msgid "Select the default setting for image <a %s>Exif data</a> on upload."
+msgstr "選擇預設的圖像 <a %s>Exif資料</a> 上傳."
+
+msgid "Image Exif data (user setting)"
+msgstr "圖像Exif資料 (使用者設置)"
+
+msgid "Enable this if you want to allow each user to configure how image Exif data will be handled."
+msgstr "啟用它, 如果您允許每個用戶設置是否刪除圖像的Exif資料."
+
+msgid "Maximum upload file size"
+msgstr "最大上傳大小"
+
+msgid "Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)."
+msgstr "主機限制最大上傳大小是%s這個限制是因為%u以及%p(%f的數值)"
+
+msgid "guests"
+msgstr "訪客"
+
+#, php-format
+msgid "Same as \"%s\" but for guests."
+msgstr "跟\"%s\"一樣，遊客允許上傳大小."
+
+msgid "File path"
+msgstr "檔案路徑"
+
+msgid "Relative to Chevereto root"
+msgstr "相對於Chevereto根目錄"
+
+msgid "Where to store the uploaded files? Relative to Chevereto root."
+msgstr "上傳的檔案存放在哪裡？相對於 Chevereto 根。"
+
+msgid "Storage mode"
+msgstr "儲存空間模式"
+
+msgid "Datefolders"
+msgstr "利用時間建立資料夾"
+
+#, php-format
+msgid "Datefolders creates %s structure"
+msgstr "時間建立資料夾 %s 建立結構"
+
+msgid "File naming method"
+msgstr "檔案命名方式"
+
+msgid "Original"
+msgstr "原始"
+
+msgid "Mix original + random"
+msgstr "原始 + 隨機"
+
+msgid "\"Original\" will try to keep the file source name while \"Random\" will generate a random name. \"ID\" will name the file just like the file ID."
+msgstr "「原始」將嘗試保留檔案來源名稱，而「隨機」將產生隨機名稱。 “ID”將像檔案 ID 一樣命名文件。"
+
+msgid "Thumb size"
+msgstr "縮圖大小"
+
+msgid "Thumbnails will be fixed to this size."
+msgstr "縮圖將會被固定在此大小"
+
+msgid "Medium image fixed dimension"
+msgstr "中等圖像固定尺寸"
+
+msgid "Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated."
+msgstr "中等圖像將被固定至此分辨率. 例如, 如果您選擇\"寬度\", 這方面將是固定的, 圖像的高度將自動計算."
+
+msgid "Medium image fixed size"
+msgstr "中等圖像固定大小"
+
+msgid "Width or height will be automatically calculated."
+msgstr "寬度或是高度將自動計算."
+
+msgid "Block file uploads by IP if the system notice a flood behavior based on the number of uploads per time period."
+msgstr "如果系統根據每個時間段的上傳數量發現泛洪行為，則阻止透過 IP 上傳檔案。"
 
 msgid "Notify to email"
 msgstr "以電子郵件通知"
@@ -2615,168 +2797,6 @@ msgstr "您的使用者ID為：%s"
 msgid "Comma-separated list of target user IDs (integers) to show most recent images on homepage. Leave it empty to display trending images."
 msgstr "用逗號分隔的目標用戶ID列表，以在首頁上顯示圖像。 保留為空白或零以顯示所有最近的圖像。"
 
-msgid "Enabled image formats"
-msgstr "啟用的圖像格式"
-
-msgid "Unsupported in your server"
-msgstr "您的服務器不支持"
-
-msgid "Only checked image formats will be allowed to be uploaded."
-msgstr "只允許上傳選中的圖像格式。"
-
-msgid "Enable uploads"
-msgstr "啟動上傳"
-
-msgid "Enable this if you want to allow image upload from URLs."
-msgstr "如果您希望允許從 URL 上傳圖片，請啟用此項。"
-
-msgid "Note that enabling this will expose your server IP."
-msgstr "請注意，啟用此功能會暴露您的服務器 IP。"
-
-msgid "This feature is available only for administrators."
-msgstr "此功能僅供管理員使用。"
-
-msgid "Upload user interface"
-msgstr "上載使用者介面"
-
-msgid "On-page container"
-msgstr "相同頁面中的上傳工具"
-
-msgid "route"
-msgstr "路由"
-
-msgid "Guest uploads"
-msgstr "訪客上傳"
-
-msgid "Enable this if you want to allow non registered users to upload."
-msgstr "允許非註冊用戶上傳"
-
-msgid "Moderate uploads"
-msgstr "審核上載"
-
-msgid "Enable this to moderate incoming uploads. Target content will require moderation for approval."
-msgstr "啟用此選項可審核傳入的上載。 目標內容需要經過審核才能獲得批准。"
-
-msgid "Enable embed codes (uploader)"
-msgstr "啟用嵌入代碼（上傳者）"
-
-msgid "Enable this if you want to show embed codes when upload gets completed."
-msgstr "如果你想圖片上傳完成後顯示嵌入代碼請啟用這個功能."
-
-msgid "Upload threads"
-msgstr "上傳序列"
-
-msgid "Number of simultaneous upload threads (parallel uploads)"
-msgstr "同時上傳連線數量（並行上傳）"
-
-msgid "Redirect on single upload"
-msgstr "跳轉單張上傳"
-
-msgid "Enable this if you want to redirect to image page on single upload."
-msgstr "啟用後上傳單張圖片後跳轉到該圖像的頁面."
-
-msgid "Enable duplicate uploads"
-msgstr "啟用重複上傳"
-
-msgid "Enable this if you want to allow duplicate uploads from the same IP within 24hrs."
-msgstr "如果您希望允許在 24 小時內從同一 IP 重複上傳，請啟用此選項。"
-
-msgid "Enable expirable uploads"
-msgstr "啟用限時上傳"
-
-msgid "Enable this if you want to allow uploads with an automatic delete option."
-msgstr "如果您想允許上傳與自動刪除選項請啟用它."
-
-msgid "Auto delete guest uploads"
-msgstr "自動刪除訪客上傳"
-
-msgid "Enable this if you want to force guest uploads to be auto deleted after certain time."
-msgstr "開啟後可再一定時間後自動刪除訪客上傳的圖片"
-
-msgid "Maximum image size"
-msgstr "最大圖片大小"
-
-msgid "Images greater than this size will get automatically downsized. Use zero (0) to don't set a limit."
-msgstr "大於此尺寸的圖片將自動縮小尺寸,使用(0)則不設置限制"
-
-msgid "Image Exif data"
-msgstr "圖像Exif資料"
-
-msgid "Keep"
-msgstr "保留"
-
-#, php-format
-msgid "Select the default setting for image <a %s>Exif data</a> on upload."
-msgstr "選擇預設的圖像 <a %s>Exif資料</a> 上傳."
-
-msgid "Image Exif data (user setting)"
-msgstr "圖像Exif資料 (使用者設置)"
-
-msgid "Enable this if you want to allow each user to configure how image Exif data will be handled."
-msgstr "啟用它, 如果您允許每個用戶設置是否刪除圖像的Exif資料."
-
-msgid "Maximum upload file size"
-msgstr "最大上傳大小"
-
-msgid "Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values)."
-msgstr "主機限制最大上傳大小是%s這個限制是因為%u以及%p(%f的數值)"
-
-msgid "guests"
-msgstr "訪客"
-
-#, php-format
-msgid "Same as \"%s\" but for guests."
-msgstr "跟\"%s\"一樣，遊客允許上傳大小."
-
-msgid "Image path"
-msgstr "圖片路徑"
-
-msgid "Relative to Chevereto root"
-msgstr "相對於Chevereto根目錄"
-
-msgid "Where to store the images? Relative to Chevereto root."
-msgstr "圖片儲存的位置? 相對於Chevereto根目錄"
-
-msgid "Storage mode"
-msgstr "儲存空間模式"
-
-msgid "Datefolders"
-msgstr "利用時間建立資料夾"
-
-#, php-format
-msgid "Datefolders creates %s structure"
-msgstr "時間建立資料夾 %s 建立結構"
-
-msgid "File naming method"
-msgstr "檔案命名方式"
-
-msgid "Original"
-msgstr "原始"
-
-msgid "Mix original + random"
-msgstr "原始 + 隨機"
-
-msgid "\"Original\" will try to keep the image source name while \"Random\" will generate a random name. \"ID\" will name the image just like the image ID."
-msgstr "\"原始的\"會盡量保持圖像原始名稱, 而\"隨機\"則產生一個隨機名稱. \"ID\"則使用圖像ID來產生命名."
-
-msgid "Thumb size"
-msgstr "縮圖大小"
-
-msgid "Thumbnails will be fixed to this size."
-msgstr "縮圖將會被固定在此大小"
-
-msgid "Medium image fixed dimension"
-msgstr "中等圖像固定尺寸"
-
-msgid "Medium sized images will be fixed to this dimension. For example, if you select \"width\" that dimension will be fixed and image height will be automatically calculated."
-msgstr "中等圖像將被固定至此分辨率. 例如, 如果您選擇\"寬度\", 這方面將是固定的, 圖像的高度將自動計算."
-
-msgid "Medium image fixed size"
-msgstr "中等圖像固定大小"
-
-msgid "Width or height will be automatically calculated."
-msgstr "寬度或是高度將自動計算."
-
 msgid "Expires"
 msgstr "到期"
 
@@ -2849,6 +2869,9 @@ msgstr "首頁圖片列表樣式. 這兩種方法都使用固定寬度, 但“�
 
 msgid "%t listing requirement"
 msgstr "%t 列表要求"
+
+msgid "Sets the minimum content count needed to show %t in %s."
+msgstr "設置在 %s 中顯示 %t 所需的最小內容計數。"
 
 msgid "Listing columns number"
 msgstr "頁面顯示列數"
@@ -2967,9 +2990,6 @@ msgstr "隱藏頁面將不會顯示在系統的選單, 但任何人擁有連結�
 msgid "Only alphanumerics, hyphens and forward slash"
 msgstr "只有字母, 數字和片語"
 
-msgid "File path"
-msgstr "檔案路徑"
-
 #, php-format
 msgid "A %f file relative to %s"
 msgstr "%f 檔案相對於 %s"
@@ -3003,7 +3023,7 @@ msgstr "連結目標屬性"
 
 #, php-format
 msgid "Select %s to open the page or link in a new window."
-msgstr "選擇 %s 來打開新頁面或是新視窗"
+msgstr "選擇 %s 在新視窗中開啟頁面或連結。"
 
 msgid "Link rel attribute"
 msgstr "連結 rel 屬性"
@@ -3092,6 +3112,9 @@ msgstr "此ID為系統的一個特殊碼, 相當於V2.x的「__CHV_CRYPT_SALT__�
 
 msgid "Debug errors"
 msgstr "偵錯錯誤"
+
+msgid "Enable this if you want to debug errors."
+msgstr "如果您想偵錯錯誤，請啟用此選項。"
 
 msgid "Debug level"
 msgstr "除錯層級"
@@ -3262,7 +3285,7 @@ msgstr "上傳插件"
 
 #, php-format
 msgid "Enable this to display plugin instructions at %u. A link to these instructions will be added to the %s menu."
-msgstr "啟用它以在 %u 顯示插件說明。 這些說明的鏈接將添加到 %s 菜單。"
+msgstr "啟用它以在 %u 顯示插件說明。 這些說明的連結將添加到 %s 菜單。"
 
 msgid "Use this to set a custom URL for %p. Please note that you need to manually replicate %s in this URL."
 msgstr "使用此選項可為%p設置自定義URL。 請注意，您需要在此URL中手動複製%s。"
@@ -3275,6 +3298,9 @@ msgstr "啟用此代表您允許用戶自行註冊賬號."
 
 msgid "Enable user content delete"
 msgstr "啟用用戶內容刪除"
+
+msgid "Enable this if you want to allow users to delete their own content."
+msgstr "如果您希望允許使用者刪除自己的內容，請啟用此選項。"
 
 msgid "Minimum age required"
 msgstr "最低年齡要求"
@@ -3438,7 +3464,7 @@ msgstr "隨機"
 
 #, php-format
 msgid "Enable this if you want to show a \"%s\" link at the footer."
-msgstr "如果您想在頁腳處顯示“%s”鏈接，請啟用此選項。"
+msgstr "如果您想在頁腳處顯示“%s”連結，請啟用此選項。"
 
 msgid "Likes"
 msgstr "喜歡"
@@ -3485,8 +3511,44 @@ msgstr "私密（任何知道連結的人）"
 msgid "Forced privacy modes will override user selected privacy."
 msgstr "全局隱私模式將覆蓋用戶選擇的隱私."
 
-msgid "If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %env% and when not set it fall-back to %var%."
-msgstr "如果檢測到的IP與您的IP不符，這意味著您的Web服務器正在使用代理。連接IP可以使用環境變數%env%中定義的HTTP標頭進行設置，當未設置時，它將回退到%var%。"
+#, php-format
+msgid "Hello and welcome, %s"
+msgstr "您好，%s"
+
+msgid "Whether you're an individual creator or a company looking for a powerful media sharing platform, Chevereto has you covered."
+msgstr "無論您是個人創作者還是正在尋找強大媒體共享平台的公司，Chevereto 都能滿足您的需求。"
+
+msgid "share your feedback"
+msgstr "分享您的回饋"
+
+#, php-format
+msgid "We're always looking for ways to improve, feel free to %s and suggestions."
+msgstr "我們一直在尋找改進的方法，請隨時向 %s 提出建議。"
+
+msgid "We are available for all your support and customization needs."
+msgstr "我們可以滿足您的所有支援和客製化需求。"
+
+msgid "Thank you for choosing Chevereto."
+msgstr "感謝您選擇Chevereto。"
+
+msgid "Chevereto creator"
+msgstr "Chevereto的創造者"
+
+#, php-format
+msgid "Provide Chevereto license key by assigning the environment variable %e or by creating the %f file containing the license key."
+msgstr "透過指派環境變數 %e 或建立包含許可證金鑰的 %f 檔案來提供 Chevereto 許可證金鑰。"
+
+msgid "You can also set the license key in the textarea below."
+msgstr "您也可以在下面的文字區域中設定許可證密鑰。"
+
+msgid "Chevereto license key"
+msgstr "Chevereto 許可證密鑰"
+
+msgid "PASTE LICENSE KEY HERE"
+msgstr "在此處貼上許可證密鑰"
+
+msgid "If the detected IP doesn't match yours it means that your web server is under a proxy. The connecting IP can be set using the HTTP header defined in the environment variable %e and when not set it fall-back to %v."
+msgstr "如果偵測到的 IP 與您的 IP 不匹配，則表示您的 Web 伺服器處於代理之下。連接 IP 可以使用環境變數 %e 中定義的 HTTP 標頭進行設置，如果不設置，則回退到 %v。"
 
 msgid "Make sure that you address this issue as the system relies on accurate IP detections to provide basic functionalities and to protect against spam, flooding, and brute force attacks."
 msgstr "由於系統依賴準確的IP檢測來提供基本功能並防止SPAM、泛濫式圖片上傳及暴力破解，因此請確保您已解決此問題。"
@@ -3498,8 +3560,9 @@ msgstr "磁盤"
 msgid "%s News"
 msgstr "%s 新聞"
 
-msgid "Installation details"
-msgstr "安裝細節"
+#, php-format
+msgid "%s edition"
+msgstr "%s 版本"
 
 msgid "Role"
 msgstr "規則"
@@ -3507,8 +3570,9 @@ msgstr "規則"
 msgid "Email address"
 msgstr "電子郵件地址"
 
-msgid "Play GIF"
-msgstr "播放 GIF"
+#, php-format
+msgid "Play %s"
+msgstr "播放 %s"
 
 msgid "Load 360° view"
 msgstr "加載 360° 視圖"
@@ -3564,12 +3628,14 @@ msgstr "%s ID"
 msgid "Add IP ban"
 msgstr "新增阻擋IP"
 
-msgid "Upload and share your images."
-msgstr "上傳並分享你的照片"
+msgid "Upload and share your media"
+msgstr "上傳並分享您的媒體"
 
-#, php-format
-msgid "Drag and drop anywhere you want and start uploading your images now. %s limit. Direct image links, BBCode and HTML thumbnails."
-msgstr "拖放在您任何想要的地方進行圖像上傳. %s 的圖片大小限制, 直接的圖片連結, BBCode代碼, HTML代碼, 縮圖."
+msgid "Drag and drop anywhere to start uploading."
+msgstr "拖曳到任何位置即可開始上傳。"
+
+msgid "Get direct links, Markdown, BBCode and HTML thumbnails."
+msgstr "取得直接連結、Markdown、BBCode 和 HTML 縮圖。"
 
 msgid "Sign up to unlock all the features"
 msgstr "註冊即可啟用所有的功能"
@@ -3605,8 +3671,14 @@ msgstr "請輸入您的密碼進行下一步."
 msgid "Unlock"
 msgstr "解鎖"
 
-msgid "Add image uploading to your website, blog or forum by installing our upload plugin. It provides image uploading to any website by placing a button that will allow your users to directly upload images to our service and it will automatically handle the codes needed for insertion. All features included like drag and drop, remote upload, image resizing and more."
-msgstr "通過安裝我們的上傳插件，將圖片上傳到您的網站，博客或論壇。 它通過放置一個按鈕，允許您的用戶直接將圖像上傳到我們的服務，並將自動處理插入所需的代碼，從而將圖像上傳到任何網站。 所有功能包括拖放，遠程上傳，圖像大小調整等。"
+msgid "Add media uploading and sharing to your website, blog or forum by installing our upload plugin."
+msgstr "透過安裝我們的上傳插件，將媒體上傳和分享添加到您的網站、部落格或論壇。"
+
+msgid "It provides file uploading to any website by placing a button that will allow your users to directly upload to our service and it will automatically handle the codes needed for insertion."
+msgstr "它透過放置一個按鈕來提供檔案上傳到任何網站的功能，該按鈕允許您的用戶直接上傳到我們的服務，並且它將自動處理插入所需的程式碼。"
+
+msgid "All features included like drag and drop, remote upload, image resizing and more."
+msgstr "包括拖放、遠端上傳、圖像大小調整等所有功能。"
 
 msgid "Supported software"
 msgstr "支持的軟件"
@@ -3680,8 +3752,8 @@ msgstr "%i 到 %f 個字元<br>字母, 數字 和 \"_\" 符號"
 msgid "Auto delete uploads"
 msgstr "自動刪除上傳"
 
-msgid "This setting will apply to all your image uploads by default. You can override this setting on each upload."
-msgstr "該設置將適用於在預設情況下所有的圖片上傳. 您可以使每個上傳應用此設置."
+msgid "This setting will apply to all your file uploads by default. You can override this setting on each upload."
+msgstr "預設情況下，此設定將套用至您上傳的所有檔案。您可以在每次上傳時覆蓋此設定。"
 
 #, php-format
 msgid "Keep image <a %s>Exif data</a> on upload"
@@ -3725,7 +3797,7 @@ msgid "User has no connections."
 msgstr "用戶沒有任何連結"
 
 msgid "Link your account to external login providers to be able to login here."
-msgstr "將您的帳戶與外部登錄提供者鏈接，以便能夠在此處登錄"
+msgstr "將您的帳戶與外部登錄提供者連結，以便能夠在此處登錄"
 
 #, php-format
 msgid "Do you really want to disconnect %s from this account?"
@@ -3794,9 +3866,6 @@ msgstr "此實例托管在由 Chevereto 軟體提供的服務層中，Chevereto 
 
 msgid "This service is based on Chevereto self-hosted edition."
 msgstr "此服務基於 Chevereto 自託管版。"
-
-msgid "Usage of Chevereto Software must be in compliance with the software license terms known as \"The Chevereto License\"."
-msgstr "使用 Chevereto 軟體必須遵守被稱為「Chevereto 授權」的軟體授權條款。"
 
 msgid "This instance is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this instance and it won't be responsible for this service neither the damages that this service may cause."
 msgstr "此實例托管在未由 Chevereto 軟體提供的服務層中，Chevereto 軟體在此聲明對於此實例的管理層沒有任何控制權或訪問權限，並且不對此服務或由此服務引起的任何損害負責。"

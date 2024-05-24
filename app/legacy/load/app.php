@@ -9,5 +9,5 @@
  * file that was distributed with this source code.
  */
 
-const APP_VERSION = '4.1.3';
+const APP_VERSION = '4.1.4';
 const APP_VERSION_AKA = 'pulento';

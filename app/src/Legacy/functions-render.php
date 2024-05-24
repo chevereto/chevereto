@@ -1045,6 +1045,9 @@ function getThemeLogo(): string
 
 function badgePaid(string $edition): string
 {
+    if ($edition === 'lite') {
+        $edition = 'pro';
+    }
     if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
         return '';
     }
@@ -1057,6 +1060,9 @@ function badgePaid(string $edition): string
 
 function linkPaid(string $edition): ?string
 {
+    if ($edition === 'lite') {
+        $edition = 'pro';
+    }
     if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
         return null;
     }
@@ -1069,6 +1075,9 @@ function linkPaid(string $edition): ?string
 
 function inputDisabledPaid(string $edition): string
 {
+    if ($edition === 'lite') {
+        $edition = 'pro';
+    }
     if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
         return '';
     }

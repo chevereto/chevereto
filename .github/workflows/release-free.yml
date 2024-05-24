@@ -1,4 +1,4 @@
-name: Release
+name: Release Free edition
 
 on:
   push:

@@ -795,6 +795,7 @@ class Image
             $uploadDir = dirname($resizeSourceImage);
             $chainExtension = $image_upload['uploaded']['extension'];
             if ($image_upload['source']['type'] === 'video') {
+                $must_resize = false;
                 $chainExtension = 'jpeg';
                 $frameImage = $uploadDir
                     . '/'

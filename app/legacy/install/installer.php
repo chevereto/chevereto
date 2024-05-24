@@ -13,8 +13,6 @@ use function Chevere\Filesystem\filePhpForPath;
 use function Chevere\Message\message;
 use function Chevere\String\randomString;
 use Chevere\Throwable\Exceptions\LogicException;
-use function Chevereto\Encryption\encryptValues;
-use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Encryption\randomKey;
 use function Chevereto\Legacy\chevereto_die;
 use Chevereto\Legacy\Classes\DB;
@@ -608,6 +606,7 @@ $settings_updates = [
     '4.1.3' => [
         'user_profile_view' => 'files',
     ],
+    '4.1.4' => null,
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -925,83 +924,6 @@ if (isset($installed_version) && empty($paramsCheck)) {
             chevereto_die('', '<p>Database table storage engine needs to be updated to InnoDB. Run the following command(s) in your MySQL console:</p><textarea class="resize-vertical highlight r5">' . implode("\n", $update_table_storage) . '</textarea><p>Review <a href="https://dev.mysql.com/doc/refman/8.0/en/converting-tables-to-innodb.html" target="_blank">Converting Tables from MyISAM to InnoDB</a>.</p>', "Convert MyISAM tables to InnoDB");
         }
         $isUtf8mb4 = version_compare($installed_version, '3.12.10', '>');
-        if (version_compare($installed_version, '4.0.0-beta.11', '<')) {
-            $loginProviders = array_map(
-                function (string $value) {
-                    return getSetting($value);
-                },
-                [
-                    'facebook' => 'facebook',
-                    'twitter' => 'twitter',
-                    'google' => 'google',
-                    'vk' => 'vk',
-                    'facebook_key' => 'facebook_app_id',
-                    'facebook_secret' => 'facebook_app_secret',
-                    'twitter_key' => 'twitter_api_key',
-                    'twitter_secret' => 'twitter_api_secret',
-                    'google_key' => 'google_client_id',
-                    'google_secret' => 'google_client_secret',
-                    'vk_key' => 'vk_client_id',
-                    'vk_secret' => 'vk_client_secret',
-                ]
-            );
-            if (hasEncryption()) {
-                $loginProviders = encryptValues(
-                    [
-                        'facebook_key',
-                        'facebook_secret',
-                        'twitter_key',
-                        'twitter_secret',
-                        'google_key',
-                        'google_secret',
-                        'vk_key',
-                        'vk_secret',
-                    ],
-                    $loginProviders
-                );
-            }
-            $queryLoginProviders =
-                <<<SQL
-                UPDATE `%table_prefix%login_providers`
-                SET `login_provider_key_id` = ':key', `login_provider_key_secret` = ':secret', `login_provider_is_enabled` = ':is_enabled'
-                WHERE `login_provider_name` = ':provider';
-                SQL;
-            $loginProvidersBinds = [];
-            foreach (['facebook', 'twitter', 'google', 'vk'] as $provider) {
-                $loginProvidersBinds[] = [
-                    ':provider' => $provider === 'vk' ? 'Vkontakte' : $provider,
-                    ':is_enabled' => (int) $loginProviders[$provider],
-                    ':key' => addcslashes($loginProviders[$provider . '_key'] ?? '', "'"),
-                    ':secret' => addcslashes($loginProviders[$provider . '_secret'] ?? '', "'")
-                ];
-            }
-            $loginUpdateQueries = '';
-            foreach ($loginProvidersBinds as $binds) {
-                $loginUpdateQueries .= strtr($queryLoginProviders, $binds);
-            }
-        }
-        if (version_compare($installed_version, '4.0.0', '<')) {
-            $passwordAlbums = DB::queryFetchAll(
-                DB::getQueryWithTablePrefix(
-                    <<<SQL
-                    SELECT album_id id, album_password password
-                    FROM `%table_prefix%albums`
-                    WHERE album_password IS NOT NULL;
-                    SQL
-                )
-            );
-            $albumUpdateQueries = '';
-            foreach ($passwordAlbums as $album) {
-                $hashAlbum = password_hash($album['password'], PASSWORD_BCRYPT);
-                $albumUpdateQueries .=
-                    <<<SQL
-                    UPDATE `%table_prefix%albums`
-                    SET album_password = '{$hashAlbum}'
-                    WHERE album_id = {$album['id']};
-
-                    SQL;
-            }
-        }
         $update_table = [
             '3.1.0' => [
                 'logins' => [

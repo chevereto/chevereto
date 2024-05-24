@@ -13,14 +13,19 @@ namespace Chevereto\Legacy\G;
 
 use function Chevere\Message\message;
 use Chevereto\Config\Config;
+use Chevereto\Config\HostConfig;
+
 use function Chevereto\Legacy\get_captcha_component;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Vars\env;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\request;
 use function Chevereto\Vars\server;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
+use function Ramsey\Uuid\v1;
+
 use Closure;
 use Exception;
 use LogicException;
@@ -79,13 +84,22 @@ class Handler
         $this->path_theme = PATH_PUBLIC_LEGACY_THEME;
         $this->request_uri = server()['REQUEST_URI'] ?? '/';
         $this->script_name = server()['SCRIPT_NAME'] ?? '';
+        if($this->script_name !== '') {
+            $relative_root = sanitize_path_slashes(dirname($this->script_name) . '/');
+            if ($relative_root !== $this->relative_root) {
+                throw new LogicException(
+                    'Missing CHEVERETO_HOSTNAME_PATH='.$relative_root.' configuration'
+                );
+            }
+        }
         $query_string = '?' . (server()['QUERY_STRING'] ?? '');
         if (!empty(server()['QUERY_STRING'])) {
             $this->request_uri = str_replace($query_string, '/', $this->request_uri);
+            $this->request_uri = sanitize_path_slashes($this->request_uri);
         }
         $this->valid_request = '/' . ltrim(rtrim(sanitize_path_slashes($this->request_uri), '/'), '/');
-        $theRequest = rtrim(PATH_PUBLIC, '/') . $this->valid_request;
-        if ($this->valid_request !== '/' && file_exists($theRequest)) {
+        $pathRequest = rtrim(PATH_PUBLIC, $this->relative_root) . $this->valid_request;
+        if ($this->request_uri !== $this->relative_root && file_exists($pathRequest)) {
             throw new LogicException('Invalid PHP front controller setup. Review your web server configuration.');
         }
         if (!empty(server()['QUERY_STRING'])) {
@@ -126,7 +140,6 @@ class Handler
             $this->canonical_request = rtrim($this->canonical_request, '/');
             redirect((sanitize_path_slashes(str_replace('index.php', '', $this->canonical_request))), 301);
         }
-
         if ($this->relative_root !== $this->request_uri
             && $this->canonical_request !== $this->request_uri
         ) {
