@@ -292,6 +292,10 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | Supports Tinkerwel REPL                            |   ✅   |           ✅           |           ✅           |
 | Queue handling                                     |   –   |           –           |           ✅           |
 
+## Contributing
+
+Chevereto is an open-source project, and we welcome contributions of all kinds. Any help is appreciated! The main goal is to improve the software and make it better for everyone. Any contribution made on this repository will abide by the AGPLv3 license, which means that your contributions will be open-source and available to everyone.
+
 ## License
 
 ### Open Source license
