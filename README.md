@@ -14,11 +14,13 @@
 [![Legacy stars](https://img.shields.io/github/stars/rodber/chevereto-free?style=flat-square&logo=github&label=Legacy%20stars&color=red)](https://github.com/rodber/chevereto-free)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
-> 🔔 [Subscribe](https://chv.to/newsletter) to don't miss any update regarding Chevereto.
+> 🔔 [Subscribe](https://chevereto.com/go/newsletter) to don't miss any update regarding Chevereto.
 
-Chevereto enables to create a media sharing website on your own server. It's your hosting and your rules, say goodbye to closures and restrictions. ⭐️ [Live demo](https://demo.chevereto.com)
+Chevereto is a powerful, self-hosted media-sharing platform that emphasizes flexibility and control. It allows you to create a media-sharing website on your own server, giving you full autonomy over your hosting environment and policies. With Chevereto, you can say goodbye to platform restrictions and closures, ensuring your site operates entirely on your terms.
 
-Chevereto is a turnkey system which main use case is to provide a self-hosted platform for content creators, communities and businesses. It's features are all about media sharing, with a strong focus on user experience, privacy and security. On its pro edition Chevereto excels as a content management system with heavy business related features that you won't get on other systems.
+Our [commercial edition](https://chevereto.com/pricing) is designed for running very large media-sharing services, offering scalability and tools to manage multiple users, high traffic, and extensive media collections.
+
+⭐️ [Live demo](https://demo.chevereto.com)
 
 ![screen](.github/screen/user-profile.jpeg)
 
@@ -39,8 +41,6 @@ Chevereto is also available at [DigitalOcean Marketplace](https://chevereto.com/
 
 ## Updating
 
-For Chevereto V4 users:
-
 * Follow the [Updating guide](https://v4-docs.chevereto.com/application/installing/updating.html) to keep your Chevereto V4 system updated.
 
 ## Upgrading
@@ -50,10 +50,15 @@ For Chevereto V3 users:
 * Follow the [Upgrading guide](https://v4-docs.chevereto.com/application/installing/upgrading.html) to upgrade to Chevereto V4.
 * Check the [Welcome Back](https://v4-docs.chevereto.com/introduction/changelog/welcome-back.html#from-chevereto-v3) reference.
 
+For Chevereto V2 users:
+
+* Follow the [Upgrading guide](https://v3-docs.chevereto.com/setup/server/upgrading.html) but skip directly to Chevereto V4.
+
 ## Files supported
 
-With Chevereto you can upload and share the following media types from device file browser, drag and drop, on-the-fly device camera (video and photos), clipboard, URL, ShareX and via API.
+Upload and share the following media types from device file browser, drag and drop, on-the-fly device camera, clipboard, URL, ShareX and via API.
 
+* image/avif
 * image/jpeg
 * image/gif
 * image/png
@@ -65,15 +70,11 @@ With Chevereto you can upload and share the following media types from device fi
 
 ## Documentation
 
-Chevereto is so **feature-rich**, mature and robust that we need three layers of documentation for it. The Chevereto software project started on **2007** and it has been actively maintained since then.
-
-* [Documentation](https://v4-docs.chevereto.com)
-* [User manual](https://v4-user.chevereto.com/)
-* [Admin manual](https://v4-admin.chevereto.com/)
+Chevereto [Documentation](https://v4-docs.chevereto.com) covers the system requirements, installation, configuration, and usage of the software. It also includes a [User manual](https://v4-user.chevereto.com/) and an [Admin manual](https://v4-admin.chevereto.com/).
 
 ## Features
 
-**Note:** This is the repository for Chevereto free edition. This software is intended for **personal usage** as it doesn't contain [all the features](https://chevereto.com/features) of commercial editions. This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a free demo of the pro edition at [chevereto.com](https://chevereto.com) to see all the features in action.
+This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a free demo of the pro edition at [chevereto.com](https://chevereto.com) to see all the features in action.
 
 ### Uploading features
 
