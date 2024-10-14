@@ -2151,7 +2151,7 @@ $(function () {
                         data.release_notes.trim() +
                         "</textarea>" +
                         '<p>' +
-                        PF.fn._s("Check the %s for alternative update methods.", '<a href="https://chv.to/v4update" target="_blank">' + PF.fn._s('documentation') + '</a>') +
+                        PF.fn._s("Check the %s for alternative update methods.", '<a href="https://chevereto.com/go/v4update" target="_blank">' + PF.fn._s('documentation') + '</a>') +
                         '</p>' +
                         '<div class="btn-container margin-bottom-0">' +
                         '<a href="' +

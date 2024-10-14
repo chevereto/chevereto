@@ -574,7 +574,7 @@ function exception_to_error(Throwable $e, bool $print = true): string
         2 => "debug @ print",
         3 => "debug @ print,$device",
     ];
-    $internal_error .= ' [' . $table[$debug_level] . '] - https://chv.to/v4debug';
+    $internal_error .= ' [' . $table[$debug_level] . '] - https://chevereto.com/go/v4debug';
     $message = [$internal_error, '', '** errorId #' . $errorId . ' **'];
     $previous = $e;
     $messageStock = [];
