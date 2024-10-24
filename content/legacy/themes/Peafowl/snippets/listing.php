@@ -6,7 +6,7 @@ use function Chevereto\Legacy\G\filter_string_polyfill;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_global;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\show_banner;
 use function Chevereto\Vars\get;
@@ -27,19 +27,36 @@ foreach ($tabs as $tab) {
     if (isset($tab['list']) && $tab['list'] === false) {
         continue;
     }
+    if($tab['type'] === 'files') {
+        $tab['type'] = 'images';
+    }
     if ($tab['current']) {
         ?>
         <div id="<?php echo $tab["id"]; ?>" class="tabbed-content content-listing visible list-<?php echo $tab["type"]; ?>" data-action="list" data-list="<?php echo $tab["type"]; ?>" data-params="<?php echo $tab["params"]; ?>" data-params-hidden="<?php echo $tab["params_hidden"] ?? ''; ?>">
-            <?php
-                    if ($listing->output !== []) {
-                        ?>
-                <div class="pad-content-listing"><?php echo $listing->htmlOutput($listing->outputTpl() ?? null); ?></div>
-                <?php
-                            if (count($listing->output) >= $listing->limit()) {
-                                ?>
+<?php
+        if ($listing->output !== []) {
+?>
+                <div class="pad-content-listing">
+<?php
+            if($tab['type'] === 'tags') {
+?>
+                    <ul class="content-tags" data-content="tags">
+<?php
+                echo $listing->htmlOutput('tags');
+?>
+                    </ul>
+<?php
+            } else {
+                echo $listing->htmlOutput($listing->outputTpl());
+            }
+?>
+                </div>
+<?php
+            if (count($listing->output) >= $listing->limit()) {
+?>
                     <div class="content-listing-loading"></div>
-                    <?php
-                            }
+<?php
+            }
                         if ($do_pagination and ($isClassic or count($listing->output) >= $listing->limit())) { // pagination
                             if ($isClassic) {
                                 show_banner('listing_before_pagination', $listing->sfw());
@@ -113,12 +130,12 @@ foreach ($tabs as $tab) {
                         if ($do_pagination && $isClassic == false) {
                             ?>
                     <div class="content-listing-more">
-                        <button class="btn default" data-action="load-more" data-seek="<?php echo $listing->seekEnd; ?>"><i class="fas fa-plus-circle"></i> <?php _se('Load more'); ?></button>
+                        <button class="btn default" data-action="load-more" data-seek="<?php echo $listing->seekEnd; ?>"><i class="fas fa-plus-circle margin-right-5"></i><?php _se('Load more'); ?></button>
                     </div>
             <?php
                         }
                     } else { // Results?
-                        include_theme_file("snippets/template_content_empty");
+                        require_theme_file("snippets/template_content_empty");
                     } ?>
         </div>
     <?php
@@ -131,6 +148,6 @@ foreach ($tabs as $tab) {
 } // for
 ?>
 <?php
-include_theme_file("snippets/viewer_template");
-include_theme_file("snippets/templates_content_listing");
+require_theme_file("snippets/viewer_template");
+require_theme_file("snippets/templates_content_listing");
 ?>

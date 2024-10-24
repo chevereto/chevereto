@@ -13,27 +13,20 @@ use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Search;
 use Chevereto\Legacy\Classes\User;
-use function Chevereto\Legacy\G\check_value;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\get_share_links;
-use function Chevereto\Vars\env;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\request;
 
 return function (Handler $handler) {
-    if (!(bool) env()['CHEVERETO_ENABLE_USERS']) {
-        $handler->issueError(403);
-
-        return;
-    }
     if ($handler::cond('search_enabled') == false) {
         $handler->issueError(404);
 
         return;
     }
-    if (post() !== [] && !$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+    if (post() !== [] && ! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
         $handler->issueError(403);
 
         return;
@@ -43,14 +36,14 @@ return function (Handler $handler) {
 
         return;
     } // Allow only 3 levels
-    if (is_null($handler->request()[0] ?? null)) {
+    if (null === ($handler->request()[0] ?? null)) {
         $handler->issueError(404);
 
         return;
     }
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
-    if (!in_array($handler->request()[0], ['images', 'albums', 'users'])) {
+    if (! in_array($handler->request()[0], ['images', 'albums', 'users'])) {
         $handler->issueError(404);
 
         return;
@@ -61,8 +54,8 @@ return function (Handler $handler) {
     $search->request = request();
     $search->requester = Login::getUser();
     $search->build();
-    if (!check_value($search->q)) {
-        redirect();
+    if ($search->q === '') {
+        redirect('', 302);
 
         return;
     }
@@ -97,7 +90,10 @@ return function (Handler $handler) {
     $tabs = Listing::getTabs([
         'listing' => 'search',
         'basename' => 'search',
-        'params' => ['q' => $safe_html_search['q'], 'page' => '1'],
+        'params' => [
+            'q' => $safe_html_search['q'],
+            'page' => '1',
+        ],
         'params_remove_keys' => ['sort'],
     ], $getParams);
     foreach ($tabs as &$v) {
@@ -106,17 +102,23 @@ return function (Handler $handler) {
     $meta_description = '';
     switch ($search->type) {
         case 'images':
-            $meta_description = _s('%t search results for %s', ['%t' => _n('Image', 'Images', 1)]);
+            $meta_description = _s('%t search results for %s', [
+                '%t' => _n('Image', 'Images', 1),
+            ]);
 
-        break;
+            break;
         case 'albums':
-            $meta_description = _s('%t search results for %s', ['%t' => _n('Album', 'Albums', 1)]);
+            $meta_description = _s('%t search results for %s', [
+                '%t' => _n('Album', 'Albums', 1),
+            ]);
 
-        break;
+            break;
         case 'users':
-            $meta_description = _s('%t search results for %s', ['%t' => _n('User', 'Users', 1)]);
+            $meta_description = _s('%t search results for %s', [
+                '%t' => _n('User', 'Users', 1),
+            ]);
 
-        break;
+            break;
     }
     $handler::setVar('pre_doctitle', $search->q . ' - ' . _s('Search'));
     $handler::setVar('meta_description', sprintf($meta_description, $safe_html_search['q']));
@@ -127,4 +129,5 @@ return function (Handler $handler) {
         $handler::setVar('user_items_editor', false);
     }
     $handler::setVar('share_links_array', get_share_links());
+    $handler::setVar('meta_robots', 'noindex, follow');
 };

@@ -36,7 +36,8 @@ if (env()['CHEVERETO_CONTEXT'] === 'saas') {
     max-width: 100%;
 }
 .powered-by--vendor {
-    font-size: 90%;
+    margin-top: 20px;
+    font-size: 1em;
 }
 .powered-by--vendor a {
     color: inherit;
@@ -44,13 +45,13 @@ if (env()['CHEVERETO_CONTEXT'] === 'saas') {
 .powered-by--fineprint {
     font-size: 75% !important;
     text-align: justify;
-    text-transform: uppercase;
     opacity: 0.7;
+    text-transform: uppercase;
 }
 </style>
 <div class="powered-by powered-by--vendor">
     <div class="display-inline-block margin-left-auto margin-right-auto"><a href="https://chevereto.com" target="_blank" rel="nofollow"><img src="<?php echo absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg'); ?>" alt="" width="212"></a></div>
-    <p><a href="https://chevereto.com/" target="_blank" class="btn btn-small default text-transform-uppercase"><span class="btn-icon fa-btn-icon fas fa-power-off"></span> chevereto.com</a></p>
+    <p><a href="https://chevereto.com/" target="_blank" class="btn btn-small default text-transform-uppercase"><span class="fas fa-power-off"></span> chevereto.com</a></p>
     <div class="powered-by--fineprint c12 phone-c1 phablet-c1">
         <p><?php echo $about; ?></p>
         <p><?php echo $liability ?></p>

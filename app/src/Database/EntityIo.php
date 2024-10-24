@@ -11,11 +11,11 @@
 
 namespace Chevereto\Database;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevereto\Database\Traits\GetWhereEqualsTrait;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Result;
+use OutOfBoundsException;
+use function Chevere\Message\message;
 
 /**
  * Provides database I/O for the X entity.
@@ -26,8 +26,9 @@ abstract class EntityIo implements EntityIoInterface
 
     protected string $whereIdClause;
 
-    public function __construct(protected Database $database)
-    {
+    public function __construct(
+        protected Database $database
+    ) {
         $this->whereIdClause = $this->getWhereEquals($this->id());
     }
 
@@ -48,8 +49,7 @@ abstract class EntityIo implements EntityIoInterface
         $fetch = $result->fetchAssociative();
         if ($fetch === false) {
             throw new OutOfBoundsException(
-                message('No record exists for id %id%')
-                    ->withCode('%id%', (string) $id)
+                message('No record exists for id `%id%`', (string) $id)
             );
         }
 

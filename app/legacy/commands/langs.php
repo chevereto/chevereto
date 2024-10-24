@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-use function Chevere\Filesystem\directoryForPath;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\G\Gettext;
+use function Chevere\Filesystem\directoryForPath;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\get_available_languages;
 
@@ -27,20 +27,20 @@ foreach ($languages as $lang) {
     $language_override_file = PATH_APP_LANGUAGES . 'overrides/' . $filename;
     $language_handling = [
         'base' => [
-          'file' => $language_file,
-          'cache_path' => L10n::PATH_CACHE,
-          'table' => [],
+            'file' => $language_file,
+            'cache_path' => L10n::PATH_CACHE,
+            'table' => [],
         ],
         'override' => [
-          'file' => $language_override_file,
-          'cache_path' => L10n::PATH_CACHE_OVERRIDES,
-          'table' => [],
-        ]
+            'file' => $language_override_file,
+            'cache_path' => L10n::PATH_CACHE_OVERRIDES,
+            'table' => [],
+        ],
     ];
     foreach ($language_handling as $k => $v) {
         $cache_path = $v['cache_path'];
         $cache_file = basename($v['file']) . '.cache.php';
-        if (!file_exists($v['file'])) {
+        if (! file_exists($v['file'])) {
             continue;
         }
         $cache = $cache_path . $cache_file;
@@ -51,12 +51,12 @@ foreach ($languages as $lang) {
             'cache_header' => $k == 'base',
         ]);
     }
-    echo "$lang\n";
+    echo "{$lang}\n";
     if (file_exists($language_override_file)) {
-        echo "$lang [override]\n";
+        echo "{$lang} [override]\n";
     }
 }
 echo "---\n";
 echo L10n::LOCALES_AVAILABLE_FILEPATH . "\n";
 echo "💯 [OK] Languages re-cached\n";
-die(0);
+exit(0);

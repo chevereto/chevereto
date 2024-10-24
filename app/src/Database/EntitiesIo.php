@@ -11,10 +11,9 @@
 
 namespace Chevereto\Database;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevereto\Database\Traits\GetWhereEqualsTrait;
 use Doctrine\DBAL\Result;
+use OutOfBoundsException;
 
 /**
  * Provides database I/O for the X entities.
@@ -63,7 +62,7 @@ abstract class EntitiesIo implements EntitiesIoInterface
         $fetch = $result->fetchAllAssociative();
         if ($fetch === false) {
             throw new OutOfBoundsException(
-                message: message('No record exists for values provided')
+                'No record exists for values provided'
             );
         }
 

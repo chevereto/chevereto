@@ -12,8 +12,7 @@
 namespace Chevereto\Actions\Legacy\Api\V1;
 
 use Chevere\Action\Action;
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 
 class LegacyApiV1VerifyKeyAction extends Action
 {
@@ -23,8 +22,8 @@ class LegacyApiV1VerifyKeyAction extends Action
     ): array {
         if ($key !== $apiV1Key) {
             throw new InvalidArgumentException(
-                message: message('Invalid API V1 key provided'),
-                code: 100
+                'Invalid API V1 key provided',
+                100
             );
         }
 

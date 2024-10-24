@@ -9,16 +9,12 @@
  * file that was distributed with this source code.
  */
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\ThrowableHandler\Documents\PlainDocument;
-use function Chevere\ThrowableHandler\throwableHandler;
-use function Chevere\Writer\writers;
-use function Chevere\Xr\throwableHandler as XrThrowableHandler;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\ApiKey;
+use Chevereto\Legacy\Classes\Category;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Follow;
 use Chevereto\Legacy\Classes\HybridauthSession;
@@ -33,8 +29,16 @@ use Chevereto\Legacy\Classes\Search;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\Stat;
 use Chevereto\Legacy\Classes\Storage;
+use Chevereto\Legacy\Classes\Tag;
 use Chevereto\Legacy\Classes\TwoFactor;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
+use Hybridauth\Hybridauth;
+use function Chevere\Message\message;
+use function Chevere\ThrowableHandler\throwableHandler;
+use function Chevere\Writer\writers;
+use function Chevere\xrDebug\PHP\throwableHandler as XrThrowableHandler;
+use function Chevereto\Legacy\assertMaxCount;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\G\array_filter_array;
@@ -45,10 +49,9 @@ use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_public_url;
-use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\json_output;
+use function Chevereto\Legacy\G\json_document_output;
 use function Chevereto\Legacy\G\nullify_string;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\isDebug;
@@ -60,14 +63,13 @@ use function Chevereto\Vars\files;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\request;
 use function Chevereto\Vars\session;
-use Hybridauth\Hybridauth;
 
 return function (Handler $handler) {
     try {
         $REQUEST = request();
         $FILES = files();
         $POST = post();
-        if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+        if (! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
             throw new Exception(_s('Request denied'), 401);
         }
         $logged_user = Login::getUser();
@@ -80,45 +82,59 @@ return function (Handler $handler) {
         if ($logged_user && $logged_user['status'] !== 'valid') {
             $doing = 'deny';
         }
-        if (in_array($doing, ['importStats', 'importEdit', 'importDelete', 'importReset', 'importResume'])) {
-            if (Login::isAdmin() == false) {
+        if (in_array($doing, ['importStats', 'importEdit', 'importDelete', 'importReset', 'importResume'], true)) {
+            if (Login::isAdmin() === false) {
                 throw new Exception(_s('Request denied'), 403);
             }
             $import = new Import();
         }
         switch ($doing) {
             case 'upload': // EX 100
-                if (!$handler::cond('upload_allowed')) {
-                    throw new Exception(_s('Request denied'), 403);
-                }
-                $source = $REQUEST['type'] == 'file' ? $FILES['source'] : $REQUEST['source'];
+                // NOTE: This is considering assets and user uploads as the same "upload" action
+
+                $source = $REQUEST['type'] === 'file'
+                    ? $FILES['source']
+                    : $REQUEST['source'];
                 $type = $REQUEST['type'];
-                $owner_id = !empty($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'] ?? null;
-                if (isset($REQUEST['what']) && in_array($REQUEST['what'], ['avatar', 'background'])) {
+                /** @var ?int $owner_id */
+                $owner_id = ! empty($REQUEST['owner'])
+                    ? decodeID($REQUEST['owner'])
+                    : ($logged_user['id'] ?? null);
+
+                if (isset($REQUEST['what'])
+                    && in_array($REQUEST['what'], ['avatar', 'background'], true)
+                ) {
                     if ($logged_user === []) {
                         throw new Exception(_s('Login needed'), 403);
                     }
-                    if (!$handler::cond('content_manager') && $owner_id != $logged_user['id']) {
+                    if (! $handler::cond('content_manager') && $owner_id !== $logged_user['id']) {
                         throw new Exception('Invalid content owner request', 115);
                     }
                     $user_picture_upload = User::uploadPicture(
-                        $owner_id == $logged_user['id']
+                        $owner_id === $logged_user['id']
                             ? $logged_user
                             : $owner_id,
                         $REQUEST['what'],
                         $source
                     );
-                    $json_array['success'] = ['image' => $user_picture_upload, 'message' => sprintf('%s picture uploaded', ucfirst($type)), 'code' => 200];
+                    $json_array['success'] = [
+                        'image' => $user_picture_upload,
+                        'message' => sprintf('%s picture uploaded', ucfirst($type)),
+                        'code' => 200,
+                    ];
 
                     break;
+                }
+                if (! $handler::cond('upload_allowed')) {
+                    throw new Exception(_s('Request denied'), 403);
                 }
                 if ($handler::cond('forced_private_mode')) {
                     $REQUEST['privacy'] = getSetting('website_content_privacy_mode');
                 }
-                if (!empty($REQUEST['album_id'])) {
+                if (! empty($REQUEST['album_id'])) {
                     $REQUEST['album_id'] = decodeID($REQUEST['album_id']);
                 }
-                if (!$handler::cond('content_manager') && getSetting('akismet')) {
+                if (! $handler::cond('content_manager') && getSetting('akismet')) {
                     Akismet::checkImage(
                         $REQUEST['title'] ?? null,
                         $REQUEST['description'] ?? null,
@@ -131,7 +147,10 @@ return function (Handler $handler) {
                 }
                 $uploaded_id = intval($uploadToWebsite[0]);
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => 'file uploaded', 'code' => 200];
+                $json_array['success'] = [
+                    'message' => 'file uploaded',
+                    'code' => 200,
+                ];
                 $image = Image::getSingle($uploaded_id);
                 if ($image === []) {
                     throw new LogicException(
@@ -139,8 +158,12 @@ return function (Handler $handler) {
                     );
                 }
                 $image = Image::formatArray($image, true);
-                $image['delete_url'] = Image::getDeleteUrl(encodeID($uploaded_id), $uploadToWebsite[1]);
-                if (!$image['is_approved']) {
+                $image['delete_url'] = Image::getDeleteUrl(
+                    type: $image['type'],
+                    idEncoded: encodeID($uploaded_id),
+                    password: $uploadToWebsite[1]
+                );
+                if (! $image['is_approved']) {
                     unset($image['image']['url'], $image['thumb']['url'], $image['medium']['url'], $image['url'], $image['display_url']);
                 }
                 $json_array['image'] = $image;
@@ -148,8 +171,8 @@ return function (Handler $handler) {
                 break;
             case 'get-album-contents':
             case 'list': // EX 200
-                if ($doing == 'get-album-contents') {
-                    if (!isShowEmbedContent()) {
+                if ($doing === 'get-album-contents') {
+                    if (! isShowEmbedContent()) {
                         throw new Exception(_s('Request denied'), 403);
                     }
                     $list_request = 'images';
@@ -159,7 +182,7 @@ return function (Handler $handler) {
                 } else {
                     $list_request = $REQUEST['list'];
                 }
-                if (!in_array($list_request, ['images', 'albums', 'users'])) {
+                if (! in_array($list_request, ['images', 'albums', 'users', 'tags'], true)) {
                     throw new Exception('Invalid list request', 100);
                 }
                 $output_tpl = $list_request;
@@ -171,7 +194,7 @@ return function (Handler $handler) {
                         }
                     }
                 }
-                if (!empty($REQUEST['albumid'])) {
+                if (! empty($REQUEST['albumid'])) {
                     $album_id = decodeID($REQUEST['albumid']);
                 }
                 $owner_id = null;
@@ -180,49 +203,49 @@ return function (Handler $handler) {
                     case 'images':
                         $binds = [];
                         $where = '';
-                        if (!empty($REQUEST['like_user_id'])) {
+                        if (! empty($REQUEST['like_user_id'])) {
                             $where .= 'WHERE like_user_id=:image_user_id';
                             $binds[] = [
                                 'param' => ':image_user_id',
                                 'value' => decodeID($REQUEST['like_user_id']),
                             ];
                         }
-                        if (!empty($REQUEST['follow_user_id'])) {
-                            $where .= ($where == '' ? 'WHERE' : ' AND') . ' follow_user_id=:image_user_id';
+                        if (! empty($REQUEST['follow_user_id'])) {
+                            $where .= ($where === '' ? 'WHERE' : ' AND') . ' follow_user_id=:image_user_id';
                             $binds[] = [
                                 'param' => ':image_user_id',
                                 'value' => decodeID($REQUEST['follow_user_id']),
                             ];
                         }
-                        if (!empty($REQUEST['userid'])) {
+                        if (! empty($REQUEST['userid'])) {
                             $owner_id = decodeID($REQUEST['userid']);
-                            $where .= ($where == '' ? 'WHERE' : ' AND') . ' image_user_id=:image_user_id';
+                            $where .= ($where === '' ? 'WHERE' : ' AND') . ' image_user_id=:image_user_id';
                             $binds[] = [
                                 'param' => ':image_user_id',
                                 'value' => $owner_id,
                             ];
                         }
                         if (isset($album_id)) {
-                            $where .= ($where == '' ? 'WHERE' : ' AND') . ' image_album_id=:image_album_id';
+                            $where .= ($where === '' ? 'WHERE' : ' AND') . ' image_album_id=:image_album_id';
                             $binds[] = [
                                 'param' => ':image_album_id',
                                 'value' => $album_id,
                             ];
                             $album = Album::getSingle($album_id);
-                            if ($album['user']['id']) {
+                            if ($album['user']['id'] ?? false) {
                                 $owner_id = $album['user']['id'];
                             }
-                            if ($album['privacy'] == 'password'
+                            if ($album['privacy'] === 'password'
                                 && (
-                                    !$handler::cond('content_manager')
-                                    && $owner_id != ($logged_user['id'] ?? 0)
-                                    && !Album::checkSessionPassword($album)
+                                    ! $handler::cond('content_manager')
+                                    && $owner_id !== ($logged_user['id'] ?? 0)
+                                    && ! Album::checkSessionPassword($album)
                                 )
                             ) {
                                 throw new Exception(_s('Request denied'), 403);
                             }
                         }
-                        if (!empty($REQUEST['category_id']) and is_numeric($REQUEST['category_id'])) {
+                        if (! empty($REQUEST['category_id']) && is_numeric($REQUEST['category_id'])) {
                             $category = $REQUEST['category_id'];
                         }
                         if (isset($REQUEST['from'])) {
@@ -242,7 +265,7 @@ return function (Handler $handler) {
                     case 'albums':
                         $binds = [];
                         $where = '';
-                        if (!empty($REQUEST['userid'])) {
+                        if (! empty($REQUEST['userid'])) {
                             $owner_id = decodeID($REQUEST['userid']);
                             $where .= 'WHERE album_user_id=:album_user_id';
                             $binds[] = [
@@ -263,7 +286,7 @@ return function (Handler $handler) {
                             }
                         }
                         if (isset($album_id)) {
-                            $where .= ($where == '' ? 'WHERE' : ' AND') . ' album_parent_id=:album_id';
+                            $where .= ($where === '' ? 'WHERE' : ' AND') . ' album_parent_id=:album_id';
                             $binds[] = [
                                 'param' => ':album_id',
                                 'value' => $album_id,
@@ -273,10 +296,24 @@ return function (Handler $handler) {
                         break;
                     case 'users':
                         $where = '';
-                        if (getSetting('enable_followers') and (!empty($REQUEST['following_user_id']) or !empty($REQUEST['followers_user_id']))) {
-                            $doing = !empty($REQUEST['following_user_id']) ? 'following' : 'followers';
-                            $user_id = decodeID($doing == 'following' ? $REQUEST['following_user_id'] : $REQUEST['followers_user_id']);
-                            $where = 'WHERE follow' . ($doing == 'following' ? null : '_followed') . '_user_id=:user_id';
+                        if (getSetting('enable_followers')
+                            && (! empty($REQUEST['following_user_id']) || ! empty($REQUEST['followers_user_id']))
+                        ) {
+                            $doing = ! empty($REQUEST['following_user_id'])
+                                ? 'following'
+                                : 'followers';
+                            $user_id = decodeID(
+                                $doing === 'following'
+                                    ? $REQUEST['following_user_id']
+                                    : $REQUEST['followers_user_id']
+                            );
+                            $where = 'WHERE follow'
+                                . (
+                                    $doing === 'following'
+                                        ? ''
+                                        : '_followed'
+                                )
+                                . '_user_id=:user_id';
                             $binds[] = [
                                 'param' => ':user_id',
                                 'value' => $user_id,
@@ -285,25 +322,25 @@ return function (Handler $handler) {
 
                         break;
                 }
-                if (!empty($REQUEST['q'])) {
+                if (! empty($REQUEST['q'])) {
                     $search = new Search();
-                    $search->q = $REQUEST['q'] ?? '';
+                    $search->q = $REQUEST['q'];
                     $search->type = $list_request;
                     $search->request = $REQUEST;
                     $search->requester = Login::getUser();
                     $search->build();
-                    if (!check_value($search->q)) {
+                    if (! check_value($search->q)) {
                         throw new Exception('Missing search term', 400);
                     }
-                    $where .= $where == '' ? $search->wheres : preg_replace('/WHERE /', ' AND ', $search->wheres, 1);
+                    $where .= $where === '' ? $search->wheres : preg_replace('/WHERE /', ' AND ', $search->wheres, 1);
                     $binds = array_merge($binds ?? [], $search->binds);
                 }
                 $getParams = Listing::getParams(request(), true);
-                if ($getParams['sort'][0] == 'likes' && !getSetting('enable_likes')) {
+                if ($getParams['sort'][0] === 'likes' && ! getSetting('enable_likes')) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $album_fetch = 0;
-                if ($doing == 'get-album-contents' && isset($album['image_count'])) {
+                if ($doing === 'get-album-contents' && isset($album['image_count'])) {
                     $album_fetch = min(1000, $album['image_count']);
                     $getParams = [
                         'items_per_page' => $album_fetch,
@@ -336,24 +373,29 @@ return function (Handler $handler) {
                     $listing->setCategory($category);
                 }
                 $home_uids = getSetting('homepage_uids');
-                if (Settings::get('homepage_style') == 'split' && isset($home_uids) && isset($POST['params_hidden']['route']) && $POST['params_hidden']['route'] == 'index') {
-                    $home_uid_is_null = ($home_uids == '' or $home_uids == '0' ? true : false);
-                    $home_uid_arr = !$home_uid_is_null ? explode(',', $home_uids) : false;
-                    if (is_array($home_uid_arr)) {
+                if (Settings::get('homepage_style') === 'split'
+                    && isset($home_uids)
+                    && isset($POST['params_hidden']['route']) && $POST['params_hidden']['route'] === 'index'
+                ) {
+                    $home_uid_is_null = $home_uids === '' || $home_uids === '0';
+                    $home_uid_arr = ! $home_uid_is_null
+                        ? explode(',', $home_uids)
+                        : false;
+                    if ($home_uid_arr) {
                         $home_uid_bind = [];
                         foreach ($home_uid_arr as $k => $v) {
                             $home_uid_bind[] = ':user_id_' . $k;
-                            if ($v == 0) {
+                            if ($v === '') {
                                 $home_uid_is_null = true;
                             }
                         }
                         $home_uid_bind = implode(',', $home_uid_bind);
-                    }
-                    if (is_array($home_uid_arr)) {
                         $prefix = DB::getFieldPrefix($list_request);
                         $where = 'WHERE ' . $prefix . '_user_id IN(' . $home_uid_bind . ')';
                         if ($home_uid_is_null) {
-                            $where .= ' OR ' . $prefix . '_user_id IS NULL';
+                            $where .= ' OR '
+                                . $prefix
+                                . '_user_id IS NULL';
                         }
                         foreach ($home_uid_arr as $k => $v) {
                             $listing->bind(':user_id_' . $k, $v);
@@ -365,13 +407,18 @@ return function (Handler $handler) {
                     $listing->setOwner((int) $owner_id);
                 }
                 $listing->setRequester($logged_user);
-                if (in_array($list_request, ['images', 'albums']) && ($handler::cond('content_manager') || ($logged_user !== [] && $owner_id == $logged_user['id']))) {
+                if (in_array($list_request, ['images', 'albums'], true)
+                    && (
+                        $handler::cond('content_manager')
+                        || ($logged_user !== [] && $owner_id === $logged_user['id'])
+                    )
+                ) {
                     $listing->setTools(true);
                 }
-                if (!empty($params_hidden)) {
+                if (! empty($params_hidden)) {
                     $listing->setParamsHidden($params_hidden);
                 }
-                if ($list_request == 'images' && !empty($REQUEST['albumid'])) {
+                if ($list_request === 'images' && ! empty($REQUEST['albumid'])) {
                     if ($handler::cond('forced_private_mode')) {
                         $album['privacy'] = getSetting('website_content_privacy_mode');
                     }
@@ -386,7 +433,7 @@ return function (Handler $handler) {
                 }
                 $listing->exec();
                 $json_array['status_code'] = 200;
-                if ($doing == 'get-album-contents'
+                if ($doing === 'get-album-contents'
                     && isset($album, $album['image_count'])) {
                     $json_array['album'] = array_filter_array($album, ['id', 'creation_ip', 'password', 'user', 'privacy_extra', 'privacy_notes'], 'rest');
                     $contents = [];
@@ -408,21 +455,39 @@ return function (Handler $handler) {
                 $editing_request = $REQUEST['editing'];
                 $editing = $editing_request;
                 $type = $REQUEST['edit'];
-                $owner_id = !empty($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'];
-                if (!in_array($type, ['image', 'album', 'images', 'albums', 'category', 'storage', 'ip_ban'])) {
+                $owner_id = ! empty($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'];
+                if (! in_array($type, ['image', 'album', 'images', 'albums', 'category', 'tag', 'storage', 'ip_ban'], true)) {
                     throw new Exception('Invalid edit request', 100);
                 }
-                if (is_null($editing['id'])) {
+                if ($editing['id'] == null) {
                     throw new Exception('Missing edit target id', 100);
-                } else {
-                    $id = decodeID($editing['id']);
                 }
-                $editing['new_album'] = isset($editing['new_album']) && $editing['new_album'] == 'true';
+                $id = decodeID($editing['id']);
+
+                $editing['new_album'] = isset($editing['new_album'])
+                    && $editing['new_album'] == 'true';
                 $allowed_to_edit = [
-                    'image' => ['category_id', 'title', 'description', 'album_id', 'nsfw'],
+                    'image' => ['category_id', 'title', 'tags', 'description', 'album_id', 'nsfw'],
                     'album' => ['name', 'privacy', 'album_id', 'description', 'password'],
                     'category' => ['name', 'description', 'url_key'],
-                    'storage' => ['name', 'bucket', 'region', 'url', 'server', 'capacity', 'is_https', 'is_active', 'api_id', 'key', 'secret', 'account_id', 'account_name', 'type_chain'],
+                    'tag' => ['name', 'description'],
+                    'storage' => [
+                        'name',
+                        'bucket',
+                        'region',
+                        'url',
+                        'server',
+                        'capacity',
+                        'is_https',
+                        'is_active',
+                        'api_id',
+                        'key',
+                        'secret',
+                        'account_id',
+                        'account_name',
+                        'type_chain',
+                        'use_path_style_endpoint',
+                    ],
                     'ip_ban' => ['ip', 'expires', 'message'],
                 ];
                 if (Handler::cond('content_manager')) {
@@ -436,10 +501,12 @@ return function (Handler $handler) {
                     $allowed_to_edit['album'] = array_merge($allowed_to_edit['album'], $new_album);
                 }
                 $editing = array_filter_array($editing, $allowed_to_edit[$type], 'exclusion');
-                if ($handler::cond('forced_private_mode') and in_array($type, ['album', 'image'])) {
-                    $editing[$type == 'album' ? 'privacy' : 'album_privacy'] = getSetting('website_content_privacy_mode');
+                if ($handler::cond('forced_private_mode')
+                    && in_array($type, ['album', 'image'], true)
+                ) {
+                    $editing[$type === 'album' ? 'privacy' : 'album_privacy'] = getSetting('website_content_privacy_mode');
                 }
-                if (count($editing) == 0) {
+                if (count($editing) === 0) {
                     throw new Exception('Invalid edit request', 403);
                 }
                 if (isset($editing['album_id']) && $editing['album_id'] !== '') {
@@ -452,17 +519,20 @@ return function (Handler $handler) {
                             throw new Exception(_s("%s doesn't exists", _n('Image', 'Images', 1)), 100);
                         }
                         if (
-                            isset($editing['nsfw']) && $editing['nsfw'] != $source_image_db['image_nsfw']
+                            isset($editing['nsfw'])
+                            && $editing['nsfw'] != $source_image_db['image_nsfw']
                             && getSetting('image_lock_nsfw_editing')
-                            && !(Login::isAdmin() || $logged_user['is_manager'])
+                            && ! (Login::isAdmin() || $logged_user['is_manager'])
                         ) {
                             throw new Exception('Invalid request', 403);
                         }
-                        if (!$handler::cond('content_manager') && $source_image_db['image_user_id'] != $logged_user['id']) {
+                        if (! $handler::cond('content_manager')
+                            && $source_image_db['image_user_id'] !== $logged_user['id']
+                        ) {
                             throw new Exception('Invalid content owner request', 101);
                         }
                         if (isset($editing['new_album'])) {
-                            if (!$handler::cond('content_manager') && getSetting('akismet')) {
+                            if (! $handler::cond('content_manager') && getSetting('akismet')) {
                                 Akismet::checkAlbum($editing['album_name'], $editing['album_description'], $source_image_db);
                             }
                             $inserted_album = Album::insert([
@@ -474,11 +544,15 @@ return function (Handler $handler) {
                             ]);
                             $editing['album_id'] = $inserted_album;
                         }
-                        if (!empty($editing['category_id']) and !array_key_exists($editing['category_id'], $handler::var('categories'))) {
+                        if (! empty($editing['category_id'])
+                            && ! array_key_exists($editing['category_id'], $handler::var('categories'))
+                        ) {
                             throw new Exception('Invalid category', 102);
                         }
                         unset($editing['album_privacy'], $editing['new_album'], $editing['album_name']);
-                        if (!$handler::cond('content_manager') && getSetting('akismet')) {
+                        if (! $handler::cond('content_manager')
+                            && getSetting('akismet')
+                        ) {
                             Akismet::checkImage($editing['title'], $editing['description'], $source_image_db);
                         }
                         Image::update($id, $editing);
@@ -495,14 +569,17 @@ return function (Handler $handler) {
                         }
                         $album_id = $image_edit_db['image_album_id'];
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('%s edited', _n('Image', 'Images', 1)), 'code' => 200];
+                        $json_array['success'] = [
+                            'message' => _s('%s edited', _n('Image', 'Images', 1)),
+                            'code' => 200,
+                        ];
                         $json_array['editing'] = $editing_request;
                         $json_array['image'] = Image::formatArray($image_edit_db, true);
                         if (isset($image_album_slice)) {
                             // Add the album URL to the slice
                             $image_album_slice['url'] = Album::getUrl(encodeID((int) $album_id));
                             ob_start();
-                            include_theme_file('snippets/image_album_slice');
+                            require_theme_file('snippets/image_album_slice');
                             $html = ob_get_contents();
                             ob_end_clean();
                             $json_array['image']['album']['slice'] = [
@@ -523,13 +600,13 @@ return function (Handler $handler) {
                         if ($source_album_db === []) {
                             throw new Exception(_s("%s doesn't exists", _n('Album', 'Albums', 1)), 100);
                         }
-                        if (!$handler::cond('content_manager') && $source_album_db['album_user_id'] != $logged_user['id']) {
+                        if (! $handler::cond('content_manager') && $source_album_db['album_user_id'] !== $logged_user['id']) {
                             throw new Exception('Invalid content owner request', 102);
                         }
                         if (isset($editing['album_id']) || isset($editing['new_album'])) {
                             $album_move = true;
                             if (isset($editing['new_album'])) {
-                                if (!$handler::cond('content_manager') && getSetting('akismet')) {
+                                if (! $handler::cond('content_manager') && getSetting('akismet')) {
                                     Akismet::checkAlbum($editing['album_name'], $editing['album_description'], $source_album_db);
                                 }
                                 $editing['album_id'] = Album::insert([
@@ -547,7 +624,7 @@ return function (Handler $handler) {
                             Album::moveContents($id, $editing['album_id']);
                         } else {
                             unset($editing['album_privacy'], $editing['new_album'], $editing['album_name']);
-                            if (!$handler::cond('content_manager') && getSetting('akismet')) {
+                            if (! $handler::cond('content_manager') && getSetting('akismet')) {
                                 Akismet::checkAlbum($editing['name'], $editing['description'], $source_album_db);
                             }
                             Album::update($id, $editing);
@@ -557,7 +634,10 @@ return function (Handler $handler) {
                             throw new Exception("Edited album doesn't exists", 100);
                         }
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('%s edited', _s('Content')), 'code' => 200];
+                        $json_array['success'] = [
+                            'message' => _s('%s edited', _s('Content')),
+                            'code' => 200,
+                        ];
                         $json_array['album'] = $album_edited;
                         if (isset($album_move)) {
                             $json_array['old_album'] = Album::formatArray(
@@ -570,25 +650,25 @@ return function (Handler $handler) {
 
                         break;
                     case 'category':
-                        if (!Login::isAdmin()) {
+                        if (! Login::isAdmin()) {
                             throw new Exception('Invalid content owner request', 107);
                         }
                         $id = $REQUEST['editing']['id'];
-                        if (!array_key_exists($id, $handler::var('categories'))) {
+                        if (! array_key_exists($id, $handler::var('categories'))) {
                             throw new Exception('Invalid target category', 100);
                         }
-                        if (!isset($editing['name'])) {
-                            throw new Exception('Invalid category name', 101);
+                        if (! isset($editing['name'])) {
+                            throw new Exception('Invalid name', 101);
                         }
-                        if (!preg_match('/^[\-\w]+$/', $editing['url_key'] ?? '')) {
+                        if (! preg_match('/^[\-\w]+$/', $editing['url_key'] ?? '')) {
                             throw new Exception('Invalid category URL key', 102);
                         }
                         if (is_array($handler::var('categories'))) {
                             foreach ($handler::var('categories') as $v) {
-                                if ($v['id'] == $id) {
+                                if ($v['id'] === intval($id)) {
                                     continue;
                                 }
-                                if ($v['url_key'] == $editing['url_key']) {
+                                if ($v['url_key'] === $editing['url_key']) {
                                     $category_error = true;
 
                                     break;
@@ -599,25 +679,57 @@ return function (Handler $handler) {
                             throw new Exception(_s('%s URL key already being used.', _s('Category')), 103);
                         }
                         nullify_string($editing['description']);
-                        $update_category = DB::update('categories', $editing, ['id' => $id]);
-                        if (!$update_category) {
-                            throw new Exception('Failed to edit category', 400);
+                        $update_category = DB::update('categories', $editing, [
+                            'id' => $id,
+                        ]);
+                        if (! $update_category) {
+                            throw new Exception('Failed to edit', 400);
                         }
-                        $category = DB::get('categories', ['id' => $id])[0];
+                        $category = DB::get('categories', [
+                            'id' => $id,
+                        ])[0];
                         $category['category_url'] = get_base_url('category/' . $category['category_url_key']);
                         $category = DB::formatRow($category);
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => _s('%s edited', _s('Category')), 'code' => 200];
+                        $json_array['success'] = [
+                            'message' => _s('%s edited', _s('Category')),
+                            'code' => 200,
+                        ];
                         $json_array['category'] = $category;
 
                         break;
+                    case 'tag':
+                        if (! $handler::cond('content_manager')) {
+                            throw new Exception('Invalid content manager request', 107);
+                        }
+                        $id = $REQUEST['editing']['id'];
+                        if (! isset($editing['name'])) {
+                            throw new Exception('Invalid name', 101);
+                        }
+                        nullify_string($editing['description']);
+                        $update_tag = Tag::update($id, $editing);
+                        if ($update_tag === false) {
+                            throw new Exception('Failed to edit', 400);
+                        }
+                        $tag = Tag::get($editing['name'], 'id', 'name', 'description');
+                        $tag = array_merge($tag[0], Tag::row($tag[0]['name']));
+                        $json_array['status_code'] = 200;
+                        $json_array['success'] = [
+                            'message' => _s('%s edited', _s('Tag')),
+                            'code' => 200,
+                        ];
+                        $json_array['tag'] = $tag;
+
+                        break;
                     case 'ip_ban':
-                        if (!$handler::cond('content_manager')) {
+                        if (! $handler::cond('content_manager')) {
                             throw new Exception('Invalid content owner request', 108);
                         }
                         $id = $REQUEST['editing']['id'];
                         IpBan::validateIP($editing['ip']);
-                        if (!empty($editing['expires']) and !preg_match('/^\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/', $editing['expires'])) {
+                        if (! empty($editing['expires'])
+                            && ! preg_match('/^\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/', $editing['expires'])
+                        ) {
                             throw new Exception('Invalid expiration date format', 102);
                         }
 
@@ -625,17 +737,31 @@ return function (Handler $handler) {
                             if (empty($editing['expires'])) {
                                 $editing['expires'] = null;
                             }
-                            $editing = array_merge($editing, ['expires_gmt' => is_null($editing['expires']) ? null : gmdate('Y-m-d H:i:s', strtotime($editing['expires']))]);
-                            if (!IpBan::update(['id' => $id], $editing)) {
+                            $editing = array_merge($editing, [
+                                'expires_gmt' => $editing['expires'] == null
+                                    ? null
+                                    : gmdate('Y-m-d H:i:s', strtotime($editing['expires'])),
+                            ]);
+                            if (! IpBan::update([
+                                'id' => $id,
+                            ], $editing)) {
                                 throw new Exception('Failed to edit IP ban', 400);
                             }
                             $json_array['status_code'] = 200;
-                            $json_array['success'] = ['message' => 'IP ban edited', 'code' => 200];
-                            $json_array['ip_ban'] = IpBan::getSingle(['id' => $id]);
+                            $json_array['success'] = [
+                                'message' => 'IP ban edited',
+                                'code' => 200,
+                            ];
+                            $json_array['ip_ban'] = IpBan::getSingle([
+                                'id' => $id,
+                            ]);
                         } catch (Exception $throwable) {
                             $json_array = [
                                 'status_code' => 403,
-                                'error' => ['message' => $throwable->getMessage(), $throwable->getCode()],
+                                'error' => [
+                                    'message' => $throwable->getMessage(),
+                                    $throwable->getCode(),
+                                ],
                             ];
 
                             break;
@@ -643,14 +769,17 @@ return function (Handler $handler) {
 
                         break;
                     case 'storage':
-                        if (!Login::isAdmin()) {
+                        if (! Login::isAdmin()) {
                             throw new Exception('Invalid content owner request', 109);
                         }
                         $id = (int) $REQUEST['editing']['id'];
                         Storage::update($id, $editing);
                         $storage = Storage::getSingle($id);
                         $json_array['status_code'] = 200;
-                        $json_array['success'] = ['message' => 'Storage edited', 'code' => 200];
+                        $json_array['success'] = [
+                            'message' => 'Storage edited',
+                            'code' => 200,
+                        ];
                         $json_array['storage'] = $storage;
 
                         break;
@@ -658,31 +787,35 @@ return function (Handler $handler) {
 
                 break;
             case 'add-user':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $user = $REQUEST['user'];
                 foreach (['username', 'email', 'password', 'role'] as $v) {
-                    if ($user[$v] == '') {
+                    if (($user[$v] ?? '') === '') {
                         throw new Exception(_s('Missing values'), 100);
                     }
                 }
-                if (!User::isValidUsername($user['username'])) {
+                if (! User::isValidUsername($user['username'])) {
                     throw new Exception(_s('Invalid username'), 101);
                 }
-                if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+                if (! filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
                     throw new Exception(_s('Invalid email'), 102);
                 }
-                if (!preg_match('/' . getSetting('user_password_pattern') . '/', $user['password'] ?? '')) {
+                if (! preg_match('/' . Settings::USER_PASSWORD_PATTERN . '/', $user['password'] ?? '')) {
                     throw new Exception(_s('Invalid password'), 103);
                 }
-                if (!in_array($user['role'], ['user', 'manager', 'admin'])) {
+                if (! in_array($user['role'], ['user', 'manager', 'admin'], true)) {
                     throw new Exception(_s('Invalid role'), 104);
                 }
-                if (DB::get('users', ['username' => $user['username']])) {
+                if (DB::get('users', [
+                    'username' => $user['username'],
+                ])) {
                     throw new Exception(_s('Username already being used'), 200);
                 }
-                if (DB::get('users', ['email' => $user['email']])) {
+                if (DB::get('users', [
+                    'email' => $user['email'],
+                ])) {
                     throw new Exception(_s('Email already being used'), 200);
                 }
                 $is_manager = 0;
@@ -707,26 +840,27 @@ return function (Handler $handler) {
                     Login::addPassword($add_user, $user['password'], false);
                 }
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => _s('%s added', _n('User', 'Users', 1)), 'code' => 200];
+                $json_array['success'] = [
+                    'message' => _s('%s added', _n('User', 'Users', 1)),
+                    'code' => 200,
+                ];
 
                 break;
             case 'add-category':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $category = $REQUEST['category'];
                 $category_error = false;
                 foreach (['name', 'url_key'] as $v) {
-                    if ($category[$v] == '') {
+                    if (($category[$v] ?? '') === '') {
                         throw new Exception(_s('Missing values'), 100);
                     }
                 }
-                if (!preg_match('/^[-\w]+$/', $category['url_key'] ?? '')) {
-                    throw new Exception('Invalid category URL key', 102);
-                }
+                Category::assertUrlKey($category['url_key'] ?? '');
                 if ($handler::var('categories')) {
                     foreach ($handler::var('categories') as $v) {
-                        if ($v['url_key'] == $category['url_key']) {
+                        if ($v['url_key'] === $category['url_key']) {
                             $category_error = true;
 
                             break;
@@ -738,56 +872,83 @@ return function (Handler $handler) {
                 }
                 nullify_string($category['description']);
                 $category = array_filter_array($category, ['name', 'url_key', 'description'], 'exclusion');
+                assertMaxCount('categories');
                 $add_category = DB::insert('categories', $category);
-                $category = DB::get('categories', ['id' => $add_category])[0];
+                $category = DB::get('categories', [
+                    'id' => $add_category,
+                ])[0];
                 $category['category_url'] = get_base_url('category/' . $category['category_url_key']);
                 $category = DB::formatRow($category);
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => _s('%s added', _s('Category')), 'code' => 200];
+                $json_array['success'] = [
+                    'message' => _s('%s added', _s('Category')),
+                    'code' => 200,
+                ];
                 $json_array['category'] = $category;
 
                 break;
             case 'add-ip_ban':
-                if (!$handler::cond('content_manager')) {
+                if (! $handler::cond('content_manager')) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $ip_ban = array_filter_array($REQUEST['ip_ban'], ['ip', 'expires', 'message'], 'exclusion');
                 IpBan::validateIP($ip_ban['ip']);
-                if (!empty($ip_ban['expires']) and !preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $ip_ban['expires'])) {
+                if (! empty($ip_ban['expires'])
+                    && ! preg_match('/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/', $ip_ban['expires'])
+                ) {
                     throw new Exception('Invalid expiration date format', 102);
                 }
 
                 try {
-                    if (IpBan::getSingle(['ip' => $ip_ban['ip']]) !== []) {
+                    if (IpBan::getSingle([
+                        'ip' => $ip_ban['ip'],
+                    ]) !== []) {
                         throw new Exception(_s('IP address already banned'), 103);
                     }
                     if (empty($ip_ban['expires'])) {
                         $ip_ban['expires'] = null;
                     }
-                    $ip_ban = array_merge($ip_ban, ['date' => datetime(), 'date_gmt' => datetimegmt(), 'expires_gmt' => is_null($ip_ban['expires']) ? null : gmdate('Y-m-d H:i:s', strtotime($ip_ban['expires']))]);
+                    $ip_ban = array_merge($ip_ban, [
+                        'date' => datetime(),
+                        'date_gmt' => datetimegmt(),
+                        'expires_gmt' => $ip_ban['expires'] == null
+                            ? null
+                            : gmdate('Y-m-d H:i:s', strtotime($ip_ban['expires'])),
+                    ]);
                     $add_ip_ban = IpBan::insert($ip_ban);
                 } catch (Exception $throwable) {
                     $json_array = [
                         'status_code' => 403,
-                        'error' => ['message' => $throwable->getMessage(), $throwable->getCode()],
+                        'error' => [
+                            'message' => $throwable->getMessage(),
+                            $throwable->getCode(),
+                        ],
                     ];
 
                     break;
                 }
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => 'IP ban added', 'code' => 200];
-                $json_array['ip_ban'] = IpBan::getSingle(['id' => $add_ip_ban]);
+                $json_array['success'] = [
+                    'message' => 'IP ban added',
+                    'code' => 200,
+                ];
+                $json_array['ip_ban'] = IpBan::getSingle([
+                    'id' => $add_ip_ban,
+                ]);
 
                 break;
             case 'add-storage':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $storage = $REQUEST['storage'];
                 $add_storage = Storage::insert($storage);
                 $storage = Storage::getSingle($add_storage);
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => 'Storage added', 'code' => 200];
+                $json_array['success'] = [
+                    'message' => 'Storage added',
+                    'code' => 200,
+                ];
                 $json_array['storage'] = $storage;
 
                 break;
@@ -799,8 +960,9 @@ return function (Handler $handler) {
                 }
                 $editing = $REQUEST['editing'];
                 $owner_id = $logged_user['id'];
-                // Admin
-                if (!$handler::cond('content_manager') and $owner_id != $logged_user['id']) {
+                if (! $handler::cond('content_manager')
+                    && $owner_id !== $logged_user['id']
+                ) {
                     throw new Exception('Invalid content owner request', 110);
                 }
                 $ids = [];
@@ -810,12 +972,14 @@ return function (Handler $handler) {
                 $images = Image::getMultiple($ids);
                 $images_ids = [];
                 foreach ($images as $image) {
-                    if (!$handler::cond('content_manager') and $image['image_user_id'] != $logged_user['id']) {
+                    if (! $handler::cond('content_manager')
+                        && $image['image_user_id'] !== $logged_user['id']
+                    ) {
                         continue;
                     }
                     $images_ids[] = $image['image_id'];
                 }
-                if (!$images_ids) {
+                if (! $images_ids) {
                     throw new Exception('Invalid content owner request', 111);
                 }
                 $prop = null;
@@ -824,12 +988,13 @@ return function (Handler $handler) {
                     case 'flag-safe':
                     case 'flag-unsafe':
                         if (getSetting('image_lock_nsfw_editing')
-                            && !(Login::isAdmin() || $logged_user['is_manager'])
+                            && ! (Login::isAdmin() || $logged_user['is_manager'])
                         ) {
                             throw new Exception('Invalid request', 403);
                         }
                         $query_field = 'nsfw';
-                        $prop = intval($editing['nsfw'] == 1);
+                        $prop = $editing['nsfw'] ?? 0;
+                        $prop = intval($prop === 1);
                         $message = 'Content flag changed';
 
                         break;
@@ -840,7 +1005,7 @@ return function (Handler $handler) {
 
                         break;
                 }
-                if (!isset($query_field)) {
+                if (! isset($query_field)) {
                     throw new Exception('Invalid request', 403);
                 }
                 $db = DB::getInstance();
@@ -848,8 +1013,11 @@ return function (Handler $handler) {
                 $db->bind(':prop', $prop);
                 $db->exec();
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => $message, 'code' => 200];
-                if ($query_field == 'category_id') {
+                $json_array['success'] = [
+                    'message' => $message,
+                    'code' => 200,
+                ];
+                if ($query_field === 'category_id') {
                     $json_array['category_id'] = $prop;
                 }
 
@@ -857,25 +1025,26 @@ return function (Handler $handler) {
             case 'move':
             case 'create-album':
                 $type = $REQUEST['type'];
-                if (!in_array($type, ['images', 'album', 'albums'])) {
-                    throw new Exception('Invalid album ' . ($doing == 'move' ? 'move' : 'create') . ' request', 100);
+                if (! in_array($type, ['images', 'album', 'albums'], true)) {
+                    throw new Exception('Invalid album ' . ($doing === 'move' ? 'move' : 'create') . ' request', 100);
                 }
                 $album = $REQUEST['album'];
                 $album['new'] = $album['new'] == 'true';
-                if ($logged_user === [] && $album['new'] == false) {
+                if ($logged_user === [] && $album['new'] === false) {
                     throw new Exception('Invalid request', 403);
                 }
-                $owner_id = !empty($REQUEST['owner'])
+                $owner_id = ! empty($REQUEST['owner'])
                     ? decodeID($REQUEST['owner'])
                     : ($logged_user['id'] ?? null);
-                if (!$handler::cond('content_manager') && $owner_id != ($logged_user['id'] ?? null)) {
-                    throw new Exception('Invalide content owner request' . var_export($owner_id, true), 112);
+                if (! $handler::cond('content_manager') && $owner_id !== ($logged_user['id'] ?? null)) {
+                    throw new Exception('Invalid content owner request' . var_export($owner_id, true), 112);
                 }
+
                 if ($handler::cond('forced_private_mode')) {
                     $album['privacy'] = getSetting('website_content_privacy_mode');
                 }
-                if (!$handler::cond('content_manager') && getSetting('akismet') && $album['new']) {
-                    Akismet::checkAlbum($album['name'], $album['description'], $owner_id == $logged_user['id'] ? $logged_user_source_db : null);
+                if (! $handler::cond('content_manager') && getSetting('akismet') && $album['new']) {
+                    Akismet::checkAlbum($album['name'], $album['description'], $owner_id === $logged_user['id'] ? $logged_user_source_db : null);
                 }
                 $album_id = $album['new']
                     ? Album::insert([
@@ -891,28 +1060,30 @@ return function (Handler $handler) {
                     : decodeID($album['id']);
                 $album_db = Album::getSingle(id: $album_id, pretty: false);
                 if (isset($album['ids']) && is_array($album['ids'])) {
-                    if (count($album['ids']) == 0) {
-                        throw new Exception('Invalid source album ids ' . ($doing == 'move' ? 'move' : 'create') . ' request', 100);
+                    if (count($album['ids']) === 0) {
+                        throw new Exception('Invalid source album ids ' . ($doing === 'move' ? 'move' : 'create') . ' request', 100);
                     }
                     $ids = [];
                     foreach ($album['ids'] as $id) {
                         $ids[] = decodeID($id);
                     }
                 }
-                if (!empty($ids) && is_array($ids)) {
-                    if ($type == 'images') {
+                if (! empty($ids) && is_array($ids)) {
+                    if ($type === 'images') {
                         $images = Image::getMultiple($ids);
                         $images_ids = [];
                         foreach ($images as $image) {
-                            if ($logged_user === [] && in_array($image['image_id'], session()['guest_images'] ?? []) == false) {
+                            if ($logged_user === []
+                                && in_array($image['image_id'], session()['guest_images'] ?? [], false) === false
+                            ) {
                                 continue;
                             }
-                            if (!$handler::cond('content_manager') && $image['image_user_id'] != ($logged_user['id'] ?? null)) {
+                            if (! $handler::cond('content_manager') && $image['image_user_id'] !== ($logged_user['id'] ?? null)) {
                                 continue;
                             }
                             $images_ids[] = $image['image_id'];
                         }
-                        if (!$images_ids) {
+                        if (! $images_ids) {
                             throw new Exception('Invalid content owner request', 104);
                         }
                         Album::addImages(
@@ -926,12 +1097,12 @@ return function (Handler $handler) {
                         $albums = Album::getMultiple($ids);
                         $albums_ids = [];
                         foreach ($albums as $album) {
-                            if (!$handler::cond('content_manager') && $album['album_user_id'] != $logged_user['id']) {
+                            if (! $handler::cond('content_manager') && $album['album_user_id'] !== $logged_user['id']) {
                                 continue;
                             }
                             $albums_ids[] = $album['album_id'];
                         }
-                        if (!$albums_ids) {
+                        if (! $albums_ids) {
                             throw new Exception('Invalid content owner request', 105);
                         }
                         Album::moveContents($albums_ids, $album_id);
@@ -941,12 +1112,15 @@ return function (Handler $handler) {
                     ? Album::getSingle(id: (int) $album_db['album_id'], pretty: false)
                     : User::getStreamAlbum($owner_id);
                 $json_array['status_code'] = 200;
-                $json_array['success'] = ['message' => 'Content added to album', 'code' => 200];
+                $json_array['success'] = [
+                    'message' => 'Content added to album',
+                    'code' => 200,
+                ];
                 if ($album_move_db !== []) {
                     $json_array['album'] = Album::formatArray($album_move_db, true);
                     $json_array['album']['html'] = Listing::getAlbumHtml($album_move_db['album_id']);
                 }
-                if ($type == 'albums') {
+                if ($type === 'albums') {
                     $json_array['albums_old'] = [];
                     foreach ($ids ?? [] as $album_id) {
                         $album_id = (int) $album_id;
@@ -966,38 +1140,58 @@ return function (Handler $handler) {
                 }
                 $deleting = $REQUEST['deleting'] ?? null;
                 $type = $REQUEST['delete'] ?? null;
-                if (is_null($type)) {
+                if ($type == null) {
                     throw new Exception('Invalid delete request', 100);
                 }
-                if (!$handler::cond('content_manager') && !getSetting('enable_user_content_delete') && (starts_with('image', $type) || starts_with('album', $type))) {
+                if (! $handler::cond('content_manager')
+                    && ! getSetting('enable_user_content_delete')
+                    && (starts_with('image', $type) || starts_with('album', $type))
+                ) {
                     throw new Exception('Forbidden action', 403);
                 }
-                $owner_id = isset($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'];
+                $owner_id = isset($REQUEST['owner'])
+                    ? decodeID($REQUEST['owner'])
+                    : $logged_user['id'];
                 $multiple = ($REQUEST['multiple'] ?? null) == 'true';
                 $single = ($REQUEST['single'] ?? null) == 'true';
-                if (!$multiple) {
+                if (! $multiple) {
                     $single = true;
                 }
                 if (
-                    in_array($type, ['avatar', 'background', 'user', 'category', 'ip_ban', 'api_key', 'two_factor'])
-                    && !$handler::cond('content_manager') && $owner_id != $logged_user['id']
+                    in_array($type, ['avatar', 'background', 'user', 'ip_ban', 'api_key', 'two_factor'], true)
+                    && ! $handler::cond('content_manager') && $owner_id !== $logged_user['id']
                 ) {
                     throw new Exception('Invalid content owner request', 113);
                 }
-                if (in_array($type, ['avatar', 'background'])) {
-                    User::deletePicture($owner_id == $logged_user['id'] ? $logged_user : $owner_id, $type);
+                if (
+                    in_array($type, ['category', 'storage'], true)
+                    && ! $handler::cond('admin')
+                ) {
+                    throw new Exception('Invalid content admin request', 114);
+                }
+                if (
+                    in_array($type, ['tag'], true)
+                    && ! $handler::cond('content_manager')
+                ) {
+                    throw new Exception('Invalid content manager request', 115);
+                }
+                if (in_array($type, ['avatar', 'background'], true)) {
+                    User::deletePicture($owner_id === $logged_user['id'] ? $logged_user : $owner_id, $type);
                     $json_array['status_code'] = 200;
-                    $json_array['success'] = ['message' => 'Profile background deleted', 'code' => 200];
+                    $json_array['success'] = [
+                        'message' => 'Profile background deleted',
+                        'code' => 200,
+                    ];
 
                     break;
                 }
                 if ($type === 'two_factor') {
                     $userTarget = intval(
-                        $owner_id == $logged_user['id']
+                        $owner_id === $logged_user['id']
                             ? $logged_user['id']
                             : $owner_id
                     );
-                    if (!TwoFactor::hasFor($userTarget)) {
+                    if (! TwoFactor::hasFor($userTarget)) {
                         $status_code = 403;
                         $message = 'Two-factor not enabled';
                     } else {
@@ -1006,13 +1200,16 @@ return function (Handler $handler) {
                         $message = 'Two-factor deleted';
                     }
                     $json_array['status_code'] = $status_code;
-                    $json_array['success'] = ['message' => $message, 'code' => $status_code];
+                    $json_array['success'] = [
+                        'message' => $message,
+                        'code' => $status_code,
+                    ];
 
                     break;
                 }
                 if ($type === 'api_key') {
                     $userTarget = intval(
-                        $owner_id == $logged_user['id']
+                        $owner_id === $logged_user['id']
                             ? $logged_user['id']
                             : $owner_id
                     );
@@ -1021,17 +1218,20 @@ return function (Handler $handler) {
                         ApiKey::remove(intval($apiKey['id']));
                     }
                     $json_array['status_code'] = 200;
-                    $json_array['success'] = ['message' => 'API key deleted', 'code' => 200];
+                    $json_array['success'] = [
+                        'message' => 'API key deleted',
+                        'code' => 200,
+                    ];
 
                     break;
                 }
-                if ($type == 'user') {
-                    $delete_user_id = $owner_id == $logged_user['id'] ? $logged_user : $owner_id;
+                if ($type === 'user') {
+                    $delete_user_id = $owner_id === $logged_user['id'] ? $logged_user : $owner_id;
                     $delete_user = User::getSingle($delete_user_id, 'id');
                     if ($delete_user === []) {
                         throw new Exception(_s('%s not found', _n('User', 'Users', 1)), 100);
                     }
-                    if ($delete_user['is_content_manager'] && Login::isAdmin() == false) {
+                    if ($delete_user['is_content_manager'] && Login::isAdmin() === false) {
                         throw new Exception("Can't touch this!", 666);
                     }
                     User::delete($delete_user_id);
@@ -1039,38 +1239,64 @@ return function (Handler $handler) {
                     break;
                 }
                 if ($single) {
-                    if (is_null($deleting['id'] ?? null)) {
+                    if (($deleting['id'] ?? null) == null) {
                         throw new Exception('Missing delete target id', 100);
                     }
                 } else {
-                    if (is_array($deleting['ids']) && count($deleting['ids']) == 0) {
+                    if (is_array($deleting['ids']) && count($deleting['ids']) === 0) {
                         throw new Exception('Missing delete target ids', 100);
                     }
                 }
-                if ($type == 'category') {
-                    if (!array_key_exists($deleting['id'], $handler::var('categories'))) {
+                if ($type === 'category') {
+                    if (! array_key_exists($deleting['id'], $handler::var('categories'))) {
                         throw new Exception('Invalid target category', 100);
                     }
-                    $delete_category = DB::delete('categories', ['id' => $deleting['id']]);
+                    $delete_category = DB::delete('categories', [
+                        'id' => $deleting['id'],
+                    ]);
                     if ($delete_category) {
-                        $update_images = DB::update('images', ['category_id' => null], ['category_id' => $deleting['id']]);
+                        DB::update('images', [
+                            'category_id' => null,
+                        ], [
+                            'category_id' => $deleting['id'],
+                        ]);
                     } else {
                         throw new Exception('Error deleting category', 400);
                     }
 
                     break;
                 }
-                if ($type == 'ip_ban') {
-                    if (!IpBan::delete(['id' => $deleting['id']])) {
+                if ($type === 'tag') {
+                    $tagsIds = $multiple
+                        ? $deleting['ids']
+                        : [$deleting['id']];
+                    $delete_tag = Tag::delete(...$tagsIds);
+                    if (! $delete_tag) {
+                        throw new Exception('Error deleting tag', 400);
+                    }
+
+                    break;
+                }
+                if ($type === 'ip_ban') {
+                    if (! IpBan::delete([
+                        'id' => $deleting['id'],
+                    ])) {
                         throw new Exception('Error deleting IP ban', 400);
                     }
 
                     break;
                 }
-                if (!in_array($type, ['image', 'album', 'images', 'albums'])) {
+                if ($type === 'storage') {
+                    Storage::delete($deleting['id']);
+
+                    break;
+                }
+                if (! in_array($type, ['image', 'album', 'images', 'albums'], true)) {
                     throw new Exception('Invalid delete request', 100);
                 }
-                $db_field_prefix = in_array($type, ['image', 'images']) ? 'image' : 'album';
+                $db_field_prefix = in_array($type, ['image', 'images'], true)
+                    ? 'image'
+                    : 'album';
                 switch ($type) {
                     case 'image':
                     case 'images':
@@ -1083,18 +1309,20 @@ return function (Handler $handler) {
 
                         break;
                 }
-                if (!isset($Class_fn)) {
+                if (! isset($Class_fn)) {
                     throw new Exception('Invalid delete request', 100);
                 }
                 if ($single) {
-                    if (is_null($deleting['id'])) {
+                    if (($deleting['id'] ?? '') === '') {
                         throw new Exception('Missing delete target id', 100);
-                    } else {
-                        $id = decodeID($deleting['id']);
                     }
+                    $id = decodeID($deleting['id']);
+
                     $content_db = $Class_fn::getSingle($id, false, false);
                     if ($content_db) {
-                        if (!$handler::cond('content_manager') and $content_db[$db_field_prefix . '_user_id'] != $logged_user['id']) {
+                        if (! $handler::cond('content_manager')
+                            && $content_db[$db_field_prefix . '_user_id'] != $logged_user['id']
+                        ) {
                             throw new Exception('Invalid content owner request', 114);
                         }
                         $delete = $Class_fn::delete($id);
@@ -1103,26 +1331,24 @@ return function (Handler $handler) {
                     }
                     $affected = $delete;
                 } else {
-                    if (!is_array($deleting['ids'])) {
+                    if (! is_array($deleting['ids'])) {
                         throw new Exception('Expecting ids array values, ' . gettype($deleting['ids']) . ' given', 100);
                     }
                     $ids = [];
-                    if (count($deleting['ids']) > 0) {
-                        foreach ($deleting['ids'] as $id) {
-                            $ids[] = decodeID($id);
-                        }
+                    foreach ($deleting['ids'] ?? [] as $id) {
+                        $ids[] = decodeID($id);
                     }
                     $contents_db = $Class_fn::getMultiple($ids);
                     $owned_ids = [];
                     foreach ($contents_db as $content_db) {
-                        if (!$handler::cond('content_manager') and $content_db[$db_field_prefix . '_user_id'] != $logged_user['id']) {
+                        if (! $handler::cond('content_manager') and $content_db[$db_field_prefix . '_user_id'] !== $logged_user['id']) {
                             continue;
                         }
                         if (isset($content_db[$db_field_prefix . '_id'])) {
                             $owned_ids[] = $content_db[$db_field_prefix . '_id'];
                         }
                     }
-                    if (!$owned_ids) {
+                    if (! $owned_ids) {
                         throw new Exception('Invalid content owner request', 106);
                     }
                     $delete = $Class_fn::deleteMultiple($owned_ids);
@@ -1144,19 +1370,21 @@ return function (Handler $handler) {
                 $user_id = $REQUEST['user_id']
                     ? decodeID($REQUEST['user_id'])
                     : null; // Optional param (allow admin to disconnect any user)
-                if (!Login::isAdmin() && $user_id && $user_id != $logged_user['id']) {
+                if (! Login::isAdmin() && $user_id && $user_id !== $logged_user['id']) {
                     throw new Exception('Invalid request', 403);
                 }
-                $user = !$user_id ? $logged_user : User::getSingle($user_id, 'id');
+                $user = ! $user_id ? $logged_user : User::getSingle($user_id, 'id');
                 $login_connection = $user['login'][$disconnect] ?? false;
                 $providersEnabled = Login::getProviders('enabled');
-                if (!array_key_exists($disconnect, $providersEnabled)) {
+                if (! array_key_exists($disconnect, $providersEnabled)) {
                     throw new Exception('Invalid disconnect value', 10);
                 }
-                if (!$login_connection) {
+                if (! $login_connection) {
                     throw new Exception("Login connection doesn't exists", 11);
                 }
-                if ($user['connections_count'] == 1 && !Login::hasPassword($user_id)) {
+                if ($user['connections_count'] === 1
+                    && ! Login::hasPassword($user_id)
+                ) {
                     throw new Exception(_s('Add a password or another social connection before deleting %s', $disconnect_label), 12);
                 }
                 $user_social_conn = 0;
@@ -1165,19 +1393,23 @@ return function (Handler $handler) {
                         ++$user_social_conn;
                     }
                 }
-                if ($user_social_conn == 1
+                if ($user_social_conn === 1
                     && Login::hasPassword($user['id'])) {
                     if (getSetting('require_user_email_confirmation')
-                        && !$user['email']) {
+                        && ! $user['email']) {
                         throw new Exception(_s('Add an email or another social connection before deleting %s', $disconnect_label), 12);
                     }
                 }
                 $loginCookie = 'cookie_' . $disconnect;
-                Login::deleteCookies($loginCookie, ['user_id' => $user['id']]);
+                Login::deleteCookies($loginCookie, [
+                    'user_id' => $user['id'],
+                ]);
                 $delete_connection = Login::deleteConnection($disconnect, $user['id']);
                 if ($delete_connection) {
-                    if (in_array($disconnect, ['twitter', 'facebook'])) {
-                        User::update($user['id'], [$disconnect . '_username' => null]);
+                    if (in_array($disconnect, ['twitter', 'facebook'], true)) {
+                        User::update($user['id'], [
+                            $disconnect . '_username' => null,
+                        ]);
                     }
                     $json_array['success'] = [
                         'message' => _s('%s has been disconnected.', $disconnect_label),
@@ -1194,7 +1426,7 @@ return function (Handler $handler) {
                             'keys' => [
                                 'id' => $providersEnabled[$disconnect]['key_id'],
                                 'secret' => $providersEnabled[$disconnect]['key_secret'],
-                            ]
+                            ],
                         ];
                         $session = new HybridauthSession();
                         $hybridauth = new Hybridauth(config: $config, storage: $session);
@@ -1211,22 +1443,25 @@ return function (Handler $handler) {
 
                 break;
             case 'rebuildStats':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
                 Stat::rebuildTotals();
                 $json_array['success'] = [
                     'message' => 'OK',
                     'code' => 200,
-                    'redirURL' => get_base_url('dashboard')
+                    'redirURL' => get_base_url('dashboard'),
                 ];
 
                 break;
             case 'testEmail':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
-                $send_email = send_mail($REQUEST['email'], _s('Test email from %s @ %t', ['%s' => getSetting('website_name'), '%t' => datetime()]), '<p>' . _s('This is just a test') . '</p>');
+                $send_email = send_mail($REQUEST['email'], _s('Test email from %s @ %t', [
+                    '%s' => getSetting('website_name', true),
+                    '%t' => datetime(),
+                ]), '<p>' . _s('This is just a test') . '</p>');
                 if ($send_email) {
                     $json_array['success'] = [
                         'message' => _s('Test email sent to %s.', $REQUEST['email']),
@@ -1241,7 +1476,7 @@ return function (Handler $handler) {
                 break;
             case 'encodeId':
             case 'decodeId':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
                 if ($REQUEST['id'] == null) {
@@ -1262,7 +1497,7 @@ return function (Handler $handler) {
 
                 break;
             case 'exportUser':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
                 // Validate id
@@ -1270,11 +1505,11 @@ return function (Handler $handler) {
                     throw new Exception(_s('Invalid username'), 100);
                 }
                 $user = User::getSingle($REQUEST['username'], 'username', false);
-                if ($user == false) {
+                if ($user === []) {
                     throw new Exception(_s('Invalid username'), 101);
                 }
                 $user = DB::formatRow($user);
-                if (!isset($REQUEST['download'])) {
+                if (! isset($REQUEST['download'])) {
                     $json_array['success'] = [
                         'message' => _s('Downloading %s data', "'" . $user['username'] . "'"),
                         'code' => 200,
@@ -1292,15 +1527,15 @@ return function (Handler $handler) {
                     header('Cache-control: private', false);
                     header('Expires: 0');
                     echo $user;
-                    die();
+                    exit();
                 }
 
                 break;
             case 'follow':
             case 'unfollow':
                 if ($logged_user === []
-                    || !getSetting('enable_followers')
-                    || $logged_user['is_private'] == 1
+                    || ! getSetting('enable_followers')
+                    || $logged_user['is_private'] === 1
                 ) {
                     throw new Exception('Invalid request', 403);
                 }
@@ -1308,15 +1543,21 @@ return function (Handler $handler) {
                     'user_id' => $logged_user['id'],
                     'followed_user_id' => decodeID($REQUEST[$doing]['id']),
                 ];
-                $return = $doing == 'follow'
+                $return = $doing === 'follow'
                     ? Follow::insert($follow_array)
                     : Follow::delete($follow_array);
                 if ($return) {
                     unset($return['id']);
                     $json_array['success'] = [
-                        'message' => $doing == 'follow'
-                            ? _s('%s %u followed', ['%s' => _n('User', 'Users', 1), '%u' => $return['username']])
-                            : _s('%s %u unfollowed', ['%s' => _n('User', 'Users', 1), '%u' => $return['username']]),
+                        'message' => $doing === 'follow'
+                            ? _s('%s %u followed', [
+                                '%s' => _n('User', 'Users', 1),
+                                '%u' => $return['username'],
+                            ])
+                            : _s('%s %u unfollowed', [
+                                '%s' => _n('User', 'Users', 1),
+                                '%u' => $return['username'],
+                            ]),
                         'code' => 200,
                     ];
                     $json_array['user_followed'] = $return;
@@ -1346,15 +1587,17 @@ return function (Handler $handler) {
                     ]), 100);
                 }
                 if (isset($logged_user['id'])) {
-                    $isLoggedOwner = ($image['user']['id'] ?? null) == $logged_user['id']
-                        || ($album['user']['id'] ?? null) == $logged_user['id'];
+                    $isLoggedOwner = ($image['user']['id'] ?? null) === $logged_user['id']
+                        || ($album['user']['id'] ?? null) === $logged_user['id'];
                 } else {
                     $isLoggedOwner = false;
                 }
-                if (!$handler::cond('content_manager') && !$isLoggedOwner) {
+                if (! $handler::cond('content_manager') && ! $isLoggedOwner) {
                     throw new Exception('Invalid content owner request', 101);
                 }
-                Album::update($album_id, ['cover_id' => $doing == 'album-cover-unset' ? null : $image_id]);
+                Album::update($album_id, [
+                    'cover_id' => $doing === 'album-cover-unset' ? null : $image_id,
+                ]);
                 $json_array['success'] = [
                     'message' => _s('%s cover updated', _n('Album', 'Albums', 1)),
                     'code' => 200,
@@ -1363,7 +1606,7 @@ return function (Handler $handler) {
                 break;
             case 'like':
             case 'dislike':
-                if ($logged_user === [] || !getSetting('enable_likes')) {
+                if ($logged_user === [] || ! getSetting('enable_likes')) {
                     throw new Exception('Invalid request', 403);
                 }
                 $like_array = [
@@ -1371,12 +1614,12 @@ return function (Handler $handler) {
                     'content_id' => decodeID($REQUEST[$doing]['id']),
                     'content_type' => $REQUEST[$doing]['object'],
                 ];
-                $return = $doing == 'like' ? Like::insert($like_array) : Like::delete($like_array);
+                $return = $doing === 'like' ? Like::insert($like_array) : Like::delete($like_array);
                 if ($return) {
                     $return['id_encoded'] = encodeID((int) $return['id']);
                     unset($return['id']);
                     $json_array['success'] = [
-                        'message' => $doing == 'like' ? _s('Content liked', $return['content']['id_encoded'] ?? '') : _s('Content disliked', $return['content']['id_encoded'] ?? ''),
+                        'message' => $doing === 'like' ? _s('Content liked', $return['content']['id_encoded'] ?? '') : _s('Content disliked', $return['content']['id_encoded'] ?? ''),
                         'code' => 200,
                     ];
                     $json_array['content'] = $return;
@@ -1384,7 +1627,7 @@ return function (Handler $handler) {
 
                 break;
             case 'regenStorageStats':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
                 $res = Storage::regenStorageStats($REQUEST['storageId']);
@@ -1395,7 +1638,7 @@ return function (Handler $handler) {
 
                 break;
             case 'migrateStorage':
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
                 $res = Storage::migrateStorage($REQUEST['sourceStorageId'], $REQUEST['targetStorageId']);
@@ -1433,7 +1676,7 @@ return function (Handler $handler) {
                                 $message = _s('%u liked your %t %c', [
                                     '%t' => _s($content_type),
                                     '%c' => '<a href="' . $v[$content_type]['url_short'] . '">'
-                                        . $v[$content_type][($content_type == 'image' ? 'title' : 'name')
+                                        . $v[$content_type][($content_type === 'image' ? 'title' : 'name')
                                         . '_truncated_html'] . '</a>',
                                 ]);
 
@@ -1443,15 +1686,15 @@ return function (Handler $handler) {
 
                                 break;
                         }
-                        if (!isset($v['user']['id'])) {
+                        if (! isset($v['user']['id'])) {
                             continue;
                         }
                         $v['message'] = strtr($message ?? '', [
-                            '%u' => $v['user']['is_private'] == 1
+                            '%u' => $v['user']['is_private'] === 1
                                 ? _s('A private user')
                                 : ('<a href="' . $v['user']['url'] . '">' . $v['user']['name_short_html'] . '</a>'),
                         ]);
-                        if ($v['user']['is_private'] == 1) {
+                        if ($v['user']['is_private'] === 1) {
                             $avatar = $avatar_tpl[0];
                         } else {
                             $avatar = strtr($avatar_tpl[1], [
@@ -1463,7 +1706,7 @@ return function (Handler $handler) {
                             ]);
                         }
                         $json_array['html'] .= strtr($template, [
-                            '%class' => !$v['is_read'] ? ' class="new"' : null,
+                            '%class' => ! $v['is_read'] ? ' class="new"' : null,
                             '%avatar' => $avatar,
                             '%user_url' => $v['user']['url'],
                             '%message' => $v['message'],
@@ -1481,11 +1724,11 @@ return function (Handler $handler) {
             case 'importDelete':
             case 'importReset':
             case 'importResume':
-                if ($REQUEST['id'] == false) {
+                if (($REQUEST['id'] ?? null) == null) {
                     throw new Exception('Missing id parameter', 100);
                 }
-                $import->id = (int) $REQUEST['id'];
-                $import->get();
+                $import->id = (int) $REQUEST['id']; // @phpstan-ignore-line
+                $import->get(); // @phpstan-ignore-line
 
                 break;
             case 'paletteSet':
@@ -1493,14 +1736,16 @@ return function (Handler $handler) {
                     throw new Exception('Invalid request', 403);
                 }
                 $palette_id = (int) $REQUEST['palette_id'];
-                User::update($logged_user['id'], ['palette_id' => $palette_id]);
+                User::update($logged_user['id'], [
+                    'palette_id' => $palette_id,
+                ]);
                 $json_array['status_code'] = 200;
                 $logged_user = User::getSingle($logged_user['id']);
                 $json_array['palette_id'] = (int) $logged_user['palette_id'];
 
                 break;
             case 'approve':
-                if (!(Login::isAdmin() || $logged_user['is_manager'])) {
+                if (! (Login::isAdmin() || $logged_user['is_manager'])) {
                     throw new Exception('Invalid request', 403);
                 }
                 $approve_ids = [];
@@ -1510,7 +1755,7 @@ return function (Handler $handler) {
                 } else {
                     $approve_ids = [$approving['id']];
                 }
-                if ($approve_ids == []) {
+                if ($approve_ids === []) {
                     throw new Exception('Missing approve target ids', 600);
                 }
                 $ids = [];
@@ -1521,10 +1766,10 @@ return function (Handler $handler) {
                 $json_array['status_code'] = 200;
                 $json_array['affected'] = $affected;
 
-            break;
+                break;
             case 'user_ban':
             case 'user_unban':
-                if (!$handler::cond('content_manager')) {
+                if (! $handler::cond('content_manager')) {
                     throw new Exception('Invalid content owner request', 108);
                 }
                 $user_id = decodeID($REQUEST[$doing]['user_id'] ?? '');
@@ -1535,7 +1780,9 @@ return function (Handler $handler) {
                 if ($user === []) {
                     throw new Exception(_s('%s not found', _n('User', 'Users', 1)), 404);
                 }
-                User::update($user_id, ['status' => $doing == 'user_ban' ? 'banned' : 'valid']);
+                User::update($user_id, [
+                    'status' => $doing === 'user_ban' ? 'banned' : 'valid',
+                ]);
                 $json_array['status_code'] = 200;
 
                 break;
@@ -1543,16 +1790,20 @@ return function (Handler $handler) {
                 if (env()['CHEVERETO_CONTEXT'] === 'saas') {
                     throw new Exception('Not found', 404);
                 }
-                if (!Login::isAdmin()) {
+                if (! Login::isAdmin()) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $licenseKey = $POST['key'] ?? '';
                 if ($licenseKey !== '') {
                     $check = fetch_url(
                         url: 'https://chevereto.com/api/license/check',
-                        options: [CURLOPT_POSTFIELDS => http_build_query(
-                            ['license' => $licenseKey]
-                        )]
+                        options: [
+                            CURLOPT_POSTFIELDS => http_build_query(
+                                [
+                                    'license' => $licenseKey,
+                                ]
+                            ),
+                        ]
                     );
                     $check = json_decode($check);
                     if (isset($check->error)) {
@@ -1568,7 +1819,7 @@ return function (Handler $handler) {
                                 'Chevereto V%s license key used, required V%r or greater license key',
                                 [
                                     '%s' => $checkVersion,
-                                    '%r' => '4'
+                                    '%r' => '4',
                                 ]
                             ),
                             403
@@ -1584,7 +1835,7 @@ return function (Handler $handler) {
                         : _s('License key updated');
                     $json_array['success'] = [
                         'message' => $licenseAction,
-                        'code' => 200
+                        'code' => 200,
                     ];
                 } else {
                     throw new Exception('Error updating license key', 500);
@@ -1595,9 +1846,9 @@ return function (Handler $handler) {
                 throw new Exception(_s('Request denied'), 403);
             default: // EX X
                 throw new Exception(
-                    !check_value($doing)
+                    ! check_value($doing)
                         ? 'empty action'
-                        : "invalid action $doing",
+                        : "invalid action {$doing}",
                 );
         }
         if (isset($import->id)) {
@@ -1608,10 +1859,10 @@ return function (Handler $handler) {
 
                     break;
                 case 'importEdit':
-                    if ($REQUEST['values'] == false) {
+                    if ($REQUEST['values'] === false) {
                         throw new Exception('Missing values parameter', 101);
                     }
-                    if (is_array($REQUEST['values']) == false) {
+                    if (is_array($REQUEST['values']) === false) {
                         throw new Exception('Expecting array values', 102);
                     }
                     $import->edit($REQUEST['values']);
@@ -1640,7 +1891,9 @@ return function (Handler $handler) {
                     break;
             }
         }
-        if (isset($json_array['success']) and !isset($json_array['status_code'])) {
+        if (isset($json_array['success'])
+            && ! isset($json_array['status_code'])
+        ) {
             $json_array['status_code'] = 200;
         }
         $json_array['request'] = $REQUEST;
@@ -1657,18 +1910,23 @@ return function (Handler $handler) {
                 HTML
             );
         }
-        $message = $throwable->getMessage() . ' (' . $throwable->getCode() . ')';
+        $message = Storage::getThrowableMessage($throwable);
+        if ($throwable->getCode() !== 0 && $throwable->getCode() !== 999) {
+            $message .= ' [Code: ' . $throwable->getCode() . ']';
+        }
         $debugLevel = Config::system()->debugLevel();
         $errorCanSurface = $throwable->getCode() === 999
             || ($throwable->getCode() > 99 && $throwable->getCode() < 600);
-        $isDebug = in_array($debugLevel, [2, 3]) || isDebug();
-        if (!$isDebug && !$errorCanSurface) {
+        $isDebug = in_array($debugLevel, [2, 3], true) || isDebug();
+        if (! $isDebug && ! $errorCanSurface) {
             $message = '⭕️ '
                 . _s('Something went wrong')
                 . ' • '
                 . strtr(
                     'Incident ID:%id%',
-                    ['%id%' => '' . $throwableHandler->id()]
+                    [
+                        '%id%' => '' . $throwableHandler->id(),
+                    ]
                 );
         }
 
@@ -1681,8 +1939,8 @@ return function (Handler $handler) {
                     ->format(DateTimeInterface::ATOM),
                 'code' => $throwable->getCode(),
                 'id' => $throwableHandler->id(),
-            ]
+            ],
         ];
     }
-    json_output($json_array);
+    json_document_output($json_array);
 };

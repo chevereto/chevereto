@@ -9,25 +9,29 @@
  * file that was distributed with this source code.
  */
 
-use function Chevere\Filesystem\filePhpForPath;
-use function Chevere\Message\message;
-use function Chevere\String\randomString;
-use Chevere\Throwable\Exceptions\LogicException;
-use function Chevereto\Encryption\randomKey;
-use function Chevereto\Legacy\chevereto_die;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\Classes\Variable;
+use Chevereto\Legacy\G\Handler;
+use function Chevere\Filesystem\filePhpForPath;
+use function Chevere\Message\message;
+use function Chevere\Parameter\getType;
+use function Chevere\Standard\randomString;
+use function Chevereto\Encryption\randomKey;
+use function Chevereto\Legacy\chevereto_die;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 use function Chevereto\Legacy\G\bytes_to_mb;
 use function Chevereto\Legacy\G\debug;
 use function Chevereto\Legacy\G\get_ini_bytes;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\hasEnvDbInfo;
 use function Chevereto\Legacy\G\logger;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\set_status_header;
 use function Chevereto\Legacy\G\starts_with;
+use function Chevereto\Legacy\G\str_replace_first;
+use function Chevereto\Legacy\G\str_replace_last;
 use function Chevereto\Legacy\get_chevereto_version;
 use function Chevereto\Legacy\getPreCodeHtml;
 use function Chevereto\Legacy\getSetting;
@@ -37,14 +41,18 @@ use function Chevereto\Vars\post;
 if (PHP_SAPI !== 'cli') {
     /** @var Handler $handler */
     $context = $handler->request_array()[0] ?? false;
-    if (!$context) {
-        throw new LogicException(message('Missing context'));
+    if (! $context) {
+        throw new LogicException(
+            message('Missing context')
+        );
     }
-    if (!in_array($context, ['install', 'update'])) {
+    if (! in_array($context, ['install', 'update'], true)) {
         throw new LogicException(message('Invalid context'));
     }
 }
-if (!is_null(getSetting('chevereto_version_installed')) && (PHP_SAPI !== 'cli' && !Login::isAdmin())) {
+if (cheveretoVersionInstalled() !== ''
+    && (PHP_SAPI !== 'cli' && ! Login::isAdmin())
+) {
     set_status_header(403);
 
     throw new LogicException(message('Request denied. You must be an admin to be here.'), 403);
@@ -82,14 +90,14 @@ $settings_updates = [
     '3.0.0' => [
         'analytics_code' => '',
         'auto_language' => 1,
-        'chevereto_version_installed' => APP_VERSION,
+        // 'chevereto_version_installed' => APP_VERSION, // deprecated @4.2.0
         'comment_code' => '',
-        'crypt_salt' => randomString(8),
+        // 'crypt_salt' => randomString(8), // deprecated @4.2.0
         'default_language' => 'en',
         'default_timezone' => 'America/Santiago',
-        'email_from_email' => 'from@chevereto.example',
+        'email_from_email' => 'from@chevereto.internal',
         'email_from_name' => 'Chevereto',
-        'email_incoming_email' => 'incoming@chevereto.example',
+        'email_incoming_email' => 'incoming@chevereto.internal',
         'email_mode' => 'mail',
         'email_smtp_server' => '',
         'email_smtp_server_password' => '',
@@ -123,7 +131,7 @@ $settings_updates = [
         // 'twitter_api_secret' => '',
         'upload_filenaming' => 'original',
         'upload_image_path' => 'images',
-        'upload_max_filesize_mb' => (string) min(25, bytes_to_mb(get_ini_bytes(ini_get('upload_max_filesize')))),
+        // 'upload_max_filesize_mb' => (string) min(25, bytes_to_mb(get_ini_bytes(ini_get('upload_max_filesize')))),
         'upload_medium_size' => '500', // upload_medium_width
         'upload_storage_mode' => 'datefolder',
         'upload_thumb_height' => '320',
@@ -146,7 +154,7 @@ $settings_updates = [
     '3.1.2' => null,
 
     '3.2.0' => [
-        'twitter_account' => 'chevereto',
+        // 'twitter_account' => 'chevereto',
         //'theme_peafowl_download_button' => 1,
         'enable_signups' => 1,
     ],
@@ -238,7 +246,7 @@ $settings_updates = [
     '3.5.3' => null,
     '3.5.4' => null,
     '3.5.5' => [
-        'last_used_storage' => '',
+        // 'last_used_storage' => '', // deprecated @4.2.0
     ],
     '3.5.6' => null,
     '3.5.7' => [
@@ -259,7 +267,7 @@ $settings_updates = [
     '3.5.13' => null,
     '3.5.14' => null,
     '3.5.15' => [
-        'listing_columns_phone' => '3',
+        'listing_columns_phone' => '2',
         'listing_columns_phablet' => '3',
         'listing_columns_tablet' => '4',
         'listing_columns_laptop' => '5',
@@ -289,7 +297,7 @@ $settings_updates = [
         //'theme_top_bar_button_color' => 'blue', // Removed in 4.0.0.beta.4
         'logo_image_homepage' => 'default/logo_homepage.png',
         'logo_vector_homepage' => 'default/logo_homepage.svg',
-        'homepage_cta_color' => 'black',
+        'homepage_cta_color' => 'accent',
         'homepage_cta_outline' => 0,
         'watermark_enable_guest' => 1,
         'watermark_enable_user' => 1,
@@ -321,7 +329,7 @@ $settings_updates = [
         'watermark_enable_file_gif' => 0,
     ],
     '3.6.6' => [
-        'id_padding' => '0', // 0-> Update | 5000-> new install
+        // 'id_padding' => '0', // deprecated @4.2.0
     ],
     '3.6.7' => null,
     '3.6.8' => [
@@ -369,8 +377,8 @@ $settings_updates = [
     ],
     '3.8.0' => [
         'enable_duplicate_uploads' => 0,
-        'update_check_datetimegmt' => '',
-        'update_check_notified_release' => APP_VERSION,
+        // 'update_check_datetimegmt' => '', // deprecated @4.2.0
+        // 'update_check_notified_release' => APP_VERSION, // deprecated @4.2.0
         'update_check_display_notification' => 1,
     ],
     '3.8.1' => null,
@@ -394,7 +402,7 @@ $settings_updates = [
     '3.8.7' => null,
     '3.8.8' => null,
     '3.8.9' => [
-        'image_load_max_filesize_mb' => '3',
+        // 'image_load_max_filesize_mb' => '3',
     ],
     '3.8.10' => null,
     '3.8.11' => null,
@@ -425,7 +433,7 @@ $settings_updates = [
     '3.10.6' => [
         'website_explore_page_guest' => 1,
         'explore_albums_min_image_count' => '1',
-        'upload_max_filesize_mb_guest' => '0.5',
+        // 'upload_max_filesize_mb_guest' => '0.5',
         'notify_user_signups' => 0,
         // 'listing_viewer' => 1,
     ],
@@ -453,7 +461,7 @@ $settings_updates = [
     '3.12.2' => null,
     '3.12.3' => null,
     '3.12.4' => [
-        'upload_gui' => 'js',
+        'upload_gui' => 'page',
         'captcha_api' => 'hcaptcha', //recaptcha_version(2,3),hcaptcha
     ],
     '3.12.5' => null,
@@ -521,8 +529,8 @@ $settings_updates = [
     '3.20.11' => null,
     '3.20.12' => null,
     '3.20.13' => [
-        'chevereto_news' => 'a:0:{}',
-        'cron_last_ran' => '0000-00-00 00:00:00',
+        // 'chevereto_news' => 'a:0:{}', // deprecated @4.2.0
+        // 'cron_last_ran' => '0000-00-00 00:00:00', // deprecated @4.2.0
     ],
     '3.20.14' => null,
     '3.20.15' => null,
@@ -533,15 +541,7 @@ $settings_updates = [
     '4.0.0.beta.4' => null,
     '4.0.0.beta.5' => [
         'logo_type' => 'vector', // vector,image,text,
-        'theme_palette' => '0',
-    ],
-    '4.0.0.beta.6' => [
-        'enable_xr' => 0,
-        'xr_host' => env()['CHEVERETO_SERVICING'] === 'docker'
-            ? 'host.docker.internal'
-            : 'localhost',
-        'xr_port' => '27420',
-        'xr_key' => '',
+        // 'theme_palette' => '0',
     ],
     '4.0.0.beta.7' => [
         'route_user' => 'user',
@@ -550,15 +550,15 @@ $settings_updates = [
     '4.0.0.beta.8' => null,
     '4.0.0.beta.9' => [
         'arachnid' => 0,
-        'arachnid_key' => '',
-        'image_first_tab' => 'info', //embeds,about,info
+        // 'arachnid_key' => '', @ deprecated @4.2.0
+        'image_first_tab' => 'about', //embeds,about,info
     ],
     '4.0.0-beta.10' => null,
     '4.0.0-beta.11' => [
         'website_random_guest' => 1,
         'website_search_guest' => 1,
         'debug_errors' => 0,
-        'news_check_datetimegmt' => '',
+        // 'news_check_datetimegmt' => '', // deprecated @4.2.0
     ],
     '4.0.0' => null,
     '4.0.1' => null,
@@ -600,13 +600,63 @@ $settings_updates = [
         // 'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mp4,webm',
     ],
     '4.1.1' => [
-        'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
+        // 'upload_enabled_image_formats' => 'jpg,png,bmp,gif,webp,mov,mp4,webm',
     ],
     '4.1.2' => null,
     '4.1.3' => [
         'user_profile_view' => 'files',
     ],
     '4.1.4' => null,
+    '4.2.0' => [
+        'upload_enabled_image_formats' => 'avif,jpg,png,bmp,gif,webp,mov,mp4,webm',
+        'theme_palette' => '10',
+        'asset_storage_api_id' => '',
+        'asset_storage_url' => '',
+        'asset_storage_account_id' => '',
+        'asset_storage_account_name' => '',
+        'asset_storage_bucket' => '',
+        'asset_storage_key' => '',
+        'asset_storage_region' => '',
+        'asset_storage_secret' => '',
+        'asset_storage_server' => '',
+        'asset_storage_service' => '',
+        'asset_storage_use_path_style_endpoint' => 0,
+        'guest_albums' => 0,
+        'route_video' => 'video',
+        'route_audio' => 'audio',
+        'cache_ttl' => '0',
+        'upload_max_filesize_mb' => (string) min(100, bytes_to_mb(get_ini_bytes(ini_get('upload_max_filesize')))),
+        'image_load_max_filesize_mb' => '5',
+        'upload_max_filesize_mb_guest' => '10',
+        'arachnid_api_username' => '',
+        'arachnid_api_password' => '',
+    ],
+];
+if ((bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
+    $settings_updates['4.2.0'] = array_merge(
+        $settings_updates['4.2.0'],
+        [
+            'asset_storage_api_id' => '8',
+            'asset_storage_bucket' => PATH_PUBLIC . 'images/_assets/',
+            'asset_storage_url' => URL_APP_PUBLIC_STATIC . 'images/_assets/',
+        ]
+    );
+}
+$variables_updates = [
+    '4.2.0' => [
+        'id_padding' => 0,
+        'crypt_salt' => '',
+        'chevereto_version_installed' => APP_VERSION,
+        'last_used_storage' => 0,
+        'update_check_datetimegmt' => '0000-00-00 00:00:00',
+        'update_check_notified_release' => APP_VERSION,
+        'chevereto_news' => [],
+        'cron_last_ran' => '0000-00-00 00:00:00',
+        'news_check_datetimegmt' => '0000-00-00 00:00:00',
+        'storages_all' => 0,
+        'storages_active' => 0,
+        'login_providers_active' => 0,
+    ],
 ];
 $cheveretoFreeMap = [
     '1.0.0' => '3.8.3',
@@ -672,22 +722,28 @@ $settings_rename = [
     'recaptcha_threshold' => 'captcha_threshold',
     'force_recaptcha_contact_page' => 'force_captcha_contact_page',
 ];
-$chv_initial_settings = [];
+$initial_settings = [];
+$initial_variables = [];
 foreach ($settings_updates as $k => $v) {
-    if (is_null($v)) {
+    if ($v === null) {
         continue;
     }
-    $chv_initial_settings += $v;
+    $initial_settings += $v;
+    if (array_key_exists($k, $variables_updates)) {
+        $initial_variables += $variables_updates[$k];
+    }
 }
 
 try {
-    $is_2X = ((int) DB::get('info', ['key' => 'version'])) > 0;
+    $is_2X = ((int) DB::get('info', [
+        'key' => 'version',
+    ])) > 0;
 } catch (Exception $e) {
     $is_2X = false;
 }
 $isMariaDB = false;
 if (hasEnvDbInfo()) {
-    if (!DB::hasInstance()) {
+    if (! DB::hasInstance()) {
         DB::fromEnv();
     }
     $db = DB::getInstance();
@@ -708,23 +764,23 @@ if (hasEnvDbInfo()) {
     $doing = 'ready';
 }
 $fulltext_engine = 'InnoDB';
-$installed_version = getSetting('chevereto_version_installed');
+$installed_version = cheveretoVersionInstalled();
 $maintenance = getSetting('maintenance');
-if (isset($installed_version, $cheveretoFreeMap[$installed_version])) {
+if (isset($cheveretoFreeMap[$installed_version])) {
     $installed_version = $cheveretoFreeMap[$installed_version];
 }
-if (isset($installed_version)) {
+if ($installed_version !== '') {
     $doing = 'already';
 }
 $opts = getopt('C:') ?: [];
 $safe_post = Handler::var('safe_post');
-if (!empty(post())) {
+if (! empty(post())) {
     $params = post();
     if (isset(post()['debug'])) {
         $params['debug'] = true;
     }
 } elseif ($opts !== []) {
-    if ($doing == 'already') {
+    if ($doing === 'already') {
         $opts = getopt('C:d::');
     } else {
         $opts = getopt('C:u:e:x:d::');
@@ -736,13 +792,13 @@ if (!empty(post())) {
             'password' => 'x',
         ] as $k => $o) {
             $params[$k] = $opts[$o] ?? null;
-            if (!isset($params[$k])) {
-                $missing[] = $k . " -$o";
+            if (! isset($params[$k])) {
+                $missing[] = $k . " -{$o}";
             }
         }
         if ($missing !== []) {
             logger('Missing ' . implode(', ', $missing) . "\n");
-            die(255);
+            exit(255);
         }
     }
     $params['dump'] = isset($opts['d']);
@@ -763,7 +819,7 @@ if ($isMariaDB && isset($sqlServerVersion)) {
         case '10.4':
         case '10.5':
         case '10.6':
-            default:
+        default:
             $mysql_version = '8'; // 8.0
 
             break;
@@ -823,8 +879,9 @@ $query_populate_stats =
             (SELECT SUM(image_views) FROM `%table_prefix%images` WHERE image_user_id = user_id GROUP BY user_id), "0");
     SQL;
 
-if (isset($installed_version) && empty($paramsCheck)) {
+if ($installed_version !== '' && empty($paramsCheck)) {
     $db_settings_keys = [];
+    $db_variables_keys = [];
 
     try {
         $db_settings = DB::get('settings', 'all');
@@ -833,24 +890,40 @@ if (isset($installed_version) && empty($paramsCheck)) {
         }
     } catch (Exception $e) {
     }
+
+    try {
+        $db_variables = DB::get('variables', 'all');
+        foreach ($db_variables as $k => $v) {
+            $db_variables_keys[] = $v['variable_name'];
+        }
+    } catch (Exception $e) {
+    }
     if ((
-        !empty($db_settings_keys)
-            && count($chv_initial_settings) !== count($db_settings_keys)
+        ! empty($db_settings_keys)
+            && count($initial_settings) !== count($db_settings_keys)
     ) || (version_compare(APP_VERSION, $installed_version, '>'))
     ) {
-        if (!array_key_exists(APP_VERSION, $settings_updates)) {
+        if (! array_key_exists(APP_VERSION, $settings_updates)) {
             throw new LogicException(
-                message: message('Outdated installation files. Re-upload %folder% folder with the one from %version%')
-                    ->withTranslate('%folder%', 'app/legacy/install')
-                    ->withTranslate('%version%', APP_VERSION)
+                (string) message(
+                    'Outdated installation files. Re-upload %folder% folder with the one from %version%',
+                    folder: 'app/legacy/install',
+                    version: APP_VERSION
+                )
             );
         }
         $schema = [];
-        $raw_schema = DB::queryFetchAll('SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA="' . env()['CHEVERETO_DB_NAME'] . '" AND TABLE_NAME LIKE "' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '%";');
+        $raw_schema = DB::queryFetchAll(
+            'SELECT * FROM information_schema.COLUMNS WHERE TABLE_SCHEMA="'
+            . env()['CHEVERETO_DB_NAME']
+            . '" AND TABLE_NAME LIKE "'
+            . env()['CHEVERETO_DB_TABLE_PREFIX']
+            . '%";'
+        );
         foreach ($raw_schema as $k => $v) {
             $TABLE = preg_replace('#' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '#i', '', strtolower($v['TABLE_NAME']), 1);
             $COLUMN = $v['COLUMN_NAME'];
-            if (!array_key_exists($TABLE, $schema)) {
+            if (! array_key_exists($TABLE, $schema)) {
                 $schema[$TABLE] = [];
             }
             $schema[$TABLE][$COLUMN] = $v;
@@ -876,12 +949,12 @@ if (isset($installed_version) && empty($paramsCheck)) {
             $drop_trigger_sql = null;
             foreach ($db_triggers as $k => $v) {
                 $trigger = $v['TRIGGER_NAME'];
-                if (in_array($v['TRIGGER_NAME'], $triggers_to_remove)) {
+                if (in_array($v['TRIGGER_NAME'], $triggers_to_remove, true)) {
                     $drop_trigger = 'DROP TRIGGER IF EXISTS `' . $v['TRIGGER_NAME'] . '`;' . "\n";
                     $drop_trigger_sql .= $drop_trigger;
                 }
             }
-            if (!is_null($drop_trigger_sql)) {
+            if ($drop_trigger_sql !== null) {
                 $drop_trigger_sql = rtrim($drop_trigger_sql, "\n");
                 $remove_triggers = false;
                 $remove_triggers = DB::queryExecute($drop_trigger_sql);
@@ -891,18 +964,22 @@ if (isset($installed_version) && empty($paramsCheck)) {
             }
         }
         $DB_indexes = [];
-        $raw_indexes = DB::queryFetchAll('SELECT DISTINCT TABLE_NAME, INDEX_NAME, INDEX_TYPE FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = "' . env()['CHEVERETO_DB_NAME'] . '"');
+        $raw_indexes = DB::queryFetchAll(
+            'SELECT DISTINCT TABLE_NAME, INDEX_NAME, INDEX_TYPE FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = "'
+            . env()['CHEVERETO_DB_NAME']
+            . '"'
+        );
         foreach ($raw_indexes as $k => $v) {
             $TABLE = preg_replace('#' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '#i', '', strtolower($v['TABLE_NAME']), 1);
             $INDEX_NAME = $v['INDEX_NAME'];
-            if (!array_key_exists($TABLE, $DB_indexes)) {
+            if (! array_key_exists($TABLE, $DB_indexes)) {
                 $DB_indexes[$TABLE] = [];
             }
             $DB_indexes[$TABLE][$INDEX_NAME] = $v;
         }
         $CHV_indexes = [];
         foreach (new DirectoryIterator(PATH_APP . 'schemas/' . $dbSchemaVer) as $fileInfo) {
-            if ($fileInfo->isDot() || $fileInfo->isDir() || !array_key_exists($fileInfo->getBasename('.sql'), $schema)) {
+            if ($fileInfo->isDot() || $fileInfo->isDir() || ! array_key_exists($fileInfo->getBasename('.sql'), $schema)) {
                 continue;
             }
             $crate_table = file_get_contents(realpath($fileInfo->getPathname()));
@@ -911,7 +988,13 @@ if (isset($installed_version) && empty($paramsCheck)) {
             }
         }
         $engines = [];
-        $raw_engines = DB::queryFetchAll('SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = "' . env()['CHEVERETO_DB_NAME'] . '" AND TABLE_NAME LIKE "' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '%";');
+        $raw_engines = DB::queryFetchAll(
+            'SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = "'
+            . env()['CHEVERETO_DB_NAME']
+            . '" AND TABLE_NAME LIKE "'
+            . env()['CHEVERETO_DB_TABLE_PREFIX']
+            . '%";'
+        );
         $update_table_storage = [];
         foreach ($raw_engines as $k => $v) {
             $TABLE = preg_replace('#' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '#i', '', strtolower($v['TABLE_NAME']), 1);
@@ -921,9 +1004,10 @@ if (isset($installed_version) && empty($paramsCheck)) {
             }
         }
         if ($update_table_storage !== []) {
-            chevereto_die('', '<p>Database table storage engine needs to be updated to InnoDB. Run the following command(s) in your MySQL console:</p><textarea class="resize-vertical highlight r5">' . implode("\n", $update_table_storage) . '</textarea><p>Review <a href="https://dev.mysql.com/doc/refman/8.0/en/converting-tables-to-innodb.html" target="_blank">Converting Tables from MyISAM to InnoDB</a>.</p>', "Convert MyISAM tables to InnoDB");
+            chevereto_die('', '<p>Database table storage engine needs to be updated to InnoDB. Run the following command(s) in your MySQL console:</p><textarea class="resize-vertical highlight r5">' . implode("\n", $update_table_storage) . '</textarea><p>Review <a href="https://dev.mysql.com/doc/refman/8.0/en/converting-tables-to-innodb.html" target="_blank">Converting Tables from MyISAM to InnoDB</a>.</p>', 'Convert MyISAM tables to InnoDB');
         }
-        $isUtf8mb4 = version_compare($installed_version, '3.12.10', '>');
+        $isUtf8mb4 = $installed_version === ''
+            || version_compare($installed_version, '3.12.10', '>');
         $update_table = [
             '3.1.0' => [
                 'logins' => [
@@ -1001,10 +1085,9 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'op' => 'ADD',
                         'type' => 'tinyint(128)',
                         'prop' => 'NOT NULL',
-                        'tail' =>
-                            <<<SQL
-                            UPDATE `%table_prefix%images` set `image_chain` = 7;
-                            SQL,
+                        'tail' => <<<SQL
+                        UPDATE `%table_prefix%images` set `image_chain` = 7;
+                        SQL,
                     ],
                 ],
                 'storages' => [],
@@ -1036,12 +1119,11 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'op' => 'ADD',
                         'type' => 'bigint(32)',
                         'prop' => "DEFAULT '0'",
-                        'tail' =>
-                            <<<SQL
-                            UPDATE `%table_prefix%storages` SET storage_space_used = (SELECT SUM(image_size) AS count
-                            FROM `%table_prefix%images`
-                            WHERE image_storage_id = `%table_prefix%storages`.storage_id);
-                            SQL,
+                        'tail' => <<<SQL
+                        UPDATE `%table_prefix%storages` SET storage_space_used = (SELECT SUM(image_size) AS count
+                        FROM `%table_prefix%images`
+                        WHERE image_storage_id = `%table_prefix%storages`.storage_id);
+                        SQL,
                     ],
                 ],
                 'images' => [
@@ -1063,10 +1145,9 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'op' => 'MODIFY',
                         'type' => "enum('storage-delete')",
                         'prop' => 'NOT NULL',
-                        'tail' =>
-                            <<<SQL
-                            UPDATE `%table_prefix%queues` SET queue_type='storage-delete';
-                            SQL,
+                        'tail' => <<<SQL
+                        UPDATE `%table_prefix%queues` SET queue_type='storage-delete';
+                        SQL,
                     ],
                 ],
                 'storages' => [
@@ -1097,13 +1178,12 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'op' => 'ADD',
                         'type' => 'varchar(100)', // 3.6.5
                         'prop' => 'DEFAULT NULL',
-                        'tail' =>
-                            <<<SQL
-                            DROP INDEX searchindex ON `%table_prefix%images`;
-                            UPDATE `%table_prefix%images` SET `image_title` = SUBSTRING(`image_description`, 1, 100);
-                            UPDATE `%table_prefix%images` SET image_description = NULL WHERE image_title = image_description;
-                            CREATE FULLTEXT INDEX searchindex ON `%table_prefix%images`(image_name, image_title, image_description, image_original_filename);
-                            SQL,
+                        'tail' => <<<SQL
+                        DROP INDEX searchindex ON `%table_prefix%images`;
+                        UPDATE `%table_prefix%images` SET `image_title` = SUBSTRING(`image_description`, 1, 100);
+                        UPDATE `%table_prefix%images` SET image_description = NULL WHERE image_title = image_description;
+                        CREATE FULLTEXT INDEX searchindex ON `%table_prefix%images`(image_name, image_title, image_description, image_original_filename);
+                        SQL,
                     ],
                 ],
                 'albums' => [
@@ -1129,11 +1209,10 @@ if (isset($installed_version) && empty($paramsCheck)) {
                 ],
             ],
             '3.5.12' => [
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%settings` SET `setting_value` = 0, `setting_default` = 0, `setting_typeset` = "bool"
-                    WHERE `setting_name` = "maintenance";
-                    SQL,
+                'query' => <<<SQL
+                UPDATE `%table_prefix%settings` SET `setting_value` = 0, `setting_default` = 0, `setting_typeset` = "bool"
+                WHERE `setting_name` = "maintenance";
+                SQL,
             ],
             '3.5.14' => [
                 'ip_bans' => [],
@@ -1184,20 +1263,18 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
-                'query' =>
-                    <<<SQL
-                    INSERT IGNORE INTO `%table_prefix%storage_apis` VALUES ('7', 'OpenStack', 'openstack');
-                    SQL,
+                'query' => <<<SQL
+                INSERT IGNORE INTO `%table_prefix%storage_apis` VALUES ('7', 'OpenStack', 'openstack');
+                SQL,
             ],
             '3.6.4' => [
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%settings` SET `setting_value`="mail"
-                    WHERE setting_name = "email_mode"
-                    AND `setting_value`="phpmail";
-                    UPDATE `%table_prefix%settings` SET `setting_default`="mail"
-                    WHERE setting_name = "email_mode";
-                    SQL,
+                'query' => <<<SQL
+                UPDATE `%table_prefix%settings` SET `setting_value`="mail"
+                WHERE setting_name = "email_mode"
+                AND `setting_value`="phpmail";
+                UPDATE `%table_prefix%settings` SET `setting_default`="mail"
+                WHERE setting_name = "email_mode";
+                SQL,
             ],
             '3.6.5' => [
                 'images' => [
@@ -1394,10 +1471,9 @@ if (isset($installed_version) && empty($paramsCheck)) {
                 ],
             ],
             '3.11.0' => [
-                'query' =>
-                    <<<SQL
-                    INSERT INTO `%table_prefix%storage_apis` VALUES ('8', 'Local', 'local') ON DUPLICATE KEY UPDATE storage_api_type = 'local';
-                    SQL,
+                'query' => <<<SQL
+                INSERT INTO `%table_prefix%storage_apis` VALUES ('8', 'Local', 'local') ON DUPLICATE KEY UPDATE storage_api_type = 'local';
+                SQL,
             ],
             '3.12.0' => [
                 'imports' => [],
@@ -1428,8 +1504,7 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
-                'query' =>
-                <<<SQL
+                'query' => <<<SQL
                 UPDATE `%table_prefix%pages` SET page_icon = "fas fa-landmark" WHERE page_url_key = "tos" AND page_icon IS NULL OR page_icon = "";
                 UPDATE `%table_prefix%pages` SET page_icon = "fas fa-lock" WHERE page_url_key = "privacy" AND page_icon IS NULL OR page_icon = "";
                 UPDATE `%table_prefix%pages` SET page_icon = "fas fa-at" WHERE page_url_key = "contact" AND page_icon IS NULL OR page_icon = "";
@@ -1447,14 +1522,12 @@ if (isset($installed_version) && empty($paramsCheck)) {
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%pages` SET page_internal = "tos" WHERE page_url_key = "tos";
-                    UPDATE `%table_prefix%pages` SET page_internal = "privacy" WHERE page_url_key = "privacy";
-                    UPDATE `%table_prefix%pages` SET page_internal = "contact" WHERE page_url_key = "contact";
-                    SQL
+                'query' => <<<SQL
+                UPDATE `%table_prefix%pages` SET page_internal = "tos" WHERE page_url_key = "tos";
+                UPDATE `%table_prefix%pages` SET page_internal = "privacy" WHERE page_url_key = "privacy";
+                UPDATE `%table_prefix%pages` SET page_internal = "contact" WHERE page_url_key = "contact";
+                SQL
             ],
-            // 191 because old MyIsam tables. InnoDB 255
             '3.13.0' => [
                 'settings' => [
                     'setting_name' => [
@@ -1518,34 +1591,80 @@ if (isset($installed_version) && empty($paramsCheck)) {
                     * https://dev.mysql.com/doc/refman/5.7/en/alter-table.html
                     * Look for "For a column that has a data type of VARCHAR or one"
                     */
-                'query' => ($DB_indexes['albums']['album_creation_ip'] ? 'DROP INDEX `album_creation_ip` ON `%table_prefix%albums`;
-ALTER TABLE `%table_prefix%albums` ADD INDEX `album_creation_ip` (`album_creation_ip`(255));
-' : null) . ($DB_indexes['images']['image_name'] ? 'DROP INDEX `image_name` ON `%table_prefix%images`;
-ALTER TABLE `%table_prefix%images` ADD INDEX `image_name` (`image_name`(255));
-' : null) . ($DB_indexes['images']['image_extension'] ? 'DROP INDEX `image_extension` ON `%table_prefix%images`;
-ALTER TABLE `%table_prefix%images` ADD INDEX `image_extension` (`image_extension`(255));
-' : null) . ($DB_indexes['images']['image_uploader_ip'] ? 'DROP INDEX `image_uploader_ip` ON `%table_prefix%images`;
-ALTER TABLE `%table_prefix%images` ADD INDEX `image_uploader_ip` (`image_uploader_ip`(255));
-' : null) . ($DB_indexes['images']['image_uploader_ip'] ? 'DROP INDEX `image_path` ON `%table_prefix%images`;
-ALTER TABLE `%table_prefix%images` ADD INDEX `image_path` (`image_path`(255));
-' : null) . ($isUtf8mb4 ? null : 'ALTER TABLE `%table_prefix%images` ENGINE=%table_engine%;
-ALTER TABLE `%table_prefix%albums` ENGINE=%table_engine%;
-ALTER TABLE `%table_prefix%users` ENGINE=%table_engine%;
-ALTER TABLE `%table_prefix%albums` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%categories` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%deletions` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%images` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%ip_bans` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%pages` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%settings` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%storages` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;'),
+                'query' => (
+                    isset($DB_indexes['albums']['album_creation_ip'])
+                    ? <<<MySQL
+                    DROP INDEX `album_creation_ip` ON `%table_prefix%albums`;
+                    ALTER TABLE `%table_prefix%albums` ADD INDEX `album_creation_ip` (`album_creation_ip`(255));
+
+                    MySQL
+                    : ''
+                )
+                .
+                (
+                    isset($DB_indexes['images']['image_name'])
+                    ? <<<MySQL
+                    DROP INDEX `image_name` ON `%table_prefix%images`;
+                    ALTER TABLE `%table_prefix%images` ADD INDEX `image_name` (`image_name`(255));
+
+                    MySQL
+                    : ''
+                )
+                .
+                (
+                    isset($DB_indexes['images']['image_extension'])
+                    ? <<<MySQL
+                    DROP INDEX `image_extension` ON `%table_prefix%images`;
+                    ALTER TABLE `%table_prefix%images` ADD INDEX `image_extension` (`image_extension`(255));
+
+                    MySQL
+                    : ''
+                )
+                .
+                (
+                    isset($DB_indexes['images']['image_uploader_ip'])
+                    ? <<<MySQL
+                    DROP INDEX `image_uploader_ip` ON `%table_prefix%images`;
+                    ALTER TABLE `%table_prefix%images` ADD INDEX `image_uploader_ip` (`image_uploader_ip`(255));
+
+                    MySQL
+                    : ''
+                )
+                .
+                (
+                    isset($DB_indexes['images']['image_uploader_ip'])
+                    ? <<<MySQL
+                    DROP INDEX `image_path` ON `%table_prefix%images`;
+                    ALTER TABLE `%table_prefix%images` ADD INDEX `image_path` (`image_path`(255));
+
+                    MySQL
+                    : ''
+                )
+                .
+                (
+                    ! $isUtf8mb4
+                    ? <<<MySQL
+                    ALTER TABLE `%table_prefix%images` ENGINE=%table_engine%;
+                    ALTER TABLE `%table_prefix%albums` ENGINE=%table_engine%;
+                    ALTER TABLE `%table_prefix%users` ENGINE=%table_engine%;
+                    ALTER TABLE `%table_prefix%albums` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%categories` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%deletions` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%images` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%ip_bans` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%pages` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%settings` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%storages` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                    ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+
+                    MySQL
+                    : ''
+                ),
             ],
             '3.13.4' => [
-                'query' =>
-                    <<<SQL
-                    ALTER TABLE `%table_prefix%logins` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-                    SQL,
+                'query' => <<<SQL
+                ALTER TABLE `%table_prefix%logins` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                SQL,
             ],
             '3.14.0' => [
                 'deletions' => [
@@ -1569,20 +1688,19 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'op' => 'ADD',
                         'type' => 'tinyint(1)',
                         'prop' => "NOT NULL DEFAULT '0'",
-                    ]
+                    ],
                 ],
-                'query' =>
-                    <<<SQL
-                    INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
-                    SELECT '%rootPath%importing/no-parse', 'a:1:{s:4:\"root\";s:5:\"plain\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
-                    WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/no-parse' AND `import_continuous`=1 LIMIT 1);
-                    INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
-                    SELECT '%rootPath%importing/parse-users', 'a:1:{s:4:\"root\";s:5:\"users\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
-                    WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/parse-users' AND `import_continuous`=1 LIMIT 1);
-                    INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
-                    SELECT '%rootPath%importing/parse-albums', 'a:1:{s:4:\"root\";s:6:\"albums\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
-                    WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/parse-albums' AND `import_continuous`=1 LIMIT 1);
-                    SQL
+                'query' => <<<SQL
+                INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
+                SELECT '%rootPath%importing/no-parse', 'a:1:{s:4:\"root\";s:5:\"plain\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
+                WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/no-parse' AND `import_continuous`=1 LIMIT 1);
+                INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
+                SELECT '%rootPath%importing/parse-users', 'a:1:{s:4:\"root\";s:5:\"users\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
+                WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/parse-users' AND `import_continuous`=1 LIMIT 1);
+                INSERT INTO `%table_prefix%imports` (`import_path`, `import_options`, `import_status`, `import_users`, `import_images`, `import_albums`, `import_time_created`, `import_time_updated`, `import_errors`, `import_started`, `import_continuous`)
+                SELECT '%rootPath%importing/parse-albums', 'a:1:{s:4:\"root\";s:6:\"albums\";}', 'working', '0', '0', '0', NOW(), NOW(), '0', '0', '1' FROM DUAL
+                WHERE NOT EXISTS (SELECT * FROM `%table_prefix%imports` WHERE `import_path`='%rootPath%importing/parse-albums' AND `import_continuous`=1 LIMIT 1);
+                SQL
             ],
             '3.16.0' => [
                 'locks' => [],
@@ -1612,14 +1730,13 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'op' => 'ADD',
                         'type' => 'tinyint(1)',
                         'prop' => "NOT NULL DEFAULT '0'",
-                    ]
+                    ],
                 ],
-                'query' =>
-                    <<<SQL
-                    UPDATE %table_prefix%albums
-                    SET album_cover_id = (SELECT image_id FROM %table_prefix%images WHERE image_album_id = album_id AND image_is_approved = 1 LIMIT 1)
-                    WHERE album_cover_id IS NULL;
-                    SQL
+                'query' => <<<SQL
+                UPDATE %table_prefix%albums
+                SET album_cover_id = (SELECT image_id FROM %table_prefix%images WHERE image_album_id = album_id AND image_is_approved = 1 LIMIT 1)
+                WHERE album_cover_id IS NULL;
+                SQL
             ],
             '3.20.0' => [
                 'assets' => [],
@@ -1628,54 +1745,50 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'op' => 'ADD',
                         'type' => 'text',
                         'prop' => null,
-                    ]
+                    ],
                 ],
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/favicon.png" WHERE `setting_name`="favicon_image" AND `setting_value`="favicon.png";
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/logo.png" WHERE `setting_name`="logo_image" AND `setting_value`="logo.png";
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/logo.svg" WHERE `setting_name`="logo_vector" AND `setting_value`="logo.svg";
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/home_cover.jpg" WHERE `setting_name`="homepage_cover_image" AND `setting_value`="home_cover.jpg";
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/home_cover.jpg" WHERE `setting_name`="homepage_cover_image" AND `setting_value` IS NULL;
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/logo_homepage.png" WHERE `setting_name`="logo_image_homepage" AND `setting_value`="logo_homepage.png";
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/logo_homepage.svg" WHERE `setting_name`="logo_vector_homepage" AND `setting_value`="logo_homepage.svg";
-                    SQL
+                'query' => <<<SQL
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/favicon.png" WHERE `setting_name`="favicon_image" AND `setting_value`="favicon.png";
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/logo.png" WHERE `setting_name`="logo_image" AND `setting_value`="logo.png";
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/logo.svg" WHERE `setting_name`="logo_vector" AND `setting_value`="logo.svg";
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/home_cover.jpg" WHERE `setting_name`="homepage_cover_image" AND `setting_value`="home_cover.jpg";
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/home_cover.jpg" WHERE `setting_name`="homepage_cover_image" AND `setting_value` IS NULL;
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/logo_homepage.png" WHERE `setting_name`="logo_image_homepage" AND `setting_value`="logo_homepage.png";
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/logo_homepage.svg" WHERE `setting_name`="logo_vector_homepage" AND `setting_value`="logo_homepage.svg";
+                SQL
             ],
             '3.20.1' => [
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%settings` SET `setting_value`="default/consent-screen_cover.jpg"
-                    WHERE `setting_name`="consent_screen_cover_image"
-                    AND `setting_value` IS NULL;
-                    SQL
+                'query' => <<<SQL
+                UPDATE `%table_prefix%settings` SET `setting_value`="default/consent-screen_cover.jpg"
+                WHERE `setting_name`="consent_screen_cover_image"
+                AND `setting_value` IS NULL;
+                SQL
             ],
             '3.20.2' => [
-                'query' =>
-                    <<<SQL
-                    ALTER TABLE `%table_prefix%importing` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-                    ALTER TABLE `%table_prefix%imports` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-                    SQL
+                'query' => <<<SQL
+                ALTER TABLE `%table_prefix%importing` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                ALTER TABLE `%table_prefix%imports` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                SQL
             ],
             '3.20.4' => [
-                'query' => 'UPDATE `%table_prefix%settings` SET `setting_value`="default/watermark.png" WHERE `setting_name`="watermark_image" AND `setting_value`="watermark.png";'
+                'query' => 'UPDATE `%table_prefix%settings` SET `setting_value`="default/watermark.png" WHERE `setting_name`="watermark_image" AND `setting_value`="watermark.png";',
             ],
             '3.20.5' => [
                 'query' => 'UPDATE `%table_prefix%settings` SET `setting_typeset`="string" WHERE `setting_name`="explore_albums_min_image_count";',
             ],
             '3.20.6' => [
-                'query' =>
-                    <<<SQL
-                    UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-landmark" WHERE `page_icon`="icon-text";
-                    UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-lock" WHERE `page_icon`="icon-lock";
-                    UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-at" WHERE `page_icon`="icon-mail";
-                    SQL,
+                'query' => <<<SQL
+                UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-landmark" WHERE `page_icon`="icon-text";
+                UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-lock" WHERE `page_icon`="icon-lock";
+                UPDATE `%table_prefix%pages` SET `page_icon`="fas fa-at" WHERE `page_icon`="icon-mail";
+                SQL,
             ],
             '4.0.0.beta.5' => [
                 'users' => [
                     'user_palette_id' => [
                         'op' => 'ADD',
                         'type' => 'int(11)',
-                        'prop' => "NOT NULL DEFAULT '0'"
+                        'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'query' => version_compare($installed_version, '3.15.0', '>=')
@@ -1694,13 +1807,13 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'type' => "enum('upload','signup','account-edit','account-password-forgot','account-password-reset','account-resend-activation','account-email-needed','account-change-email','account-activate','login','content-password','account-two-factor')",
                         'prop' => 'NOT NULL',
                     ],
-                ]
+                ],
             ],
             '4.0.0-beta.11' => [
                 'pages' => [
                     'page_code' => [
                         'op' => 'MODIFY',
-                        'type' => "mediumtext",
+                        'type' => 'mediumtext',
                         'prop' => null,
                     ],
                 ],
@@ -1708,39 +1821,37 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                 'login_cookies' => [],
                 'login_passwords' => [],
                 'login_providers' => [],
-                'query' =>
-                    <<<SQL
-                    INSERT IGNORE INTO `%table_prefix%login_passwords` (login_password_user_id, login_password_date_gmt, login_password_hash)
-                    SELECT login_user_id, max(login_date_gmt), login_secret
-                    FROM `%table_prefix%logins`
-                    WHERE login_type = "password"
-                    GROUP BY login_user_id, login_secret;
-                    INSERT IGNORE INTO `%table_prefix%login_cookies` (login_cookie_user_id, login_cookie_connection_id, login_cookie_date_gmt,
-                                                               login_cookie_ip, login_cookie_user_agent, login_cookie_hash)
-                    SELECT login_user_id, 0, login_date_gmt, login_ip, login_hostname, login_secret
-                    FROM `%table_prefix%logins`
-                    WHERE login_type = "cookie"
-                    GROUP BY login_date_gmt, login_user_id, login_ip, login_hostname, login_secret
-                    ORDER BY login_date_gmt DESC;
-                    INSERT IGNORE INTO `%table_prefix%login_connections` (login_connection_user_id, login_connection_provider_id, login_connection_date_gmt,
-                                                                   login_connection_resource_id, login_connection_resource_name,
-                                                                   login_connection_token)
-                    SELECT login_user_id, login_provider_id, max(login_date_gmt), login_resource_id, login_resource_name, '' token
-                    FROM `%table_prefix%logins`
-                            JOIN `%table_prefix%login_providers` ON login_provider_name = login_type COLLATE utf8mb4_unicode_ci
-                    WHERE login_type IN ('facebook', 'twitter', 'google', 'vk')
-                    GROUP BY login_user_id, login_provider_id, login_resource_id, login_resource_name;
-                    SQL
-                    .
-                    "\n"
-                    . ($loginUpdateQueries ?? ''),
+                'query' => <<<SQL
+                INSERT IGNORE INTO `%table_prefix%login_passwords` (login_password_user_id, login_password_date_gmt, login_password_hash)
+                SELECT login_user_id, max(login_date_gmt), login_secret
+                FROM `%table_prefix%logins`
+                WHERE login_type = "password"
+                GROUP BY login_user_id, login_secret;
+                INSERT IGNORE INTO `%table_prefix%login_cookies` (login_cookie_user_id, login_cookie_connection_id, login_cookie_date_gmt,
+                                                            login_cookie_ip, login_cookie_user_agent, login_cookie_hash)
+                SELECT login_user_id, 0, login_date_gmt, login_ip, login_hostname, login_secret
+                FROM `%table_prefix%logins`
+                WHERE login_type = "cookie"
+                GROUP BY login_date_gmt, login_user_id, login_ip, login_hostname, login_secret
+                ORDER BY login_date_gmt DESC;
+                INSERT IGNORE INTO `%table_prefix%login_connections` (login_connection_user_id, login_connection_provider_id, login_connection_date_gmt,
+                                                                login_connection_resource_id, login_connection_resource_name,
+                                                                login_connection_token)
+                SELECT login_user_id, login_provider_id, max(login_date_gmt), login_resource_id, login_resource_name, '' token
+                FROM `%table_prefix%logins`
+                        JOIN `%table_prefix%login_providers` ON login_provider_name = login_type COLLATE utf8mb4_unicode_ci
+                WHERE login_type IN ('facebook', 'twitter', 'google', 'vk')
+                GROUP BY login_user_id, login_provider_id, login_resource_id, login_resource_name;
+                SQL
+                .
+                "\n"
+                . ($loginUpdateQueries ?? ''),
             ],
             '4.0.0' => [
                 'query' => $albumUpdateQueries ?? '',
             ],
             '4.0.1' => [
-                'query' =>
-                    <<<SQL
+                'query' => <<<SQL
                     UPDATE `%table_prefix%settings`
                     SET setting_typeset = 'string',
                         setting_default = ''
@@ -1759,21 +1870,21 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'type' => 'longtext',
                         'prop' => null,
                     ],
-                ]
+                ],
             ],
             '4.1.0' => [
                 'storages' => [
                     'storage_type_chain' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(3) UNSIGNED NOT NULL',
-                        'prop' => 'DEFAULT "1"',
-                    ]
+                        'type' => 'tinyint(3) UNSIGNED',
+                        'prop' => 'NOT NULL DEFAULT "1"',
+                    ],
                 ],
                 'images' => [
                     'image_size' => [
                         'op' => 'MODIFY',
-                        'type' => 'bigint(11)',
-                        'prop' => "UNSIGNED NOT NULL",
+                        'type' => 'bigint(11) UNSIGNED',
+                        'prop' => 'NOT NULL',
                     ],
                     'image_frame_size' => [
                         'op' => 'ADD',
@@ -1789,49 +1900,144 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                         'op' => 'ADD',
                         'type' => 'tinyint(3) UNSIGNED',
                         'prop' => "as (case
-                        when `image_extension` in ('pdf', 'doc', 'md') then 4
-                        when `image_extension` in ('mp3', 'm4a', 'wav') then 3
-                        when `image_extension` in ('mp4', 'webm') then 2
-                        when `image_extension` in ('jpg', 'jpeg', 'gif', 'png', 'webp') then 1
-                        else 0 end) stored"
+                        when `image_extension` in ('pdf','doc','md') then 4
+                        when `image_extension` in ('mp3','m4a','wav') then 3
+                        when `image_extension` in ('mp4','webm') then 2
+                        when `image_extension` in ('jpg','jpeg','gif','png','webp') then 1
+                        else 0 end) stored",
                     ],
-                ]
+                ],
+            ],
+            '4.2.0' => [
+                'users' => [
+                    'user_file_meta_tag_camera_model' => [
+                        'op' => 'ADD',
+                        'type' => 'tinyint(1)',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                ],
+                'categories' => [
+                    'category_url_key' => [
+                        'op' => 'MODIFY',
+                        'type' => 'varchar(32)',
+                        'collation' => 'utf8mb4_bin',
+                        'prop' => 'NOT NULL',
+                    ],
+                ],
+                'storages' => [
+                    'storage_use_path_style_endpoint' => [
+                        'op' => 'ADD',
+                        'type' => 'tinyint(1) UNSIGNED',
+                        'prop' => 'NOT NULL DEFAULT "0"',
+                    ],
+                    'storage_deleted_at' => [
+                        'op' => 'ADD',
+                        'type' => 'DATETIME',
+                        'prop' => 'NULL DEFAULT NULL',
+                    ],
+                ],
+                'images' => [
+                    'image_type' => [
+                        'op' => 'MODIFY',
+                        'type' => 'tinyint(3) UNSIGNED',
+                        'prop' => "as (case
+                        when `image_extension` in ('pdf','doc','md') then 4
+                        when `image_extension` in ('mp3','m4a','wav') then 3
+                        when `image_extension` in ('mp4','webm','mov') then 2
+                        when `image_extension` in ('avif','jpg','jpeg','gif','png','webp') then 1
+                        else 0 end) stored",
+                    ],
+                ],
+                'stats' => [
+                    'stat_tags' => [
+                        'op' => 'ADD',
+                        'type' => 'bigint(32) UNSIGNED',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                    'stat_cron_runs' => [
+                        'op' => 'ADD',
+                        'type' => 'bigint(32) UNSIGNED',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                    'stat_cron_time' => [
+                        'op' => 'ADD',
+                        'type' => 'bigint(32) UNSIGNED',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                ],
+                'tags' => [],
+                'tags_files' => [],
+                'tags_users' => [],
+                'tags_albums' => [],
+                'variables' => [],
+                'query' => <<<SQL
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('crypt_salt', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'crypt_salt'), 'string');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('chevereto_version_installed', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'chevereto_version_installed'), 'string');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('last_used_storage', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'last_used_storage'), 'int');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('id_padding', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'id_padding'), 'int');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('update_check_datetimegmt', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'update_check_datetimegmt'), 'string');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('update_check_notified_release', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'update_check_notified_release'), 'string');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('chevereto_news', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'chevereto_news'), 'array');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('cron_last_ran', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'cron_last_ran'), 'string');
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES('news_check_datetimegmt', (SELECT `setting_value` FROM `%table_prefix%settings` WHERE `setting_name` = 'news_check_datetimegmt'), 'string');
+                SQL,
             ],
         ];
         $sql_update = [];
-        if (!$maintenance) {
+        if (! $maintenance) {
             $sql_update[] = "UPDATE `%table_prefix%settings` SET `setting_value` = 1 WHERE `setting_name` = 'maintenance';";
         }
         $required_sql_files = [];
         foreach ($update_table as $version => $changes) {
             foreach ($changes as $table => $columns) {
-                if ($table == 'query') {
+                if ($table === 'query') {
                     continue;
                 }
                 $schema_table = $schema[$table] ?? [];
                 $create_table = false;
-                if (!array_key_exists($table, $schema) && !in_array($table, $required_sql_files)) {
+                if (! array_key_exists($table, $schema)
+                    && ! in_array($table, $required_sql_files, true)
+                ) {
                     $create_table = true;
-                } elseif ($table == 'storages' && !array_key_exists('storage_bucket', $schema_table)) {
+                } elseif ($table === 'storages' && ! array_key_exists('storage_bucket', $schema_table)) {
                     $create_table = true;
                 }
-                if (!in_array($table, $required_sql_files) && $create_table) {
-                    $sql_update[] = file_get_contents(PATH_APP . 'schemas/' . $dbSchemaVer . '/' . $table . '.sql');
+                if (! in_array($table, $required_sql_files, true) && $create_table) {
+                    /** @var string $schemaTableSql */
+                    $schemaTableSql = file_get_contents(PATH_APP . 'schemas/' . $dbSchemaVer . '/' . $table . '.sql')
+                        ?: throw new LogicException('Missing schema file for table ' . $table);
+                    $sql_update[] = $schemaTableSql;
                     $required_sql_files[] = $table;
                 }
-                if (in_array($table, $required_sql_files)) {
+                if (in_array($table, $required_sql_files, true)) {
                     continue;
                 }
                 if (isset($columns['op'])) {
-                    if ($columns['op'] === 'ALTER') {
-                        if ($DB_indexes[$table]['searchindex'] && strpos($columns['prop'], 'CREATE FULLTEXT INDEX `searchindex`') !== false) {
+                    if ($columns['op'] === 'ALTER') { // @phpstan-ignore-line
+                        if ($DB_indexes[$table]['searchindex']
+                            && strpos($columns['prop'] ?? '', 'CREATE FULLTEXT INDEX `searchindex`') !== false
+                        ) {
                             continue 2;
                         }
+                        $collate = '';
+                        if (isset($columns['collation'])) {
+                            $collate = sprintf('COLLATE %s', $columns['collation']);
+                        }
                         $sql_update[] = strtr(
-                            'ALTER TABLE `%table_prefix%' . $table . '` %prop; %tail',
+                            'ALTER TABLE `%table_prefix%' . $table . '` %collate %prop; %tail',
                             [
+                                '%collate' => $collate,
                                 '%prop' => $columns['prop'],
-                                '%tail' => $columns['tail'] ?? ''
+                                '%tail' => $columns['tail'] ?? '',
                             ]
                         );
                     }
@@ -1843,15 +2049,33 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
                     $schema_column = $schema_table[$column] ?? null;
                     switch ($column_meta['op']) {
                         case 'MODIFY':
+                            // schema expression always comes with lowercase keywords
+                            $schemaExpression = $schema_column['GENERATION_EXPRESSION'] ?? '';
+                            $columnExpression = preg_replace('/\s+/', ' ', $column_meta['prop'] ?? '');
+                            $isGenerated = str_contains(mb_strtolower($schema_column['EXTRA'] ?? ''), 'generated');
+                            $isStored = str_contains(mb_strtolower($schema_column['EXTRA'] ?? ''), 'stored');
+                            if ($isGenerated && $isStored) {
+                                $columnExpression = str_replace_first('as (', '', $columnExpression);
+                                $columnExpression = str_replace_last(') stored', '', $columnExpression);
+                            }
+                            $schemaCollation = mb_strtolower($schema_column['COLLATION_NAME'] ?? '');
+                            $columnCollation = mb_strtolower($column_meta['collation'] ?? '');
+                            $collationUpdated = $columnCollation !== ''
+                                && $schemaCollation !== $columnCollation;
                             if (
                                 array_key_exists($column, $schema[$table])
                                 && (
-                                    $schema_column['COLUMN_TYPE'] !== $column_meta['type']
+                                    mb_strtolower($schema_column['COLUMN_TYPE']) !== mb_strtolower($column_meta['type'])
+                                    || ($isGenerated && $schemaExpression !== $columnExpression)
+                                    || $collationUpdated
                                     || preg_match('/DEFAULT NULL/i', $column_meta['prop'] ?? '')
-                                    && $schema_column['IS_NULLABLE'] == 'NO'
+                                    && $schema_column['IS_NULLABLE'] === 'NO'
                                 )
                             ) {
                                 $query = '`%column` %type';
+                                if ($collationUpdated) {
+                                    $query .= ' COLLATE %collation';
+                                }
                             }
 
                             break;
@@ -1862,76 +2086,91 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
 
                             break;
                         case 'ADD':
-                            if (!array_key_exists($column, $schema[$table])) {
+                            if (! array_key_exists($column, $schema[$table])) {
                                 $query = '`%column` %type';
                             }
 
                             break;
                     }
-                    if (!is_null($query)) {
-                        $stock_tr = ['op', 'type', 'to', 'prop', 'tail'];
+                    if ($query !== null) {
+                        $stock_tr = ['op', 'type', 'to', 'prop', 'tail', 'collation'];
                         $meta_tr = [];
                         foreach ($stock_tr as $v) {
                             $meta_tr['%' . $v] = $column_meta[$v] ?? '';
                         }
                         $sql_update[] = strtr(
                             'ALTER TABLE `%table_prefix%' . $table . '` %op ' . $query . ' %prop; %tail',
-                            array_merge(['%column' => $column], $meta_tr)
+                            array_merge([
+                                '%column' => $column,
+                            ], $meta_tr)
                         );
                     }
                 }
             }
             if (isset($changes['query']) && version_compare($version, $installed_version, '>')) {
-                $sql_update[] = $changes['query'];
+                $sql_update[] = (string) $changes['query'];
             }
         }
         foreach ($CHV_indexes as $table => $indexes) {
             $field_prefix = DB::getFieldPrefix($table);
             foreach ($indexes as $index => $indexProp) {
-                if ($index == 'searchindex' || $index == $field_prefix . '_id' || !starts_with($field_prefix . '_', $index)) {
+                if ($index === 'searchindex' || $index === $field_prefix . '_id' || ! starts_with($field_prefix . '_', $index)) {
                     continue;
                 }
-                if (!array_key_exists($index, $DB_indexes[$table])) {
+                if (! array_key_exists($index, $DB_indexes[$table])) {
                     $sql_update[] = 'ALTER TABLE `%table_prefix%' . $table . '` ADD ' . $indexProp . ';';
                 }
             }
         }
-        $settings_flat = [];
-        foreach (array_keys(array_merge($settings_updates, $update_table)) as $k) {
-            $sql = null;
-            if (is_array($settings_updates[$k])) {
-                foreach ($settings_updates[$k] as $k => $v) {
-                    $settings_flat[$k] = $v;
-                    if (in_array($k, $db_settings_keys)) {
-                        continue;
-                    }
-                    $value = (is_null($v) ? 'NULL' : "'" . $v . "'");
-                    $sql .= "INSERT INTO `%table_prefix%settings` (setting_name, setting_value, setting_default, setting_typeset) VALUES ('" . $k . "', " . $value . ', ' . $value . ", '" . Settings::getType($v) . "'); " . "\n";
+        $versions = array_keys(array_merge($settings_updates, $update_table));
+        foreach ($versions as $k) {
+            $sql = '';
+            foreach ($settings_updates[$k] ?? [] as $settingKey => $settingValue) {
+                if (in_array($settingKey, $db_settings_keys, true)) {
+                    continue;
                 }
+                $settingType = Settings::getType($settingValue);
+                $sql .= <<<SQL
+                INSERT IGNORE INTO `%table_prefix%settings` (setting_name, setting_value, setting_default, setting_typeset)
+                VALUES ('{$settingKey}', '{$settingValue}', '{$settingValue}', '{$settingType}');
+
+                SQL;
             }
-            if ($sql !== null) {
+            foreach ($variables_updates[$k] ?? [] as $variableKey => $variableValue) {
+                if (in_array($variableKey, $db_variables_keys, true)) {
+                    continue;
+                }
+                $variableType = getType($variableValue);
+                $variableValue = Variable::getValueAsString($variableType, $variableValue);
+                $sql .= <<<SQL
+                INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
+                VALUES ('{$variableKey}', '{$variableValue}', '{$variableType}');
+
+                SQL;
+            }
+            if ($sql !== '') {
                 $sql_update[] = $sql;
             }
         }
         foreach ($settings_delete as $k) {
             if (array_key_exists($k, Settings::get())) {
-                $sql_update[] = "DELETE FROM `%table_prefix%settings` WHERE `setting_name` = '$k';";
+                $sql_update[] = "DELETE FROM `%table_prefix%settings` WHERE `setting_name` = '{$k}';";
             }
         }
         foreach ($settings_rename as $k => $v) {
             if (array_key_exists($k, Settings::get())) {
                 $settingValue = Settings::get()[$k];
-                $value = is_null($settingValue)
+                $value = $settingValue === null
                     ? 'NULL'
-                    : "'$settingValue'";
+                    : "'{$settingValue}'";
                 $sql_update[] = <<<SQL
-                UPDATE `%table_prefix%settings` SET `setting_value` = $value WHERE `setting_name` = '$v';
-                DELETE FROM `%table_prefix%settings` WHERE `setting_name` = '$k';
+                UPDATE `%table_prefix%settings` SET `setting_value` = {$value} WHERE `setting_name` = '{$v}';
+                DELETE FROM `%table_prefix%settings` WHERE `setting_name` = '{$k}';
+
                 SQL;
             }
         }
-        $sql_update[] = 'UPDATE `%table_prefix%settings` SET `setting_value` = "' . APP_VERSION . '" WHERE `setting_name` = "chevereto_version_installed";';
-        if (!$maintenance) {
+        if (! $maintenance) {
             $sql_update[] = 'UPDATE `%table_prefix%settings` SET `setting_value` = 0 WHERE `setting_name` = "maintenance";';
         }
         $sql_update = implode("\r\n", $sql_update);
@@ -1945,8 +2184,10 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
         if (($params['dump'] ?? null) === true) {
             $isDumpUpdate = true;
         }
-        if (!$isDumpUpdate && PHP_SAPI !== 'cli') {
-            $totalDb = DB::get('stats', ['type' => 'total'])[0] ?? null;
+        if (! $isDumpUpdate && PHP_SAPI !== 'cli') {
+            $totalDb = DB::get('stats', [
+                'type' => 'total',
+            ])[0] ?? null;
             $totalImages = (int) ($totalDb['stat_images'] ?? 0);
             $stopWordsRegex = '/add|alter|modify|change/i';
             $slowUpdate = preg_match_all($stopWordsRegex, $sql_update);
@@ -1960,9 +2201,9 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
             $dumpMessage = '# Dumped update query (to manually run in the database console)'
                 . "\n\n"
                 . $sql_update;
-            debug($dumpMessage);
+            debug($dumpMessage . "\n");
             xr($dumpMessage);
-            die();
+            exit();
         }
         $updateMessageWrap = PHP_SAPI === 'cli'
             ? <<<CLI
@@ -1980,27 +2221,23 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
 
         try {
             logger("[STATUS] Updating Chevereto database (this may take a while)...\n");
+            logger("[SQL]\n{$sql_update}\n");
             $updated = $db->exec();
             if ($updated) {
-                $chevereto_version_installed = DB::get('settings', ['name' => 'chevereto_version_installed'])[0]['setting_value'];
-                if (APP_VERSION !== $chevereto_version_installed) {
-                    throw new LogicException(
-                        message('Version mismatch.')
-                    );
-                }
+                Variable::set('chevereto_version_installed', APP_VERSION);
             }
         } catch (Throwable $e) {
             throw new LogicException(
-                message(
+                (string) message(
                     <<<MESSAGE
                     Error executing the Chevereto update query.
-                    $errorMessageWrap
+                    {$errorMessageWrap}
                     Try running each of the following statements in the database console to find the conflict.
-                    $updateMessageWrap
-                    MESSAGE
+                    {$updateMessageWrap}
+                    MESSAGE,
+                    query: $sql_update,
+                    error: $e->getMessage()
                 )
-                    ->withTranslate('%query%', $sql_update)
-                    ->withTranslate('%error%', $e->getMessage())
             );
         }
         if ($updated) {
@@ -2023,15 +2260,17 @@ ALTER TABLE `%table_prefix%users` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8m
     }
 }
 $input_errors = [];
-if (!isset($installed_version) && !empty($params)) {
-    if (isset($params['username']) && !in_array($doing, ['already', 'update'])) {
+if ($installed_version === '' && ! empty($params)) {
+    if (isset($params['username'])
+        && ! in_array($doing, ['already', 'update'], true)
+    ) {
         $doing = 'ready';
     }
     switch ($doing) {
         case 'connect':
             $db_details = [];
             foreach ($db_array as $k => $v) {
-                if ($v && $params[$k] == '') {
+                if ($v && $params[$k] === '') {
                     $error = true;
 
                     break;
@@ -2051,11 +2290,11 @@ if (!isset($installed_version) && !empty($params)) {
                     $error = true;
                     $error_message = sprintf($db_conn_error, $e->getMessage());
                 }
-                if (!$error) {
+                if (! $error) {
                     $env = [];
                     $env['%encryptionKey%'] = randomKey()->base64();
                     foreach ($db_details as $k => $v) {
-                        $env["%$k%"] = $v;
+                        $env["%{$k}%"] = $v;
                     }
                     $dotenvTemplate = <<<EOT
 <?php
@@ -2083,20 +2322,20 @@ EOT;
                         $doing = 'env';
                     }
                 }
-                if ($doing == 'ready') {
-                    redirect('install');
+                if ($doing === 'ready') {
+                    redirect('install', 302);
                 }
             }
 
             break;
         case 'ready':
-            if (!filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
+            if (! filter_var($params['email'], FILTER_VALIDATE_EMAIL)) {
                 $input_errors['email'] = _s('Invalid email');
             }
-            if (!User::isValidUsername($params['username'])) {
+            if (! User::isValidUsername($params['username'])) {
                 $input_errors['username'] = _s('Invalid username');
             }
-            if (!preg_match('/' . getSetting('user_password_pattern') . '/', $params['password'] ?? '')) {
+            if (! preg_match('/' . Settings::USER_PASSWORD_PATTERN . '/', $params['password'] ?? '')) {
                 $input_errors['password'] = _s('Invalid password');
             }
             if (count($input_errors) > 0) {
@@ -2129,7 +2368,7 @@ EOT;
                         . $offsetMinutes;
                     $install_sql .=
                         <<<SQL
-                        SET time_zone = '" . $offset . "';
+                        SET time_zone = '" . {$offset} . "';
                         ALTER TABLE `chv_images`
                         MODIFY `image_id` bigint(32) NOT NULL AUTO_INCREMENT,
                         MODIFY `image_name` varchar(255),
@@ -2173,7 +2412,7 @@ EOT;
                         ADD INDEX `image_category_id` (`image_category_id`),
                         ADD INDEX `image_expiration_date_gmt` (`image_expiration_date_gmt`),
                         ADD INDEX `image_is_animated` (`image_is_animated`),
-                        ENGINE=$fulltext_engine;
+                        ENGINE={$fulltext_engine};
 
                         UPDATE `chv_images`
                             SET `image_date_gmt` = `image_date`,
@@ -2192,11 +2431,17 @@ EOT;
                         RENAME TABLE `chv_storages` to `_chv_storages`;
                         SQL;
                     unset($create_table['images']);
-                    $chv_initial_settings['crypt_salt'] = $params['crypt_salt'];
                     $table_prefix = 'chv_';
                 } else {
                     $table_prefix = env()['CHEVERETO_DB_TABLE_PREFIX'];
                 }
+                $table_tags = $create_table['tags'];
+                $table_tags_files = $create_table['tags_files'];
+                unset($create_table['tags'], $create_table['tags_files']);
+                $create_table = array_merge($create_table, [
+                    'tags' => $table_tags,
+                    'tags_files' => $table_tags_files,
+                ]);
                 foreach ($create_table as $k => $v) {
                     $install_sql .= strtr(file_get_contents($v), [
                         '%rootPath%' => PATH_PUBLIC,
@@ -2204,7 +2449,7 @@ EOT;
                         '%table_engine%' => $fulltext_engine,
                     ]) . "\n\n";
                 }
-                $chv_initial_settings['id_padding'] = $is_2X ? 0 : 5000;
+                $id_padding = $is_2X ? 0 : 999;
                 $install_sql .= strtr($query_populate_stats, [
                     '%rootPath%' => PATH_PUBLIC,
                     '%table_prefix%' => $table_prefix,
@@ -2214,19 +2459,25 @@ EOT;
                 if (($params['dump'] ?? false) === true) {
                     debug($install_sql);
                     logger("\n");
-                    die(0);
+                    exit(0);
                 }
+                $crypt_salt = $params['crypt_salt'] ?? randomString(8);
                 $db = DB::getInstance();
                 $db->query($install_sql);
                 $db->exec();
                 $db->closeCursor();
-                Settings::insert($chv_initial_settings);
+                $initial_variables['id_padding'] = $id_padding;
+                $initial_variables['crypt_salt'] = $crypt_salt;
+                foreach ($initial_variables as $k => $v) {
+                    Variable::set($k, $v);
+                }
+                Settings::insert($initial_settings);
                 $insert_admin = User::insert([
                     'username' => $params['username'],
                     'email' => $params['email'],
                     'is_admin' => 1,
-                    'language' => $chv_initial_settings['default_language'],
-                    'timezone' => $chv_initial_settings['default_timezone'],
+                    'language' => $initial_settings['default_language'],
+                    'timezone' => $initial_settings['default_timezone'],
                 ]);
                 Login::addPassword($insert_admin, $params['password']);
                 $doing = 'finished';
@@ -2237,11 +2488,14 @@ EOT;
 }
 if (PHP_SAPI === 'cli') {
     if ($error === true) {
+        $error_message ??= 'An error occurred.';
+
         throw new LogicException(
-            message("$error_message: %errors%")
-                ->withTranslate('%error%', implode("\n", $input_errors))
+            (string) message(
+                "{$error_message}: %errors%",
+                errors: implode("\n", $input_errors)
+            )
         );
-        die(255);
     }
     switch ($doing) {
         case 'already':
@@ -2266,7 +2520,7 @@ if (PHP_SAPI === 'cli') {
             break;
         case 'update_failed':
             logger("[ERROR] Chevereto database update failure\n");
-            die(255);
+            exit(255);
     }
 } else {
     $doctitle = $doctitles[$doing] . ' - Chevereto ' . get_chevereto_version(true);
@@ -2278,4 +2532,4 @@ if (PHP_SAPI === 'cli') {
     ob_end_clean();
     require_once $system_template;
 }
-die(0);
+exit(0);

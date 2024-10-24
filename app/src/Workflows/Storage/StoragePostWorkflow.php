@@ -12,9 +12,9 @@
 namespace Chevereto\Workflows\Storage;
 
 use Chevere\Workflow\Interfaces\WorkflowInterface;
+use Chevereto\Workflow\BaseWorkflow;
 use function Chevere\Workflow\job;
 use function Chevere\Workflow\workflow;
-use Chevereto\Workflow\BaseWorkflow;
 
 final class StoragePostWorkflow extends BaseWorkflow
 {
@@ -27,8 +27,8 @@ final class StoragePostWorkflow extends BaseWorkflow
             ),
             insert: job(
                 'StorageInsertAction',
-                accountId: '${account_id}',
-                accountName: '${account_name}',
+                account_id: '${account_id}',
+                account_name: '${account_name}',
                 apiId: '${api_id}',
                 bucket: '${bucket}',
                 capacity: '${capacity}',

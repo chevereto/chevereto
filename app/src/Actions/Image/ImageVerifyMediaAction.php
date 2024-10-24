@@ -12,19 +12,19 @@
 namespace Chevereto\Actions\Image;
 
 use Chevere\Action\Action;
-use function Chevere\DataStructure\data;
 use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use function Chevere\Parameter\objectParameter;
-use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringParameter;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use function Chevereto\Image\imageHash;
-use function Chevereto\Image\imageManager;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
+use InvalidArgumentException;
 use Throwable;
+use function Chevere\DataStructure\data;
+use function Chevere\Message\message;
+use function Chevere\Parameter\object;
+use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\string;
+use function Chevereto\Image\imageHash;
+use function Chevereto\Image\imageManager;
 
 /**
  * Validates an image against the image processing and image dimensions.
@@ -79,10 +79,10 @@ class ImageVerifyMediaAction extends Action
     {
         return
             parameters(
-                image: objectParameter(
+                image: object(
                     className: Image::class
                 ),
-                perceptual: stringParameter(),
+                perceptual: string(),
             );
     }
 
@@ -94,9 +94,11 @@ class ImageVerifyMediaAction extends Action
             throw new InvalidArgumentException(
                 previous: $e,
                 code: 1000,
-                message: message("Filepath %filepath% provided can't be handled by %manager%")
-                    ->withCode('%filepath%', $filepath)
-                    ->withCode('%manager%', ImageManager::class)
+                message: message(
+                    "Filepath `%filepath%` provided can't be handled by `%manager%`",
+                    filepath: $filepath,
+                    manager: ImageManager::class
+                )
             );
         }
     }
@@ -143,10 +145,12 @@ class ImageVerifyMediaAction extends Action
 
     private function getMinExceptionMessage(string $dimension, int $provided): MessageInterface
     {
-        return message("Image %dimension% %provided% doesn't meet the the minimum required (%required%)")
-            ->withCode('%dimension%', $dimension)
-            ->withCode('%provided%', (string) $provided)
-            ->withCode('%required%', $this->getMinRequired());
+        return message(
+            "Image `%dimension%` `%provided%` doesn't meet the the minimum required (`%required%`)",
+            dimension: $dimension,
+            provided: (string) $provided,
+            required: $this->getMinRequired(),
+        );
     }
 
     private function getMinRequired(): string
@@ -156,10 +160,12 @@ class ImageVerifyMediaAction extends Action
 
     private function getMaxExceptionMessage(string $dimension, int $provided): MessageInterface
     {
-        return message('Image %dimension% %provided% exceeds the maximum allowed (%allowed%)')
-            ->withCode('%dimension%', $dimension)
-            ->withCode('%provided%', (string) $provided)
-            ->withCode('%allowed%', $this->getMaxAllowed());
+        return message(
+            'Image `%dimension%` `%provided%` exceeds the maximum allowed (`%allowed%`)',
+            dimension: $dimension,
+            provided: (string) $provided,
+            allowed: $this->getMaxAllowed(),
+        );
     }
 
     private function getMaxAllowed(): string

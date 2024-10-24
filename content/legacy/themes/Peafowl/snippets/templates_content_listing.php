@@ -1,5 +1,5 @@
 <?php
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -15,7 +15,7 @@ if (!defined('ACCESS') || !ACCESS) {
 	<div class="content-listing-pagination"><a data-action="load-more"><?php _se('Load more'); ?></a></div>
 </div>
 <div data-template="content-listing-empty" class="hidden">
-	<?php include_theme_file("snippets/template_content_empty"); ?>
+	<?php require_theme_file("snippets/template_content_empty"); ?>
 </div>
 <div data-template="content-listing-loading" class="hidden">
 	<div class="content-listing-loading"></div>

@@ -12,34 +12,41 @@
 use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
+use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\get_route_name;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Vars\request;
 
 return function (Handler $handler) {
     $logged_user = Login::getUser();
-    if (!$handler::cond('explore_enabled') && !($logged_user['is_content_manager'] ?? false)) {
+    if (! $handler::cond('explore_enabled') && ! ($logged_user['is_content_manager'] ?? false)) {
         $handler->issueError(404);
 
         return;
     }
     $doing = $handler->request()[0] ?? null;
     $baseUrlRouteName = get_base_url(get_route_name());
-    if (!isset($doing)
+    if (! isset($doing)
         && getSetting('homepage_style') == 'route_explore'
         && str_contains(get_current_url(), $baseUrlRouteName)
     ) {
-        $redirect = str_replace_first($baseUrlRouteName, get_base_url(), get_current_url());
-        redirect($redirect);
+        $redirect = str_replace_first(
+            $baseUrlRouteName,
+            get_base_url(),
+            get_current_url()
+        );
+        headersNoCache();
+        redirect($redirect, 302);
     }
-    $explore_semantics = $handler::var('explore_semantics');
-    if (isset($doing) && !array_key_exists($doing, $explore_semantics)) {
+    $explore_discovery = $handler::var('explore_discovery') + $handler::var('explore_content');
+    if (isset($doing) && ! array_key_exists($doing, $explore_discovery)) {
         $handler->issueError(404);
 
         return;
@@ -55,30 +62,59 @@ return function (Handler $handler) {
     if ($doing) {
         $basename .= ($basename ? '/' : '') . $doing;
     }
-    $list = isset($doing) ? $explore_semantics[$doing] : ['label' => _s('Explore'), 'icon' => 'fas fa-images'];
-    $list['list'] = is_null($doing) ? get_route_name() : $doing;
+    $list = isset($doing) ? $explore_discovery[$doing] : [
+        'label' => _s('Explore'),
+        'icon' => 'fas fa-compass',
+    ];
+
+    $list['list'] = $doing === null
+        ? get_route_name()
+        : $doing;
+    $doing ??= 'images';
     $listingParams = [
         'listing' => $list['list'],
         'basename' => $basename,
         'params_hidden' => [
             'hide_empty' => 1,
             'hide_banned' => 1,
-            'album_min_image_count' => getSetting('explore_albums_min_image_count'),
         ],
     ];
+    if ($listingParams['listing'] === 'albums') {
+        $listingParams['params_hidden']['album_min_image_count'] = getSetting('explore_albums_min_image_count');
+    }
     if ($doing == 'animated') {
-        $listingParams['params_hidden']['is_animated'] = 1;
+        $listingParams['params_hidden'] = array_merge($listingParams['params_hidden'], [
+            'is_animated' => 1,
+            'is_image' => 1,
+            'is_video' => 0,
+        ]);
     }
     if ($doing == 'videos') {
-        $listingParams['params_hidden']['is_video'] = 1;
+        $listingParams['params_hidden'] = array_merge($listingParams['params_hidden'], [
+            'is_image' => 0,
+            'is_video' => 1,
+        ]);
     }
-    $getParams = Listing::getParams(request());
+    if ($doing == 'images') {
+        $listingParams['params_hidden'] = array_merge($listingParams['params_hidden'], [
+            'is_image' => 1,
+            'is_video' => 0,
+        ]);
+    }
+    $request = request();
+    $getParams = Listing::getParams(
+        request: $request,
+        type: $request['list'] ?? $doing
+    );
     $tabs = Listing::getTabs($listingParams, $getParams, true);
     $currentKey = $tabs['currentKey'];
     $type = $tabs['tabs'][$currentKey]['type'];
     $tabs = $tabs['tabs'];
-    parse_str($tabs[$currentKey]['params'], $tabs_params);
-    $getParams['sort'] = explode('_', $tabs_params['sort']); // Hack this stuff
+    parse_str($tabs[$currentKey]['params'], $tab_params);
+    $fix_sort = explode('_', $tab_params['sort']);
+    if (count($fix_sort) == 2) {
+        $getParams['sort'] = $fix_sort;
+    }
     $handler::setVar('list_params', $getParams);
     $listing = new Listing();
     $listing->setType($type);
@@ -109,4 +145,6 @@ return function (Handler $handler) {
         $handler::setVar('user_items_editor', false);
     }
     $handler::setVar('share_links_array', get_share_links());
+    $canonical = get_public_url($tabs[$currentKey]['url']);
+    $handler::setVar('canonical', $canonical);
 };

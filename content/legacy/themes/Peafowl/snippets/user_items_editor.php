@@ -1,7 +1,7 @@
 <?php
 
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -15,6 +15,7 @@ $modal_dealing_with_type = $modal_dealing_with == 'images' ? 'image' : 'album';
 if (!in_array($modal_dealing_with, ["images", "albums"])) {
     $modal_dealing_with = "images";
 }
+// listing single editor
 if ($user_items_editor !== false) {
     ?>
 <div data-modal="form-edit-single" class="hidden">
@@ -29,7 +30,7 @@ if ($user_items_editor !== false) {
     <div class="image-preview"></div>
     <div class="modal-form">
 		<?php
-            include_theme_file('snippets/form_' . $modal_dealing_with_type); ?>
+            require_theme_file('snippets/form_' . $modal_dealing_with_type); ?>
     </div>
 </div>
 
@@ -39,7 +40,7 @@ if ($user_items_editor !== false) {
     <div class="modal-form">
 		<div id="move-new-album" data-content="form-new-album" data-view="switchable">
         	<?php
-                include_theme_file("snippets/form_album"); ?>
+                require_theme_file("snippets/form_album"); ?>
 		</div>
 	</div>
 </div>
@@ -49,7 +50,7 @@ if ($user_items_editor !== false) {
     <div class="image-preview"></div>
 	<div class="modal-form">
 		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
-			<?php include_theme_file("snippets/form_move_existing_album"); ?>
+			<?php require_theme_file("snippets/form_move_existing_album"); ?>
 		</div>
 	</div>
 </div>
@@ -59,7 +60,7 @@ if ($user_items_editor !== false) {
     <div class="image-preview"></div>
 	<div class="modal-form">
 		<div id="move-existing-album" data-view="switchable" class="c8 input-label">
-			<?php include_theme_file("snippets/form_move_existing_album"); ?>
+			<?php require_theme_file("snippets/form_move_existing_album"); ?>
 		</div>
 
 	</div>
@@ -72,9 +73,8 @@ if ($user_items_editor !== false) {
 	<span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Assign %s', _s('category')); ?></span>
 	<?php if (Handler::var('categories')) { ?>
     <div class="image-preview"></div>
-	<p><?php _se('Selection will be assigned to %t.', ['%t' => _s('category')]); ?></p>
 	<div class="input-label c8">
-		<?php include_theme_file('snippets/form_category'); ?>
+		<?php require_theme_file('snippets/form_category'); ?>
 	</div>
 	<?php } else { ?>
 	<p><?php _se('There is no categories.'); ?></p>

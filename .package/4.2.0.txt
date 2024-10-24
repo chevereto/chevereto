@@ -1,0 +1,115 @@
+Chevereto 4.2.0 (2024-10-24)
+
+- 🏷️ Added user-defined file tags
+- 🏷️ Added album top tags filtering system
+- 🏷️ Added automatic camera model tagging
+- 🏷️ Added bulk importer support for metadata tags
+- 🏷️ Added combined tag filtering system
+- 🏷️ Added tag autocomplete search
+- 🏷️ Added tag description
+- 🏷️ Added tags listings
+- 🏷️ Added top tags explorer list
+- 🕷️ Added support for Arachnid Shield API v1.0
+- 🪣 Added "Use path style endpoint" option for External storage
+- 🪣 Added removal for External storage
+- 🪣 Improved credentials handling at External storage
+- 🪣 Improved External storage error display
+- 📈 Added CRON runtime stat
+- 📈 Added Tags stat
+- 🖼️ Added image only Explorer listing
+- 🖼️ Added support for AVIF image format
+- 🐘 Added automatic ini_set for settings mismatch
+- 🐘 Requires PHP 8.1
+- 🌚 Added System color palette prefers-color-scheme
+- 📷 Added Exif data dedicated tab
+- 🐬 Added system variables
+- 📱 Changed mobile font root size to 16px
+- ✅ Added "Go up" button for sub-albums
+- ✅ Added album creation on behalf of users
+- ✅ Added API documentation page
+- ✅ Added asset storage deletions with queues
+- ✅ Added breadcrumb navigation for sub-albums
+- ✅ Added canonical URL for /explore
+- ✅ Added category editing tools to category view
+- ✅ Added configurable cache ttl
+- ✅ Added configurable video routing
+- ✅ Added custom SMTP port setting
+- ✅ Added database settings for asset storage
+- ✅ Added error log configuration for cron and CLI
+- ✅ Added HTML encoding for growl alerts
+- ✅ Added keywords meta tag
+- ✅ Added logout action for account routes
+- ✅ Added meta robots noindex, follow for search results
+- ✅ Added more ENV configurable limits
+- ✅ Added more ENV system configurable toggles
+- ✅ Added more error log information
+- ✅ Added new content section to explorer menu
+- ✅ Added new listing /explore/albums
+- ✅ Added new listing /explore/users
+- ✅ Added option to toggle guest album creation
+- ✅ Added root user support for CLI
+- ✅ Added single JavaScript dependency
+- ✅ Added SMTP without credentials
+- ✅ Added support for bfcache
+- ✅ Added support for case-sensitive url_key for categories
+- ✅ Added support for custom upload expiration via API
+- ✅ Added support for custom upload plugins
+- ✅ Added user's liked albums listing
+- ✅ Added web manifest
+- ✅ Added PUP.js support for XenForo 2.3
+- ✅ Improved API request handling
+- ✅ Improved confirmation table indexes
+- ✅ Improved CRON error handling
+- ✅ Improved form validation handling
+- ✅ Improved handling for boolean settings
+- ✅ Improved handling for string settings (HTML safe)
+- ✅ Improved hreflang implementation
+- ✅ Improved post upload message for guest
+- ✅ Improved session handling
+- ✅ Improved share modals which now use short URL
+- ✅ Migrated xrDebug configuration from database to ENV
+- ✅ Removed History.js and unload events
+- ✅ Removed local uploads re-check
+- ✅ Removed switch to local upload failover
+- 💅 Added apple-mobile-web-app-title property
+- 💅 Added automatic menu sizing display
+- 💅 Added color-scheme dark for applicable palettes
+- 💅 Added curl command example under /dashboard/settings/guest-api
+- 💅 Added curl command example under /settings/api
+- 💅 Added dashboard stat button links
+- 💅 Added download links for files
+- 💅 Added ESC key binding to clear and close search boxes
+- 💅 Added Explore button to mobile top bar
+- 💅 Disabled key feedback message
+- 💅 Improved "hamburger" menu
+- 💅 Improved album cover button icon
+- 💅 Improved listing bulk selection tool
+- 💅 Improved select elements display for Safari
+- 💅 Improved user profile display
+- 💅 Introducing all-new dark palette
+- 💅 Mobile menus now display two columns
+- 💅 Removed default avatar from guest owned content
+- 💅 Removed redundant success alerts
+- 💅 Removed top bar hide/show on scrolling
+- 💅 Unified user action buttons
+- 💅 Updated Font Awesome dependency
+- 🐞 Fixed bug in account change email confirm
+- 🐞 Fixed bug in album editing allowing empty string
+- 🐞 Fixed bug in album editing parent id
+- 🐞 Fixed bug in failing asset upload when running in sub-dir
+- 🐞 Fixed bug in front controller
+- 🐞 Fixed bug in listing selection tools
+- 🐞 Fixed bug in missing oEmbed tags when using custom image routing
+- 🐞 Fixed bug in oEmbed XML output
+- 🐞 Fixed bug in password reset
+- 🐞 Fixed bug in share modal
+- 🐞 Fixed bug in stop words filter system
+- 🐞 Fixed bug in sub-albums listing editor
+- 🐞 Fixed bug in URL-based lang change for logged users
+- 🐞 Fixed bug in user avatar upload
+- 🐞 Fixed bug in video upload when using watermarks
+- 🐞 Fixed bug in wrong redirects when running in sub-dir
+- 🐞 Fixed bug with not working album share button
+- 🐞 Fixed bug with wrong URL for album sharing
+- 🐞 Fixed ErrorException on contact page
+- 🐞 Fixed ErrorException on route json

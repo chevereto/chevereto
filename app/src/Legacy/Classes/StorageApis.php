@@ -11,6 +11,7 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use InvalidArgumentException;
 use function Chevereto\Vars\env;
 
 final class StorageApis
@@ -24,7 +25,7 @@ final class StorageApis
         1 => [
             'name' => 'Amazon S3',
             'type' => 's3',
-            'url' => 'https://s3.amazonaws.com/<bucket>/',
+            'url' => '',
         ],
         9 => [
             'name' => 'S3 compatible',
@@ -34,18 +35,17 @@ final class StorageApis
         2 => [
             'name' => 'Google Cloud',
             'type' => 'gcloud',
-            'url' => 'https://storage.googleapis.com/<bucket>/',
+            'url' => '',
         ],
-
         3 => [
             'name' => 'Microsoft Azure',
             'type' => 'azure',
-            'url' => 'https://<account>.blob.core.windows.net/<container>/',
+            'url' => '',
         ],
         10 => [
             'name' => 'Alibaba Cloud OSS',
             'type' => 'oss',
-            'url' => 'https://<bucket>.<endpoint>/',
+            'url' => '',
         ],
         6 => [
             'name' => 'SFTP',
@@ -65,7 +65,7 @@ final class StorageApis
         11 => [
             'name' => 'Backblaze B2 (legacy API)',
             'type' => 'b2',
-            'url' => 'https://f002.backblazeb2.com/file/<bucket>/',
+            'url' => '',
         ],
     ];
 
@@ -83,7 +83,21 @@ final class StorageApis
     public static function getEnabled(): array
     {
         $apis = self::$apis;
-        if (!(bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
+        if (! (bool) env()['CHEVERETO_ENABLE_EXTERNAL_STORAGE_PROVIDERS']) {
+            $enabled_apis = [8];
+            $enabled = [];
+            foreach ($apis as $id => &$api) {
+                if (! in_array($id, $enabled_apis)) {
+                    $api['disabled'] = true;
+
+                    continue;
+                }
+                $enabled[$id] = $api;
+                unset($apis[$id]);
+            }
+            $apis = $enabled + $apis;
+        }
+        if (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
             unset($apis[8]);
         }
 
@@ -91,7 +105,7 @@ final class StorageApis
     }
 
     public static function getAnon(
-        string $type,
+        int $api_id,
         string $name,
         string $url,
         string $bucket,
@@ -100,19 +114,27 @@ final class StorageApis
         ?string $region = null,
         ?string $server = null,
         ?string $service = null,
-        ?string $accountId = null,
-        ?string $accountName = null
+        ?string $account_id = null,
+        ?string $account_name = null,
+        ?bool $use_path_style_endpoint = null
     ): array {
+        $enabled = self::getEnabled();
+        if (! array_key_exists($api_id, $enabled)) {
+            throw new InvalidArgumentException('Storage API not available.', 1001);
+        }
+
         return [
-            'api_id' => self::getApiId($type),
+            'api_id' => $api_id,
             'name' => $name,
             'url' => rtrim($url, '/') . '/',
-            'bucket' => $type == 'local' ? (rtrim($bucket, '/') . '/') : $bucket,
+            'bucket' => $api_id == 8
+                ? (rtrim($bucket, '/') . '/')
+                : $bucket,
             'region' => $region,
             'server' => $server,
             'service' => $service,
-            'account_id' => $accountId,
-            'account_name' => $accountName,
+            'account_id' => $account_id,
+            'account_name' => $account_name,
             'key' => $key,
             'secret' => $secret,
             'id' => null,
@@ -120,11 +142,13 @@ final class StorageApis
             'is_active' => true,
             'capacity' => null,
             'space_used' => null,
+            'use_path_style_endpoint' => $use_path_style_endpoint,
         ];
     }
 
     public static function getApiType(int $api_id): string
     {
-        return self::$apis[$api_id]['type'];
+        return self::$apis[$api_id]['type']
+            ?? throw new InvalidArgumentException('Invalid Storage API ID');
     }
 }

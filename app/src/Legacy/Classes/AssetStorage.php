@@ -11,27 +11,43 @@
 
 namespace Chevereto\Legacy\Classes;
 
-use Chevereto\Traits\Instance\AssertNoInstanceTrait;
+use function Chevereto\Legacy\getSetting;
 
 final class AssetStorage
 {
-    use AssertNoInstanceTrait;
+    private static array $storage = [];
 
-    protected static array $storage = [];
+    private static ?LocalStorage $localStorage = null;
 
-    protected static ?LocalStorage $localStorage = null;
-
-    protected static bool $isLocalLegacy;
+    private static bool $isLocalLegacy;
 
     public function __construct(array $storage)
     {
-        $this->assertNoInstance();
+        $storage['id'] ??= 0;
         self::$storage = $storage;
         self::$isLocalLegacy = StorageApis::getApiType((int) $storage['api_id']) == 'local'
-            && PATH_PUBLIC === $storage['bucket'];
+            && $storage['bucket'] === PATH_PUBLIC;
         if (($storage['api_id'] ?? false) === 8) {
             self::$localStorage = new LocalStorage($storage);
         }
+    }
+
+    public static function getDbSettings(): array
+    {
+        return [
+            'account_id' => getSetting('asset_storage_account_id') ?? '',
+            'account_name' => getSetting('asset_storage_account_name') ?? '',
+            'api_id' => getSetting('asset_storage_api_id') ?? '',
+            'bucket' => getSetting('asset_storage_bucket') ?? '',
+            'key' => getSetting('asset_storage_key') ?? '',
+            'name' => 'assets',
+            'region' => getSetting('asset_storage_region') ?? '',
+            'secret' => getSetting('asset_storage_secret') ?? '',
+            'server' => getSetting('asset_storage_server') ?? '',
+            'service' => getSetting('asset_storage_service') ?? '',
+            'url' => getSetting('asset_storage_url') ?? '',
+            'use_path_style_endpoint' => getSetting('asset_storage_use_path_style_endpoint') ?? '',
+        ];
     }
 
     public static function getStorage(): array
@@ -44,13 +60,13 @@ final class AssetStorage
         return self::$isLocalLegacy;
     }
 
-    public static function uploadFiles(array $targets, array $options): void
+    public static function uploadFiles(array $targets, array $options): array
     {
-        Storage::uploadFiles($targets, self::getStorage(), $options);
+        return Storage::uploadFiles($targets, self::getStorage(), $options);
     }
 
-    public static function deleteFiles(array $targets): void
+    public static function deleteFiles(array $targets): array|false
     {
-        Storage::deleteFiles($targets, self::getStorage());
+        return Storage::deleteFiles($targets, self::getStorage());
     }
 }

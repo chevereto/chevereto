@@ -11,17 +11,28 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use DateTimeZone;
+use Exception;
+use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\FFMpeg;
+use FFMpeg\Media\Video;
+use Intervention\Image\ImageManagerStatic;
+use LogicException;
+use PHPExif\Exif;
+use Throwable;
 use function Chevere\Message\message;
-use function Chevere\String\randomString;
-use Chevere\Throwable\Exceptions\LogicException;
+use function Chevere\Standard\randomString;
 use function Chevereto\Encryption\decrypt;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\assertNotStopWords;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\encodeID;
+use function Chevereto\Legacy\fetchVariable;
 use function Chevereto\Legacy\G\add_ending_slash;
 use function Chevereto\Legacy\G\array_filter_array;
 use function Chevereto\Legacy\G\array_utf8encode;
+use function Chevereto\Legacy\G\dateinterval_to_seconds;
 use function Chevereto\Legacy\G\datetime;
 use function Chevereto\Legacy\G\datetime_add;
 use function Chevereto\Legacy\G\datetime_diff;
@@ -29,16 +40,16 @@ use function Chevereto\Legacy\G\datetime_modify;
 use function Chevereto\Legacy\G\datetime_sub;
 use function Chevereto\Legacy\G\datetimegmt;
 use function Chevereto\Legacy\G\datetimegmt_convert_tz;
+use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\format_bytes;
-use function Chevereto\Legacy\G\get_basename_without_extension;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_ffmpeg_error;
-use function Chevereto\Legacy\G\get_filename;
 use function Chevereto\Legacy\G\get_image_fileinfo as GGet_image_fileinfo;
+use function Chevereto\Legacy\G\get_mimetype;
 use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\is_animated_image;
-use function Chevereto\Legacy\G\name_unique_file;
+use function Chevereto\Legacy\G\mime_to_extension;
 use function Chevereto\Legacy\G\nullify_string;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\seoUrlfy;
@@ -48,19 +59,11 @@ use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\G\url_to_relative;
 use function Chevereto\Legacy\get_fileinfo;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\system_notification_email;
 use function Chevereto\Legacy\time_elapsed_string;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
-use DateTimeZone;
-use Exception;
-use FFMpeg\Coordinate\TimeCode;
-use FFMpeg\FFMpeg;
-use Intervention\Image\ImageManagerStatic;
-use PHPExif\Exif;
 use function Safe\password_hash;
-use Throwable;
 
 class Image
 {
@@ -95,7 +98,22 @@ class Image
         'is_approved',
         'is_360',
         'duration',
-        'type'
+        'type',
+        'tags',
+    ];
+
+    public static array $types = [
+        1 => 'image',
+        2 => 'video',
+        3 => 'audio',
+    ];
+
+    public static array $chain_sizes = [
+        'frame',    // 2^4
+        'original', // 2^3
+        'image',    // 2^2
+        'medium',   // 2^1
+        'thumb',    // 2^0
     ];
 
     protected static array $expirations = [
@@ -124,20 +142,6 @@ class Image
         ['year', 1, 31536000],
     ];
 
-    public static array $types = [
-        1 => 'image',
-        2 => 'video',
-        3 => 'audio',
-    ];
-
-    public static array $chain_sizes = [
-        'frame',    // 2^4
-        'original', // 2^3
-        'image',    // 2^2
-        'medium',   // 2^1
-        'thumb',    // 2^0
-    ];
-
     public static function getSingle(
         int $id,
         bool $sumView = false,
@@ -145,22 +149,61 @@ class Image
         array $requester = []
     ): array {
         $tables = DB::getTables();
-        $query = 'SELECT * FROM ' . $tables['images'] . "\n";
+        $query = 'SELECT * FROM '
+            . $tables['images']
+            . "\n";
         $joins = [
-            'LEFT JOIN ' . $tables['storages'] . ' ON ' . $tables['images'] . '.image_storage_id = ' . $tables['storages'] . '.storage_id',
-            'LEFT JOIN ' . $tables['storage_apis'] . ' ON ' . $tables['storages'] . '.storage_api_id = ' . $tables['storage_apis'] . '.storage_api_id',
-            'LEFT JOIN ' . $tables['users'] . ' ON ' . $tables['images'] . '.image_user_id = ' . $tables['users'] . '.user_id',
-            'LEFT JOIN ' . $tables['albums'] . ' ON ' . $tables['images'] . '.image_album_id = ' . $tables['albums'] . '.album_id'
+            'LEFT JOIN '
+                . $tables['storages']
+                . ' ON '
+                . $tables['images']
+                . '.image_storage_id = '
+                . $tables['storages']
+                . '.storage_id',
+            'LEFT JOIN '
+                . $tables['storage_apis']
+                . ' ON '
+                . $tables['storages']
+                . '.storage_api_id = '
+                . $tables['storage_apis']
+                . '.storage_api_id',
+            'LEFT JOIN '
+                . $tables['users']
+                . ' ON '
+                . $tables['images']
+                . '.image_user_id = '
+                . $tables['users']
+                . '.user_id',
+            'LEFT JOIN '
+                . $tables['albums']
+                . ' ON '
+                . $tables['images']
+                . '.image_album_id = '
+                . $tables['albums']
+                . '.album_id',
         ];
         if ($requester !== []) {
-            if (version_compare(Settings::get('chevereto_version_installed'), '3.7.0', '>=')) {
-                $joins[] = 'LEFT JOIN ' . $tables['likes'] . ' ON ' . $tables['likes'] . '.like_content_type = "image" AND ' . $tables['images'] . '.image_id = ' . $tables['likes'] . '.like_content_id AND ' . $tables['likes'] . '.like_user_id = ' . $requester['id'];
+            if (version_compare(cheveretoVersionInstalled(), '3.7.0', '>=')) {
+                $joins[] = 'LEFT JOIN '
+                    . $tables['likes']
+                    . ' ON '
+                    . $tables['likes']
+                    . '.like_content_type = "image" AND '
+                    . $tables['images']
+                    . '.image_id = '
+                    . $tables['likes']
+                    . '.like_content_id AND '
+                    . $tables['likes']
+                    . '.like_user_id = '
+                    . $requester['id'];
             }
         }
         $query .= implode("\n", $joins) . "\n";
         $query .= 'WHERE image_id=:image_id;' . "\n";
         if ($sumView) {
-            $query .= 'UPDATE ' . $tables['images'] . ' SET image_views = image_views + 1 WHERE image_id=:image_id';
+            $query .= 'UPDATE '
+                . $tables['images']
+                . ' SET image_views = image_views + 1 WHERE image_id=:image_id';
         }
         $db = DB::getInstance();
         $db->query($query);
@@ -170,7 +213,7 @@ class Image
             return [];
         }
         if ($sumView) {
-            $image_db['image_views'] += 1;
+            ++$image_db['image_views'];
             Stat::track([
                 'action' => 'update',
                 'table' => 'images',
@@ -181,9 +224,30 @@ class Image
         if ($requester !== []) {
             $image_db['image_liked'] = (bool) $image_db['like_user_id'];
         }
+        if (version_compare(cheveretoVersionInstalled(), '4.2.0', '>=')) {
+            $tagsFilesTable = $tables['tags_files'];
+            $tagsTable = $tables['tags'];
+            $tagsSql = <<<MySQL
+            SELECT `tag_id` id, `tag_name` name, `tag_user_id` user_id
+            FROM `{$tagsFilesTable}` tf
+            JOIN `{$tagsTable}` t
+                ON tf.tag_file_tag_id = t.tag_id
+                AND tf.tag_file_file_id = :image_id;
+
+            MySQL;
+            $db = DB::getInstance();
+            $db->query($tagsSql);
+            $db->bind(':image_id', $id);
+            $image_tags = $db->fetchAll();
+            foreach ($image_tags as $k => $v) {
+                $image_tags[$k] = Tag::row($v['name']);
+            }
+            $image_db['image_tags'] = $image_tags;
+            $image_db['image_tags_string'] = implode(', ', array_column($image_tags, 'name'));
+        }
         $return = $image_db;
         $return = $pretty ? self::formatArray($return) : $return;
-        if (!isset($return['file_resource'])) {
+        if (! isset($return['file_resource'])) {
             $return['file_resource'] = self::getSrcTargetSingle($image_db);
         }
 
@@ -199,14 +263,14 @@ class Image
         $query = 'SELECT * FROM ' . $tables['images'] . "\n";
         $joins = [
             'LEFT JOIN ' . $tables['users'] . ' ON ' . $tables['images'] . '.image_user_id = ' . $tables['users'] . '.user_id',
-            'LEFT JOIN ' . $tables['albums'] . ' ON ' . $tables['images'] . '.image_album_id = ' . $tables['albums'] . '.album_id'
+            'LEFT JOIN ' . $tables['albums'] . ' ON ' . $tables['images'] . '.image_album_id = ' . $tables['albums'] . '.album_id',
         ];
         $query .= implode("\n", $joins) . "\n";
         $query .= 'WHERE image_id IN (' . implode(',', $ids) . ')' . "\n";
         $db = DB::getInstance();
         $db->query($query);
         $images_db = $db->fetchAll();
-        if (!empty($images_db)) {
+        if (! empty($images_db)) {
             foreach ($images_db as $k => $v) {
                 $images_db[$k] = array_merge($v, self::getSrcTargetSingle($v, true)); // todo
             }
@@ -229,17 +293,17 @@ class Image
         int $padding = 2
     ): array {
         $tables = DB::getTables();
-        if (!isset($album_id)) {
+        if (! isset($album_id)) {
             $db = DB::getInstance();
             $db->query('SELECT image_album_id FROM ' . $tables['images'] . ' WHERE image_id=:image_id');
             $db->bind(':image_id', $image_id);
             $image_album_db = $db->fetchSingle();
             $album_id = $image_album_db['image_album_id'];
-            if (!isset($album_id)) {
+            if (! isset($album_id)) {
                 return [];
             }
         }
-        if (!is_numeric($padding)) {
+        if (! is_numeric($padding)) {
             $padding = 2;
         }
         $prevListing = new Listing();
@@ -264,7 +328,7 @@ class Image
         $list = array_merge($prevListing->output, $nextListing->output);
         $album_offset = [
             'top' => $prevListing->count - 1,
-            'bottom' => $nextListing->count
+            'bottom' => $nextListing->count,
         ];
         $album_chop_count = count($list);
         $album_iteration_times = $album_chop_count - ($padding * 2 + 1);
@@ -292,7 +356,7 @@ class Image
             $format = self::formatArray($v);
             $images[$format['id']] = $format;
         }
-        if (is_array($prevListing->output) && $prevListing->count > 1) {
+        if ($prevListing->output !== [] && $prevListing->count > 1) {
             $prevLastKey = $prevListing->count - 2;
             $prevLastId = $prevListing->output[$prevLastKey]['image_id'];
             $slice['prev'] = $images[$prevLastId];
@@ -309,7 +373,7 @@ class Image
     {
         $prefix = $prefix ? 'image_' : null;
         $folder = CHV_PATH_IMAGES;
-        $pretty = !isset($fileArray['image_id']);
+        $pretty = ! isset($fileArray['image_id']);
         $mode = $fileArray[$prefix . 'storage_mode'];
         $chain_mask = str_split(
             (string) str_pad(
@@ -320,17 +384,18 @@ class Image
             )
         );
         $chain_to_suffix = [
-            'image' => '.',
             'frame' => '.fr.',
-            'medium' => '.md.',
+            'original' => '.or.',
+            'image' => '.',
             'thumb' => '.th.',
+            'medium' => '.md.',
         ];
         if ($pretty) {
             $type = isset($fileArray['storage']['id']) ? 'url' : 'path';
         } else {
             $type = isset($fileArray['storage_id']) ? 'url' : 'path';
         }
-        if ($type == 'url') {
+        if ($type === 'url') {
             $folder = add_ending_slash($pretty ? $fileArray['storage']['url'] : $fileArray['storage_url']);
         }
         switch ($mode) {
@@ -354,55 +419,52 @@ class Image
         }
         $targets = [
             'type' => $type,
-            'chain' => [
-                'frame' => null,
-                'image' => null,
-                'thumb' => null,
-                'medium' => null
-            ]
+            'chain' => array_combine(
+                static::$chain_sizes,
+                array_fill(0, count(static::$chain_sizes), null)
+            ),
         ];
+        foreach ($chain_mask as $k => $v) {
+            if (! (bool) $v) {
+                unset($targets['chain'][self::$chain_sizes[$k]]);
+            }
+        }
         foreach (array_keys($targets['chain']) as $k) {
             $extension = $fileArray[$prefix . 'extension'];
-            if ($k !== 'image' && in_array($extension, ['mov', 'mp4', 'webm'])) {
+            if ($k !== 'image'
+                && in_array($extension, ['mov', 'mp4', 'webm'], true)
+            ) {
                 $extension = 'jpeg';
             }
-            $targets['chain'][$k] = $folder . $fileArray[$prefix . 'name'] . $chain_to_suffix[$k] . $extension;
-        }
-        if ($type == 'path') {
-            foreach ($targets['chain'] as $k => $v) {
-                if (!is_readable($v)) {
-                    unset($targets['chain'][$k]);
-                }
-            }
-        } else {
-            foreach ($chain_mask as $k => $v) {
-                if (!(bool) $v) {
-                    unset($targets['chain'][self::$chain_sizes[$k]]);
-                }
-            }
+            $targets['chain'][$k] = $folder
+                . $fileArray[$prefix . 'name']
+                . $chain_to_suffix[$k]
+                . $extension;
         }
 
         return $targets;
     }
 
-    public static function getUrlViewer(string $id_encoded, string $title = ''): string
+    public static function getUrlViewer(string $type, string $id_encoded, string $title = ''): string
     {
         $seo = seoUrlfy($title);
-        $url = $seo == ''
+        $url = $seo === ''
             ? $id_encoded
             : ($seo . '.' . $id_encoded);
 
         return get_public_url(
             (getSetting('root_route') === 'image'
                 ? ''
-                : getSetting('route_image') . '/')
+                : getSetting('route_' . $type) . '/')
             . $url,
         );
     }
 
-    public static function getDeleteUrl(string $idEncoded, string $password): string
+    public static function getDeleteUrl(string $type, string $idEncoded, string $password): string
     {
-        return self::getUrlViewer($idEncoded) . '/delete/' . $password;
+        return self::getUrlViewer($type, $idEncoded)
+            . '/delete/'
+            . $password;
     }
 
     public static function getAvailableExpirations(): array
@@ -417,62 +479,41 @@ class Image
             'year' => _n('year', 'years', 1),
         ];
         $return = [
-            null => _s("Don't autodelete"),
+            null => _s("Don't auto delete"),
         ];
         $table = self::$expirations;
         foreach ($table as $expire) {
             $unit = $expire[0];
             $interval_spec = self::getPastTimeSpec($unit, $expire[1]);
-            $return[$interval_spec] = strtr($string, ['%n' => $expire[1], '%t' => _n($unit, $unit . 's', $expire[1])]);
+            $return[$interval_spec] = strtr($string, [
+                '%n' => $expire[1],
+                '%t' => _n($unit, $unit . 's', $expire[1]),
+            ]);
         }
 
         return $return;
     }
 
-    protected static function getPastTimeSpec(string $unit, string $value): string
-    {
-        return 'P' .
-            (in_array($unit, ['second', 'minute', 'hour'])
-                ? 'T'
-                : '')
-            . $value . strtoupper($unit[0]);
-    }
-
-    public static function getExpirationFromSeconds(int $seconds): string
-    {
-        if ($seconds <= 0) {
-            return '';
-        }
-        $previous = array_values(self::$expirations)[0];
-        foreach (self::$expirations as $expires) {
-            if ($seconds < $expires[2]) {
-                return self::getPastTimeSpec(...$previous);
-            }
-            $previous = [strval($expires[0]), strval($expires[1])];
-        }
-        $maxLimit = self::$expirations[count(self::$expirations) - 1];
-
-        return self::getPastTimeSpec(...$maxLimit);
-    }
-
     public static function watermarkFromDb(): void
     {
         $file = PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image');
-        $assetsDb = DB::get('assets', ['key' => 'watermark_image'], 'AND', [], 1);
+        $assetsDb = DB::get('assets', [
+            'key' => 'watermark_image',
+        ], 'AND', [], 1);
         if ($assetsDb === false) {
             return;
         }
         if (file_exists($file)
-            && md5_file($file) != $assetsDb['asset_md5']
-            && !starts_with('default/', getSetting('watermark_image'))
+            && md5_file($file) !== $assetsDb['asset_md5']
+            && ! starts_with('default/', getSetting('watermark_image'))
         ) {
             unlinkIfExists($file);
         }
-        if (!file_exists($file)) {
+        if (! file_exists($file)) {
             $fh = fopen($file, 'w');
-            $st = !$fh || fwrite($fh, $assetsDb['asset_blob']) === false ? false : true;
+            $st = ! $fh || fwrite($fh, $assetsDb['asset_blob']) === false ? false : true;
             fclose($fh);
-            if (!$st) {
+            if (! $st) {
                 throw new LogicException(
                     message(_s("Can't open %s for writing", $file)),
                     600
@@ -486,18 +527,18 @@ class Image
         $options = array_merge([
             'ratio' => getSetting('watermark_percentage') / 100,
             'position' => explode(' ', getSetting('watermark_position')),
-            'file' => PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image')
+            'file' => PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image'),
         ], $options);
         self::watermarkFromDb();
-        if (!is_readable($options['file'])) {
+        if (! is_readable($options['file'])) {
             throw new Exception("Can't read watermark file at " . $options['file'], 600);
         }
         $image = ImageManagerStatic::make($image_path);
         $options['ratio'] = min(1, (is_numeric($options['ratio']) ? max(0.01, $options['ratio']) : 0.01));
-        if (!in_array($options['position'][0], ['left', 'center', 'right'])) {
+        if (! in_array($options['position'][0], ['left', 'center', 'right'], true)) {
             $options['position'][0] = 'right';
         }
-        if (!in_array($options['position'][1], ['top', 'center', 'bottom'])) {
+        if (! in_array($options['position'][1], ['top', 'center', 'bottom'], true)) {
             $options['position'][0] = 'bottom';
         }
         $watermarkPos = [];
@@ -514,14 +555,20 @@ class Image
         if ($watermark_new_height > $image->getHeight()) {
             $watermark_new_height = $image->getHeight();
         }
-        if (getSetting('watermark_margin') && $options['position'][1] !== 'center' && $watermark_new_height + getSetting('watermark_margin') > $image->getHeight()) {
+        if (getSetting('watermark_margin')
+            && $options['position'][1] !== 'center'
+            && $watermark_new_height + getSetting('watermark_margin') > $image->getHeight()
+        ) {
             $watermark_new_height -= $watermark_new_height + 2 * getSetting('watermark_margin') - $image->getHeight();
         }
         $watermark_new_width = round($watermark_image_ratio * $watermark_new_height, 0);
         if ($watermark_new_width > $image->getWidth()) {
             $watermark_new_width = $image->getWidth();
         }
-        if (getSetting('watermark_margin') && $options['position'][0] !== 'center' && $watermark_new_width + getSetting('watermark_margin') > $image->getWidth()) {
+        if (getSetting('watermark_margin')
+            && $options['position'][0] !== 'center'
+        && $watermark_new_width + getSetting('watermark_margin') > $image->getWidth()
+        ) {
             $watermark_new_width -= $watermark_new_width + 2 * getSetting('watermark_margin') - $image->getWidth();
             $watermark_new_height = $watermark_new_width / $watermark_image_ratio;
         }
@@ -546,6 +593,9 @@ class Image
         return true;
     }
 
+    /**
+     * @param int $storage_id Storage ID, use zero for asset storage, null for local storage (legacy old)
+     */
     public static function upload(
         array|string $source,
         string $destination,
@@ -554,22 +604,29 @@ class Image
         int|null $storage_id = null,
         bool $guestSessionHandle = true
     ): array {
+        if ((! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE'])) {
+            if ($storage_id === null) {
+                throw new LogicException('Local storage API is forbidden', 900);
+            }
+            if ($storage_id === 0) {
+            }
+        }
         $default_options = Upload::getDefaultOptions();
         $options = array_merge($default_options, $options);
-        if (!is_null($filename) && !$options['filenaming']) {
+        if ($filename != null && ! $options['filenaming']) {
             $options['filenaming'] = 'original';
         }
         $upload = new Upload();
         $upload->setSource($source);
         $upload->setDestination($destination);
         $upload->setOptions($options);
-        if (!is_null($storage_id)) {
+        if ($storage_id != null) {
             $upload->setStorageId($storage_id);
         }
-        if (!is_null($filename)) {
+        if ($filename != null) {
             $upload->setFilename($filename);
         }
-        if ($guestSessionHandle == false) {
+        if ($guestSessionHandle === false) {
             $upload->detectFlood = false;
         }
         $upload->exec();
@@ -587,8 +644,8 @@ class Image
     {
         if (is_array($source) && isset($source['tmp_name'])) {
             $filename = $source['tmp_name'];
-            if (stream_resolve_include_path($filename) == false) {
-                throw new Exception("Concurrency: $filename is gone", 666);
+            if (stream_resolve_include_path($filename) === false) {
+                throw new Exception("Concurrency: {$filename} is gone", 666);
             }
             $md5_file = md5_file($filename);
         } else {
@@ -599,7 +656,11 @@ class Image
             throw new Exception('Unable to process md5_file', 600);
         }
         $db = DB::getInstance();
-        $db->query('SELECT * FROM ' . DB::getTable('images') . ' WHERE (image_md5=:md5 OR image_source_md5=:md5) AND image_uploader_ip=:ip AND image_date_gmt > :date_gmt');
+        $db->query(
+            'SELECT * FROM '
+            . DB::getTable('images') .
+            ' WHERE (image_md5=:md5 OR image_source_md5=:md5) AND image_uploader_ip=:ip AND image_date_gmt > :date_gmt'
+        );
         $db->bind(':md5', $md5_file);
         $db->bind(':ip', get_client_ip());
         $db->bind(':date_gmt', datetime_sub(datetimegmt(), $timePeriod));
@@ -620,58 +681,6 @@ class Image
         $dateFolder = '';
 
         try {
-            if ($user !== []
-                && getSetting('upload_max_filesize_mb_bak') !== null
-                && getSetting('upload_max_filesize_mb') == getSetting('upload_max_filesize_mb_guest')
-            ) {
-                Settings::setValue('upload_max_filesize_mb', getSetting('upload_max_filesize_mb_bak'));
-            }
-            $do_dupe_check = !getSetting('enable_duplicate_uploads') && !($user['is_admin'] ?? false);
-            if ($do_dupe_check && self::isDuplicatedUpload($source)) {
-                throw new Exception(_s('Duplicated upload'), 101);
-            }
-            $storage_id = null;
-            $upload_types = [
-                'image' => 1,
-                'video' => 2,
-                // 'audio' => 4,
-                // 'document' => 8,
-                // 'other' => 16,
-            ];
-            $mimetype = strtok($params['mimetype'] ?? 'image', '/');
-            $type_chain = $upload_types[$mimetype] ?? 1;
-            $get_active_storages = env()['CHEVERETO_ENABLE_EXTERNAL_STORAGE']
-                ? Storage::get([
-                    'is_active' => 1,
-                    'type_chain' => $type_chain
-                ])
-                : [];
-            if ($get_active_storages !== []) {
-                if (count($get_active_storages) > 1) {
-                    $last_used_storage = (int) getSetting('last_used_storage');
-                } else {
-                    $last_used_storage = null;
-                    $storage_id = (int) $get_active_storages[0]['id'];
-                }
-                $last_used_storage_is_active = false;
-                $active_storages = [];
-                foreach ($get_active_storages as $i => $get_active_storage) {
-                    $pointer = $get_active_storage['id'];
-                    $active_storages[$pointer] = $get_active_storage;
-                    if ($pointer === $last_used_storage) {
-                        $last_used_storage_is_active = true;
-                    }
-                }
-                if (!$last_used_storage_is_active) {
-                    $storage_id = $get_active_storages[0]['id'];
-                } else {
-                    unset($active_storages[$last_used_storage]);
-                    $storage_keys = array_keys($active_storages);
-                    shuffle($storage_keys);
-                    $storage_id = $storage_keys[0];
-                }
-                $storage = $active_storages[$storage_id];
-            }
             $storage_mode = getSetting('upload_storage_mode');
             $upload_path = '';
             switch ($storage_mode) {
@@ -688,7 +697,7 @@ class Image
                         } catch (Throwable) {
                         }
                         if (isset($exifSource['DateTime'])) {
-                            $stockDateGmt = date_create_from_format("Y:m:d H:i:s", $exifSource['DateTime'], new DateTimeZone('UTC'));
+                            $stockDateGmt = date_create_from_format('Y:m:d H:i:s', $exifSource['DateTime'], new DateTimeZone('UTC'));
                             $stockDateGmt = $stockDateGmt->format('Y-m-d H:i:s');
                             $stockDate = datetimegmt_convert_tz($stockDateGmt, getSetting('default_timezone'));
                         }
@@ -702,8 +711,88 @@ class Image
 
                     break;
             }
+            if (is_string($source)) {
+                if (! getSetting('enable_uploads_url')) {
+                    throw new Exception(
+                        message('URL uploading is disabled'),
+                        403
+                    );
+                }
+                $temp_name = Upload::getTempNam();
+                fetch_url($source, $upload_path);
+                $mimetype = get_mimetype($temp_name);
+                $source = [
+                    'name' => basename($source) . '.' . mime_to_extension($mimetype),
+                    'type' => $mimetype,
+                    'tmp_name' => $temp_name,
+                    'error' => 'UPLOAD_ERR_OK',
+                    'size' => filesize($temp_name),
+                ];
+            }
+            if ($user !== []
+                && getSetting('upload_max_filesize_mb_bak') !== null
+                && getSetting('upload_max_filesize_mb') == getSetting('upload_max_filesize_mb_guest')
+            ) {
+                Settings::setValue('upload_max_filesize_mb', getSetting('upload_max_filesize_mb_bak'));
+            }
+            $do_dupe_check = ! getSetting('enable_duplicate_uploads') && ! ($user['is_admin'] ?? false);
+            if ($do_dupe_check && self::isDuplicatedUpload($source)) {
+                throw new Exception(_s('Duplicated upload'), 101);
+            }
+            $storage_id = null;
+            $upload_types = [
+                'image' => 1,
+                'video' => 2,
+                // 'audio' => 4,
+                // 'document' => 8,
+                // 'other' => 16,
+            ];
+            $mimetype = strtok($params['mimetype'] ?? 'image', '/');
+            $type_chain = $upload_types[$mimetype] ?? 1;
+            $get_active_storages = Storage::get([
+                'is_active' => 1,
+                'type_chain' => $type_chain,
+            ]);
+            $enabled_storage_apis = array_keys(StorageApis::getEnabled());
+            foreach ($get_active_storages as $i => $get_active_storage) {
+                if (! in_array($get_active_storage['api_id'], $enabled_storage_apis, true)) {
+                    unset($get_active_storages[$i]);
+                }
+            }
+            if ($get_active_storages !== []) {
+                if (count($get_active_storages) > 1) {
+                    $last_used_storage = fetchVariable('last_used_storage')->nullInt();
+                } else {
+                    $last_used_storage = null;
+                    $storage_id = (int) $get_active_storages[0]['id'];
+                }
+                $last_used_storage_is_active = false;
+                $active_storages = [];
+                foreach ($get_active_storages as $i => $get_active_storage) {
+                    $pointer = (int) $get_active_storage['id'];
+                    $active_storages[$pointer] = $get_active_storage;
+                    if ($pointer === $last_used_storage) {
+                        $last_used_storage_is_active = true;
+                    }
+                }
+                if (! $last_used_storage_is_active) {
+                    $storage_id = $get_active_storages[0]['id'];
+                } else {
+                    unset($active_storages[$last_used_storage]);
+                    $storage_keys = array_keys($active_storages);
+                    shuffle($storage_keys);
+                    $storage_id = $storage_keys[0];
+                }
+                $storage = $active_storages[$storage_id];
+            }
+            if ($storage_id === null && (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE'])) {
+                throw new LogicException('No storage available', 900);
+            }
+
             $fileNaming = getSetting('upload_filenaming');
-            if ($fileNaming !== 'id' && in_array($params['privacy'] ?? '', ['password', 'private', 'private_but_link'])) {
+            if ($fileNaming !== 'id'
+                && in_array($params['privacy'] ?? '', ['password', 'private', 'private_but_link'], true)
+            ) {
                 $fileNaming = 'random';
             }
             $upload_options = [
@@ -712,7 +801,7 @@ class Image
                     ? $user['image_keep_exif']
                     : getSetting('upload_image_exif'),
             ];
-            if ($fileNaming == 'id') {
+            if ($fileNaming === 'id') {
                 try {
                     $dummy = [
                         'name' => '',
@@ -733,7 +822,9 @@ class Image
                         'duration' => 0,
                     ];
                     $dummy_insert = DB::insert('images', $dummy);
-                    DB::delete('images', ['id' => $dummy_insert]);
+                    DB::delete('images', [
+                        'id' => $dummy_insert,
+                    ]);
                     $target_id = $dummy_insert;
                 } catch (Throwable) {
                     $fileNaming = 'original';
@@ -744,7 +835,7 @@ class Image
             $image_upload = self::upload(
                 $source,
                 $upload_path,
-                ($fileNaming == 'id' && isset($target_id))
+                ($fileNaming === 'id' && isset($target_id))
                     ? encodeID((int) $target_id)
                     : null,
                 $upload_options,
@@ -761,7 +852,9 @@ class Image
                 'width' => Settings::get('upload_max_image_width') ?: $image_upload['uploaded']['fileinfo']['width'],
                 'height' => Settings::get('upload_max_image_height') ?: $image_upload['uploaded']['fileinfo']['height'],
             ];
-            if ($image_max_size_cfg['width'] < $image_upload['uploaded']['fileinfo']['width'] || $image_max_size_cfg['height'] < $image_upload['uploaded']['fileinfo']['height']) {
+            if ($image_max_size_cfg['width'] < $image_upload['uploaded']['fileinfo']['width']
+                || $image_max_size_cfg['height'] < $image_upload['uploaded']['fileinfo']['height']
+            ) {
                 $image_max = $image_max_size_cfg;
                 $image_max['width'] = (int) round($image_max_size_cfg['height'] * $image_ratio);
                 $image_max['height'] = (int) round($image_max_size_cfg['width'] / $image_ratio);
@@ -773,14 +866,17 @@ class Image
                     $image_max['width'] = $image_max_size_cfg['width'];
                     $image_max['height'] = (int) round($image_max['width'] / $image_ratio);
                 }
-                if ($image_max !== ['width' => $image_upload['uploaded']['fileinfo']['width'], 'height' => $image_max_size_cfg['height']]) { // loose just in case..
+                if ($image_max !== [
+                    'width' => $image_upload['uploaded']['fileinfo']['width'],
+                    'height' => $image_max_size_cfg['height'],
+                ]) { // loose just in case..
                     $must_resize = true;
                     $params['width'] = $image_max['width'];
                     $params['height'] = $image_max['height'];
                 }
             }
             foreach (['width', 'height'] as $k) {
-                if (!isset($params[$k]) || !is_numeric($params[$k])) {
+                if (! isset($params[$k]) || ! is_numeric($params[$k])) {
                     continue;
                 }
                 if ($params[$k] != $image_upload['uploaded']['fileinfo'][$k]) {
@@ -794,7 +890,8 @@ class Image
             $resizeSourceImage = $image_upload['uploaded']['file'];
             $uploadDir = dirname($resizeSourceImage);
             $chainExtension = $image_upload['uploaded']['extension'];
-            if ($image_upload['source']['type'] === 'video') {
+            $is_video = $image_upload['source']['type'] === 'video';
+            if ($is_video) {
                 $must_resize = false;
                 $chainExtension = 'jpeg';
                 $frameImage = $uploadDir
@@ -819,7 +916,9 @@ class Image
                         'height' => $params['height'],
                     ];
                 } else {
-                    $image_resize_options = ['width' => $params['width']];
+                    $image_resize_options = [
+                        'width' => $params['width'],
+                    ];
                 }
                 $image_resize_options['extension'] = $image_upload['uploaded']['extension'];
                 $image_resize_options['chmod'] = 0644;
@@ -859,7 +958,7 @@ class Image
             }
             $watermark_gif = (bool) getSetting('watermark_enable_file_gif');
             $apply_watermark = $watermark_enable;
-            if ($is_animated_image || $image_upload['uploaded']['fileinfo']['is_360']) {
+            if ($is_video || $is_animated_image || $is_360) {
                 $apply_watermark = false;
             }
             if ($apply_watermark) {
@@ -870,22 +969,30 @@ class Image
                     }
                     $apply_watermark = $image_upload['uploaded']['fileinfo'][$k] >= $min_value;
                 }
-                if ($apply_watermark && $image_upload['uploaded']['fileinfo']['extension'] == 'gif' && !$watermark_gif) {
+                if ($apply_watermark
+                    && $image_upload['uploaded']['fileinfo']['extension'] === 'gif'
+                    && ! $watermark_gif
+                ) {
                     $apply_watermark = false;
                 }
             }
             if ($apply_watermark && self::watermark($resizeSourceImage)) {
-                $image_upload['uploaded']['fileinfo'] = GGet_image_fileinfo($resizeSourceImage); // Remake the fileinfo array, new full array file info (todo: faster!)
-                $image_upload['uploaded']['fileinfo']['md5'] = $original_md5; // Preserve original MD5 for watermarked images
+                $image_upload['uploaded']['fileinfo'] = GGet_image_fileinfo($resizeSourceImage);
+                $image_upload['uploaded']['fileinfo']['md5'] = $original_md5;
             }
-            if ($image_upload['uploaded']['fileinfo'][$medium_fixed_dimension] > $medium_size || $is_animated_image) {
+            if ($image_upload['uploaded']['fileinfo'][$medium_fixed_dimension] > $medium_size
+                || $is_animated_image
+            ) {
                 $image_medium_options = [
                     'chmod' => 0644,
                 ];
                 $image_medium_options[$medium_fixed_dimension] = $medium_size;
                 if ($is_animated_image) {
                     $image_medium_options['forced'] = true;
-                    $image_medium_options[$medium_fixed_dimension] = min($image_medium_options[$medium_fixed_dimension], $image_upload['uploaded']['fileinfo'][$medium_fixed_dimension]);
+                    $image_medium_options[$medium_fixed_dimension] = min(
+                        $image_medium_options[$medium_fixed_dimension],
+                        $image_upload['uploaded']['fileinfo'][$medium_fixed_dimension]
+                    );
                 }
                 $image_medium_options['extension'] = $chainExtension;
                 $image_medium = self::resize(
@@ -904,11 +1011,10 @@ class Image
             if (isset($image_medium['fileinfo']['size'])) {
                 $disk_space_needed += $image_medium['fileinfo']['size'];
             }
-            $switch_to_local = false;
             if (isset($storage_id)
-                && !empty($storage['capacity'])
+                && ! empty($storage['capacity'])
                 && $disk_space_needed > ($storage['capacity'] - $storage['space_used'])
-                ) {
+            ) {
                 if (isset($active_storages) && $active_storages !== []) {
                     $capable_storages = [];
                     foreach ($active_storages as $k => $v) {
@@ -917,65 +1023,14 @@ class Image
                         }
                         $capable_storages[] = $v['id'];
                     }
-                    if (count($capable_storages) == 0) {
-                        $switch_to_local = true;
-                    } else {
-                        $storage_id = (int) $capable_storages[0];
-                        $storage = $active_storages[$storage_id];
+                    if (count($capable_storages) === 0) {
+                        throw new Exception(
+                            _s('No space left on storage'),
+                            104
+                        );
                     }
-                } else {
-                    $switch_to_local = true;
-                }
-                if ($switch_to_local) {
-                    $storage_id = 0;
-                    $downstream = $image_upload['uploaded']['file'];
-                    $fixed_filename = $image_upload['uploaded']['filename'];
-                    $uploaded_file = name_unique_file(
-                        $upload_path,
-                        $fixed_filename,
-                        $upload_options['filenaming']
-                    );
-
-                    try {
-                        $renamed_uploaded = rename($downstream, $uploaded_file);
-                    } catch (Throwable) {
-                        $renamed_uploaded = file_exists($uploaded_file);
-                    }
-                    if (!$renamed_uploaded) {
-                        throw new Exception("Can't re-allocate image to local storage", 600);
-                    }
-                    $image_upload['uploaded'] = [
-                        'file' => $uploaded_file,
-                        'filename' => get_filename($uploaded_file),
-                        'name' => get_basename_without_extension($uploaded_file),
-                        'fileinfo' => GGet_image_fileinfo($uploaded_file)
-                    ];
-                    $chain_props = [
-                        'thumb' => ['suffix' => 'th'],
-                        'medium' => ['suffix' => 'md']
-                    ];
-                    if (!($image_medium ?? false)) {
-                        unset($chain_props['medium']);
-                    }
-                    $dirChain = dirname($image_upload['uploaded']['file']);
-                    foreach ($chain_props as $k => $v) {
-                        $chain_file = add_ending_slash($dirChain) . $image_upload['uploaded']['name'] . '.' . $v['suffix'] . '.' . ${"image_$k"}['fileinfo']['extension'];
-
-                        try {
-                            $renamed_chain = rename(${"image_$k"}['file'], $chain_file);
-                        } catch (Throwable) {
-                            $renamed_chain = file_exists($chain_file);
-                        }
-                        if (!$renamed_chain) {
-                            throw new Exception("Can't re-allocate image " . $k . " to local storage", 601);
-                        }
-                        ${"image_$k"} = [
-                            'file' => $chain_file,
-                            'filename' => get_filename($chain_file),
-                            'name' => get_basename_without_extension($chain_file),
-                            'fileinfo' => GGet_image_fileinfo($chain_file)
-                        ];
-                    }
+                    $storage_id = (int) $capable_storages[0];
+                    $storage = $active_storages[$storage_id];
                 }
             }
             $image_insert_values = [
@@ -986,6 +1041,7 @@ class Image
                 'nsfw' => $params['nsfw'] ?? null,
                 'category_id' => $params['category_id'] ?? null,
                 'title' => $params['title'] ?? null,
+                'tags' => $params['tags'] ?? null,
                 'description' => $params['description'] ?? null,
                 'chain' => $chain_value,
                 'thumb_size' => $image_thumb['fileinfo']['size'] ?? 0,
@@ -1005,17 +1061,42 @@ class Image
                 if ($user === [] && getSetting('auto_delete_guest_uploads') !== null) {
                     $params['expiration'] = getSetting('auto_delete_guest_uploads');
                 }
-                if (!isset($params['expiration']) && isset($user['image_expiration'])) {
+                if (! isset($params['expiration']) && isset($user['image_expiration'])) {
                     $params['expiration'] = $user['image_expiration'];
                 }
+                $min_expiration_time = (int) static::$expirations[0][2];
+                $max_expiration_time = (int) end(static::$expirations)[2];
 
                 try {
-                    if (!empty($params['expiration']) && array_key_exists($params['expiration'], self::getAvailableExpirations())) {
-                        $params['expiration_date_gmt'] = datetime_add(datetimegmt(), strtoupper($params['expiration']));
+                    if (! empty($params['expiration'])) {
+                        $handle = $params['expiration'];
+                        if (is_numeric($handle)) {
+                            $handle = (int) $handle;
+                        } elseif (array_key_exists($params['expiration'], self::getAvailableExpirations())) {
+                            $handle = strtoupper($params['expiration']);
+                        } else {
+                            try {
+                                $handle = dateinterval_to_seconds((string) $params['expiration']);
+                            } catch (Exception) {
+                                $handle = 0;
+                            }
+                        }
+                        if (is_int($handle)) {
+                            if ($handle > $max_expiration_time) {
+                                $handle = $max_expiration_time;
+                            }
+                            if ($handle < $min_expiration_time) {
+                                $handle = $min_expiration_time;
+                            }
+                            $handle = 'PT' . $handle . 'S';
+                        }
+                        $params['expiration_date_gmt'] = datetime_add(datetimegmt(), $handle);
                     }
-                    if (!empty($params['expiration_date_gmt'])) {
+                    if (! empty($params['expiration_date_gmt'])) {
                         $expirable_diff = datetime_diff(datetimegmt(), $params['expiration_date_gmt'], 'm');
-                        $image_insert_values['expiration_date_gmt'] = $expirable_diff < 5 ? datetime_modify(datetimegmt(), '+5 minutes') : $params['expiration_date_gmt'];
+                        $image_insert_values['expiration_date_gmt'] = $expirable_diff < 5
+                            ? datetime_modify(datetimegmt(), '+5 minutes')
+                            : $params['expiration_date_gmt'];
                     }
                 } catch (Exception) {
                 } // Silence
@@ -1023,7 +1104,7 @@ class Image
             if (isset($storage_id, $storage)) {
                 $toStorage = [];
                 foreach (self::$chain_sizes as $k => $v) {
-                    if (!(bool) $chain_mask[$k]) {
+                    if (! (bool) $chain_mask[$k]) {
                         continue;
                     }
                     switch ($v) {
@@ -1032,15 +1113,16 @@ class Image
 
                             break;
                         case 'frame':
+                            /** @var string $frameImage */
                             $prop = [
-                                'file' => $frameImage,
-                                'filename' => basename($frameImage),
-                                'fileinfo' => $image_upload['uploaded']['frameinfo']
+                                'file' => $frameImage, // @phpstan-ignore-line
+                                'filename' => basename($frameImage), // @phpstan-ignore-line
+                                'fileinfo' => $image_upload['uploaded']['frameinfo'],
                             ];
 
                             break;
                         default:
-                            $prop = ${"image_$v"};
+                            $prop = ${"image_{$v}"};
 
                             break;
                     }
@@ -1051,9 +1133,9 @@ class Image
                     ];
                 }
                 Storage::uploadFiles($toStorage, $storage, [
-                    'keyprefix' => $storage_mode == 'datefolder'
+                    'keyprefix' => $storage_mode === 'datefolder'
                         ? $dateFolder
-                        : null
+                        : null,
                 ]);
             }
             $image_title = $params['title']
@@ -1061,7 +1143,7 @@ class Image
             /** @var ?Exif */
             $exifRead = $image_upload['source']['image_exif'];
             if ($exifRead instanceof Exif) {
-                if (!array_key_exists('title', $params)) {
+                if (! array_key_exists('title', $params)) {
                     $exifTitle = $exifRead->getTitle();
                     if ($exifTitle !== false) {
                         $title_from_exif = trim($exifTitle);
@@ -1071,7 +1153,7 @@ class Image
                         }
                     }
                 }
-                if (!array_key_exists('description', $params)) {
+                if (! array_key_exists('description', $params)) {
                     $description_from_exif = null;
                     if ($exifRead->getDescription() !== false) {
                         $description_from_exif = trim($exifRead->getDescription());
@@ -1083,13 +1165,13 @@ class Image
                 }
             }
             $image_insert_values['title'] = $image_title;
-            if ($fileNaming == 'id' && isset($target_id)) { // Insert as a reserved ID
+            if ($fileNaming === 'id' && isset($target_id)) { // Insert as a reserved ID
                 $image_insert_values['id'] = $target_id;
             }
             $image_insert_values['title'] = mb_substr($image_insert_values['title'] ?? '', 0, 100, 'UTF-8');
             if ($user !== [] && isset($image_insert_values['album_id'])) {
                 $album = Album::getSingle((int) $image_insert_values['album_id']);
-                if (($album['user']['id'] ?? 0) != $user['id']) {
+                if (($album['user']['id'] ?? 0) !== $user['id']) {
                     unset($image_insert_values['album_id'], $album);
                 }
             }
@@ -1099,15 +1181,18 @@ class Image
             $uploaded_id = self::insert($image_upload, $user, $image_insert_values);
             $deletePassword = randomString(48);
             $deleteHash = password_hash($deletePassword, PASSWORD_BCRYPT);
-            DB::insert('images_hash', ['image_id' => $uploaded_id, 'hash' => $deleteHash]);
+            DB::insert('images_hash', [
+                'image_id' => $uploaded_id,
+                'hash' => $deleteHash,
+            ]);
             if (isset($toStorage)) {
                 foreach ($toStorage as $k => $v) {
                     unlinkIfExists($v['file']); // Remove files from local when doing external storage
                 }
             }
             $privacyTargets = ['private', 'private_but_link'];
-            if (in_array($params['privacy'] ?? '', $privacyTargets)
-                && (!in_array($album['privacy'] ?? '', $privacyTargets))
+            if (in_array($params['privacy'] ?? '', $privacyTargets, true)
+                && (! in_array($album['privacy'] ?? '', $privacyTargets, true))
             ) {
                 $upload_timestamp = $params['timestamp'] ?? time();
                 $session_handle = 'upload_' . $upload_timestamp;
@@ -1115,16 +1200,17 @@ class Image
                     ? Album::getSingle(decodeID(session()[$session_handle]))
                     : null;
                 // @phpstan-ignore-next-line
-                if (!empty($album) || !in_array($album['privacy'] ?? '', $privacyTargets)) {
+                if (! empty($album)
+                    || ! in_array($album['privacy'] ?? '', $privacyTargets, true)
+                ) {
                     $inserted_album = Album::insert([
                         'name' => _s('Private upload') . ' ' . datetime('Y-m-d'),
                         'user_id' => $user['id'],
-                        'privacy' => $params['privacy']
+                        'privacy' => $params['privacy'],
                     ]);
                     sessionVar()->put($session_handle, $inserted_album);
                     $image_insert_values['album_id'] = $inserted_album;
                 } else {
-                    // @phpstan-ignore-next-line
                     $image_insert_values['album_id'] = $album['id'];
                 }
             }
@@ -1132,15 +1218,15 @@ class Image
                 Album::addImage($image_insert_values['album_id'], $uploaded_id);
             }
             if ($user !== []) {
-                DB::increment('users', ['image_count' => '+1'], ['id' => $user['id']]);
-            } elseif ($guestSessionHandle == true) {
+                DB::increment('users', [
+                    'image_count' => '+1',
+                ], [
+                    'id' => $user['id'],
+                ]);
+            } elseif ($guestSessionHandle === true) {
                 $addValue = session()['guest_images'] ?? [];
                 $addValue[] = $uploaded_id;
                 sessionVar()->put('guest_images', $addValue);
-            }
-            if ($switch_to_local) {
-                $image_viewer = self::getUrlViewer(encodeID((int) $uploaded_id));
-                system_notification_email(['subject' => 'Upload switched to local storage', 'message' => strtr('System has switched to local storage due to not enough disk capacity (%c) in the external storage server(s). The image %s has been allocated to local storage.', ['%c' => $disk_space_needed . ' B', '%s' => '<a href="' . $image_viewer . '">' . $image_viewer . '</a>'])]);
             }
 
             return [$uploaded_id, $deletePassword];
@@ -1162,10 +1248,14 @@ class Image
     public static function getEnabledImageExtensions(): array
     {
         $formats = explode(',', Settings::get('upload_enabled_image_formats'));
-        if (in_array('jpg', $formats) && !in_array('jpeg', $formats)) {
+        if (in_array('jpg', $formats, true)
+            && ! in_array('jpeg', $formats, true)
+        ) {
             $formats[] = 'jpeg';
         }
-        if (in_array('mov', $formats) && !in_array('quicktime', $formats)) {
+        if (in_array('mov', $formats, true)
+            && ! in_array('quicktime', $formats, true)
+        ) {
             $formats[] = 'quicktime';
         }
 
@@ -1178,11 +1268,13 @@ class Image
         $accept = [];
         $videos = ['mov', 'mp4', 'webm'];
         foreach ($extensions as $extension) {
-            $type = in_array($extension, $videos) ? 'video' : 'image';
+            $type = in_array($extension, $videos, true)
+                ? 'video'
+                : 'image';
             if ($extension === 'mov') {
                 $extension = 'quicktime';
             }
-            $accept[] = "$type/$extension";
+            $accept[] = "{$type}/{$extension}";
         }
 
         return implode(',', $accept);
@@ -1214,139 +1306,131 @@ class Image
         return $resize->resized();
     }
 
-    protected static function insert(array $image_upload, array $user = [], array $values = []): int
-    {
-        Stat::assertMax('images');
-        $table_chv_image = self::$table_chv_image;
-        foreach ($table_chv_image as $k => $v) {
-            $table_chv_image[$k] = 'image_' . $v;
-        }
-        if (empty($values['uploader_ip'])) {
-            $values['uploader_ip'] = get_client_ip();
-        }
-        /** @var ?Exif $exifRead */
-        $exifRead = $image_upload['source']['image_exif'];
-        $exifRaw = null;
-        if ($exifRead instanceof Exif) {
-            $exifRaw = $exifRead->getRawData();
-            unset($exifRaw['MakerNote']);
-        }
-        $original_exifdata = $exifRaw !== null
-            ? json_encode(array_utf8encode($exifRaw))
-            : null;
-        $values['nsfw'] = in_array(strval($values['nsfw']), ['0', '1']) ? $values['nsfw'] : 0;
-        if (Settings::get('moderatecontent')
-            && $values['nsfw'] == 0
-            && Settings::get('moderatecontent_flag_nsfw')
-            && is_object($image_upload['moderation'])
-            && property_exists($image_upload['moderation'], 'rating_letter')
-        ) {
-            switch ($image_upload['moderation']->rating_letter) {
-                case 'a':
-                    $values['nsfw'] = '1';
-
-                break;
-                case 't':
-                    if (Settings::get('moderatecontent_flag_nsfw') == 't') {
-                        $values['nsfw'] = 1;
-                    }
-
-                break;
-            }
-        }
-        $is360 = false;
-        if (isset($image_upload['uploaded']['fileinfo']['is_360'])) {
-            $is360 = (bool) $image_upload['uploaded']['fileinfo']['is_360'];
-        }
-        $populate_values = [
-            'uploader_ip' => $values['uploader_ip'],
-            'md5' => $image_upload['uploaded']['fileinfo']['md5'],
-            'original_filename' => $image_upload['source']['filename'],
-            'original_exifdata' => $original_exifdata,
-            'is_360' => $is360,
-            'extension' => $image_upload['uploaded']['extension'],
-        ];
-        if (!isset($values['date'])) {
-            $populate_values = array_merge($populate_values, [
-                'date' => datetime(),
-                'date_gmt' => datetimegmt(),
-            ]);
-        }
-        $values = array_merge($image_upload['uploaded']['fileinfo'], $populate_values, $values);
-        assertNotStopWords(
-            $values['name'] ?? '',
-            $values['original_filename'] ?? '',
-            $values['title'] ?? '',
-            $values['description'] ?? ''
-        );
-        foreach (['title', 'description', 'category_id', 'album_id'] as $v) {
-            nullify_string($values[$v]);
-        }
-        foreach (array_keys($values) as $k) {
-            if (!in_array('image_' . $k, $table_chv_image) && $k !== 'id') {
-                unset($values[$k]);
-            }
-        }
-        $values['is_approved'] = 1;
-        switch (Settings::get('moderate_uploads')) {
-            case 'all':
-                $values['is_approved'] = (int) (($user['is_admin'] ?? 0) || ($user['is_manager'] ?? 0));
-
-            break;
-            case 'guest':
-                $values['is_approved'] = (int) isset($values['user_id']);
-
-            break;
-        }
-        if (Settings::get('moderatecontent_auto_approve')
-            && isset($image_upload['moderation'])
-        ) {
-            $values['is_approved'] = 1;
-        }
-        $insert = DB::insert('images', $values);
-        $disk_space_used = $values['size']
-            + $values['thumb_size']
-            + $values['medium_size']
-            + $values['frame_size'];
-        Stat::track([
-            'action' => 'insert',
-            'table' => 'images',
-            'value' => '+1',
-            'date_gmt' => $values['date_gmt'],
-            'disk_sum' => $disk_space_used,
-        ]);
-        if (!is_null($values['album_id']) && $insert) {
-            Album::updateImageCount((int) $values['album_id'], 1);
-        }
-
-        return $insert;
-    }
-
     public static function update(int $id, array $values): int
     {
+        $image_db = self::getSingle($id);
+        $user_id = $image_db['image_user_id'] ?? null;
+        if ($user_id) {
+            $tags = (string) ($values['tags'] ?? '');
+            $tags = Tag::parse($tags);
+        }
+        unset($values['tags']);
         $values = array_filter_array($values, self::$table_chv_image, 'exclusion');
         assertNotStopWords($values['title'] ?? '', $values['description'] ?? '');
         foreach (['title', 'description', 'category_id', 'album_id'] as $v) {
-            if (!array_key_exists($v, $values)) {
+            if (! array_key_exists($v, $values)) {
                 continue;
             }
             nullify_string($values[$v]);
         }
+        $return = DB::update('images', $values, [
+            'id' => $id,
+        ]);
         if (isset($values['album_id'])) {
-            $image_db = self::getSingle($id);
             $old_album = $image_db['image_album_id'];
-            $update = DB::update('images', $values, ['id' => $id]);
-            if ($update && $old_album !== $values['album_id']) {
-                if (!is_null($old_album)) { // Update the old album
+            if ($return && $old_album !== $values['album_id']) {
+                if ($old_album != null) { // Update the old album
                     Album::updateImageCount((int) $old_album, 1, '-');
                 }
                 Album::updateImageCount((int) $values['album_id'], 1);
             }
-
-            return $update;
-        } else {
-            return DB::update('images', $values, ['id' => $id]);
         }
+        if ($user_id) {
+            static::tag($id, ...$tags);
+        }
+
+        return $return;
+    }
+
+    public static function tag(int $id, string ...$tag): void
+    {
+        $tag = array_filter($tag);
+        $tag = array_unique($tag);
+        $imagesTable = DB::getTable('images');
+        $tagsFilesTable = DB::getTable('tags_files');
+        $tagsUsersTable = DB::getTable('tags_users');
+        $tagsAlbumsTable = DB::getTable('tags_albums');
+        $tagsTable = DB::getTable('tags');
+        $userIdSQL = <<<MySQL
+        SELECT `image_user_id` user_id
+        FROM {$imagesTable}
+        WHERE image_id = {$id};
+
+        MySQL;
+        $user_id = DB::queryFetchSingle($userIdSQL)['user_id']
+            ?? throw new LogicException('Tag requires user_id', 600);
+        Tag::insert($user_id, ...$tag);
+        $binds = [
+            ':file_id' => $id,
+            ':user_id' => $user_id,
+        ];
+        $sql = <<<MySQL
+        SET @TAGS_IDS = (SELECT GROUP_CONCAT(`tag_file_tag_id`)
+                FROM `{$tagsFilesTable}`
+                WHERE `tag_file_file_id` = :file_id);
+        SET @ALBUM_ID = (SELECT `image_album_id`
+                FROM `{$imagesTable}`
+                WHERE `image_id` = :file_id);
+
+        UPDATE `{$tagsUsersTable}` SET `tag_user_count` = `tag_user_count` - 1
+        WHERE `tag_user_user_id` = :user_id
+        AND FIND_IN_SET(`tag_user_tag_id`, @TAGS_IDS);
+
+        IF (@ALBUM_ID IS NOT NULL)
+        THEN
+            UPDATE `{$tagsAlbumsTable}` SET `tag_album_count` = `tag_album_count` - 1
+            WHERE `tag_album_album_id` = @ALBUM_ID
+            AND `tag_album_user_id` = :user_id
+            AND FIND_IN_SET(`tag_album_tag_id`, @TAGS_IDS);
+        END IF;
+
+        UPDATE `{$tagsTable}` SET `tag_files` = `tag_files` - 1
+        WHERE FIND_IN_SET(`tag_id`, @TAGS_IDS);
+
+        DELETE FROM `{$tagsFilesTable}`
+        WHERE `tag_file_file_id` = :file_id;
+
+        MySQL;
+        if ($tag !== []) {
+            foreach ($tag as $index => $name) {
+                try {
+                    Tag::assert($name);
+                } catch (Exception) {
+                    continue;
+                }
+            }
+            $template = <<<MySQL
+            SET @TAG_ID = (SELECT `tag_id` FROM `{$tagsTable}` WHERE `tag_name` = :tag_name_%);
+
+            INSERT IGNORE INTO `{$tagsFilesTable}` (`tag_file_tag_id`, `tag_file_file_id`)
+            VALUES (@TAG_ID, :file_id);
+
+            INSERT INTO `{$tagsUsersTable}` (`tag_user_tag_id`, `tag_user_user_id`, `tag_user_count`)
+            VALUES (@TAG_ID, :user_id, 1)
+            ON DUPLICATE KEY UPDATE `tag_user_count` = `tag_user_count` + 1;
+
+            IF (@ALBUM_ID IS NOT NULL)
+            THEN
+                INSERT INTO `{$tagsAlbumsTable}` (`tag_album_tag_id`, `tag_album_album_id`, `tag_album_user_id`, `tag_album_count`)
+                VALUES (@TAG_ID, @ALBUM_ID, :user_id, 1)
+                ON DUPLICATE KEY UPDATE `tag_album_count` = `tag_album_count` + 1;
+            END IF;
+
+            UPDATE `{$tagsTable}` SET `tag_files` = `tag_files` + 1
+            WHERE `tag_id` = @TAG_ID;
+
+            MySQL;
+            foreach ($tag as $index => $name) {
+                $sql .= strtr($template, '%', $index);
+                $binds[':tag_name_' . $index] = $name;
+            }
+        }
+        $db = DB::getInstance();
+        $db->query($sql);
+        foreach ($binds as $key => $value) {
+            $db->bind($key, $value);
+        }
+        $db->exec();
     }
 
     public static function delete(int $id, bool $update_user = true): int
@@ -1356,9 +1440,9 @@ class Image
             + $image['thumb_size']
             + $image['medium_size']
             + $image['frame_size'];
-        if ($image['file_resource']['type'] == 'path') {
+        if ($image['file_resource']['type'] === 'path') {
             foreach ($image['file_resource']['chain'] as $file_delete) {
-                if (file_exists($file_delete) && !unlinkIfExists($file_delete)) {
+                if (file_exists($file_delete) && ! unlinkIfExists($file_delete)) {
                     throw new Exception("Can't delete file", 600);
                 }
             }
@@ -1373,7 +1457,11 @@ class Image
             Storage::deleteFiles($targets, $image['storage']);
         }
         if ($update_user && isset($image['user']['id'])) {
-            DB::increment('users', ['image_count' => '-1'], ['id' => $image['user']['id']]);
+            DB::increment('users', [
+                'image_count' => '-1',
+            ], [
+                'id' => $image['user']['id'],
+            ]);
         }
         if (isset($image['album']['id']) && $image['album']['id'] > 0) {
             Album::updateImageCount((int) $image['album']['id'], 1, '-');
@@ -1389,18 +1477,34 @@ class Image
             'disk_sum' => $disk_space_used,
             'likes' => $image['likes'],
         ]);
-        DB::queryExecute('UPDATE ' . DB::getTable('users') . ' INNER JOIN ' . DB::getTable('likes') . ' ON user_id = like_user_id AND like_content_type = "image" AND like_content_id = ' . $image['id'] . ' SET user_liked = GREATEST(cast(user_liked AS SIGNED) - 1, 0);');
+        DB::queryExecute(
+            'UPDATE '
+            . DB::getTable('users')
+            . ' INNER JOIN '
+            . DB::getTable('likes')
+            . ' ON user_id = like_user_id AND like_content_type = "image" AND like_content_id = '
+            . $image['id']
+            . ' SET user_liked = GREATEST(cast(user_liked AS SIGNED) - 1, 0);'
+        );
         if (isset($image['user']['id'])) {
-            $autoliked = DB::get('likes', ['user_id' => $image['user']['id'], 'content_type' => 'image', 'content_id' => $image['id']])[0] ?? [];
-            $likes_counter = (int) $image['likes']; // This is stored as "bigint" but PDO MySQL get it as string. Fuck my code, fuck PHP.
-            if ($autoliked !== []) {
-                $likes_counter -= 1;
+            $autoLiked = DB::get('likes', [
+                'user_id' => $image['user']['id'],
+                'content_type' => 'image',
+                'content_id' => $image['id'],
+            ])[0] ?? [];
+            $likes_counter = (int) $image['likes'];
+            if ($autoLiked !== []) {
+                --$likes_counter;
             }
             if ($likes_counter > 0) {
                 $likes_counter = 0 - $likes_counter;
             }
             if ($likes_counter !== 0) {
-                DB::increment('users', ['likes' => $likes_counter], ['id' => $image['user']['id']]);
+                DB::increment('users', [
+                    'likes' => $likes_counter,
+                ], [
+                    'id' => $image['user']['id'],
+                ]);
             }
             Notification::delete([
                 'table' => 'images',
@@ -1408,7 +1512,13 @@ class Image
                 'user_id' => $image['user']['id'],
             ]);
         }
-        DB::delete('likes', ['content_type' => 'image', 'content_id' => $image['id']]);
+        if (isset($image['user']['id'])) {
+            static::tag($id);
+        }
+        DB::delete('likes', [
+            'content_type' => 'image',
+            'content_id' => $image['id'],
+        ]);
         DB::insert('deletions', [
             'date_gmt' => datetimegmt(),
             'content_id' => $image['id'],
@@ -1420,9 +1530,12 @@ class Image
             'content_likes' => $image['likes'],
             'content_original_filename' => $image['original_filename'],
         ]);
-
-        $result = DB::delete('images', ['id' => $id]);
-        DB::delete('images_hash', ['image_id' => $id]);
+        $result = DB::delete('images', [
+            'id' => $id,
+        ]);
+        DB::delete('images_hash', [
+            'image_id' => $id,
+        ]);
 
         return $result;
     }
@@ -1432,7 +1545,7 @@ class Image
         $affected = 0;
         foreach ($ids as $id) {
             if (self::delete((int) $id) !== 0) {
-                $affected += 1;
+                ++$affected;
             }
         }
 
@@ -1441,11 +1554,17 @@ class Image
 
     public static function deleteExpired(int $limit = 50): void
     {
-        if (!$limit || !is_numeric($limit)) {
+        if (! $limit || ! is_numeric($limit)) {
             $limit = 50;
         }
         $db = DB::getInstance();
-        $db->query('SELECT image_id FROM ' . DB::getTable('images') . ' WHERE image_expiration_date_gmt IS NOT NULL AND image_expiration_date_gmt < :datetimegmt ORDER BY image_expiration_date_gmt DESC LIMIT ' . $limit . ';'); // Just 50 files per request to prevent CPU meltdown or something like that
+        $db->query(
+            'SELECT image_id FROM '
+            . DB::getTable('images')
+            . ' WHERE image_expiration_date_gmt IS NOT NULL AND image_expiration_date_gmt < :datetimegmt ORDER BY image_expiration_date_gmt DESC LIMIT '
+            . $limit
+            . ';'
+        );
         $db->bind(':datetimegmt', datetimegmt());
         $expired_db = $db->fetchAll();
         if ($expired_db) {
@@ -1459,7 +1578,9 @@ class Image
 
     public static function verifyPassword(int $id, string $password): bool
     {
-        $get = DB::get('images_hash', ['image_id' => $id])[0] ?? [];
+        $get = DB::get('images_hash', [
+            'image_id' => $id,
+        ])[0] ?? [];
         if ($get === []) {
             return false;
         }
@@ -1474,46 +1595,15 @@ class Image
         $targets = self::getSrcTargetSingle($image, false);
         $medium_size = getSetting('upload_medium_size');
         $medium_fixed_dimension = getSetting('upload_medium_fixed_dimension');
-        if ($targets['type'] == 'path') {
-            $is_animated = $image['is_animated'];
-            if (!$is_animated) {
-                $is_animated = isset($targets['chain']['image']) && is_animated_image($targets['chain']['image']);
-            }
-            if (count($targets['chain']) > 0) {
-                $original_md5 = $image['md5'];
-                $image = array_merge($image, get_fileinfo($targets['chain']['image']));
-                $image['md5'] = $original_md5;
-            }
-            if ($is_animated && !$image['is_animated']) {
-                self::update($image['id'], ['is_animated' => 1]);
-                $image['is_animated'] = 1;
-            }
-        } else {
-            $image_fileinfo = [
-                'ratio' => $image['width'] / $image['height'],
-                'size' => (int) $image['size'],
-                'size_formatted' => format_bytes($image['size'])
-            ];
-
-            $image = array_merge($image, get_fileinfo($targets['chain']['image']), $image_fileinfo);
-        }
+        $image_fileinfo = [
+            'ratio' => $image['width'] / $image['height'],
+            'size' => (int) $image['size'],
+            'size_formatted' => format_bytes($image['size']),
+        ];
+        $image = array_merge($image, get_fileinfo($targets['chain']['image']), $image_fileinfo);
         $image['file_resource'] = $targets;
-        $image['url_viewer'] = self::getUrlViewer(
-            $image['id_encoded'],
-            getSetting('seo_image_urls')
-            ? ($image['title'] ?? '')
-            : ''
-        );
-        $image['path_viewer'] = url_to_relative($image['url_viewer']);
-        $image['url_short'] = self::getUrlViewer($image['id_encoded']);
         foreach ($targets['chain'] as $k => $v) {
-            if ($targets['type'] == 'path') {
-                $image[$k] = file_exists($v)
-                    ? get_fileinfo($v)
-                    : null;
-            } else {
-                $image[$k] = get_fileinfo($v);
-            }
+            $image[$k] = get_fileinfo($v);
             $image[$k]['size'] = $image[($k == 'image' ? '' : $k . '_') . 'size'];
         }
         $image['url_frame'] = $image['frame']['url'] ?? '';
@@ -1531,12 +1621,12 @@ class Image
                     $display_width = $medium_size;
                     $display_height = (int) round($medium_size / $image_ratio);
 
-                break;
+                    break;
                 case 'height':
                     $display_height = $medium_size;
                     $display_width = (int) round($medium_size * $image_ratio);
 
-                break;
+                    break;
             }
             $displaySize = $image['medium']['size'];
         } elseif (
@@ -1557,7 +1647,7 @@ class Image
             $display_height = $image['height'];
         }
         $image['duration'] = (int) ($image['duration'] ?? 0);
-        $seconds = $image['duration'] ?? 0;
+        $seconds = $image['duration'];
         if ($seconds > 0) {
             $minutes = floor($seconds / 60);
             $duration_time = sprintf('%02d', $minutes) . ':' . sprintf('%02d', $seconds % 60);
@@ -1579,7 +1669,20 @@ class Image
             'url' => null,
         ];
         $image['duration_time'] = $duration_time;
-        $image['type'] = self::$types[$image['type'] ?? 1];
+        $min_type = max(1, $image['type'] ?? 1);
+        $image['type'] = self::$types[$min_type];
+        $image['url_viewer'] = self::getUrlViewer(
+            type: $image['type'],
+            id_encoded: $image['id_encoded'],
+            title: getSetting('seo_image_urls')
+            ? ($image['title'] ?? '')
+            : ''
+        );
+        $image['path_viewer'] = url_to_relative($image['url_viewer']);
+        $image['url_short'] = self::getUrlViewer(
+            type: $image['type'],
+            id_encoded: $image['id_encoded'],
+        );
         $image['display_url'] = $display_url;
         $image['display_width'] = $display_width;
         $image['display_height'] = $display_height;
@@ -1591,7 +1694,9 @@ class Image
             : $image['date_gmt'];
         $image['title_truncated'] = truncate($image['title'] ?? '', 28);
         $image['title_truncated_html'] = safe_html($image['title_truncated']);
-        $image['is_use_loader'] = getSetting('image_load_max_filesize_mb') !== '' ? ($image['size'] > get_bytes(getSetting('image_load_max_filesize_mb') . 'MB')) : false;
+        $image['is_use_loader'] = getSetting('image_load_max_filesize_mb') !== ''
+            ? ($image['size'] > get_bytes(getSetting('image_load_max_filesize_mb') . 'MB'))
+            : false;
         $image['display_title'] = $image['title']
             ?? ($image['name'] . '.' . $image['extension']);
     }
@@ -1634,7 +1739,7 @@ class Image
 
     public static function getVideoFrame(string $file, int $time): string
     {
-        $frameFile = Upload::getTempNam(sys_get_temp_dir());
+        $frameFile = Upload::getTempNam();
 
         try {
             $ffmpeg = FFMpeg::create(
@@ -1644,14 +1749,153 @@ class Image
                 ]
             );
         } catch (Throwable $e) {
-            throw new Exception("FFprobe error: " . get_ffmpeg_error($e), 600);
+            throw new Exception('FFprobe error: ' . get_ffmpeg_error($e), 600);
         }
 
+        /** @var Video $video */
         $video = $ffmpeg->open($file);
         $video
             ->frame(TimeCode::fromSeconds($time))
             ->save($frameFile);
 
         return $frameFile;
+    }
+
+    protected static function getPastTimeSpec(string $unit, string $value): string
+    {
+        return 'P' .
+            (in_array($unit, ['second', 'minute', 'hour'], true)
+                ? 'T'
+                : '')
+            . $value . strtoupper($unit[0]);
+    }
+
+    protected static function insert(array $image_upload, array $user = [], array $values = []): int
+    {
+        Stat::assertMax('CHEVERETO_MAX_FILES');
+        if ($user['id'] ?? false) {
+            $tags = (string) ($values['tags'] ?? '');
+        }
+        $table_chv_image = self::$table_chv_image;
+        foreach ($table_chv_image as $k => $v) {
+            $table_chv_image[$k] = 'image_' . $v;
+        }
+        if (empty($values['uploader_ip'])) {
+            $values['uploader_ip'] = get_client_ip();
+        }
+        /** @var ?Exif $exifRead */
+        $exifRead = $image_upload['source']['image_exif'];
+        $exifRaw = null;
+        if ($exifRead instanceof Exif) {
+            $exifRaw = $exifRead->getRawData();
+            unset($exifRaw['MakerNote']);
+            if (isset($tags)
+                && ($user['file_meta_tag_camera_model'] ?? false)
+            ) {
+                $cameraMakeModel = array_filter([$exifRead->getMake(), $exifRead->getCamera()]);
+                $cameraMakeModel = implode(' ', $cameraMakeModel);
+                $tags .= ',' . $cameraMakeModel;
+                $tags = trim($tags, ',');
+            }
+        }
+        if (isset($tags)) {
+            $tags = Tag::parse($tags);
+        }
+        unset($values['tags']);
+        $original_exifdata = $exifRaw != null
+            ? json_encode(array_utf8encode($exifRaw))
+            : null;
+        $values['nsfw'] = in_array(strval($values['nsfw']), ['0', '1'], false)
+            ? $values['nsfw']
+            : 0;
+        if (Settings::get('moderatecontent')
+            && $values['nsfw'] == 0
+            && Settings::get('moderatecontent_flag_nsfw')
+            && is_object($image_upload['moderation'])
+            && property_exists($image_upload['moderation'], 'rating_letter')
+        ) {
+            switch ($image_upload['moderation']->rating_letter) {
+                case 'a':
+                    $values['nsfw'] = '1';
+
+                    break;
+                case 't':
+                    if (Settings::get('moderatecontent_flag_nsfw') === 't') {
+                        $values['nsfw'] = 1;
+                    }
+
+                    break;
+            }
+        }
+        $is360 = false;
+        if (isset($image_upload['uploaded']['fileinfo']['is_360'])) {
+            $is360 = (bool) $image_upload['uploaded']['fileinfo']['is_360'];
+        }
+        $populate_values = [
+            'uploader_ip' => $values['uploader_ip'],
+            'md5' => $image_upload['uploaded']['fileinfo']['md5'],
+            'original_filename' => $image_upload['source']['filename'],
+            'original_exifdata' => $original_exifdata,
+            'is_360' => $is360,
+            'extension' => $image_upload['uploaded']['extension'],
+        ];
+        if (! isset($values['date'])) {
+            $populate_values = array_merge($populate_values, [
+                'date' => datetime(),
+                'date_gmt' => datetimegmt(),
+            ]);
+        }
+        $values = array_merge($image_upload['uploaded']['fileinfo'], $populate_values, $values);
+        assertNotStopWords(
+            $values['name'] ?? '',
+            $values['original_filename'] ?? '',
+            $values['title'] ?? '',
+            $values['description'] ?? ''
+        );
+        foreach (['title', 'description', 'category_id', 'album_id'] as $v) {
+            nullify_string($values[$v]);
+        }
+        foreach (array_keys($values) as $k) {
+            if (! in_array('image_' . $k, $table_chv_image, true) && $k !== 'id') {
+                unset($values[$k]);
+            }
+        }
+        $values['is_approved'] = 1;
+        switch (Settings::get('moderate_uploads')) {
+            case 'all':
+                $values['is_approved'] = (int) (($user['is_admin'] ?? 0) || ($user['is_manager'] ?? 0));
+
+                break;
+            case 'guest':
+                $values['is_approved'] = (int) isset($values['user_id']);
+
+                break;
+        }
+        if (Settings::get('moderatecontent_auto_approve')
+            && isset($image_upload['moderation'])
+        ) {
+            $values['is_approved'] = 1;
+        }
+        $insert = DB::insert('images', $values) ?: 0;
+        $disk_space_used = $values['size']
+            + $values['thumb_size']
+            + $values['medium_size']
+            + $values['frame_size'];
+        Stat::track([
+            'action' => 'insert',
+            'table' => 'images',
+            'value' => '+1',
+            'date_gmt' => $values['date_gmt'],
+            'disk_sum' => $disk_space_used,
+        ]);
+        if ($values['album_id'] != null && $insert) {
+            Album::updateImageCount((int) $values['album_id'], 1);
+        }
+
+        if (isset($tags)) {
+            static::tag($insert, ...$tags);
+        }
+
+        return $insert;
     }
 }

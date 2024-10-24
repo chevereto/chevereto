@@ -3,7 +3,7 @@
   Chevereto Popup Upload Plugin (PUP)
 
   @website	https://chevereto.com/
-  @version	1.0.7
+  @version	1.1.0
   @author	Rodolfo Berrios A. <http://rodolfoberrios.com/>
 
   --------------------------------------------------------------------- */
@@ -550,7 +550,10 @@
                     if (typeof id == "string") {
                         sel = this.getEditorSel(id);
                     }
-                    return XF.getEditorInContainer($(sel));
+                    var editorContainer = window.jQuery
+                        ? $(sel)
+                        : document.querySelector(sel);
+                    return XF.getEditorInContainer(editorContainer);
                 },
                 getEditorSel: function (id) {
                     return "[" + PUP.ns.dataPluginTarget + '="' + id + '"]';
@@ -601,8 +604,11 @@
                     return value;
                 },
                 useCustomEditor: function () {
+                    var editorContainer = window.jQuery
+                        ? $(".js-editor")
+                        : document.querySelector(".js-editor");
                     return (
-                        typeof XF.getEditorInContainer($(".js-editor")) !== typeof undefined
+                        typeof XF.getEditorInContainer(editorContainer) !== typeof undefined
                     );
                 }
             }

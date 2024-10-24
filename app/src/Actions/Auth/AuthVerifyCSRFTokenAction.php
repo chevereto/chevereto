@@ -12,19 +12,22 @@
 namespace Chevereto\Actions\Auth;
 
 use Chevere\Action\Action;
-use Chevere\Parameter\Attributes\ParameterAttribute;
-use Chevere\String\AssertString;
+use Chevere\Parameter\Attributes\StringAttr;
+use InvalidArgumentException;
 
 final class AuthVerifyCSRFTokenAction extends Action
 {
     public function run(
-        #[ParameterAttribute(description: 'Token granted to the user session.')]
+        #[StringAttr(description: 'Token granted to the user session.')]
         string $sessionValue,
-        #[ParameterAttribute(description: 'Token provided by the user.')]
+        #[StringAttr(description: 'Token provided by the user.')]
         string $userInput
     ): array {
-        (new AssertString($sessionValue))
-            ->same($userInput);
+        if (! hash_equals($sessionValue, $userInput)) {
+            throw new InvalidArgumentException(
+                'Invalid CSRF token'
+            );
+        }
 
         return [];
     }

@@ -1,6 +1,8 @@
 <?php
 
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\Classes\Settings;
+
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\getSetting;
@@ -24,7 +26,7 @@ if (Login::hasPassword(Handler::var('user')['id'])) { ?>
                 } ?>
         <div class="input-label input-password">
             <label for="new-password"><?php _se('New password'); ?></label>
-            <input autocomplete="new-password" type="password" name="new-password" id="new-password" class="text-input" value="<?php echo Handler::var('safe_post')["new-password"] ?? ''; ?>" pattern="<?php echo getSetting('user_password_pattern'); ?>" rel="tooltip" title="<?php _se('%d characters min', getSetting('user_password_min_length')); ?>" data-tipTip="right" placeholder="<?php _se('Enter your new password'); ?>" required>
+            <input autocomplete="new-password" type="password" name="new-password" id="new-password" class="text-input" value="<?php echo Handler::var('safe_post')["new-password"] ?? ''; ?>" pattern="<?php echo Settings::USER_PASSWORD_PATTERN; ?>" rel="tooltip" title="<?php _se('%d characters min', Settings::USER_PASSWORD_MIN_LENGTH); ?>" data-tipTip="right" placeholder="<?php _se('Enter your new password'); ?>" required>
             <div class="input-password-strength"><span style="width: 0%" data-content="password-meter-bar"></span></div>
             <span class="input-warning red-warning" data-text="password-meter-message"><?php echo Handler::var('input_errors')["new-password"] ?? ''; ?></span>
         </div>
@@ -45,7 +47,7 @@ if (Login::hasPassword(Handler::var('user')['id'])) { ?>
     <div class="c12 phablet-c1">
         <div class="input-label input-password">
             <label for="new-password"><?php _se('Password'); ?></label>
-            <input type="password" name="new-password" id="new-password" class="text-input" value="<?php echo Handler::var('safe_post')["new-password"] ?? ''; ?>" pattern="<?php echo getSetting('user_password_pattern'); ?>" rel="tooltip" title="<?php _se('%d characters min', getSetting('user_password_min_length')); ?>" data-tipTip="right" placeholder="<?php _se('Enter your password'); ?>" required>
+            <input type="password" name="new-password" id="new-password" class="text-input" value="<?php echo Handler::var('safe_post')["new-password"] ?? ''; ?>" pattern="<?php echo Settings::USER_PASSWORD_PATTERN; ?>" rel="tooltip" title="<?php _se('%d characters min', Settings::USER_PASSWORD_MIN_LENGTH); ?>" data-tipTip="right" placeholder="<?php _se('Enter your password'); ?>" required>
             <div class="input-password-strength"><span style="width: 0%" data-content="password-meter-bar"></span></div>
             <span class="input-warning red-warning" data-text="password-meter-message"><?php echo Handler::var('input_errors')["new-password"] ?? ''; ?></span>
         </div>

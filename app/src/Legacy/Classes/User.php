@@ -11,6 +11,9 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use Exception;
+use OverflowException;
+use function Chevere\Message\message;
 use function Chevereto\Legacy\assertNotStopWords;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\G\abbreviate_number;
@@ -27,22 +30,23 @@ use function Chevereto\Legacy\G\linkify;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\rrmdir;
 use function Chevereto\Legacy\G\safe_html;
-use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\get_redirect_url;
 use function Chevereto\Legacy\get_users_image_url;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Legacy\linkify_redirector;
 use function Chevereto\Legacy\system_notification_email;
 use function Chevereto\Vars\env;
-use Exception;
 
 class User
 {
     public static function getSingle(mixed $var, string $by = 'id', bool $pretty = true): array
     {
-        $user_db = DB::get('users', [$by => $var], 'AND', [], 1);
-        if (!is_array($user_db)
+        $user_db = DB::get('users', [
+            $by => $var,
+        ], 'AND', [], 1);
+        if (! is_array($user_db)
             || $user_db === []
         ) {
             return [];
@@ -55,22 +59,23 @@ class User
         $user_db['user_login'] = $aux;
         $user_db['user_connections_count'] = count($connections);
         foreach (['user_image_count', 'user_album_count'] as $v) {
-            if (is_null($user_db[$v]) || $user_db[$v] < 0) {
+            if ($user_db[$v] === null || $user_db[$v] < 0) {
                 $user_db[$v] = 0;
             }
         }
         $user_db['user_is_admin'] ??= false;
         $user_db['user_is_manager'] ??= false;
         $user_db['user_is_content_manager'] = $user_db['user_is_admin'] || $user_db['user_is_manager'];
-        if (!array_key_exists('user_following', $user_db)) {
+        if (! array_key_exists('user_following', $user_db)) {
             $user_db['user_following'] = 0;
         }
-        if (!array_key_exists('user_followers', $user_db)) {
+        if (! array_key_exists('user_followers', $user_db)) {
             $user_db['user_followers'] = 0;
         }
         if (isset($user_db['user_name'])) {
             $user_db['user_name'] = self::sanitizeUserName($user_db['user_name']);
         }
+        $user_db['user_file_meta_tag_camera_model'] ??= 0;
         if ($pretty) {
             $user_db = self::formatArray($user_db);
         }
@@ -91,7 +96,7 @@ class User
             'image_count_label' => _n('image', 'images', 0),
             'album_count_display' => 0,
             'image_count_display' => 0,
-            'is_private' => true
+            'is_private' => true,
         ];
     }
 
@@ -106,8 +111,12 @@ class User
         $map = [];
         $children = [];
         $db = DB::getInstance();
-        $db->query('SELECT * FROM ' . DB::getTable('albums') . ' WHERE album_user_id=:image_user_id ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit');
-        $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST'] ?? 300));
+        $db->query(
+            'SELECT * FROM '
+            . DB::getTable('albums')
+            . ' WHERE album_user_id=:image_user_id ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit'
+        );
+        $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST'] ?? 500));
         $db->bind(':image_user_id', $id);
         $user_albums_db = $db->fetchAll();
         if ($user_albums_db) {
@@ -127,7 +136,7 @@ class User
                 asort($children[$parent_id]);
             }
         }
-        if (count($children[''] ?? []) == 0) {
+        if (count($children[''] ?? []) === 0) {
             return [];
         }
         $list = [];
@@ -138,39 +147,9 @@ class User
         return $list;
     }
 
-    private static function iterate(
-        string $key,
-        array $array,
-        array &$list,
-        array $albums,
-        array $map,
-        int $level
-    ): void {
-        $album = $albums[$map[$key]];
-        $album['album_indent'] = $level;
-        $album['album_indent_string'] = '';
-        if ($level > 0) {
-            $album['album_indent_string'] = str_repeat('─', $level) . ' ';
-        }
-        $album = DB::formatRow($album, 'album');
-        Album::fill($album);
-        if ($key == 'stream') {
-            $list[$key] = $album;
-        } else {
-            $list[] = $album;
-        }
-        if (!isset($array[$key])) {
-            return;
-        }
-        $level++;
-        foreach (array_keys($array[$key]) as $k) {
-            self::iterate((string) $k, $array, $list, $albums, $map, $level);
-        }
-    }
-
     public static function getStreamAlbum(int|array $user): ?array
     {
-        if (!is_array($user)) {
+        if (! is_array($user)) {
             $user = self::getSingle($user, 'id', true);
         }
         if ($user !== []) {
@@ -180,7 +159,7 @@ class User
                 'album_name' => self::getStreamName($user['username']),
                 'album_user_id' => $user['id'],
                 'album_privacy' => 'public',
-                'album_url' => $user['url']
+                'album_url' => $user['url'],
             ];
         }
 
@@ -190,27 +169,34 @@ class User
     public static function getStreamName(string $username): string
     {
         return _s(
-            "%t by %s",
+            '%t by %s',
             [
                 '%t' => _n('File', 'Files', 20),
-                '%s' => $username
+                '%s' => $username,
             ]
         );
     }
 
-    public static function getUrl(array|string $handle)
+    public static function getUrl(array|string $handle, bool $isPublic = false)
     {
-        $username = is_array($handle) ? ($handle[isset($handle['user_username']) ? 'user_username' : 'username'] ?? null) : $handle;
-        $id = is_array($handle) ? ($handle[isset($handle['user_id']) ? 'user_id' : 'id'] ?? null) : null;
+        $username = is_array($handle)
+            ? ($handle[isset($handle['user_username']) ? 'user_username' : 'username'] ?? null)
+            : $handle;
+        $id = is_array($handle)
+            ? ($handle[isset($handle['user_id']) ? 'user_id' : 'id'] ?? null)
+            : null;
         $path = getSetting('root_route') === 'user'
             ? ''
             : getSetting('route_user') . '/';
         $url = $path . $username;
-        if (is_array($handle) && getSetting('website_mode') == 'personal' && $id == getSetting('website_mode_personal_uid')) {
+        if (is_array($handle)
+            && getSetting('website_mode') === 'personal'
+            && $id == getSetting('website_mode_personal_uid')
+        ) {
             $url = getSetting('website_mode_personal_routing') !== '/' ? getSetting('website_mode_personal_routing') : '';
         }
 
-        return get_base_url($url);
+        return get_base_url($url, $isPublic);
     }
 
     public static function getUrlPath(string $user_url, string $path): string
@@ -220,30 +206,36 @@ class User
 
     public static function insert(array $values): int
     {
-        Stat::assertMax('users');
-        if (!isset($values['date'])) {
+        Stat::assertMax('CHEVERETO_MAX_USERS');
+        if (! isset($values['date'])) {
             $values['date'] = datetime();
         }
-        if (!isset($values['date_gmt'])) {
+        if (! isset($values['date_gmt'])) {
             $values['date_gmt'] = datetimegmt();
         }
-        if (!isset($values['language'])) {
+        if (! isset($values['language'])) {
             $values['language'] = getSetting('default_language');
         }
-        if (!isset($values['timezone'])) {
+        if (! isset($values['timezone'])) {
             $values['timezone'] = getSetting('default_timezone');
         }
         if (isset($values['name'])) {
             $values['name'] = self::sanitizeUserName($values['name']);
         }
-        if (!isset($values['registration_ip'])) {
+        if (! isset($values['registration_ip'])) {
             $values['registration_ip'] = get_client_ip();
         }
-        if (!isset($values['palette_id'])) {
+        if (! isset($values['palette_id'])) {
             $values['palette_id'] = intval(getSetting('theme_palette'));
         }
-        assertNotStopWords($values['name'] ?? '', $values['bio'] ?? '');
-        if (!Login::isAdmin()) {
+        assertNotStopWords(
+            $values['name'] ?? '',
+            $values['bio'] ?? '',
+            $values['username'] ?? '',
+            $values['email'] ?? '',
+            $values['website'] ?? ''
+        );
+        if (! Login::isAdmin()) {
             $db = DB::getInstance();
             $db->query('SELECT COUNT(*) c FROM ' . DB::getTable('users') . ' WHERE user_registration_ip=:ip AND user_status != "valid" AND user_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY)');
             $db->bind(':ip', $values['registration_ip']);
@@ -252,7 +244,7 @@ class User
             }
         }
         $user_id = DB::insert('users', $values);
-        if (!Login::isAdmin() && Settings::get('notify_user_signups')) {
+        if (! Login::isAdmin() && Settings::get('notify_user_signups')) {
             $message = implode('<br>', [
                 'A new user has just signed up %user (%edit)',
                 '',
@@ -262,7 +254,7 @@ class User
                 'IP: %registration_ip',
                 'Date (GMT): %date_gmt',
                 '',
-                'You can disable these notifications on %configure'
+                'You can disable these notifications on %configure',
             ]);
             foreach (['username', 'email', 'status', 'registration_ip', 'date_gmt'] as $k) {
                 $table['%' . $k] = $values[$k] ?? '';
@@ -286,45 +278,108 @@ class User
         return $user_id;
     }
 
+    public static function assertMaxRoleLimit(string $role): void
+    {
+        $roles = [
+            'admin' => [
+                'CHEVERETO_MAX_ADMINS',
+                _s('Administrator'),
+            ],
+            'manager' => [
+                'CHEVERETO_MAX_MANAGERS',
+                _s('Manager'),
+            ],
+        ];
+        $roleHandle = $roles[$role][0];
+        $roleLabel = $roles[$role][1];
+        if (! array_key_exists($role, $roles)) {
+            throw new Exception('Invalid role', 600);
+        }
+        $maxLimit = (int) env()[$roleHandle] ?? 0;
+        if ($maxLimit === 0) {
+            return;
+        }
+        $fetch = DB::queryFetchSingle(
+            sprintf(
+                'SELECT COUNT(*) AS total FROM %s WHERE user_is_%s = 1;',
+                DB::getTable('users'),
+                $role
+            ),
+        );
+        $count = $fetch['total'] ?? 0;
+        if (($count + 1) > $maxLimit) {
+            throw new OverflowException(
+                message(
+                    'Maximum %u% for role %r% reached (limit %c%)',
+                    u: _n('user', 'users', 20),
+                    c: strval($maxLimit),
+                    r: mb_strtolower($roleLabel),
+                ),
+                999
+            );
+        }
+    }
+
     public static function update(int|string $id, array $values): int
     {
+        if ($values['is_admin'] ?? false) {
+            self::assertMaxRoleLimit('admin');
+        }
+        if ($values['is_manager'] ?? false) {
+            self::assertMaxRoleLimit('manager');
+        }
         if (isset($values['name'])) {
             $values['name'] = self::sanitizeUserName($values['name']);
         }
-        assertNotStopWords($values['name'] ?? '', $values['bio'] ?? '');
+        assertNotStopWords(
+            $values['name'] ?? '',
+            $values['bio'] ?? '',
+            $values['username'] ?? '',
+            $values['email'] ?? '',
+            $values['website'] ?? ''
+        );
 
-        return DB::update('users', $values, ['id' => (int) $id]);
+        return DB::update('users', $values, [
+            'id' => (int) $id,
+        ]);
     }
 
     public static function uploadPicture(int|array $user, string $type, array|string $source): ?array
     {
         $type = strtolower($type);
-        if (!in_array($type, ['background', 'avatar'])) {
+        if (! in_array($type, ['background', 'avatar'], true)) {
             throw new Exception('Invalid upload type', 600);
         }
-        if (!is_array($user)) {
+        if (! is_array($user)) {
             $user = self::getSingle($user, 'id');
         }
         if ($user === []) {
             throw new Exception("target user doesn't exists", 601);
         }
-        $localPath = PATH_PUBLIC_CONTENT_IMAGES_USERS . $user['id_encoded'] . '/';
-        $storagePath = ltrim(absolute_to_relative($localPath), '/');
-        $image_upload = Image::upload(
-            $source,
-            $localPath,
-            ($type == 'avatar' ? 'av' : 'bkg') . '_' . strtotime(datetimegmt()),
-            ['max_size' => get_bytes(Settings::get('user_image_' . $type . '_max_filesize_mb') . ' MB')]
-        );
+        $localPath = dirname(Upload::getTempNam());
+        $storagePath = 'content/images/users/' . $user['id_encoded'] . '/';
+        $filename = ($type === 'avatar' ? 'av' : 'bkg') . '_' . strtotime(datetimegmt());
+        $uploadOptions = [
+            'max_size' => get_bytes(Settings::get('user_image_' . $type . '_max_filesize_mb') . ' MB'),
+        ];
+        $storage_id = 0;
+        $image_upload = Image::upload($source, $localPath, $filename, $uploadOptions, $storage_id);
         /** @var array $uploaded */
         $uploaded = $image_upload['uploaded'];
         $extension = $uploaded['extension'];
-        if ($type == 'avatar') {
-            $options = ['width' => 500, 'height' => 500, 'fitted' => true];
+        if ($type === 'avatar') {
+            $options = [
+                'width' => 500,
+                'height' => 500,
+                'over_resize' => true,
+                'fitted' => true,
+            ];
             $must_resize = $uploaded['fileinfo']['width'] > $options['width']
                 || $uploaded['fileinfo']['height'] > $options['height'];
         } else {
-            $options = ['width' => 1920];
+            $options = [
+                'width' => 1920,
+            ];
             $must_resize = $uploaded['fileinfo']['width'] > $options['width'];
             $medium = Image::resize(
                 source: $uploaded['file'],
@@ -334,7 +389,7 @@ class User
                     'width' => 500,
                     'over_resize' => true,
                     'extension' => $extension,
-                    'chmod' => 0644
+                    'chmod' => 0644,
                 ]
             );
             $toStorage[] = [
@@ -361,26 +416,34 @@ class User
         $toDelete = [];
         $convert = new ImageConvert($uploaded['file'], 'jpg', $uploaded['file'], 90);
         $uploaded['file'] = $convert->out();
-        $user_edit = self::update($user['id'], [$type . '_filename' => $uploaded['filename']]);
+        $user_edit = self::update($user['id'], [
+            $type . '_filename' => $uploaded['filename'],
+        ]);
         $assetStorage = AssetStorage::getStorage();
         if ($user_edit !== 0) {
-            AssetStorage::uploadFiles($toStorage, ['keyprefix' => $storagePath]);
+            AssetStorage::uploadFiles($toStorage, [
+                'keyprefix' => $storagePath,
+            ]);
             if (isset($user[$type])) {
                 $image_path = $storagePath . $user[$type]['filename'];
-                if ($type == 'background') {
+                if ($type === 'background') {
                     $pathinfo = pathinfo($image_path);
                     $image_md_path = str_replace($pathinfo['basename'], $pathinfo['filename'] . '.md.' . $pathinfo['extension'], $image_path);
-                    $toDelete[] = ['key' => $image_md_path];
+                    $toDelete[] = [
+                        'key' => $image_md_path,
+                    ];
                 }
-                $toDelete[] = ['key' => $image_path];
+                $toDelete[] = [
+                    'key' => $image_path,
+                ];
             }
             if ($toDelete !== []) {
                 AssetStorage::deleteFiles($toDelete);
             }
         }
-        if (!AssetStorage::isLocalLegacy()) {
+        if (! AssetStorage::isLocalLegacy()) {
             $toUnlink = [$uploaded['file']];
-            if ($type == 'background') {
+            if ($type === 'background') {
                 $pathinfo = pathinfo($uploaded['file']);
                 $image_md_path = str_replace($pathinfo['basename'], $pathinfo['filename'] . '.md.' . $pathinfo['extension'], $uploaded['file']);
                 $toUnlink[] = $image_md_path;
@@ -392,11 +455,10 @@ class User
                 unlinkIfExists($remove);
             }
         }
-        $uploaded['fileinfo']['url'] = str_replace_first(
-            URL_APP_PUBLIC,
-            $assetStorage['url'],
-            $uploaded['fileinfo']['url']
-        );
+        $url = $assetStorage['url']
+            . $storagePath
+            . $uploaded['filename'];
+        $uploaded['fileinfo']['url'] = $url;
 
         return $uploaded['fileinfo'];
     }
@@ -404,37 +466,43 @@ class User
     public static function deletePicture(int|array $user, string $deleting): bool
     {
         $deleting = strtolower($deleting);
-        if (!in_array($deleting, ['background', 'avatar'])) {
+        if (! in_array($deleting, ['background', 'avatar'], true)) {
             throw new Exception('Invalid delete type', 600);
         }
-        if (!is_array($user)) {
+        if (! is_array($user)) {
             $user = self::getSingle($user, 'id', true);
         }
         if ($user === []) {
             throw new Exception("Target user doesn't exists", 601);
         }
-        if (!$user[$deleting]) {
+        if (! $user[$deleting]) {
             throw new Exception('user ' . $deleting . " doesn't exists", 602);
         }
         $localPath = PATH_PUBLIC_CONTENT_IMAGES_USERS . $user['id_encoded'] . '/';
         $storagePath = ltrim(absolute_to_relative($localPath), '/');
         $toDelete = [];
         $image_path = $storagePath . $user[$deleting]['filename'];
-        if ($deleting == 'background') {
+        if ($deleting === 'background') {
             $pathinfo = pathinfo($image_path);
             $image_md_path = str_replace($pathinfo['basename'], $pathinfo['filename'] . '.md.' . $pathinfo['extension'], $image_path);
-            $toDelete[] = ['key' => $image_md_path];
+            $toDelete[] = [
+                'key' => $image_md_path,
+            ];
         }
-        $toDelete[] = ['key' => $image_path];
+        $toDelete[] = [
+            'key' => $image_path,
+        ];
         AssetStorage::deleteFiles($toDelete);
-        self::update($user['id'], [$deleting . '_filename' => null]);
+        self::update($user['id'], [
+            $deleting . '_filename' => null,
+        ]);
 
         return true;
     }
 
     public static function delete(int|array $user): void
     {
-        if (!is_array($user)) {
+        if (! is_array($user)) {
             $user = self::getSingle($user, 'id', true);
         }
         if ($user === []) {
@@ -458,7 +526,7 @@ class User
             'table' => 'users',
             'value' => '-1',
             'user_id' => $user['id'],
-            'date_gmt' => $user['date_gmt']
+            'date_gmt' => $user['date_gmt'],
         ]);
         $sql = strtr('UPDATE `%table_users` SET user_likes = user_likes - COALESCE((SELECT COUNT(*) FROM `%table_likes` WHERE like_user_id = %user_id AND user_id = like_content_user_id AND like_user_id <> like_content_user_id GROUP BY like_content_user_id),"0");', [
             '%table_users' => DB::getTable('users'),
@@ -478,57 +546,96 @@ class User
             '%user_id' => $user['id'],
         ]);
         DB::queryExecute($sql);
-        DB::delete('albums', ['user_id' => $user['id']]);
-        DB::delete('images', ['user_id' => $user['id']]);
-        DB::delete('login_connections', ['user_id' => $user['id']]);
-        DB::delete('login_cookies', ['user_id' => $user['id']]);
-        DB::delete('login_passwords', ['user_id' => $user['id']]);
-        DB::delete('likes', ['user_id' => $user['id']]);
-        DB::delete('follows', ['user_id' => $user['id'], 'followed_user_id' => $user['id']], 'OR');
-        DB::delete('users', ['id' => $user['id']]);
+        DB::delete('albums', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('images', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('login_connections', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('login_cookies', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('login_passwords', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('likes', [
+            'user_id' => $user['id'],
+        ]);
+        DB::delete('follows', [
+            'user_id' => $user['id'],
+            'followed_user_id' => $user['id'],
+        ], 'OR');
+        DB::delete('users', [
+            'id' => $user['id'],
+        ]);
     }
 
     public static function statusRedirect(?string $status): void
     {
-        if ($status === null) {
+        if ($status === null || $status === 'valid') {
             return;
         }
-        if ($status !== 'valid') {
-            if ($status == 'awaiting-email') {
-                $status = 'email-needed';
-            }
-            redirect('account/' . $status);
+        if ($status === 'awaiting-email') {
+            $status = 'email-needed';
         }
+        headersNoCache();
+        redirect('account/' . $status, 302);
     }
 
     public static function isValidUsername(string $string): bool
     {
         $restricted = [
-            'tag', 'tags',
+            'account',
+            'activity',
+            'affiliates',
+            'api',
+            'billing',
             'categories',
-            'profile',
-            'messages',
-            'map',
-            'feed',
-            'events',
-            'notifications',
             'discover',
-            'upload',
-            'following', 'followers',
-            'flow', 'trending', 'popular', 'fresh', 'upcoming', 'editors', 'profiles',
-            'activity', 'upgrade', 'account',
-            'affiliates', 'billing',
-            'do', 'go', 'redirect',
-            'api', 'sdk', 'plugin', 'plugins', 'tools',
+            'do',
+            'editors',
+            'events',
+            'export',
+            'exporter',
             'external',
-            'importer', 'import', 'exporter', 'export',
+            'feed',
+            'file',
+            'files',
+            'flow',
+            'followers',
+            'following',
+            'fresh',
+            'go',
+            'import',
+            'importer',
+            'map',
+            'messages',
+            'notifications',
+            'plugin', 'plugins', 'tools',
+            'popular',
+            'profile',
+            'profiles',
+            'redirect',
+            'sdk',
+            'tag',
+            'tags',
+            'trending',
+            'upcoming',
+            'upgrade',
+            'upload',
         ];
-        $virtual_routes = ['image', 'album'];
+        $virtual_routes = ['image', 'album', 'video', 'audio']; // don't add 'file' here
         foreach ($virtual_routes as $k) {
             $restricted[] = getSetting('route_' . $k);
         }
 
-        return preg_match('/' . getSetting('username_pattern') . '/', $string) === 1 && !in_array($string, $restricted) && !is_route_available($string) && !file_exists(PATH_PUBLIC . $string);
+        return preg_match('/' . Settings::USERNAME_PATTERN . '/', $string) === 1
+            && ! in_array($string, $restricted, true)
+            && ! is_route_available($string)
+            && ! file_exists(PATH_PUBLIC . $string);
     }
 
     public static function formatArray(array $object): array
@@ -561,7 +668,7 @@ class User
         $user['url_liked'] = get_base_url($user['url'] . '/liked');
         $user['url_following'] = get_base_url($user['url'] . '/following');
         $user['url_followers'] = get_base_url($user['url'] . '/followers');
-        if (isset($user['website']) && !is_url_web($user['website'])) {
+        if (isset($user['website']) && ! is_url_web($user['website'])) {
             unset($user['website']);
         }
         if (isset($user['website'])) {
@@ -571,16 +678,20 @@ class User
         if (isset($user['bio'])) {
             $user['bio_safe_html'] = safe_html($user['bio']);
             $user['bio_linkify'] = $user['is_admin']
-                ? linkify($user['bio_safe_html'], ['attr' => ['target' => '_blank']])
+                ? linkify($user['bio_safe_html'], [
+                    'attr' => [
+                        'target' => '_blank',
+                    ],
+                ])
                 : linkify_redirector($user['bio_safe_html']);
         }
         $user['name'] ??= ucfirst($user['username'] ?? '');
         foreach (['image_count', 'album_count'] as $v) {
-            $single = $v == 'image_count' ? 'image' : 'album';
-            $plural = $v == 'image_count' ? 'images' : 'albums';
+            $single = $v === 'image_count' ? 'image' : 'album';
+            $plural = $v === 'image_count' ? 'images' : 'albums';
             $user[$v . '_label'] = _n($single, $plural, $user[$v] ?? 0);
         }
-        $name_array = explode(' ', $user['name'] ?? '');
+        $name_array = explode(' ', $user['name']);
         $user['firstname'] = mb_strlen($name_array[0]) > 20 ? trim(mb_substr($name_array[0], 0, 20, 'UTF-8')) : $name_array[0];
         $user['firstname_html'] = safe_html(strip_tags($user['firstname']));
         $user['name_short'] = mb_strlen($user['name']) > 20 ? $user['firstname'] : $user['name'];
@@ -590,7 +701,7 @@ class User
             $avatar_file = $user['id_encoded'] . '/' . $user['avatar_filename'];
             $user['avatar'] = [
                 'filename' => $user['avatar_filename'],
-                'url' => get_users_image_url($avatar_file)
+                'url' => get_users_image_url($avatar_file),
             ];
         }
         unset($user['avatar_filename']);
@@ -604,19 +715,19 @@ class User
                 'url' => get_users_image_url($user['id_encoded'] . '/' . $user['background_filename']),
                 'medium' => [
                     'filename' => $pathinfo['basename'],
-                    'url' => get_users_image_url($background_md_file)
-                ]
+                    'url' => get_users_image_url($background_md_file),
+                ],
             ];
         }
         unset($user['background_filename'], $user['facebook_username']);
         if (isset($user['twitter_username'])) {
             $user['twitter'] = [
                 'username' => $user['twitter_username'],
-                'url' => 'http://twitter.com/' . $user['twitter_username']
+                'url' => 'http://twitter.com/' . $user['twitter_username'],
             ];
         }
         unset($user['twitter_username']);
-        if (!isset($user['notifications_unread'])) {
+        if (! isset($user['notifications_unread'])) {
             $user['notifications_unread'] = 0;
         }
         $user['notifications_unread_display'] = $user['notifications_unread'] > 10 ? '+10' : $user['notifications_unread'];
@@ -639,6 +750,36 @@ class User
         foreach ($users as $user) {
             $user = self::formatArray($user);
             self::delete($user);
+        }
+    }
+
+    private static function iterate(
+        string $key,
+        array $array,
+        array &$list,
+        array $albums,
+        array $map,
+        int $level
+    ): void {
+        $album = $albums[$map[$key]];
+        $album['album_indent'] = $level;
+        $album['album_indent_string'] = '';
+        if ($level > 0) {
+            $album['album_indent_string'] = str_repeat('─', $level) . ' ';
+        }
+        $album = DB::formatRow($album, 'album');
+        Album::fillEssential($album);
+        if ($key === 'stream') {
+            $list[$key] = $album;
+        } else {
+            $list[] = $album;
+        }
+        if (! isset($array[$key])) {
+            return;
+        }
+        $level++;
+        foreach (array_keys($array[$key]) as $k) {
+            self::iterate((string) $k, $array, $list, $albums, $map, $level);
         }
     }
 }

@@ -14,29 +14,30 @@ use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\flatten_array;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_global;
-use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\is_animated_image;
 use function Chevereto\Legacy\G\redirect;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Legacy\getComments;
+use function Chevereto\Legacy\getFriendlyExif;
 use function Chevereto\Legacy\getIdFromURLComponent;
 use function Chevereto\Legacy\getIpButtonsArray;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Legacy\isShowEmbedContent;
-use function Chevereto\Legacy\redirectIfRouting;
+use function Chevereto\Legacy\virtualRouteHandleRedirect;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 
 return function (Handler $handler) {
-    redirectIfRouting('image', $handler->requestArray()[0]);
+    virtualRouteHandleRedirect('image', $handler->requestArray()[0]);
     $imageIndex = getSetting('root_route') === 'image'
         ? 0
         : 1;
@@ -54,18 +55,23 @@ return function (Handler $handler) {
 
         return;
     }
-    if (!isset(session()['image_view_stock'])) {
+    if (! isset(session()['image_view_stock'])) {
         sessionVar()->put('image_view_stock', []);
     }
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
-    $image = Image::getSingle($id, !in_array($id, session()['image_view_stock']), true, $logged_user);
-    if ($image === [] || !isset($image['url'])) {
+    $image = Image::getSingle(
+        $id,
+        ! in_array($id, session()['image_view_stock']),
+        true,
+        $logged_user
+    );
+    if ($image === [] || ! isset($image['url'])) {
         $handler->issueError(404);
 
         return;
     }
-    if (!(bool) env()['CHEVERETO_ENABLE_USERS']
+    if (! (bool) env()['CHEVERETO_ENABLE_USERS']
         && ($image['user']['id'] ?? 'not-found') != getSetting('website_mode_personal_uid')) {
         $handler->issueError(404);
 
@@ -76,7 +82,7 @@ return function (Handler $handler) {
             $password = $request_handle[2] ?? '';
             if (Image::verifyPassword($id, $password)) {
                 Image::delete($id);
-                redirect($image['path_viewer'] . '?deleted');
+                redirect($image['path_viewer'] . '?deleted', 301);
             }
         }
 
@@ -84,56 +90,65 @@ return function (Handler $handler) {
 
         return;
     }
-    if (!$image['is_approved'] && (!($logged_user['is_manager'] ?? false) && !($logged_user['is_admin'] ?? false))) {
+    if (! $image['is_approved']
+        && (! ($logged_user['is_manager'] ?? false) && ! ($logged_user['is_admin'] ?? false))
+    ) {
         $handler->issueError(403);
 
         return;
     }
     if ($image['path_viewer'] != get_current_url(true, ['lang'])) {
-        redirect($image['path_viewer']);
+        redirect($image['path_viewer'], 302);
     }
     $handler::setVar('canonical', $image['url_viewer']);
-    if ((!$handler::cond('content_manager')
+    if ((! $handler::cond('content_manager')
             && ($image['user']['status'] ?? null) == 'banned')
-        ) {
+    ) {
         $handler->issueError(404);
 
         return;
     }
     sessionVar()->put('last_viewed_image', encodeID((int) $id));
-    if ($image['file_resource']['type'] == 'path' && (!$image['is_animated'] && isset($image['file_resource']['chain']['image']) && is_animated_image($image['file_resource']['chain']['image']))) {
-        Image::update($id, ['is_animated' => 1]);
-        $image['is_animated'] = 1;
-    }
-
     $is_owner = isset($image['user']['id']) ? ($image['user']['id'] == ($logged_user['id'] ?? null)) : false;
     if (getSetting('website_privacy_mode') == 'private') {
         if ($handler::cond('forced_private_mode')) {
             $image['album']['privacy'] = getSetting('website_content_privacy_mode');
         }
-        if (!Login::getUser() && ($image['album']['privacy'] ?? null) != 'private_but_link') {
-            redirect('login');
+        if (! Login::getUser()
+            && ($image['album']['privacy'] ?? null) != 'private_but_link'
+        ) {
+            headersNoCache();
+            redirect('login', 302);
         }
     }
-    if (!$handler::cond('content_manager') && !$is_owner && ($image['album']['privacy'] ?? null) == 'password' && !Album::checkSessionPassword($image['album'])) {
+    if (! $handler::cond('content_manager')
+        && ! $is_owner
+        && ($image['album']['privacy'] ?? null) == 'password'
+        && ! Album::checkSessionPassword($image['album'])
+    ) {
         sessionVar()->put('redirect_password_to', $image['path_viewer']);
-        redirect($image['album']['url']);
+        headersNoCache();
+        redirect($image['album']['url'], 302);
     }
     if (isset($image['user']['is_private'])
         && $image['user']['is_private'] == 1
-        && !$handler::cond('content_manager')
+        && ! $handler::cond('content_manager')
         && $image['user']['id'] != ($logged_user['id'] ?? null)
     ) {
         unset($image['user']);
         $image['user'] = User::getPrivate();
     }
-    if (!$handler::cond('content_manager') && in_array($image['album']['privacy'] ?? null, ['private', 'custom']) && !$is_owner) {
+    if (! $handler::cond('content_manager')
+        && in_array($image['album']['privacy'] ?? null, ['private', 'custom'])
+        && ! $is_owner
+    ) {
         $handler->issueError(404);
 
         return;
     }
-    if (isset($image['user']['id'])) {
-        $image['user']['albums'] = User::getAlbums((int) $image["user"]["id"]);
+    if (isset($image['user']['id'])
+        && ($handler::cond('content_manager') || $is_owner)) {
+        $image['user']['albums'] = User::getAlbums((int) $image['user']['id']);
     }
     $is_album_cover = false;
     if (isset($image['album']['id'])) {
@@ -154,6 +169,7 @@ return function (Handler $handler) {
         'label' => _s('About'),
         'id' => 'tab-about',
         'current' => true,
+        'url' => '#about',
     ];
     $comments = getComments();
     if ($comments !== '') {
@@ -161,6 +177,7 @@ return function (Handler $handler) {
             'icon' => 'fas fa-comments',
             'label' => _s('Comments'),
             'id' => 'tab-comments',
+            'url' => '#comments',
         ];
     }
     $handler::setVar('comments', $comments);
@@ -169,17 +186,34 @@ return function (Handler $handler) {
             'icon' => 'fas fa-code',
             'label' => _s('Embed codes'),
             'id' => 'tab-embeds',
+            'url' => '#embeds',
         ];
     }
+    $image_exif = [];
+    if (getSetting('theme_show_exif_data')) {
+        $image_exif = getFriendlyExif($image['original_exifdata']) ?? [];
+        if ($image_exif !== []) {
+            $tabs[] = [
+                'icon' => 'fas fa-camera',
+                'label' => _s('EXIF data'),
+                'id' => 'tab-exif',
+                'url' => '#exif',
+            ];
+        }
+    }
+    $handler::setVar('image_exif', $image_exif);
     if ($handler::cond('content_manager')) {
         if ($handler::cond('admin')) {
             $tabs[] = [
                 'icon' => 'fas fa-info-circle',
                 'label' => _s('Info'),
                 'id' => 'tab-info',
+                'url' => '#info',
             ];
         }
-        $bannedIp = IpBan::getSingle(['ip' => $image['uploader_ip']]);
+        $bannedIp = IpBan::getSingle([
+            'ip' => $image['uploader_ip'],
+        ]);
         $image_admin_list_values = [
             [
                 'label' => _s('Image ID'),
@@ -199,12 +233,11 @@ return function (Handler $handler) {
         $handler::setVar('image_admin_list_values', $image_admin_list_values);
         $handler::setCond('banned_ip', $bannedIp !== []);
     }
-    // tab-embeds, tab-about, tab-info
     $firstTabSetting = getSetting('image_first_tab');
-    if (!$handler::cond('admin') && $firstTabSetting == 'info') {
+    if (! $handler::cond('admin') && $firstTabSetting == 'info') {
         $firstTabSetting = 'embeds';
     }
-    if (!isShowEmbedContent() && $firstTabSetting == 'embeds') {
+    if (! isShowEmbedContent() && $firstTabSetting == 'embeds') {
         $firstTabSetting = 'about';
     }
     if ($comments === '' && $firstTabSetting == 'comments') {
@@ -247,14 +280,14 @@ return function (Handler $handler) {
         $meta_description = $image['description'];
     } else {
         $image_tr = [
-            '%i' => $image[is_null($image['title']) ? 'filename' : 'title'],
+            '%i' => $image[$image['title'] === null ? 'filename' : 'title'],
             '%a' => $image['album']['name'] ?? '',
             '%w' => getSetting('website_name'),
             '%c' => $image['category']['name'] ?? '',
         ];
         if (isset($image['album']['id'])
             || (
-                !((bool) ($image['user']['is_private'] ?? false)) && isset($image['album']['name'])
+                ! ((bool) ($image['user']['is_private'] ?? false)) && isset($image['album']['name'])
             )) {
             $meta_description = _s('Image %i in %a album', $image_tr);
         } elseif (isset($image['category']['id'])) {
@@ -263,7 +296,7 @@ return function (Handler $handler) {
             $meta_description = _s('Image %i hosted in %w', $image_tr);
         }
     }
-    $handler::setVar('meta_description', htmlspecialchars($meta_description ?? ''));
+    $handler::setVar('meta_description', $meta_description ?? '');
     if ($handler::cond('content_manager') || $is_owner) {
         $handler::setVar('user_items_editor', [
             'user_albums' => $image['user']['albums'] ?? null,
@@ -274,7 +307,7 @@ return function (Handler $handler) {
     }
     $handler::setVar('share_links_array', get_share_links());
     $handler::setVar('privacy', $image['album']['privacy'] ?? '');
-    include_theme_file('snippets/embed');
+    require_theme_file('snippets/embed');
     $embed_share_tpl = get_global('embed_share_tpl');
     $sharing = [];
     foreach (flatten_array($image) as $imageKey => $imageValue) {
@@ -291,7 +324,7 @@ return function (Handler $handler) {
         $groupLabel = $group['label'];
         foreach ($group['options'] as $option => $optionValue) {
             foreach ($hasSizes as $sizeKey => $sizeValue) {
-                if (!$sizeValue && str_starts_with($option, $sizeKey . '-')) {
+                if (! $sizeValue && str_starts_with($option, $sizeKey . '-')) {
                     continue 2;
                 }
             }
@@ -309,19 +342,32 @@ return function (Handler $handler) {
             $label = $optionValue['label'];
             $label = str_ireplace($groupLabel, '', $label);
             $label = ucfirst(trim($label));
-            $entries[] = [
+            $entry = [
                 'label' => $label,
                 'value' => $value,
-                'id' => $option
+                'id' => $option,
             ];
+            if ($code === 'links'
+                && ! in_array($option, ['viewer-links', 'delete-links'])
+            ) {
+                $entry['url_download'] = $value;
+            }
+            $entries[] = $entry;
         }
         $embed[$code] = [
             'label' => $group['label'],
-            'entries' => $entries
+            'entries' => $entries,
         ];
     }
+    $handler::setVar('oembed', [
+        'title' => $handler::var('pre_doctitle'),
+        'url' => $image['url_viewer'],
+    ]);
     $handler::setVar('embed', $embed);
     $addValue = session()['image_view_stock'] ?? [];
     $addValue[] = $id;
     sessionVar()->put('image_view_stock', $addValue);
+    if ($image['tags_string'] !== '') {
+        $handler::setVar('meta_keywords', $image['tags_string']);
+    }
 };

@@ -1,17 +1,17 @@
 <?php
 
 use Chevereto\Legacy\Classes\Settings;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\get_base_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_static_url;
 use function Chevereto\Legacy\get_system_image_url;
 use function Chevereto\Legacy\get_translation_table;
 use function Chevereto\Legacy\versionize_src;
 
 // @phpstan-ignore-next-line
-if (!defined('ACCESS') || !ACCESS) {
-    die('This file cannot be directly accessed.');
+if (! defined('ACCESS') || ! ACCESS) {
+    exit('This file cannot be directly accessed.');
 } ?>
 <!DOCTYPE HTML>
 <html>
@@ -72,13 +72,12 @@ if (method_exists(Settings::class, 'getChevereto')) {
 ?>
 <script defer data-cfasync="false" src="<?php echo versionize_src(get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto.min.js')); ?>" id="chevereto-js"></script>
 <script data-cfasync="false">
-  document.getElementById("chevereto-js").addEventListener("load", function() {
-    PF.obj.devices = window.devices;
-    PF.obj.config.base_url = "<?php echo get_base_url(); ?>";
-    PF.obj.config.json_api = "<?php echo get_base_url('update'); ?>/";
-    PF.obj.l10n = <?php echo json_encode(get_translation_table()); ?>;
-    PF.obj.config.auth_token = "<?php echo Handler::getAuthToken(); ?>";
-  });
+document.getElementById("chevereto-js").addEventListener("load", function() {
+  PF.obj.devices = window.devices;
+  PF.obj.config.base_url = "<?php echo get_base_url(); ?>";
+  PF.obj.config.json_api = "<?php echo get_base_url('update'); ?>/";
+  PF.obj.l10n = <?php echo json_encode(get_translation_table()); ?>;
+  PF.obj.config.auth_token = "<?php echo Handler::getAuthToken(); ?>";
+});
 </script>
-
 </html>

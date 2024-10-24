@@ -12,6 +12,8 @@
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
 
+use function Chevereto\Legacy\G\safe_html;
+
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
@@ -21,8 +23,9 @@ echo read_the_docs_settings('semantics', _s('Semantics')); ?>
 <?php foreach (Settings::SEMANTICS as $messages) {
     foreach ($messages as $key => $message) {
         $value = Settings::get($key);
+        $value = safe_html($value);
         $errors = Handler::var('input_errors')[$key] ?? '';
-        $pattern = '^[a-Z0-9]+(?:-[a-Z0-9]+)*$';
+        $pattern = Settings::SEMANTICS_REGEX;
         echo <<<STRING
         <div class="input-label">
             <label for="{$key}">{$message}</label>

@@ -14,7 +14,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        php: ["8.2"]
+        php: ["8.1"]
+    env:
+      tools: composer
+      ini-values: default_charset='UTF-8'
     name: Build on PHP ${{ matrix.php }} ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -27,6 +30,14 @@ jobs:
           raw=$(git branch -r --contains ${{ github.ref }})
           echo "branch=${raw##*/}" >> $GITHUB_OUTPUT
       - run: echo ${{ steps.get-branch.outputs.branch }}
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          ini-values: ${{ env.ini-values }}
+          tools: ${{ env.tools }}
+        env:
+          fail-fast: true
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
@@ -42,7 +53,7 @@ jobs:
             type=semver,pattern={{major}}
           labels: |
             org.opencontainers.image.title=Chevereto V4
-            org.opencontainers.image.description=Ultimate image sharing software
+            org.opencontainers.image.description=Ultimate image and video sharing software
             org.opencontainers.image.vendor=Chevereto
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

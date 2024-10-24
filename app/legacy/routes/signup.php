@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-use function Chevereto\Legacy\captcha_check;
 use Chevereto\Legacy\Classes\Confirmation;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\RequestLog;
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\StopForumSpam;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\captcha_check;
 use function Chevereto\Legacy\G\datetime_diff;
 use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_public_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_email_body_str;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\must_use_captcha;
 use function Chevereto\Legacy\send_mail;
 use function Chevereto\Vars\post;
@@ -35,12 +35,12 @@ use function Chevereto\Vars\request;
 return function (Handler $handler) {
     $POST = post();
     $SAFE_POST = $handler::var('safe_post');
-    if (!getSetting('enable_signups')) {
+    if (! getSetting('enable_signups')) {
         $handler->issueError(404);
 
         return;
     }
-    if ($POST !== [] && !$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+    if ($POST !== [] && ! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
         $handler->issueError(403);
 
         return;
@@ -52,12 +52,12 @@ return function (Handler $handler) {
     } // Allow only 1 level
     if (Login::hasSignup()) {
         $SAFE_POST['email'] = Login::getSignup()['email'];
-        redirect('account/awaiting-confirmation');
+        redirect('account/awaiting-confirmation', 302);
     }
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
     if ($logged_user) {
-        redirect(User::getUrl($logged_user));
+        redirect(User::getUrl($logged_user), 302);
     }
     $failed_access_requests = $handler::var('failed_access_requests');
     $is_error = false;
@@ -66,13 +66,13 @@ return function (Handler $handler) {
     $captcha_needed = $handler::cond('captcha_needed');
     if ($captcha_needed && $POST !== []) {
         $captcha = captcha_check();
-        if (!$captcha->is_valid) {
+        if (! $captcha->is_valid) {
             $is_error = true;
             $error_message = _s('%s says you are a robot', 'CAPTCHA');
         }
     }
     $handler::setCond('show_resend_activation', false);
-    if ($POST !== [] && !$is_error && !Login::hasSignup()) {
+    if ($POST !== [] && ! $is_error && ! Login::hasSignup()) {
         $__post = [];
         $__safe_post = [];
         foreach (['username', 'email'] as $v) {
@@ -84,22 +84,22 @@ return function (Handler $handler) {
         }
         $handler::updateVar('post', $__post);
         $handler::updateVar('safe_post', $__safe_post);
-        if (!filter_var($POST['email'], FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($POST['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
             $input_errors['email'] = _s('Invalid email');
         }
-        if (!User::isValidUsername($POST['username'])) {
+        if (! User::isValidUsername($POST['username'] ?? '')) {
             $input_errors['username'] = _s('Invalid username');
         }
-        if (!preg_match('/' . getSetting('user_password_pattern') . '/', $POST['password'] ?? '')) {
+        if (! preg_match('/' . Settings::USER_PASSWORD_PATTERN . '/', $POST['password'] ?? '')) {
             $input_errors['password'] = _s('Invalid password');
         }
-        if (!filter_var($POST['email'], FILTER_VALIDATE_EMAIL)) {
+        if (! filter_var($POST['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
             $input_errors['email'] = _s('Invalid email');
         }
-        if ($POST['signup-accept-terms-policies'] != 1) {
+        if (($POST['signup-accept-terms-policies'] ?? 0) != 1) {
             $input_errors['signup-accept-terms-policies'] = _s('You must agree to the terms and privacy policy');
         }
-        if (getSetting('user_minimum_age') > 0 && !isset($POST['minimum-age-signup'])) {
+        if (getSetting('user_minimum_age') > 0 && ! isset($POST['minimum-age-signup'])) {
             $input_errors['minimum-age-signup'] = _s('You must be at least %s years old to use this website.', getSetting('user_minimum_age'));
         }
         if (count($input_errors) > 0) {
@@ -111,26 +111,35 @@ return function (Handler $handler) {
                 $error_message = _s('Spam detected');
             }
         }
-        if (!$is_error) {
-            $user_db = DB::get('users', ['username' => $POST['username'], 'email' => $POST['email']], 'OR', []);
+        if (! $is_error) {
+            $user_db = DB::get('users', [
+                'username' => $POST['username'],
+                'email' => $POST['email'],
+            ], 'OR', []);
             if ($user_db !== []) {
                 $is_error = true;
                 $show_resend_activation = false;
                 foreach ($user_db as $row) {
-                    if (!in_array($row['user_status'], ['valid', 'banned'])) { // Don't touch the valid and banned users
+                    if (! in_array($row['user_status'], ['valid', 'banned'])) { // Don't touch the valid and banned users
                         $must_delete_old_user = false;
-                        $confirmation_db = Confirmation::get(['user_id' => $row['user_id']]);
+                        $confirmation_db = Confirmation::get([
+                            'user_id' => $row['user_id'],
+                        ]);
                         if ($confirmation_db !== false) {
                             // 24x2 = 48 tic tac tic tac
                             if (datetime_diff($confirmation_db['confirmation_date_gmt'], null, 'h') > 48) {
-                                Confirmation::delete(['id' => $confirmation_db['confirmation_id']]);
+                                Confirmation::delete([
+                                    'id' => $confirmation_db['confirmation_id'],
+                                ]);
                                 $must_delete_old_user = true;
                             }
                         } else {
                             $must_delete_old_user = true;
                         }
                         if ($must_delete_old_user) {
-                            DB::delete('users', ['id' => $row['user_id']]);
+                            DB::delete('users', [
+                                'id' => $row['user_id'],
+                            ]);
 
                             continue;
                         }
@@ -141,7 +150,7 @@ return function (Handler $handler) {
                     if (hash_equals((string) $row['user_email'], (string) $POST['email'])) {
                         $input_errors['email'] = _s('Email already being used');
                     }
-                    if (!$show_resend_activation) {
+                    if (! $show_resend_activation) {
                         $show_resend_activation = $row['user_status'] == 'awaiting-confirmation';
                     }
                 }
@@ -152,7 +161,7 @@ return function (Handler $handler) {
                     'email' => $POST['email'],
                     'timezone' => getSetting('default_timezone'),
                     'language' => L10n::getLocale(),
-                    'status' => getSetting('require_user_email_confirmation') ? 'awaiting-confirmation' : 'valid'
+                    'status' => getSetting('require_user_email_confirmation') ? 'awaiting-confirmation' : 'valid',
                 ];
 
                 try {
@@ -169,11 +178,11 @@ return function (Handler $handler) {
                         throw new Exception($e, $e->getCode(), $e);
                     }
                 }
-                if (!$is_error) {
+                if (! $is_error) {
                     if ($inserted_user !== 0) {
                         $insert_password = Login::addPassword($inserted_user, $POST['password']);
                     }
-                    if (!$inserted_user || !$insert_password) {
+                    if (! $inserted_user || ! $insert_password) {
                         throw new Exception("Can't insert user to the DB", 400);
                     } elseif (getSetting('require_user_email_confirmation')) {
                         $hashed_token = generate_hashed_token($inserted_user);
@@ -181,7 +190,7 @@ return function (Handler $handler) {
                             'user_id' => $inserted_user,
                             'type' => 'account-activate',
                             'token_hash' => $hashed_token['hash'],
-                            'status' => 'active'
+                            'status' => 'active',
                         ]);
                         $activation_link = get_public_url(
                             'account/activate/?token='
@@ -190,9 +199,12 @@ return function (Handler $handler) {
                         global $theme_mail;
                         $theme_mail = [
                             'user' => $user_array,
-                            'link' => $activation_link
+                            'link' => $activation_link,
                         ];
-                        $mail['subject'] = _s('Confirmation required at %s', getSettings()['website_name']);
+                        $mail['subject'] = _s(
+                            'Confirmation required at %s',
+                            getSetting('website_name', true)
+                        );
                         $mail['message'] = get_email_body_str('mails/account-confirm');
                         send_mail($POST['email'], $mail['subject'], $mail['message']);
                     } else {
@@ -205,25 +217,25 @@ return function (Handler $handler) {
                             $theme_mail = [
                                 'user' => $logged_user,
                             ];
-                            $mail['subject'] = _s('Welcome to %s', getSetting('website_name'));
+                            $mail['subject'] = _s('Welcome to %s', getSetting('website_name', true));
                             $mail['message'] = get_email_body_str('mails/account-welcome');
                             send_mail($logged_user['email'], $mail['subject'], $mail['message']);
                         } catch (Exception) {
                         } // Silence
-                        redirect($user['url']);
+                        redirect($user['url'], 302);
                     }
                     Login::setSignup([
                         'status' => 'awaiting-confirmation',
-                        'email' => $SAFE_POST['email']
+                        'email' => $SAFE_POST['email'],
                     ]);
-                    redirect('account/awaiting-confirmation');
+                    redirect('account/awaiting-confirmation', 302);
                 }
             }
         }
         if ($is_error) {
             RequestLog::insert([
                 'type' => 'signup',
-                'result' => 'fail'
+                'result' => 'fail',
             ]);
             $error_message ??= _s('Check the errors in the form to continue.');
             if ((getSetting('captcha') ?? false) && must_use_captcha($failed_access_requests['day'] + 1)) {

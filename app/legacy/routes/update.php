@@ -10,19 +10,19 @@
  */
 
 use Chevereto\Legacy\Classes\Login;
-use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 use function Chevereto\Vars\env;
 
 return function (Handler $handler) {
-    if (!(bool) env()['CHEVERETO_ENABLE_UPDATE_HTTP']
-        || Settings::get('chevereto_version_installed') === null
+    if (! (bool) env()['CHEVERETO_ENABLE_UPDATE_HTTP']
+        || cheveretoVersionInstalled() === ''
     ) {
         $handler->issueError(404);
 
         return;
     }
-    if (!Login::isAdmin()) {
+    if (! Login::isAdmin()) {
         $handler->issueError(403);
 
         return;

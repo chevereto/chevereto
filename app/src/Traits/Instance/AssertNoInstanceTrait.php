@@ -11,8 +11,8 @@
 
 namespace Chevereto\Traits\Instance;
 
+use LogicException;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 
 trait AssertNoInstanceTrait
 {
@@ -20,8 +20,10 @@ trait AssertNoInstanceTrait
     {
         if (get_object_vars($this) !== []) {
             throw new LogicException(
-                message('An instance of %type% has been already created.')
-                    ->withCode('%type%', static::class)
+                message(
+                    'An instance of `%type%` has been already created.',
+                    type: static::class
+                )
             );
         }
     }

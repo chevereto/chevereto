@@ -11,21 +11,23 @@
 
 namespace Chevereto\Encryption;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
 use Chevereto\Encryption\Interfaces\KeyInterface;
-use function Chevereto\Vars\env;
+use InvalidArgumentException;
+use LogicException;
 use phpseclib3\Crypt\Random;
 use Throwable;
+use function Chevere\Message\message;
+use function Chevereto\Vars\env;
 
 function assertNonce(string $nonce): void
 {
-    if (!isValidNonce($nonce)) {
+    if (! isValidNonce($nonce)) {
         throw new InvalidArgumentException(
-            message('Requires a nonce size of %s')
-                ->withTranslate('%s', strval(EncryptionInterface::NONCE_LENGTH))
+            (string) message(
+                'Requires a nonce size of %s',
+                s: strval(EncryptionInterface::NONCE_LENGTH)
+            )
         );
     }
 }
@@ -69,17 +71,19 @@ function encryption(): EncryptionInterface
 
 function assertEncryption(): void
 {
-    if (!hasEncryption()) {
+    if (! hasEncryption()) {
         throw new LogicException(
-            message('Encryption is not enabled, set the %s environment variable to use encryption.')
-                ->withStrong('%s', 'CHEVERETO_ENCRYPTION_KEY')
+            (string) message(
+                'Encryption is not enabled, set the **%s** environment variable to use encryption.',
+                s: 'CHEVERETO_ENCRYPTION_KEY'
+            )
         );
     }
 }
 
 function hasEncryption(): bool
 {
-    return !(encryption() instanceof NullEncryption);
+    return ! (encryption() instanceof NullEncryption);
 }
 
 /**

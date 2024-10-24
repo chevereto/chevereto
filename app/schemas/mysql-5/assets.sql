@@ -8,7 +8,6 @@ CREATE TABLE `%table_prefix%assets` (
   `asset_blob` blob,
   PRIMARY KEY (`asset_id`),
   UNIQUE KEY `key` (`asset_key`(191)) USING BTREE,
-  KEY `md5` (`asset_md5`),
   KEY `filename` (`asset_filename`),
   KEY `file_path` (`asset_file_path`)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;

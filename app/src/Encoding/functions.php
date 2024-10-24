@@ -11,13 +11,13 @@
 
 namespace Chevereto\Encoding;
 
-use function Chevere\Message\message;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\RuntimeException;
+use InvalidArgumentException;
+use RuntimeException;
 use Safe\Exceptions\FilesystemException;
 use Safe\Exceptions\StreamException;
+use function Chevere\Message\message;
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fwrite;
@@ -56,8 +56,7 @@ function storeDecodedBase64(string $base64, string $filepath): void
     if (fwrite($fh, $base64) === 0) {
         // @codeCoverageIgnoreStart
         throw new RuntimeException(
-            message('Unable to write %filter% provided string')
-                ->withCode('%filter%', $filter),
+            (string) message('Unable to write `%filter%` provided string', filter: $filter),
             1200
         );
         // @codeCoverageIgnoreEnd

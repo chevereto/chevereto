@@ -1,8 +1,7 @@
 <?php
 // @phpstan-ignore-next-line
-// @phpstan-ignore-next-line
-if (!defined('ACCESS') || !ACCESS) {
-    die('This file cannot be directly accessed.');
+if (! defined('ACCESS') || ! ACCESS) {
+    exit('This file cannot be directly accessed.');
 } ?>
 <h1>Update failed</h1>
 <p>The update process failed. Here is the error returned:</p>

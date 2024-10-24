@@ -21,23 +21,19 @@ if (!defined('ACCESS') || !ACCESS) {
 			</div>
 		</ul>
 		<div class="viewer-top hover-display">
-			<a href="%path_viewer%" target="_blank">
+			<a href="%path_viewer%" class="glass-button" target="_blank">
 				<i class="fa-solid fa-arrow-up-right-from-square margin-right-5"></i><span class="txt">%display_title%</span>
 			</a>
 		</div>
 		<div class="viewer-foot hover-display hover-display--flex">
 			<div class="viewer-owner viewer-owner--user">
-				<a href="%user.url%" class="user-image">
+				<a href="%user.url%" title="@%user.username%">
 					<span class="user-image default-user-image"><span class="icon fas fa-user-circle"></span></span>
 					<img class="user-image" src="%user.avatar.url%" alt="%user.username%">
 				</a>
 			</div>
-			<div class="viewer-owner header-content" data-contains="cta-album">
+			<div class="viewer-owner header-content buttons" data-contains="cta-album">
 				%album.cta_html%
-			</div>
-			<div class="viewer-owner viewer-owner--guest">
-				<div class="user-image default-user-image"><span class="icon fas fa-user-circle"></span></div>
-				<span class="user-name"><?php _se('Guest'); ?></span>
 			</div>
 		</div>
 		<div class="list-item-privacy list-item-image-tools --top --left">

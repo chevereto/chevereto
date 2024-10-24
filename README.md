@@ -16,7 +16,7 @@
 
 > 🔔 [Subscribe](https://chevereto.com/go/newsletter) to don't miss any update regarding Chevereto.
 
-Chevereto is a powerful, self-hosted media-sharing platform that emphasizes flexibility and control. It allows you to create a media-sharing website on your own server, giving you full autonomy over your hosting environment and policies. With Chevereto, you can say goodbye to platform restrictions and closures, ensuring your site operates entirely on your terms.
+Chevereto is a robust, self-hosted media-sharing platform that prioritizes flexibility and control. It enables you to build and manage a media-sharing website on your own server, granting you complete autonomy over your hosting environment and policies. With Chevereto, you eliminate the risk of platform restrictions and shutdowns, ensuring your site operates entirely on your terms.
 
 Our [commercial edition](https://chevereto.com/pricing) is designed for running very large media-sharing services, offering scalability and tools to manage multiple users, high traffic, and extensive media collections.
 
@@ -37,7 +37,9 @@ Install Chevereto following our guides for:
 * [cPanel](https://v4-docs.chevereto.com/guides/cpanel/)
 * [Plesk](https://v4-docs.chevereto.com/guides/plesk/)
 
-Chevereto is also available at [DigitalOcean Marketplace](https://chevereto.com/go/digitalocean), [Vultr Marketplace](https://chevereto.com/go/vultr), [Installatron](https://installatron.com/chevereto) and [Softaculous](https://www.softaculous.com/apps/galleries/Chevereto). Review our [Installation docs](https://v4-docs.chevereto.com/application/installing/installation.html) for all alternatives.
+Chevereto is also available at [DigitalOcean Marketplace](https://chevereto.com/go/digitalocean), [Vultr Marketplace](https://chevereto.com/go/vultr), [Installatron](https://installatron.com/chevereto), [Softaculous](https://www.softaculous.com/apps/galleries/Chevereto) and [SwiftWave](https://swiftwave.org/docs/dashboard/swiftwave_app_store/).
+
+Review our [Installation docs](https://v4-docs.chevereto.com/application/installing/installation.html) for all alternatives.
 
 ## Updating
 
@@ -74,32 +76,91 @@ Chevereto [Documentation](https://v4-docs.chevereto.com) covers the system requi
 
 ## Features
 
-This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a free demo of the pro edition at [chevereto.com](https://chevereto.com) to see all the features in action.
+This is a short, not exhaustive, list of features available on Chevereto editions. Feel free to request a demo of the pro edition at [chevereto.com](https://chevereto.com) (free of any charge, no payment required) to see all the features in action.
 
 ### Uploading features
 
-| Feature                                  | Free  | Lite  |  Pro  |
-| ---------------------------------------- | :---: | :---: | :---: |
-| Image & Video uploads                    |   ✅   |   ✅   |   ✅   |
-| JPEG PNG BMP GIF WEBP MOV MP4 WEBM       |   ✅   |   ✅   |   ✅   |
-| ShareX support                           |   ✅   |   ✅   |   ✅   |
-| 360° images                              |   ✅   |   ✅   |   ✅   |
-| Strip image EXIF data                    |   ✅   |   ✅   |   ✅   |
-| Clipboard upload                         |   ✅   |   ✅   |   ✅   |
-| Drag-and-drop upload                     |   ✅   |   ✅   |   ✅   |
-| File delete link                         |   ✅   |   ✅   |   ✅   |
-| Time-based expirable uploads             |   ✅   |   ✅   |   ✅   |
-| Thumbs & medium sized images             |   ✅   |   ✅   |   ✅   |
-| Video frame image                        |   ✅   |   ✅   |   ✅   |
-| Duplicate media detection                |   ✅   |   ✅   |   ✅   |
-| Auto file naming options                 |   ✅   |   ✅   |   ✅   |
-| Storage modes (date, direct)             |   ✅   |   ✅   |   ✅   |
-| Upload user interface (container, route) |   ✅   |   ✅   |   ✅   |
-| Upload plugin (PUP.js)                   |   –   |   ✅   |   ✅   |
-| Watermark image uploads                  |   –   |   –   |   ✅   |
-| Upload moderation                        |   –   |   –   |   ✅   |
-| External storage servers                 |   –   |   –   |   ✅   |
-| Bulk content importer                    |   –   |   –   |   ✅   |
+| Feature                                 | Free  | Lite  |         Pro          |
+| --------------------------------------- | :---: | :---: | :------------------: |
+| Image & Video uploads                   |   ✅   |   ✅   |          ✅           |
+| AVIF JPEG PNG BMP GIF WEBP MOV MP4 WEBM |   ✅   |   ✅   |          ✅           |
+| API uploading (ShareX, etc)             |   ✅   |   ✅   |          ✅           |
+| Equirectangular 360° images             |   ✅   |   ✅   |          ✅           |
+| EXIF data (read, strip)                 |   ✅   |   ✅   |          ✅           |
+| Clipboard upload                        |   ✅   |   ✅   |          ✅           |
+| Drag-and-drop upload (drop zone)        |   ✅   |   ✅   |          ✅           |
+| File delete link                        |   ✅   |   ✅   |          ✅           |
+| Time-based expirable uploads            |   ✅   |   ✅   |          ✅           |
+| Generate thumbs & medium sized images   |   ✅   |   ✅   |          ✅           |
+| Generate video frame image              |   ✅   |   ✅   |          ✅           |
+| Duplicate media detection               |   ✅   |   ✅   |          ✅           |
+| Auto file-naming options                |   ✅   |   ✅   |          ✅           |
+| Storage modes (date, direct)            |   ✅   |   ✅   |          ✅           |
+| Upload user interface (container, page) |   ✅   |   ✅   |          ✅           |
+| Upload plugin (PUP.js, postMessage)     |   ✅   |   ✅   |          ✅           |
+| Upload moderation                       |   –   |   ✅   |          ✅           |
+| Asset storage API                       | Local | Local |         Any          |
+| External storage servers API            | Local | Local | All (S3, SFTP, etc.) |
+| Watermark image uploads                 |   –   |   –   |          ✅           |
+| Bulk content importer                   |   –   |   –   |          ✅           |
+
+### External storage APIs
+
+| Storage API           | Free  | Lite  |  Pro  |
+| --------------------- | :---: | :---: | :---: |
+| Amazon S3             |   –   |   –   |   ✅   |
+| S3 compatible         |   –   |   –   |   ✅   |
+| Google Cloud Storage  |   –   |   –   |   ✅   |
+| Microsoft Azure       |   –   |   –   |   ✅   |
+| Alibaba Cloud OSS     |   –   |   –   |   ✅   |
+| SFTP                  |   –   |   –   |   ✅   |
+| FTP                   |   –   |   –   |   ✅   |
+| OpenStack Swift       |   –   |   –   |   ✅   |
+| Backblaze B2 (legacy) |   –   |   –   |   ✅   |
+
+### Content features
+
+| Feature                                                     | Free  | Lite  |  Pro  |
+| ----------------------------------------------------------- | :---: | :---: | :---: |
+| Listing viewer (light box)                                  |   ✅   |   ✅   |   ✅   |
+| Dedicated Media, Album, Tags & Users listings               |   ✅   |   ✅   |   ✅   |
+| Configure items per page                                    |   ✅   |   ✅   |   ✅   |
+| Listing type (paginated/endless)                            |   ✅   |   ✅   |   ✅   |
+| Image listing size (fixed, fluid)                           |   ✅   |   ✅   |   ✅   |
+| Configure album listing requirement                         |   ✅   |   ✅   |   ✅   |
+| Configure listing columns per device (mobile, tablet, etc.) |   ✅   |   ✅   |   ✅   |
+
+### Organization features
+
+| Feature                      | Free  | Lite  |  Pro  |
+| ---------------------------- | :---: | :---: | :---: |
+| User defined Tags            |   ✅   |   ✅   |   ✅   |
+| Albums & Sub-albums (nested) |   ✅   |   ✅   |   ✅   |
+| Categories                   |   ✅   |   ✅   |   ✅   |
+| Search                       |   ✅   |   ✅   |   ✅   |
+| Explore & Discovery          |   ✅   |   ✅   |   ✅   |
+
+### Tags features
+
+| Feature                        | Free  | Lite  |  Pro  |
+| ------------------------------ | :---: | :---: | :---: |
+| On-the-fly tag creation        |   ✅   |   ✅   |   ✅   |
+| Tag description                |   ✅   |   ✅   |   ✅   |
+| Tag listings                   |   ✅   |   ✅   |   ✅   |
+| Tag filtering (users, albums)  |   ✅   |   ✅   |   ✅   |
+| Tag autocomplete               |   ✅   |   ✅   |   ✅   |
+| Top tags                       |   ✅   |   ✅   |   ✅   |
+| Exif camera model auto-tagging |   ✅   |   ✅   |   ✅   |
+
+### Album features
+
+| Feature                     | Free  | Lite  |  Pro  |
+| --------------------------- | :---: | :---: | :---: |
+| Nested albums (breadcrumbs) |   ✅   |   ✅   |   ✅   |
+| Album cover image           |   ✅   |   ✅   |   ✅   |
+| Album privacy               |   ✅   |   ✅   |   ✅   |
+| Album password              |   ✅   |   ✅   |   ✅   |
+| Album description           |   ✅   |   ✅   |   ✅   |
 
 ### Sharing features
 
@@ -108,20 +169,21 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | Direct link sharing            |   ✅   |   ✅   |   ✅   |
 | Sharing button                 |   ✅   |   ✅   |   ✅   |
 | Media oEmbed                   |   ✅   |   ✅   |   ✅   |
-| HTML, Markdown & BBCode        |   ✅   |   ✅   |   ✅   |
+| HTML, Markdown & BBCodes       |   ✅   |   ✅   |   ✅   |
 | Embed codes on upload complete |   ✅   |   ✅   |   ✅   |
 | Embed codes on selected media  |   ✅   |   ✅   |   ✅   |
 | Embed codes media page         |   ✅   |   ✅   |   ✅   |
 
 ### User features
 
-| Feature                     | Free  | Lite  |  Pro  |
-| --------------------------- | :---: | :---: | :---: |
-| User profiles               |   ✅   |   ✅   |   ✅   |
-| Private user profiles       |   ✅   |   ✅   |   ✅   |
-| User-based API              |   ✅   |   ✅   |   ✅   |
-| Multiple users & management |   –   |   ✅   |   ✅   |
-| Guest API                   |   –   |   ✅   |   ✅   |
+| Feature               | Free  | Lite  |  Pro  |
+| --------------------- | :---: | :---: | :---: |
+| User profiles         |   ✅   |   ✅   |   ✅   |
+| Private user profiles |   ✅   |   ✅   |   ✅   |
+| User-based API        |   ✅   |   ✅   |   ✅   |
+| Multiple users        |   –   |   ✅   |   ✅   |
+| User management       |   –   |   ✅   |   ✅   |
+| Guest API             |   –   |   ✅   |   ✅   |
 
 ### Social features
 
@@ -129,27 +191,10 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | ---------------------------- | :---: | :---: | :---: |
 | Call-to-action album buttons |   ✅   |   ✅   |   ✅   |
 | Random button                |   ✅   |   ✅   |   ✅   |
-| Notifications                |   –   |   ✅   |   ✅   |
-| List users                   |   –   |   ✅   |   ✅   |
+| Notifications                |   ✅   |   ✅   |   ✅   |
+| List users                   |   ✅   |   ✅   |   ✅   |
 | Followers                    |   –   |   –   |   ✅   |
 | Likes                        |   –   |   –   |   ✅   |
-
-### Organization features
-
-| Feature                           | Free  | Lite  |  Pro  |
-| --------------------------------- | :---: | :---: | :---: |
-| Albums & Sub-albums               |   ✅   |   ✅   |   ✅   |
-| Categories                        |   ✅   |   ✅   |   ✅   |
-| Search                            |   ✅   |   ✅   |   ✅   |
-| Media & Album listings            |   ✅   |   ✅   |   ✅   |
-| Configurable list items per page  |   ✅   |   ✅   |   ✅   |
-| Classic + Endless scroll listings |   ✅   |   ✅   |   ✅   |
-| Listing viewer                    |   ✅   |   ✅   |   ✅   |
-| Image listing size (fixed, fluid) |   ✅   |   ✅   |   ✅   |
-| Album listing requirement         |   ✅   |   ✅   |   ✅   |
-| Listing columns per device        |   ✅   |   ✅   |   ✅   |
-| Explore & Discovery               |   –   |   ✅   |   ✅   |
-| Advanced search                   |   –   |   ✅   |   ✅   |
 
 ### Security features
 
@@ -165,6 +210,7 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 
 | Feature                                                                                       | Free  | Lite  |  Pro  |
 | --------------------------------------------------------------------------------------------- | :---: | :---: | :---: |
+| Album creation on behalf of users                                                             |   ✅   |   ✅   |   ✅   |
 | Dashboard (admin UI)                                                                          |   ✅   |   ✅   |   ✅   |
 | System stats & usage                                                                          |   ✅   |   ✅   |   ✅   |
 | Website name                                                                                  |   ✅   |   ✅   |   ✅   |
@@ -191,6 +237,10 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | Custom JS & CSS                                                                               |   ✅   |   ✅   |   ✅   |
 | Universal CDN support                                                                         |   ✅   |   ✅   |   ✅   |
 | [Default language](https://v4-admin.chevereto.com/settings/languages.html#default-language)   |   ✅   |   ✅   |   ✅   |
+| Logo & branding                                                                               |   ✅   |   ✅   |   ✅   |
+| Logo type (vector, image, text)                                                               |   ✅   |   ✅   |   ✅   |
+| Logo height                                                                                   |   ✅   |   ✅   |   ✅   |
+| Logo favicon image                                                                            |   ✅   |   ✅   |   ✅   |
 | Homepage style                                                                                |   –   |   ✅   |   ✅   |
 | Homepage cover images                                                                         |   –   |   ✅   |   ✅   |
 | Homepage title & paragraph                                                                    |   –   |   ✅   |   ✅   |
@@ -201,12 +251,8 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | User avatar max file size                                                                     |   –   |   ✅   |   ✅   |
 | User background max file size                                                                 |   –   |   ✅   |   ✅   |
 | Guest API key                                                                                 |   –   |   ✅   |   ✅   |
+| Hide "Powered by Chevereto" footer                                                            |   –   |   –   |   ✅   |
 | [Enabled languages](https://v4-admin.chevereto.com/settings/languages.html#enabled-languages) |   –   |   –   |   ✅   |
-| Hide "Powered by Chevereto"                                                                   |   –   |   –   |   ✅   |
-| Logo & branding                                                                               |   –   |   –   |   ✅   |
-| Logo type (vector, image, text)                                                               |   –   |   –   |   ✅   |
-| Logo height                                                                                   |   –   |   –   |   ✅   |
-| Logo favicon image                                                                            |   –   |   –   |   ✅   |
 | Routing (user, image, album)                                                                  |   –   |   –   |   ✅   |
 | Routing root                                                                                  |   –   |   –   |   ✅   |
 | External services                                                                             |   –   |   –   |   ✅   |
@@ -215,8 +261,8 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | Akismet spam protection                                                                       |   –   |   –   |   ✅   |
 | StopForumSpam spam protection                                                                 |   –   |   –   |   ✅   |
 | CAPTCHA (reCAPTCHA, hCaptcha)                                                                 |   –   |   –   |   ✅   |
-| CAPTCHA threshold                                                                             |   –   |   –   |   ✅   |
-| Project Arachnid                                                                              |   –   |   –   |   ✅   |
+| Configurable CAPTCHA threshold                                                                |   –   |   –   |   ✅   |
+| Shield by Project Arachnid                                                                    |   –   |   –   |   ✅   |
 | ModerateContent (auto approve, block, flag)                                                   |   –   |   –   |   ✅   |
 | OAuth2 login providers (Amazon, Google, Discord, etc)                                         |   –   |   –   |   ✅   |
 | Banners                                                                                       |   –   |   –   |   ✅   |
@@ -279,8 +325,7 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | One-click upgrade (web & CLI)                      |   ✅   |           ✅           |           ✅           |
 | Maintenance mode                                   |   ✅   |           ✅           |           ✅           |
 | Email SMTP + phpmail()                             |   ✅   |           ✅           |           ✅           |
-| Decode ID                                          |   ✅   |           ✅           |           ✅           |
-| Encode ID                                          |   ✅   |           ✅           |           ✅           |
+| Cipher ID                                          |   ✅   |           ✅           |           ✅           |
 | Test-email                                         |   ✅   |           ✅           |           ✅           |
 | Export user                                        |   ✅   |           ✅           |           ✅           |
 | Regenerate external storage stats                  |   ✅   |           ✅           |           ✅           |
@@ -290,11 +335,14 @@ This is a short, not exhaustive, list of features available on Chevereto edition
 | Built-in debugger ([xrDebug](https://xrdebug.com)) |   ✅   |           ✅           |           ✅           |
 | Built-in REPL (PsySH)                              |   ✅   |           ✅           |           ✅           |
 | Supports Tinkerwel REPL                            |   ✅   |           ✅           |           ✅           |
-| Queue handling                                     |   –   |           –           |           ✅           |
+| Queue handling                                     |   ✅   |           ✅           |           ✅           |
+| Configurable cache TTL                             |   ✅   |           ✅           |           ✅           |
+| Hreflang                                           |   ✅   |           ✅           |           ✅           |
+| Session storage (files, redis)                     |   ✅   |           ✅           |           ✅           |
 
 ## Contributing
 
-Chevereto is an open-source project, and we welcome contributions of all kinds. Any help is appreciated! The main goal is to improve the software and make it better for everyone. Any contribution made on this repository will abide by the AGPLv3 license, which means that your contributions will be open-source and available to everyone.
+Chevereto is an open-source project, and while contributions are welcomed, they are entirely voluntary. We appreciate any assistance aimed at enhancing the software and making it better for the community. Please note that any contributions to this repository will fall under the AGPLv3 license, ensuring that your work remains open-source and accessible to all.
 
 ## License
 
@@ -310,10 +358,20 @@ You should have received a copy of the GNU Affero General Public License along w
 
 ### Commercial license
 
-The commercial license is designed to for you to use Chevereto in commercial products and applications, without the provisions of the AGPLv3. With the commercial license, your code is kept proprietary, to yourself. See the Chevereto Commercial License at [Chevereto License](https://chevereto.com/license)
+The commercial license allows you to use Chevereto in commercial products and applications without the obligations imposed by the AGPLv3. The commercial license ensures that your code remains proprietary and exclusive to you. For more details, please refer to the Chevereto Commercial License at [Chevereto License](https://chevereto.com/license).
 
 ### Compare licenses
 
-Chevereto free edition is licensed under AGPLv3, which means that you can use it for free as long as you comply with the AGPLv3 terms. If you modify the code and distribute it, you must provide the source code to the users.
+The Chevereto Free edition is licensed under AGPLv3, allowing free use as long as you comply with its terms. If you modify and distribute the software, you are required to provide the source code to your users.
 
-**Chevereto Lite** and **Chevereto Pro** editions are released under the **Chevereto License**, which is proprietary and it can be used for commercial purposes.
+Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which permits use for commercial purposes.
+
+Here’s the revised version with the additional note:
+
+---
+
+The Chevereto Free edition is licensed under AGPLv3, allowing free use as long as you comply with its terms. If you modify and distribute the software, you are required to provide the source code to your users.
+
+Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which permits use for commercial purposes.
+
+*Note: Proprietary licensing does not mean closed source; the source code is accessible, but its use is governed by the specific terms of the Chevereto License.*

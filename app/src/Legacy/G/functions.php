@@ -11,19 +11,20 @@
 
 namespace Chevereto\Legacy\G;
 
- use Chevereto\Config\Config;
-use function Chevereto\Vars\env;
-use function Chevereto\Vars\server;
+use Chevereto\Config\Config;
 use Composer\CaBundle\CaBundle;
 use CurlHandle;
 use DateInterval;
+use DateTimeImmutable;
 use ErrorException;
 use Exception;
 use FFMpeg\FFProbe;
 use GdImage;
 use LogicException;
-use function Safe\curl_exec;
 use Throwable;
+use function Chevereto\Vars\env;
+use function Chevereto\Vars\server;
+use function Safe\curl_exec;
 
 /**
  * ROUTE HELPERS
@@ -93,7 +94,7 @@ function debug(mixed $arguments)
 function check_value(mixed $anything): bool
 {
     // @phpstan-ignore-next-line
-    if ((!empty($anything) && isset($anything))
+    if ((! empty($anything) && isset($anything))
         || $anything == '0'
         || (is_countable($anything) && count($anything) > 0)) { // @phpstan-ignore-line
         return true;
@@ -115,6 +116,9 @@ function is_apache(): bool
     return preg_match('/Apache/i', server()['SERVER_SOFTWARE'] ?? '');
 }
 
+/**
+ * @return array<int>
+ */
 function random_values(int $min, int $max, int $limit): array
 {
     $min = min($min, $max);
@@ -184,7 +188,6 @@ function timing_safe_compare(?string $safe, ?string $user): bool
     return $result === 0;
 }
 
-/** @deprecated V4 */
 function str_replace_first(string $search, string $replace, string $subject): string
 {
     $pos = strpos($subject, $search);
@@ -195,7 +198,6 @@ function str_replace_first(string $search, string $replace, string $subject): st
     return $subject;
 }
 
-/** @deprecated V4 */
 function str_replace_last(string $search, string $replace, string $subject): string
 {
     $pos = strrpos($subject, $search);
@@ -215,12 +217,7 @@ function starts_with(string $needle, string $haystack): bool
 /** @deprecated V4 */
 function ends_with(string $needle, string $haystack): bool
 {
-    $length = strlen($needle);
-    if ($length == 0) {
-        return true;
-    }
-
-    return substr($haystack, -$length) === $needle;
+    return str_ends_with($haystack, $needle);
 }
 
 function array_filter_array(array $array, array $filter_keys, string $get = 'exclusion'): array
@@ -233,7 +230,7 @@ function array_filter_array(array $array, array $filter_keys, string $get = 'exc
             default:
             case $default_get:
                 $get = $default_get;
-                if (!array_key_exists($v, $array)) {
+                if (! array_key_exists($v, $array)) {
                     continue 2;
                 }
                 $return[$v] = $array[$v];
@@ -301,7 +298,7 @@ function abbreviate_number(string|int $number): string
 {
     // @phpstan-ignore-next-line
     $number = (0 + str_replace(',', '', (string) $number));
-    if (!is_numeric($number) or $number == 0) {
+    if (! is_numeric($number) or $number == 0) {
         return (string) $number;
     }
     $abbreviations = [
@@ -411,7 +408,7 @@ function html_to_bbcode(string $text): string
     $text = str_replace("\n", ' ', $text);
     $ntext = preg_replace($htmltags, $bbtags, $text);
     $ntext = preg_replace($htmltags, $bbtags, $ntext);
-    if (!$ntext) {
+    if (! $ntext) {
         $ntext = str_replace(['<br>', '<br />'], "\n", $text);
         $ntext = str_replace(['<strong>', '</strong>'], ['[b]', '[/b]'], $ntext);
         $ntext = str_replace(['<em>', '</em>'], ['[i]', '[/i]'], $ntext);
@@ -426,7 +423,7 @@ function linkify(string $text, array $options = []): string
     $attr = '';
     if (array_key_exists('attr', $options)) {
         foreach ($options['attr'] as $key => $value) {
-            if (true === is_array($value)) {
+            if (is_array($value) === true) {
                 $value = array_pop($value);
             }
             $attr .= sprintf(' %s="%s"', $key, $value);
@@ -439,13 +436,13 @@ function linkify(string $text, array $options = []): string
     for ($i = 0; $i < count($chunks); ++$i) {
         if ($i % 2 === 0) { // even numbers are text
             // Only process this chunk if there are no unclosed $ignoreTags
-            if (null === $openTag) {
+            if ($openTag === null) {
                 $chunks[$i] = linkify_urls($chunks[$i], $options);
                 $chunks[$i] = linkify_emails($chunks[$i], $options);
             }
         } else { // odd numbers are tags
             // Only process this tag if there are no unclosed $ignoreTags
-            if (null === $openTag) {
+            if ($openTag === null) {
                 // Check whether this tag is contained in $ignoreTags and is not self-closing
                 if (preg_match('`<(' . implode('|', $ignoreTags) . ').*(?<!/)>$`is', (string) $chunks[$i], $matches)) {
                     $openTag = $matches[1];
@@ -462,7 +459,9 @@ function linkify(string $text, array $options = []): string
     return implode('', $chunks);
 }
 
-function linkify_emails(string $text, array $options = ['attr' => '']): string
+function linkify_emails(string $text, array $options = [
+    'attr' => '',
+]): string
 {
     $pattern = '~(?xi)
             \b
@@ -476,7 +475,7 @@ function linkify_emails(string $text, array $options = ['attr' => '']): string
     $callback = function ($match) use ($options) {
         if (is_callable($options['callback'] ?? null)) {
             $cb = $options['callback']($match[0], $match[0], $options);
-            if (!is_null($cb)) {
+            if ($cb !== null) {
                 return $cb;
             }
         }
@@ -487,7 +486,9 @@ function linkify_emails(string $text, array $options = ['attr' => '']): string
     return preg_replace_callback($pattern, $callback, $text);
 }
 
-function linkify_urls(string $text, array $options = ['attr' => ''])
+function linkify_urls(string $text, array $options = [
+    'attr' => '',
+])
 {
     $pattern = '~(?xi)
             (?:
@@ -513,12 +514,12 @@ function linkify_urls(string $text, array $options = ['attr' => ''])
     $callback = function ($match) use ($options) {
         $caption = $match[0];
         $pattern = '~^(ht|f)tps?://~';
-        if (0 === preg_match($pattern, (string) $match[0])) {
+        if (preg_match($pattern, (string) $match[0]) === 0) {
             $match[0] = 'http://' . $match[0];
         }
         if (is_callable($options['callback'] ?? null)) {
             $cb = $options['callback']($match[0], $caption, $options);
-            if (!is_null($cb)) {
+            if ($cb !== null) {
                 return $cb;
             }
         }
@@ -534,8 +535,8 @@ function linkify_safe(string $text, array $options = [])
     $options = array_merge([
         'attr' => [
             'rel' => 'nofollow',
-            'target' => '_blank'
-        ]
+            'target' => '_blank',
+        ],
     ], $options);
 
     return linkify($text, $options);
@@ -563,16 +564,16 @@ function exception_to_error(Throwable $e, bool $print = true): string
     $isDocker = env()['CHEVERETO_SERVICING'] === 'docker';
     $device = $isDocker ? 'stderr' : 'error_log';
     $debug_level = Config::system()->debugLevel();
-    if (!in_array($debug_level, [0, 1, 2, 3])) {
+    if (! in_array($debug_level, [0, 1, 2, 3])) {
         $debug_level = 1;
     }
     $internal_code = 500;
     $internal_error = '<b>Aw, snap!</b> ' . get_set_status_header_desc($internal_code);
     $table = [
-        0 => "debug is disabled",
-        1 => "debug @ $device",
-        2 => "debug @ print",
-        3 => "debug @ print,$device",
+        0 => 'debug is disabled',
+        1 => "debug @ {$device}",
+        2 => 'debug @ print',
+        3 => "debug @ print,{$device}",
     ];
     $internal_error .= ' [' . $table[$debug_level] . '] - https://chevereto.com/go/v4debug';
     $message = [$internal_error, '', '** errorId #' . $errorId . ' **'];
@@ -582,7 +583,7 @@ function exception_to_error(Throwable $e, bool $print = true): string
     do {
         $code = $previous->getCode();
         $messageStock[$i] = [$previous->getMessage(), safe_html($previous->getMessage())];
-        $message[] = '>> ' . get_class($e) . " [$code]: <b>%message_$i%</b>";
+        $message[] = '>> ' . get_class($e) . " [{$code}]: <b>%message_{$i}%</b>";
         $message[] = 'At ' . absolute_to_relative($previous->getFile()) . ':' . $previous->getLine() . "\n";
         $i++;
     } while ($previous = $previous->getPrevious());
@@ -607,7 +608,7 @@ function exception_to_error(Throwable $e, bool $print = true): string
                         $args[] = 'Array';
 
                         break;
-                    case is_null($arg):
+                    case $arg === null:
                         $args[] = 'NULL';
 
                         break;
@@ -629,7 +630,7 @@ function exception_to_error(Throwable $e, bool $print = true): string
                         break;
                 }
             }
-            $args = join(', ', $args);
+            $args = implode(', ', $args);
         }
         $rtn .= sprintf(
             "#%s %s(%s): %s(%s)\n",
@@ -645,8 +646,12 @@ function exception_to_error(Throwable $e, bool $print = true): string
     $messageEcho = nl2br(implode("\n", $message));
     $messageLog = "\n" . strip_tags(nl2br(implode("\n", $message)));
     foreach ($messageStock as $pos => $safeMessage) {
-        $messageEcho = strtr($messageEcho, ["%message_$pos%" => $safeMessage[1]]);
-        $messageLog = strtr($messageLog, ["%message_$pos%" => $safeMessage[0]]);
+        $messageEcho = strtr($messageEcho, [
+            "%message_{$pos}%" => $safeMessage[1],
+        ]);
+        $messageLog = strtr($messageLog, [
+            "%message_{$pos}%" => $safeMessage[0],
+        ]);
     }
     set_status_header($internal_code);
     if ($print && in_array($debug_level, [2, 3])) {
@@ -664,19 +669,19 @@ function exception_to_error(Throwable $e, bool $print = true): string
 
 function datetimegmt(?string $format = null): string
 {
-    return gmdate(!is_null($format) ? $format : 'Y-m-d H:i:s');
+    return gmdate($format !== null ? $format : 'Y-m-d H:i:s');
 }
 
 function datetime(?string $format = null): string
 {
-    return date(!is_null($format) ? $format : 'Y-m-d H:i:s');
+    return date($format !== null ? $format : 'Y-m-d H:i:s');
 }
 
 function datetime_tz(string $tz, ?string $format = null): string
 {
     $date = date_create('now', timezone_open($tz));
 
-    return date_format($date, !is_null($format) ? $format : 'Y-m-d H:i:s');
+    return date_format($date, $format !== null ? $format : 'Y-m-d H:i:s');
 }
 
 function is_valid_timezone(string $tzid): bool
@@ -695,7 +700,7 @@ function is_valid_timezone(string $tzid): bool
 
 function datetimegmt_convert_tz(string $datetimegmt, string $tz): string
 {
-    if (!is_valid_timezone($tz)) {
+    if (! is_valid_timezone($tz)) {
         return $datetimegmt;
     }
     $date = new \DateTime($datetimegmt . '+00');
@@ -713,7 +718,7 @@ function datetime_diff(
     ?string $newDatetime = null,
     string $format = 's'
 ): int {
-    if (!in_array($format, ['s', 'm', 'h', 'd'])) {
+    if (! in_array($format, ['s', 'm', 'h', 'd'])) {
         $format = 's';
     }
     if ($newDatetime == null) {
@@ -750,19 +755,19 @@ function datetime_modify(string $datetime, string $var)
 
 function datetime_alter(string $datetime, string $var, $action = 'add'): string
 {
-    if (!in_array($action, ['add', 'sub', 'modify'])) {
+    if (! in_array($action, ['add', 'sub', 'modify'])) {
         return $datetime;
     }
     $DateTime = new \DateTime($datetime);
     if ($action == 'modify') {
-        $DateTime->$action($var);
+        $DateTime->{$action}($var);
     } else {
         try {
             $interval = new DateInterval($var);
         } catch (Throwable) {
             return $datetime;
         }
-        $DateTime->$action($interval);
+        $DateTime->{$action}($interval);
     }
 
     return $DateTime->format('Y-m-d H:i:s');
@@ -776,6 +781,13 @@ function dateinterval(string $duration): DateInterval|bool
     }
 
     return false;
+}
+
+function dateinterval_to_seconds(string $duration): int
+{
+    $interval = new DateInterval($duration);
+
+    return (new DateTimeImmutable())->setTimeStamp(0)->add($interval)->getTimeStamp();
 }
 
 function get_client_ip(): string
@@ -796,7 +808,7 @@ function get_client_languages(): array
     $ranks = $lang_parse[4];
     $lang2pref = [];
     for ($i = 0; $i < count($langs); ++$i) {
-        $lang2pref[$langs[$i]] = (float) (!empty($ranks[$i]) ? $ranks[$i] : 1);
+        $lang2pref[$langs[$i]] = (float) (! empty($ranks[$i]) ? $ranks[$i] : 1);
     }
     $cmpLangs = function ($a, $b) use ($lang2pref) {
         if ($lang2pref[$a] > $lang2pref[$b]) {
@@ -807,9 +819,9 @@ function get_client_languages(): array
             return -1;
         } elseif (strlen($a) < strlen($b)) {
             return 1;
-        } else {
-            return 0;
         }
+
+        return 0;
     };
     if (is_callable($cmpLangs)) {
         uksort($lang2pref, $cmpLangs);
@@ -825,19 +837,22 @@ function get_client_languages(): array
  *
  * @see https://github.com/donatj/PhpUserAgent
  * @see http://donatstudios.com/PHP-Parser-HTTP_USER_AGENT
- *
  */
 function parse_user_agent(?string $u_agent = null): array
 {
-    if (is_null($u_agent) && isset(server()['HTTP_USER_AGENT'])) {
+    if ($u_agent === null && isset(server()['HTTP_USER_AGENT'])) {
         $u_agent = server()['HTTP_USER_AGENT'];
     }
     $platform = null;
     $browser = null;
     $version = null;
-    $empty = ['platform' => $platform, 'browser' => $browser, 'version' => $version];
+    $empty = [
+        'platform' => $platform,
+        'browser' => $browser,
+        'version' => $version,
+    ];
 
-    if (!$u_agent) {
+    if (! $u_agent) {
         return $empty;
     }
 
@@ -873,7 +888,7 @@ function parse_user_agent(?string $u_agent = null): array
         $result,
         PREG_PATTERN_ORDER
     );
-    if (!isset($result['browser'][0]) || !isset($result['version'][0])) {
+    if (! isset($result['browser'][0]) || ! isset($result['version'][0])) {
         return $empty;
     }
     $browser = $result['browser'][0];
@@ -897,7 +912,7 @@ function parse_user_agent(?string $u_agent = null): array
     } elseif ($find('Kindle Fire Build', $key) || $find('Silk', $key)) {
         $browser = $result['browser'][$key] == 'Silk' ? 'Silk' : 'Kindle';
         $platform = 'Kindle Fire';
-        if (!($version = $result['version'][$key]) || !is_numeric($version[0])) {
+        if (! ($version = $result['version'][$key]) || ! is_numeric($version[0])) {
             $version = $result['version'][array_search('Version', $result['browser'])];
         }
     } elseif ($find('NintendoBrowser', $key) || $platform == 'Nintendo 3DS') {
@@ -947,7 +962,11 @@ function parse_user_agent(?string $u_agent = null): array
         $browser = 'NetFront';
     }
 
-    return ['platform' => $platform, 'browser' => $browser, 'version' => $version];
+    return [
+        'platform' => $platform,
+        'browser' => $browser,
+        'version' => $version,
+    ];
 }
 
 function is_real_email_address(string $email): bool
@@ -969,19 +988,19 @@ function is_real_email_address(string $email): bool
             $valid = false;
         } elseif (preg_match('/\\.\\./', $local)) {
             $valid = false;
-        } elseif (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
+        } elseif (! preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
             $valid = false;
         } elseif (preg_match('/\\.\\./', $domain)) {
             $valid = false;
-        } elseif (!preg_match(
+        } elseif (! preg_match(
             '/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
             str_replace('\\\\', '', $local)
         )) {
-            if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace('\\\\', '', $local))) {
+            if (! preg_match('/^"(\\\\"|[^"])+"$/', str_replace('\\\\', '', $local))) {
                 $valid = false;
             }
         }
-        if ($valid && !(checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A'))) {
+        if ($valid && ! (checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A'))) {
             $valid = false;
         }
     }
@@ -1086,7 +1105,7 @@ function truncate(
     if (mb_strlen($string, $encoding) <= $limit) {
         return $string;
     }
-    if (is_null($break) or $break == '') {
+    if ($break === null or $break == '') {
         $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)) . $pad;
     } else {
         if (false !== ($breakpoint = strpos($string, $break, $limit))) {
@@ -1140,107 +1159,588 @@ function unaccent_string(string $string): string
             }
         }
     }
-    if (!$utf8) {
+    if (! $utf8) {
         $string = mb_convert_encoding($string, 'UTF-8');
     }
     $transliteration = [
-        'Ĳ' => 'I', 'Ö' => 'O', 'Œ' => 'O', 'Ü' => 'U', 'ä' => 'a', 'æ' => 'a',
-        'ĳ' => 'i', 'ö' => 'o', 'œ' => 'o', 'ü' => 'u', 'ß' => 's', 'ſ' => 's',
-        'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A',
-        'Æ' => 'A', 'Ā' => 'A', 'Ą' => 'A', 'Ă' => 'A', 'Ç' => 'C', 'Ć' => 'C',
-        'Č' => 'C', 'Ĉ' => 'C', 'Ċ' => 'C', 'Ď' => 'D', 'Đ' => 'D', 'È' => 'E',
-        'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ē' => 'E', 'Ę' => 'E', 'Ě' => 'E',
-        'Ĕ' => 'E', 'Ė' => 'E', 'Ĝ' => 'G', 'Ğ' => 'G', 'Ġ' => 'G', 'Ģ' => 'G',
-        'Ĥ' => 'H', 'Ħ' => 'H', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
-        'Ī' => 'I', 'Ĩ' => 'I', 'Ĭ' => 'I', 'Į' => 'I', 'İ' => 'I', 'Ĵ' => 'J',
-        'Ķ' => 'K', 'Ľ' => 'K', 'Ĺ' => 'K', 'Ļ' => 'K', 'Ŀ' => 'K', 'Ł' => 'L',
-        'Ñ' => 'N', 'Ń' => 'N', 'Ň' => 'N', 'Ņ' => 'N', 'Ŋ' => 'N', 'Ò' => 'O',
-        'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ø' => 'O', 'Ō' => 'O', 'Ő' => 'O',
-        'Ŏ' => 'O', 'Ŕ' => 'R', 'Ř' => 'R', 'Ŗ' => 'R', 'Ś' => 'S', 'Ş' => 'S',
-        'Ŝ' => 'S', 'Ș' => 'S', 'Š' => 'S', 'Ť' => 'T', 'Ţ' => 'T', 'Ŧ' => 'T',
-        'Ț' => 'T', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ū' => 'U', 'Ů' => 'U',
-        'Ű' => 'U', 'Ŭ' => 'U', 'Ũ' => 'U', 'Ų' => 'U', 'Ŵ' => 'W', 'Ŷ' => 'Y',
-        'Ÿ' => 'Y', 'Ý' => 'Y', 'Ź' => 'Z', 'Ż' => 'Z', 'Ž' => 'Z', 'à' => 'a',
-        'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ā' => 'a', 'ą' => 'a', 'ă' => 'a',
-        'å' => 'a', 'ç' => 'c', 'ć' => 'c', 'č' => 'c', 'ĉ' => 'c', 'ċ' => 'c',
-        'ď' => 'd', 'đ' => 'd', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
-        'ē' => 'e', 'ę' => 'e', 'ě' => 'e', 'ĕ' => 'e', 'ė' => 'e', 'ƒ' => 'f',
-        'ĝ' => 'g', 'ğ' => 'g', 'ġ' => 'g', 'ģ' => 'g', 'ĥ' => 'h', 'ħ' => 'h',
-        'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ī' => 'i', 'ĩ' => 'i',
-        'ĭ' => 'i', 'į' => 'i', 'ı' => 'i', 'ĵ' => 'j', 'ķ' => 'k', 'ĸ' => 'k',
-        'ł' => 'l', 'ľ' => 'l', 'ĺ' => 'l', 'ļ' => 'l', 'ŀ' => 'l', 'ñ' => 'n',
-        'ń' => 'n', 'ň' => 'n', 'ņ' => 'n', 'ŉ' => 'n', 'ŋ' => 'n', 'ò' => 'o',
-        'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ø' => 'o', 'ō' => 'o', 'ő' => 'o',
-        'ŏ' => 'o', 'ŕ' => 'r', 'ř' => 'r', 'ŗ' => 'r', 'ś' => 's', 'š' => 's',
-        'ť' => 't', 'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ū' => 'u', 'ů' => 'u',
-        'ű' => 'u', 'ŭ' => 'u', 'ũ' => 'u', 'ų' => 'u', 'ŵ' => 'w', 'ÿ' => 'y',
-        'ý' => 'y', 'ŷ' => 'y', 'ż' => 'z', 'ź' => 'z', 'ž' => 'z', 'Α' => 'A',
-        'Ά' => 'A', 'Ἀ' => 'A', 'Ἁ' => 'A', 'Ἂ' => 'A', 'Ἃ' => 'A', 'Ἄ' => 'A',
-        'Ἅ' => 'A', 'Ἆ' => 'A', 'Ἇ' => 'A', 'ᾈ' => 'A', 'ᾉ' => 'A', 'ᾊ' => 'A',
-        'ᾋ' => 'A', 'ᾌ' => 'A', 'ᾍ' => 'A', 'ᾎ' => 'A', 'ᾏ' => 'A', 'Ᾰ' => 'A',
-        'Ᾱ' => 'A', 'Ὰ' => 'A', 'ᾼ' => 'A', 'Β' => 'B', 'Γ' => 'G', 'Δ' => 'D',
-        'Ε' => 'E', 'Έ' => 'E', 'Ἐ' => 'E', 'Ἑ' => 'E', 'Ἒ' => 'E', 'Ἓ' => 'E',
-        'Ἔ' => 'E', 'Ἕ' => 'E', 'Ὲ' => 'E', 'Ζ' => 'Z', 'Η' => 'I', 'Ή' => 'I',
-        'Ἠ' => 'I', 'Ἡ' => 'I', 'Ἢ' => 'I', 'Ἣ' => 'I', 'Ἤ' => 'I', 'Ἥ' => 'I',
-        'Ἦ' => 'I', 'Ἧ' => 'I', 'ᾘ' => 'I', 'ᾙ' => 'I', 'ᾚ' => 'I', 'ᾛ' => 'I',
-        'ᾜ' => 'I', 'ᾝ' => 'I', 'ᾞ' => 'I', 'ᾟ' => 'I', 'Ὴ' => 'I', 'ῌ' => 'I',
-        'Θ' => 'T', 'Ι' => 'I', 'Ί' => 'I', 'Ϊ' => 'I', 'Ἰ' => 'I', 'Ἱ' => 'I',
-        'Ἲ' => 'I', 'Ἳ' => 'I', 'Ἴ' => 'I', 'Ἵ' => 'I', 'Ἶ' => 'I', 'Ἷ' => 'I',
-        'Ῐ' => 'I', 'Ῑ' => 'I', 'Ὶ' => 'I', 'Κ' => 'K', 'Λ' => 'L', 'Μ' => 'M',
-        'Ν' => 'N', 'Ξ' => 'K', 'Ο' => 'O', 'Ό' => 'O', 'Ὀ' => 'O', 'Ὁ' => 'O',
-        'Ὂ' => 'O', 'Ὃ' => 'O', 'Ὄ' => 'O', 'Ὅ' => 'O', 'Ὸ' => 'O', 'Π' => 'P',
-        'Ρ' => 'R', 'Ῥ' => 'R', 'Σ' => 'S', 'Τ' => 'T', 'Υ' => 'Y', 'Ύ' => 'Y',
-        'Ϋ' => 'Y', 'Ὑ' => 'Y', 'Ὓ' => 'Y', 'Ὕ' => 'Y', 'Ὗ' => 'Y', 'Ῠ' => 'Y',
-        'Ῡ' => 'Y', 'Ὺ' => 'Y', 'Φ' => 'F', 'Χ' => 'X', 'Ψ' => 'P', 'Ω' => 'O',
-        'Ώ' => 'O', 'Ὠ' => 'O', 'Ὡ' => 'O', 'Ὢ' => 'O', 'Ὣ' => 'O', 'Ὤ' => 'O',
-        'Ὥ' => 'O', 'Ὦ' => 'O', 'Ὧ' => 'O', 'ᾨ' => 'O', 'ᾩ' => 'O', 'ᾪ' => 'O',
-        'ᾫ' => 'O', 'ᾬ' => 'O', 'ᾭ' => 'O', 'ᾮ' => 'O', 'ᾯ' => 'O', 'Ὼ' => 'O',
-        'ῼ' => 'O', 'α' => 'a', 'ά' => 'a', 'ἀ' => 'a', 'ἁ' => 'a', 'ἂ' => 'a',
-        'ἃ' => 'a', 'ἄ' => 'a', 'ἅ' => 'a', 'ἆ' => 'a', 'ἇ' => 'a', 'ᾀ' => 'a',
-        'ᾁ' => 'a', 'ᾂ' => 'a', 'ᾃ' => 'a', 'ᾄ' => 'a', 'ᾅ' => 'a', 'ᾆ' => 'a',
-        'ᾇ' => 'a', 'ὰ' => 'a', 'ᾰ' => 'a', 'ᾱ' => 'a', 'ᾲ' => 'a', 'ᾳ' => 'a',
-        'ᾴ' => 'a', 'ᾶ' => 'a', 'ᾷ' => 'a', 'β' => 'b', 'γ' => 'g', 'δ' => 'd',
-        'ε' => 'e', 'έ' => 'e', 'ἐ' => 'e', 'ἑ' => 'e', 'ἒ' => 'e', 'ἓ' => 'e',
-        'ἔ' => 'e', 'ἕ' => 'e', 'ὲ' => 'e', 'ζ' => 'z', 'η' => 'i', 'ή' => 'i',
-        'ἠ' => 'i', 'ἡ' => 'i', 'ἢ' => 'i', 'ἣ' => 'i', 'ἤ' => 'i', 'ἥ' => 'i',
-        'ἦ' => 'i', 'ἧ' => 'i', 'ᾐ' => 'i', 'ᾑ' => 'i', 'ᾒ' => 'i', 'ᾓ' => 'i',
-        'ᾔ' => 'i', 'ᾕ' => 'i', 'ᾖ' => 'i', 'ᾗ' => 'i', 'ὴ' => 'i', 'ῂ' => 'i',
-        'ῃ' => 'i', 'ῄ' => 'i', 'ῆ' => 'i', 'ῇ' => 'i', 'θ' => 't', 'ι' => 'i',
-        'ί' => 'i', 'ϊ' => 'i', 'ΐ' => 'i', 'ἰ' => 'i', 'ἱ' => 'i', 'ἲ' => 'i',
-        'ἳ' => 'i', 'ἴ' => 'i', 'ἵ' => 'i', 'ἶ' => 'i', 'ἷ' => 'i', 'ὶ' => 'i',
-        'ῐ' => 'i', 'ῑ' => 'i', 'ῒ' => 'i', 'ῖ' => 'i', 'ῗ' => 'i', 'κ' => 'k',
-        'λ' => 'l', 'μ' => 'm', 'ν' => 'n', 'ξ' => 'k', 'ο' => 'o', 'ό' => 'o',
-        'ὀ' => 'o', 'ὁ' => 'o', 'ὂ' => 'o', 'ὃ' => 'o', 'ὄ' => 'o', 'ὅ' => 'o',
-        'ὸ' => 'o', 'π' => 'p', 'ρ' => 'r', 'ῤ' => 'r', 'ῥ' => 'r', 'σ' => 's',
-        'ς' => 's', 'τ' => 't', 'υ' => 'y', 'ύ' => 'y', 'ϋ' => 'y', 'ΰ' => 'y',
-        'ὐ' => 'y', 'ὑ' => 'y', 'ὒ' => 'y', 'ὓ' => 'y', 'ὔ' => 'y', 'ὕ' => 'y',
-        'ὖ' => 'y', 'ὗ' => 'y', 'ὺ' => 'y', 'ῠ' => 'y', 'ῡ' => 'y', 'ῢ' => 'y',
-        'ῦ' => 'y', 'ῧ' => 'y', 'φ' => 'f', 'χ' => 'x', 'ψ' => 'p', 'ω' => 'o',
-        'ώ' => 'o', 'ὠ' => 'o', 'ὡ' => 'o', 'ὢ' => 'o', 'ὣ' => 'o', 'ὤ' => 'o',
-        'ὥ' => 'o', 'ὦ' => 'o', 'ὧ' => 'o', 'ᾠ' => 'o', 'ᾡ' => 'o', 'ᾢ' => 'o',
-        'ᾣ' => 'o', 'ᾤ' => 'o', 'ᾥ' => 'o', 'ᾦ' => 'o', 'ᾧ' => 'o', 'ὼ' => 'o',
-        'ῲ' => 'o', 'ῳ' => 'o', 'ῴ' => 'o', 'ῶ' => 'o', 'ῷ' => 'o', 'А' => 'A',
-        'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'E',
-        'Ж' => 'Z', 'З' => 'Z', 'И' => 'I', 'Й' => 'I', 'К' => 'K', 'Л' => 'L',
-        'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P', 'Р' => 'R', 'С' => 'S',
-        'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Х' => 'K', 'Ц' => 'T', 'Ч' => 'C',
-        'Ш' => 'S', 'Щ' => 'S', 'Ы' => 'Y', 'Э' => 'E', 'Ю' => 'Y', 'Я' => 'Y',
-        'а' => 'A', 'б' => 'B', 'в' => 'V', 'г' => 'G', 'д' => 'D', 'е' => 'E',
-        'ё' => 'E', 'ж' => 'Z', 'з' => 'Z', 'и' => 'I', 'й' => 'I', 'к' => 'K',
-        'л' => 'L', 'м' => 'M', 'н' => 'N', 'о' => 'O', 'п' => 'P', 'р' => 'R',
-        'с' => 'S', 'т' => 'T', 'у' => 'U', 'ф' => 'F', 'х' => 'K', 'ц' => 'T',
-        'ч' => 'C', 'ш' => 'S', 'щ' => 'S', 'ы' => 'Y', 'э' => 'E', 'ю' => 'Y',
-        'я' => 'Y', 'ð' => 'd', 'Ð' => 'D', 'þ' => 't', 'Þ' => 'T', 'ა' => 'a',
-        'ბ' => 'b', 'გ' => 'g', 'დ' => 'd', 'ე' => 'e', 'ვ' => 'v', 'ზ' => 'z',
-        'თ' => 't', 'ი' => 'i', 'კ' => 'k', 'ლ' => 'l', 'მ' => 'm', 'ნ' => 'n',
-        'ო' => 'o', 'პ' => 'p', 'ჟ' => 'z', 'რ' => 'r', 'ს' => 's', 'ტ' => 't',
-        'უ' => 'u', 'ფ' => 'p', 'ქ' => 'k', 'ღ' => 'g', 'ყ' => 'q', 'შ' => 's',
-        'ჩ' => 'c', 'ც' => 't', 'ძ' => 'd', 'წ' => 't', 'ჭ' => 'c', 'ხ' => 'k',
-        'ჯ' => 'j', 'ჰ' => 'h', 'ḩ' => 'h', 'ừ' => 'u', 'ế' => 'e', 'ả' => 'a',
-        'ị' => 'i', 'ậ' => 'a', 'ệ' => 'e', 'ỉ' => 'i', 'ộ' => 'o', 'ồ' => 'o',
-        'ề' => 'e', 'ơ' => 'o', 'ạ' => 'a', 'ẵ' => 'a', 'ư' => 'u', 'ắ' => 'a',
-        'ằ' => 'a', 'ầ' => 'a', 'ḑ' => 'd', 'Ḩ' => 'H', 'Ḑ' => 'D',
-        'ş' => 's', 'ţ' => 't', 'ễ' => 'e',
+        'Ĳ' => 'I',
+        'Ö' => 'O',
+        'Œ' => 'O',
+        'Ü' => 'U',
+        'ä' => 'a',
+        'æ' => 'a',
+        'ĳ' => 'i',
+        'ö' => 'o',
+        'œ' => 'o',
+        'ü' => 'u',
+        'ß' => 's',
+        'ſ' => 's',
+        'À' => 'A',
+        'Á' => 'A',
+        'Â' => 'A',
+        'Ã' => 'A',
+        'Ä' => 'A',
+        'Å' => 'A',
+        'Æ' => 'A',
+        'Ā' => 'A',
+        'Ą' => 'A',
+        'Ă' => 'A',
+        'Ç' => 'C',
+        'Ć' => 'C',
+        'Č' => 'C',
+        'Ĉ' => 'C',
+        'Ċ' => 'C',
+        'Ď' => 'D',
+        'Đ' => 'D',
+        'È' => 'E',
+        'É' => 'E',
+        'Ê' => 'E',
+        'Ë' => 'E',
+        'Ē' => 'E',
+        'Ę' => 'E',
+        'Ě' => 'E',
+        'Ĕ' => 'E',
+        'Ė' => 'E',
+        'Ĝ' => 'G',
+        'Ğ' => 'G',
+        'Ġ' => 'G',
+        'Ģ' => 'G',
+        'Ĥ' => 'H',
+        'Ħ' => 'H',
+        'Ì' => 'I',
+        'Í' => 'I',
+        'Î' => 'I',
+        'Ï' => 'I',
+        'Ī' => 'I',
+        'Ĩ' => 'I',
+        'Ĭ' => 'I',
+        'Į' => 'I',
+        'İ' => 'I',
+        'Ĵ' => 'J',
+        'Ķ' => 'K',
+        'Ľ' => 'K',
+        'Ĺ' => 'K',
+        'Ļ' => 'K',
+        'Ŀ' => 'K',
+        'Ł' => 'L',
+        'Ñ' => 'N',
+        'Ń' => 'N',
+        'Ň' => 'N',
+        'Ņ' => 'N',
+        'Ŋ' => 'N',
+        'Ò' => 'O',
+        'Ó' => 'O',
+        'Ô' => 'O',
+        'Õ' => 'O',
+        'Ø' => 'O',
+        'Ō' => 'O',
+        'Ő' => 'O',
+        'Ŏ' => 'O',
+        'Ŕ' => 'R',
+        'Ř' => 'R',
+        'Ŗ' => 'R',
+        'Ś' => 'S',
+        'Ş' => 'S',
+        'Ŝ' => 'S',
+        'Ș' => 'S',
+        'Š' => 'S',
+        'Ť' => 'T',
+        'Ţ' => 'T',
+        'Ŧ' => 'T',
+        'Ț' => 'T',
+        'Ù' => 'U',
+        'Ú' => 'U',
+        'Û' => 'U',
+        'Ū' => 'U',
+        'Ů' => 'U',
+        'Ű' => 'U',
+        'Ŭ' => 'U',
+        'Ũ' => 'U',
+        'Ų' => 'U',
+        'Ŵ' => 'W',
+        'Ŷ' => 'Y',
+        'Ÿ' => 'Y',
+        'Ý' => 'Y',
+        'Ź' => 'Z',
+        'Ż' => 'Z',
+        'Ž' => 'Z',
+        'à' => 'a',
+        'á' => 'a',
+        'â' => 'a',
+        'ã' => 'a',
+        'ā' => 'a',
+        'ą' => 'a',
+        'ă' => 'a',
+        'å' => 'a',
+        'ç' => 'c',
+        'ć' => 'c',
+        'č' => 'c',
+        'ĉ' => 'c',
+        'ċ' => 'c',
+        'ď' => 'd',
+        'đ' => 'd',
+        'è' => 'e',
+        'é' => 'e',
+        'ê' => 'e',
+        'ë' => 'e',
+        'ē' => 'e',
+        'ę' => 'e',
+        'ě' => 'e',
+        'ĕ' => 'e',
+        'ė' => 'e',
+        'ƒ' => 'f',
+        'ĝ' => 'g',
+        'ğ' => 'g',
+        'ġ' => 'g',
+        'ģ' => 'g',
+        'ĥ' => 'h',
+        'ħ' => 'h',
+        'ì' => 'i',
+        'í' => 'i',
+        'î' => 'i',
+        'ï' => 'i',
+        'ī' => 'i',
+        'ĩ' => 'i',
+        'ĭ' => 'i',
+        'į' => 'i',
+        'ı' => 'i',
+        'ĵ' => 'j',
+        'ķ' => 'k',
+        'ĸ' => 'k',
+        'ł' => 'l',
+        'ľ' => 'l',
+        'ĺ' => 'l',
+        'ļ' => 'l',
+        'ŀ' => 'l',
+        'ñ' => 'n',
+        'ń' => 'n',
+        'ň' => 'n',
+        'ņ' => 'n',
+        'ŉ' => 'n',
+        'ŋ' => 'n',
+        'ò' => 'o',
+        'ó' => 'o',
+        'ô' => 'o',
+        'õ' => 'o',
+        'ø' => 'o',
+        'ō' => 'o',
+        'ő' => 'o',
+        'ŏ' => 'o',
+        'ŕ' => 'r',
+        'ř' => 'r',
+        'ŗ' => 'r',
+        'ś' => 's',
+        'š' => 's',
+        'ť' => 't',
+        'ù' => 'u',
+        'ú' => 'u',
+        'û' => 'u',
+        'ū' => 'u',
+        'ů' => 'u',
+        'ű' => 'u',
+        'ŭ' => 'u',
+        'ũ' => 'u',
+        'ų' => 'u',
+        'ŵ' => 'w',
+        'ÿ' => 'y',
+        'ý' => 'y',
+        'ŷ' => 'y',
+        'ż' => 'z',
+        'ź' => 'z',
+        'ž' => 'z',
+        'Α' => 'A',
+        'Ά' => 'A',
+        'Ἀ' => 'A',
+        'Ἁ' => 'A',
+        'Ἂ' => 'A',
+        'Ἃ' => 'A',
+        'Ἄ' => 'A',
+        'Ἅ' => 'A',
+        'Ἆ' => 'A',
+        'Ἇ' => 'A',
+        'ᾈ' => 'A',
+        'ᾉ' => 'A',
+        'ᾊ' => 'A',
+        'ᾋ' => 'A',
+        'ᾌ' => 'A',
+        'ᾍ' => 'A',
+        'ᾎ' => 'A',
+        'ᾏ' => 'A',
+        'Ᾰ' => 'A',
+        'Ᾱ' => 'A',
+        'Ὰ' => 'A',
+        'ᾼ' => 'A',
+        'Β' => 'B',
+        'Γ' => 'G',
+        'Δ' => 'D',
+        'Ε' => 'E',
+        'Έ' => 'E',
+        'Ἐ' => 'E',
+        'Ἑ' => 'E',
+        'Ἒ' => 'E',
+        'Ἓ' => 'E',
+        'Ἔ' => 'E',
+        'Ἕ' => 'E',
+        'Ὲ' => 'E',
+        'Ζ' => 'Z',
+        'Η' => 'I',
+        'Ή' => 'I',
+        'Ἠ' => 'I',
+        'Ἡ' => 'I',
+        'Ἢ' => 'I',
+        'Ἣ' => 'I',
+        'Ἤ' => 'I',
+        'Ἥ' => 'I',
+        'Ἦ' => 'I',
+        'Ἧ' => 'I',
+        'ᾘ' => 'I',
+        'ᾙ' => 'I',
+        'ᾚ' => 'I',
+        'ᾛ' => 'I',
+        'ᾜ' => 'I',
+        'ᾝ' => 'I',
+        'ᾞ' => 'I',
+        'ᾟ' => 'I',
+        'Ὴ' => 'I',
+        'ῌ' => 'I',
+        'Θ' => 'T',
+        'Ι' => 'I',
+        'Ί' => 'I',
+        'Ϊ' => 'I',
+        'Ἰ' => 'I',
+        'Ἱ' => 'I',
+        'Ἲ' => 'I',
+        'Ἳ' => 'I',
+        'Ἴ' => 'I',
+        'Ἵ' => 'I',
+        'Ἶ' => 'I',
+        'Ἷ' => 'I',
+        'Ῐ' => 'I',
+        'Ῑ' => 'I',
+        'Ὶ' => 'I',
+        'Κ' => 'K',
+        'Λ' => 'L',
+        'Μ' => 'M',
+        'Ν' => 'N',
+        'Ξ' => 'K',
+        'Ο' => 'O',
+        'Ό' => 'O',
+        'Ὀ' => 'O',
+        'Ὁ' => 'O',
+        'Ὂ' => 'O',
+        'Ὃ' => 'O',
+        'Ὄ' => 'O',
+        'Ὅ' => 'O',
+        'Ὸ' => 'O',
+        'Π' => 'P',
+        'Ρ' => 'R',
+        'Ῥ' => 'R',
+        'Σ' => 'S',
+        'Τ' => 'T',
+        'Υ' => 'Y',
+        'Ύ' => 'Y',
+        'Ϋ' => 'Y',
+        'Ὑ' => 'Y',
+        'Ὓ' => 'Y',
+        'Ὕ' => 'Y',
+        'Ὗ' => 'Y',
+        'Ῠ' => 'Y',
+        'Ῡ' => 'Y',
+        'Ὺ' => 'Y',
+        'Φ' => 'F',
+        'Χ' => 'X',
+        'Ψ' => 'P',
+        'Ω' => 'O',
+        'Ώ' => 'O',
+        'Ὠ' => 'O',
+        'Ὡ' => 'O',
+        'Ὢ' => 'O',
+        'Ὣ' => 'O',
+        'Ὤ' => 'O',
+        'Ὥ' => 'O',
+        'Ὦ' => 'O',
+        'Ὧ' => 'O',
+        'ᾨ' => 'O',
+        'ᾩ' => 'O',
+        'ᾪ' => 'O',
+        'ᾫ' => 'O',
+        'ᾬ' => 'O',
+        'ᾭ' => 'O',
+        'ᾮ' => 'O',
+        'ᾯ' => 'O',
+        'Ὼ' => 'O',
+        'ῼ' => 'O',
+        'α' => 'a',
+        'ά' => 'a',
+        'ἀ' => 'a',
+        'ἁ' => 'a',
+        'ἂ' => 'a',
+        'ἃ' => 'a',
+        'ἄ' => 'a',
+        'ἅ' => 'a',
+        'ἆ' => 'a',
+        'ἇ' => 'a',
+        'ᾀ' => 'a',
+        'ᾁ' => 'a',
+        'ᾂ' => 'a',
+        'ᾃ' => 'a',
+        'ᾄ' => 'a',
+        'ᾅ' => 'a',
+        'ᾆ' => 'a',
+        'ᾇ' => 'a',
+        'ὰ' => 'a',
+        'ᾰ' => 'a',
+        'ᾱ' => 'a',
+        'ᾲ' => 'a',
+        'ᾳ' => 'a',
+        'ᾴ' => 'a',
+        'ᾶ' => 'a',
+        'ᾷ' => 'a',
+        'β' => 'b',
+        'γ' => 'g',
+        'δ' => 'd',
+        'ε' => 'e',
+        'έ' => 'e',
+        'ἐ' => 'e',
+        'ἑ' => 'e',
+        'ἒ' => 'e',
+        'ἓ' => 'e',
+        'ἔ' => 'e',
+        'ἕ' => 'e',
+        'ὲ' => 'e',
+        'ζ' => 'z',
+        'η' => 'i',
+        'ή' => 'i',
+        'ἠ' => 'i',
+        'ἡ' => 'i',
+        'ἢ' => 'i',
+        'ἣ' => 'i',
+        'ἤ' => 'i',
+        'ἥ' => 'i',
+        'ἦ' => 'i',
+        'ἧ' => 'i',
+        'ᾐ' => 'i',
+        'ᾑ' => 'i',
+        'ᾒ' => 'i',
+        'ᾓ' => 'i',
+        'ᾔ' => 'i',
+        'ᾕ' => 'i',
+        'ᾖ' => 'i',
+        'ᾗ' => 'i',
+        'ὴ' => 'i',
+        'ῂ' => 'i',
+        'ῃ' => 'i',
+        'ῄ' => 'i',
+        'ῆ' => 'i',
+        'ῇ' => 'i',
+        'θ' => 't',
+        'ι' => 'i',
+        'ί' => 'i',
+        'ϊ' => 'i',
+        'ΐ' => 'i',
+        'ἰ' => 'i',
+        'ἱ' => 'i',
+        'ἲ' => 'i',
+        'ἳ' => 'i',
+        'ἴ' => 'i',
+        'ἵ' => 'i',
+        'ἶ' => 'i',
+        'ἷ' => 'i',
+        'ὶ' => 'i',
+        'ῐ' => 'i',
+        'ῑ' => 'i',
+        'ῒ' => 'i',
+        'ῖ' => 'i',
+        'ῗ' => 'i',
+        'κ' => 'k',
+        'λ' => 'l',
+        'μ' => 'm',
+        'ν' => 'n',
+        'ξ' => 'k',
+        'ο' => 'o',
+        'ό' => 'o',
+        'ὀ' => 'o',
+        'ὁ' => 'o',
+        'ὂ' => 'o',
+        'ὃ' => 'o',
+        'ὄ' => 'o',
+        'ὅ' => 'o',
+        'ὸ' => 'o',
+        'π' => 'p',
+        'ρ' => 'r',
+        'ῤ' => 'r',
+        'ῥ' => 'r',
+        'σ' => 's',
+        'ς' => 's',
+        'τ' => 't',
+        'υ' => 'y',
+        'ύ' => 'y',
+        'ϋ' => 'y',
+        'ΰ' => 'y',
+        'ὐ' => 'y',
+        'ὑ' => 'y',
+        'ὒ' => 'y',
+        'ὓ' => 'y',
+        'ὔ' => 'y',
+        'ὕ' => 'y',
+        'ὖ' => 'y',
+        'ὗ' => 'y',
+        'ὺ' => 'y',
+        'ῠ' => 'y',
+        'ῡ' => 'y',
+        'ῢ' => 'y',
+        'ῦ' => 'y',
+        'ῧ' => 'y',
+        'φ' => 'f',
+        'χ' => 'x',
+        'ψ' => 'p',
+        'ω' => 'o',
+        'ώ' => 'o',
+        'ὠ' => 'o',
+        'ὡ' => 'o',
+        'ὢ' => 'o',
+        'ὣ' => 'o',
+        'ὤ' => 'o',
+        'ὥ' => 'o',
+        'ὦ' => 'o',
+        'ὧ' => 'o',
+        'ᾠ' => 'o',
+        'ᾡ' => 'o',
+        'ᾢ' => 'o',
+        'ᾣ' => 'o',
+        'ᾤ' => 'o',
+        'ᾥ' => 'o',
+        'ᾦ' => 'o',
+        'ᾧ' => 'o',
+        'ὼ' => 'o',
+        'ῲ' => 'o',
+        'ῳ' => 'o',
+        'ῴ' => 'o',
+        'ῶ' => 'o',
+        'ῷ' => 'o',
+        'А' => 'A',
+        'Б' => 'B',
+        'В' => 'V',
+        'Г' => 'G',
+        'Д' => 'D',
+        'Е' => 'E',
+        'Ё' => 'E',
+        'Ж' => 'Z',
+        'З' => 'Z',
+        'И' => 'I',
+        'Й' => 'I',
+        'К' => 'K',
+        'Л' => 'L',
+        'М' => 'M',
+        'Н' => 'N',
+        'О' => 'O',
+        'П' => 'P',
+        'Р' => 'R',
+        'С' => 'S',
+        'Т' => 'T',
+        'У' => 'U',
+        'Ф' => 'F',
+        'Х' => 'K',
+        'Ц' => 'T',
+        'Ч' => 'C',
+        'Ш' => 'S',
+        'Щ' => 'S',
+        'Ы' => 'Y',
+        'Э' => 'E',
+        'Ю' => 'Y',
+        'Я' => 'Y',
+        'а' => 'A',
+        'б' => 'B',
+        'в' => 'V',
+        'г' => 'G',
+        'д' => 'D',
+        'е' => 'E',
+        'ё' => 'E',
+        'ж' => 'Z',
+        'з' => 'Z',
+        'и' => 'I',
+        'й' => 'I',
+        'к' => 'K',
+        'л' => 'L',
+        'м' => 'M',
+        'н' => 'N',
+        'о' => 'O',
+        'п' => 'P',
+        'р' => 'R',
+        'с' => 'S',
+        'т' => 'T',
+        'у' => 'U',
+        'ф' => 'F',
+        'х' => 'K',
+        'ц' => 'T',
+        'ч' => 'C',
+        'ш' => 'S',
+        'щ' => 'S',
+        'ы' => 'Y',
+        'э' => 'E',
+        'ю' => 'Y',
+        'я' => 'Y',
+        'ð' => 'd',
+        'Ð' => 'D',
+        'þ' => 't',
+        'Þ' => 'T',
+        'ა' => 'a',
+        'ბ' => 'b',
+        'გ' => 'g',
+        'დ' => 'd',
+        'ე' => 'e',
+        'ვ' => 'v',
+        'ზ' => 'z',
+        'თ' => 't',
+        'ი' => 'i',
+        'კ' => 'k',
+        'ლ' => 'l',
+        'მ' => 'm',
+        'ნ' => 'n',
+        'ო' => 'o',
+        'პ' => 'p',
+        'ჟ' => 'z',
+        'რ' => 'r',
+        'ს' => 's',
+        'ტ' => 't',
+        'უ' => 'u',
+        'ფ' => 'p',
+        'ქ' => 'k',
+        'ღ' => 'g',
+        'ყ' => 'q',
+        'შ' => 's',
+        'ჩ' => 'c',
+        'ც' => 't',
+        'ძ' => 'd',
+        'წ' => 't',
+        'ჭ' => 'c',
+        'ხ' => 'k',
+        'ჯ' => 'j',
+        'ჰ' => 'h',
+        'ḩ' => 'h',
+        'ừ' => 'u',
+        'ế' => 'e',
+        'ả' => 'a',
+        'ị' => 'i',
+        'ậ' => 'a',
+        'ệ' => 'e',
+        'ỉ' => 'i',
+        'ộ' => 'o',
+        'ồ' => 'o',
+        'ề' => 'e',
+        'ơ' => 'o',
+        'ạ' => 'a',
+        'ẵ' => 'a',
+        'ư' => 'u',
+        'ắ' => 'a',
+        'ằ' => 'a',
+        'ầ' => 'a',
+        'ḑ' => 'd',
+        'Ḩ' => 'H',
+        'Ḑ' => 'D',
+        'ş' => 's',
+        'ţ' => 't',
+        'ễ' => 'e',
     ];
     $string = str_replace(array_keys($transliteration), array_values($transliteration), $string);
     if (strpos($string = htmlentities($string, ENT_QUOTES, 'UTF-8'), '&') !== false) {
@@ -1252,7 +1752,7 @@ function unaccent_string(string $string): string
 
 function safe_html(mixed $var, int $flag = ENT_QUOTES | ENT_HTML5, array $skip = []): string|array|null
 {
-    if (!is_array($var)) {
+    if (! is_array($var)) {
         return $var === null
             ? null
             : htmlspecialchars((string) $var, $flag, 'UTF-8', false);
@@ -1278,11 +1778,11 @@ function safe_html(mixed $var, int $flag = ENT_QUOTES | ENT_HTML5, array $skip =
 
 function format_bytes(mixed $bytes, int $round = 1): string
 {
-    if (!is_numeric($bytes)) {
+    if (! is_numeric($bytes)) {
         return '';
     }
     if ($bytes < 1000) {
-        return "$bytes B";
+        return "{$bytes} B";
     }
     $units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     foreach ($units as $k => $v) {
@@ -1291,7 +1791,7 @@ function format_bytes(mixed $bytes, int $round = 1): string
         if ($bytes < $threshold) {
             $size = round($bytes / $multiplier, $round);
 
-            return "$size $v";
+            return "{$size} {$v}";
         }
     }
 
@@ -1318,7 +1818,7 @@ function get_bytes(string $size, ?int $cut = null): int
     if (strlen($suffix) == 1) {
         $suffix .= 'B';
     }
-    if (!in_array($suffix, $units)) {
+    if (! in_array($suffix, $units)) {
         return (int) $number;
     }
     $pow_factor = array_search($suffix, $units) + 1;
@@ -1367,7 +1867,7 @@ function seoUrlfy(string $text): string
     $prepare = str_replace(' ', '-', trim($prepare));
     $prepare = strip_tags($prepare);
 
-    return urlencode($prepare);
+    return rawurlencode($prepare);
 }
 
 function forward_slash(string $string): string
@@ -1382,7 +1882,7 @@ function relative_to_absolute(string $filepath): string
 
 function relative_to_url(string $filepath, ?string $root_url = null): string
 {
-    if (!check_value($root_url)) {
+    if (! check_value($root_url)) {
         $root_url = URL_APP_PUBLIC;
     }
 
@@ -1391,7 +1891,7 @@ function relative_to_url(string $filepath, ?string $root_url = null): string
 
 function url_to_relative(string $url, ?string $root_url = null): string
 {
-    if (!check_value($root_url)) {
+    if (! check_value($root_url)) {
         $root_url = URL_APP_PUBLIC;
     }
 
@@ -1405,10 +1905,10 @@ function absolute_to_relative(string $filepath): string
 
 function absolute_to_url(string $filepath, ?string $root_url = null)
 {
-    if (!check_value($root_url)) {
+    if (! check_value($root_url)) {
         $root_url = URL_APP_PUBLIC;
     }
-    if (PATH_PUBLIC === Config::host()->hostnamePath()) {
+    if (Config::host()->hostnamePath() === PATH_PUBLIC) {
         return $root_url . ltrim($filepath, '/');
     }
 
@@ -1417,7 +1917,7 @@ function absolute_to_url(string $filepath, ?string $root_url = null)
 
 function url_to_absolute(string $url, ?string $root_url = null)
 {
-    if (!check_value($root_url)) {
+    if (! check_value($root_url)) {
         $root_url = URL_APP_PUBLIC;
     }
 
@@ -1428,11 +1928,10 @@ function get_app_version(bool $full = true): string
 {
     if ($full) {
         return APP_VERSION;
-    } else {
-        preg_match('/\d\.\d/', APP_VERSION, $return);
-
-        return $return[0];
     }
+    preg_match('/\d\.\d/', APP_VERSION, $return);
+
+    return $return[0];
 }
 
 /**
@@ -1441,17 +1940,6 @@ function get_app_version(bool $full = true): string
 function get_app_setting(string $key): mixed
 {
     $settingsToEnv = [
-        'asset_storage_account_id' => 'CHEVERETO_ASSET_STORAGE_ACCOUNT_ID',
-        'asset_storage_account_name' => 'CHEVERETO_ASSET_STORAGE_ACCOUNT_NAME',
-        'asset_storage_bucket' => 'CHEVERETO_ASSET_STORAGE_BUCKET',
-        'asset_storage_key' => 'CHEVERETO_ASSET_STORAGE_KEY',
-        'asset_storage_name' => 'CHEVERETO_ASSET_STORAGE_NAME',
-        'asset_storage_region' => 'CHEVERETO_ASSET_STORAGE_REGION',
-        'asset_storage_secret' => 'CHEVERETO_ASSET_STORAGE_SECRET',
-        'asset_storage_server' => 'CHEVERETO_ASSET_STORAGE_SERVER',
-        'asset_storage_service' => 'CHEVERETO_ASSET_STORAGE_SERVICE',
-        'asset_storage_type' => 'CHEVERETO_ASSET_STORAGE_TYPE',
-        'asset_storage_url' => 'CHEVERETO_ASSET_STORAGE_URL',
         'db_driver' => 'CHEVERETO_DB_DRIVER',
         'db_host' => 'CHEVERETO_DB_HOST',
         'db_name' => 'CHEVERETO_DB_NAME',
@@ -1504,16 +1992,19 @@ function get_public_url(string $path = ''): string
 function get_base_url(string $path = '', bool $public = false): string
 {
     $path = sanitize_relative_path($path);
-
     $base = Config::host()->hostnamePath();
+    if (str_starts_with($path, $base)) {
+        $path = str_replace_first($base, '', $path);
+    }
     if ($public) {
         $base = URL_APP_PUBLIC;
     }
+    $path = ltrim($path, '/');
 
-    return $base . ltrim($path, '/');
+    return $base . $path;
 }
 
-function get_current_url(bool $safe = true, array $removeQs = [], bool $protocol = false)
+function get_current_url(bool $safe = true, array $removeQs = [], bool $public = false)
 {
     $request_uri = server()['REQUEST_URI'] ?? '';
     $request_path = rtrim(strtok($request_uri, '?') ?: '', '/');
@@ -1530,7 +2021,7 @@ function get_current_url(bool $safe = true, array $removeQs = [], bool $protocol
     }
     $path = preg_replace('#' . Config::host()->hostnamePath() . '#', '', rtrim($request_uri, '/') . '/', 1);
 
-    return get_base_url(rtrim($path, '/'), $protocol);
+    return get_base_url(rtrim($path, '/'), $public);
 }
 
 function hasEnvDbInfo(): bool
@@ -1558,9 +2049,9 @@ function get_regex_match(
     preg_match($pattern, $subject, $matches);
     if (array_key_exists($key, $matches)) {
         return $matches[$key];
-    } else {
-        return $matches;
     }
+
+    return $matches;
 }
 
 /** @deprecated V4 */
@@ -1580,12 +2071,12 @@ function curlProgress(int $download_size = 0, int $downloaded = 0): void
     logger(progress_bar($downloaded, $download_size, ' download'));
 }
 
-function progress_bar(int $done, int $total, string $info = "", int $width = 50): string
+function progress_bar(int $done, int $total, string $info = '', int $width = 50): string
 {
     $perc = (int) round(($done * 100) / $total);
     $bar = (int) round(($width * $perc) / 100);
 
-    return sprintf("  %s%%[%s>%s]%s\r", $perc, str_repeat("=", $bar), str_repeat(" ", $width - $bar), $info);
+    return sprintf("  %s%%[%s>%s]%s\r", $perc, str_repeat('=', $bar), str_repeat(' ', $width - $bar), $info);
 }
 
 function curlResolveCa(CurlHandle $ch): void
@@ -1603,10 +2094,10 @@ function fetch_url(string $url, string $file = '', array $options = []): string
     if ($url === '') {
         throw new Exception('Missing url');
     }
-    if (ini_get('allow_url_fopen') !== '1' && !function_exists('curl_init')) {
+    if (ini_get('allow_url_fopen') !== '1' && ! function_exists('curl_init')) {
         throw new Exception("cURL isn't installed and allow_url_fopen is disabled. Can't perform HTTP requests.");
     }
-    $fn = (!function_exists('curl_init') ? 'fgc' : 'curl');
+    $fn = (! function_exists('curl_init') ? 'fgc' : 'curl');
     if ($fn == 'curl') {
         $ch = curl_init();
         curlResolveCa($ch);
@@ -1624,9 +2115,9 @@ function fetch_url(string $url, string $file = '', array $options = []): string
             curl_setopt($ch, CURLOPT_PROGRESSFUNCTION, 'Chevereto\Legacy\G\curlProgress');
             curl_setopt($ch, CURLOPT_NOPROGRESS, 0);
         }
-        if (!empty($options)) {
+        if (! empty($options)) {
             foreach ($options as $k => $v) {
-                if (!is_int($k)) {
+                if (! is_int($k)) {
                     continue;
                 }
                 curl_setopt($ch, $k, $v);
@@ -1634,7 +2125,7 @@ function fetch_url(string $url, string $file = '', array $options = []): string
         }
         if ($file !== '') {
             $out = fopen($file, 'wb');
-            if (!$out) {
+            if (! $out) {
                 throw new Exception("Can't open file for read and write");
             }
             curl_setopt($ch, CURLOPT_FILE, $out);
@@ -1659,10 +2150,13 @@ function fetch_url(string $url, string $file = '', array $options = []): string
         }
     } else {
         $context = stream_context_create([
-            'http' => ['ignore_errors' => true, 'follow_location' => false],
+            'http' => [
+                'ignore_errors' => true,
+                'follow_location' => false,
+            ],
         ]);
         $contents = file_get_contents($url, false, $context);
-        if (!$contents) {
+        if (! $contents) {
             throw new Exception("Can't fetch target URL (file_get_contents)");
         }
         if ($file !== '') {
@@ -1717,7 +2211,9 @@ function bcrypt_cost(float $time = 0.2, int $cost = 9): int
     do {
         ++$cost;
         $inicio = microtime(true);
-        password_hash('test', PASSWORD_BCRYPT, ['cost' => $cost]);
+        password_hash('test', PASSWORD_BCRYPT, [
+            'cost' => $cost,
+        ]);
         $fin = microtime(true);
     } while (($fin - $inicio) < $time);
 
@@ -1727,9 +2223,9 @@ function bcrypt_cost(float $time = 0.2, int $cost = 9): int
 function is_integer(mixed $var, array $range = []): bool
 {
     $options = [];
-    if (!empty($range) && is_array($range)) {
+    if (! empty($range) && is_array($range)) {
         foreach (['min', 'max'] as $k) {
-            if (!isset($range[$k])) {
+            if (! isset($range[$k])) {
                 continue;
             }
             if (is_int($range[$k])) {
@@ -1748,7 +2244,7 @@ function is_url_web(string $string)
 
 function is_url(mixed $string, array $protocols = []): bool
 {
-    if (!is_string($string)) {
+    if (! is_string($string)) {
         return false;
     }
     if (strlen($string) !== strlen(mb_convert_encoding($string, 'UTF-8'))) {
@@ -1762,10 +2258,10 @@ function is_url(mixed $string, array $protocols = []): bool
     $schemes = $protocols !== []
         ? $protocols
         : ['http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'svn', 'tel', 'fax', 'xmpp'];
-    if (!in_array(strtolower($parsed_url['scheme'] ?? ''), $schemes)) { // Must be a valid scheme
+    if (! in_array(strtolower($parsed_url['scheme'] ?? ''), $schemes)) { // Must be a valid scheme
         return false;
     }
-    if (!array_key_exists('host', $parsed_url)) { // Host must be there
+    if (! array_key_exists('host', $parsed_url)) { // Host must be there
         return false;
     }
 
@@ -1779,7 +2275,7 @@ function is_https(string $string): bool
 
 function is_valid_url(string $string): bool
 {
-    if (!is_url($string)) {
+    if (! is_url($string)) {
         return false;
     }
     $url = preg_replace('/^https/', 'http', $string, 1);
@@ -1808,11 +2304,11 @@ function is_valid_url(string $string): bool
 
 function is_image_url(mixed $string): bool
 {
-    if (!is_string($string)) {
+    if (! is_string($string)) {
         return false;
     }
 
-    return preg_match('/(?:ftp|https?):\/\/(\w+:\w+@)?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(:[0-9]{1,4}){0,1}|(?:[\w\-]+\.)+[a-z]{2,6})(?:\/[^\/#\?]+)+\.(?:jpe?g|gif|png|bmp|webp)/i', $string) === 1;
+    return preg_match('/(?:ftp|https?):\/\/(\w+:\w+@)?([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(:[0-9]{1,4}){0,1}|(?:[\w\-]+\.)+[a-z]{2,6})(?:\/[^\/#\?]+)+\.(?:jpe?g|gif|png|bmp|webp|avif)/i', $string) === 1;
 }
 
 function is_development_env(): bool
@@ -1838,11 +2334,11 @@ function is_animated_image($filename): bool
 function is_animated_gif($filename): bool
 {
     $fh = fopen($filename, 'rb');
-    if (!$fh) {
+    if (! $fh) {
         return false;
     }
     $count = 0;
-    while (!feof($fh) && $count < 2) {
+    while (! feof($fh) && $count < 2) {
         $chunk = fread($fh, 1024 * 100);
         $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
     }
@@ -1869,7 +2365,7 @@ function is_animated_png(string $filename): bool
 function is_animated_webp(string $filename): bool
 {
     $result = false;
-    $fh = fopen($filename, "rb");
+    $fh = fopen($filename, 'rb');
     fseek($fh, 12);
     if (fread($fh, 4) === 'VP8X') {
         fseek($fh, 20);
@@ -1902,35 +2398,35 @@ function is_writable(string $path): bool
 
 function get_mimetype(string $file): string
 {
+    if (function_exists('mime_content_type')) {
+        return mime_content_type($file);
+    }
     if (function_exists('finfo_open')) {
         return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $file);
-    } else {
-        if (function_exists('mime_content_type')) {
-            return mime_content_type($file);
-        } else {
-            return extension_to_mime(get_file_extension($file));
-        }
     }
+
+    return extension_to_mime(get_file_extension($file));
 }
 
 function mime_to_extension(string $mime): string
 {
     return [
-        'image/x-windows-bmp' => 'bmp',
-        'image/x-ms-bmp' => 'bmp',
+        'image/avif' => 'avif',
         'image/bmp' => 'bmp',
         'image/gif' => 'gif',
-        'image/pjpeg' => 'jpeg',
         'image/jpeg' => 'jpeg',
-        'image/x-png' => 'png',
+        'image/pjpeg' => 'jpeg',
         'image/png' => 'png',
-        'image/x-tiff' => 'tiff',
         'image/tiff' => 'tiff',
-        'image/x-icon' => 'ico',
         'image/vnd.microsoft.icon' => 'ico',
         'image/webp' => 'webp',
-        'video/quicktime' => 'mov',
+        'image/x-icon' => 'ico',
+        'image/x-ms-bmp' => 'bmp',
+        'image/x-png' => 'png',
+        'image/x-tiff' => 'tiff',
+        'image/x-windows-bmp' => 'bmp',
         'video/mp4' => 'mp4',
+        'video/quicktime' => 'mov',
         'video/webm' => 'webm',
     ][$mime] ?? '';
 }
@@ -1938,17 +2434,18 @@ function mime_to_extension(string $mime): string
 function extension_to_mime(string $ext): string
 {
     return [
+        'avif' => 'image/avif',
         'bmp' => 'image/bmp',
         'gif' => 'image/gif',
-        'jpg' => 'image/jpeg',
-        'jpeg' => 'image/jpeg',
-        'png' => 'image/png',
-        'tiff' => 'image/tiff',
         'ico' => 'image/vnd.microsoft.icon',
-        'webp' => 'image/webp',
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
         'mov' => 'video/quicktime',
         'mp4' => 'video/mp4',
+        'png' => 'image/png',
+        'tiff' => 'image/tiff',
         'webm' => 'video/webm',
+        'webp' => 'image/webp',
     ][$ext] ?? '';
 }
 
@@ -1973,19 +2470,20 @@ function get_video_fileinfo(string $file): array
         );
         $format = $ffprobe->format($file);
     } catch (Throwable $e) {
-        throw new Exception("FFprobe error: " . get_ffmpeg_error($e), 600);
+        throw new Exception('FFprobe error: ' . get_ffmpeg_error($e), 600);
     }
-    if (!($format->get('duration') > 0)) {
-        throw new Exception("Invalid video file provided", 100);
+    if (! ($format->get('duration') > 0)) {
+        throw new Exception('Invalid video file provided', 100);
     }
     $all = $ffprobe
         ->streams($file)
         ->videos()
         ->first()
         ->all();
-    $codecLong = strtolower($all['codec_long_name'] ?? '');
-    $extension = str_contains($codecLong, 'mpeg-4') ? 'mp4' : 'webm';
+    // $codecLong = strtolower($all['codec_long_name'] ?? '');
     $filesize = filesize($file);
+    $mimetype = get_mimetype($file);
+    $extension = mime_to_extension($mimetype);
     $duration = $all['duration'] ?? null;
     if ($duration === null) {
         $format = $ffprobe->format($file)->all();
@@ -2000,7 +2498,7 @@ function get_video_fileinfo(string $file): array
         'ratio' => $all['width'] / $all['height'],
         'size' => intval($filesize),
         'size_formatted' => format_bytes($filesize),
-        'mime' => 'video/' . $extension,
+        'mime' => $mimetype,
         'extension' => $extension,
         'bits' => $all['bits_per_raw_sample'] ?? 0,
         'channels' => '',
@@ -2015,7 +2513,7 @@ function get_image_fileinfo(string $file): array
     clearstatcache(true, $file);
     $info = getimagesize($file);
     $filesize = filesize($file);
-    if (!$info || $filesize === false) {
+    if (! $info || $filesize === false) {
         return [];
     }
     $mime = strtolower($info['mime']);
@@ -2053,14 +2551,14 @@ function get_basename_without_extension(string $filename): string
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = basename($filename);
 
-    return str_replace_last(".$extension", '', $filename);
+    return str_replace_last(".{$extension}", '', $filename);
 }
 
 function get_pathname_without_extension(string $filename): string
 {
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
 
-    return str_replace_last(".$extension", '', $filename);
+    return str_replace_last(".{$extension}", '', $filename);
 }
 
 function change_pathname_extension(string $filename, string $extension): string
@@ -2070,12 +2568,10 @@ function change_pathname_extension(string $filename, string $extension): string
         return $filename;
     }
 
-    return "$chop.$extension";
+    return "{$chop}.{$extension}";
 }
 
 /**
- * @param string $method: original | random | mixed | id
- * @param string $filename: name of the original file.
  * @deprecated V4
  */
 function get_filename_by_method(string $method, string $filename): string
@@ -2146,7 +2642,7 @@ function name_unique_file(
 /** @deprecated V4 */
 function imagefilteropacity(GdImage &$img, ?int $opacity): bool
 {
-    if (!isset($opacity)) {
+    if (! isset($opacity)) {
         return false;
     }
     $opacity /= 100;
@@ -2172,7 +2668,7 @@ function imagefilteropacity(GdImage &$img, ?int $opacity): bool
                 $alpha += 127 * $opacity;
             }
             $alphacolorxy = imagecolorallocatealpha($img, ($colorxy >> 16) & 0xFF, ($colorxy >> 8) & 0xFF, $colorxy & 0xFF, $alpha);
-            if (!imagesetpixel($img, $x, $y, $alphacolorxy)) {
+            if (! imagesetpixel($img, $x, $y, $alphacolorxy)) {
                 return false;
             }
         }
@@ -2214,27 +2710,27 @@ function get_mask_bit_shift(int $bits, string $mask)
 {
     if ($bits == 16) {
         // 555
-        if ($mask == 0x7c00) {
+        if ($mask == 0x7C00) {
             return 7;
         }
-        if ($mask == 0x03e0) {
+        if ($mask == 0x03E0) {
             return 2;
         }
         // 656
-        if ($mask == 0xf800) {
+        if ($mask == 0xF800) {
             return 8;
         }
-        if ($mask == 0x07e0) {
+        if ($mask == 0x07E0) {
             return 3;
         }
     } else {
-        if ($mask == 0xff000000) {
+        if ($mask == 0xFF000000) {
             return 24;
         }
-        if ($mask == 0x00ff0000) {
+        if ($mask == 0x00FF0000) {
             return 16;
         }
-        if ($mask == 0x0000ff00) {
+        if ($mask == 0x0000FF00) {
             return 8;
         }
     }
@@ -2245,7 +2741,7 @@ function get_mask_bit_shift(int $bits, string $mask)
 /** @deprecated V4 */
 function imagecreatefrombmp(string $file): GdImage|bool
 {
-    if (!($fh = fopen($file, 'rb'))) {
+    if (! ($fh = fopen($file, 'rb'))) {
         trigger_error('imagecreatefrombmp: Can not open ' . $file, E_USER_WARNING);
 
         return false;
@@ -2263,13 +2759,13 @@ function imagecreatefrombmp(string $file): GdImage|bool
         $bytes_read += 12;
     } else {
         if ($meta['bits'] == 16) {
-            $meta['rMask'] = 0x7c00;
-            $meta['gMask'] = 0x03e0;
-            $meta['bMask'] = 0x001f;
+            $meta['rMask'] = 0x7C00;
+            $meta['gMask'] = 0x03E0;
+            $meta['bMask'] = 0x001F;
         } elseif ($meta['bits'] > 16) {
-            $meta['rMask'] = 0x00ff0000;
-            $meta['gMask'] = 0x0000ff00;
-            $meta['bMask'] = 0x000000ff;
+            $meta['rMask'] = 0x00FF0000;
+            $meta['gMask'] = 0x0000FF00;
+            $meta['bMask'] = 0x000000FF;
         }
     }
     $meta['bytes'] = $meta['bits'] / 8;
@@ -2288,7 +2784,7 @@ function imagecreatefrombmp(string $file): GdImage|bool
             }
         }
     }
-    $meta['colors'] = !$meta['colors']
+    $meta['colors'] = ! $meta['colors']
         ? 2 ** $meta['bits']
         : $meta['colors'];
     $palette = [];
@@ -2314,7 +2810,7 @@ function imagecreatefrombmp(string $file): GdImage|bool
         while ($x < $meta['width']) {
             switch ($meta['bits']) {
                 case 32:
-                    if (!($part = substr($data, $p, 4))) {
+                    if (! ($part = substr($data, $p, 4))) {
                         trigger_error($error, E_USER_WARNING);
 
                         return $im;
@@ -2324,7 +2820,7 @@ function imagecreatefrombmp(string $file): GdImage|bool
 
                     break;
                 case 24:
-                    if (!($part = substr($data, $p, 3))) {
+                    if (! ($part = substr($data, $p, 3))) {
                         trigger_error($error, E_USER_WARNING);
 
                         return $im;
@@ -2334,7 +2830,7 @@ function imagecreatefrombmp(string $file): GdImage|bool
 
                     break;
                 case 16:
-                    if (!($part = substr($data, $p, 2))) {
+                    if (! ($part = substr($data, $p, 2))) {
                         trigger_error($error, E_USER_WARNING);
 
                         return $im;
@@ -2416,7 +2912,9 @@ function json_prepare(): void
         return;
     }
     if (server()['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') {
-        json_output(['status_code' => 400]);
+        json_document_output([
+            'status_code' => 400,
+        ]);
     }
 }
 
@@ -2434,24 +2932,24 @@ function json_error(Throwable $e): array
     ];
 }
 
-function redirect(string $to = '', int $status = 301): void
+function redirect(string $to = '', int $status = 302): void
 {
-    if (PHP_SAPI === 'cli') {
-        echo sprintf("> Redirection to $to (%s)", (string) $status) . "\n";
-        if (!defined('PHPUNIT_CHEVERETO_TESTSUITE')) {
-            die();
-        }
-    }
-    if (!is_url_web($to)) {
-        $to = get_base_url($to);
+    if (! is_url_web($to)) {
+        $to = get_base_url($to, true);
     }
     $to = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%!]|i', '', $to);
-    if (php_sapi_name() != 'cgi-fcgi') {
+    if (PHP_SAPI === 'cli') {
+        echo sprintf("> Redirection to {$to} (%s)", (string) $status) . "\n";
+        if (! defined('PHPUNIT_CHEVERETO_TESTSUITE')) {
+            exit();
+        }
+    }
+    if (PHP_SAPI != 'cgi-fcgi') {
         set_status_header($status);
     }
-    header("Location: $to");
-    if (!defined('PHPUNIT_CHEVERETO_TESTSUITE')) {
-        die();
+    header("Location: {$to}");
+    if (! defined('PHPUNIT_CHEVERETO_TESTSUITE')) {
+        exit();
     }
 }
 
@@ -2465,10 +2963,10 @@ function set_status_header(int $code): void
         return;
     }
     $protocol = server()['SERVER_PROTOCOL'] ?? 'HTTP/1.1';
-    if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol) {
+    if ($protocol != 'HTTP/1.1' && $protocol != 'HTTP/1.0') {
         $protocol = 'HTTP/1.0';
     }
-    $set_status_header = "$protocol $code $desc";
+    $set_status_header = "{$protocol} {$code} {$desc}";
     header($set_status_header, true, $code);
 }
 
@@ -2527,7 +3025,7 @@ function get_set_status_header_desc(int $code): string
         507 => 'Insufficient Storage',
         510 => 'Not Extended',
     ];
-    if (!isset($codes_to_desc[$code])) {
+    if (! isset($codes_to_desc[$code])) {
         throw new LogicException('Invalid HTTP status code');
     }
 
@@ -2571,20 +3069,20 @@ function get_domain(string $domain, bool $debug = false): string
     if (filter_var($domain, FILTER_VALIDATE_IP)) {
         return $domain;
     }
-    $debug ? print('<strong style="color:green">&raquo;</strong> Parsing: ' . $original) : false;
+    $debug ? print ('<strong style="color:green">&raquo;</strong> Parsing: ' . $original) : false;
     $arr = array_slice(array_filter(explode('.', $domain, 4), function ($value) {
         return $value !== 'www';
     }), 0); //rebuild array indexes
     if (count($arr) > 2) {
         $count = count($arr);
         $_sub = explode('.', $count === 4 ? $arr[3] : $arr[2]);
-        $debug ? print(" (parts count: {$count})") : false;
+        $debug ? print (" (parts count: {$count})") : false;
         if (count($_sub) === 2) { // two level TLD
             $removed = array_shift($arr);
             if ($count === 4) { // got a subdomain acting as a domain
                 $removed = array_shift($arr);
             }
-            $debug ? print("<br>\n" . '[*] Two level TLD: <strong>' . join('.', $_sub) . '</strong> ') : false;
+            $debug ? print ("<br>\n" . '[*] Two level TLD: <strong>' . implode('.', $_sub) . '</strong> ') : false;
         } elseif (count($_sub) === 1) { // one level TLD
             $removed = array_shift($arr); //remove the subdomain
             if (strlen($_sub[0]) === 2 && $count === 3) { // TLD domain must be 2 letters
@@ -2619,33 +3117,33 @@ function get_domain(string $domain, bool $debug = false): string
                     array_shift($arr);
                 }
             }
-            $debug ? print("<br>\n" . '[*] One level TLD: <strong>' . join('.', $_sub) . '</strong> ') : false;
+            $debug ? print ("<br>\n" . '[*] One level TLD: <strong>' . implode('.', $_sub) . '</strong> ') : false;
         } else { // more than 3 levels, something is wrong
             for ($i = count($_sub); $i > 1; --$i) {
                 $removed = array_shift($arr);
             }
-            $debug ? print("<br>\n" . '[*] Three level TLD: <strong>' . join('.', $_sub) . '</strong> ') : false;
+            $debug ? print ("<br>\n" . '[*] Three level TLD: <strong>' . implode('.', $_sub) . '</strong> ') : false;
         }
     } elseif (count($arr) === 2) {
         $arr0 = array_shift($arr);
         if (
-            strpos(join('.', $arr), '.') === false
+            strpos(implode('.', $arr), '.') === false
             && in_array($arr[0], ['localhost', 'test', 'invalid']) === false
         ) { // not a reserved domain
-            $debug ? print("<br>\n" . 'Seems invalid domain: <strong>' . join('.', $arr) . '</strong> re-adding: <strong>' . $arr0 . '</strong> ') : false;
+            $debug ? print ("<br>\n" . 'Seems invalid domain: <strong>' . implode('.', $arr) . '</strong> re-adding: <strong>' . $arr0 . '</strong> ') : false;
             // seems invalid domain, restore it
             array_unshift($arr, $arr0);
         }
     }
-    $debug ? print("<br>\n" . '<strong style="color:gray">&laquo;</strong> Done parsing: <span style="color:red">' . $original . '</span> as <span style="color:blue">' . join('.', $arr) . "</span><br>\n") : false;
+    $debug ? print ("<br>\n" . '<strong style="color:gray">&laquo;</strong> Done parsing: <span style="color:red">' . $original . '</span> as <span style="color:blue">' . implode('.', $arr) . "</span><br>\n") : false;
 
-    return join('.', $arr);
+    return implode('.', $arr);
 }
 
 function getQsParams(): array
 {
     $a = [];
-    foreach (explode("&", server()["QUERY_STRING"]) as $q) {
+    foreach (explode('&', server()['QUERY_STRING']) as $q) {
         $p = explode('=', $q, 2);
         $a[$p[0]] = $p[1] ?? '';
     }
@@ -2674,7 +3172,7 @@ function dsq_hmacsha1($data, $key)
     }
     $key = str_pad($key, $blocksize, chr(0x00));
     $ipad = str_repeat(chr(0x36), $blocksize);
-    $opad = str_repeat(chr(0x5c), $blocksize);
+    $opad = str_repeat(chr(0x5C), $blocksize);
     $hmac = pack('H*', $hashfunc(($key ^ $opad) . pack('H*', $hashfunc(($key ^ $ipad) . $data))));
 
     return bin2hex($hmac);

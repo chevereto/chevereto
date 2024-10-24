@@ -12,15 +12,16 @@
 namespace Chevereto\Legacy\Classes;
 
 use Chevereto\Legacy\G\DB as GDB;
+use PDO;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Vars\env;
-use PDO;
 
 class DB extends GDB
 {
     public const TABLES = [
         'albums',
         'api_keys',
+        'assets',
         'categories',
         'confirmations',
         'deletions',
@@ -31,11 +32,11 @@ class DB extends GDB
         'importing',
         'ip_bans',
         'likes',
-        'logins',
         'login_connections',
         'login_cookies',
         'login_passwords',
         'login_providers',
+        'logins',
         'notifications',
         'pages',
         'queue',
@@ -44,20 +45,31 @@ class DB extends GDB
         'stats',
         'storage_apis',
         'storages',
+        'tags_albums',
+        'tags_files',
+        'tags_users',
+        'tags',
         'two_factors',
         'users',
+        'variables',
     ];
 
     public const PREFIX_TO_TABLE = [
         'category' => 'categories',
         'deleted' => 'deletions',
         'image_hash' => 'images_hash',
+        'tag_file' => 'tags_files',
+        'tag_user' => 'tags_users',
+        'tag_album' => 'tags_albums',
     ];
 
     public const TABLES_TO_PREFIX = [
         'categories' => 'category',
         'deletions' => 'deleted',
         'images_hash' => 'image_hash',
+        'tags_files' => 'tag_file',
+        'tags_users' => 'tag_user',
+        'tags_albums' => 'tag_album',
     ];
 
     public static function getTable(string $table): string
@@ -77,7 +89,7 @@ class DB extends GDB
 
     public static function get(
         array|string $table,
-        array|string $values,
+        array|string $where,
         string $clause = 'AND',
         array $sort = [],
         int $limit = null,
@@ -85,11 +97,11 @@ class DB extends GDB
         array $valuesOperators = []
     ): mixed {
         $prefix = self::getFieldPrefix($table);
-        $values = self::getPrefixedValues($prefix, $values);
+        $where = self::getPrefixedValues($prefix, $where);
         $valuesOperators = self::getPrefixedValues($prefix, $valuesOperators);
         $sort = self::getPrefixedSort($prefix, $sort);
 
-        return GDB::get($table, $values, $clause, $sort, $limit, $fetch_style, $valuesOperators);
+        return GDB::get($table, $where, $clause, $sort, $limit, $fetch_style, $valuesOperators);
     }
 
     public static function update(
@@ -97,7 +109,7 @@ class DB extends GDB
         array $values,
         array $wheres,
         string $clause = 'AND'
-    ): int {
+    ): int|false {
         $prefix = self::getFieldPrefix($table);
         $values = self::getPrefixedValues($prefix, $values);
         $wheres = self::getPrefixedValues($prefix, $wheres);
@@ -105,7 +117,7 @@ class DB extends GDB
         return GDB::update($table, $values, $wheres, $clause);
     }
 
-    public static function insert($table, $values): int
+    public static function insert($table, $values): int|false
     {
         $prefix = self::getFieldPrefix($table);
         $values = self::getPrefixedValues($prefix, $values);
@@ -139,7 +151,7 @@ class DB extends GDB
 
     public static function formatRow(mixed $row, string $prefix = ''): mixed
     {
-        if (!is_array($row)) {
+        if (! is_array($row)) {
             return $row;
         }
         if ($prefix == '') {
@@ -151,7 +163,7 @@ class DB extends GDB
         $output = [];
         foreach ($row as $k => $v) {
             $k = (string) $k;
-            if (!starts_with($prefix, $k)) {
+            if (! starts_with($prefix, $k)) {
                 $new_key = preg_match('/^([a-z0-9]+)_/i', (string) $k, $new_key_match);
                 $new_key = $new_key_match[1] ?? null;
                 if ($new_key === null) {
@@ -173,7 +185,7 @@ class DB extends GDB
             foreach ($get as $k => $v) {
                 self::formatRowValues($get[$k], $v, $prefix);
             }
-        } elseif (!empty($get)) {
+        } elseif (! empty($get)) {
             self::formatRowValues(values: $get, prefix: $prefix);
         }
 
@@ -202,14 +214,14 @@ class DB extends GDB
         }
         if (array_key_exists($table, self::TABLES_TO_PREFIX)) {
             return self::TABLES_TO_PREFIX[$table];
-        } else {
-            return rtrim($table, 's');
         }
+
+        return rtrim($table, 's');
     }
 
     protected static function getPrefixedValues(string $prefix, array|string $values): array|string
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             return $values;
         }
         $values_prefix = [];
@@ -224,7 +236,7 @@ class DB extends GDB
 
     protected static function getPrefixedSort(string $prefix, array $sort): array
     {
-        if ($sort !== [] && !empty($sort['field'])) {
+        if ($sort !== [] && ! empty($sort['field'])) {
             $sort['field'] = $prefix . '_' . $sort['field'];
         }
 

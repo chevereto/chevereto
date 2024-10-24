@@ -11,14 +11,18 @@
 
 use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
-use function Chevereto\Legacy\G\get_route_name;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\redirect;
+use function Chevereto\Legacy\G\get_route_name;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Vars\request;
 
 return function (Handler $handler) {
-    if (!$handler::cond('explore_enabled')) {
+    if (! $handler::cond('explore_enabled')) {
+        $handler->issueError(404);
+
+        return;
+    }
+    if ($handler->isRequestLevel(3)) {
         $handler->issueError(404);
 
         return;
@@ -26,29 +30,33 @@ return function (Handler $handler) {
     $category = null;
     $categories = $handler::var('categories');
     $category_url_key = $handler->request()[0] ?? false;
-    if (!$category_url_key) {
-        redirect('explore');
-    }
-    if ($category_url_key) {
-        foreach ($categories as $v) {
-            if ($v['url_key'] == $category_url_key) {
-                $category = $v;
+    if (! $category_url_key) {
+        $handler->issueError(404);
 
-                break;
-            }
-        }
-        if (!$category) {
-            $handler->issueError(404);
-
-            return;
-        }
-        $handler::setVar('pre_doctitle', $category['name']);
+        return;
     }
+    $category_url_key = urldecode($category_url_key);
+    foreach ($categories as $v) {
+        if ($v['url_key'] == $category_url_key) {
+            $category = $v;
+
+            break;
+        }
+    }
+    if (! $category) {
+        $handler->issueError(404);
+
+        return;
+    }
+    $handler::setVar('pre_doctitle', $category['name']);
     $getParams = Listing::getParams(request());
     $tabs = Listing::getTabs([
         'listing' => 'images',
         'basename' => get_route_name() . '/' . $category['url_key'],
-        'params_hidden' => ['category_id' => $category['id'], 'hide_banned' => 1],
+        'params_hidden' => [
+            'category_id' => $category['id'],
+            'hide_banned' => 1,
+        ],
     ], $getParams);
     $handler::setVar('list_params', $getParams);
     $listing = new Listing();
@@ -67,10 +75,9 @@ return function (Handler $handler) {
     $listing->setRequester(Login::getUser());
     $listing->exec();
     $meta_description = $category['description'] ?? '';
-    $handler::setVar('meta_description', htmlspecialchars($meta_description));
+    $handler::setVar('meta_description', $meta_description);
     $handler::setVar('category', $category);
     $handler::setVar('tabs', $tabs);
     $handler::setVar('listing', $listing);
-    $handler->setTemplate('explore');
     $handler::setVar('share_links_array', get_share_links());
 };

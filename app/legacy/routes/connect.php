@@ -9,28 +9,29 @@
  * file that was distributed with this source code.
  */
 
-use function Chevere\Message\message;
 use Chevereto\Legacy\Classes\HybridauthSession;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
-use function Chevereto\Legacy\G\get_public_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\redirect;
-use function Chevereto\Legacy\getSetting;
 use Hybridauth\Exception\InvalidAuthorizationStateException;
 use Hybridauth\Hybridauth;
+use function Chevere\Message\message;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
+use function Chevereto\Legacy\G\get_public_url;
+use function Chevereto\Legacy\G\redirect;
+use function Chevereto\Legacy\getSetting;
 
 return function (Handler $handler) {
-    if (!version_compare(Settings::get('chevereto_version_installed') ?? '', '4.0.0-beta.11', '>=')) {
+    if (! version_compare(cheveretoVersionInstalled(), '4.0.0-beta.11', '>=')) {
         echo 'Route not available until the system update gets installed.';
-        die();
+        exit();
     }
     $doing = $handler->request()[0] ?? '';
     $providersEnabled = Login::getProviders('enabled');
     $doable = array_keys($providersEnabled);
-    if (!in_array($doing, $doable)) {
+    if (! in_array($doing, $doable)) {
         $handler->issueError(404);
 
         return;
@@ -43,7 +44,7 @@ return function (Handler $handler) {
         if ($validate['valid']
             && in_array($validate['id'], Login::getSession()['login_cookies'] ?? [])
         ) {
-            redirect('settings/connections#' . $doing);
+            redirect('settings/connections#' . $doing, 302);
 
             return;
         }
@@ -58,7 +59,7 @@ return function (Handler $handler) {
             'keys' => [
                 'id' => $provider['key_id'],
                 'secret' => $provider['key_secret'],
-            ]
+            ],
         ];
     }
     $session = new HybridauthSession();
@@ -66,13 +67,12 @@ return function (Handler $handler) {
     $adapter = $hybridauth->getAdapter($doing);
 
     try {
-        if (!$adapter->isConnected()) {
+        if (! $adapter->isConnected()) {
             $adapter->authenticate();
-        } else {
         }
     } catch (InvalidAuthorizationStateException) {
         $session->clear();
-        redirect('connect/' . $doing);
+        redirect('connect/' . $doing, 302);
     }
     if ($adapter->isConnected()) {
         $user = $logged_user;
@@ -87,11 +87,11 @@ return function (Handler $handler) {
             }
             if ($connectedUserId != ($user['id'] ?? 0)) {
                 Login::logout();
-                redirect('connect/' . $doing);
+                redirect('connect/' . $doing, 302);
             }
         }
         if ($user === []) {
-            if (!Settings::get('enable_signups')) {
+            if (! Settings::get('enable_signups')) {
                 $handler->issueError(403);
 
                 return;
@@ -101,11 +101,11 @@ return function (Handler $handler) {
             foreach ($user_matches[0] as $match) {
                 $username .= $match;
             }
-            $baseUsername = substr(strtolower($username), 0, (int) getSetting('username_max_length'));
+            $baseUsername = substr(strtolower($username), 0, (int) Settings::USERNAME_MAX_LENGTH);
             $username = $baseUsername;
             $j = 1;
-            while (!User::isValidUsername($username)) {
-                if (strlen($username) > getSetting('username_max_length')) {
+            while (! User::isValidUsername($username)) {
+                if (strlen($username) > Settings::USERNAME_MAX_LENGTH) {
                     $username = substr($baseUsername, 0, -strlen(strval($j))) . $j;
                 } else {
                     $username .= $j;
@@ -114,7 +114,7 @@ return function (Handler $handler) {
             }
             $i = 1;
             while (User::getSingle($username, 'username', false)) {
-                if (strlen($username) > getSetting('username_max_length')) {
+                if (strlen($username) > Settings::USERNAME_MAX_LENGTH) {
                     $username = substr($baseUsername, 0, -strlen(strval($i))) . $i;
                 } else {
                     $username .= $i;
@@ -132,9 +132,6 @@ return function (Handler $handler) {
                 'language' => L10n::getLocale(),
             ];
             $insert_user_values = array_filter($insert_user_values);
-            // if (in_array($doing, ['twitter', 'facebook'])) {
-            //     $insert_user_values[$doing . '_username'] = $connectProfile->displayName;
-            // }
             $inserted_user = User::insert($insert_user_values);
             $user = User::getSingle($inserted_user, 'id', true);
         }
@@ -169,10 +166,10 @@ return function (Handler $handler) {
                 ? $user['url']
                 : 'settings/connections#' . $doing
         );
-        redirect($redirectTo);
+        redirect($redirectTo, 302);
     }
 
-    redirect('');
+    redirect('', 302);
 
-    die();
+    exit();
 };

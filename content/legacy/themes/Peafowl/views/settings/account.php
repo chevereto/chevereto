@@ -11,8 +11,9 @@
 
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\get_checkbox_html;
 use function Chevereto\Legacy\get_enabled_languages;
 use function Chevereto\Legacy\get_select_options_html;
@@ -22,22 +23,12 @@ use function Chevereto\Legacy\getSetting;
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
-    if (Handler::var('user')['registration_ip']) {
-        ?>
-    <div data-modal="modal-add-ip_ban" class="hidden" data-submit-fn="CHV.fn.ip_ban.add.submit" data-before-fn="CHV.fn.ip_ban.add.before" data-ajax-deferred="CHV.fn.ip_ban.add.complete">
-        <span class="modal-box-title"><i class="fas fa-ban"></i> <?php _se('Add IP ban'); ?></span>
-        <div class="modal-form">
-            <?php include_theme_file('snippets/form_ip_ban_edit'); ?>
-        </div>
-    </div>
-    <?php
-    } ?>
-    <ul class="tabbed-content-list table-li margin-bottom-20">
+if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) { ?>
+    <ul class="tabbed-content-list table-li margin-top-0 margin-bottom-20">
 <?php
     foreach (Handler::var('user_list_values') as $v) {
         ?>
-        <li><span class="c4 display-table-cell padding-right-10"><?php echo $v['label']; ?></span> <span class="display-table-cell"><?php echo $v['content']; ?></span></li>
+        <li><span class="c4 display-table-cell padding-right-10 font-weight-bold"><?php echo $v['label']; ?></span> <span class="display-table-cell"><?php echo $v['content']; ?></span></li>
     <?php
     } ?>
     </ul>
@@ -84,7 +75,7 @@ if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
 <div class="c12 phablet-c1">
     <div class="input-label">
         <label for="username"><?php _se('Username'); ?></label>
-        <input autocomplete="nickname" type="text" name="username" id="username" maxlength="<?php echo getSetting('username_max_length'); ?>" class="text-input" value="<?php echo Handler::var('safe_post')["username"] ?? Handler::var('user')["username"]; ?>" pattern="<?php echo getSetting('username_pattern'); ?>" rel="tooltip" title='<?php _se('%i to %f characters<br>Letters, numbers and "_"', ['%i' => getSetting('username_min_length'), '%f' => getSetting('username_max_length')]); ?>' data-tipTip="right" placeholder="<?php _se('Username'); ?>" required>
+        <input autocomplete="nickname" type="text" name="username" id="username" maxlength="<?php echo Settings::USERNAME_MAX_LENGTH; ?>" class="text-input" value="<?php echo Handler::var('safe_post')["username"] ?? Handler::var('user')["username"]; ?>" pattern="<?php echo Settings::USERNAME_PATTERN; ?>" rel="tooltip" title='<?php _se('%i to %f characters<br>Letters, numbers and "_"', ['%i' => Settings::USERNAME_MIN_LENGTH, '%f' => Settings::USERNAME_MAX_LENGTH]); ?>' data-tipTip="right" placeholder="<?php _se('Username'); ?>" required>
         <span class="input-warning red-warning"><?php echo Handler::var('input_errors')["username"] ?? ''; ?></span>
         <?php
             if (getSetting('website_mode') == 'community') {
@@ -130,11 +121,19 @@ if (Handler::cond('dashboard_user') or Handler::cond('content_manager')) {
 <?php if (getSetting('upload_image_exif_user_setting')) {
             ?>
     <div class="input-label">
-        <label><?php _se('Image Exif data'); ?></label>
+        <label><?php _se('Keep EXIF data'); ?></label>
         <?php echo get_checkbox_html([
                     'name' => 'image_keep_exif',
-                    'label' => _s('Keep image <a %s>Exif data</a> on upload', 'href="https://www.google.com/search?q=Exif" target="_blank"'),
+                    'label' => _s('Keep %s on upload', '<a href="https://www.google.com/search?q=Exif" target="_blank">'._s('EXIF data').'</a>'),
                     'checked' => ((bool) (Handler::var('safe_post')['image_keep_exif'] ?? Handler::var('user')['image_keep_exif']))
+                ]); ?>
+    </div>
+    <div class="input-label">
+        <label><?php _se('Automatic metadata tags'); ?></label>
+        <?php echo get_checkbox_html([
+                    'name' => 'file_meta_tag_camera_model',
+                    'label' => _s('Assign camera model tag on upload'),
+                    'checked' => ((bool) (Handler::var('safe_post')['file_meta_tag_camera_model'] ?? Handler::var('user')['file_meta_tag_camera_model']))
                 ]); ?>
     </div>
 <?php

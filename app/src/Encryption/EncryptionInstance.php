@@ -11,9 +11,8 @@
 
 namespace Chevereto\Encryption;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
+use LogicException;
 
 final class EncryptionInstance
 {
@@ -26,10 +25,8 @@ final class EncryptionInstance
 
     public static function get(): EncryptionInterface
     {
-        if (!isset(self::$instance)) {
-            throw new LogicException(
-                message('No Encryption instance present')
-            );
+        if (! isset(self::$instance)) {
+            throw new LogicException('No Encryption instance present');
         }
 
         return self::$instance;

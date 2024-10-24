@@ -2,26 +2,37 @@
 
 use function Chevereto\Legacy\G\get_input_auth_token;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_file;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-include_theme_header(); ?>
-<div class="top-sub-bar follow-scroll margin-bottom-5 margin-top-5">
+require_theme_header(); ?>
+<div class="top-sub-bar follow-scroll margin-bottom-5">
     <div class="content-width">
         <div class="header header-tabs no-select">
             <h1 class="header-title"><strong><span class="header-icon fas fa-user-cog"></span><span class="phone-hide margin-left-5"><?php _se('Settings'); ?></span></strong>
             </h1>
-    	    <?php include_theme_file("snippets/tabs"); ?>
+    	    <?php require_theme_file("snippets/tabs"); ?>
         </div>
     </div>
 </div>
-
-<div class="content-width margin-top-20">
+<?php
+if (Handler::cond('settings_account')
+    && (Handler::cond('dashboard_user') || Handler::cond('content_manager'))
+    && Handler::var('user')['registration_ip']
+) { ?>
+<div data-modal="modal-add-ip_ban" class="hidden" data-submit-fn="CHV.fn.ip_ban.add.submit" data-before-fn="CHV.fn.ip_ban.add.before" data-ajax-deferred="CHV.fn.ip_ban.add.complete">
+    <span class="modal-box-title"><i class="fas fa-ban"></i> <?php _se('Add IP ban'); ?></span>
+    <div class="modal-form">
+        <?php require_theme_file('snippets/form_ip_ban_edit'); ?>
+    </div>
+</div>
+<?php } ?>
+<div class="content-width">
     <div class="form-content">
         <form data-content="main-form" class="overflow-auto" method="post" data-type="<?php echo Handler::var('setting'); ?>" data-action="validate">
             <?php echo get_input_auth_token(); ?>
@@ -74,21 +85,12 @@ include_theme_header(); ?>
         </form>
     </div>
 </div>
-<?php if (Handler::var('post')) {
-                if (Handler::cond('changed')) { ?>
-	<script>
-		$(function() {
-			PF.fn.growl.expirable("<?php echo Handler::var('changed_message') ?? _s('Changes have been saved.'); ?>");
-		});
-	</script>
-<?php
-                }
-                if (Handler::cond('error')) { ?>
-	<script>
-		$(function() {
-			PF.fn.growl.call("<?php echo Handler::var('error_message') ?? _s('Check the errors to proceed.'); ?>");
-		});
-	</script>
+<?php if (Handler::var('post') && Handler::cond('error')) { ?>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+    PF.fn.growl.call("<?php echo Handler::var('error_message') ?? _s('Check the errors to proceed.'); ?>");
+});
+</script>
 <?php }
-            }
-include_theme_footer(); ?>
+
+require_theme_footer();

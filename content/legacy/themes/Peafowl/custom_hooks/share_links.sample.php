@@ -20,8 +20,8 @@ $share_links_networks = [
         'label' => 'Facebook'
     ],
     'twitter' => [
-        'url' => 'https://twitter.com/intent/tweet?original_referer=%URL%&url=%URL%&via=%TWITTER%&text=%TITLE%',
-        'label' => 'Twitter'
+        'url' => 'https://x.com/intent/tweet?original_referer=%URL%&url=%URL%&via=%TWITTER%&text=%TITLE%',
+        'label' => 'X'
     ],
     'blogger' => [
         'url' => 'http://www.blogger.com/blog-this.g?n=%TITLE%&source=&b=%HTML%',
@@ -36,7 +36,7 @@ $share_links_networks = [
         'label' => 'Pinterest'
     ],
     'reddit' => [
-        'url' => 'http://reddit.com/submit?url=%URL%',
+        'url' => 'http://old.reddit.com/submit?type=link&url=%URL%&title=%TITLE%&text=%DESCRIPTION%',
         'label' => 'reddit'
     ],
     'vk' => [

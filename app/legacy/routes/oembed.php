@@ -12,14 +12,14 @@
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
-use function Chevereto\Legacy\G\get_public_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\json_output;
+use function Chevereto\Legacy\G\get_public_url;
+use function Chevereto\Legacy\G\json_document_output;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\set_status_header;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\G\str_replace_last;
-use function Chevereto\Legacy\G\xml_output;
+use function Chevereto\Legacy\G\xml_document_output;
 use function Chevereto\Legacy\getIdFromURLComponent;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Vars\get;
@@ -30,32 +30,32 @@ return function (Handler $handler) {
 
         return;
     }
-    $viewer = Image::getUrlViewer('%id');
-    $viewer = str_replace('/', '\/', $viewer);
-    $regex = str_replace_last('%id', '(.*)', $viewer);
+    $viewerImage = Image::getUrlViewer(type: 'image', id_encoded: '%id');
+    $viewerImage = str_replace('/', '\/', $viewerImage);
+    $regex = str_replace_last('%id', '(.*)', $viewerImage);
     $regex = str_replace_first('https:', 'https?:', $regex);
     $regex = str_replace_first('http:', 'https?:', $regex);
-    if (!preg_match('#^' . $regex . '$#', get()['url'] ?? '', $matches)) {
+    if (! preg_match('#^' . $regex . '$#', get()['url'] ?? '', $matches)) {
         set_status_header(403);
-        die();
+        exit();
     }
     $id = getIdFromURLComponent($matches[1]);
     if ($id == 0) {
         set_status_header(404);
-        die();
+        exit();
     }
     $image = Image::getSingle(id: $id, pretty: true);
     if ($image === []) {
         set_status_header(404);
-        die();
+        exit();
     }
-    if (!$image['is_approved']) {
+    if (! $image['is_approved']) {
         set_status_header(403);
-        die();
+        exit();
     }
     if (in_array($image['album']['privacy'] ?? '', ['password', 'private', 'custom'])) {
         set_status_header(401);
-        die();
+        exit();
     }
     if (($image['user']['is_private'] ?? false) == 1) {
         unset($image['user']);
@@ -72,7 +72,15 @@ return function (Handler $handler) {
     ];
     switch ($image['type']) {
         case 'video':
-            $data['html'] = '<video src="' . $image['url'] . '" width="' . $image['width'] . '" height="' . $image['height'] . '" controls poster="' . $image['url_frame'] . '"></video>';
+            $data['html'] = '<video src="'
+                . $image['url']
+                . '" width="'
+                . $image['width']
+                . '" height="'
+                . $image['height']
+                . '" controls poster="'
+                . $image['url_frame']
+                . '"></video>';
             $data['type'] = 'video';
 
             break;
@@ -113,9 +121,16 @@ return function (Handler $handler) {
             'thumbnail_height' => $display_height,
         ]);
     }
-    match (get()['format'] ?? '') {
-        'xml' => xml_output(['oembed' => $data]),
-        default => json_output($data),
-    };
-    die();
+    $format = get()['format'] ?? '';
+    if ($format === 'xml') {
+        if (isset($data['html'])) {
+            $data['html'] = htmlentities($data['html']);
+        }
+        xml_document_output([
+            'oembed' => $data,
+        ]);
+    } else {
+        json_document_output($data);
+    }
+    exit();
 };

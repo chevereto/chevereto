@@ -1,12 +1,12 @@
 <?php
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 
 // @phpstan-ignore-next-line
-if (!defined('ACCESS') || !ACCESS) {
-    die('This file cannot be directly accessed.');
+if (! defined('ACCESS') || ! ACCESS) {
+    exit('This file cannot be directly accessed.');
 } ?>
-<?php include_theme_header(); ?>
+<?php require_theme_header(); ?>
 <div class="content-width">
 	<div class="c24 center-box margin-top-40 margin-bottom-40">
         <div class="header default-margin-bottom">
@@ -20,4 +20,4 @@ if (!defined('ACCESS') || !ACCESS) {
 		</div>
 	</div>
 </div>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

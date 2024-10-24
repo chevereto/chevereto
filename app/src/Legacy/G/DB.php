@@ -11,24 +11,24 @@
 
 namespace Chevereto\Legacy\G;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
-use function Chevereto\Vars\env;
 use Exception;
+use LogicException;
 use PDO;
 use PDOStatement;
+use function Chevere\Message\message;
+use function Chevereto\Vars\env;
 
 class DB
 {
+    public static PDO $dbh;
+
+    public PDOStatement $query;
+
     private array $pdo_default_attrs = [];
 
     private static ?self $instance;
 
     private array $pdo_options = [];
-
-    public static PDO $dbh;
-
-    public PDOStatement $query;
 
     public function __construct(
         private string $host,
@@ -82,10 +82,12 @@ class DB
 
     public static function getInstance(): self
     {
-        if (!isset(self::$instance)) {
+        if (! isset(self::$instance)) {
             throw new LogicException(
-                message('No %type% initialized')
-                    ->withCode('%type%', static::class)
+                message(
+                    'No `%type%` initialized',
+                    s: static::class
+                )
             );
         }
 
@@ -119,28 +121,28 @@ class DB
 
     public function bind(mixed $param, mixed $value, int $type = null): void
     {
-        if (is_null($type)) {
+        if ($type === null) {
             switch (true) {
                 case is_int($value):
                     $type = PDO::PARAM_INT;
 
-                break;
+                    break;
                 case is_bool($value):
                     $type = PDO::PARAM_BOOL;
 
-                break;
-                case is_null($value):
+                    break;
+                case $value === null:
                     $type = PDO::PARAM_NULL;
 
-                break;
+                    break;
                 case is_resource($value):
                     $type = PDO::PARAM_LOB;
 
-                break;
+                    break;
                 default:
                     $type = PDO::PARAM_STR;
 
-                break;
+                    break;
             }
         }
         $this->query->bindValue($param, $value, $type);
@@ -163,16 +165,16 @@ class DB
 
     public function fetchAll(int $mode = PDO::FETCH_ASSOC): array|false
     {
-        $this->exec();
-
-        return $this->query->fetchAll($mode);
+        return $this->exec() ?
+            $this->query->fetchAll($mode)
+            : false;
     }
 
     public function fetchSingle(int $mode = PDO::FETCH_ASSOC): mixed
     {
-        $this->exec();
-
-        return $this->query->fetch($mode);
+        return $this->exec()
+            ? $this->query->fetch($mode)
+            : false;
     }
 
     /**
@@ -217,7 +219,7 @@ class DB
             $fetch_style = PDO::FETCH_ASSOC;
         }
 
-        return $limit == 1
+        return $limit === 1
             ? $db->fetchSingle($fetch_style)
             : $db->fetchAll($fetch_style);
     }
@@ -252,17 +254,20 @@ class DB
         return env()['CHEVERETO_DB_TABLE_PREFIX'] . $table;
     }
 
+    /**
+     * On limit=1 returns FALSE if no results found.
+     */
     public static function get(
         array|string $table,
-        array|string $values,
+        array|string $where,
         string $clause = 'AND',
         array $sort = [],
         int $limit = null,
         int $fetch_style = PDO::FETCH_ASSOC,
         array $valuesOperators = []
     ): mixed {
-        if (!is_array($values) && $values !== 'all') {
-            throw new Exception('Expecting array values, ' . gettype($values) . ' given');
+        if (! is_array($where) && $where !== 'all') {
+            throw new Exception('Expecting array values, ' . gettype($where) . ' given');
         }
         self::validateClause($clause, __METHOD__);
         if (is_array($table)) {
@@ -274,10 +279,10 @@ class DB
         if (isset($join)) {
             $query .= ' ' . $join . ' ';
         }
-        if (is_array($values) && !empty($values)) {
+        if (is_array($where) && ! empty($where)) {
             $query .= ' WHERE ';
-            foreach ($values as $k => $v) {
-                if (is_null($v)) {
+            foreach ($where as $k => $v) {
+                if ($v === null) {
                     $query .= '`' . $k . '` IS :' . $k . ' ' . $clause . ' ';
                 } else {
                     $operator = $valuesOperators[$k] ?? '=';
@@ -286,28 +291,28 @@ class DB
             }
         }
         $query = rtrim($query, $clause . ' ');
-        if (!empty($sort)) {
-            if (!$sort['field']) {
+        if (! empty($sort)) {
+            if (! $sort['field']) {
                 $sort['field'] = 'date';
             }
-            if (!$sort['order']) {
+            if (! $sort['order']) {
                 $sort['order'] = 'desc';
             }
             $query .= ' ORDER BY ' . $sort['field'] . ' ' . strtoupper($sort['order']) . ' ';
         }
         if ($limit && is_int($limit)) {
-            $query .= " LIMIT $limit";
+            $query .= " LIMIT {$limit}";
         }
         $db = self::getInstance();
         $db->query($query);
-        if (is_array($values)) {
-            foreach ($values as $k => $v) {
+        if (is_array($where)) {
+            foreach ($where as $k => $v) {
                 $db->bind(':' . $k, $v);
             }
         }
         $fetch_style = (int) $fetch_style;
 
-        return $limit == 1
+        return $limit === 1
             ? $db->fetchSingle($fetch_style)
             : $db->fetchAll($fetch_style);
     }
@@ -317,7 +322,7 @@ class DB
         array $values,
         array $wheres,
         string $clause = 'AND'
-    ): int {
+    ): int|false {
         self::validateClause($clause, __METHOD__);
         $table = self::getTable($table);
         $query = 'UPDATE `' . $table . '` SET ';
@@ -338,7 +343,9 @@ class DB
             $db->bind(':where_' . $k, $v);
         }
 
-        return $db->exec() ? $db->rowCount() : false;
+        return $db->exec()
+            ? $db->rowCount()
+            : false;
     }
 
     public static function insert(string $table, array $values): int|false
@@ -371,10 +378,10 @@ class DB
         foreach ($values as $k => $v) {
             if (preg_match('/^([\+\-]{1})\s*([\d]+)$/', (string) $v, $matches)) { // 1-> op 2-> number
                 $query .= '`' . $k . '`=';
-                if ($matches[1] == '+') {
+                if ($matches[1] === '+') {
                     $query .= '`' . $k . '`' . $matches[1] . $matches[2] . ',';
                 }
-                if ($matches[1] == '-') {
+                if ($matches[1] === '-') {
                     $query .= 'GREATEST(cast(`' . $k . '` AS SIGNED) - ' . $matches[2] . ', 0),';
                 }
             }
@@ -390,7 +397,9 @@ class DB
             $db->bind(':where_' . $k, $v);
         }
 
-        return $db->exec() ? $db->rowCount() : false;
+        return $db->exec()
+            ? $db->rowCount()
+            : false;
     }
 
     public static function delete(
@@ -417,11 +426,11 @@ class DB
     public static function getQueryWithTablePrefix(string $query): string
     {
         return strtr($query, [
-            '%table_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX']
+            '%table_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX'],
         ]);
     }
 
-    public static function dbPrepare(string $query, array $values): DB
+    public static function dbPrepare(string $query, array $values): self
     {
         $query = self::getQueryWithTablePrefix($query);
         $db = self::getInstance();
@@ -438,22 +447,20 @@ class DB
         $db = self::dbPrepare($query, $binds);
         $fetch = $db->fetchSingle($mode);
 
-        return $fetch === false
-            ? []
-            : $fetch;
+        return $fetch ?: [];
     }
 
     public static function fetchAllQuery(string $query, array $binds, int $mode = PDO::FETCH_ASSOC): array
     {
         $db = self::dbPrepare($query, $binds);
 
-        return $db->exec() ? $db->fetchAll($mode) : [];
+        return $db->fetchAll($mode) ?: [];
     }
 
     private static function validateClause(string $clause, string|null $method = null)
     {
         $clause = strtoupper($clause);
-        if (!in_array($clause, ['AND', 'OR', ''])) {
+        if (! in_array($clause, ['AND', 'OR', ''], true)) {
             throw new Exception('Expecting clause string \'AND\' or \'OR\' in ' . ($method ?? __CLASS__));
         }
     }

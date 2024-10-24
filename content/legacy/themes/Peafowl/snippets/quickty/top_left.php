@@ -1,6 +1,8 @@
 <?php
 use Chevereto\Legacy\Classes\Login;
 use function Chevereto\Legacy\G\get_base_url;
+use function Chevereto\Legacy\G\safe_html;
+
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\getSetting;
 
@@ -37,9 +39,18 @@ if (!defined('ACCESS') || !ACCESS) {
                 ?>
                 <a role="button" href="<?php echo $button['url']; ?>">
                     <span class="icon <?php echo $button['icon']; ?>"></span>
-                    <span class="text"><?php echo $button['title']; ?></span>
+                    <span class="text"><?php echo safe_html($button['title']); ?></span>
                 </a>
             <?php
-            } ?>
+            }
+            if(Login::isLoggedUser()) { ?>
+            <form id="form-logout" action="<?php echo get_base_url('logout'); ?>" method="post" class="display-inline">
+                <input type="hidden" name="auth_token" value="<?php echo Handler::var('auth_token'); ?>">
+            </form>
+            <a role="button" data-action="logout">
+                <span class="icon fas fa-sign-out-alt"></span>
+                <span class="text"><?php _se('Sign out'); ?></span>
+            </a>
+            <?php } ?>
         </div>
     </div>

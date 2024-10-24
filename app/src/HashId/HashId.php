@@ -11,10 +11,8 @@
 
 namespace Chevereto\HashId;
 
+use InvalidArgumentException;
 use function Chevere\Message\message;
-use Chevere\String\AssertString;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Throwable;
 
 /**
  * Provides encoding/decoding for integer IDs.
@@ -97,11 +95,7 @@ final class HashId
 
     private function assertSalt(string $salt): void
     {
-        try {
-            (new AssertString($salt))
-                ->notEmpty()
-                ->notCtypeSpace();
-        } catch (Throwable) {
+        if (empty($salt) || ctype_space($salt)) {
             throw new InvalidArgumentException(
                 message('Invalid salt provided'),
             );

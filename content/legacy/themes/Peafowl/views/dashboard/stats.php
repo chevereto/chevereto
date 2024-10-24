@@ -58,7 +58,7 @@ if (!defined('ACCESS') || !ACCESS) {
 <script type="text/javascript" src="<?php echo get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'js/apexcharts.js'); ?>"></script>
 
     <div class="header header-tabs no-select margin-top-20">
-        <h2><i class="header-icon fas fa-chart-line"></i> <?php _se('Stats'); ?></h2>
+        <h2><i class="header-icon fas fa-chart-line margin-right-5"></i><?php _se('Stats'); ?></h2>
     </div>
 
     <div id="dashboard-chart">
@@ -77,6 +77,7 @@ $imageDataSeries = [];
 $diskDataSeries = [];
 $userDataSeries = [];
 $albumDataSeries = [];
+$tagDataSeries = [];
 foreach ($dateCumulative as $data) {
     $datetime = new DateTime(
         $data['date_gmt'],
@@ -87,14 +88,15 @@ foreach ($dateCumulative as $data) {
     $diskDataSeries[] = [$timestamp, bytes_to_mb($data['disk_used_acc'])];
     $userDataSeries[] = [$timestamp, $data['users_acc']];
     $albumDataSeries[] = [$timestamp, $data['albums_acc']];
+    $tagDataSeries[] = [$timestamp, $data['tags_acc']];
 }
-$min = $imageDataSeries[0][0];
-$max = $imageDataSeries[array_key_last($imageDataSeries)][0];
+$min = $imageDataSeries[0][0] ?? 0;
+$max = $imageDataSeries[array_key_last($imageDataSeries)][0] ?? 0;
 $themeMode = in_array(Handler::var('theme_palette_handle'), ['dark', 'imgur', 'deviantart', 'cmyk'])
     ? 'dark' : 'light';
 $series = [
     [
-        'name' => _s('Images'),
+        'name' => _n('File', 'Files', 20),
         'data' => $imageDataSeries,
     ],
     [
@@ -108,6 +110,10 @@ $series = [
     [
         'name' => _n('Album', 'Albums', 20),
         'data' => $albumDataSeries,
+    ],
+    [
+        'name' => _n('Tag', 'Tags', 20),
+        'data' => $tagDataSeries,
     ],
 ];
 if (!(bool) env()['CHEVERETO_ENABLE_USERS']) {
@@ -123,6 +129,7 @@ var options = {
         '#00e396',
         '#feb019',
         '#ff4560',
+        '#9b59b6',
     ],
     chart: {
         id: 'area-datetime',
@@ -200,46 +207,52 @@ document.querySelector('#one_year').addEventListener('click', function(e) {
 });
 </script>
     <div class="overflow-auto text-align-center margin-top-20 margin-bottom-40">
-        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['images'] > 999999) {
+        <a href="<?php echo get_base_url('dashboard/files'); ?>" class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['images'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['images']) . '"';
 } ?>>
             <span class="stats-big-number">
                 <strong class="number"><?php echo Handler::var('totals')['images'] > 999999 ? Handler::var('totals_display')['images'] : number_format((float) Handler::var('totals')['images']); ?></strong>
-                <span class="label"><span class="fas fa-photo-film"></span> <?php _ne('File', 'Files', Handler::var('totals')['images']); ?></span>
+                <span class="label"><span class="margin-right-5 fas fa-photo-film"></span><span class="label-text"><?php _ne('File', 'Files', Handler::var('totals')['images']); ?></span></span>
             </span>
-        </div>
-        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['albums'] > 999999) {
+        </a>
+        <a href="<?php echo get_base_url('dashboard/albums'); ?>" class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['albums'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['albums']) . '"';
 } ?>>
             <span class="stats-big-number">
                 <strong class="number"><?php echo Handler::var('totals')['albums'] > 999999 ? Handler::var('totals_display')['albums'] : number_format((float) Handler::var('totals')['albums']); ?></strong>
-                <span class="label"><span class="fas fa-images"></span> <?php _ne('Album', 'Albums', Handler::var('totals')['albums']); ?></span>
+                <span class="label"><span class="margin-right-5 fas fa-images"></span><span class="label-text"><?php _ne('Album', 'Albums', Handler::var('totals')['albums']); ?></span></span>
             </span>
-        </div>
+        </a>
         <?php if ((bool) env()['CHEVERETO_ENABLE_USERS']) { ?>
-        <div class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['users'] > 999999) {
+        <a href="<?php echo get_base_url('dashboard/users'); ?>" class="stats-block c6 fluid-column display-inline-block" <?php if (Handler::var('totals')['users'] > 999999) {
     echo ' rel="tooltip" data-tipTip="top" title="' . number_format((float) Handler::var('totals')['users']) . '"';
 } ?>>
             <span class="stats-big-number">
                 <strong class="number"><?php echo Handler::var('totals')['users'] > 999999 ? Handler::var('totals_display')['users'] : number_format((float) Handler::var('totals')['users']); ?></strong>
-                <span class="label"><span class="fas fa-users"></span> <?php _ne('User', 'Users', Handler::var('totals')['users']); ?></span>
+                <span class="label"><span class="margin-right-5 fas fa-users"></span><span class="label-text"><?php _ne('User', 'Users', Handler::var('totals')['users']); ?></span></span>
             </span>
-        </div>
+        </a>
         <?php } ?>
+        <a href="<?php echo get_base_url('dashboard/tags'); ?>" class="stats-block c6 fluid-column display-inline-block">
+            <div class="stats-big-number">
+                <strong class="number"><?php echo Handler::var('totals_display')['tags']; ?></strong>
+                <span class="label"><span class="margin-right-5 fas fa-tags"></span><span class="label-text"><?php _ne('Tag', 'Tags', 20); ?></span></span>
+            </div>
+        </a>
         <div class="stats-block c6 fluid-column display-inline-block">
             <div class="stats-big-number">
                 <strong class="number"><?php echo Handler::var('totals_display')['disk']['used']; ?> <span><?php echo Handler::var('totals_display')['disk']['unit']; ?></span></strong>
-                <span class="label"><span class="fas fa-hdd"></span> <?php _se('Disk used'); ?></span>
+                <span class="label"><span class="margin-right-5 fas fa-hdd"></span><span class="label-text"><?php _se('Disk used'); ?></span></span>
             </div>
         </div>
     </div>
 
     <div class="header header-tabs no-select">
-        <h2><i class="header-icon fas fa-rss"></i> <?php _se('%s News', 'Chevereto'); ?></h2>
+        <h2><i class="header-icon fas fa-rss margin-right-5"></i><?php _se('%s News', 'Chevereto'); ?></h2>
     </div>
     <div class="card-wrapper margin-bottom-40">
         <div class="card-slider">
-            <?php foreach (array_slice(Handler::var('chevereto_news'), 0, 8) as $k => $v) {
+            <?php foreach (array_slice(Handler::var('chevereto_news'), 0, 10) as $k => $v) {
     echo strtr('<article class="card-container">
                 <div class="card">
                     <a class="card-header-image" href="%url%" target="_blank" style="background-image: url(%image%);">
@@ -261,7 +274,7 @@ document.querySelector('#one_year').addEventListener('click', function(e) {
     </div>
 
     <div class="header header-tabs no-select">
-        <h2><i class="header-icon fas fa-server"></i> Chevereto <span class="edition-label"><?php _se('%s edition', ucfirst(env()['CHEVERETO_EDITION'])); ?></span></h2>
+        <h2><i class="header-icon fas fa-server margin-right-5"></i>Chevereto <span class="edition-label"><?php _se('%s edition', ucfirst(env()['CHEVERETO_EDITION'])); ?></span></h2>
     </div>
 
     <ul class="tabbed-content-list table-li margin-top-20 padding-bottom-20">

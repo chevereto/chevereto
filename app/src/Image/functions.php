@@ -11,11 +11,10 @@
 
 namespace Chevereto\Image;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\RuntimeException;
 use Intervention\Image\ImageManager;
 use Jenssegers\ImageHash\ImageHash;
 use Jenssegers\ImageHash\Implementations\DifferenceHash;
+use RuntimeException;
 use Throwable;
 
 function hasExtGd(): bool
@@ -39,11 +38,11 @@ function imageManager(): ImageManager
             default => '',
         };
         if ($driver === '') {
-            throw new RuntimeException(
-                message: message('No image driver available')
-            );
+            throw new RuntimeException('No image driver available');
         }
-        $manager = new ImageManager(['driver' => $driver]);
+        $manager = new ImageManager([
+            'driver' => $driver,
+        ]);
         new ImageManagerInstance($manager);
 
         return ImageManagerInstance::get();

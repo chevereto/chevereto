@@ -1,8 +1,9 @@
 <?php
 
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 use function Chevereto\Legacy\get_system_image_url;
 use function Chevereto\Legacy\getSetting;
 
@@ -12,8 +13,8 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 $logo_header = getSetting('logo_' . getSetting('logo_type'));
 ?>
-<?php include_theme_header(); ?>
-<div id="maintenance-cover" style="background-image: url(<?php echo get_system_image_url(getSetting('maintenance_image')); ?>);">
+<?php require_theme_header(); ?>
+<div id="maintenance-cover" style="background-image: url(<?php echo get_system_image_url(Settings::MAINTENANCE_IMAGE); ?>);">
 	<div id="maintenance-cover-inner">
 		<div id="maintenance-cover-content" class="c16 center-box">
             <a class="logo" href="<?php echo Handler::var('header_logo_link'); ?>"><?php if (getSetting('logo_type') !== 'text') { ?><img src="<?php echo get_system_image_url($logo_header); ?>" alt="<?php echo Handler::var('safe_html_website_name'); ?>"><?php } else { ?><?php echo Handler::var('safe_html_website_name'); ?><?php } ?></a>
@@ -22,4 +23,4 @@ $logo_header = getSetting('logo_' . getSetting('logo_type'));
 		</div>
 	</div>
 </div>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

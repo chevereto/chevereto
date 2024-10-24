@@ -10,22 +10,27 @@
  */
 
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\get_global;
 use function Chevereto\Legacy\G\get_public_url;
-use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\getSetting;
 
 return function (Handler $handler) {
-    if (!getSetting('enable_plugin_route') && !Login::isAdmin()) {
+    if (! getSetting('enable_plugin_route') && ! Login::isAdmin()) {
+        $handler->issueError(404);
+
+        return;
+    }
+    if ($handler->isRequestLevel(2)) {
         $handler->issueError(404);
 
         return;
     }
     $src = getSetting('sdk_pup_url') ?: get_public_url('sdk/pup.js');
     $src = str_replace_first('https:', '', $src);
-    include_theme_file('snippets/embed');
+    require_theme_file('snippets/embed');
     $embed_share_tpl = get_global('embed_share_tpl');
     $embed = [];
     foreach ($embed_share_tpl as $vGroup) {
@@ -39,7 +44,7 @@ return function (Handler $handler) {
     $tagAttrs = [
         'async' => '',
         'src' => $src,
-        'data-url' => get_public_url('upload')
+        'data-url' => get_public_url('upload'),
     ];
     $tagCode = '<script';
     foreach ($tagAttrs as $k => $v) {
@@ -71,7 +76,7 @@ return function (Handler $handler) {
             'Vanilla Forums',
             'vBulletin',
             'WoltLab',
-            'XenForo'
+            'XenForo',
         ],
         'palettes' => [
             'default' => ['#ececec', '#000', '#2980b9', '#fff'],
@@ -85,7 +90,7 @@ return function (Handler $handler) {
             'orange' => ['#d35400', '#fff', '#e67e22', '#fff'],
             'red' => ['#c0392b', '#fff', '#e74c3c', '#fff'],
             'grey' => ['#ececec', '#000', '#e0e0e0', '#000'],
-            'black' => ['#333', '#fff', '#666', '#fff']
+            'black' => ['#333', '#fff', '#666', '#fff'],
         ],
         'button' => '<div class="%cClass"><button id="pup-preview" class="%bClass %bClass--palette-default"><span class="%iClass">%iconSvg</span><span class="%tClass">' . _s('Upload images') . '</span></button></div>',
         'baseCss' => '.%cClass{display:inline-block;margin-top:5px;margin-bottom:5px}.%bClass{-webkit-transition:all .2s;-o-transition:all .2s;transition:all .2s;outline:0;border:none;cursor:pointer;border:1px solid rgba(0,0,0,.05);border-radius:.2em;padding:.5em 1em;font-size:12px;font-weight:700;text-shadow:none}.%bClass:hover{border-top-color:rgba(255,255,255,.1);border-right-color:rgba(0,0,0,.05);border-bottom-color:rgba(0,0,0,.1);border-left-color:rgba(0,0,0,.05);}.%iClass{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-ms-flex-item-align:center;align-self:center;position:relative;height:1em;width:1em;margin-right:.25em}.%iClass img,.%iClass svg{width:1em;height:1em;bottom:-.125em;position:absolute}.%iClass svg{fill:currentColor}',
@@ -101,7 +106,7 @@ return function (Handler $handler) {
         }
         $palette_css_rules .= strtr($plugin['paletteCss'], $paletteTable);
     }
-    foreach (['button', 'baseCss'] as  $v) {
+    foreach (['button', 'baseCss'] as $v) {
         $plugin[$v] = strtr($plugin[$v], $plugin['table']);
     }
     $plugin['stylesheet'] = '<style type="text/css" id="chevereto-pup-style">' . $plugin['baseCss'] . $palette_css_rules . '</style>';

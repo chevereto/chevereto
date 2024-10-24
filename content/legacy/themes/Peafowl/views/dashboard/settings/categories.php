@@ -2,7 +2,8 @@
 
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
+use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\getSetting;
 use function Safe\json_encode;
 
@@ -16,9 +17,9 @@ echo read_the_docs_settings('categories', _s('Categories')); ?>
 <?php
 } ?>
 <script>
-    $(document).ready(function() {
-        CHV.obj.categories = <?php echo json_encode(Handler::var('categories')); ?>;
-    });
+document.addEventListener("DOMContentLoaded", function() {
+    CHV.obj.categories = <?php echo json_encode(Handler::var('categories')); ?>;
+});
 </script>
 <ul data-content="dashboard-categories-list" class="tabbed-content-list table-li-hover table-li margin-top-20 margin-bottom-20">
     <li class="table-li-header phone-hide">
@@ -37,6 +38,9 @@ if (Handler::var('categories')) {
     foreach (Handler::var('categories') as $category) {
         $replaces = [];
         foreach ($category as $k => $v) {
+            if(in_array($k, ['description', 'name'])) {
+                $v = safe_html($v);
+            }
             $replaces['%' . strtoupper($k) . '%'] = $v;
         }
         echo strtr($li_template, $replaces);
@@ -50,6 +54,6 @@ if (Handler::var('categories')) {
     <span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit %s', _s('category')); ?></span>
     <div class="modal-form">
         <input type="hidden" name="form-category-id">
-        <?php include_theme_file('snippets/form_category_edit'); ?>
+        <?php require_theme_file('snippets/form_category_edit'); ?>
     </div>
 </div>

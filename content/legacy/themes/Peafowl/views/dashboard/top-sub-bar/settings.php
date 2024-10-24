@@ -2,7 +2,7 @@
 
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -10,17 +10,17 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 ?>
 <div class="header header-tabs no-select header--centering default-margin-bottom">
-    <h1 class="header-title">
+    <h2 class="header-title">
         <span class="header-icon fas fa-cog"></span>
         <span class="phone-hide"><?php echo Handler::var('dashboard_menu')[Handler::var('dashboard')]['label']; ?></span>
-    </h1>
+    </h2>
     <div data-content="pop-selection" class="pop-btn pop-keep-click header-link float-left margin-left-5" data-action="settings-switch">
         <div class="pop-btn-text">
             <span class="icon <?php echo Handler::var('settings')['icon']; ?>"></span>
             <span class="btn-text"><?php echo Handler::var('settings')['label']; ?></span>
             <span class="fas fa-angle-down"></span>
         </div>
-        <div class="pop-box pbcols3 anchor-left arrow-box arrow-box-top">
+        <div class="pop-box --auto-cols pbcols3 anchor-left arrow-box arrow-box-top">
             <div class="pop-box-inner pop-box-menu pop-box-menucols">
                 <ul>
                     <?php
@@ -44,13 +44,13 @@ if (!defined('ACCESS') || !ACCESS) {
     <?php if (Handler::var('settings')['key'] == 'categories') { ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
-                <a class="btn btn-small default" data-modal="form" data-target="modal-add-category"><i class="fas fa-plus"></i><span class="margin-left-5 phone-hide"><?php _se('Create'); ?></span></a>
+                <a class="btn btn-small default" data-modal="form" data-target="modal-add-category"><i class="fas fa-columns"></i><span class="margin-left-5 phone-hide"><?php _se('Create %s', _s('category')); ?></span></a>
             </div>
         </div>
         <div data-modal="modal-add-category" class="hidden" data-submit-fn="CHV.fn.category.add.submit" data-before-fn="CHV.fn.category.add.before" data-ajax-deferred="CHV.fn.category.add.complete">
             <span class="modal-box-title"><i class="fas fa-columns"></i> <?php _se('Create %s', _s('category')); ?></span>
             <div class="modal-form">
-                <?php include_theme_file('snippets/form_category_edit'); ?>
+                <?php require_theme_file('snippets/form_category_edit'); ?>
             </div>
         </div>
     <?php
@@ -64,7 +64,7 @@ if (!defined('ACCESS') || !ACCESS) {
         <div data-modal="modal-add-ip_ban" class="hidden" data-submit-fn="CHV.fn.ip_ban.add.submit" data-before-fn="CHV.fn.ip_ban.add.before" data-ajax-deferred="CHV.fn.ip_ban.add.complete">
             <span class="modal-box-title"><i class="fas fa-ban"></i> <?php _se('Add IP ban'); ?></span>
             <div class="modal-form">
-                <?php include_theme_file('snippets/form_ip_ban_edit'); ?>
+                <?php require_theme_file('snippets/form_ip_ban_edit'); ?>
             </div>
         </div>
     <?php
@@ -72,13 +72,13 @@ if (!defined('ACCESS') || !ACCESS) {
     <?php if (Handler::var('settings')['key'] == 'external-storage') { ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
-                <a class="btn btn-small default" data-modal="form" data-target="modal-add-storage"><i class="fas fa-plus"></i><span class="margin-left-5 phone-hide"><?php _se('Add'); ?></span></a>
+                <a class="btn btn-small default" data-modal="form" data-target="modal-add-storage"><i class="fas fa-hdd"></i><span class="margin-left-5 phone-hide"><?php _se('Add %s', _s('storage')); ?></span></a>
             </div>
         </div>
         <div data-modal="modal-add-storage" class="hidden" data-submit-fn="CHV.fn.storage.add.submit" data-before-fn="CHV.fn.storage.add.before" data-ajax-deferred="CHV.fn.storage.add.complete">
             <span class="modal-box-title"><i class="fas fa-hdd"></i> <?php _se('Add storage'); ?></span>
             <div class="modal-form">
-                <?php include_theme_file('snippets/form_storage_edit'); ?>
+                <?php require_theme_file('snippets/form_storage_edit'); ?>
             </div>
         </div>
     <?php

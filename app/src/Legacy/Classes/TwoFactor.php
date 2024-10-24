@@ -11,20 +11,19 @@
 
 namespace Chevereto\Legacy\Classes;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
+use LogicException;
+use PragmaRX\Google2FAQRCode\Google2FA;
+use PragmaRX\Google2FAQRCode\QRCode\Chillerlan;
+use Throwable;
 use function Chevereto\Encryption\decryptValues;
 use function Chevereto\Encryption\encryptValues;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\G\datetimegmt;
-use PragmaRX\Google2FAQRCode\Google2FA;
-use PragmaRX\Google2FAQRCode\QRCode\Chillerlan;
-use Throwable;
 
 class TwoFactor
 {
     public const ENCRYPTED_NAMES = [
-        'secret'
+        'secret',
     ];
 
     private Google2FA $google2FA;
@@ -100,22 +99,16 @@ class TwoFactor
         }
         self::assertSecret($values['secret']);
 
-        return DB::update('two_factors', $values, ['id' => $id]);
-    }
-
-    protected static function assertSecret(string $secret): void
-    {
-        if ($secret === '') {
-            throw new LogicException(
-                message("Secret can't be empty string"),
-                600
-            );
-        }
+        return DB::update('two_factors', $values, [
+            'id' => $id,
+        ]);
     }
 
     public static function delete(int $userId): void
     {
-        DB::delete('two_factors', ['user_id' => $userId]);
+        DB::delete('two_factors', [
+            'user_id' => $userId,
+        ]);
     }
 
     public static function hasFor(int $userId): bool
@@ -126,7 +119,12 @@ class TwoFactor
     public static function get(int $id, string $by = 'id'): array
     {
         try {
-            $get = DB::get('two_factors', [$by => $id], 'AND', ['field' => 'id', 'order' => 'desc'])[0]
+            $get = DB::get('two_factors', [
+                $by => $id,
+            ], 'AND', [
+                'field' => 'id',
+                'order' => 'desc',
+            ])[0]
                 ?? null;
         } catch (Throwable) {
             return [];
@@ -152,5 +150,15 @@ class TwoFactor
     public static function getSecretFor(int $userId): string
     {
         return self::getFor($userId)['secret'];
+    }
+
+    protected static function assertSecret(string $secret): void
+    {
+        if ($secret === '') {
+            throw new LogicException(
+                "Secret can't be empty string",
+                600
+            );
+        }
     }
 }

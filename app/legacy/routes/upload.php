@@ -13,22 +13,21 @@ use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\G\get_base_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Vars\get;
 
 return function (Handler $handler) {
-    if (!$handler::cond('upload_allowed')) {
+    if (! $handler::cond('upload_allowed')) {
         if (Login::isLoggedUser()) {
             $handler->issueError(403);
 
             return;
-        } else {
-            redirect('login');
         }
+        redirect('login', 302);
     }
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
@@ -37,7 +36,7 @@ return function (Handler $handler) {
         $toAlbumId = decodeID(get()['toAlbum']);
         $album = Album::getSingle(id: $toAlbumId, requester: $logged_user);
         $is_owner = isset($album['user']['id']) && $album['user']['id'] == $logged_user['id'];
-        if (!$is_owner) {
+        if (! $is_owner) {
             $album = [];
         }
     }

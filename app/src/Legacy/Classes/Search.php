@@ -11,8 +11,8 @@
 
 namespace Chevereto\Legacy\Classes;
 
-use function Chevereto\Legacy\G\str_replace_first;
 use Exception;
+use function Chevereto\Legacy\G\str_replace_first;
 
 class Search
 {
@@ -43,27 +43,44 @@ class Search
 
     public function build(): void
     {
-        if (!in_array($this->type, ['images', 'albums', 'users'])) {
+        if (! in_array($this->type, ['images', 'albums', 'users'], true)) {
             throw new Exception('Invalid search type', 600);
         }
-        $as_handle = ['as_q' => null, 'as_epq' => null, 'as_oq' => null, 'as_eq' => null, 'as_cat' => 'category'];
-        $as_handle_admin = ['as_stor' => 'storage', 'as_ip' => 'ip'];
+        $as_handle = [
+            'as_q' => null,
+            'as_epq' => null,
+            'as_oq' => null,
+            'as_eq' => null,
+            'as_cat' => 'category',
+        ];
+        $as_handle_admin = [
+            'as_stor' => 'storage',
+            'as_ip' => 'ip',
+        ];
         if ($this->requester['is_content_manager'] ?? false) {
             $as_handle = array_merge($as_handle, $as_handle_admin);
         }
         $this->q = str_replace('@', '', $this->q);
         foreach ($as_handle as $k => $v) {
             if (isset($this->request[$k]) && $this->request[$k] !== '') {
-                $this->q .= ' ' . (isset($v) ? $v . ':' : '') . $this->request[$k];
+                $this->q .= ' '
+                    . (isset($v) ? ($v . ':') : '')
+                    . $this->request[$k];
             }
         }
-        $this->q = trim(preg_replace(['#\"+#', '#\'+#'], ['"', '\''], $this->q ?? ''));
+        $this->q = trim(
+            preg_replace(
+                ['#\"+#', '#\'+#'],
+                ['"', '\''],
+                $this->q ?? '' // @phpstan-ignore-line
+            )
+        );
         $search_op = $this->handleSearchOperators($this->q, $this->requester['is_content_manager'] ?? false);
         $this->q = '';
         foreach ($search_op as $operator) {
             $this->q .= implode(' ', $operator) . ' ';
         }
-        if (isset($this->q)) {
+        if ($this->q !== '') {
             $this->q = trim($this->q);
             $this->q = preg_replace(
                 '/\s+/',
@@ -71,7 +88,7 @@ class Search
                 trim($this->q)
             ) ?? '';
         }
-        $this->q ??= '';
+        $this->q ??= ''; // @phpstan-ignore-line
         $q_match = $this->q;
         $search_binds = [];
         $search_op_wheres = [];
@@ -84,7 +101,7 @@ class Search
                 )
             );
             $op = explode(':', $v);
-            if (!in_array($op[0], ['category', 'ip', 'storage'])) {
+            if (! in_array($op[0], ['category', 'ip', 'storage'], true)) {
                 continue;
             }
             switch ($this->type) {
@@ -92,18 +109,26 @@ class Search
                     switch ($op[0]) {
                         case 'category':
                             $search_op_wheres[] = 'category_url_key = :category';
-                            $search_binds[] = ['param' => ':category', 'value' => $op[1]];
+                            $search_binds[] = [
+                                'param' => ':category',
+                                'value' => $op[1],
+                            ];
 
-                        break;
+                            break;
 
                         case 'ip':
                             $search_op_wheres[] = 'image_uploader_ip LIKE REPLACE(:ip, "*", "%")';
-                            $search_binds[] = ['param' => ':ip', 'value' => str_replace_first('ip:', '', $this->q)];
+                            $search_binds[] = [
+                                'param' => ':ip',
+                                'value' => str_replace_first('ip:', '', $this->q),
+                            ];
 
-                        break;
+                            break;
 
                         case 'storage':
-                            if (!filter_var($op[1], FILTER_VALIDATE_INT) && !in_array($op[1], ['local', 'external'])) {
+                            if (! filter_var($op[1], FILTER_VALIDATE_INT)
+                                && ! in_array($op[1], ['local', 'external'], true)
+                            ) {
                                 break;
                             }
                             $storage_operator_clause = [
@@ -113,56 +138,65 @@ class Search
                             ];
 
                             if (filter_var($op[1], FILTER_VALIDATE_INT)) {
-                                $search_binds[] = ['param' => ':storage_id', 'value' => $op[1]];
+                                $search_binds[] = [
+                                    'param' => ':storage_id',
+                                    'value' => $op[1],
+                                ];
                             }
 
                             $search_op_wheres[] = 'image_storage_id ' . ($storage_operator_clause[$op[1]]);
 
-                        break;
+                            break;
                     }
 
-                break;
+                    break;
                 case 'albums':
                 case 'users':
                     if ($op[0] === 'ip') {
-                        $search_binds[] = ['param' => ':ip', 'value' => str_replace_first('ip:', '', $this->q)];
+                        $search_binds[] = [
+                            'param' => ':ip',
+                            'value' => str_replace_first('ip:', '', $this->q),
+                        ];
                     }
 
-                break;
+                    break;
             }
         }
         if ($q_match !== '') {
             $q_value = $q_match;
-            if ($this->DBEngine == 'InnoDB') {
+            if ($this->DBEngine === 'InnoDB') {
                 $q_value = trim($q_value, '><');
             }
-            $search_binds[] = ['param' => ':q', 'value' => $q_value];
+            $search_binds[] = [
+                'param' => ':q',
+                'value' => $q_value,
+            ];
         }
         $this->binds = $search_binds;
         $this->op = $search_op;
-        $wheres = null;
+        $wheres = '';
         switch ($this->type) {
             case 'images':
                 if ($q_match !== '') {
                     $wheres = 'WHERE MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)';
                 }
                 if ($search_op_wheres !== []) {
-                    $wheres .= (is_null($wheres) ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
+                    $wheres .= ($wheres === '' ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
                 }
 
-            break;
+                break;
             case 'albums':
                 if (empty($search_binds)) {
                     $wheres = 'WHERE album_id < 0';
                 } else {
-                    $wheres = (($op[0] ?? null) == 'ip' ? 'album_creation_ip LIKE REPLACE(:ip, "*", "%")' : 'WHERE MATCH(`album_name`,`album_description`) AGAINST (:q)');
+                    $wheres = (($op[0] ?? null) === 'ip' ? 'album_creation_ip LIKE REPLACE(:ip, "*", "%")' : 'WHERE MATCH(`album_name`,`album_description`) AGAINST (:q)');
                 }
 
-            break;
+                break;
             case 'users':
                 if (empty($search_binds)) {
                     $wheres = 'WHERE user_id < 0';
-                } elseif (($op[0] ?? null) == 'ip') {
+                } elseif (($op[0] ?? null) === 'ip') {
                     $wheres = 'user_registration_ip LIKE REPLACE(:ip, "*", "%")';
                 } else {
                     $clauses = [
@@ -186,7 +220,7 @@ class Search
                     }
                 }
 
-            break;
+                break;
         }
         $this->wheres = $wheres ?? '';
         $this->display = [
@@ -198,39 +232,44 @@ class Search
 
     protected function handleSearchOperators(string $q, bool $full = true): array
     {
-        $operators = ['any' => [], 'exact_phrases' => [], 'excluded' => [], 'named' => []];
+        $operators = [
+            'any' => [],
+            'exact_phrases' => [],
+            'excluded' => [],
+            'named' => [],
+        ];
         $raw_regex = [
             'named' => '[\S]+\:[\S]+', // take all the like:this operators
             'quoted' => '-*[\"\']+.+[\"\']+', // take all the "quoted stuff" "like" "this, one"
             'spaced' => '\S+', // Take all the space separated stuff
         ];
         foreach ($raw_regex as $k => $v) {
-            if ($k == 'spaced') {
+            if ($k === 'spaced') {
                 $q = str_replace(',', '', $q);
             }
             if (preg_match_all('/' . $v . '/', $q, $match)) {
                 foreach ($match[0] as $qMatch) {
                     switch ($k) {
                         case 'named':
-                            if (!$full) {
+                            if (! $full) {
                                 $named_operator = explode(':', $qMatch);
-                                if (in_array($named_operator[0], self::$excluded)) {
+                                if (in_array($named_operator[0], self::$excluded, false)) {
                                     continue 2;
                                 }
                             }
                             $operators[$k][] = $qMatch;
 
-                        break;
+                            break;
                         default:
-                            if (0 === strpos($qMatch, '-')) {
+                            if (strpos($qMatch, '-') === 0) {
                                 $operators['excluded'][] = $qMatch;
-                            } elseif (0 === strpos($qMatch, '"')) {
+                            } elseif (strpos($qMatch, '"') === 0) {
                                 $operators['exact_phrases'][] = $qMatch;
                             } else {
                                 $operators['any'][] = $qMatch;
                             }
 
-                        break;
+                            break;
                     }
                     $q = trim(preg_replace('/\s+/', ' ', str_replace($qMatch, '', $q)));
                 }

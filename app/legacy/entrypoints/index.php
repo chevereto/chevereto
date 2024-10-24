@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use function Chevereto\Legacy\G\sanitize_path_slashes;
 use function Chevereto\Legacy\loaderHandler;
 
 define('ACCESS', 'web');
@@ -16,14 +17,21 @@ define('ACCESS', 'web');
 $appDir = __DIR__ . '/../..';
 $loadDir = __DIR__ . '/../load';
 require_once $loadDir . '/php-boot.php';
-$uri = $_SERVER['REQUEST_URI'] ?? '';
-$parseUri = parse_url($uri);
-if (in_array($parseUri['path'] ?? null, ['/upgrading', '/upgrading/'])
+$requestUri = $_SERVER['REQUEST_URI'] ?? '';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$urlPath = parse_url($requestUri, PHP_URL_PATH);
+if (str_ends_with($scriptName, 'index.php')) {
+    $relative_root = sanitize_path_slashes(
+        dirname($scriptName)
+        . '/'
+    );
+    $urlPath = preg_replace('#' . $relative_root . '#', '/', $requestUri, 1);
+}
+if (in_array($urlPath, ['/upgrading', '/upgrading/'], true)
     && file_exists($appDir . '/.upgrading/upgrading.lock')) {
     require $appDir . '/upgrading.php';
     exit;
 }
-require_once $loadDir . '/loader.php';
 require_once loaderHandler(
     $_COOKIE,
     $_ENV,

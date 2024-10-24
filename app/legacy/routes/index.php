@@ -15,16 +15,17 @@ use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\random_values;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\request;
@@ -34,7 +35,9 @@ use function Chevereto\Vars\sessionVar;
 
 return function (Handler $handler) {
     parse_str(server()['QUERY_STRING'] ?? '', $querystr);
-    if (key($querystr) != 'random' && starts_with('route_', Settings::get('homepage_style'))) {
+    if (key($querystr) !== 'random'
+        && starts_with('route_', Settings::get('homepage_style'))
+    ) {
         $route = str_replace_first('route_', '', Settings::get('homepage_style'));
         $handler->mapRoute($route);
         $routeCallable = include PATH_APP_LEGACY_ROUTES . $route . '.php';
@@ -46,25 +49,27 @@ return function (Handler $handler) {
     if (server()['QUERY_STRING'] ?? false) {
         switch (key($querystr)) {
             case 'random':
-                if (!$handler::cond('random_enabled')) {
-                    redirect('/');
+                headersNoCache();
+                if (! $handler::cond('random_enabled')) {
+                    redirect('', 302);
                 }
                 $tables = DB::getTables();
                 $db = DB::getInstance();
                 $db->query('SELECT MIN(image_id) as min, MAX(image_id) as max FROM ' . $tables['images']);
                 $limit = $db->fetchSingle();
                 $random_ids = random_values((int) $limit['min'], (int) $limit['max'], 100);
-                if (count($random_ids) == 1) {
+                if (count($random_ids) === 1) {
                     $random_ids[] = $random_ids[0];
                 }
                 if ($limit['min'] !== $limit['max']) {
                     $last_viewed_image = decodeID(session()['last_viewed_image'] ?? '');
-                    if (($key = array_search($last_viewed_image, $random_ids)) !== false) {
+                    $key = array_search($last_viewed_image, $random_ids, true);
+                    if ($key !== false) {
                         unset($random_ids[$key]);
                     }
                 }
                 $query = 'SELECT image_id FROM ' . $tables['images'] . ' LEFT JOIN ' . $tables['albums'] . ' ON ' . $tables['images'] . '.image_album_id = ' . $tables['albums'] . '.album_id WHERE image_is_approved = 1 AND image_id IN (' . implode(',', $random_ids) . ") AND (album_privacy = 'public' OR album_privacy IS NULL) ";
-                if (!getSetting('show_nsfw_in_random_mode')) {
+                if (! getSetting('show_nsfw_in_random_mode')) {
                     if ($logged_user) {
                         $query .= 'AND (' . $tables['images'] . '.image_nsfw = 0 OR ' . $tables['images'] . '.image_user_id = ' . $logged_user['id'] . ') ';
                     } else {
@@ -74,24 +79,24 @@ return function (Handler $handler) {
                 if ($handler::cond('forced_private_mode')) {
                     $query .= 'AND ' . $tables['images'] . '.image_user_id = ' . $logged_user['id'] . ' ';
                 }
-                if (!(bool) env()['CHEVERETO_ENABLE_USERS']) {
+                if (! (bool) env()['CHEVERETO_ENABLE_USERS']) {
                     $query .= 'AND ' . $tables['images'] . '.image_user_id=' . (getSetting('website_mode_personal_uid') ?? 0) . ' ';
                 }
                 $query .= 'ORDER BY RAND() LIMIT 1';
                 $db->query($query);
                 $fetch = $db->fetchSingle();
-                if (!$fetch) {
+                if (! $fetch) {
                     $image = false;
                 } else {
                     $imageId = (int) $fetch['image_id'];
                     $image = Image::getSingle(id: $imageId, pretty: true);
-                    if (!isset($image['file_resource']['chain']['image'])) {
+                    if (! isset($image['file_resource']['chain']['image'])) {
                         $image = false;
                     }
                 }
-                if (!$image) {
+                if (! $image) {
                     if ((session()['random_failure'] ?? 0) > 3) {
-                        redirect();
+                        redirect('', 302);
                     } else {
                         sessionVar()->put('random_failure', (session()['random_failure'] ?? 0) + 1);
                     }
@@ -100,21 +105,23 @@ return function (Handler $handler) {
                         sessionVar()->remove('random_failure');
                     }
                 }
-                redirect(
-                    $image
-                        ? $image['path_viewer']
-                        : '?random'
-                );
+                $redirectTo = $image
+                    ? $image['path_viewer']
+                    : '?random';
+                redirect($redirectTo, 302);
 
                 return;
             case 'v':
                 if (preg_match('{^\w*\.jpg|png|gif$}', get()['v'] ?? '')) {
                     $explode = array_filter(explode('.', get()['v']));
-                    if (count($explode) == 2) {
-                        $image = DB::get('images', ['name' => $explode[0], 'extension' => $explode[1]], 'AND', [], 1) ?: [];
+                    if (count($explode) === 2) {
+                        $image = DB::get('images', [
+                            'name' => $explode[0],
+                            'extension' => $explode[1],
+                        ], 'AND', [], 1) ?: [];
                         if ($image !== []) {
                             $image = Image::formatArray($image);
-                            redirect($image['path_viewer']);
+                            redirect($image['path_viewer'], 301);
                         }
                     }
                 }
@@ -122,7 +129,6 @@ return function (Handler $handler) {
 
                 return;
 
-                break;
             case 'list':
                 $handler->setTemplate('index');
 
@@ -138,7 +144,7 @@ return function (Handler $handler) {
                 break;
         }
     }
-    if (Settings::get('homepage_style') == 'split') {
+    if (Settings::get('homepage_style') === 'split') {
         $tabs = [
             [
                 'tools' => true,
@@ -147,22 +153,28 @@ return function (Handler $handler) {
                 'type' => 'image',
             ],
         ];
-        $home_uids = getSetting('homepage_uids');
-        $home_uid_is_null = ($home_uids == '' || $home_uids == '0');
-        $home_uid_arr = $home_uid_is_null ? false : explode(',', $home_uids);
+        $home_uids = getSetting('homepage_uids') ?? '';
+        $home_uids = trim($home_uids);
+        $home_uid_is_null = $home_uids === '' || $home_uids === '0';
+        $home_uid_arr = $home_uid_is_null
+            ? false
+            : explode(',', $home_uids);
         if (is_array($home_uid_arr)) {
+            $home_uid_arr = array_filter($home_uid_arr);
             $home_uid_bind = [];
             foreach ($home_uid_arr as $k => $v) {
-                $home_uid_bind[] = ':user_id_' . $k;
-                if ($v == 0) {
-                    $home_uid_is_null = true;
+                if (! is_numeric($v)) {
+                    continue;
                 }
+                $home_uid_bind[] = ':user_id_' . $k;
             }
             $home_uid_bind = implode(',', $home_uid_bind);
         }
-        $doing = is_array($home_uid_arr) ? 'recent' : 'trending';
-        $explore_semantics = $handler::var('explore_semantics');
-        $list = $explore_semantics[$doing];
+        $doing = is_array($home_uid_arr)
+            ? 'recent'
+            : 'trending';
+        $explore_discovery = $handler::var('explore_discovery');
+        $list = $explore_discovery[$doing];
         $list['list'] = $doing;
         $getParams = Listing::getParams(request());
         $listing = new Listing();
@@ -187,7 +199,7 @@ return function (Handler $handler) {
         $listing->setParamsHidden($listingParams['params_hidden']);
         if (is_array($home_uid_arr)) {
             foreach ($tabs as $k => &$v) {
-                if ($v['type'] == 'users') {
+                if ($v['type'] === 'users') {
                     unset($tabs[$k]);
                 }
             }
@@ -227,26 +239,29 @@ return function (Handler $handler) {
         $handler::setVar('user_items_editor', false);
     }
     $handler::setVar('share_links_array', get_share_links());
-
+    $button_color = Settings::get('homepage_cta_color') ?: 'accent';
+    if (getSetting('homepage_cta_outline')) {
+        $button_color .= ' outline';
+    }
     $homepage_cta = [
         '<a',
-        getSetting('homepage_cta_fn') == 'cta-upload'
+        getSetting('homepage_cta_fn') === 'cta-upload'
             ? (
-                getSetting('upload_gui') == 'js' && Handler::cond('upload_allowed')
+                getSetting('upload_gui') === 'js' && Handler::cond('upload_allowed')
                     ? 'data-trigger="anywhere-upload-input"'
                     : 'href="' . get_base_url('upload') . '"'
             )
             : 'href="'
                 . getSetting('homepage_cta_fn_extra')
                 . '"',
-        (getSetting('homepage_cta_fn') == 'cta-upload' && !getSetting('guest_uploads'))
+        (getSetting('homepage_cta_fn') === 'cta-upload' && ! getSetting('guest_uploads'))
             ? 'data-login-needed="true"'
             : '',
-        'class="btn btn-big accent ' . getSetting('homepage_cta_color') . '">'
+        'class="btn btn-big ' . $button_color . '">'
         . (getSetting('homepage_cta_html')
             ?: '<i class="fas fa-cloud-upload-alt"></i><span class="btn-text">'
                 . _s('Start uploading') . '</span>')
-                . '</a>'
+                . '</a>',
     ];
-    $handler::setVar('homepage_cta', join(' ', $homepage_cta));
+    $handler::setVar('homepage_cta', implode(' ', $homepage_cta));
 };

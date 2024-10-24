@@ -1,6 +1,8 @@
 <?php
 
 use function Chevereto\Legacy\G\get_global;
+use function Chevereto\Legacy\G\safe_html;
+
 use Chevereto\Legacy\G\Handler;
 
 // @phpstan-ignore-next-line
@@ -22,7 +24,7 @@ if (!defined('ACCESS') || !ACCESS) {
             ?>
 	<option value="<?php echo $category['id']; ?>"<?php if ($category['id'] == ($user_items_editor['category_id'] ?? null)) {
                 echo " selected";
-            } ?>><?php echo $category['name']; ?></option>
+            } ?>><?php echo safe_html($category['name']); ?></option>
 	<?php
         }
     ?>

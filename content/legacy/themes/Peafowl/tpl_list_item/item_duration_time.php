@@ -1,1 +1,1 @@
-<div class="list-item-duration list-item-image-tools --top --left">%IMAGE_DURATION_TIME%</div>
+<div class="list-item-duration list-item-image-tools --top --left" title="%IMAGE_WIDTH% × %IMAGE_HEIGHT% — %IMAGE_SIZE_FORMATTED%"><span class="fa-solid fa-video margin-right-5"></span>%IMAGE_DURATION_TIME%</div>

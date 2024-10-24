@@ -11,10 +11,10 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use Exception;
 use function Chevereto\Legacy\G\is_writable;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\unlinkIfExists;
-use Exception;
 
 class LocalStorage
 {
@@ -31,7 +31,6 @@ class LocalStorage
         if ($this->realPath === '/') {
             $this->realPath = $this->path;
         }
-        $this->assertPath($this->realPath);
     }
 
     public function realPath(): string
@@ -39,11 +38,11 @@ class LocalStorage
         return $this->realPath;
     }
 
-    protected function assertPath(string $path): void
+    public function assertPath(): void
     {
-        if (is_writable($path) === false) {
+        if (is_writable($this->realPath) === false) {
             throw new Exception(
-                sprintf("Path %s is not writable", $path),
+                sprintf('Path %s is not writable', $this->realPath),
                 600
             );
         }
@@ -87,7 +86,7 @@ class LocalStorage
             return;
         }
         if (unlinkIfExists($filename) == false) {
-            throw new Exception("Can't delete file '$filename'", 600);
+            throw new Exception("Can't delete file '{$filename}'", 600);
         }
         clearstatcache();
     }
@@ -117,7 +116,7 @@ class LocalStorage
         $make_pathname = mkdir($dirname, $path_perms, true);
         chmod($dirname, $path_perms);
         umask($old_umask);
-        if (!$make_pathname) {
+        if (! $make_pathname) {
             throw new Exception('$dirname ' . $dirname . ' is not a dir', 630);
         }
     }

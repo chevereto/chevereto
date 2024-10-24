@@ -1,13 +1,14 @@
 <?php
 
+use Chevereto\Legacy\Classes\Fonts;
 use Chevereto\Legacy\Classes\Palettes;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_select_options_html;
 
 // @phpstan-ignore-next-line
-if (!defined('ACCESS') || !ACCESS) {
-    die('This file cannot be directly accessed.');
+if (! defined('ACCESS') || ! ACCESS) {
+    exit('This file cannot be directly accessed.');
 }
 echo read_the_docs_settings('theme', _s('Theme')); ?>
 <div class="input-label">
@@ -15,7 +16,9 @@ echo read_the_docs_settings('theme', _s('Theme')); ?>
     <?php
     $themes = [];
 foreach (scandir(PATH_PUBLIC_CONTENT_LEGACY_THEMES) as $v) {
-    if (is_dir(PATH_PUBLIC_CONTENT_LEGACY_THEMES . DIRECTORY_SEPARATOR . $v) and !in_array($v, ['.', '..'])) {
+    if (is_dir(PATH_PUBLIC_CONTENT_LEGACY_THEMES . DIRECTORY_SEPARATOR . $v)
+        && ! in_array($v, ['.', '..'], true)
+    ) {
         $themes[$v] = $v;
     }
 } ?>
@@ -24,6 +27,7 @@ foreach (scandir(PATH_PUBLIC_CONTENT_LEGACY_THEMES) as $v) {
             <?php
             echo get_select_options_html($themes, Settings::get('theme')); ?>
         </select>
+        <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['theme'] ?? ''; ?></div>
     </div>
 </div>
 <div class="input-label">
@@ -44,7 +48,7 @@ foreach (array_keys($palettes->get()) as $id) {
 </div>
 <div class="input-label">
 <?php
-/** @var Fonts $palettes */
+/** @var Fonts $fonts */
 $fonts = Handler::var('fonts');
 $fontsOptions = [];
 foreach (array_keys($fonts->get()) as $id) {
@@ -69,7 +73,10 @@ foreach (array_keys($fonts->get()) as $id) {
     <label for="theme_download_button"><?php _se('Enable download button'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="theme_download_button" id="theme_download_button" class="text-input">
             <?php
-            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_download_button')); ?>
+            echo get_select_options_html([
+                1 => _s('Enabled'),
+                0 => _s('Disabled'),
+            ], Settings::get('theme_download_button')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show the image download button.'); ?></div>
 </div>
@@ -77,7 +84,10 @@ foreach (array_keys($fonts->get()) as $id) {
     <label for="theme_image_right_click"><?php _se('Enable right click on image'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="theme_image_right_click" id="theme_image_right_click" class="text-input">
             <?php
-            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_image_right_click')); ?>
+            echo get_select_options_html([
+                1 => _s('Enabled'),
+                0 => _s('Disabled'),
+            ], Settings::get('theme_image_right_click')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to allow right click on image viewer page.'); ?></div>
 </div>
@@ -85,7 +95,10 @@ foreach (array_keys($fonts->get()) as $id) {
     <label for="theme_show_exif_data"><?php _se('Enable show Exif data'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="theme_show_exif_data" id="theme_show_exif_data" class="text-input">
             <?php
-            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_show_exif_data')); ?>
+            echo get_select_options_html([
+                1 => _s('Enabled'),
+                0 => _s('Disabled'),
+            ], Settings::get('theme_show_exif_data')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show image Exif data.'); ?></div>
 </div>
@@ -94,15 +107,15 @@ foreach (array_keys($fonts->get()) as $id) {
     <div class="c5 phablet-c1"><select type="text" name="image_first_tab" id="image_first_tab" class="text-input">
             <?php
             echo get_select_options_html(
-    [
+                [
                     'embeds' => _s('Embed codes'),
                     'about' => _s('About'),
                     'comments' => _s('Comments'),
                     'info' => _s('Info'),
                 ],
-    Settings::get('image_first_tab')
-);
-            ?>
+                Settings::get('image_first_tab')
+            );
+?>
         </select></div>
     <div class="input-below"><?php _se('Determine the first tab on %s page.', _n('image', 'images', 1)); ?></div>
 </div>
@@ -111,7 +124,10 @@ foreach (array_keys($fonts->get()) as $id) {
     <label for="theme_show_social_share"><?php _se('Enable social share'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="theme_show_social_share" id="theme_show_social_share" class="text-input">
             <?php
-            echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('theme_show_social_share')); ?>
+echo get_select_options_html([
+    1 => _s('Enabled'),
+    0 => _s('Disabled'),
+], Settings::get('theme_show_social_share')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show social network buttons to share content.'); ?></div>
 </div>
@@ -119,11 +135,11 @@ foreach (array_keys($fonts->get()) as $id) {
     <label for="theme_show_embed_content_for"><?php _se('Enable embed codes (content)'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="theme_show_embed_content_for" id="theme_show_embed_content_for" class="text-input">
             <?php
-            echo get_select_options_html([
-                'all' => _s('Everybody'),
-                'users' => _s('Users only'),
-                'none' => _s('Disabled')
-                ], Settings::get('theme_show_embed_content_for')); ?>
+echo get_select_options_html([
+    'all' => _s('Everybody'),
+    'users' => _s('Users only'),
+    'none' => _s('Disabled'),
+], Settings::get('theme_show_embed_content_for')); ?>
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show embed codes for the content.'); ?></div>
 </div>

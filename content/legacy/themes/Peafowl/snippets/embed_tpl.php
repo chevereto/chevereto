@@ -6,20 +6,20 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
 <script>
-	$(document).ready(function() {
-		if(typeof CHV == "undefined") {
-			CHV = {obj: {}, fn: {}, str:{}};
-		} else {
-			if(typeof CHV.obj.embed_share_tpl == "undefined") {
-				CHV.obj.embed_share_tpl = {};
-			}
-			if(typeof CHV.obj.embed_upload_tpl == "undefined") {
-				CHV.obj.embed_upload_tpl = {};
-			}
+document.addEventListener("DOMContentLoaded", function() {
+	if(typeof CHV == "undefined") {
+		CHV = {obj: {}, fn: {}, str:{}};
+	} else {
+		if(typeof CHV.obj.embed_share_tpl == "undefined") {
+			CHV.obj.embed_share_tpl = {};
 		}
-		CHV.obj.embed_share_tpl = <?php $embed_share_tpl = get_global('embed_share_tpl'); echo json_encode($embed_share_tpl); ?>;
-		CHV.obj.embed_upload_tpl = <?php $embed_upload_tpl = get_global('embed_upload_tpl'); echo json_encode($embed_upload_tpl); ?>;
-	});
+		if(typeof CHV.obj.embed_upload_tpl == "undefined") {
+			CHV.obj.embed_upload_tpl = {};
+		}
+	}
+	CHV.obj.embed_share_tpl = <?php $embed_share_tpl = get_global('embed_share_tpl'); echo json_encode($embed_share_tpl); ?>;
+	CHV.obj.embed_upload_tpl = <?php $embed_upload_tpl = get_global('embed_upload_tpl'); echo json_encode($embed_upload_tpl); ?>;
+});
 </script>
 <div data-modal="form-embed-codes" class="hidden">
 	<span class="modal-box-title"><i class="fas fa-code"></i> <?php _se('Embed codes'); ?></span>

@@ -11,10 +11,10 @@
 
 namespace Chevereto\Encryption;
 
-use function Chevere\VariableSupport\deepCopy;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
 use Chevereto\Encryption\Interfaces\KeyInterface;
 use phpseclib3\Crypt\ChaCha20;
+use function Chevere\VarSupport\deepCopy;
 
 final class Encryption implements EncryptionInterface
 {

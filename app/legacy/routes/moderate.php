@@ -11,24 +11,27 @@
 
 use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
-use function Chevereto\Legacy\G\get_route_name;
 use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\G\get_route_name;
 use function Chevereto\Legacy\get_share_links;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\request;
 
 return function (Handler $handler) {
-    if (!$handler::cond('content_manager')) {
+    if (! $handler::cond('content_manager')) {
         $handler->issueError(404);
 
         return;
     }
-    if (!(bool) env()['CHEVERETO_ENABLE_MODERATION']) {
+    if (! (bool) env()['CHEVERETO_ENABLE_MODERATION']) {
         $handler->issueError(403);
 
         return;
     }
-    $list = ['label' => _s('Moderate'), 'icon' => 'fas fa-check-double'];
+    $list = [
+        'label' => _s('Moderate'),
+        'icon' => 'fas fa-check-double',
+    ];
     $list['list'] = get_route_name();
     $listingParams = [
         'listing' => $list['list'],
@@ -40,7 +43,7 @@ return function (Handler $handler) {
             'album_min_image_count' => 0,
         ],
         'exclude_criterias' => ['most-viewed', 'most-liked'],
-        'order' => ['most-oldest', 'most-recent']
+        'order' => ['most-oldest', 'most-recent'],
     ];
     $getParams = Listing::getParams(request());
     $tabs = Listing::getTabs($listingParams, $getParams, true);

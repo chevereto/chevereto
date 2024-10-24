@@ -37,11 +37,15 @@ use stdClass;
 use Throwable;
 use ZipArchive;
 
+use function Chevere\Filesystem\directoryForPath;
+
 require_once __DIR__ . '/legacy/load/php-boot.php';
 
 const ZIP_BALL = 'https://chevereto.com/api/download/%tag%';
 const LOGGER = __DIR__ . '/.upgrading/process.log';
 if (!file_exists(LOGGER)) {
+    $loggerDir = dirname(LOGGER);
+    directoryForPath($loggerDir)->createIfNotExists();
     touch(LOGGER);
 }
 ob_start('ob_gzhandler');

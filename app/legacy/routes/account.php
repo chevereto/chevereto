@@ -10,8 +10,6 @@
  */
 
 use Chevereto\Config\Config;
-use function Chevereto\Legacy\captcha_check;
-use function Chevereto\Legacy\check_hashed_token;
 use Chevereto\Legacy\Classes\Confirmation;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Login;
@@ -19,12 +17,14 @@ use Chevereto\Legacy\Classes\RequestLog;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\TwoFactor;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\captcha_check;
+use function Chevereto\Legacy\check_hashed_token;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\G\datetime;
 use function Chevereto\Legacy\G\datetime_diff;
 use function Chevereto\Legacy\G\datetimegmt;
 use function Chevereto\Legacy\G\get_public_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_email_body_str;
@@ -43,73 +43,82 @@ return function (Handler $handler) {
     $handler->setTemplate('404');
     $route = $handler->requestArray()[0];
     $doing = $handler->request()[0] ?? false;
-    if (!$doing || !in_array($doing, ['activate', 'password-reset', 'change-email-confirm', 'two-factor']) && $handler->isRequestLevel(3)) {
+    if (! $doing
+        || ! in_array($doing, ['activate', 'password-reset', 'change-email-confirm', 'two-factor'], true)
+        && $handler->isRequestLevel(3)
+    ) {
         $handler->issueError(404);
 
         return;
     }
-    if (!Settings::get('enable_signups') && in_array($doing, ['awaiting-confirmation', 'activate', 'email-changed'])) {
+    if (! Settings::get('enable_signups')
+        && in_array($doing, ['awaiting-confirmation', 'activate', 'email-changed'], true)
+    ) {
         $handler->issueError(403);
 
         return;
     }
     $logged_user = Login::getUser();
     $loggedStatus = $logged_user['status'] ?? '';
-    if (Login::isLoggedUser() && $doing !== 'email-needed' && $loggedStatus == 'awaiting-email') {
-        redirect('account/email-needed');
+    if (Login::isLoggedUser() && $doing !== 'email-needed' && $loggedStatus === 'awaiting-email') {
+        redirect('account/email-needed', 302);
     }
 
     switch ($doing) {
         case 'email-needed':
-            if (Login::isLoggedUser() && $loggedStatus !== 'awaiting-email') {
-                redirect($logged_user['url']);
+            if (Login::isLoggedUser()) {
+                if ($loggedStatus !== 'awaiting-email') {
+                    redirect($logged_user['url'], 302);
+                }
+            } else {
+                redirect('login', 302);
             }
 
             break;
         case 'resend-activation':
         case 'activate':
             if (Login::isLoggedUser() && $loggedStatus !== 'awaiting-confirmation') {
-                redirect($logged_user['url'] ?? '');
+                redirect($logged_user['url'] ?? '', 302);
             }
 
             break;
         case 'two-factor':
-            if (!Login::isLoggedUser()) {
-                redirect('');
+            if (! Login::isLoggedUser()) {
+                redirect('login', 302);
             }
-            if (!TwoFactor::hasFor($logged_user['id'])) {
-                redirect('settings/security');
+            if (! TwoFactor::hasFor($logged_user['id'])) {
+                redirect('settings/security', 302);
             }
-            if (!sessionVar()->hasKey('challenge_two_factor')) {
-                redirect($logged_user['url'] ?? '');
+            if (! sessionVar()->hasKey('challenge_two_factor')) {
+                redirect($logged_user['url'] ?? '', 302);
             }
 
             break;
     }
     $captcha_needed = false;
     $request_to_db = [
+        'activate' => 'account-activate',
+        'change-email-confirm' => 'account-change-email',
+        'email-needed' => 'account-email-needed',
         'password-forgot' => 'account-password-forgot',
         'password-reset' => 'account-password-forgot',
         'resend-activation' => 'account-activate',
-        'activate' => 'account-activate',
-        'email-needed' => 'account-email-needed',
-        'change-email-confirm' => 'account-change-email',
         'two-factor' => 'account-two-factor',
     ];
     $request_db_field = $request_to_db[$doing] ?? '';
     $pre_doctitles = [
+        'awaiting-confirmation' => _s('Awaiting confirmation'),
+        'email-changed' => _s('Email changed'),
+        'email-needed' => _s('Add your email address'),
         'password-forgot' => _s('Forgot password?'),
         'password-reset' => _s('Reset password'),
         'resend-activation' => _s('Resend account activation'),
-        'email-needed' => _s('Add your email address'),
-        'awaiting-confirmation' => _s('Awaiting confirmation'),
         'two-factor' => _s('Two-factor authentication'),
-        'email-changed' => _s('Email changed'),
     ];
     $keysToCheck = $request_to_db;
     unset($keysToCheck['change-email-confirm']);
     $keysToCheck = array_keys($keysToCheck);
-    if (in_array($doing, $keysToCheck)) {
+    if (in_array($doing, $keysToCheck, true)) {
         $request_log = RequestLog::getCounts($request_db_field, 'fail');
         $captcha_needed = (getSetting('captcha') ?? false)
             ? must_use_captcha($request_log['day'])
@@ -119,9 +128,9 @@ return function (Handler $handler) {
     $is_error = false;
     $error_message = null;
     $input_errors = [];
-    if ($captcha_needed && !empty($POST)) {
+    if ($captcha_needed && ! empty($POST)) {
         $captcha = captcha_check();
-        if (!$captcha->is_valid) {
+        if (! $captcha->is_valid) {
             $is_error = true;
             $error_message = _s('%s says you are a robot', 'CAPTCHA');
         }
@@ -130,33 +139,32 @@ return function (Handler $handler) {
     switch ($doing) {
         case 'password-forgot':
         case 'resend-activation':
-            if ($doing == 'password-forgot' && $loggedStatus == 'valid' || $doing == 'resend-activation' && $loggedStatus == 'awaiting-confirmation') {
+            if ($doing === 'password-forgot' && $loggedStatus === 'valid' || $doing === 'resend-activation' && $loggedStatus === 'awaiting-confirmation') {
                 $POST['user-subject'] = $logged_user['username'];
                 $is_error = false;
             }
-            if ($POST !== [] && !$is_error) {
+            if ($POST !== [] && ! $is_error) {
                 $subject_type = filter_var($POST['user-subject'] ?? '', FILTER_VALIDATE_EMAIL)
                     ? 'email'
                     : 'username';
-                if (trim($POST['user-subject']) == '') {
+                if (trim($POST['user-subject']) === '') {
                     $is_error = true;
                     $input_errors['user-subject'] = _s('Invalid Username/Email');
                 }
-                if (!$is_error) {
+                if (! $is_error) {
                     $user = User::getSingle($POST['user-subject'], $subject_type);
                     if ($user !== []) {
-                        if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+                        if (! filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
                             $error_message = _s("User doesn't have an email.");
                             $is_error = true;
                         }
-                        if ($doing == 'password-forgot') {
+                        if ($doing === 'password-forgot') {
                             switch ($user['status']) {
                                 case 'banned':
                                     $handler->issueError(403);
 
                                     return;
 
-                                    break;
                                 case 'awaiting-email':
                                 case 'awaiting-confirmation':
                                     $is_error = true;
@@ -178,11 +186,11 @@ return function (Handler $handler) {
                                     break;
                             }
                         }
-                        if ($handler->template() == '403') {
+                        if ($handler->template() === '403') {
                             RequestLog::insert([
                                 'type' => $request_db_field,
                                 'result' => 'fail',
-                                'user_id' => $user['id']
+                                'user_id' => $user['id'],
                             ]);
 
                             return;
@@ -191,15 +199,24 @@ return function (Handler $handler) {
                         $is_error = true;
                         $input_errors['user-subject'] = _s('Invalid Username/Email');
                     }
-                    if (!$is_error) {
-                        $confirmation_db = Confirmation::get(['user_id' => $user['id'], 'type' => $request_db_field, 'status' => 'active'], ['field' => 'date', 'order' => 'desc'], 1);
+                    if (! $is_error) {
+                        $confirmation_db = Confirmation::get([
+                            'user_id' => $user['id'],
+                            'type' => $request_db_field,
+                            'status' => 'active',
+                        ], [
+                            'field' => 'date',
+                            'order' => 'desc',
+                        ], 1);
                         if ($confirmation_db !== false) {
-                            $minute_diff = $confirmation_db['confirmation_date_gmt'] ? datetime_diff($confirmation_db['confirmation_date_gmt'], null, 'm') : 15 + 1;
+                            $minute_diff = $confirmation_db['confirmation_date_gmt']
+                                ? datetime_diff($confirmation_db['confirmation_date_gmt'], null, 'm')
+                                : 15 + 1;
                             if ($minute_diff < 15) { // Mimic for the already submitted
                                 $is_error = true;
                                 $is_process_done = false;
                                 $activation_email = $user['email'];
-                                if ($subject_type == 'username') { // We won't disclose this email address
+                                if ($subject_type === 'username') { // We won't disclose this email address
                                     $activation_email = preg_replace('/(?<=.).(?=.*@)/u', '*', $activation_email);
                                     $explode = explode('@', $activation_email);
                                     while (strlen($explode[0]) < 4) {
@@ -210,11 +227,14 @@ return function (Handler $handler) {
                                 $handler::setVar('resend_activation_email', $activation_email);
                                 $error_message = _s('Allow up to 15 minutes for the email. You can try again later.');
                             } else {
-                                Confirmation::delete(['user_id' => $user['id'], 'type' => $request_db_field]);
+                                Confirmation::delete([
+                                    'user_id' => $user['id'],
+                                    'type' => $request_db_field,
+                                ]);
                             }
                         }
                     }
-                    if (!$is_error) {
+                    if (! $is_error) {
                         $hashed_token = generate_hashed_token((int) $user['id']);
                         $array_values = [
                             'type' => $request_db_field,
@@ -222,35 +242,34 @@ return function (Handler $handler) {
                             'date_gmt' => datetimegmt(),
                             'token_hash' => $hashed_token['hash'],
                         ];
-                        if (!isset($user['confirmation_id'])) {
+                        if (! isset($user['confirmation_id'])) {
                             $array_values['user_id'] = $user['id'];
                             $confirmation_db_query = Confirmation::insert($array_values);
                         } else {
                             $confirmation_db_query = Confirmation::update($user['confirmation_id'], $array_values);
                         }
                         if ($confirmation_db_query) {
-                            $recovery_link = get_public_url('account/' . ($doing == 'password-forgot' ? 'password-reset' : 'activate') . '/?token=' . $hashed_token['public_token_format']);
+                            $recovery_link = get_public_url('account/' . ($doing === 'password-forgot' ? 'password-reset' : 'activate') . '/?token=' . $hashed_token['public_token_format']);
                             global $theme_mail;
                             $theme_mail = [
                                 'user' => $user,
                                 'link' => $recovery_link,
                             ];
-                            if ($doing == 'password-forgot') {
-                                $mail['subject'] = _s('Reset your password at %s', getSettings()['website_name']);
+                            if ($doing === 'password-forgot') {
+                                $mail['subject'] = _s('Reset your password at %s', getSetting('website_name', true));
                             } else {
-                                $mail['subject'] = _s('Confirmation required at %s', getSettings()['website_name']);
+                                $mail['subject'] = _s('Confirmation required at %s', getSetting('website_name', true));
                             }
-                            $mail['message'] = get_email_body_str('mails/account-' . ($doing == 'password-forgot' ? 'password-reset' : 'confirm'));
-                            xr($mail);
+                            $mail['message'] = get_email_body_str('mails/account-' . ($doing === 'password-forgot' ? 'password-reset' : 'confirm'));
                             if (send_mail($user['email'], $mail['subject'], $mail['message'])) {
                                 $is_process_done = true;
                             }
-                            if ($doing == 'resend-activation') {
+                            if ($doing === 'resend-activation') {
                                 Login::setSignup([
                                     'status' => 'awaiting-confirmation',
                                     'email' => $user['email'],
                                 ]);
-                                redirect('account/awaiting-confirmation');
+                                redirect('account/awaiting-confirmation', 302);
                             }
                             $handler::setVar('password_forgot_email', $user['email']);
                         } else {
@@ -262,14 +281,14 @@ return function (Handler $handler) {
                     RequestLog::insert([
                         'result' => 'fail',
                         'type' => $request_db_field,
-                        'user_id' => $user['id'] ?? null
+                        'user_id' => $user['id'] ?? null,
                     ]);
                     if ((getSetting('captcha') ?? false)
                         && isset($request_log)
                         && must_use_captcha($request_log['day'] + 1)) {
                         $captcha_needed = true;
                     }
-                    if (!$error_message) {
+                    if (! $error_message) {
                         $error_message = _s('Invalid Username/Email');
                     }
                 }
@@ -277,14 +296,12 @@ return function (Handler $handler) {
 
             break;
         case 'awaiting-confirmation':
-            if (!Login::hasSignup()) {
+            if (! Login::hasSignup()) {
                 $handler->issueError(403);
 
                 return;
-
-                break;
             }
-            if (Login::getSignup()['status'] != 'awaiting-confirmation') {
+            if (Login::getSignup()['status'] !== 'awaiting-confirmation') {
                 $handler->issueError(403);
 
                 return;
@@ -310,7 +327,7 @@ return function (Handler $handler) {
                 RequestLog::insert([
                     'type' => $request_db_field,
                     'result' => 'fail',
-                    'user_id' => null
+                    'user_id' => null,
                 ]);
                 $handler->issueError(403);
 
@@ -318,7 +335,10 @@ return function (Handler $handler) {
             }
             $user_id = decodeID($get_token_array[0]);
             $get_token = hashed_token_info(get()['token']);
-            $confirmation_db = Confirmation::get(['type' => $request_db_field, 'user_id' => $get_token['id']]);
+            $confirmation_db = Confirmation::get([
+                'user_id' => $get_token['id'],
+                'type' => $request_db_field,
+            ]);
             if ($confirmation_db === false) {
                 $handler->issueError(403);
 
@@ -326,14 +346,16 @@ return function (Handler $handler) {
             }
             $hash_match = check_hashed_token($confirmation_db['confirmation_token_hash'], get()['token']);
             if (datetime_diff($confirmation_db['confirmation_date_gmt'], null, 'h') > 48) {
-                Confirmation::delete(['id' => $confirmation_db['confirmation_id']]);
+                Confirmation::delete([
+                    'id' => $confirmation_db['confirmation_id'],
+                ]);
                 $confirmation_db = false;
             }
-            if (!$hash_match || !$confirmation_db) {
+            if (! $hash_match || ! $confirmation_db) {
                 RequestLog::insert([
                     'type' => $request_db_field,
                     'result' => 'fail',
-                    'user_id' => $user_id
+                    'user_id' => $user_id,
                 ]);
                 $handler->issueError(403);
 
@@ -341,39 +363,49 @@ return function (Handler $handler) {
             }
             switch ($doing) {
                 case 'activate':
-                    User::update($confirmation_db['confirmation_user_id'], ['status' => 'valid']);
-                    Confirmation::delete(['id' => $confirmation_db['confirmation_id']]);
+                    User::update($confirmation_db['confirmation_user_id'], [
+                        'status' => 'valid',
+                    ]);
+                    Confirmation::delete([
+                        'id' => $confirmation_db['confirmation_id'],
+                    ]);
                     $logged_user = Login::login($confirmation_db['confirmation_user_id']);
                     Login::insertCookie('cookie', $logged_user['id']);
                     global $theme_mail;
                     $theme_mail = [
                         'user' => $logged_user,
                     ];
-                    $mail['subject'] = _s('Welcome to %s', getSettings()['website_name']);
+                    $mail['subject'] = _s('Welcome to %s', getSetting('website_name', true));
                     $mail['message'] = get_email_body_str('mails/account-welcome');
                     if (send_mail($logged_user['email'], $mail['subject'], $mail['message'])) {
                         $is_process_done = true;
                     }
                     Login::unsetSignup();
-                    redirect($logged_user !== [] ? User::getUrl($logged_user) : null);
+                    $redirectTo = $logged_user !== []
+                        ? User::getUrl($logged_user)
+                        : '';
+                    redirect($redirectTo, 302);
 
                     break;
                 case 'password-reset':
                     if ($POST !== []) {
-                        if (!preg_match('/' . getSetting('user_password_pattern') . '/', $POST['new-password'] ?? '')) {
+                        if (! preg_match('/' . Settings::USER_PASSWORD_PATTERN . '/', $POST['new-password'] ?? '')) {
                             $input_errors['new-password'] = _s('Invalid password');
                         }
                         if ($POST['new-password'] !== $POST['new-password-confirm']) {
                             $input_errors['new-password-confirm'] = _s("Passwords don't match");
                         }
-                        if (count($input_errors) == 0) {
+                        if (count($input_errors) === 0) {
                             if (Login::hasPassword($user_id)) {
                                 $is_process_done = Login::changePassword($user_id, $POST['new-password']);
                             } else {
                                 $is_process_done = Login::addPassword($user_id, $POST['new-password']);
                             }
                             if ($is_process_done) {
-                                Confirmation::delete(['type' => $request_db_field, 'user_id' => $user_id]);
+                                Confirmation::delete([
+                                    'type' => $request_db_field,
+                                    'user_id' => $user_id,
+                                ]);
                             } else {
                                 throw new Exception('Unexpected error', 400);
                             }
@@ -385,50 +417,70 @@ return function (Handler $handler) {
                     break;
                 case 'change-email-confirm':
                     $email_candidate = $confirmation_db['confirmation_extra'];
-                    $email_db = DB::get('users', ['email' => $email_candidate]);
-                    if ($email_db !== []) {
-                        if ($email_db['user_status'] == 'valid') {
-                            Confirmation::delete(['id' => $confirmation_db['confirmation_id']]);
+                    $email_db = DB::get(
+                        table: 'users',
+                        where: [
+                            'email' => $email_candidate,
+                        ],
+                        limit: 1
+                    );
+                    if (! $email_db) {
+                        if ($email_db['user_status'] === 'valid') {
+                            Confirmation::delete([
+                                'id' => $confirmation_db['confirmation_id'],
+                            ]);
                             RequestLog::insert([
                                 'type' => $request_db_field,
                                 'result' => 'fail',
-                                'user_id' => $user_id
+                                'user_id' => $user_id,
                             ]);
                             $handler->issueError(403);
 
                             return;
-                        } else {
-                            DB::delete('users', ['id' => $email_db['user_id']]);
-                            Confirmation::delete(['type' => 'account-change-email', 'user_id' => $email_db['user_id']]);
                         }
+                        DB::delete('users', [
+                            'id' => $email_db['user_id'],
+                        ]);
+                        Confirmation::delete([
+                            'type' => 'account-change-email',
+                            'user_id' => $email_db['user_id'],
+                        ]);
                     }
-                    Confirmation::delete(['type' => 'account-change-email', 'user_id' => $user_id]);
+                    Confirmation::delete([
+                        'type' => 'account-change-email',
+                        'user_id' => $user_id,
+                    ]);
                     sessionVar()->put('change-email-confirm', true);
-                    User::update($user_id, ['email' => $email_candidate]);
+                    User::update($user_id, [
+                        'email' => $email_candidate,
+                    ]);
                     Login::login($user_id);
-                    redirect('account/email-changed');
+                    redirect('account/email-changed', 302);
 
                     break;
             }
 
             break;
         case 'email-needed':
-            if ($POST !== [] && !$is_error) {
-                if (!filter_var($POST['email'], FILTER_VALIDATE_EMAIL)) {
+            if ($POST !== [] && ! $is_error) {
+                if (! filter_var($POST['email'], FILTER_VALIDATE_EMAIL)) {
                     $is_error = true;
                     $input_errors['email'] = _s('Invalid email');
                 }
-                if (!$is_error) {
+                if (! $is_error) {
                     $user = User::getSingle($POST['email'], 'email');
                     if ($user !== []) {
                         $is_error = true;
                         $input_errors['email'] = _s('Email already being used');
                     }
                 }
-                if (!$is_error) {
-                    User::update($logged_user['id'], ['status' => getSetting('require_user_email_confirmation') ? 'awaiting-confirmation' : 'valid', 'email' => trim($POST['email'])]);
-                    if (!getSetting('require_user_email_confirmation')) {
-                        redirect($logged_user['url']);
+                if (! $is_error) {
+                    User::update($logged_user['id'], [
+                        'status' => getSetting('require_user_email_confirmation') ? 'awaiting-confirmation' : 'valid',
+                        'email' => trim($POST['email']),
+                    ]);
+                    if (! getSetting('require_user_email_confirmation')) {
+                        redirect($logged_user['url'], 302);
                     }
                     $hashed_token = generate_hashed_token((int) $logged_user['id']);
                     $array_values = [
@@ -445,7 +497,7 @@ return function (Handler $handler) {
                         'user' => $logged_user,
                         'link' => $activation_link,
                     ];
-                    $mail['subject'] = _s('Confirmation required at %s', getSettings()['website_name']);
+                    $mail['subject'] = _s('Confirmation required at %s', getSettings('website_name', true));
                     $mail['message'] = get_email_body_str('mails/account-confirm');
                     if (send_mail($POST['email'], $mail['subject'], $mail['message'])) {
                         $is_process_done = true;
@@ -454,13 +506,13 @@ return function (Handler $handler) {
                         'status' => 'awaiting-confirmation',
                         'email' => $POST['email'],
                     ]);
-                    redirect('account/awaiting-confirmation');
+                    redirect('account/awaiting-confirmation', 302);
                 } else {
                     RequestLog::insert(
                         [
                             'result' => 'fail',
                             'type' => $request_db_field,
-                            'user_id' => $user['id'] ?? null
+                            'user_id' => $user['id'] ?? null,
                         ]
                     );
                     if ((getSetting('captcha') ?? false)
@@ -476,7 +528,7 @@ return function (Handler $handler) {
 
             break;
         case 'email-changed':
-            if (!isset(session()['change-email-confirm'])) {
+            if (! isset(session()['change-email-confirm'])) {
                 $handler->issueError(404);
 
                 return;
@@ -486,20 +538,20 @@ return function (Handler $handler) {
             break;
         case 'two-factor':
             $handler->setTemplate($route . '/' . 'two-factor');
-            if (!is_null($POST['user-two-factor'] ?? null) && !$is_error) {
+            if (null !== ($POST['user-two-factor'] ?? null) && ! $is_error) {
                 $twoFactor = (new TwoFactor())->withSecret(
                     TwoFactor::getSecretFor(intval($logged_user['id']))
                 );
                 if ($twoFactor->verify($POST['user-two-factor'])) {
                     sessionVar()->remove('challenge_two_factor');
-                    redirect($logged_user['url']);
+                    redirect($logged_user['url'], 302);
                 } else {
                     $is_error = true;
                     $input_errors['user-two-factor'] = _s('Invalid code');
                     RequestLog::insert([
                         'type' => $request_db_field,
                         'result' => 'fail',
-                        'user_id' => $logged_user['id']
+                        'user_id' => $logged_user['id'],
                     ]);
                     if ((getSetting('captcha') ?? false)
                         && isset($request_log)

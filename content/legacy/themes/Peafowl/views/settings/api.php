@@ -1,6 +1,10 @@
 <?php
 
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
+
+use function Chevereto\Legacy\G\get_base_url;
+use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\time_elapsed_string;
 
 // @phpstan-ignore-next-line
@@ -10,12 +14,31 @@ if (!defined('ACCESS') || !ACCESS) {
 $api_date = Handler::var('api_v1_date_created'); ?>
 <div class="growl static inline font-size-small"><?php
     _se(
-    'Learn about %s at our %d.',
+    'Learn about %s at %t %d.',
     [
+                '%t' => 'Chevereto',
                 '%s' => '<b><i class="fas fa-project-diagram"></i> API</b>',
                 '%d' => '<a rel="external" href="https://v4-docs.chevereto.com/developer/api/api-v1.html" target="_blank">' . _s('documentation') . '</a>',
             ]
 ); ?></div>
+<div class="input-label"><i class="fas fa-info-circle"></i> <?php _se('The API enables to programmatically interact with %s.', 'Chevereto'); ?></div>
+<div>
+    <?php
+        $api = get_base_url('api/1/upload', true);
+        $key = 'YOUR_API_KEY';
+        $code = <<<COMMAND
+        curl --fail-with-body -X POST \
+            -H "X-API-Key: $key" \
+            -H "Content-Type: multipart/form-data" \
+            -F "source=@image.jpeg" \
+            $api
+        COMMAND;
+    ?>
+    <div class="margin-bottom-10 margin-top-10">
+        <code class="code code--command display-inline-block" data-click="select-all"><?php echo $code; ?></code>
+    </div>
+    <p><?php _se('Check the %s documentation to learn more.', '<a rel="external" href="https://v4-docs.chevereto.com/developer/api/api-v1.html" target="_blank">API V1</a>'); ?></p>
+</div>
 <div class="input-label">
     <label for="api_v1_key"><?php _se('%s key', _s('API')); ?></label>
     <?php if (Handler::hasVar('api_v1_key')) { ?>

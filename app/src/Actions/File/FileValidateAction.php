@@ -12,18 +12,18 @@
 namespace Chevereto\Actions\File;
 
 use Chevere\Action\Action;
+use Chevere\Parameter\Attributes\StringAttr;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use InvalidArgumentException;
+use Throwable;
 use function Chevere\DataStructure\data;
 use function Chevere\Message\message;
-use Chevere\Parameter\Attributes\ParameterAttribute;
-use function Chevere\Parameter\integerParameter;
-use Chevere\Parameter\Interfaces\ParametersInterface;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringParameter;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Parameter\string;
 use function Safe\filesize;
 use function Safe\md5_file;
 use function Safe\mime_content_type;
-use Throwable;
 
 /**
  * Validate file type and its size.
@@ -37,9 +37,9 @@ class FileValidateAction extends Action
     private int $minBytes = 0;
 
     public function run(
-        #[ParameterAttribute(
-            description: 'Comma-separated list of allowed mime-types.',
-            regex: '/^([\w]+\/[\w\-\+\.]+)+(,([\w]+\/[\w\-\+\.]+))*$/'
+        #[StringAttr(
+            '/^([\w]+\/[\w\-\+\.]+)+(,([\w]+\/[\w\-\+\.]+))*$/',
+            'Comma-separated list of allowed mime-types.'
         )]
         string $mimes,
         string $filepath,
@@ -66,9 +66,9 @@ class FileValidateAction extends Action
     {
         return
             parameters(
-                bytes : integerParameter(),
-                mime : stringParameter(),
-                md5 : stringParameter(),
+                bytes : int(),
+                mime : string(),
+                md5 : string(),
             );
     }
 
@@ -94,9 +94,11 @@ class FileValidateAction extends Action
         }
         if ($bytes < $this->minBytes) {
             throw new InvalidArgumentException(
-                message("Filesize (%fileSize%) doesn't meet the minimum bytes required (%required%)")
-                    ->withCode('%fileSize%', (string) $bytes . ' B')
-                    ->withCode('%required%', (string) $this->minBytes . ' B'),
+                message(
+                    "Filesize (`%fileSize%`) doesn't meet the minimum bytes required (`%required%`)",
+                    fileSize: (string) ($bytes . ' B'),
+                    required: (string) ($this->minBytes . ' B'),
+                ),
                 1001
             );
         }
@@ -109,9 +111,11 @@ class FileValidateAction extends Action
         }
         if ($bytes > $this->maxBytes) {
             throw new InvalidArgumentException(
-                message('Filesize (%fileSize%) exceeds the maximum bytes allowed (%allowed%)')
-                    ->withCode('%fileSize%', (string) $bytes . ' B')
-                    ->withCode('%allowed%', (string) $this->maxBytes . ' B'),
+                message(
+                    'Filesize (`%fileSize%`) exceeds the maximum bytes allowed (`%allowed%`)',
+                    fileSize: (string) ($bytes . ' B'),
+                    allowed: (string) ($this->maxBytes . ' B'),
+                ),
                 1002
             );
         }
@@ -119,11 +123,13 @@ class FileValidateAction extends Action
 
     private function assertMime(string $mime): void
     {
-        if (!in_array($mime, $this->mimes, true)) {
+        if (! in_array($mime, $this->mimes, true)) {
             throw new InvalidArgumentException(
-                message('File mime-type %type% is not allowed (allows %allowed%)')
-                    ->withCode('%type%', $mime)
-                    ->withCode('%allowed%', implode(', ', $this->mimes)),
+                message(
+                    'File mime-type `%type%` is not allowed (allows `%allowed%`)',
+                    type: $mime,
+                    allowed: implode(', ', $this->mimes),
+                ),
                 1004
             );
         }

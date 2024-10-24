@@ -11,15 +11,13 @@
 
 namespace Chevereto\Config;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Traits\Instance\AssertStaticInstanceTrait;
+use LogicException;
+use function Chevere\Message\message;
 
 final class Config
 {
     use AssertStaticInstanceTrait;
-
-    private static AssetConfig $asset;
 
     private static EnabledConfig $enabled;
 
@@ -30,7 +28,6 @@ final class Config
     private static LimitConfig $limit;
 
     public function __construct(
-        AssetConfig $asset,
         EnabledConfig $enabled,
         HostConfig $host,
         SystemConfig $system,
@@ -38,21 +35,17 @@ final class Config
     ) {
         if (isset(static::$asset)) {
             throw new LogicException(
-                message('An instance of %type% has been already created.')
-                    ->withCode('%type%', static::class),
+                message(
+                    'An instance of `%type%` has been already created.',
+                    type: static::class
+                ),
                 600
             );
         }
-        static::$asset = $asset;
         static::$enabled = $enabled;
         static::$host = $host;
         static::$system = $system;
         static::$limit = $limit;
-    }
-
-    public static function asset(): AssetConfig
-    {
-        return static::$asset;
     }
 
     public static function enabled(): EnabledConfig

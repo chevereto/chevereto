@@ -23,6 +23,7 @@ echo read_the_docs_settings('languages', _s('Languages')); ?>
                     echo '<option value="' . $k . '"' . $selected_lang . '>' . $v['name'] . '</option>' . "\n";
                 } ?>
     </select></div>
+    <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['default_language'] ?? ''; ?></div>
     <div class="input-below"><?php _se('Default base language to use.'); ?></div>
 </div>
 <div class="input-label">

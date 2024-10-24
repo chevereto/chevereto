@@ -2,13 +2,14 @@
 
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\G\format_bytes;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_global;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
 
@@ -60,7 +61,7 @@ if (Login::isLoggedUser()) {
                         ]); ?></div>
                         <div class="upload-box-allowed-files margin-top-10 text-transform-uppercase">
                             <span><?php echo str_replace(',', ' ', strtoupper(getSetting('upload_enabled_image_formats'))); ?></span>
-                            <span class="margin-left-5"><?php
+                            <span class="margin-left-5 display-inline-block"><?php
                                 echo _s('max')
                                     . ' '
                                     . format_bytes(get_bytes(getSetting('upload_max_filesize_mb') . ' MB'));
@@ -120,7 +121,13 @@ if (Login::isLoggedUser()) {
 							</div>
 							<div data-group="guest" class="soft-hidden">
 							<?php
-                                $uploaded_message = _s('You can %c with the content just uploaded.') . ' ' . _s('You must %s or %l to save this content into your account.');
+								$uploaded_message = '';
+								if(getSetting('guest_albums')) {
+									$uploaded_message .= _s('You can %c with the content just uploaded.') . ' ';
+								}
+								if(getSetting('enable_signups')) {
+                                	$uploaded_message .= _s('You must %s or %l to save this content into your account.');
+								}
                                 echo strtr($uploaded_message, [
                                     '%c' => '<a data-modal="form" data-target="form-uploaded-create-album">' . $iconAlbum . _s('create new %s', _n('album', 'albums', 1)) . '</a>',
                                     '%s' => '<a href="' . get_base_url("signup") . '">' . $iconSignup . _s('create an account') . '</a>',
@@ -302,7 +309,12 @@ if (Login::isLoggedUser()) {
 				<div class="image-preview"></div>
 				<div class="input-label">
 					<label for="form-title"><?php _se('Title'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
-					<input type="text" id="form-title" name="form-title" class="text-input" value="" maxlength="<?php echo getSetting('image_title_max_length'); ?>">
+					<input type="text" id="form-title" name="form-title" class="text-input" value="" placeholder="<?php _se('Untitled %s', _n('image', 'images', 1)); ?>" maxlength="<?php echo Settings::IMAGE_TITLE_MAX_LENGTH; ?>">
+				</div>
+				<div class="input-label">
+					<label for="form-tags"><?php _se('Tags'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
+					<input autocomplete="off" data-autocomplete="tags" data-target="#form-tags-autocomplete" type="text" id="form-tags" name="form-tags" class="text-input" value="" placeholder="<?php _se('Multiple tags may be separated by commas'); ?>" maxlength="">
+					<ul id="form-tags-autocomplete" class="content-tags content-tags-autocomplete hide-empty"></ul>
 				</div>
 				<?php
                     if (Login::isLoggedUser() && Login::getUser()['album_count'] > 0) {
@@ -320,7 +332,7 @@ if (Login::isLoggedUser()) {
                     if (Handler::var('categories')) {
                         ?>
 				<div class="input-label c8">
-					<?php include_theme_file('snippets/form_category'); ?>
+					<?php require_theme_file('snippets/form_category'); ?>
 				</div>
 				<?php
                     }
@@ -394,7 +406,7 @@ if (Login::isLoggedUser()) {
             "type" => "albums"
         ];
     ?>
-	<div data-modal="form-uploaded-create-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
+	<template data-modal="form-uploaded-create-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
 		<span class="modal-box-title"><i class="fas fa-images"></i> <?php _se('Create %s', _n('album', 'albums', 1)); ?></span>
 		<p><?php
             _se('The uploaded content will be moved to this newly created album.');
@@ -411,36 +423,36 @@ if (Login::isLoggedUser()) {
                 if (Login::isLoggedUser()) {
                     ?>
 			<div name="move-existing-album" id="move-existing-album" data-view="switchable" class="c7 input-label soft-hidden">
-				<?php include_theme_file("snippets/form_move_existing_album"); ?>
+				<?php require_theme_file("snippets/form_move_existing_album"); ?>
 			</div>
 			<?php
                 }
             ?>
 			<div name="move-new-album" id="move-new-album" data-content="form-new-album" data-view="switchable">
-				<?php include_theme_file("snippets/form_album"); ?>
+				<?php require_theme_file("snippets/form_album"); ?>
 			</div>
 		</div>
-	</div>
+	</template>
 	<?php
         if (Login::isLoggedUser()) {
             ?>
-	<div data-modal="form-uploaded-move-album" class="hidden" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
+	<template data-modal="form-uploaded-move-album" data-is-xhr data-submit-fn="CHV.fn.submit_upload_edit" data-ajax-deferred="CHV.fn.complete_upload_edit">
 		<span class="modal-box-title"><i class="fas fa-exchange-alt"></i> <?php _se('Move to %s', _n('album', 'albums', 1)); ?></span>
 		<p><?php _se('Select an existing album to move the uploaded content.'); ?></p>
 		<div class="modal-form">
 			<div name="move-existing-album" id="move-existing-album" data-view="switchable" class="c7 input-label">
-				<?php include_theme_file("snippets/form_move_existing_album"); ?>
+				<?php require_theme_file("snippets/form_move_existing_album"); ?>
 			</div>
 			<div name="move-new-album" id="move-new-album" data-content="form-new-album" data-view="switchable" class="soft-hidden">
-				<?php include_theme_file("snippets/form_album"); ?>
+				<?php require_theme_file("snippets/form_album"); ?>
 			</div>
 		</div>
-	</div>
+	</template>
 	<?php
         }
     ?>
 	<div data-modal="failed-upload-result" class="hidden">
 		<span class="modal-box-title"><i class="fas fa-exclamation-circle"></i> <?php _se('Error report'); ?></span>
-		<ul data-content="failed-upload-result" style="max-height: 115px;" class="overflow-auto"></ul>
+		<ul data-content="failed-upload-result"></ul>
 	</div>
 </div>

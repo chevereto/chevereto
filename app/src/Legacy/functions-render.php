@@ -11,13 +11,15 @@
 
 namespace Chevereto\Legacy;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
+use Chevereto\Legacy\G\Handler;
+use LogicException;
+use Throwable;
+use function Chevere\Message\message;
 use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\add_trailing_slashes;
 use function Chevereto\Legacy\G\array_filter_array;
@@ -29,10 +31,9 @@ use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\get_route_name;
 use function Chevereto\Legacy\G\get_route_path;
 use function Chevereto\Legacy\G\get_set_status_header_desc;
-use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\json_output;
+use function Chevereto\Legacy\G\json_document_output;
 use function Chevereto\Legacy\G\json_prepare;
+use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\sanitize_path_slashes;
 use function Chevereto\Legacy\G\set_status_header;
@@ -45,7 +46,7 @@ use function Chevereto\Vars\server;
 function get_email_body_str($file)
 {
     ob_start();
-    include_theme_file($file);
+    require_theme_file($file);
     $mail_body = ob_get_contents();
     ob_end_clean();
 
@@ -54,14 +55,14 @@ function get_email_body_str($file)
 
 function get_theme_inline_code($file, $type = null)
 {
-    if (!isset($type)) {
+    if (! isset($type)) {
         $type = pathinfo(rtrim($file, '.php'), PATHINFO_EXTENSION);
     }
-    include_theme_file($file);
+    require_theme_file($file);
 }
 function show_theme_inline_code($file, $type = null)
 {
-    include_theme_file($file);
+    require_theme_file($file);
 }
 
 function get_theme_file_url($file, $options = [])
@@ -76,7 +77,9 @@ function get_theme_file_url($file, $options = [])
 }
 function get_static_url($filepath, $options = [])
 {
-    $options = array_merge(['versionize' => true], $options);
+    $options = array_merge([
+        'versionize' => true,
+    ], $options);
     $url = getLocalUrl();
     $return = absolute_to_url($filepath, $url);
     if ($options['versionize']) {
@@ -122,19 +125,28 @@ function get_lang_html_tags()
     return 'xml:lang="' . $lang['base'] . '" lang="' . $lang['base'] . '" dir="' . $lang['dir'] . '"';
 }
 
-function get_select_options_html($arr, $selected)
+function get_select_options_html(array $arr, $selected)
 {
     $html = '';
     foreach ($arr as $k => $v) {
-        $selected = is_bool($selected) ? ($selected ? 1 : 0) : $selected;
-        $html .= '<option value="' . $k . '"' . ($selected == $k ? ' selected' : '') . '>' . $v . '</option>' . "\n";
+        $selected = is_bool($selected)
+            ? intval($selected)
+            : $selected;
+        $html .= '<option value="'
+            . $k
+            . '"'
+            . ($selected == $k ? ' selected' : '')
+            . '>'
+            . $v
+            . '</option>'
+            . "\n";
     }
 
     return $html;
 }
 function get_checkbox_html($options = [])
 {
-    if (!array_key_exists('name', $options)) {
+    if (! array_key_exists('name', $options)) {
         return 'ERR:CHECKBOX_NAME_MISSING';
     }
     $options = array_merge([
@@ -155,7 +167,10 @@ function get_checkbox_html($options = [])
 function get_captcha_component($id = 'g-recaptcha')
 {
     return match (getSetting('captcha_api')) {
-        '2', 'hcaptcha' => ['captcha_html', strtr('<div id="%id" data-recaptcha-element class="captcha"></div>', ['%id' => $id])],
+        '2', 'hcaptcha' => [
+            'captcha_html', strtr('<div id="%id" data-recaptcha-element class="captcha"></div>', [
+                '%id' => $id,
+            ])],
         '3' => ['recaptcha_invisible_html', get_captcha_invisible_html()],
         default => throw new LogicException(message('Invalid captcha API')),
     };
@@ -190,19 +205,23 @@ function get_share_links(array $share_element = [])
         'image' => '__image__',
         'title' => '__title__',
     ], $share_element);
-    if (!isset($share_element['twitter'])) {
+    if (! isset($share_element['twitter'])) {
         $share_element['twitter'] = getSetting('twitter_account');
     }
     $elements = [];
     foreach ($share_element as $key => $value) {
-        if (is_null($value)) {
+        if ($value == null) {
             continue;
         }
         $elements[$key] = rawurlencode($value);
     }
     global $share_links_networks;
-    include_theme_file('custom_hooks/share_links');
-    if (!isset($share_links_networks)) {
+
+    try {
+        require_theme_file('custom_hooks/share_links');
+    } catch (Throwable $e) {
+    }
+    if (! isset($share_links_networks)) {
         $share_links_networks = [
             'share' => [
                 'url' => 'share:title=%TITLE%&url=%URL%',
@@ -217,12 +236,14 @@ function get_share_links(array $share_element = [])
                 'url' => 'http://www.facebook.com/share.php?u=%URL%',
                 'label' => 'Facebook',
             ],
-            'twitter' => [
-                'url' => 'https://twitter.com/intent/tweet?original_referer=%URL%&url=%URL%&text=%TITLE%' . ($share_element['twitter'] ? '&via=%TWITTER%' : null),
-                'label' => 'Twitter',
+            'x-twitter' => [
+                'url' => 'https://x.com/intent/tweet?original_referer=%URL%&url=%URL%&text=%TITLE%' . ($share_element['twitter'] ? '&via=%TWITTER%' : null),
+                'label' => 'X',
             ],
             'whatsapp' => [
-                'url' => 'whatsapp://send?text=%TITLE% - ' . _s('view on %s', safe_html(getSetting('website_name'))) . ': %URL%',
+                'url' => 'whatsapp://send?text=%TITLE% - '
+                    . _s('view on %s', getSetting('website_name', true))
+                    . ': %URL%',
                 'label' => 'WhatsApp',
                 'mobileonly' => true,
             ],
@@ -242,14 +263,14 @@ function get_share_links(array $share_element = [])
             'qzone' => [
                 'url' => 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=%URL%&pics=%IMAGE%&title=%TITLE%',
                 'label' => '分享到QQ空间',
-                'icon' => 'star'
+                'icon' => 'star',
             ],
             'qq' => [
                 'url' => 'https://connect.qq.com/widget/shareqq/index.html?url=%URL%&summary=%DESCRIPTION%&title=%TITLE%&pics=%IMAGE%',
                 'label' => '分享到QQ',
             ],
             'reddit' => [
-                'url' => 'http://reddit.com/submit?url=%URL%',
+                'url' => 'http://old.reddit.com/submit?type=link&url=%URL%&title=%TITLE%&text=%DESCRIPTION%',
                 'label' => 'reddit',
             ],
             'vk' => [
@@ -281,7 +302,7 @@ function get_share_links(array $share_element = [])
         }
 
         $value['url'] = str_replace($search, $replace, $value['url']);
-        $icon = "fab";
+        $icon = 'fab';
         switch ($key) {
             case 'share':
                 $icon = 'fas';
@@ -299,7 +320,19 @@ function get_share_links(array $share_element = [])
                 break;
         }
         $iconKey = $value['icon'] ?? $key;
-        $return[] = '<li' . (isset($value['mobileonly']) ? ' class="hidden phone-display-inline-block"' : null) . '><a data-href="' . $value['url'] . '" class="popup-link btn-32 btn-social btn-' . $key . '" rel="tooltip" data-tiptip="top" title="' . $value['label'] . '"><span class="btn-icon ' . $icon . ' fa-' . $iconKey . '"></span></a></li>';
+        $return[] = '<li'
+            . (isset($value['mobileonly']) ? ' class="hidden phone-display-inline-block"' : '')
+            . '><a data-href="'
+            . $value['url']
+            . '" class="popup-link btn-32 btn-social btn-'
+            . $key
+            . '" rel="tooltip" data-tiptip="top" title="'
+            . $value['label']
+            . '"><span class="btn-icon '
+            . $icon
+            . ' fa-'
+            . $iconKey
+            . '"></span></a></li>';
     }
 
     return $return;
@@ -307,28 +340,29 @@ function get_share_links(array $share_element = [])
 
 function include_peafowl_head()
 {
-    echo    '<meta name="generator" content="Chevereto 4">' . "\n" .
+    echo '<meta name="generator" content="Chevereto 4">' . "\n" .
         '<link rel="stylesheet" href="' . get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'peafowl.min.css') . '">' . "\n" .
         '<link rel="stylesheet" href="' . get_theme_file_url('style.min.css') . '">' . "\n\n" .
         '<link rel="stylesheet" href="' . get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'font-awesome-6/css/all.min.css') . '">' . "\n" .
-        '<script data-cfasync="false">document.documentElement.className+=" js";var devices=["phone","phablet","tablet","laptop","desktop","largescreen"],window_to_device=function(){for(var e=[480,768,992,1200,1880,2180],t=[],n="",d=document.documentElement.clientWidth||document.getElementsByTagName("body")[0].clientWidth||window.innerWidth,c=0;c<devices.length;++c)d>=e[c]&&t.push(devices[c]);for(0==t.length&&t.push(devices[0]),n=t[t.length-1],c=0;c<devices.length;++c)document.documentElement.className=document.documentElement.className.replace(devices[c],""),c==devices.length-1&&(document.documentElement.className+=" "+n),document.documentElement.className=document.documentElement.className.replace(/\s+/g," ");if("laptop"==n||"desktop"==n){var o=document.getElementById("pop-box-mask");null!==o&&o.parentNode.removeChild(o)}};window_to_device(),window.onresize=window_to_device;function jQueryLoaded(){!function(n,d){n.each(readyQ,function(d,e){n(e)}),n.each(bindReadyQ,function(e,i){n(d).bind("ready",i)})}(jQuery,document)}!function(n,d,e){function i(d,e){"ready"==d?n.bindReadyQ.push(e):n.readyQ.push(d)}n.readyQ=[],n.bindReadyQ=[];var u={ready:i,bind:i};n.$=n.jQuery=function(n){return n===d||void 0===n?u:void i(n)}}(window,document);
-            </script>' . "\n\n";
-    if (Handler::cond('captcha_needed') && getSetting('captcha_api') === '3') {
+        '<script data-cfasync="false">document.documentElement.className += " js"; var devices = ["phone", "phablet", "tablet", "laptop", "desktop", "largescreen"], window_to_device = function () { for (var e = [480, 768, 992, 1200, 1880, 2180], t = [], n = "", d = document.documentElement.clientWidth || document.getElementsByTagName("body")[0].clientWidth || window.innerWidth, c = 0; c < devices.length; ++c)d >= e[c] && t.push(devices[c]); for (0 == t.length && t.push(devices[0]), n = t[t.length - 1], c = 0; c < devices.length; ++c)document.documentElement.className = document.documentElement.className.replace(devices[c], ""), c == devices.length - 1 && (document.documentElement.className += " " + n), document.documentElement.className = document.documentElement.className.replace(/\s+/g, " "); if ("laptop" == n || "desktop" == n) { var o = document.getElementById("pop-box-mask"); null !== o && o.parentNode.removeChild(o) } }; window_to_device(), window.onresize = window_to_device;</script>' . "\n\n";
+    if (Handler::cond('captcha_needed') && getSetting('captcha_api') == '3') {
         echo '<script src="https://www.recaptcha.net/recaptcha/api.js?render=' . getSetting('captcha_sitekey') . '"></script>';
     }
 }
 function get_cookie_law_banner()
 {
-    return '<div id="cookie-law-banner" data-cookie="CHV_COOKIE_LAW_DISPLAY"><div class="c24 center-box position-relative"><p class="">' . _s('We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link.', ['%cookie_policy_link' => '<a href="' . get_base_url('page/privacy') . '">' . _s('cookie policy') . '</a>']) . '</p><a data-action="cookie-law-close" title="' . _s('I understand') . '" class="cookie-law-close"><span class="icon fas fa-times"></span></a></div></div>' . "\n\n";
+    return '<div id="cookie-law-banner" data-cookie="CHV_COOKIE_LAW_DISPLAY"><div class="c24 center-box position-relative"><p class="">' . _s('We use our own and third party cookies to improve your browsing experience and our services. If you continue using our website is understood that you accept this %cookie_policy_link.', [
+        '%cookie_policy_link' => '<a href="' . get_base_url('page/privacy') . '">' . _s('cookie policy') . '</a>',
+    ]) . '</p><a data-action="cookie-law-close" title="' . _s('I understand') . '" class="cookie-law-close"><span class="icon fas fa-times"></span></a></div></div>' . "\n\n";
 }
 // Sensitive Cookie law display
 function display_cookie_law_banner()
 {
-    if (!getSetting('enable_cookie_law') || Login::isLoggedUser()) {
+    if (! getSetting('enable_cookie_law') || Login::isLoggedUser()) {
         return;
     }
     // No user logged in and cookie law has not been accepted
-    if (!isset(cookie()['CHV_COOKIE_LAW_DISPLAY']) || (bool) cookie()['CHV_COOKIE_LAW_DISPLAY'] !== false) {
+    if (! isset(cookie()['CHV_COOKIE_LAW_DISPLAY']) || (bool) cookie()['CHV_COOKIE_LAW_DISPLAY'] !== false) {
         echo get_cookie_law_banner();
     }
 }
@@ -336,16 +370,13 @@ function include_peafowl_foot()
 {
     display_cookie_law_banner();
     $resources = [
-        'peafowl' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'peafowl.min.js',
-        'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto.min.js',
+        // 'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto-all.js',
+        'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto-all.min.js',
     ];
     foreach ($resources as $k => &$v) {
         $v = get_static_url($v);
     }
-    $resources['scripts'] = get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'js/scripts.min.js');
     $echo = [
-        '<script defer data-cfasync="false" src="' . $resources['scripts'] . '" id="jquery-js" onload="jQueryLoaded(this, event)"></script>',
-        '<script defer data-cfasync="false" src="' . $resources['peafowl'] . '" id="peafowl-js"></script>',
         '<script defer data-cfasync="false" src="' . $resources['chevereto'] . '" id="chevereto-js"></script>',
     ];
     if (Handler::cond('captcha_needed')) {
@@ -377,7 +408,7 @@ function include_peafowl_foot()
 		};
 		</script>', [
             '%k' => getSetting('captcha_sitekey'),
-            '%t' => in_array(Handler::var('theme_palette_handle'), ['dark', 'imgur', 'deviantart'])
+            '%t' => in_array(Handler::var('theme_palette_handle'), ['dark', 'imgur', 'deviantart'], true)
                 ? 'dark'
                 : 'light',
             '%script' => $script,
@@ -394,16 +425,19 @@ function include_peafowl_foot()
     }
     echo implode("\n", $echo);
 }
-function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $requester = [])
+function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $requester = [], int $pos = 0)
 {
     $isRequesterAdmin = (bool) ($requester['is_admin'] ?? false);
     $isRequesterManager = (bool) ($requester['is_manager'] ?? false);
-    $stock_tpl = 'IMAGE';
-    if ($tpl == 'album' || $tpl == 'user/album') {
-        $stock_tpl = 'ALBUM';
-    }
-    if ($tpl == 'user' || $tpl == 'user/user') {
-        $stock_tpl = 'USER';
+    $conditional_replaces = [];
+    $stock_tpl = match (true) {
+        in_array($tpl, ['album', 'user/album', 'user/liked/album'], true) => 'ALBUM',
+        in_array($tpl, ['user', 'user/user'], true) => 'USER',
+        in_array($tpl, ['tag'], true) => 'TAG',
+        default => 'IMAGE',
+    };
+
+    if ($stock_tpl === 'USER') {
         if ($item['is_private'] == 1) {
             if ($isRequesterAdmin || $isRequesterManager) {
                 $item['name'] = '🔒 ' . $item['name'];
@@ -417,34 +451,40 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
             User::fill($item['user']);
         }
     }
-    if (in_array($stock_tpl, ['IMAGE', 'ALBUM'])) {
-        $item['liked'] = !isset($item['like']['user_id'])
+    if (in_array($stock_tpl, ['IMAGE', 'ALBUM'], true)) {
+        $item['liked'] = ! isset($item['like']['user_id'])
             ? 0
-            : (($requester['id'] ?? null) == $item['like']['user_id'] ? 1 : 0);
+            : (
+                (int) intval($requester['id'] ?? 0) == intval($item['like']['user_id'])
+            );
     }
-    if ($stock_tpl == 'IMAGE') {
-        if (!$item['is_animated'] || !isset($item['file_resource']['chain']['image'])) {
-            $conditional_replaces['tpl_list_item/item_image_play_gif'] = null;
+    $play_gif = false;
+    if ($stock_tpl === 'IMAGE') {
+        if ($item['is_animated']) {
+            $play_gif = $item['display_url'] !== $item['url'];
         }
-    } elseif (!isset($item['images_slice'][0]['is_animated']) || $item['images_slice'][0]['is_animated'] == false) {
+    } else {
+        $play_gif = (bool) ($item['images_slice'][0]['is_animated'] ?? false);
+    }
+    if (! $play_gif) {
         $conditional_replaces['tpl_list_item/item_image_play_gif'] = null;
     }
     $fill_tpl = $tpl;
-    if ($stock_tpl == 'ALBUM' && $isRequesterAdmin == false && $item['privacy'] == 'password' && !($item['user']['id'] && $item['user']['id'] == ($requester['id'] ?? null)) && Album::checkSessionPassword($item) == false) {
+    if ($stock_tpl === 'ALBUM' && $isRequesterAdmin === false && $item['privacy'] === 'password' && ! ($item['user']['id'] && $item['user']['id'] === ($requester['id'] ?? null)) && Album::checkSessionPassword($item) === false) {
         $fill_tpl = 'album_password';
     }
-    $filled_template = $template["tpl_list_item/$fill_tpl"];
-    if (!getSetting('enable_likes') || (bool) ($requester['is_private'] ?? false)) {
+    $filled_template = $template["tpl_list_item/{$fill_tpl}"];
+    if (! getSetting('enable_likes') || (bool) ($requester['is_private'] ?? false)) {
         $conditional_replaces['tpl_list_item/item_like'] = null;
     }
-    if (!getSetting('theme_show_social_share')) {
+    if (! getSetting('theme_show_social_share')) {
         $conditional_replaces['tpl_list_item/item_share'] = null;
     }
     if (isset($item['user'])
-        && ($item['user']['is_private'] ?? false) == 1
-        && !$isRequesterAdmin
+        && ($item['user']['is_private'] ?? 0) == 1
+        && ! $isRequesterAdmin
         && $item['user']['id'] != ($requester['id'] ?? null)
-        ) {
+    ) {
         unset($item['user']);
         $item['user'] = User::getPrivate();
         $conditional_replaces['tpl_list_item/image_description_user'] = null;
@@ -452,23 +492,26 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
     } else {
         $conditional_replaces['tpl_list_item/image_description_private'] = null;
     }
-    if (isset($item['user']) && ($item['user']['is_private'] ?? false) == 1 && ($isRequesterAdmin || ($requester['is_manager'] ?? false))) {
+    if (isset($item['user'])
+        && ($item['user']['is_private'] ?? 0) == 1
+        && ($isRequesterAdmin || ($requester['is_manager'] ?? false))
+    ) {
         $item['user']['name'] = '🔒 ' . $item['user']['name'];
     }
-    $conditional_replaces[!isset($item['user'], $item['user']['id']) ? 'tpl_list_item/image_description_user' : 'tpl_list_item/image_description_guest'] = null;
-    $conditional_replaces[!isset($item['user'], $item['user']['avatar']) ? 'tpl_list_item/image_description_user_avatar' : 'tpl_list_item/image_description_user_no_avatar'] = null;
-    if ($stock_tpl == 'IMAGE') {
+    $conditional_replaces[! isset($item['user'], $item['user']['id']) ? 'tpl_list_item/image_description_user' : 'tpl_list_item/image_description_guest'] = null;
+    $conditional_replaces[! isset($item['user'], $item['user']['avatar']) ? 'tpl_list_item/image_description_user_avatar' : 'tpl_list_item/image_description_user_no_avatar'] = null;
+    if ($stock_tpl === 'IMAGE') {
         $hasImageCover = isset($item['file_resource']['chain']['image']);
         $conditional_replaces['tpl_list_item/item_cover_type'] = $hasImageCover ? '--media' : '--bodyEmpty';
-        $conditional_replaces['tpl_list_item/' . (!$hasImageCover ? 'image_cover_image' : 'image_cover_empty')] = null;
+        $conditional_replaces['tpl_list_item/' . (! $hasImageCover ? 'image_cover_image' : 'image_cover_empty')] = null;
     }
-    if ($stock_tpl == 'ALBUM') {
+    if ($stock_tpl === 'ALBUM') {
         if ($item['privacy'] !== 'password'
-            || (!$isRequesterAdmin || ($item['user']['id'] ?? null) != ($requester['id'] ?? false))
+            || (! $isRequesterAdmin || ($item['user']['id'] ?? null) !== ($requester['id'] ?? false))
         ) {
             $item['password'] = null;
         }
-        if ($fill_tpl == 'album_password') {
+        if ($fill_tpl === 'album_password') {
             unset($item['images_slice']);
         }
         $hasImageCoverSlice = isset($item['images_slice'][0]['file_resource']);
@@ -478,25 +521,25 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
         $conditional_replaces[
             'tpl_list_item/'
             . (
-                (($item['image_count'] ?? 0) == 0 || !$hasImageCoverSlice)
+                (($item['image_count'] ?? 0) == 0 || ! $hasImageCoverSlice)
                     ? 'album_cover_image'
                     : 'album_cover_empty'
             )
         ] = null;
         if (isset($item['images_slice'])) {
             for ($i = 1; $i < count((array) $item['images_slice']); ++$i) {
-                if (!$item['images_slice'][$i]['file_resource']['chain']['thumb']) {
+                if (! $item['images_slice'][$i]['file_resource']['chain']['thumb']) {
                     continue;
                 }
-                $template['tpl_list_item/album_thumbs'] = str_replace("%$i", '', $template['tpl_list_item/album_thumbs']);
+                $template['tpl_list_item/album_thumbs'] = str_replace("%{$i}", '', $template['tpl_list_item/album_thumbs']);
             }
         }
         $template['tpl_list_item/album_thumbs'] = preg_replace('/%[0-9]+(.*)%[0-9]+/', '', $template['tpl_list_item/album_thumbs']);
     }
-    if ($stock_tpl == 'USER') {
+    if ($stock_tpl === 'USER') {
         $conditional_replaces[($item['avatar'] ?? false) ? 'tpl_list_item/user_no_avatar' : 'tpl_list_item/user_avatar'] = null;
         foreach (['twitter', 'facebook', 'website'] as $social) {
-            if (!isset($item[$social])) {
+            if (! isset($item[$social])) {
                 $conditional_replaces['tpl_list_item/user_' . $social] = null;
             }
         }
@@ -507,8 +550,8 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
     $show_item_public_tools = false;
     $show_admin_tools = false;
     if ($requester !== []) {
-        if (!is_null($tools)) {
-            $show_item_edit_tools = !is_array($tools);
+        if ($tools != null) {
+            $show_item_edit_tools = ! is_array($tools);
             $show_item_public_tools = is_array($tools);
         }
         if ($isRequesterAdmin || ($requester['is_manager'] ?? false)) {
@@ -517,17 +560,17 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
             $show_admin_tools = true;
         }
     }
-    if (($item['duration_time'] ?? '') === '') {
+    if (($item['duration_time'] ?? '') == '') {
         $template['tpl_list_item/item_duration_time'] = null;
     }
     $stock_tpl_lower = strtolower($stock_tpl);
-    if (!$show_item_public_tools) {
+    if (! $show_item_public_tools) {
         $template['tpl_list_item/item_' . $stock_tpl_lower . '_public_tools'] = null;
     }
-    if (!$show_item_edit_tools) {
+    if (! $show_item_edit_tools) {
         $template['tpl_list_item/item_' . $stock_tpl_lower . '_edit_tools'] = null;
     }
-    if (!$show_admin_tools) {
+    if (! $show_admin_tools) {
         $template['tpl_list_item/item_' . $stock_tpl_lower . '_admin_tools'] = null;
     }
     foreach ($conditional_replaces as $k => $v) {
@@ -547,21 +590,48 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
     // Now stock the item values
     $replacements = array_change_key_case(flatten_array($item, $stock_tpl . '_'), CASE_UPPER);
     unset($replacements['IMAGE_ORIGINAL_EXIFDATA']);
-    if ($stock_tpl == 'IMAGE' or $stock_tpl == 'ALBUM') {
-        $replacements['ITEM_URL_EDIT'] = url_to_relative($stock_tpl == 'IMAGE' ? $item['url_viewer'] : $item['url']) . '#edit';
+    if ($stock_tpl === 'IMAGE' or $stock_tpl === 'ALBUM') {
+        $replacements['ITEM_URL_EDIT'] = url_to_relative($stock_tpl === 'IMAGE' ? $item['url_viewer'] : $item['url']) . '#edit';
     }
     // Public for the guest
-    if (!array_key_exists('user', $item)) {
+    if (! array_key_exists('user', $item)) {
         $replacements['IMAGE_ALBUM_PRIVACY'] = 'public';
     }
-    if (in_array($stock_tpl, ['IMAGE', 'ALBUM'])) {
-        $nsfw = $stock_tpl == 'IMAGE'
+    if (in_array($stock_tpl, ['IMAGE', 'ALBUM'], true)) {
+        $nsfw = $stock_tpl === 'IMAGE'
             ? $item['nsfw']
             : ($item['images_slice'][0]['nsfw'] ?? '');
-        $placeholder = $stock_tpl == 'IMAGE' ? 'IMAGE_FLAG' : 'ALBUM_COVER_FLAG';
+        $placeholder = $stock_tpl === 'IMAGE' ? 'IMAGE_FLAG' : 'ALBUM_COVER_FLAG';
         $replacements[$placeholder] = $nsfw ? 'unsafe' : 'safe';
     }
-    $object = array_filter_array($item, ['id_encoded', 'image', 'medium', 'thumb', 'name', 'title', 'display_url', 'display_title', 'extension', 'filename', 'height', 'how_long_ago', 'size_formatted', 'url', 'path_viewer', 'url_viewer', 'url_frame', 'url_short', 'width', 'is_360', 'type']);
+    $object = array_filter_array(
+        $item,
+        [
+            'id_encoded',
+            'image',
+            'medium',
+            'thumb',
+            'name',
+            'title',
+            'display_url',
+            'display_title',
+            'extension',
+            'filename',
+            'height',
+            'how_long_ago',
+            'size_formatted',
+            'url',
+            'path_viewer',
+            'url_viewer',
+            'url_frame',
+            'url_short',
+            'width',
+            'is_360',
+            'type',
+            'tags',
+            'tags_string',
+        ]
+    );
     if (isset($item['user'])) {
         $object['user'] = [];
         foreach (['avatar', 'url', 'username', 'name_short_html'] as $k) {
@@ -573,10 +643,15 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
             'cta_html' => $item['album']['cta_html'] ?? '',
         ];
     }
-    $replacements['DATA_OBJECT'] = "data-object='" . rawurlencode(json_encode(G\array_utf8encode($object))) . "'";
-    if ($stock_tpl == 'IMAGE') {
+    $replacements['DATA_OBJECT'] = "data-object='"
+        . rawurlencode(json_encode(G\array_utf8encode($object)))
+        . "'";
+    if ($stock_tpl === 'IMAGE') {
         $replacements['SIZE_TYPE'] = getSetting('theme_image_listing_sizing') . '-size';
     }
+    $replacements['IMG_LOADING_ATTRIBUTE'] = $pos > 5
+        ? 'lazy'
+        : '';
     foreach ($replacements as $k => $v) {
         $filled_template = replace_tpl_string($k, $v, $filled_template);
     }
@@ -586,14 +661,22 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
         'user' => 8,
     ];
     foreach ($column_sizes as $k => $v) {
-        $filled_template = replace_tpl_string('COLUMN_SIZE_' . strtoupper($k), (string) $v, $filled_template);
+        $filled_template = replace_tpl_string(
+            'COLUMN_SIZE_' . strtoupper($k),
+            (string) $v,
+            $filled_template
+        );
     }
 
     return $filled_template;
 }
 function replace_tpl_string(string $search, $replace, string $subject)
 {
-    return str_replace('%' . $search . '%', is_null($replace) ? '' : (string) $replace, $subject);
+    return str_replace(
+        '%' . $search . '%',
+        (string) $replace,
+        $subject
+    );
 }
 // http://stackoverflow.com/a/9546215
 function flatten_array($array, $prefix = '')
@@ -611,15 +694,15 @@ function flatten_array($array, $prefix = '')
 }
 function chevereto_die(array|string $error_msg, $paragraph = null, $title = null)
 {
-    if (!is_array($error_msg) && check_value($error_msg)) {
+    if (! is_array($error_msg) && check_value($error_msg)) {
         $error_msg = [$error_msg];
     }
-    if (is_null($paragraph)) {
-        $paragraph = "The system has encountered errors <b>in your server setup</b> that must be fixed to use Chevereto:";
+    if ($paragraph == null) {
+        $paragraph = 'The system has encountered errors <b>in your server setup</b> that must be fixed to use Chevereto:';
     }
     $solution = 'Need help? Check our <a href="https://chevereto.com" target="_blank">Support</a>.';
-    $title = (!is_null($title)) ? $title : 'System error';
-    $handled_request = PATH_PUBLIC == '/' // @phpstan-ignore-line
+    $title = ($title != null) ? $title : 'System error';
+    $handled_request = PATH_PUBLIC === '/' // @phpstan-ignore-line
         ? sanitize_path_slashes(server()['REQUEST_URI'] ?? '')
         : str_ireplace(
             Config::host()->hostnamePath(),
@@ -627,7 +710,7 @@ function chevereto_die(array|string $error_msg, $paragraph = null, $title = null
             add_trailing_slashes(server()['REQUEST_URI'] ?? '')
         );
     $base_request = explode('/', rtrim(str_replace('//', '/', str_replace('?', '/', $handled_request)), '/'))[0];
-    if ($base_request == 'json' || $base_request == 'api') {
+    if ($base_request === 'json' || $base_request === 'api') {
         $output = [
             'status_code' => 500,
             'status_txt' => get_set_status_header_desc(500),
@@ -635,9 +718,10 @@ function chevereto_die(array|string $error_msg, $paragraph = null, $title = null
             'errors' => $error_msg,
         ];
         set_status_header(500);
+        headersNoCache();
         json_prepare();
-        json_output($output);
-        die(255);
+        json_document_output($output);
+        exit(255);
     }
     $html = [
         '<h1>' . $title . '</h1>',
@@ -651,14 +735,18 @@ function chevereto_die(array|string $error_msg, $paragraph = null, $title = null
         $html[] = '</ul>';
     }
     $html[] = '<p class="margin-bottom-0">' . $solution . '</p>';
-    $html = join('', $html);
+    $html = implode('', $html);
     $template = PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'template.php';
     require_once $template;
-    die(255);
+    exit(255);
 }
+// NCM: title, description, label, camera make, camera model, lens model, copyright, gps
+/**
+ * @return object|null JSON stdClass object
+ */
 function getFriendlyExif($Exif)
 {
-    if (gettype($Exif) == 'string') {
+    if (gettype($Exif) === 'string') {
         $Exif = json_decode($Exif);
     }
     if ($Exif->Make ?? false) {
@@ -681,42 +769,43 @@ function getFriendlyExif($Exif)
             $exif_one_line[] = $ISO;
         }
         if ($Exif->FocalLength ?? false) {
-            $FocalLength = $Exif->FocalLength . 'mm';
+            $FocalLength = $Exif->FocalLength . ' mm';
             $exif_one_line[] = $FocalLength;
         }
         $exif_relevant = [
-            'XResolution',
-            'YResolution',
-            'ResolutionUnit',
-            'ColorSpace',
-            'Orientation',
-            'Software',
             'BrightnessValue',
-            'SensingMethod',
-            'SceneCaptureType',
-            'GainControl',
-            'ExposureBiasValue',
-            'MaxApertureValue',
-            'ExposureProgram',
-            'ExposureMode',
-            'MeteringMode',
-            'LightSource',
-            'Flash',
-            'WhiteBalance',
-            'DigitalZoomRatio',
+            'ColorSpace',
             'Contrast',
-            'Saturation',
-            'Sharpness',
-            'ExifVersion',
+            'DateTimeDigitized',
             'DateTimeModified',
             'DateTimeOriginal',
-            'DateTimeDigitized',
+            'DigitalZoomRatio',
+            'ExifVersion',
+            'ExposureBiasValue',
+            'ExposureCompensation',
+            'ExposureMode',
+            'ExposureProgram',
+            'Flash',
+            'GainControl',
+            'LightSource',
+            'MaxApertureValue',
+            'MeteringMode',
+            'Orientation',
+            'ResolutionUnit',
+            'Saturation',
+            'SceneCaptureType',
+            'SensingMethod',
+            'Sharpness',
+            'Software',
+            'WhiteBalance',
+            'XResolution',
+            'YResolution',
         ];
         $ExifRelevant = [];
         foreach ($exif_relevant as $k) {
             if (property_exists($Exif, $k)) {
                 $exifReadableValue = exifReadableValue($Exif, $k);
-                if ($exifReadableValue !== null && !is_array($exifReadableValue)) { // Just make sure to avoid this array
+                if ($exifReadableValue !== null && ! is_array($exifReadableValue)) { // Just make sure to avoid this array
                     $ExifRelevant[$k] = $exifReadableValue;
                 }
             }
@@ -731,8 +820,8 @@ function getFriendlyExif($Exif)
                 'Capture' => implode(' ', $exif_one_line),
             ],
             'Full' => array_merge([
-                'Manufacturer' => $Exif->Make,
-                'Model' => $Exif->Model ?? '',
+                'CameraMake' => $Exif->Make,
+                'CameraModel' => $Exif->Model ?? '',
                 'ExposureTime' => $Exposure ?? '',
                 'Aperture' => $Aperture ?? '',
                 'ISO' => preg_replace('/iso/i', '', $ISO ?? ''),
@@ -740,8 +829,8 @@ function getFriendlyExif($Exif)
             ], $ExifRelevant),
         ];
         foreach ($return as $k => &$v) {
-            if ($k == 'Full') {
-                $v = array_filter((array) $v, 'strlen');
+            if ($k === 'Full') {
+                $v = array_filter((array) $v, 'strlen'); // @phpstan-ignore-line
             }
             foreach ($v as $kk => $vv) {
                 $return[$k][$kk] = safe_html(strip_tags((string) $vv));
@@ -909,21 +998,23 @@ function exifReadableValue($Exif, $key)
         ],
     ];
     $table['Contrast'] = $table['Saturation'];
-    if (is_object($Exif) and is_array($Exif->$key)) {
+    if (is_object($Exif) and is_array($Exif->{$key})) {
         $value_arr = [];
-        foreach ($Exif->$key as $k) {
+        foreach ($Exif->{$key} as $k) {
             $value_arr[] = $table[$key][$k];
         }
         $value = implode(', ', $value_arr);
     } else {
-        $value = $table[$key][$Exif->$key] ?? $Exif->$key;
+        $value = $table[$key][$Exif->{$key}] ?? $Exif->{$key};
     }
     switch ($key) {
         case 'DateTime':
         case 'DateTimeOriginal':
         case 'DateTimeDigitized':
         case 'DateTimeModified':
-            $value = $value !== null ? preg_replace('/(\d{4})(:)(\d{2})(:)(\d{2})/', '$1-$3-$5', $value) : null;
+            $value = $value != null
+                ? preg_replace('/(\d{4})(:)(\d{2})(:)(\d{2})/', '$1-$3-$5', $value)
+                : null;
 
             break;
         case 'WhiteBalance':
@@ -946,9 +1037,15 @@ function arr_printer($arr, $tpl = '', $wrap = [])
     $rtn .= $wrap[0];
     foreach ($arr as $k => $v) {
         if (is_array($v)) {
-            $rtn .= strtr($tpl, ['%K' => $k, '%V' => arr_printer($v, $tpl, $wrap)]);
+            $rtn .= strtr($tpl, [
+                '%K' => $k,
+                '%V' => arr_printer($v, $tpl, $wrap),
+            ]);
         } else {
-            $rtn .= strtr($tpl, ['%K' => $k, '%V' => $v]);
+            $rtn .= strtr($tpl, [
+                '%K' => $k,
+                '%V' => $v,
+            ]);
         }
     }
     $rtn .= $wrap[1];
@@ -961,10 +1058,10 @@ function versionize_src($src)
 }
 function show_banner($banner, $sfw = true)
 {
-    if (!(bool) env()['CHEVERETO_ENABLE_BANNERS']) {
+    if (! (bool) env()['CHEVERETO_ENABLE_BANNERS']) {
         return;
     }
-    if (!$sfw) {
+    if (! $sfw) {
         $banner .= '_nsfw';
     }
     $banner_code = trim(get_banner_code($banner, false));
@@ -983,7 +1080,7 @@ function getComments(): string
         case 'disqus':
             $disqus_secret = getSetting('disqus_secret_key');
             $disqus_public = getSetting('disqus_public_key');
-            if (!empty($disqus_secret) && !empty($disqus_public)) {
+            if (! empty($disqus_secret) && ! empty($disqus_public)) {
                 $data = [];
                 $logged_user = Login::getUser();
                 if ($logged_user !== []) {
@@ -1037,10 +1134,14 @@ function getThemeLogo(): string
 {
     $logo = getSetting('logo_' . getSetting('logo_type'));
     if (getSetting('logo_type') !== 'text') {
-        return '<img src="' . get_system_image_url($logo) . '" alt="' . getSetting('website_name') . '">';
-    } else {
-        return Handler::var('safe_html_website_name');
+        return '<img src="'
+            . get_system_image_url($logo)
+            . '" alt="'
+            . getSetting('website_name', true)
+            . '">';
     }
+
+    return Handler::var('safe_html_website_name');
 }
 
 function badgePaid(string $edition): string
@@ -1048,10 +1149,10 @@ function badgePaid(string $edition): string
     if ($edition === 'lite') {
         $edition = 'pro';
     }
-    if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+    if (! (bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
         return '';
     }
-    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']], true)) {
         return '';
     }
 
@@ -1063,10 +1164,10 @@ function linkPaid(string $edition): ?string
     if ($edition === 'lite') {
         $edition = 'pro';
     }
-    if (!(bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
+    if (! (bool) env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES']) {
         return null;
     }
-    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']], true)) {
         return null;
     }
 
@@ -1078,7 +1179,7 @@ function inputDisabledPaid(string $edition): string
     if ($edition === 'lite') {
         $edition = 'pro';
     }
-    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']])) {
+    if (in_array($edition, editionCombo()[env()['CHEVERETO_EDITION']], true)) {
         return '';
     }
 
@@ -1091,43 +1192,56 @@ function inputDisabledPaid(string $edition): string
 
 function getIpButtonsArray(array $bannedIp, string $ip): array
 {
-    $exposePaid = env()['CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES'];
-    $hrefPaidLink = 'https://chevereto.com/pricing';
-    $buttonSearchIp = '';
-    $buttonBanIp = '';
-    $ipBanNotice = '';
     $hrefSearchButton = get_base_url('search/images/?q=ip:%1$s');
     $buttonLabel = _s('Search');
-    if (!(bool) env()['CHEVERETO_ENABLE_USERS']) {
-        $hrefSearchButton = $hrefPaidLink;
-        $buttonLabel .= badgePaid($exposePaid);
-    }
     $buttonSearchIp = '<a class="btn btn-small default" href="' . $hrefSearchButton . '"><i class="fas fa-search"></i> ' . $buttonLabel . '</a>';
-    $buttonLabelBan = _s('Ban');
-    $buttonLabelBanned = _s('Banned');
-    $ipBanAttribute = '';
-    $ipBanNoticeClass = 'disabled';
-    $hrefNoticeButtonAttribute = '';
+    $buttonBanIp = '';
     if ((bool) env()['CHEVERETO_ENABLE_IP_BANS']) {
+        $buttonLabelBan = _s('Ban');
+        $buttonLabelBanned = _s('Banned');
+        $ipBanAttribute = '';
+        $ipBanNoticeClass = 'default--hover';
+        $hrefNoticeButtonAttribute = '';
         $ipBanAttribute = ' data-modal="form" data-args="%IP" data-target="modal-add-ip_ban" data-options=\'{"forced": true}\' data-content="ban_ip"';
-    } else {
-        $hrefNoticeButtonAttribute = 'href="' . $hrefPaidLink . '"';
-        $buttonLabelBanned = _s('Ban') . badgePaid($exposePaid);
-        $buttonLabelBan .= badgePaid($exposePaid);
-        $ipBanNoticeClass = '';
+        $buttonBanIp = $bannedIp === []
+            ? ('<a class="btn btn-small default"' . $ipBanAttribute . '><i class="fas fa-ban"></i> ' . $buttonLabelBan . '</a>')
+            : '';
+        $ipBanNotice = '<a class="btn btn-small '
+            . $ipBanNoticeClass
+            . ($bannedIp !== [] ? '' : ' hidden')
+            . '" '
+            . $hrefNoticeButtonAttribute
+            . '  data-content="banned_ip"><i class="fas fa-ban"></i> '
+            . $buttonLabelBanned
+            . '</a>';
+        $buttonBanIp = ' '
+            . $buttonBanIp
+            . $ipBanNotice;
     }
-    $buttonBanIp = $bannedIp === []
-        ? ('<a class="btn btn-small default"' . $ipBanAttribute . '><i class="fas fa-ban"></i> ' . $buttonLabelBan . '</a>')
-        : '';
-    $ipBanNotice = '<a class="btn btn-small default ' . $ipBanNoticeClass . ($bannedIp !== [] ? '' : ' hidden') . '" ' . $hrefNoticeButtonAttribute . '  data-content="banned_ip"><i class="fas fa-ban"></i> ' . $buttonLabelBanned . '</a>';
 
     return [
         'label' => _s('IP Address'),
         'content' => sprintf(str_replace(
             '%IP',
             '%1$s',
-            '<a rel="external" href="' . getSetting('ip_whois_url') . '" target="_blank">%1$s</a>'
-            . '<div>' . $buttonSearchIp . ' ' . $buttonBanIp . $ipBanNotice . '</div>'
-        ), $ip)
+            '<a rel="external" href="'
+            . Settings::IP_WHOIS_URL
+            . '" target="_blank">%1$s</a>'
+            . '<div>'
+            . $buttonSearchIp
+            . $buttonBanIp
+            . '</div>'
+        ), $ip),
     ];
+}
+
+function json_output(int $code, array $array = []): void
+{
+    set_status_header($code);
+    $array = array_merge($array, [
+        'status_code' => $code,
+        'status_txt' => get_set_status_header_desc($code),
+    ]);
+    echo json_encode($array);
+    exit(0);
 }

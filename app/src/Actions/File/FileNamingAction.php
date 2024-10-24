@@ -12,16 +12,16 @@
 namespace Chevereto\Actions\File;
 
 use Chevere\Action\Action;
-use function Chevere\DataStructure\data;
 use Chevere\Filesystem\Filename;
 use Chevere\Filesystem\Interfaces\FilenameInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
-use Chevere\Parameter\Attributes\ParameterAttribute;
+use Chevere\Parameter\Attributes\StringAttr;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use function Chevere\Parameter\objectParameter;
-use function Chevere\Parameter\parameters;
-use function Chevere\String\randomString;
 use Chevereto\Storage\Storage;
+use function Chevere\DataStructure\data;
+use function Chevere\Parameter\object;
+use function Chevere\Parameter\parameters;
+use function Chevere\Standard\randomString;
 
 /**
  * Determines the best available target filename for the given storage, path and naming.
@@ -30,21 +30,19 @@ class FileNamingAction extends Action
 {
     public function run(
         int $id,
-        #[ParameterAttribute(
-            regex: '/^.+\.[a-zA-Z]+$/'
-        )]
+        #[StringAttr('/^.+\.[a-zA-Z]+$/')]
         string $name,
         Storage $storage,
         PathInterface $path,
-        #[ParameterAttribute(
-            regex: '/^original|random|mixed|id$/'
-        )]
+        #[StringAttr('/^original|random|mixed|id$/')]
         string $naming = 'original',
     ): array {
         $encodedId = 'encoded';
         $file = new Filename($name);
         if ($naming === 'id') {
-            return ['filename' => new Filename($encodedId . '.' . $file->extension())];
+            return [
+                'filename' => new Filename($encodedId . '.' . $file->extension()),
+            ];
         }
         $name = $this->getName($naming, $file);
         // USE OWN INDEX, REQUIRE STORAGE ID PARAM
@@ -64,7 +62,7 @@ class FileNamingAction extends Action
     {
         return
             parameters(
-                filename: objectParameter(
+                filename: object(
                     className: Filename::class
                 ),
             );

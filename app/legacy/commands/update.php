@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 
-if (getSetting('chevereto_version_installed') === null) {
+if (cheveretoVersionInstalled() === '') {
     echo "[ERROR] Chevereto is not installed, try with the install command.\n";
-    die(255);
+    exit(255);
 }
 require_once PATH_APP_LEGACY_INSTALL . 'installer.php';

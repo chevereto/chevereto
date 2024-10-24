@@ -2,14 +2,14 @@
 
 use function Chevereto\Legacy\G\get_input_auth_token;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
-<?php include_theme_header(); ?>
+<?php require_theme_header(); ?>
 <div class="content-width">
 	<div class="content-password-gate">
 		<div class="c16 center-box">
@@ -39,10 +39,10 @@ if (!defined('ACCESS') || !ACCESS) {
 <?php if (Handler::cond('error') && Handler::var('error') !== null) {
         ?>
 <script>
-$(function() {
+document.addEventListener("DOMContentLoaded", function(event) {
 	PF.fn.growl.call("<?php echo Handler::var('error'); ?>");
 });
 </script>
 <?php
     } ?>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

@@ -4,6 +4,6 @@ if (!defined('ACCESS') || !ACCESS) {
 } ?>
 
 <div class="content-empty">
-	<span class="icon fas fa-inbox"></span>
+	<span class="icon fas fa-ellipsis"></span>
 	<h2><?php _se("There's nothing to show here."); ?></h2>
 </div>

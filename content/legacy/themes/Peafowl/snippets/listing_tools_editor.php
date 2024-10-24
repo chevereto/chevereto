@@ -16,7 +16,7 @@ foreach ($tabs as $tab) {
     if ((isset($tab['list']) && $tab['list'] === false) || isset($tab['tools']) && $tab['tools'] === false) {
         continue;
     } ?>
-<div data-content="list-selection" data-tab="<?php echo $tab['id']; ?>" class="header--height header--centering list-selection margin-right-5 <?php $class = [];
+<div data-content="list-selection" data-tab="<?php echo $tab['id']; ?>" class="header--height header--centering list-selection <?php $class = [];
     if (isset($listing) && (is_array($listing->output) == false || count($listing->output) == 0)) {
         $class[] = 'disabled';
     }
@@ -56,8 +56,8 @@ foreach ($tabs as $tab) {
 					<?php
                         if (Handler::cond('allowed_nsfw_flagging') && (array_key_exists('tools_available', $tab) ? (in_array('flag', $tab['tools_available'])) : true)) {
                             ?>
-					<li class="with-icon"><a data-action="flag-safe" class="hidden"><span class="btn-icon far fa-flag"></span><?php _se('Flag as safe'); ?><kbd>V</kbd></a></li>
-					<li class="with-icon"><a data-action="flag-unsafe" class="hidden"><span class="btn-icon fas fa-flag"></span><?php _se('Flag as unsafe'); ?><kbd>F</kbd></a></li>
+					<li class="with-icon hidden"><a data-action="flag-safe"><span class="btn-icon far fa-flag"></span><?php _se('Flag as safe'); ?><kbd>V</kbd></a></li>
+					<li class="with-icon hidden"><a data-action="flag-unsafe"><span class="btn-icon fas fa-flag"></span><?php _se('Flag as unsafe'); ?><kbd>F</kbd></a></li>
 					<?php
                         }
                             if (Handler::getRouteName() == 'moderate') { ?>
@@ -65,13 +65,13 @@ foreach ($tabs as $tab) {
                     <?php
                             }
                         } // images?>
-                    <?php
-                        if (Handler::cond('allowed_to_delete_content') && (array_key_exists('tools_available', $tab) ? in_array('delete', $tab['tools_available']) : true)) {
-                            ?>
+<?php
+if (Handler::cond('allowed_to_delete_content') && (array_key_exists('tools_available', $tab) ? in_array('delete', $tab['tools_available']) : true)) { ?>
 					<li class="with-icon"><a data-action="delete"><span class="btn-icon fas fa-trash-alt"></span><?php _se('Delete'); ?><kbd>Del</kbd></a></li>
-					<?php
-                        } ?>
-                    <div class="or-separator margin-top-5 margin-bottom-5"></div>
+<?php } ?>
+                </ul>
+                <div class="or-separator margin-top-5 margin-bottom-5"></div>
+                <ul>
                     <li class="with-icon"><a data-action="list-select-all"><span class="btn-icon fas fa-check-square"></span><?php _se('Select all'); ?><kbd>.</kbd></a></li>
                     <li class="with-icon"><a data-action="clear"><span class="btn-icon fas fa-times-circle"></span><?php _se('Clear selection'); ?><kbd>Z</kbd></a></li>
 				</ul>

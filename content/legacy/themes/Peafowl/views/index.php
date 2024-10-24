@@ -4,9 +4,9 @@ use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_file;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\show_banner;
 use function Chevereto\Legacy\show_theme_inline_code;
@@ -15,7 +15,7 @@ use function Chevereto\Legacy\show_theme_inline_code;
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-include_theme_header();
+require_theme_header();
 $hasPrev = false;
 if (Settings::get('homepage_style') == 'split') {
     show_theme_inline_code('snippets/index.js');
@@ -26,7 +26,7 @@ if (Settings::get('homepage_style') == 'split') {
 }
 if ($hasPrev == false) { ?>
 <div id="home-cover">
-	<?php include_theme_file('snippets/homepage_cover_slideshow'); ?>
+	<?php require_theme_file('snippets/homepage_cover_slideshow'); ?>
 	<div id="home-cover-content" class="c20 phone-c1 phablet-c1 fluid-column center-box padding-left-10 padding-right-10">
 		<?php show_banner('home_before_title', (Handler::var('listing') !== null ? Handler::var('listing')->sfw() : true)); ?>
 		<h1><?php echo getSetting('homepage_title_html') ?: _s('Upload and share your media'); ?></h1>
@@ -48,19 +48,19 @@ if ($hasPrev == false) { ?>
 <?php if (Settings::get('homepage_style') == 'split') {
                 ?>
 
-<div class="top-sub-bar follow-scroll margin-bottom-5 margin-top-5">
+<div class="top-sub-bar follow-scroll margin-bottom-5">
     <div class="content-width">
         <div class="header header-tabs">
             <h2 class="header-title"><strong><?php
                 echo isset($home_user)
                     ? User::getStreamName($home_user['name_short'])
                     : ('<span class="' . Handler::var('list')['icon'] . '"></span><span class="phone-hide margin-left-5">' . Handler::var('list')['label']); ?></span></strong></h1>
-            <?php include_theme_file("snippets/tabs"); ?>
+            <?php require_theme_file("snippets/tabs"); ?>
             <?php
                 if (Handler::cond('content_manager')) {
-                    include_theme_file("snippets/user_items_editor"); ?>
+                    require_theme_file("snippets/user_items_editor"); ?>
             <div class="header-content-right">
-                <?php include_theme_file("snippets/listing_tools_editor"); ?>
+                <?php require_theme_file("snippets/listing_tools_editor"); ?>
             </div>
             <?php
                 } ?>
@@ -75,7 +75,7 @@ if ($hasPrev == false) { ?>
 		<div id="content-listing-tabs" class="tabbed-listing">
 			<div id="tabbed-content-group">
 				<?php
-                    include_theme_file("snippets/listing"); ?>
+                    require_theme_file("snippets/listing"); ?>
 			</div>
 		</div>
 	</div>
@@ -93,4 +93,4 @@ if ($hasPrev == false) { ?>
 </div>
 <?php
             } ?>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

@@ -1,5 +1,6 @@
 <?php
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_checkbox_html;
 use function Chevereto\Legacy\getSetting;
@@ -14,7 +15,7 @@ if (!defined('ACCESS') || !ACCESS) {
         $label = 'form-album-name';
     ?>
     <label for="<?php echo $label; ?>"><?php _se('Name'); ?></label>
-    <input type="text" name="<?php echo $label; ?>" id="<?php echo $label; ?>" class="text-input" value="<?php echo $album["name"] ?? null; ?>" placeholder="<?php _se('Unnamed %s', _n('album', 'albums', 1)); ?>" maxlength="<?php echo getSetting('album_name_max_length'); ?>" required autocomplete="off">
+    <input type="text" name="<?php echo $label; ?>" id="<?php echo $label; ?>" class="text-input" value="<?php echo $album["name"] ?? null; ?>" placeholder="<?php _se('Unnamed %s', _n('album', 'albums', 1)); ?>" maxlength="<?php echo Settings::ALBUM_NAME_MAX_LENGTH; ?>" required autocomplete="off">
 </div>
 <?php if (Handler::cond('content_manager') && ($GLOBALS['theme_include_args']['album-root'] ?? false)) { ?>
 <div id="cta-form">
@@ -28,8 +29,8 @@ if (!defined('ACCESS') || !ACCESS) {
     </div>
     <div id="cta-combo" class="soft-hidden">
         <p class="font-size-small"><?php _se('Call to action buttons will be displayed on the %s page and in content belonging to.', _n('album', 'albums', 1)); ?> <?php _se('You can use %emoji% or %package% icons.', [
-        '%emoji%' => '<a href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank"><span class="btn-icon">🙂 </span>Emoji</a>',
-        '%package%' => '<a href="https://fontawesome.com/search?o=r&m=free&s=solid" target="_blank"><i class="fa-solid fa-font-awesome btn-icon"></i>Font Awesome</a>',
+        '%emoji%' => '<a class="display-inline-block" href="https://unicode.org/emoji/charts/full-emoji-list.html" target="_blank"><span class="margin-right-5">🙂</span>Emoji</a>',
+        '%package%' => '<a class="display-inline-block" href="https://fontawesome.com/search?o=r&m=free&s=solid" target="_blank"><i class="fa-solid fa-font-awesome margin-right-5"></i>Font Awesome</a>',
     ]); ?></p>
         <div id="cta-rows" class="position-relative"></div>
         <template id="cta-row-template">

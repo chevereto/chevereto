@@ -1,4 +1,4 @@
-/** 
+/**
 CSS BROWSER DETECTOR 1.0.3
 By Rodolfo Berrios <inbox@rodolfoberrios.com>
 
@@ -18,7 +18,7 @@ You can also use something like if(is_ie() && get_browser_version() >= 9) to det
 get_browser() returns the browser name
 get_broser_version() returns the browser version
 get_browser_os() return the operating system
-	
+
 **/
 var BrowserDetect = {
 	init: function(){
@@ -29,7 +29,7 @@ var BrowserDetect = {
 	},
 
 	searchString: function(data){
-		for (var i=0; i < data.length; i++)   
+		for (var i=0; i < data.length; i++)
 		{
 			var dataString = data[i].string;
 			this.versionSearchString = data[i].subString;
@@ -47,22 +47,22 @@ var BrowserDetect = {
 	},
 
 	dataBrowser: [
-		{ 
+		{
 			string: navigator.userAgent,
-			subString: "Chrome", 
-			identity: "chrome" 
+			subString: "Chrome",
+			identity: "chrome"
 		},
-		{ 
+		{
 			string: navigator.userAgent,
 			subString: "MSIE",
 			identity: "ie"
 		},
-		{ 
+		{
 			string: navigator.userAgent,
 			subString: "Firefox",
 			identity: "firefox"
 		},
-		{ 
+		{
 			string: navigator.userAgent,
 			subString: "Safari",
 			identity: "safari"
@@ -73,7 +73,7 @@ var BrowserDetect = {
 			identity: "opera"
 		}
 	],
-	
+
 	dataOS: [
 		{
 			string: navigator.platform,
@@ -138,5 +138,5 @@ for(var i=0; i<BrowserDetect.dataBrowser.length; i++){
 }
 // Generate is_os() functions
 for(var i=0; i<BrowserDetect.dataOS.length; i++){
-	eval('function is_'+BrowserDetect.dataOS[i].identity+'() { return "'+BrowserDetect.dataOS[i].identity+'" == "'+BrowserDetect.OS+'"; }');	
+	eval('function is_'+BrowserDetect.dataOS[i].identity+'() { return "'+BrowserDetect.dataOS[i].identity+'" == "'+BrowserDetect.OS+'"; }');
 }

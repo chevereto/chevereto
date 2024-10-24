@@ -14,6 +14,7 @@ namespace Chevereto\Legacy\Classes;
 class Palettes
 {
     private array $handles = [
+        10 => 'system',
         0 => 'blanco',
         1 => 'dark',
         2 => 'flickr',
@@ -27,7 +28,8 @@ class Palettes
     ];
 
     private array $names = [
-        0 => 'Blanco',
+        10 => 'System',
+        0 => 'Light',
         1 => 'Dark',
         2 => 'Flickr',
         3 => 'Imgur',

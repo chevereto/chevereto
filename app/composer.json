@@ -16,36 +16,40 @@
             "composer/package-versions-deprecated": true
         },
         "platform": {
-            "php": "8.0.30"
+            "php": "8.1.28"
         }
     },
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "intervention/image": "^2.6",
         "jeroendesloovere/xmp-metadata-extractor": "^2.0",
+        "league/flysystem": "^2.0",
         "jenssegers/imagehash": "^0.5.0",
         "guzzlehttp/psr7": "^1.7",
         "phpmailer/phpmailer": "^6.5",
         "psr/cache": "^1",
         "psr/log": "^1",
-        "phpseclib/phpseclib": "^3.0",
+        "phpseclib/phpseclib": "^3.0.37",
         "mobiledetect/mobiledetectlib": "^2.8",
         "mlocati/ip-lib": "^1.17",
         "composer/ca-bundle": "^1.2",
-        "chevere/chevere": "^2.0",
-        "chevere/throwable-handler": "^0.9",
-        "chevere/xr": "^0.7",
-        "chevere/xr-server": "^0.7",
-        "chevere/workflow": "^0.7.0",
+        "chevere/throwable-handler": "^1.0.2",
+        "xrdebug/php": "^2.0.2",
+        "xrdebug/xrdebug": "^2.0.2",
+        "chevere/workflow": "^0.9.0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-qrcode": "^3.0",
-        "chevere/cache": "^0.4",
         "phpseclib/bcmath_compat": "^2.0",
         "chillerlan/php-qrcode": "^4.3",
         "firebase/php-jwt": "^6.3",
         "lychee-org/php-exif": "^0.7.14",
+        "p3k/emoji-detector": "^1.0",
         "php-ds/php-ds": "^1.4",
-        "php-ffmpeg/php-ffmpeg": "^1.2"
+        "php-ffmpeg/php-ffmpeg": "^1.2",
+        "psy/psysh": "^0.11.8",
+        "chevere/cache": "^0.5.0",
+        "chevere/var-dump": "^2.0.x-dev",
+        "chevere/var-support": "^1.0"
     },
     "autoload": {
         "files": [
@@ -70,10 +74,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.2",
-        "symplify/easy-coding-standard": "^10.3",
-        "phpstan/phpstan": "^1.4",
-        "rector/rector": "^0.12.15",
-        "psy/psysh": "^0.11.8"
+        "symplify/easy-coding-standard": "^12.2",
+        "phpstan/phpstan": "^1.11"
     },
     "prefer-stable": true,
     "scripts": {

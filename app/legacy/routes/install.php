@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 
 return function (Handler $handler) {
-    if (Settings::get('chevereto_version_installed') !== null) {
+    if (cheveretoVersionInstalled() !== '') {
         $handler->issueError(404);
 
         return;

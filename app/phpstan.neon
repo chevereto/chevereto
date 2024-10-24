@@ -4,6 +4,7 @@ parameters:
 		- phpstan-bootstrap.php
 	paths:
 		- bin
+		- legacy
 		- src/Legacy
 		- src/Encryption
 		- ../content/

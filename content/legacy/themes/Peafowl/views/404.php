@@ -1,14 +1,14 @@
 <?php
 use function Chevereto\Legacy\G\get_route_name;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 use function Chevereto\Vars\request;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
-<?php include_theme_header(); ?>
+<?php require_theme_header(); ?>
 <div class="content-width">
 	<div class="page-not-found">
 		<h1><?php _se("That page doesn't exist"); ?></h1>
@@ -18,10 +18,10 @@ if (!defined('ACCESS') || !ACCESS) {
 <?php if (isset(request()["deleted"])) {
     ?>
 <script>
-	$(function() {
-		PF.fn.growl.call("<?php echo get_route_name() == 'user' ? _s('The user has been deleted') : _s('The content has been deleted.'); ?>");
-	});
+document.addEventListener("DOMContentLoaded", function(event) {
+	PF.fn.growl.call("<?php echo get_route_name() == 'user' ? _s('The %s has been deleted', _s('user')) : _s('The %s has been deleted.', _s('content')); ?>");
+});
 </script>
 <?php
 } ?>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

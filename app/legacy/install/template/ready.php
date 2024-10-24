@@ -1,9 +1,10 @@
 <?php
-use function Chevereto\Legacy\getSetting;
+
+use Chevereto\Legacy\Classes\Settings;
 
 // @phpstan-ignore-next-line
-if (!defined('ACCESS') || !ACCESS) {
-    die('This file cannot be directly accessed.');
+if (! defined('ACCESS') || ! ACCESS) {
+    exit('This file cannot be directly accessed.');
 } ?>
 <h1><i class="fa fa-box-open"></i> Ready to install</h1>
 <p>Fill this form with the details of the initial admin account you want to use.</p>
@@ -15,7 +16,10 @@ if (!defined('ACCESS') || !ACCESS) {
 	<div>
         <div class="p input-label">
             <label for="username">Admin username</label>
-            <input type="text" name="username" id="username" class="width-100p" value="<?php echo $safe_post['username'] ?? ''; ?>" placeholder="Admin username" pattern="<?php echo getSetting('username_pattern'); ?>" title='<?php echo strtr('%i to %f characters<br>Letters, numbers and "_"', ['%i' => getSetting('username_min_length'), '%f' => getSetting('username_max_length')]); ?>' maxlength="<?php echo getSetting('username_max_length'); ?>" required>
+            <input type="text" name="username" id="username" class="width-100p" value="<?php echo $safe_post['username'] ?? ''; ?>" placeholder="Admin username" pattern="<?php echo Settings::USERNAME_PATTERN; ?>" title='<?php echo strtr('%i to %f characters<br>Letters, numbers and "_"', [
+                '%i' => Settings::USERNAME_MIN_LENGTH,
+                '%f' => Settings::USERNAME_MAX_LENGTH,
+            ]); ?>' maxlength="<?php echo Settings::USERNAME_MAX_LENGTH; ?>" required>
             <span class="input-warning red-warning"><?php echo $input_errors['username'] ?? ''; ?></span>
         </div>
         <div class="p input-label">
@@ -25,7 +29,7 @@ if (!defined('ACCESS') || !ACCESS) {
         </div>
         <div class="p input-label input-password">
             <label for="password">Admin password</label>
-            <input type="password" name="password" id="password" class="width-100p" value="" placeholder="Admin password" title="Password to login" pattern="<?php echo getSetting('user_password_pattern'); ?>" autocomplete="new-password" required>
+            <input type="password" name="password" id="password" class="width-100p" value="" placeholder="Admin password" title="Password to login" pattern="<?php echo Settings::USER_PASSWORD_PATTERN; ?>" autocomplete="new-password" required>
             <div class="input-password-strength"><span style="width: 0%" data-content="password-meter-bar"></span></div>
             <div class="input-warning red-warning" data-text="password-meter-message"><?php echo $input_errors['password'] ?? ''; ?></div>
         </div>
@@ -43,7 +47,7 @@ if (!defined('ACCESS') || !ACCESS) {
     </div>
 	<?php
         }
-    ?>
+?>
 	<div>
 		<button class="action radius" type="submit">Install</button>
 	</div>

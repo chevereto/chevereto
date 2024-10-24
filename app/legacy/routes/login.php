@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-use function Chevereto\Legacy\captcha_check;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\RequestLog;
 use Chevereto\Legacy\Classes\TwoFactor;
 use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\captcha_check;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\must_use_captcha;
@@ -25,7 +25,7 @@ use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 
 return function (Handler $handler) {
-    if (post() !== [] && !$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+    if (post() !== [] && ! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
         $handler->issueError(403);
 
         return;
@@ -38,27 +38,30 @@ return function (Handler $handler) {
     $logged_user = Login::getUser();
     User::statusRedirect($logged_user['status'] ?? null);
     if ($logged_user) {
-        redirect(User::getUrl($logged_user));
+        redirect(User::getUrl($logged_user), 302);
     }
-    $request_log_insert = ['type' => 'login', 'user_id' => null];
+    $request_log_insert = [
+        'type' => 'login',
+        'user_id' => null,
+    ];
     $failed_access_requests = $handler::var('failed_access_requests');
     $SAFE_POST = $handler::var('safe_post');
     $is_error = false;
     $captcha_needed = $handler::cond('captcha_needed');
     $error_message = null;
-    if ($captcha_needed && !empty(post())) {
+    if ($captcha_needed && ! empty(post())) {
         $captcha = captcha_check();
-        if (!$captcha->is_valid) {
+        if (! $captcha->is_valid) {
             $is_error = true;
             $error_message = _s('%s says you are a robot', 'CAPTCHA');
         }
     }
-    if (post() !== [] && !$is_error) {
+    if (post() !== [] && ! $is_error) {
         $login_by = filter_var(post()['login-subject'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         if (trim(post()['login-subject']) == '' || trim(post()['password']) == '') {
             $is_error = true;
         }
-        if (!$is_error) {
+        if (! $is_error) {
             $user = User::getSingle(
                 trim(post()['login-subject']),
                 $login_by,
@@ -71,9 +74,9 @@ return function (Handler $handler) {
                     case 'awaiting-confirmation':
                         Login::setSignup([
                             'status' => 'awaiting-confirmation',
-                            'email' => $user['email']
+                            'email' => $user['email'],
                         ]);
-                        redirect('account/awaiting-confirmation');
+                        redirect('account/awaiting-confirmation', 302);
 
                         break;
                     case 'banned':
@@ -81,7 +84,7 @@ return function (Handler $handler) {
 
                         return;
                 }
-                $is_login = !(bool) env()['CHEVERETO_ENABLE_USERS'] && getSetting('website_mode_personal_uid') != $user['id']
+                $is_login = ! (bool) env()['CHEVERETO_ENABLE_USERS'] && getSetting('website_mode_personal_uid') != $user['id']
                     ? false
                     : Login::checkPassword($user['id'], post()['password']);
             }
@@ -90,7 +93,7 @@ return function (Handler $handler) {
                 RequestLog::insert($request_log_insert);
                 $logged_user = Login::login($user['id']);
                 Login::insertCookie('cookie', $user['id']);
-                $redirect_to = User::getUrl(Login::getUser());
+                $redirect_to = User::getUrl(Login::getUser(), true);
                 if (TwoFactor::hasFor($user['id'])) {
                     sessionVar()->put('challenge_two_factor', $user['id']);
                     $redirect_to = 'account/two-factor';
@@ -101,7 +104,7 @@ return function (Handler $handler) {
                     $redirect_to = 'account/email-needed';
                 }
 
-                redirect($redirect_to);
+                redirect($redirect_to, 302);
             } else {
                 $is_error = true;
             }

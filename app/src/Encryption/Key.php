@@ -11,23 +11,26 @@
 
 namespace Chevereto\Encryption;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
 use Chevereto\Encryption\Interfaces\KeyInterface;
+use InvalidArgumentException;
+use function Chevere\Message\message;
 use function Safe\base64_decode;
 
 final class Key implements KeyInterface
 {
     private string $key;
 
-    public function __construct(private string $base64)
-    {
+    public function __construct(
+        private string $base64
+    ) {
         $this->key = base64_decode($base64);
         if (strlen($this->key) !== EncryptionInterface::KEY_LENGTH) {
             throw new InvalidArgumentException(
-                message('Requires a key size of %s')
-                    ->withTranslate('%s', strval(EncryptionInterface::KEY_LENGTH))
+                message(
+                    'Requires a key size of %s',
+                    s: strval(EncryptionInterface::KEY_LENGTH)
+                )
             );
         }
     }

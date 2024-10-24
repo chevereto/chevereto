@@ -2,19 +2,24 @@
 
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
-use function Chevereto\Legacy\G\include_theme_footer;
+use function Chevereto\Legacy\G\require_theme_file;
+use function Chevereto\Legacy\G\require_theme_footer;
 use function Chevereto\Legacy\getSetting;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
-<?php include_theme_file('head'); ?>
+<?php require_theme_file('head'); ?>
 <body id="login" class="full--wh">
-	<?php include_theme_file('custom_hooks/body_open'); ?>
+<?php
+try {
+	require_theme_file('custom_hooks/body_open');
+} catch (Throwable $e) {
+}
+?>
 	<div class="display-flex height-min-full">
-		<?php include_theme_file('snippets/quickty/background_cover'); ?>
+		<?php require_theme_file('snippets/quickty/background_cover'); ?>
 		<div class="flex-center">
 			<div class="content-box card-box col-8-max text-align-center">
 				<div class="fancy-box">
@@ -37,23 +42,23 @@ if (!defined('ACCESS') || !ACCESS) {
 						<div class="input-label-below text-align-right margin-top-5">
 							<a href="<?php echo get_base_url('account/password-forgot'); ?>"><i class="fas fa-key margin-right-5"></i><?php _se('Forgot password?'); ?></a>
 						</div>
-						<?php include_theme_file('snippets/quickty/recaptcha_form'); ?>
+						<?php require_theme_file('snippets/quickty/recaptcha_form'); ?>
 					</form>
-					<?php include_theme_file('snippets/quickty/login_providers'); ?>
+					<?php require_theme_file('snippets/quickty/login_providers'); ?>
 				</div>
 			</div>
 		</div>
 	</div>
-	<?php include_theme_file('snippets/quickty/top_left'); ?>
+	<?php require_theme_file('snippets/quickty/top_left'); ?>
 </div>
 
 <?php if (Handler::var('post') && Handler::cond('error')) {
         ?>
 <script>
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
 	PF.fn.growl.call("<?php echo Handler::var('error'); ?>");
 });
 </script>
 <?php
     }
-include_theme_footer(); ?>
+require_theme_footer(); ?>

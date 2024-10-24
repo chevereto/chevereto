@@ -1,13 +1,13 @@
 <?php
 use function Chevereto\Legacy\G\get_base_url;
-use function Chevereto\Legacy\G\include_theme_footer;
-use function Chevereto\Legacy\G\include_theme_header;
+use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\G\require_theme_header;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 } ?>
-<?php include_theme_header(); ?>
+<?php require_theme_header(); ?>
 <div class="center-box c24 margin-top-20">
 	<div class="content-width">
 		<div class="header default-margin-bottom">
@@ -19,4 +19,4 @@ if (!defined('ACCESS') || !ACCESS) {
 		</div>
 	</div>
 </div>
-<?php include_theme_footer(); ?>
+<?php require_theme_footer(); ?>

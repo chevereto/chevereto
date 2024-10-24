@@ -14,7 +14,7 @@ use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\G\Handler;
 
 return function (Handler $handler) {
-    if (!Login::isAdmin()) {
+    if (! Login::isAdmin()) {
         $handler->issueError(403);
 
         return;
@@ -25,18 +25,18 @@ return function (Handler $handler) {
 
         return;
     }
-    if (is_null($handler->request()[0] ?? null) || is_null($handler->request()[1] ?? null)) {
+    if (null === ($handler->request()[0] ?? null) || null === ($handler->request()[1] ?? null)) {
         $handler->issueError(404);
 
         return;
     }
     $filepath = Import::PATH_JOBS . sprintf('%1$s/%2$s.txt', $handler->request()[0], $handler->request()[1]);
-    if (!file_exists($filepath)) {
+    if (! file_exists($filepath)) {
         $handler->issueError(404);
 
         return;
     }
-    if (!headers_sent()) {
+    if (! headers_sent()) {
         header('Content-Type: text/plain');
     }
     readfile($filepath);

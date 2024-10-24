@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Chevereto\File;
 
-use Chevere\Throwable\Exceptions\LogicException;
 use GuzzleHttp\Client;
-use function Safe\file_put_contents;
+use LogicException;
 use Throwable;
+use function Safe\file_put_contents;
 
 function storeDownloadedUrl(string $url, string $filepath)
 {

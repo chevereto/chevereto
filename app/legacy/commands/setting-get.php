@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-use function Chevere\Type\getType;
 use Chevereto\Legacy\Classes\Settings;
+use function Chevere\Parameter\getType;
 
 $opts = getopt('C:k:t::') ?: [];
-if (!isset($opts['k'])) {
+if (! isset($opts['k'])) {
     echo "[ERROR] Missing setting key\n";
-    die(255);
+    exit(255);
 }
-if (!Settings::hasKey($opts['k'])) {
+if (! Settings::hasKey($opts['k'])) {
     echo "[ERROR] Setting key doesn't exists\n";
-    die(255);
+    exit(255);
 }
 function toItalic(string $text): string
 {
-    return "\e[3m$text\e[0m";
+    return "\e[3m{$text}\e[0m";
 }
 $value = Settings::get($opts['k']);
 $echoValue = match (getType($value)) {
@@ -31,9 +31,9 @@ $echoValue = match (getType($value)) {
     'boolean' => toItalic($value ? 'true' : 'false'),
     default => $value,
 };
-echo "$echoValue\n";
+echo "{$echoValue}\n";
 if (isset($opts['t'])) {
     $typeset = Settings::getTypeset($opts['k']);
-    echo "%($typeset)\n";
+    echo "%({$typeset})\n";
 }
-die(0);
+exit(0);

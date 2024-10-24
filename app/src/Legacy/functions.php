@@ -11,18 +11,13 @@
 
 namespace Chevereto\Legacy;
 
-use function Chevere\Filesystem\filePhpForPath;
 use Chevere\Filesystem\FilePhpReturn;
-use function Chevere\Message\message;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Regex\Regex;
-use Chevere\Throwable\Exceptions\LogicException;
-use Chevere\Throwable\Exceptions\RuntimeException;
-use function Chevere\Writer\streamFor;
 use Chevere\Writer\StreamWriter;
-use function Chevere\Writer\writers;
 use Chevere\Writer\WritersInstance;
-use Chevere\Xr\Xr;
-use Chevere\Xr\XrInstance;
+use Chevere\xrDebug\PHP\Xr;
+use Chevere\xrDebug\PHP\XrInstance;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\AssetStorage;
 use Chevereto\Legacy\Classes\DB;
@@ -32,7 +27,30 @@ use Chevereto\Legacy\Classes\Mailer;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\StorageApis;
 use Chevereto\Legacy\Classes\Upload;
-use function Chevereto\Legacy\G\absolute_to_relative;
+use Chevereto\Legacy\Classes\Variable;
+use Chevereto\Legacy\G\Handler;
+use Chevereto\Vars\CookieVar;
+use Chevereto\Vars\EnvVar;
+use Chevereto\Vars\FilesVar;
+use Chevereto\Vars\GetVar;
+use Chevereto\Vars\PostVar;
+use Chevereto\Vars\RequestVar;
+use Chevereto\Vars\ServerVar;
+use Chevereto\Vars\SessionVar;
+use Exception;
+use Intervention\Image\ImageManagerStatic;
+use LogicException;
+use OutOfBoundsException;
+use OverflowException;
+use PDO;
+use PHPMailer\PHPMailer\SMTP;
+use RuntimeException;
+use Throwable;
+use function Chevere\Filesystem\filePhpForPath;
+use function Chevere\Message\message;
+use function Chevere\Parameter\cast;
+use function Chevere\Writer\streamFor;
+use function Chevere\Writer\writers;
 use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\bytes_to_mb;
 use function Chevereto\Legacy\G\datetimegmt;
@@ -47,7 +65,6 @@ use function Chevereto\Legacy\G\get_file_extension;
 use function Chevereto\Legacy\G\get_image_fileinfo as GGet_image_fileinfo;
 use function Chevereto\Legacy\G\get_ini_bytes;
 use function Chevereto\Legacy\G\get_public_url;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\hasEnvDbInfo;
 use function Chevereto\Legacy\G\is_url;
 use function Chevereto\Legacy\G\is_url_web;
@@ -56,28 +73,16 @@ use function Chevereto\Legacy\G\linkify_safe;
 use function Chevereto\Legacy\G\random_string;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
+use function Chevereto\Legacy\G\sanitize_path_slashes;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Vars\cookie;
-use Chevereto\Vars\CookieVar;
 use function Chevereto\Vars\env;
-use Chevereto\Vars\EnvVar;
-use Chevereto\Vars\FilesVar;
-use Chevereto\Vars\GetVar;
 use function Chevereto\Vars\post;
-use Chevereto\Vars\PostVar;
-use Chevereto\Vars\RequestVar;
 use function Chevereto\Vars\server;
-use Chevereto\Vars\ServerVar;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
-use Chevereto\Vars\SessionVar;
-use Exception;
-use Intervention\Image\ImageManagerStatic;
-use OutOfBoundsException;
-use PHPMailer\PHPMailer\SMTP;
 use function Safe\openssl_cipher_iv_length;
-use Throwable;
 
 function getIdFromURLComponent(string $component): int
 {
@@ -106,7 +111,7 @@ function time_elapsed_string(string $datetime, bool $full = false): string
     foreach ($string as $k => &$v) {
         $elapsed = $k === 'w'
             ? $diffWeek
-            : $diff->$k;
+            : $diff->{$k};
         if ($elapsed > 0) {
             $times = [
                 'y' => _n('year', 'years', $elapsed),
@@ -123,7 +128,7 @@ function time_elapsed_string(string $datetime, bool $full = false): string
             unset($string[$k]);
         }
     }
-    if (!$full) {
+    if (! $full) {
         $string = array_slice($string, 0, 1);
     }
 
@@ -135,7 +140,7 @@ function time_elapsed_string(string $datetime, bool $full = false): string
 function missing_values_to_exception(object $object, string $exception, array $values_array, int $code = 100): void
 {
     for ($i = 0; $i < count((array) $values_array); ++$i) {
-        if (!property_exists($object, $values_array[$i])) {
+        if (! property_exists($object, $values_array[$i])) {
             throw new $exception('Missing $' . $values_array[$i], ($code + $i));
         }
     }
@@ -150,9 +155,11 @@ function system_notification_email(array $args = []): void
 
 function send_mail($to, $subject, $body): bool
 {
+    $email_from_email = getSetting('email_from_email') ?? 'from@chevereto.internal';
+    $email_from_name = getSetting('email_from_name') ?? 'Chevereto';
     $args = ['to', 'subject', 'body'];
     foreach (func_get_args() as $k => $v) {
-        if (!$v) {
+        if (! $v) {
             throw new Exception('Missing $' . $args[$k] . '', 600);
         }
     }
@@ -162,43 +169,40 @@ function send_mail($to, $subject, $body): bool
         $from = $aux['from'];
         $reply_to = $aux['reply-to'];
     } else {
-        $from = [getSettings()['email_from_email'], getSettings()['email_from_name']];
+        /** @var array<string> */
+        $from = [$email_from_email, $email_from_name];
         $reply_to = null;
-        $fromEmail = $from[0];
-        if (str_ends_with($fromEmail, '@chevereto.com')) {
-            throw new Exception('Forbidden to send email from ' . $fromEmail, 600);
+        if (str_ends_with($from[0], '@chevereto.com')) {
+            throw new Exception('Forbidden to send email from ' . $from[0], 600);
         }
     }
-    if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+    if (! filter_var($to, FILTER_VALIDATE_EMAIL)) {
         throw new Exception('Invalid to email', 100);
-    }
-    foreach (['email_from_email', 'email_from_name'] as $v) {
-        if (!getSettings()[$v]) {
-            throw new Exception('Invalid $' . $v . ' setting', 601);
-        }
     }
     $writer = new StreamWriter(streamFor('php://temp', 'r+'));
     $body = trim($body);
     $mail = new Mailer();
     $mail->SMTPDebug = SMTP::DEBUG_SERVER;
     $mail->Debugoutput = function ($str, $level) use ($writer) {
-        $writer->write("$str \n");
+        $writer->write("{$str} \n");
     };
     $alt_body = $mail->html2text($body);
     $mail->CharSet = 'UTF-8';
-    if (getSettings()['email_mode'] === 'smtp') {
+    if (getSetting('email_mode') === 'smtp') {
         $mail->isSMTP();
-        $mail->SMTPAuth = true;
-        $mail->SMTPSecure = getSettings()['email_smtp_server_security'];
-        $mail->SMTPAutoTLS = in_array(getSettings()['email_smtp_server_security'], ['ssl', 'tls']);
-        $mail->Port = getSettings()['email_smtp_server_port'];
-        $mail->Host = getSettings()['email_smtp_server'];
-        $mail->Username = getSettings()['email_smtp_server_username'];
-        $mail->Password = getSettings()['email_smtp_server_password'];
+        $mail->Username = getSetting('email_smtp_server_username') ?? '';
+        $mail->Password = getSetting('email_smtp_server_password') ?? '';
+        $mail->SMTPAuth = $mail->Username !== '' || $mail->Password !== '';
+        $mail->SMTPSecure = in_array(getSetting('email_smtp_server_security'), ['ssl', 'tls'], true)
+            ? getSetting('email_smtp_server_security')
+            : '';
+        $mail->SMTPAutoTLS = in_array(getSetting('email_smtp_server_security'), ['ssl', 'tls'], true);
+        $mail->Port = getSetting('email_smtp_server_port');
+        $mail->Host = getSetting('email_smtp_server');
     }
     $mail->Timeout = 30;
     $mail->Subject = $subject;
-    if ($body != $alt_body) {
+    if ($body !== $alt_body) {
         $mail->IsHTML(true);
         $mail->Body = $mail->normalizeBreaks($body);
         $mail->AltBody = $mail->normalizeBreaks($alt_body);
@@ -214,17 +218,16 @@ function send_mail($to, $subject, $body): bool
     $mail->setFrom($from[0], $from[1]);
     if ($mail->Send()) {
         return true;
-    } else {
-        $mailerWrap = "\n----------- MAILER DEBUG -----------\n\n";
-        $error = str_replace('-', '>', $mailerWrap)
-            . $writer->__toString()
-            . str_replace('-', '<', $mailerWrap);
-        writers()->error()
-            ->write($error);
-        xr(mailer: $error);
-
-        throw new Exception($mail->ErrorInfo, 606);
     }
+    $mailerWrap = "\n----------- MAILER DEBUG -----------\n\n";
+    $error = str_replace('-', '>', $mailerWrap)
+        . $writer->__toString()
+        . str_replace('-', '<', $mailerWrap);
+    writers()->error()
+        ->write($error);
+    xr(mailer: $error);
+
+    throw new Exception($mail->ErrorInfo, 606);
 }
 
 function get_chevereto_version(bool $full = true): string
@@ -261,7 +264,12 @@ function get_chv_default_setting(string $value = '', bool $safe = false): mixed
 
 function getStorages(): array|bool
 {
-    $storages = DB::get('storages', 'all');
+    $storages = DB::get(
+        table: 'storages',
+        where: [
+            'deleted_at' => null,
+        ],
+    );
     if ($storages) {
         foreach ($storages as $k => $v) {
             $storages[$k] = DB::formatRow($v);
@@ -276,7 +284,7 @@ function getStorages(): array|bool
 
 function get_banner_code(string $banner, bool $safe_html = true): string
 {
-    if (!str_starts_with($banner, 'banner_')) {
+    if (! str_starts_with($banner, 'banner_')) {
         $banner = 'banner_' . $banner;
     }
     $banner_code = Settings::get($banner);
@@ -292,39 +300,62 @@ function get_banner_code(string $banner, bool $safe_html = true): string
 
 function getSystemNotices(): array
 {
-    $installed = getSetting('chevereto_version_installed') ?? '';
-    $notified = getSetting('update_check_notified_release') ?? '';
+    $installed = cheveretoVersionInstalled();
     $system_notices = [];
-    if (getSetting('update_check_display_notification')
-        && (
-            version_compare($notified, $installed, '>')
-            && version_compare($notified, APP_VERSION, '>')
-        )
-    ) {
-        $system_notices[] = _s('There is an update available for your system.')
-            . ' '
-            . _s(
-                'Go to %s to download and install this update.',
-                '<a href="'
-                . get_base_url('dashboard?checkUpdates')
-                . '"><i class="fas fa-tachometer-alt margin-right-035em"></i>'
-                . _s('Dashboard')
-                . '</a>'
-            );
+    if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
+        $notified = getVariable('update_check_notified_release')->nullString() ?? '';
+        if (getSetting('update_check_display_notification')
+            && (
+                version_compare($notified, $installed, '>')
+                && version_compare($notified, APP_VERSION, '>')
+            )
+        ) {
+            $system_notices[] = _s('There is an update available for your system.')
+                . ' '
+                . _s(
+                    'Go to %s to download and install this update.',
+                    '<a href="'
+                    . get_base_url('dashboard?checkUpdates')
+                    . '"><i class="fas fa-tachometer-alt margin-right-035em"></i>'
+                    . _s('Dashboard')
+                    . '</a>'
+                );
+        }
+        if (version_compare(APP_VERSION, $installed, '>')) {
+            $system_notices[] = _s('System database is outdated.')
+                . ' '
+                . _s(
+                    'You need to %s.',
+                    '<a href="'
+                    . get_base_url('update')
+                    . '"><i class="fas fa-arrow-alt-circle-up margin-right-035em"></i>'
+                    . _s('Update')
+                    . '</a>'
+                );
+        }
+        $dbServer = 'MySQL';
+        $sqlServerVersion = DB::getInstance()->getAttr(PDO::ATTR_SERVER_VERSION);
+        $cteRequiresVersion = '8.0.1'; // https://dev.mysql.com/doc/relnotes/mysql/8.0/en/news-8-0-1.html
+        if (stripos($sqlServerVersion, 'MariaDB') !== false) {
+            $dbServer = 'MariaDB';
+            $cteRequiresVersion = '10.2.2'; // https://mariadb.com/kb/en/mariadb-1022-release-notes/
+            $explodeSqlVersion = explode('-', $sqlServerVersion, 2);
+            foreach ($explodeSqlVersion as $pos => $ver) {
+                if (str_starts_with($ver, 'MariaDB')) {
+                    continue;
+                }
+                $sqlServerVersion = $ver;
+            }
+        }
+        if (version_compare($sqlServerVersion, $cteRequiresVersion, '<')) {
+            $system_notices[] = _s('The %s database server version outdated.', $dbServer)
+                . ' '
+                . _s(
+                    'You need to upgrade to %s or higher.',
+                    $cteRequiresVersion
+                );
+        }
     }
-    if (version_compare(APP_VERSION, $installed, '>')) {
-        $system_notices[] = _s('System database is outdated.')
-            . ' '
-            . _s(
-                'You need to %s.',
-                '<a href="'
-                . get_base_url('update')
-                . '"><i class="fas fa-arrow-alt-circle-up margin-right-035em"></i>'
-                . _s('Update')
-                . '</a>'
-            );
-    }
-
     if (getSetting('maintenance')) {
         $system_notices[] = _s('Website is in maintenance mode.')
             . ' '
@@ -346,8 +377,40 @@ function getSystemNotices(): array
                 '%emailSettings%' => '<a href="'
                     . get_base_url('dashboard/settings/email')
                     . '"><i class="fas fa-at margin-right-035em"></i>'
-                    . _s('%s settings', _s('Email')) . '</a>'
+                    . _s('%s settings', _s('Email')) . '</a>',
             ]
+        );
+    }
+    $minActiveStorages = (int) env()['CHEVERETO_MIN_STORAGES_ACTIVE'];
+    $storagesActive = getVariable('storages_active')->nullInt() ?? 0;
+    if ($minActiveStorages !== 0 && $storagesActive < $minActiveStorages) {
+        $system_notices[] = _s(
+            'You need to activate %s to upload files.',
+            [
+                // '%c' => $minActiveStorages,
+                '%s' => '<a href="'
+                        . get_base_url('dashboard/settings/external-storage')
+                        . '"><i class="fas fa-hdd margin-right-035em"></i>'
+                        . _s('External storage')
+                        . '</a>',
+            ]
+        );
+    }
+    $defaultAsset = [
+        'asset_storage_bucket' => getSetting('asset_storage_bucket') === null,
+        'asset_storage_url' => getSetting('asset_storage_url') === null,
+        'asset_storage_api_id' => getSetting('asset_storage_api_id') === null,
+    ];
+    if (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']
+        && in_array(true, $defaultAsset, true)
+    ) {
+        $system_notices[] = _s(
+            'You need to configure %s to upload website assets.',
+            '<a href="'
+            . get_base_url('dashboard/settings/asset-storage')
+            . '"><i class="fas fa-hdd margin-right-035em"></i>'
+            . _s('Asset storage')
+            . '</a>'
         );
     }
 
@@ -390,7 +453,7 @@ function captcha_check(): object
         return (object) [
             'is_valid' => sessionVar()->hasKey('isHuman')
                 ? (bool) session()['isHuman']
-                : false
+                : false,
         ];
     }
     $endpoint = match (getSetting('captcha_api')) {
@@ -414,7 +477,9 @@ function captcha_check(): object
     );
     $object = json_decode($fetch);
 
-    return (object) ['is_valid' => (bool) $object->success];
+    return (object) [
+        'is_valid' => (bool) $object->success,
+    ];
 }
 
 function must_use_captcha(int $val, ?int $max = null): bool
@@ -453,7 +518,7 @@ function get_available_languages(): array
 
 function get_enabled_languages(): array
 {
-    if (!getSetting('language_chooser_enable')) {
+    if (! getSetting('language_chooser_enable')) {
         return [];
     }
 
@@ -486,8 +551,8 @@ function cheveretoID(string|int $in, string $action = 'encode'): string|int
 {
     global $cheveretoID;
     $index = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $salt = getSetting('crypt_salt');
-    $id_padding = intval(getSetting('id_padding'));
+    $salt = getVariable('crypt_salt')->nullString() ?? '';
+    $id_padding = getVariable('id_padding')->nullInt() ?? 0;
     // Use a stock version of the hashed values (faster execution)
     if (isset($cheveretoID)) {
         $passhash = $cheveretoID['passhash'];
@@ -511,7 +576,7 @@ function cheveretoID(string|int $in, string $action = 'encode'): string|int
     array_multisort($p, SORT_DESC, $i);
     $index = implode('', $i);
     $base = strlen($index);
-    if ($action == 'decode') {
+    if ($action === 'decode') {
         $out = 0;
         $len = strlen($in) - 1;
         for ($t = 0; $t <= $len; ++$t) {
@@ -552,30 +617,32 @@ function linkify_redirector(string $text): string
 {
     return linkify_safe(
         $text,
-        ['callback' => function (string $url, string $caption, array $options) {
-            $url = match (true) {
-                filter_var($url, FILTER_VALIDATE_EMAIL) !== false => "mailto:$url",
-                default => get_redirect_url($url)
-            };
-            $attributes = $options['attr'];
+        [
+            'callback' => function (string $url, string $caption, array $options) {
+                $url = match (true) {
+                    filter_var($url, FILTER_VALIDATE_EMAIL) !== false => "mailto:{$url}",
+                    default => get_redirect_url($url)
+                };
+                $attributes = $options['attr'];
 
-            return
-                <<<HTML
-                <a href="$url"$attributes>$caption</a>
+                return
+                    <<<HTML
+                <a href="{$url}"{$attributes}>{$caption}</a>
                 HTML;
-        }]
+            },
+        ]
     );
 }
 
 function get_redirect_url(string $url): string
 {
-    if (!is_url_web($url)) {
+    if (! is_url_web($url)) {
         return '#';
     }
 
     return get_base_url(
         'redirect/?to='
-        . urlencode(encryptString($url))
+        . rawurlencode(encryptString($url))
         . '&auth_token='
         . Handler::getAuthToken()
     );
@@ -583,7 +650,7 @@ function get_redirect_url(string $url): string
 
 function sessionCrypt(string $string, bool $encrypt = true): string|bool
 {
-    if (!(session()['crypt'] ?? false)) {
+    if (! (session()['crypt'] ?? false)) {
         $cipher = 'AES-128-CBC';
         $ivlen = openssl_cipher_iv_length($cipher);
         $iv = openssl_random_pseudo_bytes($ivlen);
@@ -601,7 +668,9 @@ function sessionCrypt(string $string, bool $encrypt = true): string|bool
      * @var string $iv
      */
     $fn = 'openssl_' . ($encrypt ? 'encrypt' : 'decrypt');
-    $secret = md5(getSetting('crypt_salt'));
+    $secret = md5(
+        getVariable('crypt_salt')->nullString() ?? ''
+    );
 
     return $fn($string, $cipher, $secret, 0, $iv);
 }
@@ -633,7 +702,7 @@ function get_content_url(string $sub): string
     $dirname = dirname($sub);
     $local = getLocalUrl();
     $url = AssetStorage::getStorage()['url'] ?? $local;
-    if (basename($dirname) == 'default') {
+    if (basename($dirname) === 'default') {
         $url = $local;
     }
 
@@ -660,7 +729,7 @@ function get_fileinfo(string $file): array
         'extension' => $extension,
         'url' => is_url($file) ? $file : absolute_to_url($file),
     ];
-    if (!is_url($file)) {
+    if (! is_url($file)) {
         $return['url'] = preg_replace('#' . URL_APP_PUBLIC . '#', URL_APP_PUBLIC_STATIC, $return['url'], 1);
     }
 
@@ -671,7 +740,7 @@ function upload_to_content_images(array $source, string $what): void
 {
     $remove_old = true;
     $localPath = PATH_PUBLIC_CONTENT_IMAGES_SYSTEM;
-    $storagePath = ltrim(absolute_to_relative($localPath), '/');
+    $storagePath = 'content/images/system/';
     $typeArr = [
         'favicon_image' => [
             'name' => 'favicon',
@@ -698,12 +767,12 @@ function upload_to_content_images(array $source, string $what): void
             'type' => 'image',
         ],
     ];
-    if (!isset($typeArr[$what]) && !starts_with('homepage_cover_image_', $what)) {
+    if (! isset($typeArr[$what]) && ! starts_with('homepage_cover_image_', $what)) {
         throw new OutOfBoundsException(sprintf('Invalid key %s', $what), 600);
     }
     if (starts_with('homepage_cover_image_', $what)) {
         $cover_handle = str_replace('homepage_cover_image_', '', $what);
-        if ($cover_handle == 'add') {
+        if ($cover_handle === 'add') {
             $remove_old = false;
         } else {
             $db_filename = getSetting('homepage_cover_images')[$cover_handle]['basename'];
@@ -711,7 +780,9 @@ function upload_to_content_images(array $source, string $what): void
         $typeArr[$what] = $typeArr['homepage_cover_image'];
     }
     foreach (['logo_vector', 'logo_image'] as $k) {
-        $typeArr[$k . '_homepage'] = array_merge($typeArr[$k], ['name' => 'logo_homepage']);
+        $typeArr[$k . '_homepage'] = array_merge($typeArr[$k], [
+            'name' => 'logo_homepage',
+        ]);
     }
     foreach ($typeArr as $k => &$v) {
         $v['name'] .= '_'
@@ -720,11 +791,11 @@ function upload_to_content_images(array $source, string $what): void
             . random_string(6);
     }
     $name = $typeArr[$what]['name'];
-    if ($typeArr[$what]['type'] == 'image') {
+    if ($typeArr[$what]['type'] === 'image') {
         $fileinfo = GGet_image_fileinfo($source['tmp_name']);
         switch ($what) {
             case 'favicon_image':
-                if (!$fileinfo['ratio']) {
+                if (! $fileinfo['ratio']) {
                     throw new Exception('Invalid favicon image', 200);
                 }
                 if ($fileinfo['ratio'] != 1) {
@@ -743,7 +814,7 @@ function upload_to_content_images(array $source, string $what): void
         $upload->setSource($source);
         $upload->setDestination($localPath);
         $upload->setFilename($name);
-        if (in_array($what, ['homepage_cover_image_add', 'homepage_cover_image', 'consent_screen_cover_image'])) {
+        if (in_array($what, ['homepage_cover_image_add', 'homepage_cover_image', 'consent_screen_cover_image'], true)) {
             $upload->setOption('max_size', Settings::get('true_upload_max_filesize'));
         }
         if ($what === 'watermark_image') {
@@ -767,11 +838,11 @@ function upload_to_content_images(array $source, string $what): void
                 throw new Exception('Unknown errors', 602);
         }
         $file_contents = file_get_contents($source['tmp_name']);
-        if (!$file_contents) {
+        if (! $file_contents) {
             throw new Exception("Can't read uploaded file content", 600);
         }
-        if (!str_contains($file_contents, '<!DOCTYPE svg PUBLIC')
-            && !str_contains($file_contents, '<svg')) {
+        if (! str_contains($file_contents, '<!DOCTYPE svg PUBLIC')
+            && ! str_contains($file_contents, '<svg')) {
             throw new Exception("Uploaded file isn't SVG.", 300);
         }
         $filename = $name . random_string(8) . '.svg';
@@ -791,24 +862,28 @@ function upload_to_content_images(array $source, string $what): void
             'file' => $uploaded['file'],
             'filename' => $filename,
             'mime' => $uploaded['fileinfo']['mime'],
-        ]
+        ],
     ];
-    AssetStorage::uploadFiles($toStorage, ['keyprefix' => $storagePath]);
-    if (!isset($db_filename) || empty($db_filename)) {
+    AssetStorage::uploadFiles($toStorage, [
+        'keyprefix' => $storagePath,
+    ]);
+    if (! isset($db_filename) || empty($db_filename)) {
         $db_filename = getSetting($what);
     }
     if ($remove_old) {
         if ($what === 'watermark_image') {
             unlinkIfExists(PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . $db_filename);
         } else {
-            AssetStorage::deleteFiles(['key' => $storagePath . $db_filename]);
+            AssetStorage::deleteFiles([
+                'key' => $storagePath . $db_filename,
+            ]);
         }
     }
     $home_cover_images = [];
     if (isset($cover_handle)) {
         $what = 'homepage_cover_image';
         $homepage_cover_image = getSetting($what);
-        if ($cover_handle == 'add') {
+        if ($cover_handle === 'add') {
             $filename = (
                 $homepage_cover_image
                     ?? getSetting('homepage_cover_images')[0]['basename']
@@ -827,13 +902,17 @@ function upload_to_content_images(array $source, string $what): void
             ];
         }
     }
-    Settings::update([$what => $filename]);
+    Settings::update([
+        $what => $filename,
+    ]);
     if (isset($cover_handle)) {
         Settings::setValue('homepage_cover_images', $home_cover_images);
     }
     if ($what === 'watermark_image') {
         $fp = fopen($uploaded['file'], 'rb');
-        $assetsDb = DB::get('assets', ['key' => $what]);
+        $assetsDb = DB::get('assets', [
+            'key' => $what,
+        ]);
         $dbArray = [
             'md5' => md5_file($uploaded['file']),
             'filename' => $filename,
@@ -844,24 +923,28 @@ function upload_to_content_images(array $source, string $what): void
             $dbArray['key'] = $what;
             DB::insert('assets', $dbArray);
         } else {
-            DB::update('assets', $dbArray, ['key' => $what]);
+            DB::update('assets', $dbArray, [
+                'key' => $what,
+            ]);
         }
     }
-    if (!AssetStorage::isLocalLegacy()) {
+    if (! AssetStorage::isLocalLegacy()) {
         unlinkIfExists($uploaded['file']);
     }
 }
 
 function isSafeToExecute(int $max_execution_time = null, array $options = []): bool
 {
-    if (is_null($max_execution_time)) {
+    if ($max_execution_time === null) {
         $max_execution_time = (int) ini_get('max_execution_time');
     }
-    if ($max_execution_time == 0) {
+    if ($max_execution_time === 0) {
         return true;
     }
     $executed_time = microtime(true) - TIME_EXECUTION_START;
-    $options = array_merge(['safe_time' => 5], $options);
+    $options = array_merge([
+        'safe_time' => 5,
+    ], $options);
     if (($max_execution_time - $executed_time) > $options['safe_time']) {
         return true;
     }
@@ -882,33 +965,30 @@ function checkUpdates(): void
         $pos = (int) strpos($release_notes, 'Affected files and folders');
         $release_notes = trim(substr($release_notes, 0, $pos));
         $latest_release = $json->software->current_version;
-        if (is_null(getSetting('update_check_notified_release')) || (version_compare($latest_release, APP_VERSION, '>') && version_compare($latest_release, getSetting('update_check_notified_release'), '>'))) {
-            $settings_update = [
-                'update_check_notified_release' => $latest_release,
-                'update_check_datetimegmt' => datetimegmt(),
-                'update_check_latest_release' => $latest_release,
-            ];
-        } else {
-            $settings_update = ['update_check_datetimegmt' => datetimegmt()];
+        $notified = getVariable('update_check_notified_release')->nullString();
+        if ($notified === null
+            || (version_compare($latest_release, APP_VERSION, '>')
+            && version_compare($latest_release, $notified, '>'))
+        ) {
+            Variable::set('update_check_notified_release', $latest_release);
+            Variable::set('update_check_latest_release', $latest_release);
         }
-        Settings::update($settings_update);
+        Variable::set('update_check_datetimegmt', datetimegmt());
     }
 }
 
 function updateCheveretoNews()
 {
     try {
-        $chevereto_news = G\fetch_url('https://blog.chevereto.com/feed.json');
-        $chevereto_news = json_decode($chevereto_news)->items;
-        Settings::update([
-            'chevereto_news' => serialize($chevereto_news),
-            'news_check_datetimegmt' => datetimegmt(),
-        ]);
+        $cheveretoNews = G\fetch_url('https://blog.chevereto.com/feed.json');
+        $cheveretoNews = (array) json_decode($cheveretoNews)->items;
+        Variable::set('chevereto_news', $cheveretoNews);
+        Variable::set('news_check_datetimegmt', datetimegmt());
     } catch (Throwable) {
-        $chevereto_news = [];
+        $cheveretoNews = [];
     }
 
-    return $chevereto_news;
+    return $cheveretoNews;
 }
 
 function obfuscate(string $string): string
@@ -924,13 +1004,11 @@ function obfuscate(string $string): string
 
 function isShowEmbedContent(): bool
 {
-    $showEmbed = match (getSetting('theme_show_embed_content_for')) {
+    return match (getSetting('theme_show_embed_content_for')) {
         'none' => false,
         'users' => Login::isLoggedUser(),
         default => true,
     };
-
-    return $showEmbed;
 }
 
 /**
@@ -987,56 +1065,105 @@ function loaderHandler(
     $envFile = filePhpForPath(PATH_APP . 'env.php');
     if ($envFile->file()->exists()) {
         $filePhpReturn = new FilePhpReturn($envFile);
-        $env = $filePhpReturn->getArray();
+        $env = $filePhpReturn->cast()->array();
     }
     $envVar = array_merge($envDefault, $env, $_env);
-    if ($envVar['CHEVERETO_CONTEXT'] === 'saas') {
-        $envVar = array_merge($envVar, [
-            'CHEVERETO_ENABLE_LOCAL_STORAGE' => '0',
-            'CHEVERETO_ENABLE_BULK_IMPORTER' => '0',
-            'CHEVERETO_ENABLE_PHP_PAGES' => '0',
-            'CHEVERETO_ENABLE_UPDATE_HTTP' => '0',
-            'CHEVERETO_ENABLE_CHECK_UPDATES' => '0',
-        ]);
-    }
-    $envVar = array_merge($envVar, array (
+    $envVar['CHEVERETO_ID'] = $_env['CHEVERETO_ID']
+        ?? $env['CHEVERETO_ID']
+        ?? $_server['CHEVERETO_ID']
+        ?? '';
+    $envVar['CHEVERETO_ID_HANDLE'] = '';
+        $envVar = array_merge($envVar, array (
+      'CHEVERETO_EDITION' => 'free',
       'CHEVERETO_ENABLE_API_GUEST' => '0',
       'CHEVERETO_ENABLE_BANNERS' => '0',
       'CHEVERETO_ENABLE_BULK_IMPORTER' => '0',
       'CHEVERETO_ENABLE_CAPTCHA' => '0',
-      'CHEVERETO_ENABLE_CDN' => '1',
       'CHEVERETO_ENABLE_CONSENT_SCREEN' => '0',
       'CHEVERETO_ENABLE_COOKIE_COMPLIANCE' => '0',
       'CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES' => '1',
       'CHEVERETO_ENABLE_EXTERNAL_SERVICES' => '0',
-      'CHEVERETO_ENABLE_EXTERNAL_STORAGE' => '0',
+      'CHEVERETO_ENABLE_EXTERNAL_STORAGE_PROVIDERS' => '0',
       'CHEVERETO_ENABLE_FAVICON' => '0',
       'CHEVERETO_ENABLE_FOLLOWERS' => '0',
+      'CHEVERETO_ENABLE_FORCE_POWERED_BY_FOOTER' => '1',
       'CHEVERETO_ENABLE_IP_BANS' => '0',
       'CHEVERETO_ENABLE_LANGUAGE_CHOOSER' => '0',
       'CHEVERETO_ENABLE_LIKES' => '0',
       'CHEVERETO_ENABLE_LOCAL_STORAGE' => '1',
       'CHEVERETO_ENABLE_LOGIN_PROVIDERS' => '0',
-      'CHEVERETO_ENABLE_LOGO' => '0',
+      'CHEVERETO_ENABLE_LOGO_CUSTOM' => '1',
       'CHEVERETO_ENABLE_MODERATION' => '0',
       'CHEVERETO_ENABLE_NOTIFICATIONS' => '0',
       'CHEVERETO_ENABLE_PAGES' => '0',
-      'CHEVERETO_ENABLE_POWERED_BY_FOOTER_SITE_WIDE' => '1',
       'CHEVERETO_ENABLE_ROUTING' => '0',
+      'CHEVERETO_ENABLE_SEO_ALBUM_URL' => '0',
+      'CHEVERETO_ENABLE_SEO_IMAGE_URL' => '0',
       'CHEVERETO_ENABLE_SERVICE_AKISMET' => '0',
       'CHEVERETO_ENABLE_SERVICE_MODERATECONTENT' => '0',
       'CHEVERETO_ENABLE_SERVICE_PROJECTARACHNID' => '0',
       'CHEVERETO_ENABLE_SERVICE_STOPFORUMSPAM' => '0',
       'CHEVERETO_ENABLE_STOPWORDS' => '0',
       'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION' => '0',
-      'CHEVERETO_ENABLE_UPLOAD_PLUGIN' => '0',
+      'CHEVERETO_ENABLE_UPLOAD_PLUGIN' => '1',
       'CHEVERETO_ENABLE_UPLOAD_WATERMARK' => '0',
       'CHEVERETO_ENABLE_USERS' => '0',
-      'CHEVERETO_ENABLE_SEO_IMAGE_URL' => '0',
-      'CHEVERETO_ENABLE_SEO_ALBUM_URL' => '0',
+      'CHEVERETO_MAX_ADMINS' => '1',
+      'CHEVERETO_MAX_MANAGERS' => '1',
+      'CHEVERETO_MAX_PAGES' => '-1',
       'CHEVERETO_MAX_USERS' => '1',
-      'CHEVERETO_EDITION' => 'free',
     ));
+    $iniToChevereto = [
+        'error_log' => 'CHEVERETO_ERROR_LOG',
+        'max_execution_time' => 'CHEVERETO_MAX_EXECUTION_TIME_SECONDS',
+        'memory_limit' => 'CHEVERETO_MAX_MEMORY_SIZE',
+        'post_max_size' => 'CHEVERETO_MAX_POST_SIZE',
+        'session.save_handler' => 'CHEVERETO_SESSION_SAVE_HANDLER',
+        'session.save_path' => 'CHEVERETO_SESSION_SAVE_PATH',
+        // 'upload_max_filesize' => 'CHEVERETO_MAX_UPLOAD_SIZE', // INI_PERDIR
+    ];
+    foreach ($iniToChevereto as $iniOption => $envName) {
+        if (! function_exists('ini_get')
+            || ! function_exists('ini_set')
+        ) {
+            continue;
+        }
+        $iniGet = ini_get($iniOption);
+        if ($iniGet === false) {
+            continue;
+        }
+        $iniWant = $envVar[$envName] ?? '';
+        if ($iniGet === $iniWant) {
+            continue;
+        }
+        ini_set($iniOption, $iniWant);
+    }
+    $errorLog = 'CHEVERETO_ERROR_LOG';
+    if (PHP_SAPI === 'cli' && $envVar['CHEVERETO_ERROR_LOG_CLI'] !== '') {
+        $errorLog = 'CHEVERETO_ERROR_LOG_CLI';
+    }
+    if (ACCESS === 'cron' && $envVar['CHEVERETO_ERROR_LOG_CRON'] !== '') {
+        $errorLog = 'CHEVERETO_ERROR_LOG_CRON';
+    }
+    ini_set('error_log', $envVar[$errorLog]);
+    if (ACCESS === 'web') {
+        $script_name = $_server['SCRIPT_NAME'] ?? '';
+        if (str_ends_with($script_name, 'index.php')) {
+            $relative_root = sanitize_path_slashes(
+                dirname($script_name)
+                . '/'
+            );
+            $envVar['CHEVERETO_HOSTNAME_PATH'] = $relative_root;
+        }
+    }
+    if (($envVar['CHEVERETO_ENVIRONMENT'] ?? '') === 'dev') {
+        $envVar['CHEVERETO_ENABLE_XRDEBUG'] = '1';
+        if (($envVar['CHEVERETO_XRDEBUG_HOST'] ?? '') === 'localhost'
+            && ($envVar['CHEVERETO_SERVICING'] ?? '') === 'docker'
+        ) {
+            $envVar['CHEVERETO_XRDEBUG_HOST'] = 'host.docker.internal';
+        }
+    }
     new EnvVar($envVar);
     new ServerVar(array_merge($envDefault, $env, $_server));
     new CookieVar($_cookie);
@@ -1044,10 +1171,19 @@ function loaderHandler(
     new PostVar($_post);
     new GetVar($_get);
     new FilesVar($_files);
+    require_once PATH_APP . 'configurator.php';
     if ($_session === []) {
-        if (!session_start()) {
+        $sessionStart = session_start([
+            'save_handler' => Config::system()->sessionSaveHandler(),
+            'save_path' => Config::system()->sessionSavePath(),
+            'cookie_path' => Config::host()->hostnamePath(),
+            'cookie_domain' => Config::host()->hostname(),
+            'cookie_secure' => Config::host()->isHttps(),
+            'cookie_httponly' => true,
+        ]);
+        if (! $sessionStart) {
             throw new RuntimeException(
-                message('Sessions not working (session_start)'),
+                'Sessions not working (session_start)',
                 600
             );
         }
@@ -1059,7 +1195,7 @@ function loaderHandler(
         $_COOKIE = cookie();
         session_write_close();
     });
-    if (!array_key_exists('crypt', session())) {
+    if (! array_key_exists('crypt', session())) {
         $cipherAlgo = 'AES-128-CBC';
         $ivLength = openssl_cipher_iv_length($cipherAlgo);
         sessionVar()->put('crypt', [
@@ -1068,8 +1204,7 @@ function loaderHandler(
             'iv' => openssl_random_pseudo_bytes($ivLength),
         ]);
     }
-    require_once PATH_APP . "configurator.php";
-    if (!in_array(Config::system()->errorLog(), ['php://stderr', '/dev/stderr', '', 'syslog', ])) {
+    if (! in_array(Config::system()->errorLog(), ['php://stderr', '/dev/stderr', '', 'syslog'], true)) {
         new WritersInstance(
             writers()->withError(
                 new StreamWriter(
@@ -1079,7 +1214,7 @@ function loaderHandler(
         );
     }
     define('HTTP_APP_PROTOCOL', Config::host()->isHttps() ? 'https' : 'http');
-    $httpPort = !in_array(server()['SERVER_PORT'] ?? '80', ['80', '443'])
+    $httpPort = ! in_array(server()['SERVER_PORT'] ?? '80', ['80', '443'], false)
         ? ':' . server()['SERVER_PORT']
         : '';
     define('URL_APP_PUBLIC', HTTP_APP_PROTOCOL . '://' . Config::host()->hostname() . $httpPort . Config::host()->hostnamePath());
@@ -1101,8 +1236,9 @@ function loaderHandler(
             if ($value === null) {
                 continue;
             }
+            $value = safe_html($value);
             L10n::setOverride($message, $value);
-            if (count($messages) == 2 && $aux == 1) {
+            if (count($messages) === 2 && $aux === 1) {
                 $singularKey = $message;
                 $singular = $value;
             }
@@ -1113,28 +1249,35 @@ function loaderHandler(
     }
 
     try {
-        $xrArguments = array_filter([
-            'isEnabled' => isDebug() ?: Settings::get('enable_xr'),
-            'host' => Settings::get('xr_host'),
-            'port' => Settings::get('xr_port'),
-            'key' => Settings::get('xr_key'),
-        ]);
+        $xrArguments = [
+            'isEnabled' => (bool) (env()['CHEVERETO_ENABLE_XRDEBUG']),
+            'isHttps' => (bool) (env()['CHEVERETO_XRDEBUG_HTTPS']),
+            'host' => (string) (env()['CHEVERETO_XRDEBUG_HOST']),
+            'port' => (int) (env()['CHEVERETO_XRDEBUG_PORT']),
+            'key' => (string) (env()['CHEVERETO_XRDEBUG_KEY']),
+        ];
+
         new XrInstance(new Xr(...$xrArguments));
     } catch (Throwable) {
         // Silent failover
     }
-    $uploadImageFolder = Settings::get('chevereto_version_installed') !== null
+    $uploadImageFolder = cheveretoVersionInstalled() !== ''
             ? Settings::get('upload_image_path')
             : 'images';
     $urlAppPublicStatic = Settings::get('cdn')
         ? Settings::get('cdn_url') ?? URL_APP_PUBLIC
         : URL_APP_PUBLIC;
     define('URL_APP_PUBLIC_STATIC', $urlAppPublicStatic);
-    define('PATH_PUBLIC_LEGACY_THEME', PATH_PUBLIC_CONTENT_LEGACY_THEMES . (Settings::get('theme') ?? 'Peafowl') . '/');
+    define(
+        'PATH_PUBLIC_LEGACY_THEME',
+        PATH_PUBLIC_CONTENT_LEGACY_THEMES
+            . (Settings::get('theme') ?? 'Peafowl')
+            . '/'
+    );
     define('URL_APP_THEME', absolute_to_url(PATH_PUBLIC_LEGACY_THEME, URL_APP_PUBLIC_STATIC));
     define('CHV_PATH_IMAGES', PATH_PUBLIC . '' . $uploadImageFolder . '/');
     filesystemPermissionsCheck();
-    if (Settings::get('chevereto_version_installed')) {
+    if (cheveretoVersionInstalled() !== '') {
         error_reporting(0);
         if (is_valid_timezone(Settings::get('default_timezone'))) {
             date_default_timezone_set(Settings::get('default_timezone'));
@@ -1143,29 +1286,34 @@ function loaderHandler(
             $upload_max_filesize_mb_db = Settings::get('upload_max_filesize_mb');
             $upload_max_filesize_mb_bytes = get_bytes($upload_max_filesize_mb_db . 'MB');
             $ini_upload_max_filesize = get_ini_bytes(ini_get('upload_max_filesize'));
-            $ini_post_max_size = ini_get('post_max_size') == 0
-            ? $ini_upload_max_filesize
-            : get_ini_bytes(
-                ini_get('post_max_size')
+            $ini_post_max_size = ((int) ini_get('post_max_size')) === 0
+                ? $ini_upload_max_filesize
+                : get_ini_bytes(
+                    ini_get('post_max_size')
+                );
+            Settings::setValue(
+                'true_upload_max_filesize',
+                min($ini_upload_max_filesize, $ini_post_max_size)
             );
-            Settings::setValue('true_upload_max_filesize', min($ini_upload_max_filesize, $ini_post_max_size));
             if (Settings::get('true_upload_max_filesize') < $upload_max_filesize_mb_bytes) {
                 Settings::update([
-                'upload_max_filesize_mb' => bytes_to_mb((int) Settings::get('true_upload_max_filesize')),
-            ]);
+                    'upload_max_filesize_mb' => bytes_to_mb((int) Settings::get('true_upload_max_filesize')),
+                ]);
             }
         }
         ImageManagerStatic::configure([
-            'driver' => Config::system()->imageLibrary()
+            'driver' => Config::system()->imageLibrary(),
         ]);
-        $configAsset = Config::asset()->export();
-        if (Config::asset()->bucket() == '' && Config::asset()->url() == '') {
-            $configAsset['bucket'] = PATH_PUBLIC;
-            $configAsset['url'] = URL_APP_PUBLIC_STATIC;
+
+        try {
+            new AssetStorage(
+                StorageApis::getAnon(
+                    ...AssetStorage::getDbSettings()
+                )
+            );
+        } catch (Throwable) {
+            // Silent failover
         }
-        new AssetStorage(
-            StorageApis::getAnon(...$configAsset)
-        );
         $homepage_cover_image = getSetting('homepage_cover_image');
         $homeCovers = [];
         if (isset($homepage_cover_image)) {
@@ -1187,7 +1335,9 @@ function loaderHandler(
             $formats = explode(',', Settings::get('upload_enabled_image_formats'));
             $formatsDiff = array_diff($formats, IMAGE_FORMATS_FAILING);
             if ($formatsDiff !== $formats) {
-                Settings::update(['upload_enabled_image_formats' => implode(',', $formatsDiff)]);
+                Settings::update([
+                    'upload_enabled_image_formats' => implode(',', $formatsDiff),
+                ]);
             }
         }
     }
@@ -1198,10 +1348,9 @@ function loaderHandler(
         $handler .= '../commands/';
     }
     $handler .= ACCESS . '.php';
-    if (!stream_resolve_include_path($handler)) {
+    if (! stream_resolve_include_path($handler)) {
         throw new LogicException(
-            message("Missing handler for %access%")
-                ->withCode('%access%', ACCESS),
+            (string) message('Missing handler for `%access%`', access: ACCESS),
             600
         );
     }
@@ -1209,12 +1358,19 @@ function loaderHandler(
     return $handler;
 }
 
-function redirectIfRouting(string $namespace, string $base): void
+function virtualRouteHandleRedirect(string $route, string $base, ?string $virtual = null): void
 {
-    if (getSetting('root_route') === $namespace
-        && $base == getSetting('route_' . $namespace)) {
-        $target = preg_replace('#/' . getSetting('route_' . $namespace) . '/#', '/', get_current_url(), 1);
-        redirect($target);
+    $virtual ??= $route;
+    if (getSetting('root_route') === $route
+        && $base === getSetting('route_' . $virtual)) {
+        $target = preg_replace(
+            '#/' . getSetting('route_' . $virtual) . '/#',
+            '/',
+            get_current_url(),
+            1
+        );
+        headersNoCache();
+        redirect($target, 301);
     }
 }
 
@@ -1225,7 +1381,7 @@ function feedback(string $message)
 
 function feedbackAlert(string $message)
 {
-    echo "[!] $message\n";
+    echo "[!] {$message}\n";
 }
 
 function feedbackSeparator()
@@ -1235,7 +1391,7 @@ function feedbackSeparator()
 
 function feedbackStep(string $doing, string $target)
 {
-    feedback("* $doing $target");
+    feedback("* {$doing} {$target}");
 }
 
 function isDebug(): bool
@@ -1257,7 +1413,7 @@ function getPreCodeHtml(string $body): string
 
 function isStopWords(string ...$message): bool
 {
-    if (!(bool) env()['CHEVERETO_ENABLE_STOPWORDS'] || !defined('STOP_WORDS')) {
+    if (! (bool) env()['CHEVERETO_ENABLE_STOPWORDS'] || ! defined('STOP_WORDS')) {
         return false;
     }
     foreach ($message as $subject) {
@@ -1305,7 +1461,7 @@ function assertNotStopWords(string ...$message): void
 function adjustBrightness(string $hexCode, float $adjustPercent)
 {
     $hexCode = ltrim($hexCode, '#');
-    if (strlen($hexCode) == 3) {
+    if (strlen($hexCode) === 3) {
         $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
     }
     $hexCode = array_map('hexdec', str_split($hexCode, 2));
@@ -1338,4 +1494,131 @@ function editionCombo(): array
         'pro' => ['free', 'lite', 'pro'],
         'enterprise' => ['free', 'lite', 'pro', 'enterprise'],
     ];
+}
+
+/**
+ * Strip tags with the content in tag also removed.
+ */
+function strip_tags_content(string $text, string $tags = '')
+{
+    preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
+    /** @var array $tags */
+    $tags = array_unique($tags[1]);
+
+    if ($tags !== []) {
+        $return = preg_replace(
+            '@<(?!(?:' . implode('|', $tags) . ')\b)(\w+)\b.*?>.*?</\1>@si',
+            '',
+            $text
+        );
+
+        return strip_tags($return);
+    }
+
+    $return = preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+
+    return strip_tags($return);
+}
+
+function assertMaxCount(string $table): void
+{
+    $tablesToEnv = [
+        'categories' => 'CHEVERETO_MAX_CATEGORIES',
+        'pages' => 'CHEVERETO_MAX_PAGES',
+        'storages' => 'CHEVERETO_MAX_STORAGES',
+        'albums' => 'CHEVERETO_MAX_ALBUMS',
+        'login_providers' => 'CHEVERETO_MAX_LOGIN_PROVIDERS',
+        'tags' => 'CHEVERETO_MAX_TAGS',
+    ];
+    if (! array_key_exists($table, $tablesToEnv)) {
+        throw new LogicException(
+            message: message('Invalid table `%table%`', table: $table),
+            code: 400
+        );
+    }
+    $maxLimit = (int) (env()[$tablesToEnv[$table]] ?? 0);
+    if ($maxLimit === 0) {
+        return;
+    }
+    $query = sprintf(
+        'SELECT COUNT(*) AS total FROM `%s`',
+        DB::getTable($table)
+    );
+    if ($table === 'storages') {
+        $query .= ' WHERE storage_deleted_at IS NULL';
+    }
+    $fetch = DB::queryFetchSingle($query);
+    $count = $fetch['total'] ?? 0;
+    if (($count + 1) > $maxLimit) {
+        throw new OverflowException(
+            message(
+                'Maximum number of %t% reached (limit %s%).',
+                t: $table,
+                s: strval($maxLimit),
+            ),
+            999
+        );
+    }
+}
+
+function fetchVariable(string $name): CastInterface
+{
+    return cast(
+        Variable::fetch($name)
+    );
+}
+
+function getVariable(string $name): CastInterface
+{
+    return cast(
+        Variable::get($name)
+    );
+}
+
+/**
+ * @return string Version, empty string if not installed
+ */
+function cheveretoVersionInstalled(): string
+{
+    try {
+        $variable = getVariable('chevereto_version_installed')->nullString() ?? '';
+        if ($variable !== '') {
+            return $variable;
+        }
+
+        return getSetting('chevereto_version_installed') ?? '';
+    } catch (Throwable) {
+        return '';
+    }
+}
+
+function headersNoCache(): void
+{
+    // if (headers_sent()) {
+    //     return;
+    // }
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+}
+
+function headersResetCache(): void
+{
+    // if (headers_sent()) {
+    //     return;
+    // }
+    header_remove('Cache-Control');
+    header_remove('Pragma');
+    header_remove('Expires');
+}
+
+function isPublicHost(string $host): bool
+{
+    $ip = gethostbyname($host);
+    $typePub = \IPLib\Range\Type::getName(\IPLib\Range\Type::T_PUBLIC);
+    $address = \IPLib\Factory::parseAddressString($ip);
+    $type = $address->getRangeType();
+    $typeName = \IPLib\Range\Type::getName($type);
+
+    return $typeName === $typePub;
 }

@@ -11,9 +11,9 @@
 
 namespace Chevereto\Image;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Jenssegers\ImageHash\ImageHash;
+use LogicException;
+use function Chevere\Message\message;
 
 /**
  * @codeCoverageIgnore
@@ -29,10 +29,9 @@ final class ImageHashInstance
 
     public static function get(): ImageHash
     {
-        if (!isset(self::$instance)) {
+        if (! isset(self::$instance)) {
             throw new LogicException(
-                message('No %instance% instance present')
-                    ->withCode('%instance%', ImageHash::class)
+                message('No `%instance%` instance present', s: ImageHash::class)
             );
         }
 

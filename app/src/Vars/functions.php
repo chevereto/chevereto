@@ -11,8 +11,8 @@
 
 namespace Chevereto\Vars;
 
-use Chevere\Throwable\Exceptions\LogicException;
 use Ds\Map;
+use LogicException;
 
 function env(): array
 {

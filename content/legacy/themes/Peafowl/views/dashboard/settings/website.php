@@ -8,6 +8,7 @@ use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\inputDisabledPaid;
+use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -101,7 +102,7 @@ foreach ($regions ?? [] as $key => $region) {
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('website_explore_page')); ?>
         </select></div>
-    <div class="input-below"><?php _se('Enables to browse public uploaded images. It also enables categories.'); ?></div>
+    <div class="input-below"><?php _se('Enables to browse public uploaded files, categories, tags and users.'); ?></div>
 </div>
 <div id="website-explore-combo">
     <div data-combo-value="1" class="switch-combo phablet-c1<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['website_explore_page'] : Settings::get('website_explore_page')) != 1) {
@@ -124,7 +125,7 @@ foreach ($regions ?? [] as $key => $region) {
             <?php
             echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('website_random')); ?>
         </select></div>
-    <div class="input-below"><?php _se('Enables to browse images randomly.'); ?></div>
+    <div class="input-below"><?php _se('Enables to browse files randomly.'); ?></div>
 </div>
 <div id="website-random-combo">
     <div data-combo-value="1" class="switch-combo phablet-c1<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['website_random'] : Settings::get('website_random')) != 1) {
@@ -140,6 +141,7 @@ foreach ($regions ?? [] as $key => $region) {
         </div>
     </div>
 </div>
+<?php if((bool) (env()['CHEVERETO_ENABLE_POWERED_BY_SETTING'] ?? true)) { ?>
 <hr class="line-separator">
 <div class="input-label">
     <?php echo badgePaid('pro'); ?><label for="enable_powered_by"><?php _se('Powered by'); ?> Chevereto</label>
@@ -149,6 +151,7 @@ foreach ($regions ?? [] as $key => $region) {
         </select></div>
     <div class="input-below"><?php _se('Enable this if you want to show a "%s" link at the footer.', _s('Powered by') . ' Chevereto'); ?></div>
 </div>
+<?php } ?>
 <hr class="line-separator">
 <div class="input-label">
     <?php echo badgePaid('pro'); ?><label for="enable_likes"><?php _se('Likes'); ?></label>

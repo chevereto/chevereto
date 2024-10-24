@@ -12,10 +12,10 @@
 namespace Chevereto\Controllers;
 
 use Chevere\Controller\Controller;
-use function Chevere\Message\message;
 use Chevere\Workflow\Interfaces\WorkflowInterface;
 use Chevere\Workflow\Interfaces\WorkflowProviderInterface;
 use LogicException;
+use function Chevere\Message\message;
 
 abstract class WorkflowController extends Controller
 {
@@ -27,11 +27,13 @@ abstract class WorkflowController extends Controller
                 message: message('Missing workflow provider relationship')
             );
         }
-        if (!is_subclass_of($relation, WorkflowProviderInterface::class, true)) {
+        if (! is_subclass_of($relation, WorkflowProviderInterface::class, true)) {
             throw new LogicException(
-                message: message('Relation %relation% is not of type %type%')
-                    ->withCode('%relation%', $relation)
-                    ->withCode('%type%', WorkflowProviderInterface::class)
+                message: message(
+                    'Relation` %relation%` is not of type `%type%`',
+                    relation: $relation,
+                    type: WorkflowProviderInterface::class,
+                )
             );
         }
         /** @var WorkflowProviderInterface $workflowProvider */

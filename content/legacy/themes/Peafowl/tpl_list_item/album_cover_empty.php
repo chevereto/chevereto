@@ -1,1 +1,1 @@
-<span class="empty icon fas fa-inbox"></span>
+<span class="empty icon fas fa-images"></span>

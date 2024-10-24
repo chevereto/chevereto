@@ -10,13 +10,15 @@
  */
 
 use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
+use PhpCsFixer\Fixer\Strict\StrictComparisonFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
-use Symplify\EasyCodingStandard\ValueObject\Option;
 
-return static function (ECSConfig $containerConfigurator): void {
-    $containerConfigurator->import(__DIR__ . '/ecs-chevere.php');
-    $services = $containerConfigurator->services();
-    $services->remove(DeclareStrictTypesFixer::class);
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::SKIP, []);
+return static function (ECSConfig $ecsConfig): void {
+    $ecsConfig->import(__DIR__ . '/ecs-chevere.php');
+    $ecsConfig->skip([
+        DeclareStrictTypesFixer::class,
+        StrictComparisonFixer::class,
+        getcwd() . '/vendor/*',
+        getcwd() . '/content/legacy/themes/Peafowl/',
+    ]);
 };

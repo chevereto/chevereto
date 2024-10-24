@@ -1,7 +1,7 @@
 <?php
 
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\G\include_theme_file;
+use function Chevereto\Legacy\G\require_theme_file;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -12,7 +12,7 @@ Handler::setVar('tabs', Handler::var('sub_tabs'));
 <div id="content-listing-tabs" class="tabbed-listing">
     <div id="tabbed-content-group">
         <?php
-            include_theme_file('snippets/listing');
+            require_theme_file('snippets/listing');
         ?>
     </div>
 </div>

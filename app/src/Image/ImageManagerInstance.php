@@ -11,9 +11,8 @@
 
 namespace Chevereto\Image;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Intervention\Image\ImageManager;
+use LogicException;
 
 /**
  * @codeCoverageIgnore
@@ -29,10 +28,8 @@ final class ImageManagerInstance
 
     public static function get(): ImageManager
     {
-        if (!isset(self::$instance)) {
-            throw new LogicException(
-                message('No ImageManager instance present')
-            );
+        if (! isset(self::$instance)) {
+            throw new LogicException('No ImageManager instance present');
         }
 
         return self::$instance;

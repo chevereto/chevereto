@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-use function Chevereto\Legacy\decryptString;
 use Chevereto\Legacy\G\Handler;
+use function Chevereto\Legacy\decryptString;
 use function Chevereto\Legacy\G\is_url_web;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Vars\get;
@@ -34,7 +34,7 @@ return function (Handler $handler) {
     $url = decryptString($encrypted);
     $validations = [
         is_url_web($url),
-        $handler::checkAuthToken(get()['auth_token'] ?? '')
+        $handler::checkAuthToken(get()['auth_token'] ?? ''),
     ];
     if (in_array(false, $validations)) {
         $handler->issueError(404);

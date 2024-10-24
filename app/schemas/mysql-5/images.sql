@@ -9,7 +9,7 @@ CREATE TABLE `%table_prefix%images` (
   `image_date` datetime NOT NULL,
   `image_date_gmt` datetime NOT NULL,
   `image_title` varchar(100) DEFAULT NULL,
-  `image_description` mediumtext,
+  `image_description` text,
   `image_nsfw` tinyint(1) NOT NULL DEFAULT '0',
   `image_user_id` bigint(32) DEFAULT NULL,
   `image_album_id` bigint(32) DEFAULT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE `%table_prefix%images` (
   `image_md5` varchar(32) NOT NULL,
   `image_source_md5` varchar(32) DEFAULT NULL,
   `image_original_filename` varchar(255) NOT NULL,
-  `image_original_exifdata` longtext,
+  `image_original_exifdata` text,
   `image_views` bigint(32) NOT NULL DEFAULT '0',
   `image_category_id` bigint(32) DEFAULT NULL,
   `image_chain` tinyint(3) NOT NULL,
@@ -34,10 +34,10 @@ CREATE TABLE `%table_prefix%images` (
   `image_is_360` tinyint(1) NOT NULL DEFAULT '0',
   `image_duration` int(11) NOT NULL DEFAULT '0',
   `image_type` tinyint(3) UNSIGNED as (case
-    when `image_extension` in ('pdf', 'doc', 'md') then 4
-    when `image_extension` in ('mp3', 'm4a', 'wav') then 3
-    when `image_extension` in ('mp4', 'webm') then 2
-    when `image_extension` in ('jpg', 'jpeg', 'gif', 'png', 'webp') then 1
+    when `image_extension` in ('pdf','doc','md') then 4
+    when `image_extension` in ('mp3','m4a','wav') then 3
+    when `image_extension` in ('mp4','webm','mov') then 2
+    when `image_extension` in ('avif','jpg','jpeg','gif','png','webp') then 1
     else 0 end) stored,
   PRIMARY KEY (`image_id`),
   KEY `image_name` (`image_name`),

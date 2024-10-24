@@ -3,35 +3,52 @@
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
-} ?>
+}
+$dark = <<<CSS
+color-scheme: dark;
+--colorBlue: hsl(216, 73%, 52%);
+--colorBlueHover: hsl(216, 73%, 42%);
+--alertAccent: hsl(48, 89%, 50%);
+--alertBackground: hsl(52, 100%, 90%);
+--alertText: hsl(278, 22%, 10%);
+--bodyBackground: hsl(0deg 0% 12.94%);
+--bodyEmpty: hsl(0deg 0% 18.43%);
+--bodySeparator: var(--bodyEmpty);
+--bodyText: hsl(245, 5%, 80%);
+--bodyTextSubtle: hsl(245, 5%, 45%);
+--buttonDefaultBackground: var(--bodyEmpty);
+--buttonDefaultHoverBackground: hsl(245, 5%, 10%);
+--buttonDefaultHoverText: var(--colorAccent);
+--buttonDefaultText: var(--bodyText);
+--inputBackground: hsl(0deg 0% 18.43%);
+--inputPlaceholderText: hsl(245, 5%, 50%);
+--inputText: var(--bodyText);
+--menuBackground: hsla(0deg, 0%, 18.43%, 75%);
+--menuItemHoverBackground: var(--colorAccent);
+--menuItemHoverText: hsl(245, 5%, 100%);
+--menuItemText: #DEDEDE;
+--menuSeparator: rgba(255, 255, 255, .1);
+--menuText: #DEDEDE;
+--modalBackground: var(--bodyBackground);
+--modalText: var(--bodyText);
+--topBarBackground: var(--bodyBackground);
+--topBarText: var(--bodyText);
+--topSubBarBackground: var(--bodyBackground);
+--viewerBackground: hsl(0deg 0% 9.02%);
+--linkText: rgb(41, 151, 255);
+--buttonAccentBackground: rgb(0, 113, 227);
+--buttonAccentHoverBackground: rgb(0, 118, 223);
+CSS;
+?>
 <style>
-.palette-dark:root{
-    --alertAccent: hsl(48, 89%, 50%);
-    --alertBackground: hsl(52, 100%, 90%);
-    --alertText: hsl(278, 22%, 10%);
-    --bodyBackground: hsl(245, 9%, 18%);
-    --bodyEmpty: hsl(245, 10%, 22%);
-    --bodySeparator: var(--bodyEmpty);
-    --bodyText: hsl(245, 5%, 80%);
-    --bodyTextSubtle: hsl(245, 5%, 45%);
-    --buttonDefaultBackground: var(--bodyEmpty);
-    --buttonDefaultHoverBackground: hsl(245, 5%, 10%);
-    --buttonDefaultHoverText: var(--colorAccent);
-    --buttonDefaultText: var(--bodyText);
-    --inputBackground:  hsl(245, 10%, 10%);
-    --inputPlaceholderText: hsl(245, 5%, 50%);
-    --inputText: var(--bodyText);
-    --menuBackground: hsla(245, 10%, 8%, 80%);
-    --menuItemHoverBackground: var(--colorAccent);
-    --menuItemHoverText: hsl(245, 5%, 100%);
-    --menuItemText: var(--bodyText);
-    --menuSeparator: var(--bodyBackground);
-    --menuText: var(--bodyText);
-    --modalBackground: var(--bodyBackground);
-    --modalText: var(--bodyText);
-    --topBarBackground: hsl(245, 9%, 18%);
-    --topBarText: var(--bodyText);
-    --viewerBackground: hsl(245, 5%, 12%);
+@media (prefers-color-scheme: dark) {
+    .palette-system:root {
+        <?php echo $dark; ?>
+    }
+}
+
+.palette-dark:root {
+    <?php echo $dark; ?>
 }
 .palette-lush:root{
     --alertAccent: hsl(48, 89%, 50%);
@@ -106,7 +123,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarText: var(--bodyText);
     --listItemText: var(--bodyBackground);
 }
-.palette-abstract:root{
+.palette-abstract:root {
     --alertAccent: hsl(48, 89%, 50%);
     --alertBackground: hsl(52, 100%, 90%);
     --alertText: hsl(278, 22%, 10%);
@@ -144,7 +161,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --topBarText: var(--bodyText);
     --listItemText: var(--bodyBackground);
 }
-.palette-cheers:root{
+.palette-cheers:root {
     --alertAccent: hsl(48, 89%, 50%);
     --alertBackground: hsl(52, 100%, 90%);
     --alertText: hsl(278, 22%, 10%);
@@ -183,14 +200,15 @@ if (!defined('ACCESS') || !ACCESS) {
     --listItemText: var(--bodyBackground);
 }
 .palette-imgur:root {
+    color-scheme: dark;
     --alertAccent: var(--colorAccent);
     --alertBackground: #463979;
     --alertText: var(--bodyText);
     --backgroundDarkAlpha: rgb(0 0 0 / 80%);
     --backgroundLightAlpha: rgba(26, 25, 62, .9);
     --bodyBackground: rgb(39,41,45);
-    --bodyEmpty: var(--buttonDefaultBackground);
-    --bodySeparator: #585D6A;
+    --bodyEmpty: hsl(222.35deg 10.83% 24.78%);
+    --bodySeparator: #464b57;
     --bodyText: #DADCDF;
     --bodyTextDisabled: #b4b9c2;
     --bodyTextSubtle: #999;
@@ -215,6 +233,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --modalBackground: rgb(60 66 75 / 50%);
     --modalText: var(--buttonAccentText);
     --topBarBackground: linear-gradient(180deg, #171544 0%, rgba(39,41,45,1));
+    --topSubBarBackground: var(--bodyBackground);
     --topBarText: var(--bodyText);
     --viewerBackground: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.1));
 }
@@ -224,10 +243,12 @@ if (!defined('ACCESS') || !ACCESS) {
     --colorAccentStrong: #1c9be9;
     --linkText: #006dac;
     --topBarBackground: rgb(0 0 0 / 90%);
+    --topSubBarBackground: var(--bodyBackground);
     --topBarText: #FFF;
     --viewerBackground: #212124;
 }
 .palette-deviantart:root {
+    color-scheme: dark;
     --alertAccent: var(--colorAccent);
     --alertBackground: #9affde;
     --bodyBackground: #06070d;
@@ -258,6 +279,7 @@ if (!defined('ACCESS') || !ACCESS) {
     --viewerBackground: linear-gradient(180deg, rgba(26,28,35,1) 0%, rgba(11,13,18,1) 100%);
 }
 .palette-cmyk:root {
+    color-scheme: dark;
     --alertAccent: var(--buttonAccentBackground);
     --alertBackground: #fff5b3;
     --alertText: var(--bodyText);

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
+use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\get_client_ip;
-use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Vars\get;
@@ -20,7 +20,7 @@ use function Chevereto\Vars\sessionVar;
 return function (Handler $handler) {
     $key = getSetting('captcha_secret') ?? '';
     if ($key === '') {
-        redirect();
+        redirect('', 302);
     }
 
     try {
@@ -35,7 +35,7 @@ return function (Handler $handler) {
         $params = [
             'secret' => getSetting('captcha_secret'),
             'response' => get()['token'] ?? '',
-            'remoteip' => get_client_ip()
+            'remoteip' => get_client_ip(),
         ];
         $fetch = fetch_url(
             url: $endpoint,
@@ -47,9 +47,9 @@ return function (Handler $handler) {
         $object = json_decode($fetch);
         $isSuccess = (bool) $object->success;
         sessionVar()->put('isHuman', $isSuccess);
-        sessionVar()->put('isBot', !$isSuccess);
-        die($fetch);
+        sessionVar()->put('isBot', ! $isSuccess);
+        exit($fetch);
     } catch (Exception) {
     }
-    die();
+    exit();
 };

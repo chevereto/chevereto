@@ -11,8 +11,8 @@
 
 namespace Chevereto\Traits\Instance;
 
+use LogicException;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 
 trait AssertStaticInstanceTrait
 {
@@ -20,11 +20,13 @@ trait AssertStaticInstanceTrait
         string $property = 'instance',
         string $type = self::class
     ): void {
-        if (!isset(static::${$property})) {
+        if (! isset(static::${$property})) {
             throw new LogicException(
-                message('Instance property %property% %type% not initialized.')
-                    ->withCode('%type%', $type)
-                    ->withCode('%property%', '$' . $property)
+                message(
+                    'Instance property `%property%` `%type%` not initialized.',
+                    type: $type,
+                    property: '$' . $property
+                )
             );
         }
     }

@@ -46,7 +46,7 @@ echo read_the_docs_settings('email', _s('Email')); ?>
 <div id="mail-combo">
     <?php
                 if (isset($GLOBALS['SMTPDebug'])) {
-                    echo '<p class="highlight">' . nl2br($GLOBALS['SMTPDebug']) . '</p>';
+                    echo '<p class="highlight padding-5 c9 phablet-c1">' . nl2br($GLOBALS['SMTPDebug']) . '</p>';
                 } ?>
     <div data-combo-value="smtp" class="switch-combo c9 phablet-c1<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode')) !== 'smtp') {
                     echo ' soft-hidden';
@@ -55,25 +55,23 @@ echo read_the_docs_settings('email', _s('Email')); ?>
             <label for="email_smtp_server"><?php _se('SMTP server and port'); ?></label>
             <div class="overflow-auto">
                 <div class="c7 float-left">
-                    <input type="text" name="email_smtp_server" id="email_smtp_server" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server'] ?? Settings::get('email_smtp_server'); ?>" placeholder="<?php _se('SMTP server'); ?>">
+                    <input type="text" name="email_smtp_server" id="email_smtp_server" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server'] ?? Settings::get('email_smtp_server'); ?>" placeholder="<?php _se('Server'); ?>">
                 </div>
                 <div class="c2 float-left margin-left-10">
-                    <select type="text" name="email_smtp_server_port" id="email_smtp_server_port" class="text-input">
-                        <?php
-                        echo get_select_options_html([25 => 25, 80 => 80, 465 => 465, 587 => 587], Handler::var('safe_post') ? Handler::var('safe_post')['email_smtp_server_port'] : Settings::get('email_smtp_server_port')); ?>
-                    </select>
+                    <input type="number" min="1" max="65535" step="1" name="email_smtp_server_port" id="email_smtp_server_port" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server_port'] ?? Settings::get('email_smtp_server_port'); ?>" placeholder="<?php _se('Port'); ?>">
                 </div>
             </div>
             <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['email_smtp_server'] ?? ''; ?></div>
+            <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['email_smtp_server_port'] ?? ''; ?></div>
         </div>
         <div class="input-label">
             <label for="email_smtp_server_username"><?php _se('SMTP username'); ?></label>
-            <input type="text" name="email_smtp_server_username" id="email_smtp_server_username" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server_username'] ?? Settings::get('email_smtp_server_username'); ?>">
+            <input type="text" name="email_smtp_server_username" id="email_smtp_server_username" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server_username'] ?? Settings::get('email_smtp_server_username'); ?>" placeholder="<?php _se('Username'); ?>">
             <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['email_smtp_server_username'] ?? ''; ?></div>
         </div>
         <div class="input-label">
             <label for="email_smtp_server_password"><?php _se('SMTP password'); ?></label>
-            <input type="password" name="email_smtp_server_password" id="email_smtp_server_password" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server_password'] ?? Settings::get('email_smtp_server_password'); ?>">
+            <input type="password" name="email_smtp_server_password" id="email_smtp_server_password" class="text-input" value="<?php echo Handler::var('safe_post')['email_smtp_server_password'] ?? Settings::get('email_smtp_server_password'); ?>" placeholder="<?php _se('Password'); ?>">
             <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['email_smtp_server_password'] ?? ''; ?></div>
         </div>
         <div class="input-label c5">

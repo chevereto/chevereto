@@ -11,13 +11,13 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use OutOfRangeException;
+use Throwable;
 use function Chevere\Message\message;
-use function Chevere\String\randomString;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use function Chevere\Standard\randomString;
 use function Chevereto\Legacy\decodeID;
 use function Chevereto\Legacy\encodeID;
 use function Chevereto\Legacy\G\datetimegmt;
-use Throwable;
 
 class ApiKey
 {
@@ -65,14 +65,20 @@ class ApiKey
         $insert = DB::insert('api_keys', $values);
         $key = self::generate($insert);
         $hash = self::hash($key);
-        DB::update('api_keys', ['hash' => $hash], ['id' => $insert]);
+        DB::update('api_keys', [
+            'hash' => $hash,
+        ], [
+            'id' => $insert,
+        ]);
 
         return $key;
     }
 
     public static function remove(int $id): void
     {
-        DB::delete('api_keys', ['id' => $id]);
+        DB::delete('api_keys', [
+            'id' => $id,
+        ]);
     }
 
     public static function has(int $userId): bool
@@ -98,7 +104,12 @@ class ApiKey
     public static function get(int $id): array
     {
         try {
-            $get = DB::get('api_keys', ['id' => $id], 'AND', ['field' => 'id', 'order' => 'desc'])[0] ?? null;
+            $get = DB::get('api_keys', [
+                'id' => $id,
+            ], 'AND', [
+                'field' => 'id',
+                'order' => 'desc',
+            ])[0] ?? null;
         } catch (Throwable) {
             return [];
         }
@@ -109,7 +120,12 @@ class ApiKey
     public static function getUserKey(int $userId): array
     {
         try {
-            $get = DB::get('api_keys', ['user_id' => $userId], 'AND', ['field' => 'id', 'order' => 'desc'])[0] ?? null;
+            $get = DB::get('api_keys', [
+                'user_id' => $userId,
+            ], 'AND', [
+                'field' => 'id',
+                'order' => 'desc',
+            ])[0] ?? null;
         } catch (Throwable) {
             return [];
         }

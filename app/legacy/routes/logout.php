@@ -14,7 +14,7 @@ use Chevereto\Legacy\G\Handler;
 use function Chevereto\Vars\request;
 
 return function (Handler $handler) {
-    if (!$handler::checkAuthToken(request()['auth_token'] ?? '')) {
+    if (! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
         $handler->issueError(403);
 
         return;

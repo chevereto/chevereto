@@ -35,8 +35,10 @@ $settings = Settings::get();
 new EncryptionInstance($toEncryption);
 foreach (Settings::ENCRYPTED_NAMES as $key) {
     $value = $settings[$key] ?? '';
-    feedback("- $key: $value");
-    Settings::update([$key => $value]);
+    feedback("- {$key}: {$value}");
+    Settings::update([
+        $key => $value,
+    ]);
 }
 feedbackSeparator();
 feedbackStep($doing, 'storages');
@@ -48,7 +50,7 @@ foreach ($storages as $storage) {
     $values = [];
     foreach (Storage::ENCRYPTED_NAMES as $key) {
         $value = $storage[$key] ?? '';
-        feedback("  $key: $value");
+        feedback("  {$key}: {$value}");
         $values[$key] = $value;
     }
     Storage::update(
@@ -59,7 +61,10 @@ foreach ($storages as $storage) {
 }
 feedbackSeparator();
 feedbackStep($doing, 'two-factor secrets');
-$twoFactors = DB::get('two_factors', [], 'AND', ['field' => 'id', 'order' => 'desc']);
+$twoFactors = DB::get('two_factors', [], 'AND', [
+    'field' => 'id',
+    'order' => 'desc',
+]);
 foreach ($twoFactors as $twoFactor) {
     new EncryptionInstance($fromEncryption);
     $twoFactor = TwoFactor::get($twoFactor['two_factor_id']);
@@ -69,7 +74,7 @@ foreach ($twoFactors as $twoFactor) {
     $values = [
         'secret' => $secret,
     ];
-    feedback("- secret: $secret");
+    feedback("- secret: {$secret}");
     TwoFactor::update(
         id: $twoFactor['id'],
         values: $values,
@@ -85,7 +90,7 @@ foreach ($loginProviders as $name => $loginProvider) {
     $values = [];
     foreach (Login::ENCRYPTED_PROVIDER_NAMES as $key) {
         $value = $loginProvider[$key] ?? '';
-        feedback("  $key: $value");
+        feedback("  {$key}: {$value}");
         $values[$key] = $value;
     }
     Login::updateProvider(
@@ -95,11 +100,18 @@ foreach ($loginProviders as $name => $loginProvider) {
 }
 feedbackSeparator();
 feedbackStep($doing, 'login connection tokens');
-$connections = DB::get(table: 'login_connections', values: 'all', sort: ['field' => 'id', 'order' => 'desc']);
+$connections = DB::get(
+    table: 'login_connections',
+    where: 'all',
+    sort: [
+        'field' => 'id',
+        'order' => 'desc',
+    ]
+);
 foreach ($connections as $connection) {
     new EncryptionInstance($fromEncryption);
     $connection = Login::getConnection($connection['login_connection_id']);
-    feedback("> Login connection #" . $connection['id']);
+    feedback('> Login connection #' . $connection['id']);
     new EncryptionInstance($toEncryption);
     $token = $connection['token'];
     $values = [
@@ -110,14 +122,14 @@ foreach ($connections as $connection) {
         values: $values,
     );
     $tokenString = serialize($token);
-    feedback("- token: $tokenString");
+    feedback("- token: {$tokenString}");
 }
 feedbackSeparator();
 feedbackStep($doing, 'albums password');
 $albumsPassword = DB::queryFetchAll('SELECT album_id id, album_password password FROM ' . DB::getTable('albums') . ' WHERE album_password IS NOT NULL;');
 foreach ($albumsPassword as $album) {
     new EncryptionInstance($fromEncryption);
-    feedback("> Album id #" . $album['id']);
+    feedback('> Album id #' . $album['id']);
     new EncryptionInstance($toEncryption);
     $password = $album['password'];
     $values = [
@@ -127,5 +139,5 @@ foreach ($albumsPassword as $album) {
         id: (int) $album['id'],
         values: $values,
     );
-    feedback("- password: $password");
+    feedback("- password: {$password}");
 }
