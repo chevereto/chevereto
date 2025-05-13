@@ -9,9 +9,14 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
+use function Chevereto\Legacy\G\str_replace_last;
+
 $workingDir = PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB;
 $target = 'chevereto-all.js';
 $outputFile = $workingDir . $target;
+$outputMinifiedFile = $workingDir . str_replace_last('.js', '.min.js', $target);
 echo "* Compile JavaScript\n";
 echo "---\n";
 $fh = fopen($outputFile, 'w');
@@ -23,6 +28,7 @@ $files = [
     'js/peafowl.js',
     'js/images-loaded.js',
     'js/load-image.js',
+    'js/xxhash-wasm.js',
     'js/clipboard.js',
     'js/chevereto.js',
 ];
@@ -37,5 +43,19 @@ foreach ($files as $file) {
 }
 fclose($fh);
 echo "---\n";
-echo "💯 [OK] {$outputFile}\n";
+echo "[OK] {$outputFile}\n";
+$process = new Process([
+    'uglifyjs',
+    $outputFile,
+    '-o',
+    $outputMinifiedFile,
+    '-c',
+    '-m',
+]);
+$process->run();
+if (! $process->isSuccessful()) {
+    throw new ProcessFailedException($process);
+}
+echo "[OK] {$outputMinifiedFile}\n";
+
 exit(0);

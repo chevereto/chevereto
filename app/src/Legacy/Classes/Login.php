@@ -157,36 +157,6 @@ class Login
         }
     }
 
-    public static function addGuestContentToUser(array $user, int $id): void
-    {
-        if ($user === []) {
-            return;
-        }
-        foreach (['albums', 'images'] as $table) {
-            $sessionKey = 'guest_' . $table;
-            if (! is_array(session()[$sessionKey] ?? null)) {
-                continue;
-            }
-
-            try {
-                $db = DB::getInstance();
-                $getTable = DB::getTable($table);
-                $fieldPrefix = DB::getFieldPrefix($table);
-                $db->query('UPDATE ' . $getTable . ' SET ' . $fieldPrefix . '_user_id=' . $id . ' WHERE ' . $fieldPrefix . '_id IN (' . implode(',', session()[$sessionKey]) . ')');
-                $db->exec();
-                if ($db->rowCount() !== 0) {
-                    DB::increment('users', [
-                        $fieldPrefix . '_count' => '+' . $db->rowCount(),
-                    ], [
-                        'id' => $id,
-                    ]);
-                }
-            } catch (Exception) {
-            } // Silence
-            sessionVar()->remove($sessionKey);
-        }
-    }
-
     public static function login(string|int $id, string $cookieType = 'cookie'): array
     {
         $id = (int) $id;
@@ -195,7 +165,6 @@ class Login
             throw new Exception(sprintf('Invalid login $by %s', $cookieType), 600);
         }
         $user = User::getSingle($id, 'id');
-        self::addGuestContentToUser($user, $id);
         RequestLog::delete([
             'user_id' => $id,
             'result' => 'fail',

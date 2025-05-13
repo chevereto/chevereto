@@ -1722,9 +1722,9 @@ PF.fn.guid = function () {
     });
 };
 
-PF.fn.md5 = function (string) {
-    return SparkMD5.hash(string);
-};
+// PF.fn.md5 = function (string) {
+//     return SparkMD5.hash(string);
+// };
 
 /**
  * dataURI to BLOB
@@ -4007,7 +4007,8 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
     $pad_content_listing.css("width", "100%");
 
     var delay = 0;
-
+    var margin_right = parseInt($list_item.first().css("margin-right"));
+    var margin_bottom = parseInt($list_item.first().css("margin-bottom"));
     $list_item.each(function (index) {
         $(this).addClass("jsly");
 
@@ -4016,6 +4017,7 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
             $list_item_thumbs = $(".list-item-thumbs", this),
             isJslyLoaded = $list_item_src.hasClass("jsly-loaded");
 
+        var isFixed = $list_item_img.hasClass("fixed-size");
         $list_item_src.show();
 
         if (hard_forced) {
@@ -4031,14 +4033,13 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
                 });
             $("li", $list_item_thumbs).css({ width: "", height: "" });
         }
-        var margin_gap = parseInt($(this).css("margin-right")) * (Math.max(2, PF.obj.listing.columns_number) - 1);
+        var margin_gap = Math.ceil(margin_right * (Math.max(2, PF.obj.listing.columns_number) - 1));
         var width_responsive =
             PF.obj.listing.columns_number == 1
                 ? "100%"
                 : parseFloat(
                     (1 / PF.obj.listing.columns_number) *
-                    ($container.width() - margin_gap) +
-                    "px"
+                    ($container.get(0).getBoundingClientRect().width - margin_gap)
                 );
         $(this).css("width", width_responsive);
         if (PF.obj.listing.current_column > PF.obj.listing.columns_number) {
@@ -4055,7 +4056,7 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
         var already_shown = $(this).is(":visible");
         $list_item.show();
 
-        var isFixed = $list_item_img.hasClass("fixed-size");
+
 
         var image = {
             w: parseFloat($list_item_src.attr("width")),
@@ -4068,13 +4069,12 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
             ($list_item_img.css("min-height") && !$list_item_src.hasClass("jsly"))
         ) {
             var col = {
-                    w: $(this).width(),
-                    h: isFixed ? $(this).width() : null
+                    w: this.getBoundingClientRect().width,
+                    h: isFixed ? this.getBoundingClientRect().width : null
                 },
                 magicWidth = Math.min(image.w, image.w < col.w ? image.w : col.w);
-
             if (isFixed) {
-                $list_item_img.css({ height: col.w }); // Sets the item container height
+                $list_item_img.css({ height: col.w });
                 if (image.ratio <= 3 && (image.ratio > 1 || image.ratio == 1)) {
                     // Landscape or square
                     image.h = Math.min(image.h, image.w < col.w ? image.w : col.w);
@@ -4149,17 +4149,13 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
             $(this).css("top", "100%");
         }
 
-        PF.obj.listing.columns[PF.obj.listing.current_column] += $(
-            this
-        ).outerHeight(true);
+        PF.obj.listing.columns[PF.obj.listing.current_column] += this.getBoundingClientRect().height + margin_bottom;
 
         if ($(this).is(":animated")) {
             animation_time = 0;
         }
         $(this).addClass("position-absolute");
-
-        var new_left =
-            $(this).outerWidth(true) * (PF.obj.listing.current_column - 1);
+        var new_left = (this.getBoundingClientRect().width + margin_right) * (PF.obj.listing.current_column - 1);
         var must_change_left = parseFloat($(this).css("left")) != new_left;
         if (must_change_left) {
             animate_grid = true;
@@ -4171,9 +4167,7 @@ PF.fn.listing.columnizer = function (forced, animation_time, hard_forced) {
             );
         }
 
-        var new_top =
-            PF.obj.listing.columns[PF.obj.listing.current_column] -
-            $(this).outerHeight(true);
+        var new_top = PF.obj.listing.columns[PF.obj.listing.current_column] - (this.getBoundingClientRect().height + 1);
         if (parseFloat($(this).css("top")) != new_top) {
             animate_grid = true;
             $(this).animate(
@@ -6652,401 +6646,6 @@ function testPassword(e) {
     return { score: t, ratio: i, percent: i * 100 + "%", verdict: n, log: r };
 }
 
-// SparkMD5
-(function (factory) {
-    if (typeof exports === "object") {
-        module.exports = factory();
-    } else if (typeof define === "function" && define.amd) {
-        define(factory);
-    } else {
-        var glob;
-        try {
-            glob = window;
-        } catch (e) {
-            glob = self;
-        }
-        glob.SparkMD5 = factory();
-    }
-})(function (undefined) {
-    "use strict";
-    var add32 = function (a, b) {
-        return (a + b) & 4294967295;
-    },
-        hex_chr = [
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f"
-        ];
-    function cmn(q, a, b, x, s, t) {
-        a = add32(add32(a, q), add32(x, t));
-        return add32((a << s) | (a >>> (32 - s)), b);
-    }
-    function ff(a, b, c, d, x, s, t) {
-        return cmn((b & c) | (~b & d), a, b, x, s, t);
-    }
-    function gg(a, b, c, d, x, s, t) {
-        return cmn((b & d) | (c & ~d), a, b, x, s, t);
-    }
-    function hh(a, b, c, d, x, s, t) {
-        return cmn(b ^ c ^ d, a, b, x, s, t);
-    }
-    function ii(a, b, c, d, x, s, t) {
-        return cmn(c ^ (b | ~d), a, b, x, s, t);
-    }
-    function md5cycle(x, k) {
-        var a = x[0],
-            b = x[1],
-            c = x[2],
-            d = x[3];
-        a = ff(a, b, c, d, k[0], 7, -680876936);
-        d = ff(d, a, b, c, k[1], 12, -389564586);
-        c = ff(c, d, a, b, k[2], 17, 606105819);
-        b = ff(b, c, d, a, k[3], 22, -1044525330);
-        a = ff(a, b, c, d, k[4], 7, -176418897);
-        d = ff(d, a, b, c, k[5], 12, 1200080426);
-        c = ff(c, d, a, b, k[6], 17, -1473231341);
-        b = ff(b, c, d, a, k[7], 22, -45705983);
-        a = ff(a, b, c, d, k[8], 7, 1770035416);
-        d = ff(d, a, b, c, k[9], 12, -1958414417);
-        c = ff(c, d, a, b, k[10], 17, -42063);
-        b = ff(b, c, d, a, k[11], 22, -1990404162);
-        a = ff(a, b, c, d, k[12], 7, 1804603682);
-        d = ff(d, a, b, c, k[13], 12, -40341101);
-        c = ff(c, d, a, b, k[14], 17, -1502002290);
-        b = ff(b, c, d, a, k[15], 22, 1236535329);
-        a = gg(a, b, c, d, k[1], 5, -165796510);
-        d = gg(d, a, b, c, k[6], 9, -1069501632);
-        c = gg(c, d, a, b, k[11], 14, 643717713);
-        b = gg(b, c, d, a, k[0], 20, -373897302);
-        a = gg(a, b, c, d, k[5], 5, -701558691);
-        d = gg(d, a, b, c, k[10], 9, 38016083);
-        c = gg(c, d, a, b, k[15], 14, -660478335);
-        b = gg(b, c, d, a, k[4], 20, -405537848);
-        a = gg(a, b, c, d, k[9], 5, 568446438);
-        d = gg(d, a, b, c, k[14], 9, -1019803690);
-        c = gg(c, d, a, b, k[3], 14, -187363961);
-        b = gg(b, c, d, a, k[8], 20, 1163531501);
-        a = gg(a, b, c, d, k[13], 5, -1444681467);
-        d = gg(d, a, b, c, k[2], 9, -51403784);
-        c = gg(c, d, a, b, k[7], 14, 1735328473);
-        b = gg(b, c, d, a, k[12], 20, -1926607734);
-        a = hh(a, b, c, d, k[5], 4, -378558);
-        d = hh(d, a, b, c, k[8], 11, -2022574463);
-        c = hh(c, d, a, b, k[11], 16, 1839030562);
-        b = hh(b, c, d, a, k[14], 23, -35309556);
-        a = hh(a, b, c, d, k[1], 4, -1530992060);
-        d = hh(d, a, b, c, k[4], 11, 1272893353);
-        c = hh(c, d, a, b, k[7], 16, -155497632);
-        b = hh(b, c, d, a, k[10], 23, -1094730640);
-        a = hh(a, b, c, d, k[13], 4, 681279174);
-        d = hh(d, a, b, c, k[0], 11, -358537222);
-        c = hh(c, d, a, b, k[3], 16, -722521979);
-        b = hh(b, c, d, a, k[6], 23, 76029189);
-        a = hh(a, b, c, d, k[9], 4, -640364487);
-        d = hh(d, a, b, c, k[12], 11, -421815835);
-        c = hh(c, d, a, b, k[15], 16, 530742520);
-        b = hh(b, c, d, a, k[2], 23, -995338651);
-        a = ii(a, b, c, d, k[0], 6, -198630844);
-        d = ii(d, a, b, c, k[7], 10, 1126891415);
-        c = ii(c, d, a, b, k[14], 15, -1416354905);
-        b = ii(b, c, d, a, k[5], 21, -57434055);
-        a = ii(a, b, c, d, k[12], 6, 1700485571);
-        d = ii(d, a, b, c, k[3], 10, -1894986606);
-        c = ii(c, d, a, b, k[10], 15, -1051523);
-        b = ii(b, c, d, a, k[1], 21, -2054922799);
-        a = ii(a, b, c, d, k[8], 6, 1873313359);
-        d = ii(d, a, b, c, k[15], 10, -30611744);
-        c = ii(c, d, a, b, k[6], 15, -1560198380);
-        b = ii(b, c, d, a, k[13], 21, 1309151649);
-        a = ii(a, b, c, d, k[4], 6, -145523070);
-        d = ii(d, a, b, c, k[11], 10, -1120210379);
-        c = ii(c, d, a, b, k[2], 15, 718787259);
-        b = ii(b, c, d, a, k[9], 21, -343485551);
-        x[0] = add32(a, x[0]);
-        x[1] = add32(b, x[1]);
-        x[2] = add32(c, x[2]);
-        x[3] = add32(d, x[3]);
-    }
-    function md5blk(s) {
-        var md5blks = [],
-            i;
-        for (i = 0; i < 64; i += 4) {
-            md5blks[i >> 2] =
-                s.charCodeAt(i) +
-                (s.charCodeAt(i + 1) << 8) +
-                (s.charCodeAt(i + 2) << 16) +
-                (s.charCodeAt(i + 3) << 24);
-        }
-        return md5blks;
-    }
-    function md5blk_array(a) {
-        var md5blks = [],
-            i;
-        for (i = 0; i < 64; i += 4) {
-            md5blks[i >> 2] =
-                a[i] + (a[i + 1] << 8) + (a[i + 2] << 16) + (a[i + 3] << 24);
-        }
-        return md5blks;
-    }
-    function md51(s) {
-        var n = s.length,
-            state = [1732584193, -271733879, -1732584194, 271733878],
-            i,
-            length,
-            tail,
-            tmp,
-            lo,
-            hi;
-        for (i = 64; i <= n; i += 64) {
-            md5cycle(state, md5blk(s.substring(i - 64, i)));
-        }
-        s = s.substring(i - 64);
-        length = s.length;
-        tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (i = 0; i < length; i += 1) {
-            tail[i >> 2] |= s.charCodeAt(i) << (i % 4 << 3);
-        }
-        tail[i >> 2] |= 128 << (i % 4 << 3);
-        if (i > 55) {
-            md5cycle(state, tail);
-            for (i = 0; i < 16; i += 1) {
-                tail[i] = 0;
-            }
-        }
-        tmp = n * 8;
-        tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
-        lo = parseInt(tmp[2], 16);
-        hi = parseInt(tmp[1], 16) || 0;
-        tail[14] = lo;
-        tail[15] = hi;
-        md5cycle(state, tail);
-        return state;
-    }
-    function md51_array(a) {
-        var n = a.length,
-            state = [1732584193, -271733879, -1732584194, 271733878],
-            i,
-            length,
-            tail,
-            tmp,
-            lo,
-            hi;
-        for (i = 64; i <= n; i += 64) {
-            md5cycle(state, md5blk_array(a.subarray(i - 64, i)));
-        }
-        a = i - 64 < n ? a.subarray(i - 64) : new Uint8Array(0);
-        length = a.length;
-        tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        for (i = 0; i < length; i += 1) {
-            tail[i >> 2] |= a[i] << (i % 4 << 3);
-        }
-        tail[i >> 2] |= 128 << (i % 4 << 3);
-        if (i > 55) {
-            md5cycle(state, tail);
-            for (i = 0; i < 16; i += 1) {
-                tail[i] = 0;
-            }
-        }
-        tmp = n * 8;
-        tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
-        lo = parseInt(tmp[2], 16);
-        hi = parseInt(tmp[1], 16) || 0;
-        tail[14] = lo;
-        tail[15] = hi;
-        md5cycle(state, tail);
-        return state;
-    }
-    function rhex(n) {
-        var s = "",
-            j;
-        for (j = 0; j < 4; j += 1) {
-            s += hex_chr[(n >> (j * 8 + 4)) & 15] + hex_chr[(n >> (j * 8)) & 15];
-        }
-        return s;
-    }
-    function hex(x) {
-        var i;
-        for (i = 0; i < x.length; i += 1) {
-            x[i] = rhex(x[i]);
-        }
-        return x.join("");
-    }
-    if (hex(md51("hello")) !== "5d41402abc4b2a76b9719d911017c592") {
-        add32 = function (x, y) {
-            var lsw = (x & 65535) + (y & 65535),
-                msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-            return (msw << 16) | (lsw & 65535);
-        };
-    }
-    function toUtf8(str) {
-        if (/[\u0080-\uFFFF]/.test(str)) {
-            str = unescape(encodeURIComponent(str));
-        }
-        return str;
-    }
-    function utf8Str2ArrayBuffer(str, returnUInt8Array) {
-        var length = str.length,
-            buff = new ArrayBuffer(length),
-            arr = new Uint8Array(buff),
-            i;
-        for (i = 0; i < length; i++) {
-            arr[i] = str.charCodeAt(i);
-        }
-        return returnUInt8Array ? arr : buff;
-    }
-    function arrayBuffer2Utf8Str(buff) {
-        return String.fromCharCode.apply(null, new Uint8Array(buff));
-    }
-    function concatenateArrayBuffers(first, second, returnUInt8Array) {
-        var result = new Uint8Array(first.byteLength + second.byteLength);
-        result.set(new Uint8Array(first));
-        result.set(new Uint8Array(second), first.byteLength);
-        return returnUInt8Array ? result : result.buffer;
-    }
-    function SparkMD5() {
-        this.reset();
-    }
-    SparkMD5.prototype.append = function (str) {
-        this.appendBinary(toUtf8(str));
-        return this;
-    };
-    SparkMD5.prototype.appendBinary = function (contents) {
-        this._buff += contents;
-        this._length += contents.length;
-        var length = this._buff.length,
-            i;
-        for (i = 64; i <= length; i += 64) {
-            md5cycle(this._hash, md5blk(this._buff.substring(i - 64, i)));
-        }
-        this._buff = this._buff.substring(i - 64);
-        return this;
-    };
-    SparkMD5.prototype.end = function (raw) {
-        var buff = this._buff,
-            length = buff.length,
-            i,
-            tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            ret;
-        for (i = 0; i < length; i += 1) {
-            tail[i >> 2] |= buff.charCodeAt(i) << (i % 4 << 3);
-        }
-        this._finish(tail, length);
-        ret = !!raw ? this._hash : hex(this._hash);
-        this.reset();
-        return ret;
-    };
-    SparkMD5.prototype.reset = function () {
-        this._buff = "";
-        this._length = 0;
-        this._hash = [1732584193, -271733879, -1732584194, 271733878];
-        return this;
-    };
-    SparkMD5.prototype.getState = function () {
-        return { buff: this._buff, length: this._length, hash: this._hash };
-    };
-    SparkMD5.prototype.setState = function (state) {
-        this._buff = state.buff;
-        this._length = state.length;
-        this._hash = state.hash;
-        return this;
-    };
-    SparkMD5.prototype.destroy = function () {
-        delete this._hash;
-        delete this._buff;
-        delete this._length;
-    };
-    SparkMD5.prototype._finish = function (tail, length) {
-        var i = length,
-            tmp,
-            lo,
-            hi;
-        tail[i >> 2] |= 128 << (i % 4 << 3);
-        if (i > 55) {
-            md5cycle(this._hash, tail);
-            for (i = 0; i < 16; i += 1) {
-                tail[i] = 0;
-            }
-        }
-        tmp = this._length * 8;
-        tmp = tmp.toString(16).match(/(.*?)(.{0,8})$/);
-        lo = parseInt(tmp[2], 16);
-        hi = parseInt(tmp[1], 16) || 0;
-        tail[14] = lo;
-        tail[15] = hi;
-        md5cycle(this._hash, tail);
-    };
-    SparkMD5.hash = function (str, raw) {
-        return SparkMD5.hashBinary(toUtf8(str), raw);
-    };
-    SparkMD5.hashBinary = function (content, raw) {
-        var hash = md51(content);
-        return !!raw ? hash : hex(hash);
-    };
-    SparkMD5.ArrayBuffer = function () {
-        this.reset();
-    };
-    SparkMD5.ArrayBuffer.prototype.append = function (arr) {
-        var buff = concatenateArrayBuffers(this._buff.buffer, arr, true),
-            length = buff.length,
-            i;
-        this._length += arr.byteLength;
-        for (i = 64; i <= length; i += 64) {
-            md5cycle(this._hash, md5blk_array(buff.subarray(i - 64, i)));
-        }
-        this._buff = i - 64 < length ? buff.subarray(i - 64) : new Uint8Array(0);
-        return this;
-    };
-    SparkMD5.ArrayBuffer.prototype.end = function (raw) {
-        var buff = this._buff,
-            length = buff.length,
-            tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            i,
-            ret;
-        for (i = 0; i < length; i += 1) {
-            tail[i >> 2] |= buff[i] << (i % 4 << 3);
-        }
-        this._finish(tail, length);
-        ret = !!raw ? this._hash : hex(this._hash);
-        this.reset();
-        return ret;
-    };
-    SparkMD5.ArrayBuffer.prototype.reset = function () {
-        this._buff = new Uint8Array(0);
-        this._length = 0;
-        this._hash = [1732584193, -271733879, -1732584194, 271733878];
-        return this;
-    };
-    SparkMD5.ArrayBuffer.prototype.getState = function () {
-        var state = SparkMD5.prototype.getState.call(this);
-        state.buff = arrayBuffer2Utf8Str(state.buff);
-        return state;
-    };
-    SparkMD5.ArrayBuffer.prototype.setState = function (state) {
-        state.buff = utf8Str2ArrayBuffer(state.buff, true);
-        return SparkMD5.prototype.setState.call(this, state);
-    };
-    SparkMD5.ArrayBuffer.prototype.destroy = SparkMD5.prototype.destroy;
-    SparkMD5.ArrayBuffer.prototype._finish = SparkMD5.prototype._finish;
-    SparkMD5.ArrayBuffer.hash = function (arr, raw) {
-        var hash = md51_array(new Uint8Array(arr));
-        return !!raw ? hash : hex(hash);
-    };
-    return SparkMD5;
-});
-
 /*!
  * jQuery Color Animations v3.0.0
  * https://github.com/jquery/jquery-color
@@ -9051,6 +8650,7 @@ colors = jQuery.Color.names = {
     }
   });
 
+var t,e;t=this,e=function(){"use strict";const t=new Uint8Array([0,97,115,109,1,0,0,0,1,48,8,96,3,127,127,127,1,127,96,3,127,127,127,0,96,2,127,127,0,96,1,127,1,127,96,3,127,127,126,1,126,96,3,126,127,127,1,126,96,2,127,126,0,96,1,127,1,126,3,11,10,0,0,2,1,3,4,5,6,1,7,5,3,1,0,1,7,85,9,3,109,101,109,2,0,5,120,120,104,51,50,0,0,6,105,110,105,116,51,50,0,2,8,117,112,100,97,116,101,51,50,0,3,8,100,105,103,101,115,116,51,50,0,4,5,120,120,104,54,52,0,5,6,105,110,105,116,54,52,0,7,8,117,112,100,97,116,101,54,52,0,8,8,100,105,103,101,115,116,54,52,0,9,10,251,22,10,242,1,1,4,127,32,0,32,1,106,33,3,32,1,65,16,79,4,127,32,3,65,16,107,33,6,32,2,65,168,136,141,161,2,106,33,3,32,2,65,137,235,208,208,7,107,33,4,32,2,65,207,140,162,142,6,106,33,5,3,64,32,3,32,0,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,3,32,4,32,0,65,4,106,34,0,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,4,32,2,32,0,65,4,106,34,0,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,2,32,5,32,0,65,4,106,34,0,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,5,32,6,32,0,65,4,106,34,0,79,13,0,11,32,2,65,12,119,32,5,65,18,119,106,32,4,65,7,119,106,32,3,65,1,119,106,5,32,2,65,177,207,217,178,1,106,11,32,1,106,32,0,32,1,65,15,113,16,1,11,146,1,0,32,1,32,2,106,33,2,3,64,32,1,65,4,106,32,2,75,69,4,64,32,0,32,1,40,2,0,65,189,220,202,149,124,108,106,65,17,119,65,175,214,211,190,2,108,33,0,32,1,65,4,106,33,1,12,1,11,11,3,64,32,1,32,2,79,69,4,64,32,0,32,1,45,0,0,65,177,207,217,178,1,108,106,65,11,119,65,177,243,221,241,121,108,33,0,32,1,65,1,106,33,1,12,1,11,11,32,0,32,0,65,15,118,115,65,247,148,175,175,120,108,34,0,65,13,118,32,0,115,65,189,220,202,149,124,108,34,0,65,16,118,32,0,115,11,63,0,32,0,65,8,106,32,1,65,168,136,141,161,2,106,54,2,0,32,0,65,12,106,32,1,65,137,235,208,208,7,107,54,2,0,32,0,65,16,106,32,1,54,2,0,32,0,65,20,106,32,1,65,207,140,162,142,6,106,54,2,0,11,195,4,1,6,127,32,1,32,2,106,33,6,32,0,65,24,106,33,4,32,0,65,40,106,40,2,0,33,3,32,0,32,0,40,2,0,32,2,106,54,2,0,32,0,65,4,106,34,5,32,5,40,2,0,32,2,65,16,79,32,0,40,2,0,65,16,79,114,114,54,2,0,32,2,32,3,106,65,16,73,4,64,32,3,32,4,106,32,1,32,2,252,10,0,0,32,0,65,40,106,32,2,32,3,106,54,2,0,15,11,32,3,4,64,32,3,32,4,106,32,1,65,16,32,3,107,34,2,252,10,0,0,32,0,65,8,106,34,3,32,3,40,2,0,32,4,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,54,2,0,32,0,65,12,106,34,3,32,3,40,2,0,32,4,65,4,106,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,54,2,0,32,0,65,16,106,34,3,32,3,40,2,0,32,4,65,8,106,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,54,2,0,32,0,65,20,106,34,3,32,3,40,2,0,32,4,65,12,106,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,54,2,0,32,0,65,40,106,65,0,54,2,0,32,1,32,2,106,33,1,11,32,1,32,6,65,16,107,77,4,64,32,6,65,16,107,33,8,32,0,65,8,106,40,2,0,33,2,32,0,65,12,106,40,2,0,33,3,32,0,65,16,106,40,2,0,33,5,32,0,65,20,106,40,2,0,33,7,3,64,32,2,32,1,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,2,32,3,32,1,65,4,106,34,1,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,3,32,5,32,1,65,4,106,34,1,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,5,32,7,32,1,65,4,106,34,1,40,2,0,65,247,148,175,175,120,108,106,65,13,119,65,177,243,221,241,121,108,33,7,32,8,32,1,65,4,106,34,1,79,13,0,11,32,0,65,8,106,32,2,54,2,0,32,0,65,12,106,32,3,54,2,0,32,0,65,16,106,32,5,54,2,0,32,0,65,20,106,32,7,54,2,0,11,32,1,32,6,73,4,64,32,4,32,1,32,6,32,1,107,34,1,252,10,0,0,32,0,65,40,106,32,1,54,2,0,11,11,97,1,1,127,32,0,65,16,106,40,2,0,33,1,32,0,65,4,106,40,2,0,4,127,32,1,65,12,119,32,0,65,20,106,40,2,0,65,18,119,106,32,0,65,12,106,40,2,0,65,7,119,106,32,0,65,8,106,40,2,0,65,1,119,106,5,32,1,65,177,207,217,178,1,106,11,32,0,40,2,0,106,32,0,65,24,106,32,0,65,40,106,40,2,0,16,1,11,255,3,2,3,126,1,127,32,0,32,1,106,33,6,32,1,65,32,79,4,126,32,6,65,32,107,33,6,32,2,66,214,235,130,238,234,253,137,245,224,0,124,33,3,32,2,66,177,169,172,193,173,184,212,166,61,125,33,4,32,2,66,249,234,208,208,231,201,161,228,225,0,124,33,5,3,64,32,3,32,0,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,3,32,4,32,0,65,8,106,34,0,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,4,32,2,32,0,65,8,106,34,0,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,2,32,5,32,0,65,8,106,34,0,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,5,32,6,32,0,65,8,106,34,0,79,13,0,11,32,2,66,12,137,32,5,66,18,137,124,32,4,66,7,137,124,32,3,66,1,137,124,32,3,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,4,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,2,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,5,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,5,32,2,66,197,207,217,178,241,229,186,234,39,124,11,32,1,173,124,32,0,32,1,65,31,113,16,6,11,134,2,0,32,1,32,2,106,33,2,3,64,32,2,32,1,65,8,106,79,4,64,32,1,41,3,0,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,32,0,133,66,27,137,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,33,0,32,1,65,8,106,33,1,12,1,11,11,32,1,65,4,106,32,2,77,4,64,32,0,32,1,53,2,0,66,135,149,175,175,152,182,222,155,158,127,126,133,66,23,137,66,207,214,211,190,210,199,171,217,66,126,66,249,243,221,241,153,246,153,171,22,124,33,0,32,1,65,4,106,33,1,11,3,64,32,1,32,2,73,4,64,32,0,32,1,49,0,0,66,197,207,217,178,241,229,186,234,39,126,133,66,11,137,66,135,149,175,175,152,182,222,155,158,127,126,33,0,32,1,65,1,106,33,1,12,1,11,11,32,0,32,0,66,33,136,133,66,207,214,211,190,210,199,171,217,66,126,34,0,32,0,66,29,136,133,66,249,243,221,241,153,246,153,171,22,126,34,0,32,0,66,32,136,133,11,77,0,32,0,65,8,106,32,1,66,214,235,130,238,234,253,137,245,224,0,124,55,3,0,32,0,65,16,106,32,1,66,177,169,172,193,173,184,212,166,61,125,55,3,0,32,0,65,24,106,32,1,55,3,0,32,0,65,32,106,32,1,66,249,234,208,208,231,201,161,228,225,0,124,55,3,0,11,244,4,2,3,127,4,126,32,1,32,2,106,33,5,32,0,65,40,106,33,4,32,0,65,200,0,106,40,2,0,33,3,32,0,32,0,41,3,0,32,2,173,124,55,3,0,32,2,32,3,106,65,32,73,4,64,32,3,32,4,106,32,1,32,2,252,10,0,0,32,0,65,200,0,106,32,2,32,3,106,54,2,0,15,11,32,3,4,64,32,3,32,4,106,32,1,65,32,32,3,107,34,2,252,10,0,0,32,0,65,8,106,34,3,32,3,41,3,0,32,4,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,55,3,0,32,0,65,16,106,34,3,32,3,41,3,0,32,4,65,8,106,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,55,3,0,32,0,65,24,106,34,3,32,3,41,3,0,32,4,65,16,106,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,55,3,0,32,0,65,32,106,34,3,32,3,41,3,0,32,4,65,24,106,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,55,3,0,32,0,65,200,0,106,65,0,54,2,0,32,1,32,2,106,33,1,11,32,1,65,32,106,32,5,77,4,64,32,5,65,32,107,33,2,32,0,65,8,106,41,3,0,33,6,32,0,65,16,106,41,3,0,33,7,32,0,65,24,106,41,3,0,33,8,32,0,65,32,106,41,3,0,33,9,3,64,32,6,32,1,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,6,32,7,32,1,65,8,106,34,1,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,7,32,8,32,1,65,8,106,34,1,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,8,32,9,32,1,65,8,106,34,1,41,3,0,66,207,214,211,190,210,199,171,217,66,126,124,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,33,9,32,2,32,1,65,8,106,34,1,79,13,0,11,32,0,65,8,106,32,6,55,3,0,32,0,65,16,106,32,7,55,3,0,32,0,65,24,106,32,8,55,3,0,32,0,65,32,106,32,9,55,3,0,11,32,1,32,5,73,4,64,32,4,32,1,32,5,32,1,107,34,1,252,10,0,0,32,0,65,200,0,106,32,1,54,2,0,11,11,188,2,1,5,126,32,0,65,24,106,41,3,0,33,1,32,0,41,3,0,34,2,66,32,90,4,126,32,0,65,8,106,41,3,0,34,3,66,1,137,32,0,65,16,106,41,3,0,34,4,66,7,137,124,32,1,66,12,137,32,0,65,32,106,41,3,0,34,5,66,18,137,124,124,32,3,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,4,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,1,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,32,5,66,207,214,211,190,210,199,171,217,66,126,66,31,137,66,135,149,175,175,152,182,222,155,158,127,126,133,66,135,149,175,175,152,182,222,155,158,127,126,66,157,163,181,234,131,177,141,138,250,0,125,5,32,1,66,197,207,217,178,241,229,186,234,39,124,11,32,2,124,32,0,65,40,106,32,2,66,31,131,167,16,6,11]);return async function(){return function(t){const{exports:{mem:e,xxh32:n,xxh64:r,init32:i,update32:o,digest32:s,init64:u,update64:a,digest64:f}}=t;let c=new Uint8Array(e.buffer);function h(t,n){if(e.buffer.byteLength<t+n){const r=Math.ceil((t+n-e.buffer.byteLength)/65536);e.grow(r),c=new Uint8Array(e.buffer)}}function d(t,e,n,r,i,o){h(t);const s=new Uint8Array(t);return c.set(s),n(0,e),s.set(c.subarray(0,t)),{update(e){let n;return c.set(s),"string"==typeof e?(h(3*e.length,t),n=l.encodeInto(e,c.subarray(t)).written):(h(e.byteLength,t),c.set(e,t),n=e.byteLength),r(0,t,n),s.set(c.subarray(0,t)),this},digest:()=>(c.set(s),o(i(0)))}}function g(t){return t>>>0}const y=2n**64n-1n;function b(t){return t&y}const l=new TextEncoder,p=0,w=0n;function x(t,e=p){return h(3*t.length,0),g(n(0,l.encodeInto(t,c).written,e))}function L(t,e=w){return h(3*t.length,0),b(r(0,l.encodeInto(t,c).written,e))}return{h32:x,h32ToString:(t,e=p)=>x(t,e).toString(16).padStart(8,"0"),h32Raw:(t,e=p)=>(h(t.byteLength,0),c.set(t),g(n(0,t.byteLength,e))),create32:(t=p)=>d(48,t,i,o,s,g),h64:L,h64ToString:(t,e=w)=>L(t,e).toString(16).padStart(16,"0"),h64Raw:(t,e=w)=>(h(t.byteLength,0),c.set(t),b(r(0,t.byteLength,e))),create64:(t=w)=>d(88,t,u,a,f,b)}}((await WebAssembly.instantiate(t)).instance)}},"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).xxhash=e();
 /*!
  * clipboard.js v2.0.11
  * https://clipboardjs.com/
@@ -10741,7 +10341,7 @@ CHV.fn.uploader = {
 
     reset: function () {
         $.extend(this, $.extend(true, {}, CHV.obj.uploaderReset));
-
+        $("[data-text=queue-progress]", this.selectors.root).text("0");
         $("li", this.selectors.queue).remove();
         $(this.selectors.root).height("").css({
             "overflow-y": "",
@@ -10781,7 +10381,7 @@ CHV.fn.uploader = {
         });
 
         $(this.selectors.root)
-            .removeClass("queueCompleted queueReady queueHasResults")
+            .removeClass("queueCompleted queueReady queueUploading queueHasResults")
             .addClass("queueEmpty")
             .attr("data-queue-size", 0);
 
@@ -10922,9 +10522,7 @@ CHV.fn.uploader = {
     },
 
     add: function (e, urls) {
-        var md5;
 
-        // Prevent add items ?
         if (!this.canAdd) {
             var e = e.originalEvent;
             e.preventDefault();
@@ -10991,7 +10589,6 @@ CHV.fn.uploader = {
                 files = Array.isArray(data.files)
                     ? data.files.slice()
                     : $.makeArray(data.files);
-
                 files = files.filter(function (o) {
                     return (directories.indexOf(o.name) < 0);
                 });
@@ -11010,9 +10607,20 @@ CHV.fn.uploader = {
             var failed_files = [];
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
+                file.checksum = null;
+                file.fromClipboard = e.clipboard == true;
+                file.uid = i;
                 if (directories.includes(file.name)) {
                     continue;
                 }
+                ((currentFile) => {
+                    hashFile(currentFile).then(hash => {
+                        console.log("Checksum:", hash);
+                        currentFile.checksum = hash;
+                    }).catch(error => {
+                        console.error("Error hashing file:", error);
+                    });
+                })(file);
                 var image_type_str;
                 if (typeof file.type == "undefined" || file.type == "") {
                     // Some browsers (Android) don't set the correct file.type
@@ -11047,15 +10655,12 @@ CHV.fn.uploader = {
                     });
                     continue;
                 }
-                if (md5) {
-                    file.md5 = md5;
-                }
-                file.fromClipboard = e.clipboard == true;
-                file.uid = i;
             }
             for (var i = 0; i < failed_files.length; i++) {
                 var failed_file = failed_files[i];
-                files.splice(failed_file.id, 1);
+                files = files.filter(function(file) {
+                    return file.uid !== failed_file.uid;
+                });
             }
             if (failed_files.length > 0 && files.length == 0) {
                 var failed_message = "";
@@ -11069,7 +10674,6 @@ CHV.fn.uploader = {
                 });
                 return;
             }
-
             if (files.length == 0) {
                 return;
             }
@@ -11143,12 +10747,174 @@ CHV.fn.uploader = {
                 maxWidth: 610,
             };
 
+        function getQueueItem(uid) {
+            return $(
+                CHV.fn.uploader.selectors.queue_item +
+                "[data-id=" + uid +"]",
+                CHV.fn.uploader.selectors.queue
+            );
+        }
+
+        function displayQueueIfNotVisible() {
+            if (!$(
+                "[data-group=upload-queue]",
+                CHV.fn.uploader.selectors.root
+            ).is(":visible")) {
+                $(
+                    "[data-group=upload-queue]",
+                    CHV.fn.uploader.selectors.root
+                ).css("display", "block");
+            }
+        }
+
+        function getTitle(file) {
+            var title = null;
+            if (typeof file.name !== typeof undefined) {
+                var basename = PF.fn.baseName(file.name);
+                title = $.trim(
+                    basename
+                        .substring(0, 100)
+                        .capitalizeFirstLetter()
+                );
+            }
+            return title;
+        }
+
+        async function loadVideo(url, callback) {
+            const video = document.createElement("video");
+            video.onerror = (e) => {
+                const videoError = {
+                    1: "MEDIA_ERR_ABORTED",
+                    2: "MEDIA_ERR_NETWORK",
+                    3: "MEDIA_ERR_DECODE",
+                    4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
+                }
+                var error = videoError[video.error.code];
+                callback({ type: "error", error: error })
+                console.error("Error loading video", error)
+            }
+            video.addEventListener("loadedmetadata", function () {
+                const seek = parseInt(video.duration / 4);
+                setTimeout(() => {
+                    video.currentTime = seek;
+                    video.pause();
+                }, 200);
+                video.addEventListener("seeked", () => {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    ctx.canvas.toBlob(
+                        blob => {
+                            callback(video, canvas)
+                        },
+                        "image/jpeg",
+                        0.90
+                    );
+                    video.remove();
+                }, false);
+            });
+            if (get_browser() === "safari") {
+                video.autoplay = true;
+                video.playsInline = true;
+                video.muted = true;
+            }
+            video.preload = "metadata";
+            video.src = url;
+        }
+
+        function setQueueReady($queue_item, img) {
+            $queue_item.show();
+            $(CHV.fn.uploader.selectors.root)
+                .addClass("queueReady")
+                .removeClass("queueEmpty");
+            $("[data-group=upload-queue-ready]", CHV.fn.uploader.selectors.root).show();
+            $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
+            $queue_item.find(".load-url").remove();
+            $queue_item
+                .find(".preview")
+                .removeClass("soft-hidden")
+                .show()
+                .append(img);
+            $img = $queue_item.find(".preview").find("img,canvas");
+            $img.attr("class", "canvas");
+            queue_item_h = $queue_item.height();
+            queue_item_w = $queue_item.width();
+            var img_w = parseInt($img.attr("width")) || $img.width();
+            var img_h = parseInt($img.attr("height")) || $img.height();
+            var img_r = img_w / img_h;
+            $img.hide();
+            if (img_w > img_h || img_w == img_h) {
+                // Landscape
+                var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
+                if (img_w > img_h) {
+                    $img.height(queue_img_h).width(queue_img_h * img_r);
+                }
+            }
+            if (img_w < img_h || img_w == img_h) {
+                // Portrait
+                var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
+                if (img_w < img_h) {
+                    $img.width(queue_img_w).height(queue_img_w / img_r);
+                }
+            }
+            if (img_w == img_h) {
+                $img.height(queue_img_h).width(queue_img_w);
+            }
+            $img
+                .css({
+                    marginTop: -$img.height() / 2,
+                    marginLeft: -$img.width() / 2,
+                })
+                .show();
+            displayQueueIfNotVisible();
+            CHV.fn.uploader.boxSizer();
+        }
+
+        function someFilesFailed(j, files, failed_files) {
+            if (j !== files.length) {
+                return;
+            }
+            if (typeof failed_before !== "undefined") {
+                failed_files = failed_files.concat(failed_before);
+            }
+            PF.fn.loading.destroy("fullscreen");
+            if (failed_files.length > 0) {
+                var failed_message = "";
+                for (var i = 0; i < failed_files.length; i++) {
+                    failed_message +=
+                        "<li>" +
+                        PF.fn.htmlEncode(failed_files[i].name) +
+                        " - " +
+                        PF.fn.htmlEncode(failed_files[i].error) +
+                        "</li>";
+                    delete CHV.fn.uploader.files[failed_files[i].uid];
+                    $(
+                        "li[data-id=" + failed_files[i].uid + "]",
+                        CHV.fn.uploader.selectors.queue
+                    )
+                        .find("[data-action=cancel]")
+                        .click();
+                }
+                PF.fn.modal.simple({
+                    title: PF.fn._s("Some files couldn't be loaded"),
+                    message: "<ul>" + failed_message + "</ul>",
+                });
+            } else {
+                CHV.fn.uploader.focus();
+            }
+            CHV.fn.uploader.boxSizer();
+        }
+
         function CHVLoadImage(i) {
             if (typeof i == typeof undefined) {
                 var i = 0;
             }
             if (!(i in files)) {
-                PF.fn.loading.destroy("fullscreen");
+                if (i === files.length - 1) {
+                    PF.fn.loading.destroy("fullscreen");
+                }
                 return;
             }
             var file = files[i];
@@ -11159,9 +10925,7 @@ CHV.fn.uploader = {
                 CHV.fn.uploader.selectors.queue_item + ":not([data-id]) .load-url",
                 CHV.fn.uploader.selectors.queue
             )[typeof file.url !== "undefined" ? "show" : "remove"]();
-
             loadImage.parseMetaData(file.url ? file.url : file, function (data) {
-                // Set the queue item placeholder ids
                 $(
                     CHV.fn.uploader.selectors.queue_item +
                     ":not([data-id]) .preview:empty",
@@ -11171,166 +10935,6 @@ CHV.fn.uploader = {
                     .closest("li")
                     .attr("data-id", file.uid);
 
-                function getQueueItem(uid) {
-                    return $(
-                        CHV.fn.uploader.selectors.queue_item +
-                        "[data-id=" + uid +"]",
-                        CHV.fn.uploader.selectors.queue
-                    );
-                }
-
-                function displayQueueIfNotVisible() {
-                    if (!$(
-                        "[data-group=upload-queue]",
-                        CHV.fn.uploader.selectors.root
-                    ).is(":visible")) {
-                        $(
-                            "[data-group=upload-queue]",
-                            CHV.fn.uploader.selectors.root
-                        ).css("display", "block");
-                    }
-                }
-
-                function getTitle(file) {
-                    var title = null;
-                    if (typeof file.name !== typeof undefined) {
-                        var basename = PF.fn.baseName(file.name);
-                        title = $.trim(
-                            basename
-                                .substring(0, 100)
-                                .capitalizeFirstLetter()
-                        );
-                    }
-                    return title;
-                }
-
-                function loadVideo(url, callback) {
-                    const video = document.createElement("video");
-                    video.onerror = (e) => {
-                        const videoError = {
-                            1: "MEDIA_ERR_ABORTED",
-                            2: "MEDIA_ERR_NETWORK",
-                            3: "MEDIA_ERR_DECODE",
-                            4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
-                        }
-                        var error = videoError[video.error.code];
-                        callback({ type: "error", error: error })
-                        console.error("Error loading video", error)
-                    }
-                    video.addEventListener("loadedmetadata", function () {
-                        const seek = parseInt(video.duration / 4);
-                        setTimeout(() => {
-                            video.currentTime = seek;
-                            video.pause();
-                        }, 200);
-                        video.addEventListener("seeked", () => {
-                            const canvas = document.createElement("canvas");
-                            canvas.width = video.videoWidth;
-                            canvas.height = video.videoHeight;
-                            const ctx = canvas.getContext("2d");
-                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            ctx.canvas.toBlob(
-                                blob => {
-                                    callback(video, canvas)
-                                },
-                                "image/jpeg",
-                                0.90
-                            );
-                        }, false);
-                    });
-                    if (get_browser() === "safari") {
-                        video.autoplay = true;
-                        video.playsInline = true;
-                        video.muted = true;
-                    }
-                    video.preload = "metadata";
-                    video.src = url;
-                }
-
-                function setQueueReady($queue_item, img) {
-                    $queue_item.show();
-                    $(CHV.fn.uploader.selectors.root)
-                        .addClass("queueReady")
-                        .removeClass("queueEmpty");
-                    $("[data-group=upload-queue-ready]", CHV.fn.uploader.selectors.root).show();
-                    $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
-                    $queue_item.find(".load-url").remove();
-                    $queue_item
-                        .find(".preview")
-                        .removeClass("soft-hidden")
-                        .show()
-                        .append(img);
-                    $img = $queue_item.find(".preview").find("img,canvas");
-                    $img.attr("class", "canvas");
-                    queue_item_h = $queue_item.height();
-                    queue_item_w = $queue_item.width();
-                    var img_w = parseInt($img.attr("width")) || $img.width();
-                    var img_h = parseInt($img.attr("height")) || $img.height();
-                    var img_r = img_w / img_h;
-                    $img.hide();
-                    if (img_w > img_h || img_w == img_h) {
-                        // Landscape
-                        var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
-                        if (img_w > img_h) {
-                            $img.height(queue_img_h).width(queue_img_h * img_r);
-                        }
-                    }
-                    if (img_w < img_h || img_w == img_h) {
-                        // Portrait
-                        var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
-                        if (img_w < img_h) {
-                            $img.width(queue_img_w).height(queue_img_w / img_r);
-                        }
-                    }
-                    if (img_w == img_h) {
-                        $img.height(queue_img_h).width(queue_img_w);
-                    }
-                    $img
-                        .css({
-                            marginTop: -$img.height() / 2,
-                            marginLeft: -$img.width() / 2,
-                        })
-                        .show();
-                    displayQueueIfNotVisible();
-                    CHV.fn.uploader.boxSizer();
-                }
-
-                function someFilesFailed(j, files, failed_files) {
-                    if (j !== files.length) {
-                        return;
-                    }
-                    if (typeof failed_before !== "undefined") {
-                        failed_files = failed_files.concat(failed_before);
-                    }
-                    PF.fn.loading.destroy("fullscreen");
-                    if (failed_files.length > 0) {
-                        var failed_message = "";
-                        for (var i = 0; i < failed_files.length; i++) {
-                            failed_message +=
-                                "<li>" +
-                                PF.fn.htmlEncode(failed_files[i].name) +
-                                " - " +
-                                PF.fn.htmlEncode(failed_files[i].error) +
-                                "</li>";
-                            delete CHV.fn.uploader.files[failed_files[i].uid];
-                            $(
-                                "li[data-id=" + failed_files[i].uid + "]",
-                                CHV.fn.uploader.selectors.queue
-                            )
-                                .find("[data-action=cancel]")
-                                .click();
-                        }
-                        PF.fn.modal.simple({
-                            title: PF.fn._s("Some files couldn't be loaded"),
-                            message: "<ul>" + failed_message + "</ul>",
-                        });
-                    } else {
-                        CHV.fn.uploader.focus();
-                    }
-                    CHV.fn.uploader.boxSizer();
-                }
-
-                // Load the image (async)
                 if(typeof file.type !== "undefined" && file.type.startsWith('video/')) {
                     var $queue_item = getQueueItem(file.uid);
                     var title = getTitle(file);
@@ -11339,7 +10943,6 @@ CHV.fn.uploader = {
                         videoUrl,
                         function(video, canvas) {
                             ++j;
-                            // var $queue_item = getQueueItem(file.uid);
                             if (video.type === "error") {
                                 failed_files.push({
                                     uid: file.uid,
@@ -11404,7 +11007,6 @@ CHV.fn.uploader = {
                                     height: imgData.originalHeight,
                                     mimetype: mimetype,
                                 };
-
                                 setQueueReady($queue_item, img);
                             }
                             someFilesFailed(j, files, failed_files);
@@ -11414,8 +11016,6 @@ CHV.fn.uploader = {
                         })
                     );
                 }
-
-                // Next one
                 setTimeout(function () {
                     CHVLoadImage(i + 1);
                 }, 25);
@@ -11449,12 +11049,15 @@ CHV.fn.uploader = {
                 continue;
             progress += this.files[i].progress;
         }
-        $("[data-text=queue-progress]", this.selectors.root).text(
-            parseInt((100 * progress) / queue_size)
-        );
+        var value = parseInt((100 * progress) / queue_size);
+        var current = parseInt($("[data-text=queue-progress]", this.selectors.root).text());
+        if(value > current) {
+            $("[data-text=queue-progress]", this.selectors.root).text(value);
+        }
     },
 
-    upload: function ($queue_item) {
+    upload: async function ($queue_item) {
+        console.log("Uploading...", $queue_item.data("id"));
         var id = $queue_item.data("id");
         var nextId = $queue_item.next().exists() ?
             $queue_item.next().data("id") :
@@ -11476,7 +11079,18 @@ CHV.fn.uploader = {
         if (typeof f == typeof undefined) {
             return;
         }
+
         var queue_is_url = typeof f.url !== typeof undefined;
+        if(!queue_is_url) {
+            const waitForChecksum = async (id) => {
+                console.log("Waiting for checksum...");
+                while (CHV.fn.uploader.files[id].checksum === null) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            };
+            await waitForChecksum(id);
+        }
+
         var source = queue_is_url ? f.url : f;
         var hasForm = typeof f.formValues !== typeof undefined;
 
@@ -11512,7 +11126,6 @@ CHV.fn.uploader = {
             mimetype: f.type,
         };
 
-        // Append URL BLOB source
         if (queue_is_url) {
             formData.source = source;
         } else {
@@ -11534,6 +11147,7 @@ CHV.fn.uploader = {
             if (v === null) return true;
             form.append(i, v);
         });
+        form.append("checksum", f.checksum);
 
         this.files[id].xhr = new XMLHttpRequest();
 
@@ -11548,7 +11162,6 @@ CHV.fn.uploader = {
                     $(CHV.fn.uploader.selectors.item_progress_bar, $queue_item).width(
                         100 - percentComplete + "%"
                     );
-
                     if (percentComplete == 100) {
                         CHV.fn.uploader.itemLoading($queue_item);
                     }
@@ -11566,8 +11179,10 @@ CHV.fn.uploader = {
         }
 
         this.files[id].xhr.onreadystatechange = function () {
+            if(this.readyState !== 4) {
+                return;
+            }
             var is_error = false;
-
             if (
                 this.readyState == 4 &&
                 typeof CHV.fn.uploader.files[id].xhr !== "undefined" &&
@@ -11598,8 +11213,6 @@ CHV.fn.uploader = {
                             " - " +
                             JSONresponse.error.message;
                     }
-
-                    // Save the server response (keeping indexing for results)
                     CHV.fn.uploader.results[this.status == 200 ? "success" : "error"][
                         id
                     ] = JSONresponse;
@@ -11669,7 +11282,204 @@ CHV.fn.uploader = {
 
         this.files[id].xhr.open("POST", PF.obj.config.json_api, true);
         this.files[id].xhr.setRequestHeader("Accept", "application/json");
-        this.files[id].xhr.send(form);
+
+        const chunkSize = CHV.obj.config.upload.chunkSize;
+        if (!queue_is_url && source.size >= chunkSize) {
+            CHV.fn.uploader.files[id].chunksXHRs = [];
+            let chunkedUpload = {
+                type: "chunked",
+                source: source.name,
+                action: "chunked-upload",
+                checksum: source.checksum,
+                size: source.size,
+                auth_token: PF.obj.config.auth_token,
+            };
+            const xhrInit = new XMLHttpRequest();
+            xhrInit.open("POST", PF.obj.config.json_api, true);
+            xhrInit.setRequestHeader("Accept", "application/json");
+            xhrInit.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhrInit.onreadystatechange = function () {
+                if (xhrInit.readyState !== 4) return;
+                if (xhrInit.status === 200) {
+                    let response;
+                    try {
+                        response = JSON.parse(xhrInit.responseText);
+                    } catch (e) {
+                        response = {};
+                    }
+                    if (!response.success) {
+                        if (CHV.fn.uploader.files[id]) {
+                            CHV.fn.uploader.files[id].xhr.status = xhrInit.status;
+                            CHV.fn.uploader.files[id].xhr.responseText = xhrInit.responseText;
+                            CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                        }
+                        return;
+                    }
+                    const upload_id = response.success.upload_id;
+                    const token = response.success.token;
+                    const hash = response.success.hash;
+                    const totalChunks = Math.ceil(source.size / chunkSize);
+                    const chunkBlobs = [];
+                    let offset = 0;
+                    while (offset < source.size) {
+                        const end = Math.min(offset + chunkSize, source.size);
+                        chunkBlobs.push(source.slice(offset, end));
+                        offset = end;
+                    }
+                    let uploadedChunks = 0;
+                    let uploadingError = false;
+                    let isFinalizing = false;
+                    const maxParallel = 2;
+                    let chunkResults = new Array(totalChunks);
+                    function uploadChunk(blob, index) {
+                        return new Promise((resolve, reject) => {
+                            const chunkXHR = new XMLHttpRequest();
+                            chunkXHR.open("POST", PF.obj.config.json_api, true);
+                            chunkXHR.setRequestHeader("X-Action", "upload-chunk");
+                            chunkXHR.setRequestHeader("X-Upload-Id", upload_id);
+                            chunkXHR.setRequestHeader("X-Token", token);
+                            chunkXHR.setRequestHeader("X-Hash", hash);
+                            chunkXHR.setRequestHeader("X-Index", index + 1);
+                            chunkXHR.setRequestHeader("X-Auth-Token", PF.obj.config.auth_token);
+                            chunkXHR.setRequestHeader("X-Type", "file");
+                            chunkXHR.setRequestHeader("Accept", "application/json");
+                            chunkXHR.upload.onprogress = function (e) {
+                                if (!e.lengthComputable) return;
+                                const loaded = (index * chunkSize) + e.loaded;
+                                const overallProgress = {
+                                    loaded: loaded,
+                                    total: source.size
+                                };
+                                CHV.fn.uploader.queueProgress(overallProgress, id);
+                                var $el = $(CHV.fn.uploader.selectors.item_progress_bar, $queue_item);
+                                const percentComplete = parseInt((overallProgress.loaded / overallProgress.total) * 100);
+                                if (percentComplete > parseInt($el.data("completed") || 0)) {
+                                    $el
+                                        .data("completed", percentComplete)
+                                        .width(100 - percentComplete + "%");
+                                }
+                            };
+                            chunkXHR.onreadystatechange = function () {
+                                if (chunkXHR.readyState !== 4) return;
+                                if (chunkXHR.status === 200) {
+                                    chunkResults[index] = true;
+                                    uploadedChunks++;
+                                    resolve();
+                                } else {
+                                    uploadingError = true;
+                                    if (CHV.fn.uploader.files[id]) {
+                                        CHV.fn.uploader.files[id].xhr.status = 400;
+                                        CHV.fn.uploader.files[id].xhr.responseText = JSON.stringify({
+                                            status_code: 400,
+                                            error: {
+                                                message: "Failed to upload chunk " + (index + 1)
+                                            }
+                                        });
+                                        CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                                    }
+                                    reject();
+                                }
+                            };
+                            chunkXHR.onerror = function () {
+                                uploadingError = true;
+                                if (CHV.fn.uploader.files[id]) {
+                                    CHV.fn.uploader.files[id].xhr.status = 400;
+                                    CHV.fn.uploader.files[id].xhr.responseText = JSON.stringify({
+                                        status_code: 400,
+                                        error: {
+                                            message: "Failed to upload chunk " + (index + 1)
+                                        }
+                                    });
+                                    CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                                }
+                                reject();
+                            };
+                            chunkXHR.send(blob);
+                            CHV.fn.uploader.files[id].chunksXHRs.push(chunkXHR);
+                        });
+                    }
+
+                    async function runParallelUploads() {
+                        let nextChunk = 0;
+                        let running = 0;
+                        return new Promise((resolve, reject) => {
+                            function launchNext() {
+                                if (uploadingError || isFinalizing) return;
+                                while (running < maxParallel && nextChunk < totalChunks) {
+                                    const idx = nextChunk++;
+                                    running++;
+                                    uploadChunk(chunkBlobs[idx], idx)
+                                        .then(() => {
+                                            running--;
+                                            if (uploadingError || isFinalizing) return;
+                                            if (uploadedChunks === totalChunks && !isFinalizing) {
+                                                isFinalizing = true;
+                                                CHV.fn.uploader.itemLoading($queue_item);
+                                                const finalForm = new FormData();
+                                                for (let key in formData) {
+                                                    if (formData[key] !== null) {
+                                                        finalForm.append(key, formData[key]);
+                                                    }
+                                                }
+                                                finalForm.append("source", `CHUNKED_${upload_id}_${token}_${hash}`);
+                                                finalForm.append("type", "chunked");
+                                                CHV.fn.uploader.files[id].xhr.open("POST", PF.obj.config.json_api, true);
+                                                CHV.fn.uploader.files[id].xhr.setRequestHeader("Accept", "application/json");
+                                                CHV.fn.uploader.files[id].xhr.send(finalForm);
+                                                resolve();
+                                            } else {
+                                                launchNext();
+                                            }
+                                        })
+                                        .catch(() => {
+                                            running--;
+                                            reject();
+                                        });
+                                }
+                            }
+                            launchNext();
+                        });
+                    }
+
+                    runParallelUploads();
+                } else {
+                    const handler = CHV.fn.uploader.files[id].xhr.onreadystatechange;
+                    let responseJSON;
+                    try {
+                        responseJSON = JSON.parse(xhrInit.responseText);
+                    } catch (e) {
+                        responseJSON = {
+                            error: {
+                                message: 'Error',
+                                type: 'Error',
+                            }
+                        };
+                    }
+                    const mockXHR = {
+                        status: xhrInit.status || 400,
+                        readyState: 4,
+                        responseText: xhrInit.responseText,
+                        response: JSON.stringify(responseJSON),
+                        onreadystatechange: function () {
+                            if (typeof handler === "function") {
+                                handler.call(this);
+                            }
+                        }
+                    };
+                    CHV.fn.uploader.files[id].xhr = mockXHR;
+                    CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                }
+            };
+            // Serialize chunkedUpload object to x-www-form-urlencoded
+            const params = Object.keys(chunkedUpload)
+                .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(chunkedUpload[k]))
+                .join("&");
+            xhrInit.send(params);
+        } else {
+            this.files[id].xhr.open("POST", PF.obj.config.json_api, true);
+            this.files[id].xhr.setRequestHeader("Accept", "application/json");
+            this.files[id].xhr.send(form);
+        }
     },
 
     itemLoading: function ($queue_item) {
@@ -12769,7 +12579,7 @@ CHV.fn.storage = {
             storage_capacity = $storage_capacity.val(),
             capacity_error_msg;
 
-        if ($storage_capacity.is(":visible") && storage_capacity !== "") {
+        if ($storage_capacity.is(":visible") && (storage_capacity !== "" || storage_capacity != "0")) {
             if (
                 /^[\d\.]+\s*[A-Za-z]{2}$/.test(storage_capacity) == false ||
                 typeof storage_capacity.getBytes() == "undefined"
@@ -13526,7 +13336,6 @@ CHV.fn.list_editor = {
     },
 
     updateItem: function ($target, response, action, growl) {
-        console.log('que mierda')
         var album_name;
         if ($target instanceof jQuery == false) {
             var $target = $($target);
@@ -13542,7 +13351,6 @@ CHV.fn.list_editor = {
         }
         if (action == "edit" || action == "move") {
             if (action == "move" && CHV.obj.resource.type == "album") {
-                console.log("Moving from album", $target, growl);
                 CHV.fn.list_editor.moveFromList($target, growl);
                 return;
             }
@@ -14540,20 +14348,30 @@ $(function () {
                 ).css("display", "");
             }
 
-            if (
-                CHV.fn.uploader.files[id] &&
-                typeof CHV.fn.uploader.files[id].xhr !== "undefined"
-            ) {
-                CHV.fn.uploader.files[id].xhr.abort();
-                item_xhr_cancel = true;
+            if (CHV.fn.uploader.files[id]) {
+                if(typeof CHV.fn.uploader.files[id].xhr !== "undefined") {
+                    CHV.fn.uploader.files[id].xhr.abort();
+                    item_xhr_cancel = true;
+                }
+                if (typeof CHV.fn.uploader.files[id].chunksXHRs !== "undefined") {
+                    CHV.fn.uploader.files[id].chunksXHRs.forEach(xhr => {
+                        if (xhr && xhr.readyState !== 4) {
+                            xhr.abort();
+                            if (xhr.upload) {
+                                xhr.upload.onprogress = null;
+                            }
+                        }
+                    });
+                    item_xhr_cancel = true;
+                }
             }
 
             if (
                 typeof CHV.fn.uploader.files[id] !== typeof undefined &&
                 typeof CHV.fn.uploader.files[id].fromClipboard !== typeof undefined
             ) {
-                var c_md5 = CHV.fn.uploader.files[id].md5;
-                var c_index = CHV.fn.uploader.clipboardImages.indexOf(c_md5);
+                var c_checksum = CHV.fn.uploader.files[id].checksum;
+                var c_index = CHV.fn.uploader.clipboardImages.indexOf(c_checksum);
                 if (c_index > -1) {
                     CHV.fn.uploader.clipboardImages.splice(c_index, 1);
                 }
@@ -14564,8 +14382,6 @@ $(function () {
             CHV.fn.uploader.queueSize();
 
             if (Object.size(CHV.fn.uploader.files) == 0) {
-                // No queue left
-                // Null result ?
                 if (!("success" in CHV.fn.uploader) ||
                     !("results" in CHV.fn.uploader) ||
                     (Object.size(CHV.fn.uploader.results.success) == 0 &&
@@ -14574,7 +14390,6 @@ $(function () {
                     CHV.fn.uploader.reset();
                 }
             } else {
-                // Do we need to process the next item?
                 if (item_xhr_cancel && $("li.waiting", $queue).first().length !== 0) {
                     CHV.fn.uploader.upload($("li.waiting", $queue).first());
                 }
@@ -14988,7 +14803,6 @@ $(function () {
                         url: PF.obj.config.json_api,
                         deferred: {
                             success: function (XHR) {
-                                console.log('UPDATE ITEM')
                                 CHV.fn.list_editor.updateItem(
                                     "[data-type=" + dealing_with + "][data-id=" + id + "]",
                                     XHR.responseJSON[dealing_with],
@@ -16818,4 +16632,20 @@ $(function () {
         }, 150);
     });
 });
+
+async function hashFile(file) {
+    const { create64 } = await xxhash();
+    const hasher = create64();
+    const start = performance.now();
+    console.log('hashing file...');
+    const reader = file.stream().getReader();
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        hasher.update(value);
+    }
+    const end = performance.now();
+    console.log("hashFile took", (end - start).toFixed(2), "ms");
+    return hasher.digest().toString(16);
+}
 

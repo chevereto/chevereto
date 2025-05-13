@@ -410,15 +410,18 @@ return function (Handler $handler) {
         }
     }
     if (! isset($tabs)) {
-        $tabs = Listing::getTabs([
-            'listing' => $type,
-            'basename' => $base_user_url,
-            'tools' => $tools,
-            'tools_available' => $tools_available ?? [],
-            'params_hidden' => $params_hidden,
-            'params_remove_keys' => $params_remove_keys ?? null,
-            'tag' => rawurldecode($tag_string_no_spaces),
-        ], [], true);
+        $tabs = Listing::getTabs(
+            args: [
+                'listing' => $type,
+                'basename' => $base_user_url,
+                'tools' => $tools,
+                'tools_available' => $tools_available ?? [],
+                'params_hidden' => $params_hidden,
+                'params_remove_keys' => $params_remove_keys ?? null,
+                'tag' => rawurldecode($tag_string_no_spaces),
+            ],
+            expanded: true
+        );
         $currentKey = $tabs['currentKey'];
         $tabs = $tabs['tabs'];
     }

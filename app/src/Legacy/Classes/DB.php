@@ -13,6 +13,7 @@ namespace Chevereto\Legacy\Classes;
 
 use Chevereto\Legacy\G\DB as GDB;
 use PDO;
+use function Chevere\Message\message;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Vars\env;
 
@@ -52,6 +53,8 @@ class DB extends GDB
         'two_factors',
         'users',
         'variables',
+        'uploads',
+        'uploads_chunks',
     ];
 
     public const PREFIX_TO_TABLE = [
@@ -61,6 +64,7 @@ class DB extends GDB
         'tag_file' => 'tags_files',
         'tag_user' => 'tags_users',
         'tag_album' => 'tags_albums',
+        'upload_chunk' => 'uploads_chunks',
     ];
 
     public const TABLES_TO_PREFIX = [
@@ -70,6 +74,7 @@ class DB extends GDB
         'tags_files' => 'tag_file',
         'tags_users' => 'tag_user',
         'tags_albums' => 'tag_album',
+        'uploads_chunks' => 'upload_chunk',
     ];
 
     public static function getTable(string $table): string
@@ -94,14 +99,15 @@ class DB extends GDB
         array $sort = [],
         ?int $limit = null,
         int $fetch_style = PDO::FETCH_ASSOC,
-        array $valuesOperators = []
+        array $valuesOperators = [],
+        array $columns = [],
     ): mixed {
         $prefix = self::getFieldPrefix($table);
         $where = self::getPrefixedValues($prefix, $where);
         $valuesOperators = self::getPrefixedValues($prefix, $valuesOperators);
         $sort = self::getPrefixedSort($prefix, $sort);
 
-        return GDB::get($table, $where, $clause, $sort, $limit, $fetch_style, $valuesOperators);
+        return GDB::get($table, $where, $clause, $sort, $limit, $fetch_style, $valuesOperators, $columns);
     }
 
     public static function update(
@@ -217,6 +223,13 @@ class DB extends GDB
         }
 
         return rtrim($table, 's');
+    }
+
+    public static function translate(string $query, string|int|float ...$pair)
+    {
+        $pair['table_prefix'] = env()['CHEVERETO_DB_TABLE_PREFIX'];
+
+        return message($query, ...$pair)->__toString();
     }
 
     protected static function getPrefixedValues(string $prefix, array|string $values): array|string

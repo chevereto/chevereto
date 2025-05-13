@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS `%table_prefix%tags_albums`;
 CREATE TABLE `%table_prefix%tags_albums` (
-  `tag_album_tag_id` bigint(32) NOT NULL,
-  `tag_album_album_id` bigint(32) NOT NULL,
-  `tag_album_user_id` bigint(32) NOT NULL,
-  `tag_album_count` int(11) NOT NULL DEFAULT 0,
-  `tag_album_last_used_datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `tag_album_tag_id` INT UNSIGNED NOT NULL,
+  `tag_album_album_id` INT UNSIGNED NOT NULL,
+  `tag_album_user_id` INT UNSIGNED NOT NULL,
+  `tag_album_count` INT UNSIGNED NOT NULL DEFAULT 0,
+  `tag_album_last_used_datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (tag_album_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE,
   FOREIGN KEY (tag_album_album_id) REFERENCES `%table_prefix%albums` (album_id) ON DELETE CASCADE,
   FOREIGN KEY (tag_album_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE,

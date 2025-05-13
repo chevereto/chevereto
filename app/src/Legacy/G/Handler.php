@@ -74,6 +74,8 @@ class Handler
 
     private array $request;
 
+    private string $content;
+
     public function __construct(bool $loadTemplate, ?Closure $before = null, ?Closure $after = null)
     {
         // @ini_set('open_basedir', PATH_PUBLIC);
@@ -189,14 +191,9 @@ class Handler
         }
     }
 
-    public function handled_request(): string
+    public function handledRequest(): string
     {
         return $this->handled_request;
-    }
-
-    public function request_array(): array
-    {
-        return $this->request_array;
     }
 
     public function template(): string
@@ -207,6 +204,11 @@ class Handler
     public function setTemplate(string $template): void
     {
         $this->template = $template;
+    }
+
+    public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     public function setPathTheme(string $path): void
@@ -477,10 +479,14 @@ class Handler
         return (bool) preg_match('{index\.php$}', ltrim($this->script_name, '/'));
     }
 
-    private function loadTemplate(?string $template = null): void
+    private function loadTemplate(): void
     {
-        if ($template !== null) {
-            $this->template = $template;
+        if (isset($this->content)) {
+            require_theme_header();
+            echo $this->content;
+            require_theme_footer();
+
+            return;
         }
         $functions_basename = 'functions.php';
         $template_functions = [

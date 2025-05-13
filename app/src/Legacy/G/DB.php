@@ -261,7 +261,8 @@ class DB
         array $sort = [],
         ?int $limit = null,
         int $fetch_style = PDO::FETCH_ASSOC,
-        array $valuesOperators = []
+        array $valuesOperators = [],
+        array $columns = [],
     ): mixed {
         if (! is_array($where) && $where !== 'all') {
             throw new Exception('Expecting array values, ' . gettype($where) . ' given');
@@ -272,7 +273,13 @@ class DB
             $table = $table['table'];
         }
         $table = self::getTable($table);
-        $query = 'SELECT * FROM ' . $table;
+        $selectColumns = implode(', ', $columns);
+        if (empty($selectColumns)) {
+            $selectColumns = '*';
+        }
+        $query = <<<SQL
+        SELECT {$selectColumns} FROM `{$table}`
+        SQL;
         if (isset($join)) {
             $query .= ' ' . $join . ' ';
         }
@@ -427,7 +434,7 @@ class DB
         ]);
     }
 
-    public static function dbPrepare(string $query, array $values): self
+    public static function dbPrepare(string $query, array $values = []): self
     {
         $query = self::getQueryWithTablePrefix($query);
         $db = self::getInstance();
@@ -452,6 +459,57 @@ class DB
         $db = self::dbPrepare($query, $binds);
 
         return $db->fetchAll($mode) ?: [];
+    }
+
+    /**
+     * @param string $table Table name (no prefix).
+     * @param string $constraint Foreign key name (no prefix).
+     */
+    public function getSqlDropForeignKey(string $table, string $constraint): string
+    {
+        $table = self::getTable($table);
+        $constraint = self::getTable($constraint);
+        $stmt = static::$dbh->prepare(
+            <<<SQL
+            SELECT COUNT(*)
+            FROM information_schema.TABLE_CONSTRAINTS
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND CONSTRAINT_NAME = ? AND CONSTRAINT_TYPE = 'FOREIGN KEY';
+            SQL
+        );
+        $stmt->execute([$table, $constraint]);
+        if ($stmt->fetchColumn() > 0) {
+            return <<<SQL
+            ALTER TABLE `{$table}` DROP FOREIGN KEY `{$constraint}`;
+
+            SQL;
+        }
+
+        return '';
+    }
+
+    /**
+     * @param string $table Table name (no prefix).
+     */
+    public function getSqlDropIndex(string $table, string $index): string
+    {
+        $table = self::getTable($table);
+        $pdo = static::$dbh;
+        $stmt = $pdo->prepare(
+            <<<SQL
+            SELECT COUNT(*)
+            FROM information_schema.STATISTICS
+            WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND INDEX_NAME = ?
+            SQL
+        );
+        $stmt->execute([$table, $index]);
+        if ($stmt->fetchColumn() > 0) {
+            return <<<SQL
+            DROP INDEX `{$index}` ON `{$table}`;
+
+            SQL;
+        }
+
+        return '';
     }
 
     private static function validateClause(string $clause, string|null $method = null)

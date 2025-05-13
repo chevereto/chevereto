@@ -125,13 +125,14 @@ foreach ($links as $rel => $href) {
             if (in_array(Handler::var('album')['privacy'], ['public', 'private_but_link'])
                 && Handler::var('listing')->outputCount()
             ) {
-                $open_graph_extend = array_merge($open_graph_extend, [
-                    'image' => Handler::var('listing')->outputAssoc()[0]['display_url'],
-                    'image:width' => Handler::var('listing')->outputAssoc()[0]['display_width'],
-                    'image:height' => Handler::var('listing')->outputAssoc()[0]['display_height'],
-                ]);
+                if(Handler::var('listing') && Handler::var('listing')->first()) {
+                    $open_graph_extend = array_merge($open_graph_extend, [
+                        'image' => Handler::var('listing')->first()['display_url'],
+                        'image:width' => Handler::var('listing')->first()['display_width'],
+                        'image:height' => Handler::var('listing')->first()['display_height'],
+                    ]);
+                }
             }
-
             break;
         case Handler::var('user') !== null && is_route('user'):
             $open_graph_extend = [
@@ -183,12 +184,9 @@ foreach ($links as $rel => $href) {
             } else {
                 $twitter_card['creator'] = isset(Handler::var('user')['twitter']) ? Handler::var('user')['twitter']['username'] : '';
             }
-            $list_output = Handler::var('listing') !== null ? (Handler::var('listing')->outputAssoc() ?? null) : null;
-            if (is_array($list_output) && count($list_output) > 0) {
-                for ($i = 0; $i < 4; ++$i) {
-                    $twitter_card['image' . $i] = $list_output[$i]['display_url'] ?? '';
-                }
-            }
+            $twitter_card['image'] = Handler::var('listing') && Handler::var('listing')->first()
+                ? Handler::var('listing')->first()['display_url']
+                : '';
 
             break;
     }

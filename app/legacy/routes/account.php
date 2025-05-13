@@ -89,7 +89,7 @@ return function (Handler $handler) {
             if (! TwoFactor::hasFor($logged_user['id'])) {
                 redirect('settings/security', 302);
             }
-            if (! sessionVar()->hasKey('challenge_two_factor')) {
+            if (! sessionVar()->has('challenge_two_factor')) {
                 redirect($logged_user['url'] ?? '', 302);
             }
 

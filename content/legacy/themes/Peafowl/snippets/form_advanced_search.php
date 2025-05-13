@@ -4,7 +4,7 @@ use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_client_ip;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\safe_html;
-use function Chevereto\Legacy\getStorages;
+use function Chevereto\Legacy\getStoragesFormList;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -63,9 +63,8 @@ if (!defined('ACCESS') || !ACCESS) {
     ?>
 	<?php
         if (Handler::cond('content_manager')) {
-            $storages = getStorages();
-
-            if ($storages) {
+            $storages = getStoragesFormList();
+            if ($storages !== []) {
                 array_unshift($storages, [
                     'id' => null,
                     'name' => _s('All')

@@ -11,9 +11,10 @@
 
 namespace Chevereto\Vars\Traits;
 
+use Chevere\DataStructure\Interfaces\MapMutableInterface;
+use Chevere\DataStructure\MapMutable;
 use Chevereto\Traits\Instance\AssertNoInstanceTrait;
 use Chevereto\Traits\Instance\AssertStaticInstanceTrait;
-use Ds\Map;
 
 trait MutableMapTrait
 {
@@ -21,15 +22,15 @@ trait MutableMapTrait
 
     use AssertNoInstanceTrait;
 
-    private static Map $map;
+    private static MapMutableInterface $map;
 
     public function __construct(array $array)
     {
         $this->assertNoInstance();
-        static::$map = new Map($array);
+        static::$map = new MapMutable(...$array);
     }
 
-    public static function map(): Map
+    public static function map(): MapMutableInterface
     {
         return static::$map;
     }

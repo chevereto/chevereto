@@ -15,9 +15,14 @@ use Chevereto\Config\Config;
 use Exception;
 use Intervention\Image\ImageManagerStatic;
 use LogicException;
+use PHPExif\Adapter\Exiftool as ExifToolAdapter;
+use PHPExif\Enum\ReaderType as ExifReaderType;
 use PHPExif\Exif;
+use PHPExif\Reader\Reader as ExifReader;
+use RuntimeException;
 use Throwable;
 use function Chevere\Message\message;
+use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\add_ending_slash;
 use function Chevereto\Legacy\G\ends_with;
 use function Chevereto\Legacy\G\fetch_url;
@@ -95,6 +100,8 @@ class Upload
     private string $downstream;
 
     private string $source_filename;
+
+    private ?string $checksum = null;
 
     public function uploaded(): array
     {
@@ -183,6 +190,11 @@ class Upload
         $this->name = $name;
     }
 
+    public function setChecksum(string $checksum): void
+    {
+        $this->checksum = $checksum;
+    }
+
     public function setOptions(array $options): void
     {
         $this->options = $options;
@@ -212,7 +224,11 @@ class Upload
         if (! is_array($this->options['allowed_formats'])) {
             $this->options['allowed_formats'] = explode(',', $this->options['allowed_formats']);
         }
-        $this->source_name = get_basename_without_extension($this->type === 'url' ? $this->source : $this->source['name']);
+        $this->source_name = get_basename_without_extension(
+            $this->type === 'url'
+                ? $this->source
+                : $this->source['name']
+        );
         $this->extension = $this->source_image_fileinfo['extension'];
         if ($this->extension === 'jpeg' && $this->source_extension === 'jpg') {
             $this->extension = 'jpg';
@@ -224,15 +240,45 @@ class Upload
         if (get_file_extension($this->name) === $this->extension) {
             $this->name = get_basename_without_extension($this->name);
         }
-        $this->fixed_filename = preg_replace('/(.*)\.(th|md|original|lg)\.([\w]+)$/', '$1.$3', $this->name . '.' . $this->extension);
+        $this->fixed_filename = preg_replace(
+            '/(.*)\.(th|md|original|lg)\.([\w]+)$/',
+            '$1.$3',
+            $this->name . '.' . $this->extension
+        );
         $is_360 = false;
         if (in_array($this->extension, ['jpg', 'jpeg'], true)) {
+            $exifToolBinary = env()['CHEVERETO_BINARY_EXIFTOOL'] ?? '';
+            if ($exifToolBinary !== '') {
+                try {
+                    $exifTool = new ExifTool($exifToolBinary);
+                } catch (RuntimeException) {
+                }
+                // ExifTool adapter doesn't work with SONY exif
+                // Mind to check in the future?
+                // $adapter = new ExifToolAdapter([
+                //     'toolPath' => $exifTool->binary(),
+                // ]);
+                // $reader = new ExifReader($adapter);
+            }
+            $exifTranBinary = env()['CHEVERETO_BINARY_EXIFTRAN'] ?? '';
+            if ($exifTranBinary !== '') {
+                try {
+                    $exifTran = new ExifTran($exifTranBinary);
+                } catch (RuntimeException) {
+                }
+            }
+            $reader = ExifReader::factory(ExifReaderType::NATIVE);
             $xmpDataExtractor = new XmpMetadataExtractor();
             $xmpData = $xmpDataExtractor->extractFromFile($this->downstream);
-            $reader = \PHPExif\Reader\Reader::factory(\PHPExif\Reader\Reader::TYPE_NATIVE);
             $is_360 = false;
-            if (isset($xmpData['rdf:RDF']['rdf:Description']['@attributes']['ProjectionType'])) {
-                $is_360 = $xmpData['rdf:RDF']['rdf:Description']['@attributes']['ProjectionType'] === 'equirectangular';
+            if ($xmpData['rdf:RDF']['rdf:Description'] ?? false) {
+                $projectionType = $xmpData['rdf:RDF']['rdf:Description']['@attributes']['ProjectionType']
+                    ?? $xmpData['rdf:RDF']['rdf:Description'][0]['GPano:ProjectionType']
+                    ?? '';
+                $usePanoramaViewer = $xmpData['rdf:RDF']['rdf:Description'][0]['GPano:UsePanoramaViewer']
+                    ?? '';
+                $is_360 = strtolower($projectionType) === 'equirectangular'
+                    || strtolower($usePanoramaViewer) === 'true';
             }
             if (array_key_exists('exif', $this->options)) {
                 try {
@@ -247,22 +293,30 @@ class Upload
                         $orientation = false;
                     }
                     if ($orientation !== false) {
-                        ImageManagerStatic::make($this->downstream)->orientate()->save();
+                        if (isset($exifTran)) {
+                            $exifTran->orientate($this->downstream);
+                        } else {
+                            ImageManagerStatic::make($this->downstream)->orientate()->save();
+                        }
                     }
                 }
                 if (! $this->options['exif']) {
                     $this->source_image_exif = null;
-                    if (ImageManagerStatic::getManager()->config['driver'] === 'imagick') {
-                        $img = ImageManagerStatic::make($this->downstream);
-                        $img->getCore()->stripImage();
-                        $img->save();
+                    if (isset($exifTool)) {
+                        $exifTool->strip($this->downstream);
                     } else {
-                        $img = @imagecreatefromjpeg($this->downstream);
-                        if ($img) {
-                            imagejpeg($img, $this->downstream, 90);
-                            imagedestroy($img);
+                        if (ImageManagerStatic::getManager()->config['driver'] === 'imagick') {
+                            $img = ImageManagerStatic::make($this->downstream);
+                            $img->getCore()->stripImage();
+                            $img->save();
                         } else {
-                            throw new Exception('Unable to create a new JPEG without Exif data', 644);
+                            $img = @imagecreatefromjpeg($this->downstream);
+                            if ($img) {
+                                imagejpeg($img, $this->downstream, 90);
+                                imagedestroy($img);
+                            } else {
+                                throw new Exception('Unable to create a new JPEG without Exif data', 644);
+                            }
                         }
                     }
                 }
@@ -296,7 +350,7 @@ class Upload
         }
 
         try {
-            $uploaded = rename($this->downstream, $this->uploaded_file);
+            $uploaded = rename($this->downstream, $this->uploaded_file); // slow: 6s
         } catch (Throwable) {
             $uploaded = file_exists($this->uploaded_file);
         }
@@ -312,12 +366,10 @@ class Upload
             } catch (Throwable) {
             }
         }
-        $fileInfo = $this->mediaType === 'video'
-            ? get_video_fileinfo($this->uploaded_file)
-            : get_image_fileinfo($this->uploaded_file);
-        if ($fileInfo === []) {
-            throw new Exception("Can't get uploaded info", 610);
-        }
+        $fileInfo = $this->source_image_fileinfo;
+        $fileInfo['filename'] = basename($this->uploaded_file);
+        $fileInfo['name'] = get_basename_without_extension($this->uploaded_file);
+        $fileInfo['url'] = absolute_to_url($this->uploaded_file);
         $fileInfo['is_360'] = $is_360;
         $frameFile = null;
         if ($this->mediaType === 'video') {
@@ -355,15 +407,18 @@ class Upload
         ];
     }
 
-    public static function getTempNam(string $failoverDirectory = ''): string
+    public static function getTempNam(string $failoverDir = '', string $suffix = ''): string
     {
-        if ($failoverDirectory === '') {
-            $failoverDirectory = sys_get_temp_dir();
+        if ($failoverDir === '') {
+            $failoverDir = sys_get_temp_dir();
         }
-        $prefix = env()['CHEVERETO_ID_HANDLE'] . 'chvtemp_';
-        $tempNam = @tempnam(sys_get_temp_dir(), $prefix);
+        $chvIdPrefix = 'chv'
+            . env()['CHEVERETO_ID']
+            . '_upload_'
+            . $suffix;
+        $tempNam = @tempnam(sys_get_temp_dir(), $chvIdPrefix);
         if (! $tempNam || ! @is_writable($tempNam)) {
-            $tempNam = @tempnam($failoverDirectory, $prefix);
+            $tempNam = @tempnam($failoverDir, $chvIdPrefix);
             if (! $tempNam) {
                 throw new Exception("Can't get a tempnam", 600);
             }
@@ -519,8 +574,8 @@ class Upload
             ? 'video'
             : 'image';
         $this->source_image_fileinfo = $this->mediaType === 'video'
-            ? get_video_fileinfo($this->downstream)
-            : get_image_fileinfo($this->downstream);
+            ? get_video_fileinfo($this->downstream, $this->checksum)
+            : get_image_fileinfo($this->downstream, $this->checksum);
         if ($this->source_image_fileinfo === []) {
             throw new Exception("Can't get target upload source info", 610);
         }
@@ -547,7 +602,7 @@ class Upload
         if ($this->source_image_fileinfo['extension'] === 'bmp') {
             $this->ImageConvert = new ImageConvert($this->downstream, 'png', $this->downstream);
             $this->downstream = $this->ImageConvert->out();
-            $this->source_image_fileinfo = get_image_fileinfo($this->downstream);
+            $this->source_image_fileinfo = get_image_fileinfo($this->downstream, $this->checksum);
         }
         if ($this->source_image_fileinfo['extension'] === 'webp'
             && is_animated_webp($this->downstream)
@@ -555,7 +610,6 @@ class Upload
         ) {
             throw new Exception('Animated WebP is not supported', 400);
         }
-
         if ($this->mediaType === 'video') {
             return;
         }

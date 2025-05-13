@@ -1,14 +1,15 @@
 DROP TABLE IF EXISTS `%table_prefix%login_providers`;
 CREATE TABLE `%table_prefix%login_providers` (
-  `login_provider_id` bigint(32) NOT NULL AUTO_INCREMENT,
-  `login_provider_name` varchar(255) DEFAULT NULL,
-  `login_provider_label` varchar(255) DEFAULT NULL,
-  `login_provider_key_id` text DEFAULT NULL,
-  `login_provider_key_secret` text DEFAULT NULL,
-  `login_provider_is_enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `login_provider_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login_provider_name` VARCHAR(255) DEFAULT NULL,
+  `login_provider_label` VARCHAR(255) DEFAULT NULL,
+  `login_provider_key_id` TEXT DEFAULT NULL,
+  `login_provider_key_secret` TEXT DEFAULT NULL,
+  `login_provider_is_enabled` TINYINT UNSIGNED NOT NULL DEFAULT '1',
   PRIMARY KEY (`login_provider_id`),
   UNIQUE KEY `login_provider_name` (`login_provider_name`(191)),
-  KEY `login_provider_is_enabled` (`login_provider_is_enabled`)
+  KEY `login_provider_is_enabled` (`login_provider_is_enabled`),
+  KEY `login_provider_id_is_enabled_name` (`login_provider_id`, `login_provider_is_enabled`, `login_provider_name` DESC)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 INSERT INTO `%table_prefix%login_providers` VALUES ('1', 'facebook', 'Facebook', null, null, '0');
 INSERT INTO `%table_prefix%login_providers` VALUES ('2', 'twitter', 'Twitter', null, null, '0');

@@ -7,6 +7,7 @@ use function Chevereto\Legacy\G\require_theme_footer;
 use function Chevereto\Legacy\G\require_theme_header;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -21,9 +22,8 @@ if (!defined('ACCESS') || !ACCESS) {
 		<div class="text-content">
 
 			<p>Our API enables programmatic file uploads, allowing you to seamlessly integrate our uploading functionality into your own applications.</p>
-
 			<h2><i class="fa-solid fa-key color-accent margin-right-5"></i><?php _se('Key'); ?></h2>
-<?php if(getSetting('guest_uploads') && (getSetting('api_v1_key') ?? '') !== '') { ?>
+<?php if(getSetting('enable_api_guest') && (getSetting('api_v1_key') ?? '') !== '') { ?>
 			<div class="input-label">
 				<label><?php _se('Public API key'); ?></label>
 				<div class="position-relative">
@@ -126,8 +126,8 @@ if (!defined('ACCESS') || !ACCESS) {
     "description": null,
     "nsfw": 0,
     "storage_mode": "datefolder",
-    "md5": "7a120d5c28de264bdbb934f023a628fd",
-    "source_md5": null,
+    "checksum": "7a120d5c28de264bdbb934f023a628fd",
+    "source_checksum": null,
     "original_filename": "Badgers _ animated music video _ MrWeebl.mp4",
     "original_exifdata": null,
     "views": 0,

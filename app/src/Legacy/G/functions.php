@@ -23,6 +23,7 @@ use GdImage;
 use LogicException;
 use Throwable;
 use function Chevereto\Legacy\getCheveretoEnv;
+use function Chevereto\Legacy\hashFile;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\server;
 use function Safe\curl_exec;
@@ -2453,13 +2454,13 @@ function extension_to_mime(string $ext): string
 function get_ffmpeg_error(Throwable $e): string
 {
     $previous = $e->getPrevious() ?
-        (': ' . $e->getPrevious()->getMessage()) :
+        (' [' . $e->getPrevious()->getMessage() . ']') :
         '';
 
     return $e->getMessage() . $previous;
 }
 
-function get_video_fileinfo(string $file): array
+function get_video_fileinfo(string $file, ?string $checksum = null): array
 {
     clearstatcache(true, $file);
 
@@ -2504,12 +2505,12 @@ function get_video_fileinfo(string $file): array
         'bits' => $all['bits_per_raw_sample'] ?? 0,
         'channels' => '',
         'url' => absolute_to_url($file),
-        'md5' => md5_file($file),
+        'checksum' => $checksum ?? hashFile($file),
         'duration' => (int) $duration,
     ];
 }
 
-function get_image_fileinfo(string $file): array
+function get_image_fileinfo(string $file, ?string $checksum = null): array
 {
     clearstatcache(true, $file);
     $info = getimagesize($file);
@@ -2533,7 +2534,7 @@ function get_image_fileinfo(string $file): array
         'bits' => $info['bits'] ?? '',
         'channels' => $info['channels'] ?? '',
         'url' => absolute_to_url($file),
-        'md5' => md5_file($file),
+        'checksum' => $checksum ?? hashFile($file),
     ];
 }
 

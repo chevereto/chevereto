@@ -15,4 +15,5 @@ if (cheveretoVersionInstalled() !== '') {
     echo "[ERROR] Chevereto is already installed, try with the update command\n";
     exit(255);
 }
+
 require_once PATH_APP_LEGACY_INSTALL . 'installer.php';

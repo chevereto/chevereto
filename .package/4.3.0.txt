@@ -1,0 +1,50 @@
+Chevereto 4.3.0 (2025-05-13)
+
+- Added API dashboard settings page
+- Added application-level categories cache
+- Added application-level guest listing cache
+- Added application-level pages cache
+- Added application-level settings cache
+- Added application-level top tags cache
+- Added application-level user albums cache
+- Added application-level variables cache
+- Added cache-flush command
+- Added cache-view command
+- Added CHEVERETO_ENABLE_API_USER
+- Added CHEVERETO_MAX_LISTING_ITEMS_PER_PAGE limit
+- Added CHEVERETO_MAX_TAGS limit
+- Added chunked uploads
+- Added circles for user avatars
+- Added configurable API availability
+- Added connect URL display for each login provider
+- Added customizable semantics for file concerns
+- Added customizable semantics for tag concerns
+- Added customizable semantics for video concerns
+- Added explicit instructions to "Something went wrong" message
+- Added lossless JPEG auto-orientation using ExifTran
+- Added lossless metadata removal using ExifTool
+- Added more database composite indexes
+- Added option to disable user color palette selection
+- Added restricted password reset after repeated failures
+- Added restricted two-factor access after repeated failures
+- Added support for Cloudflare Turnstile captcha
+- Added support for GoPro 360 photos
+- Fixed bug affecting EXIF read for Sony cameras
+- Fixed bug affecting private sub-albums
+- Fixed bug in upload queue handler
+- Fixed bug on upgrading.php
+- Improved Dashboard settings menu sort display
+- Improved database schema integer types
+- Improved listing database queries
+- Improved search engine (boolean matching)
+- Improved stats query handling
+- Improved user albums query
+- Removed guest upload session binding
+- Removed maximum upload limit imposed by php.ini
+- Removed sendmail for Docker servicing
+- Removed support for ModerateContent
+- Removed unused dependencies and files
+- Renamed "Asset storage" to "Site storage"
+- Renamed "External storage" to "Upload storage"
+- Renamed app/bin/legacy to app/bin/cli
+- Updated file checksum algo to xxh64

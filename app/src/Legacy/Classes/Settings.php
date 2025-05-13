@@ -103,6 +103,18 @@ class Settings
             'semantics_images' => 'Images',
         ],
         [
+            'semantics_video' => 'Video',
+            'semantics_videos' => 'Videos',
+        ],
+        [
+            'semantics_file' => 'File',
+            'semantics_files' => 'Files',
+        ],
+        [
+            'semantics_tag' => 'Tag',
+            'semantics_tags' => 'Tags',
+        ],
+        [
             'semantics_user' => 'User',
             'semantics_users' => 'Users',
         ],
@@ -285,6 +297,16 @@ class Settings
                 'sdk_pup_url' => '',
             ],
         ],
+        'CHEVERETO_ENABLE_API_USER' => ['0',
+            [
+                'enable_api_user' => false,
+            ],
+        ],
+        'CHEVERETO_ENABLE_API_GUEST' => ['0',
+            [
+                'enable_api_guest' => false,
+            ],
+        ],
     ];
 
     public const STOCK = [
@@ -391,6 +413,9 @@ class Settings
         'website_search' => true,
         'arachnid_api_username' => '',
         'arachnid_api_password' => '',
+        'theme_palette_user_select' => true,
+        'enable_api_user' => true,
+        'enable_api_guest' => false,
     ];
 
     public const USERNAME_MIN_LENGTH = 3;
@@ -438,10 +463,21 @@ class Settings
 
     protected static array $typeset = [];
 
-    protected static array $decrypted = [];
-
-    public function __construct()
+    public function __construct(bool $reCache = false)
     {
+        if ($reCache === true) {
+            $cached = false;
+        } else {
+            $cached = Cache::instance()->get('settings');
+        }
+        if ($cached) {
+            self::$settings = $cached['settings'];
+            self::$defaults = $cached['defaults'];
+            self::$typeset = $cached['typeset'];
+            self::$instance = $this;
+
+            return;
+        }
         $settings = [];
         $defaults = [];
         $typeset = [];
@@ -585,6 +621,7 @@ class Settings
         self::$typeset = $typeset;
         self::$instance = $this;
         self::update($db_settings_fix);
+        self::cache();
     }
 
     public static function getInstance(): self
@@ -655,11 +692,6 @@ class Settings
         return self::getDefaults($key);
     }
 
-    public static function setValues(array $values): void
-    {
-        self::$settings = $values;
-    }
-
     public static function setValue(string $key, mixed $value): void
     {
         self::$settings[$key] = $value ?? null;
@@ -674,6 +706,7 @@ class Settings
             <<<SQL
             INSERT INTO `{$table}` (setting_name, setting_value, setting_default, setting_typeset)
             VALUES (%name, %value, %value, %typeset);
+
             SQL;
         $plainText = $keyValues;
         if (hasEncryption()) {
@@ -702,6 +735,7 @@ class Settings
             $db->bind($bindK, $bindV);
         }
         $db->exec();
+        new self(reCache: true);
 
         return true;
     }
@@ -766,7 +800,12 @@ class Settings
             $db->bind($bindK, $bindV);
         }
 
-        return $db->exec();
+        $return = $db->exec();
+        if ($return) {
+            self::cache();
+        }
+
+        return $return;
     }
 
     /**
@@ -796,5 +835,17 @@ class Settings
     public static function isEnvRestricted(string $key): bool
     {
         return in_array($key, self::$envRestricted, true);
+    }
+
+    private static function cache(): void
+    {
+        Cache::instance()->set(
+            'settings',
+            [
+                'settings' => self::$settings,
+                'defaults' => self::$defaults,
+                'typeset' => self::$typeset,
+            ]
+        );
     }
 }

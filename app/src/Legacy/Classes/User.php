@@ -100,48 +100,81 @@ class User
         ];
     }
 
+    public static function getCacheKey(int $id, string ...$locator): string
+    {
+        $components = ['u', (string) $id];
+        array_push($components, ...$locator);
+
+        return implode(':', $components);
+    }
+
+    public static function deleteAlbumsCache(int $userId): void
+    {
+        $cacheKey = static::getCacheKey($userId, 'albums');
+        Cache::instance()->delete($cacheKey);
+    }
+
     public static function getAlbums(int|array $var): array
     {
         $id = is_array($var) ? $var['id'] : $var;
-        $user_albums = [];
-        $user_stream = self::getStreamAlbum($var);
-        if (is_array($user_stream)) {
-            $user_albums['stream'] = $user_stream;
-        }
-        $map = [];
-        $children = [];
-        $db = DB::getInstance();
-        $db->query(
-            'SELECT * FROM '
-            . DB::getTable('albums')
-            . ' WHERE album_user_id=:image_user_id ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit'
-        );
-        $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST'] ?? 500));
-        $db->bind(':image_user_id', $id);
-        $user_albums_db = $db->fetchAll();
-        if ($user_albums_db) {
-            $user_albums += $user_albums_db;
-        }
-        foreach ($user_albums as $k => &$v) {
-            $album_id = isset($v['album_id'])
-                ? $v['album_id']
-                : 'stream';
-            $map[$album_id] = $k;
-            $parent_id = $v['album_parent_id'] ?? null;
-            if (isset($v['album_image_count']) && $v['album_image_count'] < 0) {
-                $v['album_image_count'] = 0;
+        $cacheKey = static::getCacheKey($id, 'albums');
+        $cached = Cache::instance()->get($cacheKey) ?: [];
+        if ($cached) {
+            [$userAlbums, $children, $map] = $cached;
+        } else {
+            $userAlbums = [];
+            $user_stream = self::getStreamAlbum($var);
+            if ($user_stream === null || $user_stream['user_album_count'] === 0) {
+                return [];
             }
-            $children[$parent_id][$album_id] = $v['album_name'];
-            if (isset($parent_id)) {
-                asort($children[$parent_id]);
+            unset($user_stream['user_album_count']);
+            $userAlbums['stream'] = $user_stream;
+            $map = [];
+            $children = [];
+            $columns = [
+                'album_id',
+                'album_name',
+                'album_privacy',
+                'album_parent_id',
+                'album_image_count',
+                'album_cover_id',
+            ];
+            $columnsString = implode(', ', $columns);
+            $tableAlbums = DB::getTable('albums');
+            $db = DB::getInstance();
+            $db->query(
+                <<<MySQL
+                SELECT {$columnsString}
+                FROM {$tableAlbums}
+                WHERE album_user_id=:image_user_id
+                ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit
+                MySQL
+            );
+            $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST']));
+            $db->bind(':image_user_id', $id);
+            $user_albums_db = $db->fetchAll();
+            if ($user_albums_db) {
+                $userAlbums += $user_albums_db;
             }
-        }
-        if (count($children[''] ?? []) === 0) {
-            return [];
+            foreach ($userAlbums as $k => &$v) {
+                $album_id = isset($v['album_id'])
+                    ? $v['album_id']
+                    : 'stream';
+                $map[$album_id] = $k;
+                $parent_id = $v['album_parent_id'] ?? null;
+                if (isset($v['album_image_count']) && $v['album_image_count'] < 0) {
+                    $v['album_image_count'] = 0;
+                }
+                $children[$parent_id][$album_id] = $v['album_name'];
+                if (isset($parent_id)) {
+                    asort($children[$parent_id]);
+                }
+            }
+            Cache::instance()->set($cacheKey, [$userAlbums, $children, $map], 3600);
         }
         $list = [];
-        foreach (array_keys($children['']) as $key) {
-            self::iterate((string) $key, $children, $list, $user_albums, $map, 0);
+        foreach (array_keys($children[''] ?? []) as $key) {
+            self::iterate((string) $key, $children, $list, $userAlbums, $map, 0);
         }
 
         return $list;
@@ -160,6 +193,7 @@ class User
                 'album_user_id' => $user['id'],
                 'album_privacy' => 'public',
                 'album_url' => $user['url'],
+                'user_album_count' => (int) ($user['album_count'] ?? 0),
             ];
         }
 
@@ -237,7 +271,11 @@ class User
         );
         if (! Login::isAdmin()) {
             $db = DB::getInstance();
-            $db->query('SELECT COUNT(*) c FROM ' . DB::getTable('users') . ' WHERE user_registration_ip=:ip AND user_status != "valid" AND user_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY)');
+            $db->query(
+                'SELECT COUNT(*) c FROM '
+                . DB::getTable('users')
+                . ' WHERE user_registration_ip=:ip AND user_status != "valid" AND user_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY)'
+            );
             $db->bind(':ip', $values['registration_ip']);
             if ($db->fetchSingle()['c'] > 5) {
                 throw new Exception('Flood detected', 666);
@@ -546,31 +584,22 @@ class User
             '%user_id' => $user['id'],
         ]);
         DB::queryExecute($sql);
-        DB::delete('albums', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('images', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('login_connections', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('login_cookies', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('login_passwords', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('likes', [
-            'user_id' => $user['id'],
-        ]);
-        DB::delete('follows', [
-            'user_id' => $user['id'],
-            'followed_user_id' => $user['id'],
-        ], 'OR');
-        DB::delete('users', [
-            'id' => $user['id'],
-        ]);
+        $deleteTemplate = <<<SQL
+        DELETE FROM `%table_prefix%albums` WHERE `album_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%images` WHERE `image_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%login_connections` WHERE `login_connection_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%login_cookies` WHERE `login_cookie_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%login_passwords` WHERE `login_password_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%likes` WHERE `like_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%follows` WHERE `follow_user_id` = %user_id% OR `follow_followed_user_id` = %user_id%;
+        DELETE FROM `%table_prefix%users` WHERE `user_id` = %user_id%;
+        SQL;
+        $deleteSQL = DB::translate(
+            $deleteTemplate,
+            user_id: $user['id']
+        );
+        DB::queryExecute($deleteSQL);
+        Listing::deleteTypeIdCache('u', $user['id']);
     }
 
     public static function statusRedirect(?string $status): void
@@ -741,7 +770,9 @@ class User
     public static function cleanUnconfirmed(?int $limit = null): void
     {
         $db = DB::getInstance();
-        $query = 'SELECT * FROM ' . DB::getTable('users') . ' WHERE user_status IN ("awaiting-confirmation", "awaiting-email") AND user_date_gmt <= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY) ORDER BY user_id DESC';
+        $query = 'SELECT * FROM '
+            . DB::getTable('users')
+            . ' WHERE user_status IN ("awaiting-confirmation", "awaiting-email") AND user_date_gmt <= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 2 DAY) ORDER BY user_id DESC';
         if (is_int($limit)) {
             $query .= ' LIMIT ' . $limit;
         }

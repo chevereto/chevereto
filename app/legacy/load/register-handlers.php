@@ -90,9 +90,28 @@ set_exception_handler(function (Throwable $throwable) {
                 ? 1
                 : (int) $envDebugLevel;
         }
-        $doDebug = in_array($debugLevel, [2, 3], true) || isDebug();
-        $publicHandler = $publicHandler->withIsDebug($doDebug);
         $internalHandler = $publicHandler->withIsDebug(true);
+        $doDebug = in_array($debugLevel, [2, 3], true) || isDebug();
+        if ($doDebug === false) {
+            $publicHandler = $publicHandler
+                ->withIsDebug($doDebug)
+                ->withPutExtra(
+                    'Why am I seeing this?',
+                    <<<HTML
+                    For security reasons, detailed error information is not shown. This incident has been logged and will be reviewed by the system administrator.
+                    HTML
+                )
+                ->withPutExtra(
+                    'Administrator guide',
+                    <<<HTML
+                    <ul>
+                        <li>Refer to the <a href="https://v4-docs.chevereto.com/developer/how-to/debug" target="_blank">Chevereto documentation</a> to understand how to debug this error.</li>
+                        <li>Need help? Visit <a href="https://chevereto.com/support" target="_blank">Chevereto support</a> to open a ticket.</li>
+                    </ul>
+                    <style>.administrator-guide ul{margin:0;padding-left:1.5em}</style>
+                    HTML
+                );
+        }
         $method = server()['REQUEST_METHOD'] ?? '';
         $uri = server()['REQUEST_URI'] ?? '';
         $uri = strtok($uri, '?');

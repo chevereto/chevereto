@@ -20,7 +20,7 @@ class Search
 
     public static array $excluded = ['storage', 'ip'];
 
-    public string $DBEngine;
+    public string $DBEngine = 'InnoDB';
 
     public string $wheres;
 
@@ -35,11 +35,6 @@ class Search
     public array $binds;
 
     public array $op;
-
-    public function __construct()
-    {
-        $this->DBEngine = DB::queryFetchSingle("SHOW TABLE STATUS WHERE Name = '" . DB::getTable('images') . "';")['Engine'];
-    }
 
     public function build(): void
     {
@@ -171,6 +166,11 @@ class Search
                 'param' => ':q',
                 'value' => $q_value,
             ];
+            $q_strip = preg_replace('/(-[\S]+|".+?")/u', '', $q_match);
+            $search_binds[] = [
+                'param' => ':like_q',
+                'value' => '%' . $q_strip . '%',
+            ];
         }
         $this->binds = $search_binds;
         $this->op = $search_op;
@@ -178,7 +178,15 @@ class Search
         switch ($this->type) {
             case 'images':
                 if ($q_match !== '') {
-                    $wheres = 'WHERE MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)';
+                    $wheres = <<<SQL
+                    WHERE (
+                        MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)
+                        OR BINARY image_name LIKE BINARY :like_q
+                        OR BINARY image_title LIKE BINARY :like_q
+                        OR BINARY image_description LIKE BINARY :like_q
+                        OR BINARY image_original_filename LIKE BINARY :like_q
+                    )
+                    SQL;
                 }
                 if ($search_op_wheres !== []) {
                     $wheres .= ($wheres === '' ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
@@ -189,7 +197,17 @@ class Search
                 if (empty($search_binds)) {
                     $wheres = 'WHERE album_id < 0';
                 } else {
-                    $wheres = (($op[0] ?? null) === 'ip' ? 'album_creation_ip LIKE REPLACE(:ip, "*", "%")' : 'WHERE MATCH(`album_name`,`album_description`) AGAINST (:q)');
+                    $wheres = ($op[0] ?? null) === 'ip'
+                        ? <<<SQL
+                        album_creation_ip LIKE REPLACE(:ip, "*", "%")
+                        SQL
+                        : <<<SQL
+                        WHERE (
+                            MATCH(`album_name`,`album_description`) AGAINST (:q)
+                            OR BINARY album_name LIKE BINARY :like_q
+                            OR BINARY album_description LIKE BINARY :like_q
+                        )
+                        SQL;
                 }
 
                 break;
@@ -197,11 +215,21 @@ class Search
                 if (empty($search_binds)) {
                     $wheres = 'WHERE user_id < 0';
                 } elseif (($op[0] ?? null) === 'ip') {
-                    $wheres = 'user_registration_ip LIKE REPLACE(:ip, "*", "%")';
+                    $wheres = <<<SQL
+                    user_registration_ip LIKE REPLACE(:ip, "*", "%")
+                    SQL;
                 } else {
                     $clauses = [
-                        'name_username' => 'WHERE MATCH(`user_name`,`user_username`) AGAINST (:q)',
-                        'email' => '`user_email` LIKE CONCAT("%", :q, "%")',
+                        'name_username' => <<<SQL
+                        WHERE (
+                            MATCH(`user_name`,`user_username`) AGAINST (:q)
+                            OR BINARY user_name LIKE BINARY :like_q
+                            OR BINARY user_username LIKE BINARY :like_q
+                        )
+                        SQL,
+                        'email' => <<<SQL
+                        `user_email` LIKE CONCAT("%", :q, "%")
+                        SQL,
                     ];
                     if ($this->requester['is_content_manager'] ?? false) {
                         $pos = strpos($this->q, '@');

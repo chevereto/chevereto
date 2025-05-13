@@ -10,4 +10,6 @@
  * file that was distributed with this source code.
  */
 
+define('APP_BIN_LEGACY', true);
+
 require_once dirname(__DIR__) . '/legacy/entrypoints/cli.php';

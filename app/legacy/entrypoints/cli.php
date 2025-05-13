@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Chevere\ThrowableHandler\ThrowableHandler;
 use function Chevereto\Legacy\getCheveretoEnv;
 use function Chevereto\Legacy\loaderHandler;
 
@@ -24,27 +25,34 @@ if ($opts === []) {
 }
 $access = $opts['C'];
 $options = [
+    'bulk-importer',
+    'cache-view',
+    'cache-flush',
     'cron',
-    'update',
-    'encrypt-secrets',
     'decrypt-secrets',
+    'encrypt-secrets',
     'htaccess-checksum',
     'htaccess-enforce',
-    'bulk-importer',
     'install',
-    'langs',
     'js',
+    'langs',
     'password-reset',
     'setting-get',
     'setting-update',
+    'update',
     'version',
 ];
 if (! in_array($access, $options, true)) {
     echo 'Invalid command' . PHP_EOL;
     exit(255);
 }
+if (defined('APP_BIN_LEGACY')) {
+    echo 'Note: This CLI is migrating to app/bin/cli' . PHP_EOL . PHP_EOL;
+}
 define('ACCESS', $access);
 require_once __DIR__ . '/../load/php-boot.php';
+set_error_handler(ThrowableHandler::ERROR_AS_EXCEPTION);
+set_exception_handler(ThrowableHandler::CONSOLE);
 require_once loaderHandler(
     $_COOKIE,
     getCheveretoEnv(),

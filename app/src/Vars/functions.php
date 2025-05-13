@@ -11,61 +11,91 @@
 
 namespace Chevereto\Vars;
 
-use Ds\Map;
+use Chevere\DataStructure\Interfaces\MapMutableInterface;
 use LogicException;
 
 function env(): array
 {
-    try {
-        return EnvVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = EnvVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function request(): array
 {
-    try {
-        return RequestVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = RequestVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function get(): array
 {
-    try {
-        return GetVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = GetVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function post(): array
 {
-    try {
-        return PostVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = PostVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function server(): array
 {
-    try {
-        return ServerVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = ServerVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function files(): array
 {
-    try {
-        return FilesVar::toArray();
-    } catch (LogicException) {
-        return [];
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = FilesVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
     }
+
+    return $cache;
 }
 
 function cookie(): array
@@ -77,7 +107,7 @@ function cookie(): array
     }
 }
 
-function cookieVar(): Map
+function cookieVar(): MapMutableInterface
 {
     return CookieVar::map();
 }
@@ -91,7 +121,21 @@ function session(): array
     }
 }
 
-function sessionVar(): Map
+function sessionVar(): MapMutableInterface
 {
     return SessionVar::map();
+}
+
+function requestHeaders(): array
+{
+    static $cache;
+    if (! isset($cache)) {
+        try {
+            $cache = RequestHeadersVar::toArray();
+        } catch (LogicException) {
+            $cache = [];
+        }
+    }
+
+    return $cache;
 }

@@ -15,6 +15,7 @@ use BadMethodCallException;
 use Chevereto\Legacy\G\Handler;
 use DateTime;
 use Exception;
+use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
@@ -36,9 +37,303 @@ use function Chevereto\Vars\request;
 
 class Listing
 {
+    public const COLUMNS = [
+        'images' => [
+            'image_id',
+            'image_name',
+            'image_extension',
+            'image_size',
+            'image_width',
+            'image_height',
+            'image_date',
+            'image_date_gmt',
+            'image_title',
+            'image_description',
+            'image_nsfw',
+            'image_user_id',
+            'image_album_id',
+            'image_uploader_ip',
+            'image_storage_mode',
+            'image_path',
+            'image_storage_id',
+            'image_checksum',
+            'image_source_checksum',
+            'image_original_filename',
+            // 'image_original_exifdata',
+            'image_views',
+            'image_category_id',
+            'image_chain',
+            'image_thumb_size',
+            'image_medium_size',
+            'image_frame_size',
+            'image_expiration_date_gmt',
+            'image_likes',
+            'image_is_animated',
+            'image_is_approved',
+            'image_is_360',
+            'image_duration',
+            'image_type',
+        ],
+        'users' => [
+            'user_id',
+            'user_name',
+            'user_username',
+            'user_date',
+            'user_date_gmt',
+            'user_email',
+            'user_avatar_filename',
+            'user_facebook_username',
+            'user_twitter_username',
+            'user_website',
+            'user_background_filename',
+            'user_bio',
+            'user_timezone',
+            'user_language',
+            'user_status',
+            'user_is_admin',
+            'user_is_manager',
+            'user_is_private',
+            'user_palette_id',
+            'user_newsletter_subscribe',
+            'user_show_nsfw_listings',
+            'user_image_count',
+            'user_album_count',
+            'user_image_keep_exif',
+            'user_file_meta_tag_camera_model',
+            'user_image_expiration',
+            'user_registration_ip',
+            'user_likes',
+            'user_liked',
+            'user_following',
+            'user_followers',
+            'user_content_views',
+            // 'user_notifications_unread',
+        ],
+        'albums' => [
+            'album_id',
+            'album_name',
+            'album_user_id',
+            'album_date',
+            'album_date_gmt',
+            'album_creation_ip',
+            'album_privacy',
+            'album_privacy_extra',
+            'album_password',
+            'album_image_count',
+            'album_description',
+            'album_likes',
+            'album_views',
+            'album_cover_id',
+            'album_parent_id',
+            'album_cta_enable',
+            'album_cta',
+        ],
+        'tags' => [
+            'tag_id',
+            'tag_name',
+            'tag_description',
+            'tag_user_id',
+            'tag_date_gmt',
+            'tag_files',
+            'tag_views',
+        ],
+        'likes' => [
+            'like_id',
+            'like_date',
+            'like_date_gmt',
+            'like_user_id',
+            'like_content_type',
+            'like_content_id',
+            'like_content_user_id',
+            'like_ip',
+        ],
+        'follows' => [
+            'follow_id',
+            'follow_date',
+            'follow_date_gmt',
+            'follow_user_id',
+            'follow_followed_user_id',
+            'follow_ip',
+        ],
+        'storages' => [
+            'storage_id',
+            'storage_api_id',
+            'storage_name',
+            // 'storage_service',
+            'storage_url',
+            // 'storage_bucket',
+            // 'storage_region',
+            // 'storage_server',
+            // 'storage_account_id',
+            // 'storage_account_name',
+            // 'storage_key',
+            // 'storage_secret',
+            // 'storage_is_https',
+            'storage_is_active',
+            'storage_capacity',
+            // 'storage_space_used',
+            'storage_type_chain',
+            // 'storage_use_path_style_endpoint',
+            // 'storage_deleted_at',
+        ],
+        'categories' => [
+            'category_id',
+            'category_name',
+            'category_url_key',
+            'category_description',
+        ],
+    ];
+
+    public const COLUMNS_JOIN = [
+        'images' => [
+            'image_id',
+            'image_name',
+            'image_extension',
+            'image_size',
+            'image_width',
+            'image_height',
+            'image_date',
+            'image_date_gmt',
+            'image_title',
+            'image_description',
+            'image_nsfw',
+            'image_user_id',
+            'image_album_id',
+            'image_uploader_ip',
+            'image_storage_mode',
+            'image_path',
+            'image_storage_id',
+            'image_checksum',
+            'image_source_checksum',
+            'image_original_filename',
+            // 'image_original_exifdata',
+            'image_views',
+            'image_category_id',
+            'image_chain',
+            'image_thumb_size',
+            'image_medium_size',
+            'image_frame_size',
+            'image_expiration_date_gmt',
+            'image_likes',
+            'image_is_animated',
+            'image_is_approved',
+            'image_is_360',
+            'image_duration',
+            'image_type',
+        ],
+        'users' => [
+            'user_id',
+            'user_name',
+            'user_username',
+            // 'user_date',
+            // 'user_date_gmt',
+            // 'user_email',
+            'user_avatar_filename',
+            'user_facebook_username',
+            'user_twitter_username',
+            'user_website',
+            'user_background_filename',
+            // 'user_bio',
+            // 'user_timezone',
+            'user_language',
+            'user_status',
+            'user_is_admin',
+            'user_is_manager',
+            'user_is_private',
+            // 'user_palette_id',
+            // 'user_newsletter_subscribe',
+            // 'user_show_nsfw_listings',
+            // 'user_image_count',
+            // 'user_album_count',
+            // 'user_image_keep_exif',
+            // 'user_file_meta_tag_camera_model',
+            // 'user_image_expiration',
+            // 'user_registration_ip',
+            'user_likes',
+            'user_liked',
+            'user_following',
+            'user_followers',
+            'user_content_views',
+            // 'user_notifications_unread',
+        ],
+        'albums' => [
+            'album_id',
+            'album_name',
+            // 'album_user_id',
+            'album_date',
+            'album_date_gmt',
+            'album_creation_ip',
+            'album_privacy',
+            // 'album_privacy_extra',
+            // 'album_password',
+            'album_image_count',
+            // 'album_description',
+            'album_likes',
+            'album_views',
+            'album_cover_id',
+            'album_parent_id',
+            // 'album_cta_enable',
+            // 'album_cta',
+        ],
+        'tags' => [
+            'tag_id',
+            'tag_name',
+            // 'tag_description',
+            // 'tag_user_id',
+            // 'tag_date_gmt',
+            // 'tag_files',
+            // 'tag_views',
+        ],
+        'likes' => [
+            'like_id',
+            'like_date',
+            'like_date_gmt',
+            'like_user_id',
+            'like_content_type',
+            'like_content_id',
+            'like_content_user_id',
+            'like_ip',
+        ],
+        'follows' => [
+            'follow_id',
+            'follow_date',
+            'follow_date_gmt',
+            'follow_user_id',
+            'follow_followed_user_id',
+            'follow_ip',
+        ],
+        'storages' => [
+            'storage_id',
+            'storage_api_id',
+            'storage_name',
+            // 'storage_service',
+            'storage_url',
+            // 'storage_bucket',
+            // 'storage_region',
+            // 'storage_server',
+            // 'storage_account_id',
+            // 'storage_account_name',
+            // 'storage_key',
+            // 'storage_secret',
+            // 'storage_is_https',
+            'storage_is_active',
+            'storage_capacity',
+            // 'storage_space_used',
+            'storage_type_chain',
+            // 'storage_use_path_style_endpoint',
+            // 'storage_deleted_at',
+        ],
+        'categories' => [
+            'category_id',
+            'category_name',
+            'category_url_key',
+            // 'category_description',
+        ],
+    ];
+
     public string $query;
 
-    public array $seek;
+    public array $seek = [];
 
     public string $seekEnd = '';
 
@@ -107,6 +402,15 @@ class Listing
     private bool $reverse = false;
 
     private ?string $outputTpl;
+
+    private array $first = [];
+
+    private bool $isOutputAssoc = false;
+
+    public function first(): array
+    {
+        return $this->first;
+    }
 
     public function outputCount(): int
     {
@@ -296,8 +600,7 @@ class Listing
     }
 
     /**
-     * Do the thing
-     * @Exeption 4xx
+     * @Exception 4xx
      */
     public function exec()
     {
@@ -588,7 +891,7 @@ class Listing
         }
         $sort_field = $type_singular . '_' . $this->sort_type;
         $key_field = $type_singular . '_id';
-        if (isset($this->seek)) {
+        if ($this->seek !== []) {
             if (ends_with('date_gmt', $this->sort_type)) {
                 $d = DateTime::createFromFormat('Y-m-d H:i:s', $this->seek[0]);
                 if (! $d || $d->format('Y-m-d H:i:s') !== $this->seek[0]) {
@@ -633,12 +936,15 @@ class Listing
             $limit = "\n" . 'LIMIT ' . ($this->limit + 1); // +1 allows to fetch "one extra" to detect prev/next pages
         }
         $base_table = $tables[$this->type];
+        $joins = array_filter($joins);
         // Normal query
         if (empty($joins[$this->type])) {
-            $query = 'SELECT * FROM ' . $base_table;
+            $query = 'SELECT '
+                . implode(', ', self::COLUMNS[$this->type])
+                . ' FROM ' . $base_table;
             $query .= $this->where . $order_by . $limit;
-            // Alternative query
         } else {
+            // Alternative query
             if ($this->where !== '') {
                 preg_match_all('/' . env()['CHEVERETO_DB_TABLE_PREFIX'] . '([\w_]+)\./', $this->where, $where_tables);
                 $where_tables = array_values(array_diff(array_unique($where_tables[1]), [$this->type]));
@@ -651,34 +957,113 @@ class Listing
                 reset($joins);
                 $join_tables = [key($joins)];
             }
+            $joinSelect = [$this->type];
+            $subSelectColumns = self::COLUMNS[$this->type];
             $join = '';
             if (is_iterable($join_tables)) {
                 foreach ($join_tables as $join_table) {
                     if (! empty($joins[$this->type][$join_table])) {
                         $join .= "\n" . $joins[$this->type][$join_table];
                         unset($joins[$this->type][$join_table]);
+                        $joinSelect[] = $join_table;
+                        $subSelectColumns = array_merge(
+                            $subSelectColumns,
+                            self::COLUMNS_JOIN[$join_table]
+                        );
                     }
                 }
             }
-            // Get rid of the original Exif data (for listings)
-            $null_db = $this->type === 'images'
-                ? ', NULL as image_original_exifdata '
-                : null;
-            $query = 'SELECT * '
-                . $null_db
-                . 'FROM (SELECT * FROM '
+            $outerColumns = [$this->type];
+            $typeJoins = array_keys($joins[$this->type]);
+            foreach ($typeJoins as $joinKey) {
+                if (isset($joins[$joinKey])) {
+                    array_push($outerColumns, ...array_keys($joins[$joinKey]));
+                }
+                array_push($outerColumns, $joinKey);
+            }
+            $outerColumns = array_unique($outerColumns);
+            $selectColumns = [];
+            foreach ($outerColumns as $columnName) {
+                $selectColumns = array_merge($selectColumns, self::COLUMNS_JOIN[$columnName]);
+            }
+            $selectColumns = array_merge($selectColumns, $subSelectColumns);
+            $selectColumns = array_unique($selectColumns);
+            $columns = implode(', ', $selectColumns);
+            $subColumns = implode(', ', $subSelectColumns);
+            $query = 'SELECT '
+                . $columns
+                . ' FROM (SELECT '
+                . $subColumns
+                . ' FROM '
                 . $base_table
                 . $join
                 . $this->where
                 . $order_by
                 . $limit
-                . ') '
-                . $base_table;
-            if (! empty($joins[$this->type])) {
-                $query .= "\n"
-                    . implode("\n", $joins[$this->type]);
+                . ') AS subquery ';
+            $topJoins = implode("\n", $joins[$this->type]);
+            $topJoins = str_replace(
+                "{$base_table}.",
+                'subquery.',
+                $topJoins
+            );
+            $query .= "\n"
+                . $topJoins;
+            $topOrder = str_replace(
+                "{$base_table}.",
+                'subquery.',
+                $order_by
+            );
+            $query .= $topOrder;
+        }
+        usort($this->binds, function ($a, $b) {
+            return strcmp($a['param'], $b['param']);
+        });
+        $cacheable = Cache::isEnabled()
+            && $this->requester === [];
+        if ($cacheable) {
+            $listingPageBinds = [];
+            foreach ($this->binds as $k => $v) {
+                $listingPageBinds[$v['param']] = $v['value'];
             }
-            $query .= $order_by;
+            // $rootBinds = $listingPageBinds;
+            // unset($rootBinds[':seekSort'], $rootBinds[':seekKey']);
+            // $listingHash = Cache::hash($query . serialize($rootBinds));
+            $listingPageHash = Cache::hash($query . serialize($listingPageBinds));
+            $cacheKeyListingPage = "l:{$listingPageHash}";
+            $cached = Cache::instance()->get($cacheKeyListingPage);
+            if ($cached) {
+                $this->count = $cached['count'];
+                $this->has_page_next = $cached['has_page_next'];
+                $this->has_page_prev = $cached['has_page_prev'];
+                $this->nsfw = $cached['nsfw'];
+                $this->output = unserialize(gzuncompress($cached['output']));
+                $filler = [];
+                foreach ($cached['joinSelect'] as $joinSelect) {
+                    $filler = array_merge($filler, array_fill_keys(static::COLUMNS[$joinSelect], null));
+                }
+                foreach ($this->output as $k => $v) {
+                    $this->output[$k] = array_merge($filler, $v);
+                }
+                $this->output_count = $cached['output_count'];
+                $this->seek = $cached['seek'];
+                $this->seekEnd = $cached['seekEnd'];
+                $this->seekStart = $cached['seekStart'];
+                $this->sfw = $cached['sfw'];
+                $this->output_assoc = [];
+                $this->first = $cached['first'];
+                if (! $this->isOutputAssoc()) {
+                    return;
+                }
+                $formatFunction = 'Chevereto\Legacy\Classes\\' . ucfirst(substr($this->type, 0, -1));
+                foreach ($this->output as $k => $v) {
+                    $this->output_assoc[] = $this->type === 'images'
+                        ? $formatFunction::formatArray($v, fillAlbumCover: false)
+                        : $formatFunction::formatArray($v);
+                }
+
+                return;
+            }
         }
         $db = DB::getInstance();
         $this->query = $query;
@@ -723,12 +1108,26 @@ class Listing
         $this->count = count($this->output);
         $this->nsfw = false;
         $this->output_assoc = [];
-        $formatfn = 'Chevereto\Legacy\Classes\\' . ucfirst(substr($this->type, 0, -1));
+        $formatFunction = 'Chevereto\Legacy\Classes\\' . ucfirst(substr($this->type, 0, -1));
+        $prefix = DB::getFieldPrefix($this->type) . '_';
+        $ids = [];
         foreach ($this->output as $k => $v) {
-            $val = $formatfn::formatArray($v);
-            $this->output_assoc[] = $val;
-            if (! $this->nsfw && isset($val['nsfw']) && $val['nsfw']) {
+            if ($this->isOutputAssoc()) {
+                $this->output_assoc[] = $this->type === 'images'
+                    ? $formatFunction::formatArray($v, fillAlbumCover: false)
+                    : $formatFunction::formatArray($v);
+            }
+            $ids[] = $v[$prefix . 'id'];
+            if (! $this->nsfw && isset($v[$prefix . 'nsfw']) && $v[$prefix . 'nsfw']) {
                 $this->nsfw = true;
+            }
+        }
+        if (in_array($this->type, ['images', 'albums'])) {
+            $this->first = $this->output_assoc[0] ?? $this->output[0] ?? [];
+            if ($this->first !== [] && $this->output_assoc === []) {
+                $this->first = $this->type === 'images'
+                    ? $formatFunction::formatArray($this->first, fillAlbumCover: false)
+                    : $formatFunction::formatArray($this->first);
             }
         }
         if ($this->type === 'albums') {
@@ -737,18 +1136,20 @@ class Listing
         $this->sfw = ! $this->nsfw;
         Handler::setCond('show_viewer_zero', isset(request()['viewer']) && $this->count > 0);
         if ($this->type === 'albums' && $this->output !== []) {
-            $coverTpl = '(SELECT *
-            FROM %tImages%
-            LEFT JOIN %tStorages% ON %tImages%.image_storage_id = %tStorages%.storage_id
-            WHERE image_id = (SELECT album_cover_id FROM %tAlbums% WHERE album_id = %ALBUM_ID%)
-            AND %tImages%.image_is_approved = 1
-            LIMIT 1)';
-            $album_cover_qry_tpl = strtr($coverTpl, [
-                '%tImages%' => $tables['images'],
-                '%tStorages%' => $tables['storages'],
-                '%tAlbums%' => $tables['albums'],
-            ]);
-            $albums_cover_qry_arr = [];
+            $selectColumns = array_merge(
+                self::COLUMNS['images'],
+                self::COLUMNS['storages']
+            );
+            $selectColumns = implode(', ', $selectColumns);
+            $inIds = implode(',', $ids);
+            $coverSQL = <<<MySQL
+            SELECT {$selectColumns}
+            FROM {$tables['albums']} a
+            JOIN {$tables['images']} i ON a.album_cover_id = i.image_id
+            LEFT JOIN {$tables['storages']} s ON i.image_storage_id = s.storage_id
+            WHERE album_id IN ({$inIds})
+            AND image_is_approved = 1;
+            MySQL;
             $albums_mapping = [];
             foreach ($this->output as $k => &$album) {
                 $album['album_id'] ??= '';
@@ -757,15 +1158,9 @@ class Listing
                     $album['album_image_count'] = 0;
                 }
                 $album['album_image_count_label'] = _n('image', 'images', $album['album_image_count']);
-                $albums_cover_qry_arr[] = str_replace(
-                    '%ALBUM_ID%',
-                    $album['album_id'],
-                    $album_cover_qry_tpl
-                );
                 $albums_mapping[$album['album_id']] = $k;
             }
-            $albums_slice_qry = implode("\n" . 'UNION ALL ' . "\n", $albums_cover_qry_arr);
-            $db->query($albums_slice_qry);
+            $db->query($coverSQL);
             $albums_slice = $db->fetchAll();
             if (! empty($albums_slice)) {
                 foreach ($albums_slice as $slice) {
@@ -776,13 +1171,79 @@ class Listing
                     if (! isset($this->output[$album_key]['album_images_slice'])) {
                         $this->output[$album_key]['album_images_slice'] = [];
                     }
+                    foreach ($slice as $key => $value) {
+                        if ($value === null) {
+                            unset($slice[$key]);
+                        }
+                    }
                     $this->output[$album_key]['album_images_slice'][] = $slice;
                 }
             }
         }
+        if (! $cacheable) {
+            return;
+        }
+        $output = $this->output;
+        foreach ($output as $pos => $array) {
+            foreach ($array as $key => $value) {
+                if ($value === null) {
+                    unset($output[$pos][$key]);
+                }
+            }
+        }
+        Cache::instance()->set(
+            $cacheKeyListingPage,
+            [
+                'first' => $this->first,
+                'joinSelect' => $joinSelect ?? [],
+                'count' => $this->count,
+                'has_page_next' => $this->has_page_next,
+                'has_page_prev' => $this->has_page_prev,
+                'nsfw' => $this->nsfw,
+                'output_count' => $this->output_count,
+                'output' => gzcompress(serialize($output)),
+                'seek' => $this->seek,
+                'seekEnd' => $this->seekEnd,
+                'seekStart' => $this->seekStart,
+                'sfw' => $this->sfw,
+            ],
+            300
+        );
+        $cacheType = match ($type_singular) {
+            'image' => 'i',
+            'album' => 'a',
+            'user' => 'u',
+            'tag' => 't',
+            default => throw new LogicException('Invalid cache type::' . $type_singular),
+        };
+        $cache = Cache::instance();
+        foreach ($ids as $id) {
+            $cacheKeyTypeIdListing = $cache->getKey("{$cacheType}:{$id}:l");
+            $cacheValue = "{$listingPageHash}";
+            $cache->redis()->sAdd($cacheKeyTypeIdListing, $cacheValue);
+            $cache->redis()->expire($cacheKeyTypeIdListing, 300);
+        }
     }
 
-    public static function getTabs($args = [], $autoParams = [], $expanded = false)
+    public static function deleteTypeIdCache(string $type, int ...$id): void
+    {
+        if (! Cache::isEnabled()) {
+            return;
+        }
+        $cache = Cache::instance();
+        $redis = $cache->redis();
+        foreach ($id as $item) {
+            $key = $cache->getKey("{$type}:{$item}:l");
+            $set = $redis->sMembers($key) ?: [];
+            foreach ($set as $hash) {
+                $cacheKeyListing = $cache->getKey("l:{$hash}");
+                $redis->del($cacheKeyListing);
+                $redis->sRem($key, $hash);
+            }
+        }
+    }
+
+    public static function getTabs($args = [], &$autoParams = [], $expanded = false)
     {
         $default = [
             'list' => true,
@@ -1037,6 +1498,7 @@ class Listing
                 'label' => $v['label'],
                 'id' => $id,
                 'params' => $http_build_query,
+                'sort' => $params['sort'] ?? null,
                 'current' => false,
                 'type' => $content,
                 'url' => $url,
@@ -1071,6 +1533,13 @@ class Listing
         }
         $tabs[$currentKey]['current'] = 1;
         self::fillCurrentTabPeekSeek($tabs, $currentKey, $autoParams);
+        $currentSort = explode('_', $tabs[$currentKey]['sort'] ?? '');
+        if (count($currentSort) > 2) {
+            $autoParams['sort'] = [
+                implode('_', array_slice($currentSort, 0, -1)),
+                end($currentSort),
+            ];
+        }
         if ($expanded) {
             return [
                 'tabs' => $tabs,
@@ -1174,6 +1643,9 @@ class Listing
         /** @var callable $tagFn */
         $tagFn = require_theme_file_return('snippets/tag');
         $items = [];
+        // if (str_ends_with($tpl_list, 'album')) {
+        //     $ids = array_column($this->output, 'album_id');
+        // }
         foreach ($this->output as $pos => &$row) {
             switch ($tpl_list) {
                 case 'image':
@@ -1206,7 +1678,11 @@ class Listing
 
                     break;
             }
-            $item = $Class::formatArray($row);
+            if ($Class === Image::class) {
+                $item = $Class::formatArray($row, fillAlbumCover: false);
+            } else {
+                $item = $Class::formatArray($row);
+            }
             if (str_ends_with($tpl_list, 'album') && $this->tagsString !== '') {
                 $item['url'] .= '/?tag=' . rawurlencode($this->tagsString);
             }
@@ -1310,6 +1786,11 @@ class Listing
         return $params;
     }
 
+    public function setOutputAssoc(bool $isOutputAssoc): void
+    {
+        $this->isOutputAssoc = $isOutputAssoc;
+    }
+
     /**
      * validate_input aka "first stage validation"
      * This checks for valid input source data before exec
@@ -1347,5 +1828,10 @@ class Listing
     private function getWhere(string $where): string
     {
         return ($this->where === '' ? 'WHERE ' : ($this->where . ' AND ')) . $where;
+    }
+
+    private function isOutputAssoc(): bool
+    {
+        return $this->isOutputAssoc;
     }
 }

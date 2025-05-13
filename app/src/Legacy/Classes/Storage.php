@@ -510,7 +510,11 @@ class Storage
         if ($storage === []) {
             throw new Exception(sprintf("Error: Storage id %s doesn't exists", $storageId), 100);
         }
-        $query = 'UPDATE ' . DB::getTable('storages') . ' SET storage_space_used = (SELECT IFNULL(SUM(image_size) + SUM(image_thumb_size) + SUM(image_medium_size),0) FROM ' . DB::getTable('images') . ' WHERE image_storage_id = :storageId) WHERE storage_id = :storageId';
+        $query = 'UPDATE '
+            . DB::getTable('storages')
+            . ' SET storage_space_used = (SELECT IFNULL(SUM(image_size) + SUM(image_thumb_size) + SUM(image_medium_size),0) FROM '
+            . DB::getTable('images')
+            . ' WHERE image_storage_id = :storageId) WHERE storage_id = :storageId';
         $db = DB::getInstance();
         $db->query($query);
         if ($storageId !== 0) {

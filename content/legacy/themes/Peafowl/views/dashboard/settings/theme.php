@@ -47,6 +47,17 @@ foreach (array_keys($palettes->get()) as $id) {
     <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['theme_palette'] ?? ''; ?></div>
 </div>
 <div class="input-label">
+    <label for="theme_download_button"><?php _se('Enable user %s selection', _s('palette')); ?></label>
+    <div class="c5 phablet-c1"><select type="text" name="theme_palette_user_select" id="theme_palette_user_select" class="text-input">
+            <?php
+            echo get_select_options_html([
+                1 => _s('Enabled'),
+                0 => _s('Disabled'),
+            ], Settings::get('theme_palette_user_select')); ?>
+        </select></div>
+    <div class="input-below"><?php _se('Enable this if you want to enable users to select the theme palette.'); ?></div>
+</div>
+<div class="input-label">
 <?php
 /** @var Fonts $fonts */
 $fonts = Handler::var('fonts');

@@ -10,7 +10,8 @@
  */
 
 use Chevereto\Config\Config;
-use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\Cache;
+use Chevereto\Legacy\Classes\Categories;
 use Chevereto\Legacy\Classes\Fonts;
 use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\L10n;
@@ -19,7 +20,7 @@ use Chevereto\Legacy\Classes\Page;
 use Chevereto\Legacy\Classes\Palettes;
 use Chevereto\Legacy\Classes\RequestLog;
 use Chevereto\Legacy\Classes\Settings;
-use Chevereto\Legacy\Classes\Tag;
+use Chevereto\Legacy\Classes\Tags;
 use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\badgePaid;
@@ -52,31 +53,19 @@ if (cheveretoVersionInstalled() === '') {
         loadTemplate: ! REPL, // @phpstan-ignore-line
         before: function ($handler) {
             headersNoCache();
-            if ($handler->request_array()[0] !== 'install') {
+            if ($handler->requestArray()[0] !== 'install') {
                 redirect('install', 302);
             }
         },
     );
 }
-$bannedIp = IpBan::getSingle();
-if ($bannedIp !== []) {
-    headersNoCache();
-    // TODO: Cache until ban expires
-    if (is_url($bannedIp['message'] ?? false)) {
-        redirect($bannedIp['message'], 301);
-    } else {
-        $exitMessage = $bannedIp['message'] ?? '';
-        $exitMessage = match ($exitMessage) {
-            '' => _s('You have been forbidden to use this website.'),
-            default => $bannedIp['message'],
-        };
-        exit($exitMessage);
-    }
-}
 $hook_before = function (Handler $handler) {
     header('Permissions-Policy: unload=()');
     header('Permissions-Policy: interest-cohort=()');
     header("Content-Security-Policy: frame-ancestors 'none'");
+    $dayCacheRoutes = [
+        'webmanifest',
+    ];
     $exitEarlyRoutes = [
         'webmanifest',
     ];
@@ -96,17 +85,46 @@ $hook_before = function (Handler $handler) {
         'settings',
         'redirect',
     ];
+    $doNotCheckBanRoutes = [
+        'webmanifest',
+    ];
+    if (! in_array($handler->requestArray()[0], $doNotCheckBanRoutes, true)) {
+        $bannedIp = IpBan::getSingle();
+        if ($bannedIp !== []) {
+            headersNoCache();
+            // TODO: Cache until ban expires
+            if (is_url($bannedIp['message'] ?? false)) {
+                redirect($bannedIp['message'], 301);
+            } else {
+                $exitMessage = $bannedIp['message'] ?? '';
+                $exitMessage = match ($exitMessage) {
+                    '' => _s('You have been forbidden to use this website.'),
+                    default => $bannedIp['message'],
+                };
+                exit($exitMessage);
+            }
+        }
+    }
     $cache_ttl = (int) max(0, getSetting('cache_ttl') ?? 0);
-    if (in_array($handler->request_array()[0], $doNotCacheRoutes, true)) {
+    if (in_array($handler->requestArray()[0], $dayCacheRoutes, true)) {
+        $cache_ttl = 86400; // 1 day
+    }
+    if (in_array($handler->requestArray()[0], $doNotCacheRoutes, true)) {
         headersNoCache();
     } elseif ($cache_ttl > 0) {
         headersResetCache();
         header("Cache-Control: private, max-age={$cache_ttl}");
     }
-    if (in_array($handler->request_array()[0], $exitEarlyRoutes, true)) {
+    if (in_array($handler->requestArray()[0], $exitEarlyRoutes, true)) {
         return;
     }
-    $failed_access_requests = RequestLog::getCounts(['login', 'signup'], 'fail');
+    $failTriggers = [
+        'account-password-forgot',
+        'account-two-factor',
+        'login',
+        'signup',
+    ];
+    $failed_access_requests = RequestLog::getCounts($failTriggers, 'fail');
     if (is_max_invalid_request($failed_access_requests['day'])) {
         set_status_header(403);
     } else {
@@ -119,9 +137,9 @@ $hook_before = function (Handler $handler) {
         if (Login::getUser()['status'] === 'banned') {
             set_status_header(403);
         }
-        if (sessionVar()->hasKey('challenge_two_factor')
+        if (sessionVar()->has('challenge_two_factor')
             && ! in_array($handler->getRoutePath(), ['account/two-factor', 'captcha-verify', 'logout'], true)
-            && $handler->request_array()[0] !== 'page'
+            && $handler->requestArray()[0] !== 'page'
         ) {
             headersNoCache();
             redirect('account/two-factor', 302);
@@ -138,9 +156,10 @@ $hook_before = function (Handler $handler) {
     );
     if (http_response_code() === 403) {
         headersNoCache();
+        echo '403 Forbidden';
         exit();
     }
-    if ($handler->request_array()[0] !== 'api'
+    if ($handler->requestArray()[0] !== 'api'
         && Settings::get('enable_uploads_url') && ! Login::isAdmin()) {
         Settings::setValue('enable_uploads_url', 0);
     }
@@ -212,10 +231,10 @@ $hook_before = function (Handler $handler) {
     $handler::setVar('fonts', $fonts);
     $fontId = intval(getSetting('theme_font') ?? 0);
     $handler::setVar('theme_font', $fontId);
-    if (in_array($handler->request_array()[0], ['login', 'signup', 'account'], true)) {
+    if (in_array($handler->requestArray()[0], ['login', 'signup', 'account'], true)) {
         $paletteId = 0;
     } else {
-        $paletteId = Login::isLoggedUser()
+        $paletteId = Login::isLoggedUser() & Settings::get('theme_palette_user_select')
             ? Login::getUser()['palette_id']
             : Settings::get('theme_palette');
     }
@@ -227,7 +246,7 @@ $hook_before = function (Handler $handler) {
     $handler::setVar('theme_palette', $paletteId);
     $handler::setVar('theme_palette_handle', $theme_palette_handle);
     if ($handler::cond('maintenance')
-        && $handler->request_array()[0] === 'dashboard') {
+        && $handler->requestArray()[0] === 'dashboard') {
         headersNoCache();
         redirect('login', 302);
     }
@@ -273,24 +292,24 @@ $hook_before = function (Handler $handler) {
         $userMapPaths[] = getSetting('user_profile_view') === 'files'
             ? 'albums'
             : 'files';
-        if ($handler->request_array()[0] === '/'
+        if ($handler->requestArray()[0] === '/'
             && getSetting('website_mode_personal_routing') === '/'
             && in_array(key($querystr), ['random'], true)
         ) {
             $handler->mapRoute('index');
-        } elseif ($handler->request_array()[0] === 'search'
-            && in_array($handler->request_array()[1] ?? [], ['images', 'albums', 'users'], true)
+        } elseif ($handler->requestArray()[0] === 'search'
+            && in_array($handler->requestArray()[1] ?? [], ['images', 'albums', 'users'], true)
         ) {
             $handler->mapRoute('search');
-        } elseif ($handler->request_array()[0] === getSetting('website_mode_personal_routing')
+        } elseif ($handler->requestArray()[0] === getSetting('website_mode_personal_routing')
             || (getSetting('website_mode_personal_routing') === '/'
-            && in_array($handler->request_array()[0], $userMapPaths, true))
+            && in_array($handler->requestArray()[0], $userMapPaths, true))
         ) {
             $handler->mapRoute('user', [
                 'id' => getSetting('website_mode_personal_uid'),
             ]);
         }
-        if ($handler->request_array()[0] === '/'
+        if ($handler->requestArray()[0] === '/'
             && ! in_array(key($querystr), ['random', 'lang'], true)
             && ! $handler::cond('mapped_route')
         ) {
@@ -315,17 +334,17 @@ $hook_before = function (Handler $handler) {
             }
         }
     } else {
-        if ($base !== 'index' and ! is_route_available($handler->request_array()[0])) {
+        if ($base !== 'index' and ! is_route_available($handler->requestArray()[0])) {
             $mapTo = getSetting('root_route');
             $handler->mapRoute($mapTo);
         }
     }
     $virtual_routes = ['image', 'album', 'user', 'video', 'audio'];
-    if (in_array($handler->request_array()[0], $virtual_routes, true)) {
-        $virtual_route = getSetting('route_' . $handler->request_array()[0]);
-        if ($handler->request_array()[0] !== $virtual_route) {
+    if (in_array($handler->requestArray()[0], $virtual_routes, true)) {
+        $virtual_route = getSetting('route_' . $handler->requestArray()[0]);
+        if ($handler->requestArray()[0] !== $virtual_route) {
             $virtualized_url = str_replace(
-                get_base_url($handler->request_array()[0]),
+                get_base_url($handler->requestArray()[0]),
                 get_base_url($virtual_route),
                 get_current_url()
             );
@@ -334,9 +353,9 @@ $hook_before = function (Handler $handler) {
             return;
         }
     }
-    if ($base !== 'index' && ! is_route_available($handler->request_array()[0])) {
+    if ($base !== 'index' && ! is_route_available($handler->requestArray()[0])) {
         foreach ($virtual_routes as $k) {
-            if ($handler->request_array()[0] === getSetting('route_' . $k)) {
+            if ($handler->requestArray()[0] === getSetting('route_' . $k)) {
                 $handler->mapRoute($k);
             }
         }
@@ -352,7 +371,7 @@ $hook_before = function (Handler $handler) {
         if (getSetting('enable_signups')) {
             $allowed_requests[] = 'signup';
         }
-        if (! in_array($handler->request_array()[0], $allowed_requests, true)) {
+        if (! in_array($handler->requestArray()[0], $allowed_requests, true)) {
             headersNoCache();
             redirect('login', 302);
         }
@@ -400,43 +419,13 @@ $hook_before = function (Handler $handler) {
     }
     $handler::setCond('moderate_uploads', $moderate_uploads);
     $categories = [];
-    $tags_top = [];
+    $tagsTop = [];
     if ($handler::cond('explore_enabled') || $base === 'dashboard') {
-        try {
-            $categories_db = DB::queryFetchAll(
-                'SELECT * FROM '
-                    . DB::getTable('categories')
-                    . ' ORDER BY category_name ASC;'
-            );
-            foreach ($categories_db as $k => $v) {
-                $key = $v['category_id'];
-                $categories[$key] = $v;
-                $categories[$key]['category_url'] = get_base_url('category/' . $v['category_url_key']);
-                $categories[$key] = DB::formatRow($categories[$key]);
-            }
-        } catch (Throwable) {
-        }
-
-        try {
-            $tagsTable = DB::getTable('tags');
-            $tags_db = DB::queryFetchAll(
-                <<<MYSQL
-                SELECT t.tag_name name, t.tag_id id, t.tag_files files, t.tag_views views
-                FROM `{$tagsTable}` t
-                ORDER BY `tag_files` DESC, `tag_name` ASC
-                LIMIT 30;
-
-                MYSQL
-            );
-            foreach ($tags_db as $k => $v) {
-                $tag = array_merge($v, Tag::row($v['name']));
-                $tags_top[] = $tag;
-            }
-        } catch (Throwable) {
-        }
+        $categories = Categories::get();
+        $tagsTop = Tags::top();
     }
     $handler::setVar('categories', $categories);
-    $handler::setVar('tags_top', $tags_top);
+    $handler::setVar('tags_top', $tagsTop);
     $explore_discovery = [
         'recent' => [
             'label' => _s('Recent'),
@@ -497,49 +486,66 @@ $hook_before = function (Handler $handler) {
     $handler::setVar('explore_discovery', $explore_discovery);
     $handler::setVar('explore_content', $explore_content);
     $versionInstalled = cheveretoVersionInstalled();
-    $pages_visible = [];
+    $pages_link_visible = [];
     if (version_compare($versionInstalled, '3.6.7', '>=')) {
-        $pages_visible_db = Page::getAll(
-            args: [
-                'is_active' => '1',
-                'is_link_visible' => '1',
-            ],
-            sort: [
-                'field' => 'sort_display',
-                'order' => 'ASC',
-            ]
-        );
-        $pos_page_tos = array_search('tos', array_column($pages_visible_db, 'internal'));
-        $pos_page_privacy = array_search('privacy', array_column($pages_visible_db, 'internal'));
-        $page_tos = $pos_page_tos === false
-            ? null
-            : $pages_visible_db[$pos_page_tos];
-        $page_privacy = $pos_page_privacy === false
-            ? null
-            : $pages_visible_db[$pos_page_privacy];
-        $handler::setVar('page_tos', $page_tos);
-        $handler::setVar('page_privacy', $page_privacy);
+        $cachedPagesVisibleRows = Cache::instance()->get('pages_visible');
+        if ($cachedPagesVisibleRows === false) {
+            $pagesVisibleRows = Page::getAll(
+                args: [
+                    'is_active' => '1',
+                    'is_link_visible' => '1',
+                ],
+                sort: [
+                    'field' => 'sort_display',
+                    'order' => 'ASC',
+                ]
+            );
+            $posPageTos = array_search('tos', array_column($pagesVisibleRows, 'internal'));
+            $posPagePrivacy = array_search('privacy', array_column($pagesVisibleRows, 'internal'));
+            Cache::instance()->set(
+                'pages_visible',
+                [
+                    'rows' => $pagesVisibleRows,
+                    'pos_page_tos' => $posPageTos,
+                    'pos_page_privacy' => $posPagePrivacy,
+                ],
+                3600
+            );
+        } else {
+            $pagesVisibleRows = $cachedPagesVisibleRows['rows'] ?? [];
+            $posPageTos = $cachedPagesVisibleRows['pos_page_tos'] ?? false;
+            $posPagePrivacy = $cachedPagesVisibleRows['pos_page_privacy'] ?? false;
+        }
+        $pageTos = $posPageTos === false ? null : $pagesVisibleRows[$posPageTos];
+        $pagePrivacy = $posPagePrivacy === false ? null : $pagesVisibleRows[$posPagePrivacy];
+        $handler::setVar('page_tos', $pageTos);
+        $handler::setVar('page_privacy', $pagePrivacy);
     }
     if ((bool) env()['CHEVERETO_ENABLE_PAGES']) {
-        foreach ($pages_visible_db ?? [] as $k => $v) {
+        foreach ($pagesVisibleRows ?? [] as $k => $v) {
             if (! ($v['is_active'] ?? false) && ! ($v['is_link_visible'] ?? false)) {
                 continue;
             }
-            $pages_visible[$v['id']] = $v;
+            $pages_link_visible[$v['id']] = $v;
         }
     }
-    $api_page = [
-        'type' => 'link',
-        'link_url' => get_base_url('api-v1'),
-        'icon' => 'fas fa-project-diagram',
-        'title' => 'API',
-        'is_active' => 1,
-        'is_link_visible' => 1,
-        'attr_target' => '_self',
-        'sort_display' => -2,
-    ];
-    Page::fill($api_page);
-    $pages_visible[] = $api_page;
+    $apiEnabled = ((bool) env()['CHEVERETO_ENABLE_API_USER'] || (bool) env()['CHEVERETO_ENABLE_API_GUEST'])
+        && (getSetting('enable_api_user') || getSetting('enable_api_guest'));
+    $handler::setCond('api_enabled', $apiEnabled);
+    if ($apiEnabled) {
+        $api_page = [
+            'type' => 'link',
+            'link_url' => get_base_url('api-v1'),
+            'icon' => 'fas fa-project-diagram',
+            'title' => 'API',
+            'is_active' => 1,
+            'is_link_visible' => 1,
+            'attr_target' => '_self',
+            'sort_display' => -2,
+        ];
+        Page::fill($api_page);
+        $pages_link_visible[] = $api_page;
+    }
     if (getSetting('enable_plugin_route')) {
         $plugin_page = [
             'type' => 'link',
@@ -552,12 +558,12 @@ $hook_before = function (Handler $handler) {
             'sort_display' => -1,
         ];
         Page::fill($plugin_page);
-        $pages_visible[] = $plugin_page;
+        $pages_link_visible[] = $plugin_page;
     }
-    uasort($pages_visible, function ($a, $b) {
+    uasort($pages_link_visible, function ($a, $b) {
         return $a['sort_display'] - $b['sort_display'];
     });
-    $handler::setVar('pages_link_visible', $pages_visible);
+    $handler::setVar('pages_link_visible', $pages_link_visible);
     $upload_enabled = Login::isAdmin() ?: getSetting('enable_uploads');
     $upload_allowed = $upload_enabled;
     if (! Login::getUser()) {
@@ -576,7 +582,7 @@ $hook_before = function (Handler $handler) {
         Settings::setValue('upload_max_filesize_mb', getSetting('upload_max_filesize_mb_guest'));
     }
     if ($upload_allowed
-        && in_array($handler->request_array()[0], ['login', 'signup', 'account'], true)
+        && in_array($handler->requestArray()[0], ['login', 'signup', 'account'], true)
     ) {
         $upload_allowed = false;
     }
@@ -585,7 +591,7 @@ $hook_before = function (Handler $handler) {
     if ($handler::cond('maintenance') || $handler::cond('show_consent_screen')) {
         $handler::setCond('private_gate', true);
         $allowed_requests = ['login', 'account', 'connect', 'captcha-verify', 'oembed'];
-        if (! in_array($handler->request_array()[0], $allowed_requests, true)) {
+        if (! in_array($handler->requestArray()[0], $allowed_requests, true)) {
             $handler->preventRoute($handler::cond('show_consent_screen') ? 'consent-screen' : 'maintenance');
         }
     }
@@ -602,7 +608,7 @@ $hook_before = function (Handler $handler) {
         'webmanifest',
         'tag-autocomplete',
     ];
-    if (! in_array($handler->request_array()[0], $excludeLastUrl, true)) {
+    if (! in_array($handler->requestArray()[0], $excludeLastUrl, true)) {
         sessionVar()->put('last_url', get_current_url());
     }
     $detect = new Mobile_Detect();
@@ -627,12 +633,12 @@ $hook_before = function (Handler $handler) {
 };
 $hook_after = function (Handler $handler) {
     if (array_key_exists('deleted', get())
-        && in_array($handler->template(), ['user', 'album'], true)
+            && in_array($handler->template(), ['user', 'album'], true)
     ) {
         set_status_header(303);
     }
     if ($handler->template() === '404') {
-        if (sessionVar()->hasKey('last_url')) {
+        if (sessionVar()->has('last_url')) {
             sessionVar()->remove('last_url');
         }
         $handler::setVar('doctitle', _s("That page doesn't exist") . ' (404) - ' . getSetting('website_name'));

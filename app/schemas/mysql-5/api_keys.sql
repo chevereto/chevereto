@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS `%table_prefix%api_keys`;
 CREATE TABLE `%table_prefix%api_keys` (
-  `api_key_id` bigint(32) NOT NULL AUTO_INCREMENT,
-  `api_key_user_id` bigint(32) DEFAULT NULL,
-  `api_key_name` varchar(100) DEFAULT NULL,
-  `api_key_date_gmt` datetime NOT NULL,
-  `api_key_hash` text NOT NULL,
+  `api_key_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `api_key_user_id` INT UNSIGNED DEFAULT NULL,
+  `api_key_name` VARCHAR(100) DEFAULT NULL,
+  `api_key_date_gmt` DATETIME NOT NULL,
+  `api_key_hash` TEXT NOT NULL,
   PRIMARY KEY (`api_key_id`),
   KEY `api_key_user_id` (`api_key_user_id`),
   KEY `api_key_name` (`api_key_name`),

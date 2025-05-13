@@ -86,7 +86,6 @@ final class Tag
         $array = explode(',', $tags);
         $array = array_map(function (string $value) {
             return trim($value);
-            // return strip_tags_content($value);
         }, $array);
         $array = array_unique($array);
         $array = array_filter($array);
@@ -139,16 +138,12 @@ final class Tag
             ]);
         }
         $select = implode(',', $select);
-        $query = <<<MySQL
-        SELECT %select
+        $query = <<<SQL
+        SELECT {$select}
         FROM `{$tagsTable}`
         WHERE `tag_name` IN ({$inSQL})
         ORDER BY `tag_name` COLLATE utf8mb4_general_ci ASC;
-
-        MySQL;
-        $query = strtr($query, [
-            '%select' => $select,
-        ]);
+        SQL;
         $db->query($query);
         foreach ($binds as $pos => $v) {
             $db->bind($pos, $v);
@@ -162,14 +157,14 @@ final class Tag
         $limit = max(1, $limit);
         $db = DB::getInstance();
         $tagsTable = DB::getTable('tags');
-        $query = <<<MySQL
+        $query = <<<SQL
         SELECT `tag_name` name
         FROM `{$tagsTable}`
         WHERE `tag_name` LIKE :try COLLATE utf8mb4_general_ci
         ORDER BY `tag_name` COLLATE utf8mb4_general_ci ASC
         LIMIT {$limit};
 
-        MySQL;
+        SQL;
         $db->query($query);
         $db->bind(':try', $try . '%');
 
@@ -181,13 +176,31 @@ final class Tag
         if ($tag === []) {
             return;
         }
+        $maxTags = (int) env()['CHEVERETO_MAX_TAGS'];
+        if ($maxTags > 0) {
+            $currentTotalTags = Stat::getTotals()['tags'] ?? 0;
+            if ($currentTotalTags >= $maxTags) {
+                return;
+            }
+            $count = count($tag);
+            $newTotalTags = $currentTotalTags + $count;
+            if ($newTotalTags > $maxTags) {
+                $excessTags = $newTotalTags - $maxTags;
+                if ($excessTags > 0) {
+                    $tag = array_slice($tag, 0, $count - $excessTags);
+                }
+            }
+        }
+        if ($tag === []) {
+            return;
+        }
         $tagsTable = DB::getTable('tags');
         $statsTable = DB::getTable('stats');
         $sql = '';
         $binds = [
             ':tag_user_id' => $user_id,
         ];
-        $template = <<<MySQL
+        $template = <<<SQL
         SET @TRY_TAG = :tag_name_%;
         SET @MISSING = IF(
             EXISTS(
@@ -210,7 +223,7 @@ final class Tag
         WHERE @MISSING IS NOT NULL
         ON DUPLICATE KEY UPDATE stat_tags = stat_tags + 1;
 
-        MySQL;
+        SQL;
         foreach ($tag as $pos => $name) {
             static::assert($name);
             $sql .= str_replace('%', $pos, $template);
@@ -294,12 +307,12 @@ final class Tag
         $tagsTable = DB::getTable('tags');
         $statsTable = DB::getTable('stats');
         $db = DB::getInstance();
-        $sql = <<<MySQL
+        $sql = <<<SQL
         SET @DELETE_COUNT = 0;
 
-        MySQL;
+        SQL;
         foreach ($id as $tagId) {
-            $sql .= <<<MySQL
+            $sql .= <<<SQL
             SET @DATE = (SELECT DATE(`tag_date_gmt`) FROM `{$tagsTable}` WHERE `tag_id` = {$tagId});
 
             DELETE FROM `{$tagsTable}`
@@ -315,16 +328,21 @@ final class Tag
             AND stat_date_gmt = @DATE
             AND @DATE IS NOT NULL;
 
-            MySQL;
+            SQL;
         }
-        $sql .= <<<MySQL
+        $sql .= <<<SQL
         UPDATE `{$statsTable}` SET stat_tags = GREATEST(GREATEST(0, stat_tags) - @DELETE_COUNT, 0)
         WHERE stat_type = "total";
 
-        MySQL;
+        SQL;
         $db->query($sql);
 
-        return $db->exec();
+        $return = $db->exec();
+        if ($return) {
+            Listing::deleteTypeIdCache('t', ...$id);
+        }
+
+        return $return;
     }
 
     public static function formatArray(array $object): array

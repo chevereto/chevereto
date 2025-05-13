@@ -4333,7 +4333,6 @@ html:not(.--idle) .list-item:hover .hover-display {
 
 .user-image img, .user-image {
     display: block;
-    border-radius: 3px;
 }
 
 .default-user-image {
@@ -4518,7 +4517,15 @@ a.top-user-avatar {
     width: 1em;
     height: 1em;
     float: left;
-    border-radius: 100%;
+}
+
+.top-user .user-image,
+.user-image img,
+.user-image,
+.header-content .user-image img,
+.header .user-image img {
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .top-user:not(.no-background) .user-image {

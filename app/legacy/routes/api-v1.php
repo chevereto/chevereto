@@ -12,7 +12,7 @@
 use Chevereto\Legacy\G\Handler;
 
 return function (Handler $handler) {
-    if ($handler->isRequestLevel(2)) {
+    if (! $handler::cond('api_enabled') || $handler->isRequestLevel(2)) {
         $handler->issueError(404);
 
         return;

@@ -3,6 +3,7 @@
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_select_options_html;
+use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -11,7 +12,7 @@ if (!defined('ACCESS') || !ACCESS) {
 echo read_the_docs_settings('listings', _s('Listings')); ?>
 <div class="input-label">
     <label for="listing_items_per_page"><?php _se('List items per page'); ?></label>
-    <div class="c2"><input type="number" min="1" name="listing_items_per_page" id="listing_items_per_page" class="text-input" value="<?php echo Settings::get('listing_items_per_page'); ?>" placeholder="<?php echo Settings::getDefault('listing_items_per_page'); ?>" required></div>
+    <div class="c2"><input type="number" min="1" max="<?php echo env()['CHEVERETO_MAX_LISTING_ITEMS_PER_PAGE']; ?>" name="listing_items_per_page" id="listing_items_per_page" class="text-input" value="<?php echo Settings::get('listing_items_per_page'); ?>" placeholder="<?php echo Settings::getDefault('listing_items_per_page'); ?>" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['listing_items_per_page'] ?? ''; ?></div>
     <div class="input-below"><?php _se('How many items should be displayed per page listing.'); ?></div>
 </div>

@@ -396,7 +396,7 @@ return function (Handler $handler) {
                 break;
 
             case 'security':
-                if (! TwoFactor::hasFor($user['id']) && sessionVar()->hasKey('two_factor_secret')) {
+                if (! TwoFactor::hasFor($user['id']) && sessionVar()->has('two_factor_secret')) {
                     $twoFactor = new TwoFactor();
                     $twoFactor = $twoFactor->withSecret(session()['two_factor_secret']);
                     sessionVar()->remove('two_factor_secret');

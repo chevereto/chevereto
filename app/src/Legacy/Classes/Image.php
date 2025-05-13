@@ -45,7 +45,7 @@ use function Chevereto\Legacy\G\format_bytes;
 use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_ffmpeg_error;
-use function Chevereto\Legacy\G\get_image_fileinfo as GGet_image_fileinfo;
+use function Chevereto\Legacy\G\get_image_fileinfo;
 use function Chevereto\Legacy\G\get_mimetype;
 use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\is_animated_image;
@@ -58,6 +58,7 @@ use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Legacy\G\url_to_relative;
 use function Chevereto\Legacy\get_fileinfo;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\hashFile;
 use function Chevereto\Legacy\time_elapsed_string;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\session;
@@ -66,6 +67,144 @@ use function Safe\password_hash;
 
 class Image
 {
+    public const COLUMNS = [
+        'images' => [
+            'image_id',
+            'image_name',
+            'image_extension',
+            'image_size',
+            'image_width',
+            'image_height',
+            'image_date',
+            'image_date_gmt',
+            'image_title',
+            'image_description',
+            'image_nsfw',
+            'image_user_id',
+            'image_album_id',
+            'image_uploader_ip',
+            'image_storage_mode',
+            'image_path',
+            'image_storage_id',
+            'image_checksum',
+            'image_source_checksum',
+            'image_original_filename',
+            'image_original_exifdata',
+            'image_views',
+            'image_category_id',
+            'image_chain',
+            'image_thumb_size',
+            'image_medium_size',
+            'image_frame_size',
+            'image_expiration_date_gmt',
+            'image_likes',
+            'image_is_animated',
+            'image_is_approved',
+            'image_is_360',
+            'image_duration',
+            'image_type',
+        ],
+        'users' => [
+            'user_id',
+            'user_name',
+            'user_username',
+            'user_date',
+            'user_date_gmt',
+            'user_email',
+            'user_avatar_filename',
+            'user_facebook_username',
+            'user_twitter_username',
+            'user_website',
+            'user_background_filename',
+            'user_bio',
+            'user_timezone',
+            'user_language',
+            'user_status',
+            'user_is_admin',
+            'user_is_manager',
+            'user_is_private',
+            'user_palette_id',
+            'user_newsletter_subscribe',
+            'user_show_nsfw_listings',
+            'user_image_count',
+            'user_album_count',
+            'user_image_keep_exif',
+            'user_file_meta_tag_camera_model',
+            'user_image_expiration',
+            'user_registration_ip',
+            'user_likes',
+            'user_liked',
+            'user_following',
+            'user_followers',
+            'user_content_views',
+            // 'user_notifications_unread',
+        ],
+        'albums' => [
+            'album_id',
+            'album_name',
+            'album_user_id',
+            'album_date',
+            'album_date_gmt',
+            'album_creation_ip',
+            'album_privacy',
+            'album_privacy_extra',
+            'album_password',
+            'album_image_count',
+            'album_description',
+            'album_likes',
+            'album_views',
+            'album_cover_id',
+            'album_parent_id',
+            'album_cta_enable',
+            'album_cta',
+        ],
+        'tags' => [
+            'tag_id',
+            'tag_name',
+            'tag_description',
+            'tag_user_id',
+            'tag_date_gmt',
+            'tag_files',
+            'tag_views',
+        ],
+        'likes' => [
+            'like_id',
+            'like_date',
+            'like_date_gmt',
+            'like_user_id',
+            'like_content_type',
+            'like_content_id',
+            'like_content_user_id',
+            'like_ip',
+        ],
+        'storages' => [
+            'storage_id',
+            // 'storage_api_id',
+            'storage_name',
+            // 'storage_service',
+            'storage_url',
+            // 'storage_bucket',
+            // 'storage_region',
+            // 'storage_server',
+            // 'storage_account_id',
+            // 'storage_account_name',
+            // 'storage_key',
+            // 'storage_secret',
+            // 'storage_is_https',
+            'storage_is_active',
+            'storage_capacity',
+            // 'storage_space_used',
+            'storage_type_chain',
+            // 'storage_use_path_style_endpoint',
+            // 'storage_deleted_at',
+        ],
+        'storage_apis' => [
+            'storage_api_id',
+            'storage_api_name',
+            'storage_api_type',
+        ],
+    ];
+
     public static array $table_chv_image = [
         'name',
         'extension',
@@ -80,8 +219,8 @@ class Image
         'uploader_ip',
         'storage_mode',
         'storage_id',
-        'md5',
-        'source_md5',
+        'checksum',
+        'source_checksum',
         'original_filename',
         'original_exifdata',
         'category_id',
@@ -148,9 +287,6 @@ class Image
         array $requester = []
     ): array {
         $tables = DB::getTables();
-        $query = 'SELECT * FROM '
-            . $tables['images']
-            . "\n";
         $joins = [
             'LEFT JOIN '
                 . $tables['storages']
@@ -181,6 +317,17 @@ class Image
                 . $tables['albums']
                 . '.album_id',
         ];
+        $storageApiColumns = self::COLUMNS['storage_apis'];
+        $find = array_search('storage_api_id', $storageApiColumns);
+        unset($storageApiColumns[$find]);
+        $storageApiColumns[] = DB::getTable('storages') . '.' . 'storage_api_id';
+        $columns = array_merge(
+            self::COLUMNS['images'],
+            self::COLUMNS['storages'],
+            $storageApiColumns,
+            self::COLUMNS['users'],
+            self::COLUMNS['albums']
+        );
         if ($requester !== []) {
             if (version_compare(cheveretoVersionInstalled(), '3.7.0', '>=')) {
                 $joins[] = 'LEFT JOIN '
@@ -195,8 +342,14 @@ class Image
                     . $tables['likes']
                     . '.like_user_id = '
                     . $requester['id'];
+                $columns = array_merge($columns, self::COLUMNS['likes']);
             }
         }
+        $columnsString = implode(', ', $columns);
+        $query = "SELECT {$columnsString} FROM "
+            . $tables['images']
+            . "\n";
+
         $query .= implode("\n", $joins) . "\n";
         $query .= 'WHERE image_id=:image_id;' . "\n";
         if ($sumView) {
@@ -248,7 +401,7 @@ class Image
         $image_db['image_tags'] = $image_tags;
         $image_db['image_tags_string'] = $image_tags_string;
         $return = $image_db;
-        $return = $pretty ? self::formatArray($return) : $return;
+        $return = $pretty ? self::formatArray($return, fillAlbumCover: false) : $return;
         if (! isset($return['file_resource'])) {
             $return['file_resource'] = self::getSrcTargetSingle($image_db);
         }
@@ -262,7 +415,15 @@ class Image
             throw new Exception('Null $ids provided in Image::get_multiple', 600);
         }
         $tables = DB::getTables();
-        $query = 'SELECT * FROM ' . $tables['images'] . "\n";
+        $columns = array_merge(
+            self::COLUMNS['images'],
+            self::COLUMNS['users'],
+            self::COLUMNS['albums']
+        );
+        $columnsString = implode(', ', $columns);
+        $query = "SELECT {$columnsString} FROM "
+            . $tables['images']
+            . "\n";
         $joins = [
             'LEFT JOIN ' . $tables['users'] . ' ON ' . $tables['images'] . '.image_user_id = ' . $tables['users'] . '.user_id',
             'LEFT JOIN ' . $tables['albums'] . ' ON ' . $tables['images'] . '.image_album_id = ' . $tables['albums'] . '.album_id',
@@ -355,7 +516,7 @@ class Image
         }
         $images = [];
         foreach ($list as $v) {
-            $format = self::formatArray($v);
+            $format = self::formatArray($v, fillAlbumCover: false);
             $images[$format['id']] = $format;
         }
         if ($prevListing->output !== [] && $prevListing->count > 1) {
@@ -496,24 +657,34 @@ class Image
         return $return;
     }
 
-    public static function watermarkFromDb(): void
+    public static function watermarkTempFile(): string
     {
-        $file = PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image');
+        return
+            sys_get_temp_dir()
+            . '/chv'
+            . env()['CHEVERETO_ID']
+            . '_image_'
+            . getSetting('watermark_image');
+    }
+
+    public static function watermarkFromDb(): string
+    {
         $assetsDb = DB::get('assets', [
             'key' => 'watermark_image',
         ], 'AND', [], 1);
         if ($assetsDb === false) {
-            return;
+            return PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image');
         }
+        $file = static::watermarkTempFile();
         if (file_exists($file)
-            && md5_file($file) !== $assetsDb['asset_md5']
+            && hashFile($file) !== $assetsDb['asset_checksum']
             && ! starts_with('default/', getSetting('watermark_image'))
         ) {
             unlinkIfExists($file);
         }
         if (! file_exists($file)) {
             $fh = fopen($file, 'w');
-            $st = ! $fh || fwrite($fh, $assetsDb['asset_blob']) === false ? false : true;
+            $st = $fh && fwrite($fh, $assetsDb['asset_blob']) !== false;
             fclose($fh);
             if (! $st) {
                 throw new LogicException(
@@ -522,6 +693,11 @@ class Image
                 );
             }
         }
+        if (! is_readable($file)) {
+            throw new Exception("Can't read watermark file at " . $file, 600);
+        }
+
+        return $file;
     }
 
     public static function watermark(string $image_path, array $options = []): bool
@@ -529,12 +705,8 @@ class Image
         $options = array_merge([
             'ratio' => getSetting('watermark_percentage') / 100,
             'position' => explode(' ', getSetting('watermark_position')),
-            'file' => PATH_PUBLIC_CONTENT_IMAGES_SYSTEM . getSetting('watermark_image'),
+            'file' => self::watermarkFromDb(),
         ], $options);
-        self::watermarkFromDb();
-        if (! is_readable($options['file'])) {
-            throw new Exception("Can't read watermark file at " . $options['file'], 600);
-        }
         $image = ImageManagerStatic::make($image_path);
         $options['ratio'] = min(1, (is_numeric($options['ratio']) ? max(0.01, $options['ratio']) : 0.01));
         if (! in_array($options['position'][0], ['left', 'center', 'right'], true)) {
@@ -604,7 +776,8 @@ class Image
         string|null $filename = null,
         array $options = [],
         int|null $storage_id = null,
-        bool $guestSessionHandle = true
+        bool $guestSessionHandle = true,
+        string $checksum = null
     ): array {
         if ((! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE'])) {
             if ($storage_id === null) {
@@ -631,6 +804,9 @@ class Image
         if ($guestSessionHandle === false) {
             $upload->detectFlood = false;
         }
+        if ($checksum != null) {
+            $upload->setChecksum($checksum);
+        }
         $upload->exec();
 
         return [
@@ -640,30 +816,19 @@ class Image
         ];
     }
 
-    // Mostly for people uploading two times the same image to test or just bug you
-    // $mixed => $_FILES or md5 string
-    public static function isDuplicatedUpload(array|string $source, string $timePeriod = 'P1D'): bool
+    public static function isDuplicatedChunkUpload(string $checksum, string $timePeriod = 'P1D'): bool
     {
-        if (is_array($source) && isset($source['tmp_name'])) {
-            $filename = $source['tmp_name'];
-            if (stream_resolve_include_path($filename) === false) {
-                throw new Exception("Concurrency: {$filename} is gone", 666);
-            }
-            $md5_file = md5_file($filename);
-        } else {
-            $filename = $source;
-            $md5_file = $filename;
-        }
-        if ($md5_file === false) {
-            throw new Exception('Unable to process md5_file', 600);
-        }
         $db = DB::getInstance();
+        $tableUploads = DB::getTable('uploads');
         $db->query(
-            'SELECT * FROM '
-            . DB::getTable('images') .
-            ' WHERE (image_md5=:md5 OR image_source_md5=:md5) AND image_uploader_ip=:ip AND image_date_gmt > :date_gmt'
+            <<<MySQL
+            SELECT 1 FROM `{$tableUploads}`
+            WHERE upload_checksum=:checksum
+                AND upload_uploader_ip=:ip
+                AND upload_date_gmt > :date_gmt;
+            MySQL
         );
-        $db->bind(':md5', $md5_file);
+        $db->bind(':checksum', $checksum);
         $db->bind(':ip', get_client_ip());
         $db->bind(':date_gmt', datetime_sub(datetimegmt(), $timePeriod));
         $db->exec();
@@ -671,6 +836,82 @@ class Image
         return (bool) $db->fetchColumn();
     }
 
+    // Mostly for people uploading two times the same image to test or just bug you
+    // $mixed => $_FILES or checksum string
+    public static function isDuplicatedUpload(array|string $source, string $timePeriod = 'P1D'): bool
+    {
+        if (is_string($source)) {
+            $checksum = $source;
+        } else {
+            if ($source['tmp_name'] ?? false) {
+                $filename = $source['tmp_name'];
+                if (stream_resolve_include_path($filename) === false) {
+                    throw new Exception("Concurrency: {$filename} is gone", 666);
+                }
+            }
+            $checksum = $source['checksum']
+                ?? hashFile($filename);
+        }
+        if ($checksum === false) {
+            throw new Exception('Unable to process checksum', 600);
+        }
+        $db = DB::getInstance();
+        $tableImages = DB::getTable('images');
+        $db->query(
+            <<<MySQL
+            SELECT 1 FROM `{$tableImages}`
+            WHERE (image_checksum=:checksum OR image_source_checksum=:checksum)
+                AND image_uploader_ip=:ip
+                AND image_date_gmt > :date_gmt;
+            MySQL
+        );
+        $db->bind(':checksum', $checksum);
+        $db->bind(':ip', get_client_ip());
+        $db->bind(':date_gmt', datetime_sub(datetimegmt(), $timePeriod));
+        $db->exec();
+
+        return (bool) $db->fetchColumn();
+    }
+
+    public static function validateParamsUploadToWebsite(array &$params = [], array $user = []): void
+    {
+        // Validate user_id existence
+        // Validate category_id existence
+        // Validate album_id ownership
+        // params:
+        // {"type":"chunked","privacy":"","timestamp":"1744383904543","expiration":"","category_id":"","nsfw":"0","album_id":"","tags":"","mimetype":"image\/jpeg","source":"Sony HV-30 DSC00271.JPG","size":"23122540"}
+        $params['use_file_date'] = $params['use_file_date'] ?? false;
+        nullify_string($params['album_id']);
+    }
+
+    /**
+     * Uploads an image to the Chevereto website.
+     *
+     * Handles the entire image upload process including storage selection,
+     * file validation, image processing, watermarking, and database insertion.
+     *
+     * @param array|string $source Either an array with file data or a URL string to fetch
+     * @param array $user User array data, empty for guest uploads
+     * @param array $params Upload parameters that may include:
+     *        - album_id: ID of target album
+     *        - title: Image title
+     *        - description: Image description
+     *        - category_id: Image category ID
+     *        - nsfw: NSFW flag (0 or 1)
+     *        - expiration: Expiration time (seconds)
+     *        - expiration_date_gmt: Direct expiration date in UTC format
+     *        - width: Target width for resizing
+     *        - height: Target height for resizing
+     *        - use_file_date: Use file's EXIF date instead of current date
+     *        - privacy: public, password, private, private_but_link
+     *        - mimetype: Force specific mimetype for the upload
+     *        - tags: Comma-separated tags
+     *        - timestamp: Upload timestamp
+     * @param bool $guestSessionHandle Whether to handle guest session tracking
+     * @param string|null $ip Override for uploader IP address
+     * @return array Array containing [inserted_id, delete_password]
+     * @throws Exception For various error conditions including duplicates, storage issues, moderation rejection
+     */
     public static function uploadToWebsite(
         array|string $source,
         array $user = [],
@@ -678,16 +919,15 @@ class Image
         bool $guestSessionHandle = true,
         string|null $ip = null
     ): array {
-        $params['use_file_date'] = $params['use_file_date'] ?? false;
-        nullify_string($params['album_id']);
+        self::validateParamsUploadToWebsite($params);
         $dateFolder = '';
 
         try {
             $storage_mode = getSetting('upload_storage_mode');
-            $upload_path = '';
+            $uploadPath = '';
             switch ($storage_mode) {
                 case 'direct':
-                    $upload_path = CHV_PATH_IMAGES;
+                    $uploadPath = CHV_PATH_IMAGES;
 
                     break;
                 case 'datefolder':
@@ -709,26 +949,34 @@ class Image
                         'date_gmt' => $stockDateGmt,
                     ];
                     $dateFolder = date('Y/m/d/', strtotime($datefolder_stock['date']));
-                    $upload_path = CHV_PATH_IMAGES . $dateFolder;
+                    $uploadPath = CHV_PATH_IMAGES . $dateFolder;
 
                     break;
             }
             if (is_string($source)) {
-                if (! getSetting('enable_uploads_url')) {
+                if (preg_match('/^CHUNKED_([^_]+)_([a-zA-Z0-9]{64})_([a-zA-Z0-9]{64})$/', $source, $matches)) {
+                    [$tempName, $uploadParams] = Uploads::join(
+                        uploadPath: $uploadPath,
+                        uploadId: decodeID($matches[1]),
+                        token: $matches[2],
+                        hash: $matches[3],
+                    );
+                    $source = $uploadParams['source'];
+                } elseif (! getSetting('enable_uploads_url')) {
                     throw new Exception(
                         message('URL uploading is disabled'),
                         403
                     );
+                    $tempName = Upload::getTempNam($uploadPath);
+                    fetch_url($source, $tempName);
                 }
-                $temp_name = Upload::getTempNam($upload_path);
-                fetch_url($source, $temp_name);
-                $mimetype = get_mimetype($temp_name);
+                $mimetype = get_mimetype($tempName);
                 $source = [
                     'name' => basename($source),
                     'type' => $mimetype,
-                    'tmp_name' => $temp_name,
+                    'tmp_name' => $tempName,
                     'error' => 'UPLOAD_ERR_OK',
-                    'size' => filesize($temp_name),
+                    'size' => filesize($tempName),
                 ];
             }
             if ($user !== []
@@ -738,6 +986,7 @@ class Image
                 Settings::setValue('upload_max_filesize_mb', getSetting('upload_max_filesize_mb_bak'));
             }
             $do_dupe_check = ! getSetting('enable_duplicate_uploads') && ! ($user['is_admin'] ?? false);
+            $source['checksum'] = hashFile($source['tmp_name']);
             if ($do_dupe_check && self::isDuplicatedUpload($source)) {
                 throw new Exception(_s('Duplicated upload'), 101);
             }
@@ -749,6 +998,7 @@ class Image
                 // 'document' => 8,
                 // 'other' => 16,
             ];
+            // @deprecate $params['mimetype']
             $mimetype = strtok($params['mimetype'] ?? 'image', '/');
             $type_chain = $upload_types[$mimetype] ?? 1;
             $get_active_storages = Storage::get([
@@ -790,7 +1040,6 @@ class Image
             if ($storage_id === null && (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE'])) {
                 throw new LogicException('No storage available', 900);
             }
-
             $fileNaming = getSetting('upload_filenaming');
             if ($fileNaming !== 'id'
                 && in_array($params['privacy'] ?? '', ['password', 'private', 'private_but_link'], true)
@@ -815,7 +1064,7 @@ class Image
                         'date_gmt' => '0000-01-01 00:00:00',
                         'nsfw' => 0,
                         'uploader_ip' => '',
-                        'md5' => '',
+                        'checksum' => '',
                         'original_filename' => '',
                         'chain' => 0,
                         'thumb_size' => 0,
@@ -836,18 +1085,18 @@ class Image
             $upload_options['allowed_formats'] = self::getEnabledImageExtensions();
             $image_upload = self::upload(
                 $source,
-                $upload_path,
+                $uploadPath,
                 ($fileNaming === 'id' && isset($target_id))
                     ? encodeID((int) $target_id)
                     : null,
                 $upload_options,
                 $storage_id,
                 $guestSessionHandle
-            );
+            ); // slow: 6s
             $chain_mask = [0, 0, 1, 0, 1]; // frame, original, image, medium, thumb
-            if ($do_dupe_check && self::isDuplicatedUpload($image_upload['uploaded']['fileinfo']['md5'])) {
-                throw new Exception(_s('Duplicated upload'), 102);
-            }
+            // if ($do_dupe_check && self::isDuplicatedUpload($image_upload['uploaded']['fileinfo']['checksum'])) {
+            //     throw new Exception(_s('Duplicated upload'), 102);
+            // }
             $image_ratio = $image_upload['uploaded']['fileinfo']['ratio'];
             $must_resize = false;
             $image_max_size_cfg = [
@@ -907,8 +1156,8 @@ class Image
                 $chain_mask[0] = 1;
             }
             if ($must_resize) {
-                $source_md5 = $image_upload['uploaded']['fileinfo']['md5'];
-                if ($do_dupe_check && self::isDuplicatedUpload($source_md5)) {
+                $sourceChecksum = $image_upload['uploaded']['fileinfo']['checksum'];
+                if ($do_dupe_check && self::isDuplicatedUpload($sourceChecksum)) {
                     throw new Exception(_s('Duplicated upload'), 103);
                 }
                 $image_ratio = $image_upload['uploaded']['fileinfo']['ratio'];
@@ -950,7 +1199,7 @@ class Image
                 filename: $image_upload['uploaded']['name'] . '.th',
                 options: $image_thumb_options
             );
-            $original_md5 = $image_upload['source']['fileinfo']['md5'];
+            $originalChecksum = $image_upload['source']['fileinfo']['checksum'];
             $watermark_enable = getSetting('watermark_enable');
             if ($watermark_enable) {
                 $watermark_user = $user !== []
@@ -979,8 +1228,8 @@ class Image
                 }
             }
             if ($apply_watermark && self::watermark($resizeSourceImage)) {
-                $image_upload['uploaded']['fileinfo'] = GGet_image_fileinfo($resizeSourceImage);
-                $image_upload['uploaded']['fileinfo']['md5'] = $original_md5;
+                $image_upload['uploaded']['fileinfo'] = get_image_fileinfo($resizeSourceImage);
+                $image_upload['uploaded']['fileinfo']['checksum'] = $originalChecksum;
             }
             if ($image_upload['uploaded']['fileinfo'][$medium_fixed_dimension] > $medium_size
                 || $is_animated_image
@@ -1050,7 +1299,7 @@ class Image
                 'medium_size' => $image_medium['fileinfo']['size'] ?? 0,
                 'frame_size' => $image_upload['uploaded']['frameinfo']['size'] ?? 0,
                 'is_animated' => $is_animated_image,
-                'source_md5' => $source_md5 ?? null,
+                'source_checksum' => $sourceChecksum ?? null,
                 'is_360' => $is_360,
                 'duration' => $image_upload['uploaded']['fileinfo']['duration'] ?? 0,
             ];
@@ -1171,6 +1420,7 @@ class Image
                 $image_insert_values['id'] = $target_id;
             }
             $image_insert_values['title'] = mb_substr($image_insert_values['title'] ?? '', 0, 100, 'UTF-8');
+            // Validate user_id album ownership
             if ($user !== [] && isset($image_insert_values['album_id'])) {
                 $album = Album::getSingle((int) $image_insert_values['album_id']);
                 if (($album['user']['id'] ?? 0) !== $user['id']) {
@@ -1216,6 +1466,7 @@ class Image
                     $image_insert_values['album_id'] = $album['id'];
                 }
             }
+
             if (isset($image_insert_values['album_id'])) {
                 Album::addImage($image_insert_values['album_id'], $uploaded_id);
             }
@@ -1424,7 +1675,6 @@ class Image
                 $binds[':tag_name_' . $pos] = $name;
             }
         }
-        xr(sql: $sql, binds: $binds);
         $db = DB::getInstance();
         $db->query($sql);
         foreach ($binds as $key => $value) {
@@ -1454,7 +1704,7 @@ class Image
                     'size' => $image[$k]['size'],
                 ];
             }
-            Storage::deleteFiles($targets, $image['storage']);
+            Storage::deleteFiles($targets, $image['storage']['id']);
         }
         if ($update_user && isset($image['user']['id'])) {
             DB::increment('users', [
@@ -1526,16 +1776,19 @@ class Image
             'content_user_id' => $image['user']['id'] ?? null,
             'content_ip' => $image['uploader_ip'],
             'content_views' => $image['views'],
-            'content_md5' => $image['md5'],
+            'content_checksum' => $image['checksum'],
             'content_likes' => $image['likes'],
             'content_original_filename' => $image['original_filename'],
         ]);
         $result = DB::delete('images', [
             'id' => $id,
         ]);
-        DB::delete('images_hash', [
-            'image_id' => $id,
-        ]);
+        if ($result) {
+            DB::delete('images_hash', [
+                'image_id' => $id,
+            ]);
+            Listing::deleteTypeIdCache('i', $id);
+        }
 
         return $result;
     }
@@ -1701,7 +1954,7 @@ class Image
             ?? ($image['name'] . '.' . $image['extension']);
     }
 
-    public static function formatArray(array $dbRow, bool $safe = false): array
+    public static function formatArray(array $dbRow, bool $safe = false, bool $fillAlbumCover = true): array
     {
         $output = DB::formatRow($dbRow);
         if (isset($output['user']['id'])) {
@@ -1718,7 +1971,8 @@ class Image
                     $output['album']['password'] = $output['album']['password'];
                 }
             }
-            Album::fill($output['album'], $output['user']);
+            $output['album'] ??= [];
+            Album::fill($output['album'], $output['user'], $fillAlbumCover);
         } else {
             unset($output['album']);
         }
@@ -1833,7 +2087,7 @@ class Image
         }
         $populate_values = [
             'uploader_ip' => $values['uploader_ip'],
-            'md5' => $image_upload['uploaded']['fileinfo']['md5'],
+            'checksum' => $image_upload['uploaded']['fileinfo']['checksum'],
             'original_filename' => $image_upload['source']['filename'],
             'original_exifdata' => $original_exifdata,
             'is_360' => $is360,

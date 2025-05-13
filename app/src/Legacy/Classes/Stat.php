@@ -23,9 +23,29 @@ class Stat
 {
     public static function getTotals(): array
     {
-        $res = DB::queryFetchSingle('SELECT * FROM ' . DB::getTable('stats') . ' WHERE stat_type = "total"');
+        $columns = implode(', ', [
+            'stat_users',
+            'stat_images',
+            'stat_albums',
+            'stat_tags',
+            'stat_cron_runs',
+            'stat_cron_time',
+            'stat_image_views',
+            'stat_album_views',
+            'stat_image_likes',
+            'stat_album_likes',
+            'stat_disk_used',
+        ]);
+        $tableStats = DB::getTable('stats');
+        $res = DB::queryFetchSingle(
+            <<<SQL
+            SELECT {$columns}
+            FROM {$tableStats}
+            WHERE stat_type = "total";
+
+            SQL
+        );
         if (is_array($res)) {
-            unset($res['stat_id'], $res['stat_type'], $res['date_gmt']);
             $res = DB::formatRow($res, 'stat');
         } else {
             $res = [
@@ -46,10 +66,15 @@ class Stat
 
     public static function getDaily(): array
     {
+        $tableStats = DB::getTable('stats');
         $res = DB::queryFetchAll(
-            'SELECT * FROM '
-                . DB::getTable('stats')
-                . ' WHERE stat_type = "date" AND stat_date_gmt IS NOT NULL ORDER BY stat_date_gmt DESC LIMIT 365'
+            <<<SQL
+            SELECT *
+            FROM {$tableStats}
+            WHERE stat_type = "date" AND stat_date_gmt IS NOT NULL
+            ORDER BY stat_date_gmt DESC LIMIT 365;
+
+            SQL
         );
         if (is_array($res)) {
             $res = DB::formatRows($res, 'stat');
@@ -88,7 +113,7 @@ class Stat
         return $return;
     }
 
-    public static function assertMax(string $env): void
+    public static function assertMax(string $env, int $add = 1): void
     {
         $envToStat = [
             'CHEVERETO_MAX_FILES' => 'images',
@@ -107,7 +132,7 @@ class Stat
             return;
         }
         $count = self::getTotals()[$envToStat[$env]] ?? 0;
-        if (($count + 1) > $maxLimit) {
+        if (($count + $add) > $maxLimit) {
             throw new OverflowException(
                 message(
                     'Maximum %t% reached (limit %s%).',
@@ -121,7 +146,7 @@ class Stat
 
     public static function rebuildTotals(): void
     {
-        $query = <<<MySQL
+        $query = <<<SQL
         TRUNCATE TABLE `%table_prefix%stats`;
 
         INSERT INTO `%table_prefix%stats` (stat_id, stat_date_gmt, stat_type)
@@ -167,7 +192,7 @@ class Stat
             "0"
         );
 
-        MySQL;
+        SQL;
         $sql = strtr($query, [
             '%table_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX'],
         ]);
@@ -230,7 +255,7 @@ class Stat
                         if (! isset($args['disk_sum'])) {
                             throw new Exception('Missing disk_sum value', 603);
                         }
-                        $sql_tpl = <<<MySQL
+                        $sql_tpl = <<<SQL
                         UPDATE `%table_stats`
                         SET stat_images = stat_images + %value, stat_disk_used = stat_disk_used + %disk_sum
                         WHERE stat_type = "total";
@@ -239,11 +264,11 @@ class Stat
                         VALUES ("date",DATE("%date_gmt"),"%value", "%disk_sum")
                         ON DUPLICATE KEY UPDATE stat_images = stat_images + %value, stat_disk_used = stat_disk_used + %disk_sum;
 
-                        MySQL;
+                        SQL;
 
                         break;
                     default: // albums, likes, users, tags
-                        $sql_tpl = <<<MySQL
+                        $sql_tpl = <<<SQL
                         UPDATE `%table_stats`
                         SET stat_%related_table = stat_%related_table + %value
                         WHERE stat_type = "total";
@@ -252,7 +277,7 @@ class Stat
                         VALUES ("date",DATE("%date_gmt"),"%value")
                         ON DUPLICATE KEY UPDATE stat_%related_table = stat_%related_table + %value;
 
-                        MySQL;
+                        SQL;
 
                         break;
                 }
@@ -264,7 +289,7 @@ class Stat
                     case 'images':
                     case 'albums':
                         // Track (image | album | user) views
-                        $sql_tpl = <<<MySQL
+                        $sql_tpl = <<<SQL
                         UPDATE `%table_stats`
                         SET stat_%aux_views = stat_%aux_views + %value
                         WHERE stat_type = "total";
@@ -273,12 +298,12 @@ class Stat
                         VALUES ("date",DATE("%date_gmt"),"%value")
                         ON DUPLICATE KEY UPDATE stat_%aux_views = stat_%aux_views + %value;
 
-                        MySQL;
+                        SQL;
                         if (isset($args['user_id'])) {
-                            $sql_tpl .= <<<MySQL
+                            $sql_tpl .= <<<SQL
                             UPDATE `%table_users` SET user_content_views = user_content_views + %value WHERE user_id = %user_id;
 
-                            MySQL;
+                            SQL;
                         }
                         $sql_tpl = strtr($sql_tpl, [
                             '%aux' => DB::getFieldPrefix($args['table']),
@@ -292,7 +317,7 @@ class Stat
             case 'delete':
                 switch ($args['table']) {
                     case 'images':
-                        $sql_tpl = <<<MySQL
+                        $sql_tpl = <<<SQL
                         UPDATE `%table_stats`
                         SET stat_images = GREATEST(GREATEST(0, stat_images) - %value, 0)
                         WHERE stat_type = "total";
@@ -320,11 +345,11 @@ class Stat
                         WHERE stat_type = "date"
                             AND stat_date_gmt = DATE("%date_gmt");
 
-                        MySQL;
+                        SQL;
 
                         break;
                     default:  // albums, likes, users, tags
-                        $sql_tpl = <<<MySQL
+                        $sql_tpl = <<<SQL
                         UPDATE `%table_stats`
                         SET stat_%related_table = GREATEST(GREATEST(0, stat_%related_table) - %value, 0)
                         WHERE stat_type = "total";
@@ -334,9 +359,9 @@ class Stat
                         WHERE stat_type = "date"
                             AND stat_date_gmt = DATE("%date_gmt");
 
-                        MySQL;
+                        SQL;
                         if ($args['table'] === 'users') {
-                            $sql_tpl .= <<<MySQL
+                            $sql_tpl .= <<<SQL
                             UPDATE IGNORE `%table_stats` AS S
                             INNER JOIN (
                                 SELECT DATE(like_date_gmt) AS like_date_gmt, COUNT(*) AS cnt
@@ -363,7 +388,7 @@ class Stat
                             SET stat_albums = GREATEST(GREATEST(0, stat_albums) - COALESCE((SELECT COUNT(*) FROM `%table_albums` WHERE album_user_id = %user_id), "0"), 0)
                             WHERE stat_type = "total";
 
-                            MySQL;
+                            SQL;
                         }
 
                         break;

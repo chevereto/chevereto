@@ -757,6 +757,7 @@ class Import
 
                 try {
                     $params['use_file_date'] = true;
+                    // @deprecate $params['mimetype']
                     $params['mimetype'] = $mimetype;
                     $user = User::getSingle($user_id, 'id');
                     $metaFile = $pathName . '.json';

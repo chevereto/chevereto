@@ -15,4 +15,5 @@ if (cheveretoVersionInstalled() === '') {
     echo "[ERROR] Chevereto is not installed, try with the install command.\n";
     exit(255);
 }
+
 require_once PATH_APP_LEGACY_INSTALL . 'installer.php';

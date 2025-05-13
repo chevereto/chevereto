@@ -150,7 +150,7 @@ return function (Handler $handler) {
     }
     if (isset($image['user']['id'])
         && ($handler::cond('content_manager') || $is_owner)) {
-        $image['user']['albums'] = User::getAlbums((int) $image['user']['id']);
+        $image['user']['albums'] = User::getAlbums($image['user']);
     }
     $is_album_cover = false;
     if (isset($image['album']['id'])) {

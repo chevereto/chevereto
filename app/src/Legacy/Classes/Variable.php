@@ -44,8 +44,20 @@ class Variable
 
     protected static array $variables = [];
 
-    public function __construct()
+    public function __construct(bool $reCache = false)
     {
+        if ($reCache === true) {
+            $cached = false;
+        } else {
+            $cached = Cache::instance()->get('variables');
+        }
+        if ($cached) {
+            static::$variables = $cached;
+            static::$instance = $this;
+
+            return;
+        }
+
         try {
             $rows = DB::get(
                 table: 'variables',
@@ -78,6 +90,7 @@ class Variable
             );
         }
         static::$instance = $this;
+        Cache::instance()->set('variables', static::$variables);
     }
 
     public static function getAll(): array
@@ -130,6 +143,7 @@ class Variable
                 value: $value,
                 type: $type,
             );
+            Cache::instance()->set('variables', static::$variables);
         }
 
         return $return;
@@ -165,6 +179,7 @@ class Variable
             ]
         );
         unset(static::$variables[$name]);
+        Cache::instance()->set('variables', static::$variables);
 
         return $return;
     }

@@ -4,6 +4,7 @@ use Chevereto\Legacy\Classes\Settings;
 use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\get_select_options_html;
+use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -34,23 +35,34 @@ echo read_the_docs_settings('email', _s('Email')); ?>
     <div class="input-warning red-warning"><?php echo Handler::var('input_errors')['email_incoming_email'] ?? ''; ?></div>
     <div class="input-below"><?php _se('Recipient for contact form and system alerts.'); ?></div>
 </div>
+<?php
+$mailOptions = [
+    'smtp' => _s('SMTP'),
+];
+if(env()['CHEVERETO_SERVICING'] === 'server') {
+    $mailOptions['mail'] = _s('PHP mail() func.');
+}
+$mailComboClass = '';
+if (count($mailOptions) == 2 && (Handler::var('safe_post')
+    ? Handler::var('safe_post')['email_mode']
+    : Settings::get('email_mode')) !== 'smtp'
+) {
+    $mailComboClass = ' soft-hidden';
+}
+?>
 <div class="input-label">
     <label for="email_mode"><?php _se('Email mode'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="email_mode" id="email_mode" class="text-input" data-combo="mail-combo">
-        <?php
-                echo get_select_options_html(['smtp' => 'SMTP', 'mail' => 'PHP mail() func.'], Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode')); ?>
+        <?php echo get_select_options_html($mailOptions, Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode')); ?>
     </select></div>
     <div class="input-below input-warning red-warning clear-both"><?php echo Handler::var('input_errors')['email_mode'] ?? ''; ?></div>
-    <div class="input-below"><?php _se('How to send emails? SMTP recommended.'); ?></div>
 </div>
 <div id="mail-combo">
     <?php
                 if (isset($GLOBALS['SMTPDebug'])) {
                     echo '<p class="highlight padding-5 c9 phablet-c1">' . nl2br($GLOBALS['SMTPDebug']) . '</p>';
                 } ?>
-    <div data-combo-value="smtp" class="switch-combo c9 phablet-c1<?php if ((Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode')) !== 'smtp') {
-                    echo ' soft-hidden';
-                } ?>">
+    <div data-combo-value="smtp" class="switch-combo c9 phablet-c1<?php echo $mailComboClass; ?>">
         <div class="input-label">
             <label for="email_smtp_server"><?php _se('SMTP server and port'); ?></label>
             <div class="overflow-auto">

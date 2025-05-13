@@ -161,13 +161,14 @@ function get_checkbox_html($options = [])
         '	</label>' . "\n" .
         '</div>';
 }
-function get_captcha_component($id = 'g-recaptcha')
+function get_captcha_component()
 {
     return match (getSetting('captcha_api')) {
-        '2', 'hcaptcha' => [
-            'captcha_html', strtr('<div id="%id" data-recaptcha-element class="captcha"></div>', [
-                '%id' => $id,
-            ])],
+        '2', 'hcaptcha', 'turnstile' => [
+            'captcha_html', strtr('<div id="g-recaptcha" data-recaptcha-element class="captcha captcha-api--%api"></div>', [
+                '%api' => getSetting('captcha_api'),
+            ]),
+        ],
         '3' => ['recaptcha_invisible_html', get_captcha_invisible_html()],
         default => throw new LogicException(message('Invalid captcha API')),
     };
@@ -367,7 +368,7 @@ function include_peafowl_foot()
 {
     display_cookie_law_banner();
     $resources = [
-        // 'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto-all.js',
+        'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto-all.js',
         'chevereto' => PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'chevereto-all.min.js',
     ];
     foreach ($resources as $k => &$v) {
@@ -383,6 +384,13 @@ function include_peafowl_foot()
                     .render(\$this.attr("id"), {
                         sitekey: CHV.obj.config.captcha.sitekey,
                         theme: "%t"
+                    });
+            JS,
+            'turnstile' => <<<JS
+                turnstile
+                    .render("#" + \$this.attr("id"), {
+                        sitekey: CHV.obj.config.captcha.sitekey,
+                        theme: "%t",
                     });
             JS,
             '3' => <<<JS
@@ -414,6 +422,7 @@ function include_peafowl_foot()
             '2' => '<script defer src="https://www.recaptcha.net/recaptcha/api.js?onload=captchaCallback&render=explicit"></script>',
             'hcaptcha' => '<script defer src="https://js.hcaptcha.com/1/api.js?onload=captchaCallback&render=explicit"></script>',
             '3' => '<script defer src="https://www.recaptcha.net/recaptcha/api.js?onload=captchaCallback&render=' . getSetting('captcha_sitekey') . '"></script>',
+            'turnstile' => '<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=captchaCallback&render=explicit" async defer></script>',
             default => throw new LogicException(message('Invalid captcha API')),
         };
     }
@@ -1051,7 +1060,9 @@ function arr_printer($arr, $tpl = '', $wrap = [])
 }
 function versionize_src($src)
 {
-    return $src . '?' . md5(get_chevereto_version());
+    return $src
+        . '?'
+        . hashString(get_chevereto_version());
 }
 function show_banner($banner, $sfw = true)
 {

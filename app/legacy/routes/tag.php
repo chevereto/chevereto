@@ -85,6 +85,7 @@ return function (Handler $handler) {
             $sumViews[] = $tag['id'];
         }
     }
+    $sumViews = array_unique($sumViews);
     $tags_names = array_column($tags, 'name');
     $tag_string = implode(', ', $tags_names);
     $tag_string_no_spaces = implode(',', $tags_names);

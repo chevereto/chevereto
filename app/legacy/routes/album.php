@@ -368,7 +368,7 @@ return function (Handler $handler) {
     $handler::setVar('meta_description', $meta_description);
     if ($handler::cond('content_manager') || $is_owner) {
         $handler::setVar('user_items_editor', [
-            'user_albums' => User::getAlbums((int) $album['user']['id']),
+            'user_albums' => User::getAlbums($album['user']),
             'type' => $type,
         ]);
     }

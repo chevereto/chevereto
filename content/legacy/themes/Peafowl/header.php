@@ -215,7 +215,7 @@ foreach($tags_top as $k => $v) {
                 <?php if (Handler::var('system_notices') !== []) {
         ?>
                     <li data-nav="notices" class="phone-hide top-btn-el" data-modal="simple" data-target="modal-notices">
-                        <span class="top-btn-text"><span class="icon fas fa-exclamation-triangle color-fail"></span><span class="btn-text phone-hide phablet-hide"><?php _se('Notices (%s)', count(Handler::var('system_notices'))); ?></span></span>
+                        <span class="top-btn-text"><span class="icon fas fa-exclamation-triangle"></span><span class="btn-text phone-hide phablet-hide"><?php _se('Notices (%s)', count(Handler::var('system_notices'))); ?></span></span>
                     </li>
                 <?php
     } ?>
@@ -304,6 +304,7 @@ foreach($tags_top as $k => $v) {
                                     } ?>
                                         <li class="with-icon"><a href="<?php echo get_base_url('settings'); ?>"><span class="btn-icon fas fa-user-cog"></span><?php echo _s('Settings'); ?></a></li>
                                 </ul>
+                                <?php if(getSetting('theme_palette_user_select')) { ?>
                                 <div class="or-separator margin-top-5 margin-bottom-5"></div>
                                 <div class="pop-box-label"><?php _se('Palette'); ?></div>
                                 <div data-action="top-bar-tone">
@@ -321,6 +322,7 @@ foreach($tags_top as $k => $v) {
                         } ?>
                                     </div>
                                 </div>
+                                <?php } ?>
 <?php if (Handler::cond('content_manager')) { ?>
                                 <div class="or-separator margin-top-5 margin-bottom-5"></div>
                                 <div class="pop-box-label"><?php Handler::cond('admin') ? _se('Administrator') : _se('Manager') ?></div>

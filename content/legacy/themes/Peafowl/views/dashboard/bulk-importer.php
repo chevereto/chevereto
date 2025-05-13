@@ -101,8 +101,8 @@ if ($continuous = Import::getContinuous()) {
     <p><?php _se('Run the following command to import content to Chevereto:'); ?></p>
     <?php
         $code = env()['CHEVERETO_SERVICING'] === 'docker'
-            ? "docker exec -it --user www-data " . (gethostname() ?: 'chv-container') . " app/bin/legacy -C bulk-importer"
-            : 'sudo -u www-data php ' . PATH_PUBLIC . 'app/bin/legacy -C bulk-importer'
+            ? "docker exec -it --user www-data " . (gethostname() ?: 'chv-container') . " app/bin/cli -C bulk-importer"
+            : 'sudo -u www-data php ' . PATH_PUBLIC . 'app/bin/cli -C bulk-importer'
     ?>
     <div class="margin-bottom-10 margin-top-10">
         <code class="code code--command display-inline-block" data-click="select-all"><?php echo $code; ?></code>

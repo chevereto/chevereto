@@ -40,10 +40,11 @@ if (getSetting('maintenance')) {
     exit(255);
 }
 $jobs = [
-    'deleteExpiredImages',
+    'deleteExpiredFiles',
     'cleanUnconfirmedUsers',
     'removeDeleteLog',
     'storageDelete',
+    'deleteExpiredUploads',
 ];
 if ((bool) env()['CHEVERETO_ENABLE_UPDATE_CHECK']) {
     $jobs[] = 'checkForUpdates';
@@ -152,9 +153,9 @@ function storageDelete(): void
     }
     echoLocked($job);
 }
-function deleteExpiredImages(): void
+function deleteExpiredFiles(): void
 {
-    $job = 'delete-expired-images';
+    $job = 'delete-expired-files';
     $lock = new Lock($job);
     if ($lock->create()) {
         Image::deleteExpired(50);
@@ -240,4 +241,47 @@ function checkoutUpdate(string $datetimeSetting, string $past): bool
 function checkHtaccess()
 {
     include __DIR__ . '/htaccess-enforce.php';
+}
+function deleteExpiredUploads(): void
+{
+    $job = 'delete-expired-uploads';
+    $lock = new Lock($job);
+    if ($lock->create()) {
+        $uploadsTable = DB::getTable('uploads');
+        $uploadsChunksTable = DB::getTable('uploads_chunks');
+        $db = DB::getInstance();
+        $db->query(
+            <<<MySQL
+            SELECT `upload_chunk_upload_id` `id`, `upload_chunk_index` `index`, `upload_chunk_path` path
+            FROM `{$uploadsChunksTable}` WHERE `upload_chunk_date_gmt` <= :time;
+            MySQL
+        );
+        $db->bind(':time', datetime_sub(datetimegmt(), 'P1D'));
+        $chunks = $db->fetchAll();
+        if (! $chunks) {
+            $lock->destroy();
+
+            return;
+        }
+        $ids = [];
+        foreach ($chunks as $chunk) {
+            $ids[] = (int) $chunk['id'];
+            $chunkPath = $chunk['path'];
+            if (file_exists($chunkPath)) {
+                unlink($chunkPath);
+            }
+        }
+        $ids = array_unique($ids);
+        $idsString = implode(',', $ids);
+        $db->query(
+            <<<MySQL
+            DELETE FROM `{$uploadsTable}`  WHERE `upload_id` IN ({$idsString});
+            MySQL
+        );
+        $db->exec();
+        $lock->destroy();
+
+        return;
+    }
+    echoLocked($job);
 }

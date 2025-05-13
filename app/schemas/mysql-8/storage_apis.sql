@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS `%table_prefix%storage_apis`;
 CREATE TABLE `%table_prefix%storage_apis` (
-  `storage_api_id` bigint(32) NOT NULL AUTO_INCREMENT,
-  `storage_api_name` varchar(255) NOT NULL,
-  `storage_api_type` varchar(255) NOT NULL,
+  `storage_api_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `storage_api_name` VARCHAR(255) NOT NULL,
+  `storage_api_type` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`storage_api_id`)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8;
 INSERT INTO `%table_prefix%storage_apis` VALUES ('1', 'Amazon S3', 's3');

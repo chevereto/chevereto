@@ -7,6 +7,7 @@ use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\badgePaid;
 use function Chevereto\Legacy\G\bytes_to_mb;
 use function Chevereto\Legacy\G\format_bytes;
+use function Chevereto\Legacy\G\get_ini_bytes;
 use function Chevereto\Legacy\get_select_options_html;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\inputDisabledPaid;
@@ -281,20 +282,28 @@ echo get_select_options_html(
     <div class="input-below"><?php _se('Enable this if you want to allow each user to configure how image Exif data will be handled.'); ?></div>
 </div>
 <hr class="line-separator">
+<?php
+$maxUploadSize = get_ini_bytes(env()['CHEVERETO_MAX_UPLOAD_SIZE']);
+$maxValue = $maxUploadSize > 0 ? bytes_to_mb($maxUploadSize) : '';
+?>
 <div class="input-label">
-    <label for="upload_max_filesize_mb"><?php _se('Maximum upload file size'); ?> [MB]</label>
-    <div class="c2"><input type="number" min="0.1" step="0.1" max="<?php echo bytes_to_mb(Settings::get('true_upload_max_filesize')); ?>" pattern="\d+" name="upload_max_filesize_mb" id="upload_max_filesize_mb" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb'] ?? Settings::get('upload_max_filesize_mb'); ?>" placeholder="MB" required></div>
+    <label for="upload_max_filesize_mb"><?php _se('Maximum upload file size'); ?> (MB)</label>
+    <div class="c3"><input type="number" min="1" pattern="\d+" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb" id="upload_max_filesize_mb" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb'] ?? Settings::get('upload_max_filesize_mb'); ?>" placeholder="MB" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_max_filesize_mb'] ?? ''; ?></div>
-    <div class="input-below"><?php _se('Maximum size allowed by server is %s. This limit is capped by %u and %p (%f values).', [
-        '%s' => format_bytes(Settings::get('true_upload_max_filesize')),
-        '%u' => '<code>upload_max_filesize = ' . ini_get('upload_max_filesize') . '</code>',
-        '%p' => '<code>post_max_size = ' . ini_get('post_max_size') . '</code>',
-        '%f' => 'php.ini',
-    ]); ?></div>
+    <div class="input-below"><?php
+        _se('Maximum upload file size allowed for users.');
+        if($maxUploadSize > 0) {
+            echo ' '
+                . _s('Maximum value %f (%v).', [
+                    '%f' => bytes_to_mb($maxUploadSize),
+                    '%v' => format_bytes($maxUploadSize),
+                ]);
+        }
+    ?></div>
 </div>
 <div class="input-label">
     <label for="upload_max_filesize_mb_guest"><?php _se('Maximum upload file size'); ?> (<?php _se('guests'); ?>)</label>
-    <div class="c2"><input type="number" min="0.1" step="0.1" max="<?php echo bytes_to_mb(Settings::get('true_upload_max_filesize')); ?>" pattern="\d+" name="upload_max_filesize_mb_guest" id="upload_max_filesize_mb_guest" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb_guest'] ?? Settings::get('upload_max_filesize_mb_guest'); ?>" placeholder="MB" required></div>
+    <div class="c3"><input type="number" min="1" pattern="\d+" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb_guest" id="upload_max_filesize_mb_guest" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb_guest'] ?? Settings::get('upload_max_filesize_mb_guest'); ?>" placeholder="MB" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_max_filesize_mb_guest'] ?? ''; ?></div>
     <div class="input-below"><?php _se('Same as "%s" but for guests.', _s('Maximum upload file size')); ?></div>
 </div>

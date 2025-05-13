@@ -14,6 +14,7 @@ namespace Chevereto\Legacy\Classes;
 use function Chevereto\Legacy\G\datetime;
 use function Chevereto\Legacy\G\datetimegmt;
 use function Chevereto\Legacy\G\get_client_ip;
+use function Chevereto\Vars\env;
 
 class RequestLog
 {
@@ -27,47 +28,85 @@ class RequestLog
         if (defined('PHPUNIT_CHEVERETO_TESTSUITE')) {
             return 0;
         }
-        if (!isset($values['ip'])) {
+        if (! isset($values['ip'])) {
             $values['ip'] = get_client_ip();
         }
         $values['date'] = datetime();
         $values['date_gmt'] = datetimegmt();
+        $rows = DB::insert('requests', $values);
+        if ($rows && Cache::isEnabled()) {
+            $cache = Cache::instance();
+            $redis = $cache->redis();
+            $ip = inet_ntop(inet_pton($values['ip']));
+            $key = Cache::instance()->getKey("ip:{$ip}:rl");
+            $set = $redis->sMembers($key) ?: [];
+            foreach ($set as $hash) {
+                $cacheKeyLog = $cache->getKey("rl:{$hash}");
+                $redis->del($cacheKeyLog);
+                $redis->sRem($key, $hash);
+            }
+        }
 
-        return DB::insert('requests', $values);
+        return $rows;
     }
 
     public static function getCounts(array|string $type, string $result, ?string $ip = null): array
     {
+        $ip ??= get_client_ip();
+        if (Cache::isEnabled()) {
+            $hash = Cache::hash(serialize($type) . $result . $ip);
+            $cacheKey = "rl:{$hash}";
+            $cached = Cache::instance()->get($cacheKey);
+            if ($cached) {
+                return $cached;
+            }
+        }
         if (is_array($type)) {
-            $type_qry = 'request_type IN(';
+            $whereType = 'request_type IN(';
             $binds = [];
             foreach ($type as $i => $singleType) {
-                $type_qry .= ':rt' . $i . ',';
+                $whereType .= ':rt' . $i . ',';
                 $binds[':rt' . $i] = $singleType;
             }
-            $type_qry = rtrim($type_qry, ',') . ')';
+            $whereType = rtrim($whereType, ',') . ')';
         } else {
-            $type_qry = 'request_type=:request_type';
+            $whereType = 'request_type=:request_type';
             $binds = [
-                ':request_type' => $type
+                ':request_type' => $type,
             ];
         }
-
+        $binds[':request_result'] = $result;
+        $binds[':request_ip'] = $ip;
         $db = DB::getInstance();
-        $db->query('SELECT
-                        COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MINUTE), 1, NULL)) AS minute,
-                        COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 HOUR), 1, NULL)) AS hour,
-                        COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY), 1, NULL)) AS day,
-                        COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK), 1, NULL)) AS week,
-                        COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH), 1, NULL)) AS month
-                    FROM ' . DB::getTable('requests') . ' WHERE ' . $type_qry . ' AND request_result=:request_result AND request_ip=:request_ip AND request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH)');
+        $tableRequest = DB::getTable('requests');
+        $sql = <<<SQL
+        SELECT
+            COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MINUTE), 1, NULL)) AS minute,
+            COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 HOUR), 1, NULL)) AS hour,
+            COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY), 1, NULL)) AS day,
+            COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 WEEK), 1, NULL)) AS week,
+            COUNT(IF(request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH), 1, NULL)) AS month
+        FROM `{$tableRequest}` WHERE request_result=:request_result
+            AND {$whereType}
+            AND request_ip=:request_ip
+            AND request_date_gmt >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 MONTH)
+        SQL;
+        $db->query($sql);
         foreach ($binds as $k => $v) {
             $db->bind($k, $v);
         }
-        $db->bind(':request_result', $result);
-        $db->bind(':request_ip', $ip ?: get_client_ip());
+        $row = $db->fetchSingle();
+        $ttl = (int) (env()['CHEVERETO_CACHE_TIME_MICRO'] ?? 60);
+        if (Cache::isEnabled()) {
+            Cache::instance()->set($cacheKey, $row, $ttl);
+            $redis = Cache::instance()->redis();
+            $ip = inet_ntop(inet_pton($ip));
+            $inverseKey = Cache::instance()->getKey("ip:{$ip}:rl");
+            $redis->sAdd($inverseKey, $hash);
+            $redis->expire($inverseKey, $ttl);
+        }
 
-        return $db->fetchSingle();
+        return $row;
     }
 
     public static function delete($values, $clause = 'AND'): int

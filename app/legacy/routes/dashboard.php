@@ -12,7 +12,10 @@
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\AssetStorage;
+use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\ExifTool;
+use Chevereto\Legacy\Classes\ExifTran;
 use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Listing;
@@ -45,7 +48,6 @@ use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\format_bytes;
 use function Chevereto\Legacy\G\get_app_version;
 use function Chevereto\Legacy\G\get_base_url;
-use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_ffmpeg_error;
 use function Chevereto\Legacy\G\get_ini_bytes;
@@ -133,6 +135,18 @@ return function (Handler $handler) {
 
         return;
     }
+    $request = implode('/', $handler->request());
+    $redirects = [
+        'settings/external-storage' => 'dashboard/settings/upload-storage',
+        'settings/asset-storage' => 'dashboard/settings/site-storage',
+        'settings/guest-api' => 'dashboard/settings/api',
+    ];
+    $redirectTo = $redirects[$request] ?? null;
+    if ($redirectTo) {
+        redirect($redirectTo);
+
+        return;
+    }
     $route_prefix = 'dashboard';
     $routes = [
         'stats' => _s('Home'),
@@ -178,6 +192,7 @@ return function (Handler $handler) {
         'tags' => 'fas fa-tags',
     ];
     $settings_sections = [
+        'api' => 'API',
         'website' => _s('Website'),
         'content' => _s('Content'),
         'listings' => _s('Listings'),
@@ -190,14 +205,13 @@ return function (Handler $handler) {
         'email' => _s('Email'),
         'tools' => _s('Tools'),
         'logo' => _s('Logo'),
-        'asset-storage' => _s('Asset storage'),
-        'external-storage' => _s('External storage'),
+        'site-storage' => _s('Site storage'),
+        'upload-storage' => _s('Upload storage'),
         'upload-plugin' => _s('Upload plugin'),
         'homepage' => _s('Homepage'),
         'pages' => _s('Pages'),
         'consent-screen' => _s('Consent screen'),
         'users' => _n('User', 'Users', 20),
-        'guest-api' => _s('Guests %s', 'API'),
         'login-providers' => _s('Login providers'),
         'routing' => _s('Routing'),
         'external-services' => _s('External services'),
@@ -218,11 +232,11 @@ return function (Handler $handler) {
         'cookie-compliance' => 'fas fa-cookie-bite',
         'email' => 'fas fa-at',
         'external-services' => 'fas fa-concierge-bell',
-        'asset-storage' => 'fas fa-warehouse',
-        'external-storage' => 'fas fa-hdd',
+        'site-storage' => 'fas fa-warehouse',
+        'upload-storage' => 'fas fa-hdd',
         'file-uploads' => 'fas fa-cloud-upload-alt',
         'flood-protection' => 'fas fa-faucet',
-        'guest-api' => 'fas fa-project-diagram',
+        'api' => 'fas fa-project-diagram',
         'homepage' => 'fas fa-home',
         'ip-bans' => 'fas fa-ban',
         'languages' => 'fas fa-language',
@@ -246,7 +260,6 @@ return function (Handler $handler) {
         'cookie-compliance' => ['pro', 'CHEVERETO_ENABLE_COOKIE_COMPLIANCE'],
         'external-services' => ['pro', 'CHEVERETO_ENABLE_EXTERNAL_SERVICES'],
         'flood-protection' => ['pro', 'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION'],
-        'guest-api' => ['lite', 'CHEVERETO_ENABLE_API_GUEST'],
         'homepage' => ['lite', 'CHEVERETO_ENABLE_USERS'],
         'ip-bans' => ['pro', 'CHEVERETO_ENABLE_IP_BANS'],
         'login-providers' => ['lite', 'CHEVERETO_ENABLE_LOGIN_PROVIDERS'],
@@ -425,68 +438,10 @@ return function (Handler $handler) {
                     $cronRemark .= ' — <span class="color-fail"><span class="fas fa-exclamation-triangle"></span> ' . _s('not running') . '</span>';
                 }
                 if ((env()['CHEVERETO_SERVICING'] ?? null) === 'docker') {
-                    $cronRemark .= '<div><code class="code code--inline-auto code--command" data-click="select-all">docker exec -it --user www-data ' . (gethostname() ?: 'chv-container') . ' app/bin/legacy -C cron</code></div>';
+                    $cronRemark .= '<div><code class="code code--inline-auto code--command" data-click="select-all">docker exec -it --user www-data ' . (gethostname() ?: 'chv-container') . ' app/bin/cli -C cron</code></div>';
                     $errorLogRemark .= '<div><code class="code code--inline-auto code--command" data-click="select-all">docker logs ' . (gethostname() ?: 'chv-container') . ' -f 1>/dev/null</code></div>';
                 }
             }
-            $ffmpegContent = '<i class="fas fa-video"></i> ';
-
-            try {
-                $missing = [
-                    'proc_open' => ! function_exists('proc_open'),
-                    'proc_close' => ! function_exists('proc_close'),
-                ];
-                $missing = array_filter($missing);
-                if ($missing) {
-                    throw new Exception(
-                        _s(
-                            'PHP function [%s] not available in this PHP installation',
-                            implode(', ', array_keys($missing))
-                        )
-                    );
-                }
-                $ffmpegErrors = [];
-
-                try {
-                    $ffmpeg = FFMpeg::create(
-                        [
-                            'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
-                            'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
-                        ]
-                    );
-                } catch (Throwable $e) {
-                    $ffmpegErrors[] = get_ffmpeg_error($e);
-                }
-
-                try {
-                    $ffprobe = FFProbe::create(
-                        [
-                            'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
-                        ]
-                    );
-                    $ffprobe->getFFProbeDriver()->getName();
-                } catch (Throwable $e) {
-                    $ffmpegErrors[] = get_ffmpeg_error($e);
-                }
-                if ($ffmpegErrors !== []) {
-                    throw new Exception(implode(', ', $ffmpegErrors));
-                }
-                $ffmpegContent .= 'FFmpeg';
-                if (isset($ffmpeg) && env()['CHEVERETO_CONTEXT'] !== 'saas') {
-                    $ffmpegContent .= ' bin: '
-                        . env()['CHEVERETO_BINARY_FFMPEG']
-                        . ' version '
-                        . $ffmpeg->getFFMpegDriver()->getVersion()
-                        . '<br>'
-                        . '<i class="fas fa-circle-check"></i> FFprobe bin:'
-                        . env()['CHEVERETO_BINARY_FFPROBE'];
-                }
-            } catch (Throwable $e) {
-                $ffmpegContent = '<span class="color-fail"><i class="fas fa-warning"></i> Error: '
-                    . get_ffmpeg_error($e)
-                    . '</span>';
-            }
-
             $chv_versioning = explode('.', APP_VERSION);
             $chv_version_major = $chv_versioning[0] . '.X';
             $chv_version_minor = $chv_versioning[0] . '.' . $chv_versioning[1];
@@ -501,16 +456,9 @@ return function (Handler $handler) {
                         . '<div class="margin-bottom-20">' . $version_check . $linksButtons . '</div>
                         </div>',
                 ],
-                'max_upload_size' => [
+                'upload_max_filesize' => [
                     'label' => _s('Max. upload file size'),
                     'content' => '<i class="fas fa-cloud-upload-alt"></i> ' . format_bytes(get_ini_bytes(ini_get('upload_max_filesize'))),
-                ],
-                'graphics' => [
-                    'label' => _s('Graphics library'),
-                ],
-                'video' => [
-                    'label' => _s('Video processing'),
-                    'content' => $ffmpegContent,
                 ],
                 'rebuild_stats' => [
                     'label' => _s('Stats'),
@@ -572,11 +520,113 @@ return function (Handler $handler) {
                     '%label%' => $link['label'],
                 ]);
             }
-
             if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
+                $ffmpegContent = '<i class="fas fa-video"></i> ';
+
+                try {
+                    $missing = [
+                        'proc_open' => ! function_exists('proc_open'),
+                        'proc_close' => ! function_exists('proc_close'),
+                    ];
+                    $missing = array_filter($missing);
+                    if ($missing) {
+                        throw new Exception(
+                            _s(
+                                'PHP function [%s] not available in this PHP installation',
+                                implode(', ', array_keys($missing))
+                            )
+                        );
+                    }
+                    $ffmpegErrors = [];
+
+                    try {
+                        $ffmpeg = FFMpeg::create(
+                            [
+                                'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
+                                // 'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                            ]
+                        );
+                    } catch (Throwable $e) {
+                        $ffmpegErrors[] = get_ffmpeg_error($e);
+                    }
+
+                    try {
+                        $ffprobe = FFProbe::create(
+                            [
+                                'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                            ]
+                        );
+                        $ffprobe->getFFProbeDriver()->getName();
+                    } catch (Throwable $e) {
+                        $ffmpegErrors[] = get_ffmpeg_error($e);
+                    }
+                    if ($ffmpegErrors !== []) {
+                        throw new Exception(implode('<br>', $ffmpegErrors));
+                    }
+                    $ffmpegContent .= 'FFmpeg';
+                    if (isset($ffmpeg) && env()['CHEVERETO_CONTEXT'] !== 'saas') {
+                        $ffmpegContent .= ' bin: '
+                            . env()['CHEVERETO_BINARY_FFMPEG']
+                            . ' version '
+                            . $ffmpeg->getFFMpegDriver()->getVersion()
+                            . '<br>'
+                            . '<i class="fas fa-circle-check"></i> FFprobe bin: '
+                            . env()['CHEVERETO_BINARY_FFPROBE'];
+                    }
+                } catch (Throwable $e) {
+                    $ffmpegContent = '<span class="color-fail"><i class="fas fa-warning"></i> Error: '
+                        . get_ffmpeg_error($e)
+                        . '</span>';
+                }
+                $graphicsLibraryContent = '<i class="fas fa-feather"></i> ';
+                if (ImageManagerStatic::getManager()->config['driver'] === 'imagick') {
+                    $graphicVersion = Imagick::getVersion()['versionString'];
+                    $graphicsLibraryContent .= $graphicVersion;
+                } else {
+                    $graphicVersion = 'GD Version ' . gd_info()['GD Version'];
+                    $graphicsLibraryContent .= $graphicVersion
+                        . ' JPEG:' . gd_info()['JPEG Support']
+                        . ' GIF:' . gd_info()['GIF Read Support'] . '/' . gd_info()['GIF Create Support']
+                        . ' PNG:' . gd_info()['PNG Support']
+                        . ' WEBP:' . (gd_info()['WebP Support'] ?? 0)
+                        . ' WBMP:' . gd_info()['WBMP Support']
+                        . ' XBM:' . gd_info()['XBM Support'];
+                }
+                $exifToolBinary = env()['CHEVERETO_BINARY_EXIFTOOL'] ?? '';
+                $exifToolContent = '<i class="fas fa-camera"></i> ExifTool';
+                if ($exifToolBinary !== '') {
+                    $exifToolContent .= ' bin: ' . $exifToolBinary;
+
+                    try {
+                        $exifTool = new ExifTool(env()['CHEVERETO_BINARY_EXIFTOOL']);
+                        $exifToolContent .= ' version ' . $exifTool->version();
+                    } catch (RuntimeException $e) {
+                        $exifToolContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                    }
+                } else {
+                    $exifToolContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not available') . '</span>';
+                }
+                $exifTranBinary = env()['CHEVERETO_BINARY_EXIFTRAN'] ?? '';
+                $exifTranContent = '<i class="fas fa-camera"></i> ExifTran';
+                if ($exifTranBinary !== '') {
+                    $exifTranContent .= ' bin: ' . $exifTranBinary;
+
+                    try {
+                        new ExifTran($exifTranBinary);
+                    } catch (RuntimeException $e) {
+                        $exifTranContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                    }
+                } else {
+                    $exifTranContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not available') . '</span>';
+                }
                 $mysqlVersion = $db->getAttr(PDO::ATTR_SERVER_VERSION);
                 $db->closeCursor();
                 $mysqlServerInfo = $db->getAttr(PDO::ATTR_SERVER_INFO);
+                $redisVersion = _s('Disabled');
+                if (Cache::isEnabled()) {
+                    $redisInfo = Cache::instance()->redis()->info();
+                    $redisVersion = 'Redis v' . $redisInfo['redis_version'];
+                }
                 $phpIniLoaded = php_ini_loaded_file();
                 $phpIniFiles = php_ini_scanned_files() ?: 'N/A';
                 $phpIniFiles = explode(',', $phpIniFiles);
@@ -594,7 +644,7 @@ return function (Handler $handler) {
                     ],
                     'cli' => [
                         'label' => 'CLI',
-                        'content' => '<i class="fas fa-terminal"></i> <span data-click="select-all">' . PATH_PUBLIC . 'app/bin/legacy</span>',
+                        'content' => '<i class="fas fa-terminal"></i> <span data-click="select-all">' . PATH_PUBLIC . 'app/bin/cli</span>',
                     ],
                     'cron' => [
                         'label' => _s('Cron last ran'),
@@ -626,6 +676,11 @@ return function (Handler $handler) {
                             . '<br>'
                             . $mysqlServerInfo,
                     ],
+                    'cache' => [
+                        'label' => 'Cache',
+                        'content' => '<i class="fas fa-database"></i> '
+                            . $redisVersion,
+                    ],
                     'php_version' => [
                         'label' => _s('PHP version'),
                         'content' => '<span class="fab fa-php"></span> '
@@ -648,28 +703,25 @@ return function (Handler $handler) {
                         'label' => _s('Memory limit'),
                         'content' => '<i class="fas fa-memory"></i> ' . format_bytes(get_ini_bytes(ini_get('memory_limit'))),
                     ],
+                    'graphics' => [
+                        'label' => _s('Graphics library'),
+                        'content' => $graphicsLibraryContent,
+                    ],
+                    'exiftool' => [
+                        'label' => 'ExifTool',
+                        'content' => $exifToolContent,
+                    ],
+                    'exiftran' => [
+                        'label' => 'ExifTran',
+                        'content' => $exifTranContent,
+                    ],
+                    'video' => [
+                        'label' => _s('Video processing'),
+                        'content' => $ffmpegContent,
+                    ],
                 ];
-                $pos = array_search('max_upload_size', array_keys($system_values), true);
+                $pos = array_search('upload_max_filesize', array_keys($system_values), true);
                 array_splice($system_values, $pos, 0, $system_values_more);
-            }
-
-            $graphicsLibraryContent = '<i class="fas fa-feather"></i> ';
-            if (ImageManagerStatic::getManager()->config['driver'] === 'imagick') {
-                $graphicVersion = env()['CHEVERETO_CONTEXT'] === 'saas'
-                    ? 'ImageMagick'
-                    : Imagick::getVersion()['versionString'];
-                $system_values['graphics']['content'] = $graphicsLibraryContent . $graphicVersion;
-            } else {
-                $graphicVersion = env()['CHEVERETO_CONTEXT'] === 'saas'
-                    ? 'GD '
-                    : ('GD Version ' . gd_info()['GD Version']);
-                $system_values['graphics']['content'] = $graphicsLibraryContent . $graphicVersion
-                    . ' JPEG:' . gd_info()['JPEG Support']
-                    . ' GIF:' . gd_info()['GIF Read Support'] . '/' . gd_info()['GIF Create Support']
-                    . ' PNG:' . gd_info()['PNG Support']
-                    . ' WEBP:' . (gd_info()['WebP Support'] ?? 0)
-                    . ' WBMP:' . gd_info()['WBMP Support']
-                    . ' XBM:' . gd_info()['XBM Support'];
             }
             $handler::setVar('system_values', $system_values);
             $handler::setVar('totals', $totals);
@@ -717,7 +769,7 @@ return function (Handler $handler) {
                 ];
                 if ($current) {
                     $handler::setVar('settings', $settings_sections[$k]);
-                    if (in_array($k, ['categories', 'ip-bans', 'external-storage'], true)) {
+                    if (in_array($k, ['categories', 'ip-bans', 'upload-storage'], true)) {
                         $handler::setCond('show_submit', false);
                     }
                 }
@@ -727,6 +779,9 @@ return function (Handler $handler) {
 
                 return;
             }
+            uasort($settings_sections, function ($a, $b) {
+                return strcoll($a['label'], $b['label']);
+            });
             $handler::setVar('settings_menu', $settings_sections);
             if (isset($handler->request()[1])) {
                 $requestSetting = $handler->request()[1];
@@ -791,7 +846,7 @@ return function (Handler $handler) {
 
                         break;
 
-                    case 'external-storage':
+                    case 'upload-storage':
                         $disk_used_all = Stat::getTotals()['disk_used'];
                         $disk_used_external = DB::queryFetchSingle('SELECT SUM(storage_space_used) space_used FROM ' . DB::getTable('storages') . ';')['space_used'];
                         $storage_usage = [
@@ -857,7 +912,7 @@ return function (Handler $handler) {
                                     $page = Page::getSingle($handler->request()[3], 'id');
                                     if ($page) {
                                         // Workaround for default pages
-                                        if (starts_with('default/', $page['file_path'])) {
+                                        if (starts_with('default/', $page['file_path'] ?? '')) {
                                             $page['file_path'] = null;
                                         }
                                     } else {
@@ -1060,9 +1115,11 @@ return function (Handler $handler) {
                     }
                 }
                 if (($handler->request()[1] ?? null) === 'pages') {
-                    $page_file_path_clean = trim(sanitize_relative_path($POST['page_file_path']), '/');
-                    $POST['page_file_path'] = str_replace('default/', '', $page_file_path_clean);
-                    $POST['page_file_path_absolute'] = Page::getPath($POST['page_file_path']);
+                    if (Config::enabled()->phpPages()) {
+                        $page_file_path_clean = trim(sanitize_relative_path($POST['page_file_path']), '/');
+                        $POST['page_file_path'] = str_replace('default/', '', $page_file_path_clean);
+                        $POST['page_file_path_absolute'] = Page::getPath($POST['page_file_path']);
+                    }
                     if (! filter_var($POST['page_sort_display'], FILTER_VALIDATE_INT)) {
                         $POST['page_sort_display'] = null;
                     }
@@ -1076,8 +1133,12 @@ return function (Handler $handler) {
                     $handler::updateVar('safe_post', [
                         'page_is_active' => $POST['page_is_active'],
                         'page_is_link_visible' => $POST['page_is_link_visible'],
-                        'page_file_path_absolute' => $POST['page_file_path_absolute'],
+                        // 'page_file_path_absolute' => $POST['page_file_path_absolute'],
                     ]);
+                }
+                $mailApis = ['smtp'];
+                if (env()['CHEVERETO_SERVICING'] !== 'docker') {
+                    $mailApis[] = 'mail';
                 }
                 $validations = [
                     'website_name' => [
@@ -1166,7 +1227,7 @@ return function (Handler $handler) {
                         'error_msg' => _s('Invalid user id'),
                     ],
                     'email_mode' => [
-                        'validate' => isset($POST['email_mode']) && in_array($POST['email_mode'], ['smtp', 'mail'], true),
+                        'validate' => isset($POST['email_mode']) && in_array($POST['email_mode'], $mailApis, true),
                         'error_msg' => _s('Invalid email mode'),
                     ],
                     'email_smtp_server_port' => [
@@ -1249,10 +1310,6 @@ return function (Handler $handler) {
                         'validate' => isset($POST['page_type'], $POST['page_url_key']) && $POST['page_type'] === 'internal' ? preg_match('/^[\w\-\_\/]+$/', $POST['page_url_key']) : true,
                         'error_msg' => _s('Invalid URL key'),
                     ],
-                    'page_file_path' => [
-                        'validate' => isset($POST['page_type'], $POST['page_file_path']) && $POST['page_type'] === 'internal' ? preg_match('/^[\w\-\_\/]+\.' . (Config::enabled()->phpPages() ? 'html|php' : 'html') . '$/', $POST['page_file_path']) : true,
-                        'error_msg' => _s('Invalid file path'),
-                    ],
                     'page_link_url' => [
                         'validate' => isset($POST['page_type'], $POST['page_link_url']) && $POST['page_type'] === 'link' ? is_url_web($POST['page_link_url']) : true,
                         'error_msg' => _s('Invalid link URL'),
@@ -1308,6 +1365,12 @@ return function (Handler $handler) {
                         'error_msg' => _s('Invalid key'),
                     ],
                 ];
+                if (Config::enabled()->phpPages()) {
+                    $validations['page_file_path'] = [
+                        'validate' => isset($POST['page_type'], $POST['page_file_path']) && $POST['page_type'] === 'internal' ? preg_match('/^[\w\-\_\/]+\.html|php$/', $POST['page_file_path']) : true,
+                        'error_msg' => _s('Invalid file path'),
+                    ];
+                }
                 $customRoutes = [];
                 foreach (['image', 'album', 'user'] as $test) {
                     $tryValue = $POST['route_' . $test] ?? null;
@@ -1389,8 +1452,6 @@ return function (Handler $handler) {
                     if (isset($POST[$k])) {
                         if (! is_numeric($POST[$k]) || $POST[$k] == 0) {
                             $error_max_filesize = _s('Invalid value');
-                        } elseif (get_bytes($POST[$k] . 'MB') > Settings::get('true_upload_max_filesize')) {
-                            $error_max_filesize = _s('Max. allowed %s', format_bytes(Settings::get('true_upload_max_filesize')));
                         }
                         $validations[$k] = [
                             'validate' => ! isset($error_max_filesize),
@@ -1736,15 +1797,17 @@ return function (Handler $handler) {
                                 : null;
 
                             try {
-                                Page::writePage([
-                                    'file_path' => $POST['page_file_path'],
-                                    'code' => $page_write_code,
-                                ]);
-                                if ($handler->request()[2] === 'edit'
-                                    && isset($page['file_path'])
-                                    && ! hash_equals((string) $page['file_path'], (string) $POST['page_file_path'])
-                                ) {
-                                    unlinkIfExists(Page::getPath($page['file_path']));
+                                if (Config::enabled()->phpPages()) {
+                                    Page::writePage([
+                                        'file_path' => $POST['page_file_path'],
+                                        'code' => $page_write_code,
+                                    ]);
+                                    if ($handler->request()[2] === 'edit'
+                                        && isset($page['file_path'])
+                                        && ! hash_equals((string) $page['file_path'], (string) $POST['page_file_path'])
+                                    ) {
+                                        unlinkIfExists(Page::getPath($page['file_path']));
+                                    }
                                 }
                                 if (isset($page['id'])) {
                                     Page::update((int) $page['id'], [
@@ -1841,7 +1904,7 @@ return function (Handler $handler) {
                         }
                         $oldSettings = Settings::get();
                         if ($update_settings !== [] && Settings::update($update_settings)) {
-                            new Settings();
+                            new Settings(reCache: true);
                             $diffSettings = array_diff_key($oldSettings, Settings::get());
                             foreach ($diffSettings as $k => $v) {
                                 Settings::setValue($k, $v);

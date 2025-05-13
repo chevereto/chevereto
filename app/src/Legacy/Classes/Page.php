@@ -13,10 +13,8 @@ namespace Chevereto\Legacy\Classes;
 
 use Chevereto\Config\Config;
 use function Chevereto\Legacy\G\get_base_url;
-use function Chevereto\Legacy\G\get_file_extension;
 use function Chevereto\Legacy\G\is_url;
 use function Chevereto\Legacy\G\safe_html;
-use function Chevereto\Legacy\G\str_replace_last;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\post;
 
@@ -25,7 +23,6 @@ class Page
     public static array $table_fields = [
         'url_key',
         'type',
-        'file_path',
         'link_url',
         'icon',
         'title',
@@ -40,17 +37,17 @@ class Page
         'code',
     ];
 
-    public static function getSingle(string $var, $by = 'url_key'): array
+    public static function getSingle(string $var, string $by = 'url_key', bool $withCode = true): array
     {
         return [];
     }
 
-    public static function getAll(array $args = [], array $sort = []): array
+    public static function getAll(array $args = [], array $sort = [], bool $withCode = false): array
     {
         return [];
     }
 
-    public static function get(array $values, array $sort = [], ?int $limit = null): array
+    public static function get(array $values, array $sort = [], ?int $limit = null, bool $withCode = false): array
     {
         return [];
     }
@@ -62,7 +59,12 @@ class Page
 
     public static function getFields(): array
     {
-        return self::$table_fields;
+        $fields = self::$table_fields;
+        if (Config::enabled()->phpPages()) {
+            $fields[] = 'file_path';
+        }
+
+        return $fields;
     }
 
     public static function update(int $id, array $values): int
@@ -83,7 +85,6 @@ class Page
             'link' => _s('Link'),
         ];
         $page['type_tr'] = $type_tr[$page['type']];
-
         switch ($page['type']) {
             case 'internal':
                 $page['url'] = get_base_url('page/' . $page['url_key']);
@@ -93,28 +94,26 @@ class Page
                         'user' => null, // base
                     ];
                     $file_basename = $page['url_key'] . '.php';
-                    foreach ($filepaths as $k => $v) {
+                    foreach ($filepaths as $v) {
                         if (is_readable(self::getPath($v) . $file_basename)) {
                             $page['file_path'] = $v . $file_basename;
                         }
                     }
-                } else {
-                    $page_extension = get_file_extension($page['file_path']);
-                    if (! Config::enabled()->phpPages() && $page_extension == 'php') {
-                        $page['file_path'] = str_replace_last($page_extension, 'html', $page['file_path']);
-                    }
+                } elseif (Config::enabled()->phpPages()) {
                     if ($page['internal'] === 'contact'
-                    && (post() !== [] || (get()['sent'] ?? '0' == '1'))) {
-                        $page_extension = 'php';
+                        && (post() !== [] || (get()['sent'] ?? '0' == '1'))
+                    ) {
                         $page['file_path'] = 'default/contact.php';
                     }
                 }
                 $page['file_path_absolute'] = self::getPath($page['file_path']);
-                if (! file_exists($page['file_path_absolute'])) {
-                    self::writePage([
-                        'file_path' => $page['file_path'],
-                        'code' => $page['code'] ?? '',
-                    ]);
+                if (Config::enabled()->phpPages()) {
+                    if (! file_exists($page['file_path_absolute'])) {
+                        self::writePage([
+                            'file_path' => $page['file_path'],
+                            'code' => $page['code'] ?? '',
+                        ]);
+                    }
                 }
 
                 break;

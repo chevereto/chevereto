@@ -40,6 +40,59 @@ use function Emoji\detect_emoji;
 
 class Album
 {
+    public const COLUMNS = [
+        'album_id',
+        'album_name',
+        'album_user_id',
+        'album_date',
+        'album_date_gmt',
+        'album_creation_ip',
+        'album_privacy',
+        'album_privacy_extra',
+        'album_password',
+        'album_image_count',
+        'album_description',
+        'album_likes',
+        'album_views',
+        'album_cover_id',
+        'album_parent_id',
+        'album_cta_enable',
+        'album_cta',
+        'user_id',
+        'user_name',
+        'user_username',
+        // 'user_date',
+        // 'user_date_gmt',
+        // 'user_email',
+        'user_avatar_filename',
+        'user_facebook_username',
+        'user_twitter_username',
+        'user_website',
+        'user_background_filename',
+        // 'user_bio',
+        // 'user_timezone',
+        // 'user_language',
+        'user_status',
+        'user_is_admin',
+        'user_is_manager',
+        'user_is_private',
+        // 'user_palette_id',
+        // 'user_newsletter_subscribe',
+        // 'user_show_nsfw_listings',
+        // 'user_image_count',
+        // 'user_album_count',
+        // 'user_image_keep_exif',
+        // 'user_file_meta_tag_camera_model',
+        // 'user_image_expiration',
+        // 'user_registration_ip',
+        'user_likes',
+        'user_liked',
+        'user_following',
+        'user_followers',
+        'user_content_views',
+        // 'user_notifications_unread',
+    ];
+
     public const ENCRYPTED_NAMES = [
         'password',
     ];
@@ -50,8 +103,8 @@ class Album
         bool $pretty = true,
         array $requester = []
     ): array {
+        $columns = self::COLUMNS;
         $tables = DB::getTables();
-        $query = 'SELECT * FROM ' . $tables['albums'] . "\n";
         $joins = [
             'LEFT JOIN ' . $tables['users'] . ' ON ' . $tables['albums'] . '.album_user_id = ' . $tables['users'] . '.user_id',
         ];
@@ -59,7 +112,24 @@ class Album
             if (version_compare(cheveretoVersionInstalled(), '3.9.0', '>=')) {
                 $joins[] = 'LEFT JOIN ' . $tables['likes'] . ' ON ' . $tables['likes'] . '.like_content_type = "album" AND ' . $tables['albums'] . '.album_id = ' . $tables['likes'] . '.like_content_id AND ' . $tables['likes'] . '.like_user_id = ' . $requester['id'];
             }
+            array_push(
+                $columns,
+                ...[
+                    // 'like_id',
+                    // 'like_date',
+                    // 'like_date_gmt',
+                    'like_user_id',
+                    // 'like_content_type',
+                    // 'like_content_id',
+                    // 'like_content_user_id',
+                    // 'like_ip',
+                ]
+            );
         }
+        $columnsString = implode(', ', $columns);
+        $query = "SELECT {$columnsString} FROM "
+            . $tables['albums']
+            . "\n";
         $query .= implode("\n", $joins) . "\n";
         $query .= 'WHERE album_id=:album_id;' . "\n";
         if ($sumView) {
@@ -89,7 +159,7 @@ class Album
         }
 
         return $pretty
-            ? self::formatArray($album_db)
+            ? self::formatArray($album_db, fillCover: false)
             : self::cipherAwareDbRow($album_db);
     }
 
@@ -99,7 +169,10 @@ class Album
             throw new Exception('Empty ids provided', 600);
         }
         $tables = DB::getTables();
-        $query = 'SELECT * FROM ' . $tables['albums'] . "\n";
+        $columnsString = implode(', ', self::COLUMNS);
+        $query = "SELECT {$columnsString} FROM "
+            . $tables['albums']
+            . "\n";
         $joins = [
             'LEFT JOIN ' . $tables['users'] . ' ON ' . $tables['albums'] . '.album_user_id = ' . $tables['users'] . '.user_id',
         ];
@@ -243,17 +316,15 @@ class Album
             }
         }
         $insert = DB::insert('albums', $album_array);
-        if (Login::isLoggedUser()) {
+        if ($values['user_id'] ?? false) {
             DB::increment('users', [
                 'album_count' => '+1',
             ], [
                 'id' => $values['user_id'],
             ]);
-        } else {
-            $addValue = session()['guest_albums'] ?? [];
-            $addValue[] = $insert;
-            sessionVar()->put('guest_albums', $addValue);
+            User::deleteAlbumsCache($values['user_id']);
         }
+
         Stat::track([
             'action' => 'insert',
             'table' => 'albums',
@@ -278,7 +349,7 @@ class Album
         }
         $children = implode(',', $children);
         $tableAlbums = DB::getTable('albums');
-        $query = <<<MySQL
+        $query = <<<SQL
         WITH RECURSIVE Ancestors AS (
             SELECT 1 level,
                 album_id TargetItemId,
@@ -306,7 +377,7 @@ class Album
         WHERE TargetItemId={$id}
         AND album_id IN ({$children});
 
-        MySQL;
+        SQL;
         $rows = DB::queryFetchAll($query) ?: [];
 
         if ($rows !== []) {
@@ -411,9 +482,28 @@ class Album
             throw new Exception('Invalid album name', 140);
         }
 
-        return DB::update('albums', $values, [
+        $return = DB::update('albums', $values, [
             'id' => $id,
         ]);
+        if ($return) {
+            $db = DB::getInstance();
+            $tableAlbums = DB::getTable('albums');
+            $db->query(
+                <<<MySQL
+                SELECT album_user_id
+                FROM {$tableAlbums}
+                WHERE album_id = :album_id;
+                MySQL
+            );
+            $db->bind(':album_id', $id);
+            $fetchSingle = $db->fetchSingle();
+            if ($fetchSingle) {
+                $userId = $fetchSingle['album_user_id'];
+                User::deleteAlbumsCache($userId);
+            }
+        }
+
+        return $return;
     }
 
     public static function populateCover(int $id)
@@ -429,7 +519,7 @@ class Album
     public static function delete(int $id): int
     {
         $images_deleted = 0;
-        $user_id = DB::get('albums', [
+        $userId = DB::get('albums', [
             'id' => $id,
         ])[0]['album_user_id'] ?? null;
         $album = self::getSingle($id);
@@ -460,13 +550,13 @@ class Album
                 $images_deleted++;
             }
         }
-        if (isset($user_id)) {
+        if (isset($userId)) {
             $user_updated_counts = [
                 'album_count' => '-1',
                 'image_count' => '-' . $images_deleted,
             ];
             DB::increment('users', $user_updated_counts, [
-                'id' => $user_id,
+                'id' => $userId,
             ]);
         }
         DB::delete('notifications', [
@@ -479,6 +569,8 @@ class Album
             'value' => '-1',
             'date_gmt' => $album['date_gmt'],
         ]);
+        Listing::deleteTypeIdCache('a', $id);
+        User::deleteAlbumsCache($userId);
 
         return $images_deleted;
     }
@@ -509,25 +601,16 @@ class Album
         return $db->exec();
     }
 
-    public static function fill(array &$album, array &$user = [])
+    public static function fill(array &$album, array &$user = [], bool $fillCover = true)
     {
         static::fillEssential($album, $user);
         if (! empty($user)) {
             User::fill($user);
         }
-        $display_url = '';
-        $display_width = '';
-        $display_height = '';
+        $display_url = $album['display_url'] ?? '';
+        $display_width = $album['display_width'] ?? '';
+        $display_height = $album['display_height'] ?? '';
         if (! empty($album['cover_id'])) {
-            $image = Image::getSingle((int) $album['cover_id']);
-            if ($image !== []) {
-                $image = DB::formatRow($image);
-                unset($image['album']);
-                Image::fill($image);
-                $display_url = $image['display_url'];
-                $display_width = $image['display_width'];
-                $display_height = $image['display_height'];
-            }
             $album['cover_id_encoded'] = encodeID((int) $album['cover_id']);
         }
         if (! empty($album['parent_id'])) {
@@ -627,27 +710,27 @@ class Album
         $album['name_truncated_html'] = safe_html($album['name_truncated']);
     }
 
-    public static function cipherAwareDbRow(array &$dbrow): array
+    public static function cipherAwareDbRow(array &$row): array
     {
-        if (isset($dbrow['album_password']) && hasEncryption()) {
+        if (isset($row['album_password']) && hasEncryption()) {
             try {
-                $dbrow['album_password'] = decrypt($dbrow['album_password']);
+                $row['album_password'] = decrypt($row['album_password']);
             } catch (Throwable) {
-                $dbrow['album_password'] = $dbrow['album_password'];
+                $row['album_password'] = $row['album_password'];
             }
         }
 
-        return $dbrow;
+        return $row;
     }
 
-    public static function formatArray(array $dbrow, bool $safe = false): array
+    public static function formatArray(array $row, bool $safe = false, bool $fillCover = true): array
     {
-        self::cipherAwareDbRow($dbrow);
-        $output = DB::formatRow($dbrow);
+        self::cipherAwareDbRow($row);
+        $output = DB::formatRow($row);
         if (! isset($output['user'])) {
             $output['user'] = [];
         }
-        self::fill($output, $output['user']);
+        self::fill($output, $output['user'], $fillCover);
         $output['views_label'] = _n('view', 'views', $output['views'] ?? 0);
         $output['how_long_ago'] = time_elapsed_string($output['date_gmt'] ?? '');
         if (isset($output['images_slice'])) {
@@ -705,7 +788,7 @@ class Album
         int $limit = 5,
     ): array {
         $tableAlbums = DB::getTable('albums');
-        $query = <<<MySQL
+        $query = <<<SQL
         WITH RECURSIVE Ancestors AS (
             SELECT 1 level,
                 album_id TargetItemId,
@@ -736,7 +819,7 @@ class Album
         SELECT album_id, album_name, album_privacy, album_user_id
         FROM Ancestors
         WHERE TargetItemId={$id};
-        MySQL;
+        SQL;
         $rows = DB::queryFetchAll($query) ?: [];
         $ancestors = [];
         $isManager = $requester['is_admin']
@@ -756,7 +839,7 @@ class Album
             $ancestors[] = $row;
         }
 
-        return $rows;
+        return $ancestors;
     }
 
     protected static function handleFlood(): array

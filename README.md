@@ -9,23 +9,33 @@
 [![Chevereto Docs](https://img.shields.io/badge/chevereto-docs-50C878?style=flat-square)](https://v4-docs.chevereto.com/)
 [![Chevereto Community](https://img.shields.io/badge/chevereto-community-blue?style=flat-square)](https://chevereto.com/community)
 [![Chevereto Demo](https://img.shields.io/badge/chevereto-demo-d4af37?style=flat-square&color=red)](https://demo.chevereto.com)
-[![AGPL-3.0-only](https://img.shields.io/github/license/chevereto/chevereto?style=flat-square)](LICENSE)
-[![Legacy stars](https://img.shields.io/github/stars/rodber/chevereto-free?style=flat-square&logo=github&label=Legacy%20stars&color=gold)](https://github.com/rodber/chevereto-free)
+[![Chevereto Free](https://img.shields.io/badge/chevereto-editions-gold?style=flat-square)](https://v4-docs.chevereto.com/introduction/editions/compare.html)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
 > 🔔 [Subscribe](https://chevereto.com/go/newsletter) to don't miss any update regarding Chevereto.
 
 Chevereto is a robust, self-hosted media-sharing platform that prioritizes flexibility and control. It enables you to build and manage a media-sharing website on your own server, granting you complete autonomy over your hosting environment and policies. With Chevereto, you eliminate the risk of platform restrictions and shutdowns, ensuring your site operates entirely on your terms.
 
-This is the repository for **Chevereto Free** edition. You can [compare editions](https://v4-docs.chevereto.com/introduction/editions/compare.html) to find the Chevereto edition that best suits your needs.
-
 ![screen](.github/screen/user-listing-selected.webp)
+
+## Features
+
+Chevereto offers a comprehensive suite of features that make it the ultimate image and video sharing software:
+
+* **Media Management**: Support for images, videos, categories, tags and albums with advanced organization tools
+* **User Experience**: Customizable listings, responsive design, and intuitive user interface
+* **Privacy Controls**: Granular content privacy settings and user management
+* **Performance**: Optimized for speed with CDN support, caching, and image optimization
+* **Customization**: Turnkey options, language, and extensive API for integration
+
+You can check the complete list of features in our [Features page](https://chevereto.com/features) and you can also [compare Chevereto editions](https://v4-docs.chevereto.com/introduction/editions/compare.html).
 
 ## Requirements
 
-* A [webserver](https://v4-docs.chevereto.com/application/stack/web-server.html) (Apache recommended)
-* [PHP](https://v4-docs.chevereto.com/application/stack/php.html) 8.1+ with [extensions](https://v4-docs.chevereto.com/application/stack/php.html#extensions)
-* [MySQL Server](https://v4-docs.chevereto.com/application/stack/mysql-server.html) 8.0.1+ or MariaDB Server 10.2.2+
+* [Webserver](https://v4-docs.chevereto.com/application/stack/web-server.html)
+* [PHP](https://v4-docs.chevereto.com/application/stack/php.html)
+* [MySQL Server](https://v4-docs.chevereto.com/application/stack/mysql-server.html) (MariaDB Server)
+* [Redis](https://v4-docs.chevereto.com/application/stack/redis.html) (optional)
 
 ## Download
 

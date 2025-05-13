@@ -12,8 +12,6 @@
 namespace Chevereto\Vars\Traits;
 
 use Chevereto\Traits\Instance\AssertNoInstanceTrait;
-use function DeepCopy\deep_copy;
-use Ds\Map;
 
 trait ImmutableMapTrait
 {
@@ -21,18 +19,10 @@ trait ImmutableMapTrait
 
     private static array $array = [];
 
-    private static Map $map;
-
     public function __construct(array $array)
     {
         $this->assertNoInstance();
         static::$array = $array;
-        static::$map = new Map($array);
-    }
-
-    public static function map(): Map
-    {
-        return deep_copy(static::$map);
     }
 
     public static function toArray(): array

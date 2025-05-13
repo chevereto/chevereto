@@ -81,6 +81,7 @@ document.getElementById("chevereto-js").addEventListener("load", function() {
 			image_types: <?php echo json_encode(Image::getEnabledImageExtensions()); ?>,
 			moderation: <?php echo json_encode(Handler::cond('moderate_uploads')); ?>,
 			maxQueue: <?php echo json_encode(Handler::var('upload_max_queue')); ?>,
+			chunkSize: <?php echo json_encode(getSetting('chunk_upload_size')); ?>,
 		},
 		user: {
 			avatar_max_filesize: "<?php echo getSetting('user_image_avatar_max_filesize_mb') . ' MB'; ?>",

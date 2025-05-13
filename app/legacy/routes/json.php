@@ -14,6 +14,7 @@ use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\Album;
 use Chevereto\Legacy\Classes\ApiKey;
+use Chevereto\Legacy\Classes\Categories;
 use Chevereto\Legacy\Classes\Category;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Follow;
@@ -31,10 +32,12 @@ use Chevereto\Legacy\Classes\Stat;
 use Chevereto\Legacy\Classes\Storage;
 use Chevereto\Legacy\Classes\Tag;
 use Chevereto\Legacy\Classes\TwoFactor;
+use Chevereto\Legacy\Classes\Upload;
 use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
 use Hybridauth\Hybridauth;
 use function Chevere\Message\message;
+use function Chevere\Standard\randomString;
 use function Chevere\ThrowableHandler\throwableHandler;
 use function Chevere\Writer\writers;
 use function Chevere\xrDebug\PHP\throwableHandler as XrThrowableHandler;
@@ -47,6 +50,8 @@ use function Chevereto\Legacy\G\datetime;
 use function Chevereto\Legacy\G\datetimegmt;
 use function Chevereto\Legacy\G\fetch_url;
 use function Chevereto\Legacy\G\get_base_url;
+use function Chevereto\Legacy\G\get_bytes;
+use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\json_document_output;
@@ -54,6 +59,7 @@ use function Chevereto\Legacy\G\nullify_string;
 use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\getVariable;
 use function Chevereto\Legacy\isDebug;
 use function Chevereto\Legacy\isShowEmbedContent;
 use function Chevereto\Legacy\send_mail;
@@ -62,14 +68,17 @@ use function Chevereto\Vars\env;
 use function Chevereto\Vars\files;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\request;
+use function Chevereto\Vars\requestHeaders;
 use function Chevereto\Vars\session;
 
 return function (Handler $handler) {
     try {
-        $REQUEST = request();
-        $FILES = files();
         $POST = post();
-        if (! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
+        $REQUEST = request();
+        $HEADERS = requestHeaders();
+        $REQUEST['auth_token'] ??= $HEADERS['X-Auth-Token'] ?? '';
+        $REQUEST['action'] ??= $HEADERS['X-Action'] ?? '';
+        if (! $handler::checkAuthToken($REQUEST['auth_token'] ?? '')) {
             throw new Exception(_s('Request denied'), 401);
         }
         $logged_user = Login::getUser();
@@ -88,32 +97,188 @@ return function (Handler $handler) {
             }
             $import = new Import();
         }
+        if (in_array($doing, ['chunked-upload', 'upload-chunk', 'upload'], true)) {
+            if (! $handler::cond('upload_allowed')) {
+                throw new Exception(_s('Request denied'), 403);
+            }
+            $REQUEST['type'] ??= $HEADERS['X-Type'] ?? '';
+            if ($doing !== 'upload-chunk') {
+                $source = $REQUEST['type'] === 'file'
+                    ? files()['source']
+                    : $REQUEST['source'];
+            }
+            /** @var ?int $ownerId */
+            $ownerId = $logged_user['id'] ?? null;
+            $REQUEST['owner'] ??= $HEADERS['X-Owner'] ?? null;
+            if ((Login::isAdmin() || Login::isManager()) && ! empty($REQUEST['owner'])) {
+                $ownerId = decodeID($REQUEST['owner']);
+            }
+        }
+        $chunkUploadSize = getSetting('chunk_upload_size');
         switch ($doing) {
+            case 'chunked-upload':
+                $maxSize = get_bytes(getSetting('upload_max_filesize_mb') . ' MB');
+                $checksum = $REQUEST['checksum'] ?? '';
+                $size = (int) ($REQUEST['size'] ?? 0);
+                if (! preg_match('/^[a-f0-9]{16,}$/', $checksum)) {
+                    throw new Exception('Invalid file checksum', 100);
+                }
+                if ($size === 0) {
+                    throw new Exception('Invalid file size', 100);
+                }
+                if ($source === '') {
+                    throw new Exception('Invalid file name', 100);
+                }
+                $extension = strtolower(pathinfo($source, PATHINFO_EXTENSION));
+                if ($extension === '') {
+                    throw new Exception('Missing file extension', 100);
+                }
+                if (! in_array($extension, Image::getEnabledImageExtensions(), true)) {
+                    throw new Exception('Unsupported file extension', 100);
+                }
+                if ($size > $maxSize) {
+                    throw new Exception('File size exceeds maximum', 101);
+                }
+                $do_dupe_check = ! getSetting('enable_duplicate_uploads') && ! Login::isAdmin();
+                if ($do_dupe_check && (Image::isDuplicatedChunkUpload($checksum) || Image::isDuplicatedUpload($checksum))) {
+                    throw new Exception(_s('Duplicated upload'), 101);
+                }
+                $token = randomString(64);
+                $uploadId = DB::insert('uploads', [
+                    'user_id' => $ownerId,
+                    'uploader_ip' => get_client_ip(),
+                    'token' => $token,
+                    'checksum' => $checksum,
+                    'params' => json_encode([
+                        'source' => $REQUEST['source'],
+                    ]),
+                    'chunks' => ceil($size / $chunkUploadSize),
+                ]);
+                $json_array['status_code'] = 200;
+                $json_array['success'] = [
+                    'message' => 'chunked upload',
+                    'code' => 200,
+                    'upload_id' => encodeID($uploadId),
+                    'token' => $token,
+                    'hash' => hash_hmac(
+                        'sha256',
+                        $uploadId . $token,
+                        getVariable('crypt_salt')->string()
+                    ),
+                ];
+
+                break;
+            case 'upload-chunk':
+                if ($logged_user !== []) {
+                    session_write_close();
+                }
+                $uploadId = decodeID($HEADERS['X-Upload-Id']);
+                $index = (int) ($HEADERS['X-Index'] ?? 0);
+                $token = $HEADERS['X-Token'] ?? '';
+                $hash = $HEADERS['X-Hash'] ?? '';
+                if ($index === 0) {
+                    throw new Exception('Invalid chunk index', 100);
+                }
+                if ($token === '') {
+                    throw new Exception('Invalid token', 100);
+                }
+                if ($hash === '') {
+                    throw new Exception('Invalid hash', 100);
+                }
+                $calcHash = hash_hmac(
+                    'sha256',
+                    $uploadId . $token,
+                    getVariable('crypt_salt')->string()
+                );
+                if (! hash_equals($calcHash, $hash)) {
+                    throw new Exception('Invalid hash', 100);
+                }
+                $uploadWhere = [
+                    'id' => $uploadId,
+                    'token' => $token,
+                ];
+                if ($logged_user !== []) {
+                    $uploadWhere['user_id'] = $logged_user['id'];
+                }
+                $uploadRow = DB::get(
+                    table: 'uploads',
+                    where: $uploadWhere,
+                    limit: 1,
+                );
+                if (! $uploadRow) {
+                    throw new Exception('Missing upload id', 100);
+                }
+                if ($index > $uploadRow['upload_chunks']) {
+                    throw new Exception('Invalid chunk index', 100);
+                }
+                $db = DB::getInstance();
+                $db->query(
+                    'SELECT COUNT(*) c FROM '
+                    . DB::getTable('uploads_chunks')
+                    . ' WHERE upload_chunk_upload_id=:upload_id AND upload_chunk_index=:chunk_index;'
+                );
+                $db->bind(':upload_id', $uploadId);
+                $db->bind(':chunk_index', $index);
+                if ($db->fetchSingle()['c'] > 0) {
+                    throw new Exception('Chunk already uploaded', 100);
+                }
+                // $chunkFile = $source['tmp_name'];
+                // if (! file_exists($chunkFile)) {
+                //     throw new Exception('Missing chunk file', 100);
+                // }
+                // $chunkFilesize = filesize($chunkFile);
+                // if ($chunkFilesize === 0) {
+                //     throw new Exception('Empty chunk file', 100);
+                // }
+                // if ($chunkFilesize > $chunkUploadSize) {
+                //     throw new Exception('Chunk file size exceeds maximum', 101);
+                // }
+                // Handle chunk upload as a stream (for "source" stream input)
+                $chunkFile = Upload::getTempNam(suffix: "{$uploadId}_{$index}");
+                $inputStream = fopen('php://input', 'rb');
+                if ($inputStream === false) {
+                    throw new Exception('Failed to open input stream', 100);
+                }
+                $outputStream = fopen($chunkFile, 'wb');
+                if ($outputStream === false) {
+                    fclose($inputStream);
+
+                    throw new Exception('Failed to open chunk file for writing', 100);
+                }
+                stream_copy_to_stream($inputStream, $outputStream);
+                fclose($inputStream);
+                fclose($outputStream);
+                if (! file_exists($chunkFile) || filesize($chunkFile) === 0) {
+                    throw new Exception('Failed to write chunk file', 100);
+                }
+                DB::insert('uploads_chunks', [
+                    'upload_id' => $uploadId,
+                    'index' => $index,
+                    'path' => $chunkFile,
+                ]);
+                $json_array['status_code'] = 200;
+                $json_array['success'] = [
+                    'message' => 'chunk uploaded',
+                    'code' => 200,
+                ];
+
+                break;
             case 'upload': // EX 100
                 // NOTE: This is considering assets and user uploads as the same "upload" action
-
-                $source = $REQUEST['type'] === 'file'
-                    ? $FILES['source']
-                    : $REQUEST['source'];
                 $type = $REQUEST['type'];
-                /** @var ?int $owner_id */
-                $owner_id = ! empty($REQUEST['owner'])
-                    ? decodeID($REQUEST['owner'])
-                    : ($logged_user['id'] ?? null);
-
                 if (isset($REQUEST['what'])
                     && in_array($REQUEST['what'], ['avatar', 'background'], true)
                 ) {
                     if ($logged_user === []) {
                         throw new Exception(_s('Login needed'), 403);
                     }
-                    if (! $handler::cond('content_manager') && $owner_id !== $logged_user['id']) {
+                    if (! $handler::cond('content_manager') && $ownerId !== $logged_user['id']) {
                         throw new Exception('Invalid content owner request', 115);
                     }
                     $user_picture_upload = User::uploadPicture(
-                        $owner_id === $logged_user['id']
+                        $ownerId === $logged_user['id']
                             ? $logged_user
-                            : $owner_id,
+                            : $ownerId,
                         $REQUEST['what'],
                         $source
                     );
@@ -125,15 +290,13 @@ return function (Handler $handler) {
 
                     break;
                 }
-                if (! $handler::cond('upload_allowed')) {
-                    throw new Exception(_s('Request denied'), 403);
-                }
                 if ($handler::cond('forced_private_mode')) {
                     $REQUEST['privacy'] = getSetting('website_content_privacy_mode');
                 }
                 if (! empty($REQUEST['album_id'])) {
                     $REQUEST['album_id'] = decodeID($REQUEST['album_id']);
                 }
+                // TODO: Unify this check
                 if (! $handler::cond('content_manager') && getSetting('akismet')) {
                     Akismet::checkImage(
                         title: $REQUEST['title'] ?? null,
@@ -144,7 +307,7 @@ return function (Handler $handler) {
                 }
                 $uploadToWebsite = Image::uploadToWebsite($source, $logged_user, $REQUEST);
                 if ($logged_user !== []) {
-                    session_write_close(); // guest session uploads
+                    session_write_close();
                 }
                 $uploaded_id = intval($uploadToWebsite[0]);
                 $json_array['status_code'] = 200;
@@ -198,7 +361,7 @@ return function (Handler $handler) {
                 if (! empty($REQUEST['albumid'])) {
                     $album_id = decodeID($REQUEST['albumid']);
                 }
-                $owner_id = null;
+                $ownerId = null;
                 $where = '';
                 switch ($list_request) {
                     case 'images':
@@ -219,11 +382,11 @@ return function (Handler $handler) {
                             ];
                         }
                         if (! empty($REQUEST['userid'])) {
-                            $owner_id = decodeID($REQUEST['userid']);
+                            $ownerId = decodeID($REQUEST['userid']);
                             $where .= ($where === '' ? 'WHERE' : ' AND') . ' image_user_id=:image_user_id';
                             $binds[] = [
                                 'param' => ':image_user_id',
-                                'value' => $owner_id,
+                                'value' => $ownerId,
                             ];
                         }
                         if (isset($album_id)) {
@@ -234,12 +397,12 @@ return function (Handler $handler) {
                             ];
                             $album = Album::getSingle($album_id);
                             if ($album['user']['id'] ?? false) {
-                                $owner_id = $album['user']['id'];
+                                $ownerId = $album['user']['id'];
                             }
                             if ($album['privacy'] === 'password'
                                 && (
                                     ! $handler::cond('content_manager')
-                                    && $owner_id !== ($logged_user['id'] ?? 0)
+                                    && $ownerId !== ($logged_user['id'] ?? 0)
                                     && ! Album::checkSessionPassword($album)
                                 )
                             ) {
@@ -267,11 +430,11 @@ return function (Handler $handler) {
                         $binds = [];
                         $where = '';
                         if (! empty($REQUEST['userid'])) {
-                            $owner_id = decodeID($REQUEST['userid']);
+                            $ownerId = decodeID($REQUEST['userid']);
                             $where .= 'WHERE album_user_id=:album_user_id';
                             $binds[] = [
                                 'param' => ':album_user_id',
-                                'value' => $owner_id,
+                                'value' => $ownerId,
                             ];
                         }
                         if (isset($REQUEST['from'])) {
@@ -404,14 +567,14 @@ return function (Handler $handler) {
                     }
                 }
                 $listing->setWhere($where);
-                if (isset($owner_id)) {
-                    $listing->setOwner((int) $owner_id);
+                if (isset($ownerId)) {
+                    $listing->setOwner((int) $ownerId);
                 }
                 $listing->setRequester($logged_user);
                 if (in_array($list_request, ['images', 'albums'], true)
                     && (
                         $handler::cond('content_manager')
-                        || ($logged_user !== [] && $owner_id === $logged_user['id'])
+                        || ($logged_user !== [] && $ownerId === $logged_user['id'])
                     )
                 ) {
                     $listing->setTools(true);
@@ -432,6 +595,7 @@ return function (Handler $handler) {
                         $listing->bind($bind['param'], $bind['value']);
                     }
                 }
+                $listing->setOutputAssoc(true);
                 $listing->exec();
                 $json_array['status_code'] = 200;
                 if ($doing === 'get-album-contents'
@@ -456,7 +620,7 @@ return function (Handler $handler) {
                 $editing_request = $REQUEST['editing'];
                 $editing = $editing_request;
                 $type = $REQUEST['edit'];
-                $owner_id = ! empty($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'];
+                $ownerId = ! empty($REQUEST['owner']) ? decodeID($REQUEST['owner']) : $logged_user['id'];
                 if (! in_array($type, ['image', 'album', 'images', 'albums', 'category', 'tag', 'storage', 'ip_ban'], true)) {
                     throw new Exception('Invalid edit request', 100);
                 }
@@ -702,6 +866,7 @@ return function (Handler $handler) {
                             'code' => 200,
                         ];
                         $json_array['category'] = $category;
+                        Categories::deleteCache();
 
                         break;
                     case 'tag':
@@ -891,6 +1056,7 @@ return function (Handler $handler) {
                     'code' => 200,
                 ];
                 $json_array['category'] = $category;
+                Categories::deleteCache();
 
                 break;
             case 'add-ip_ban':
@@ -965,12 +1131,7 @@ return function (Handler $handler) {
                     throw new Exception(_s('Login needed'), 403);
                 }
                 $editing = $REQUEST['editing'];
-                $owner_id = $logged_user['id'];
-                if (! $handler::cond('content_manager')
-                    && $owner_id !== $logged_user['id']
-                ) {
-                    throw new Exception('Invalid content owner request', 110);
-                }
+                $ownerId = $logged_user['id'];
                 $ids = [];
                 foreach ($editing['ids'] as $id) {
                     $ids[] = decodeID($id);
@@ -1039,23 +1200,23 @@ return function (Handler $handler) {
                 if ($logged_user === [] && $album['new'] === false) {
                     throw new Exception('Invalid request', 403);
                 }
-                $owner_id = ! empty($REQUEST['owner'])
+                $ownerId = ! empty($REQUEST['owner'])
                     ? decodeID($REQUEST['owner'])
                     : ($logged_user['id'] ?? null);
-                if (! $handler::cond('content_manager') && $owner_id !== ($logged_user['id'] ?? null)) {
-                    throw new Exception('Invalid content owner request' . var_export($owner_id, true), 112);
+                if (! $handler::cond('content_manager') && $ownerId !== ($logged_user['id'] ?? null)) {
+                    throw new Exception('Invalid content owner request', 112);
                 }
 
                 if ($handler::cond('forced_private_mode')) {
                     $album['privacy'] = getSetting('website_content_privacy_mode');
                 }
                 if (! $handler::cond('content_manager') && getSetting('akismet') && $album['new']) {
-                    Akismet::checkAlbum($album['name'], $album['description'], $owner_id === $logged_user['id'] ? $logged_user_source_db : null);
+                    Akismet::checkAlbum($album['name'], $album['description'], $ownerId === $logged_user['id'] ? $logged_user_source_db : null);
                 }
                 $album_id = $album['new']
                     ? Album::insert([
                         'name' => $album['name'],
-                        'user_id' => $owner_id,
+                        'user_id' => $ownerId,
                         'privacy' => $album['privacy'],
                         'description' => $album['description'],
                         'password' => $album['password'] ?? null,
@@ -1116,7 +1277,7 @@ return function (Handler $handler) {
                 }
                 $album_move_db = isset($album_db['album_id'])
                     ? Album::getSingle(id: (int) $album_db['album_id'], pretty: false)
-                    : User::getStreamAlbum($owner_id);
+                    : User::getStreamAlbum($ownerId);
                 $json_array['status_code'] = 200;
                 $json_array['success'] = [
                     'message' => 'Content added to album',
@@ -1155,7 +1316,7 @@ return function (Handler $handler) {
                 ) {
                     throw new Exception('Forbidden action', 403);
                 }
-                $owner_id = isset($REQUEST['owner'])
+                $ownerId = isset($REQUEST['owner'])
                     ? decodeID($REQUEST['owner'])
                     : $logged_user['id'];
                 $multiple = ($REQUEST['multiple'] ?? null) == 'true';
@@ -1165,7 +1326,7 @@ return function (Handler $handler) {
                 }
                 if (
                     in_array($type, ['avatar', 'background', 'user', 'ip_ban', 'api_key', 'two_factor'], true)
-                    && ! $handler::cond('content_manager') && $owner_id !== $logged_user['id']
+                    && ! $handler::cond('content_manager') && $ownerId !== $logged_user['id']
                 ) {
                     throw new Exception('Invalid content owner request', 113);
                 }
@@ -1182,7 +1343,7 @@ return function (Handler $handler) {
                     throw new Exception('Invalid content manager request', 115);
                 }
                 if (in_array($type, ['avatar', 'background'], true)) {
-                    User::deletePicture($owner_id === $logged_user['id'] ? $logged_user : $owner_id, $type);
+                    User::deletePicture($ownerId === $logged_user['id'] ? $logged_user : $ownerId, $type);
                     $json_array['status_code'] = 200;
                     $json_array['success'] = [
                         'message' => 'Profile background deleted',
@@ -1193,9 +1354,9 @@ return function (Handler $handler) {
                 }
                 if ($type === 'two_factor') {
                     $userTarget = intval(
-                        $owner_id === $logged_user['id']
+                        $ownerId === $logged_user['id']
                             ? $logged_user['id']
-                            : $owner_id
+                            : $ownerId
                     );
                     if (! TwoFactor::hasFor($userTarget)) {
                         $status_code = 403;
@@ -1215,9 +1376,9 @@ return function (Handler $handler) {
                 }
                 if ($type === 'api_key') {
                     $userTarget = intval(
-                        $owner_id === $logged_user['id']
+                        $ownerId === $logged_user['id']
                             ? $logged_user['id']
-                            : $owner_id
+                            : $ownerId
                     );
                     $apiKey = ApiKey::getUserKey($userTarget);
                     if ($apiKey !== []) {
@@ -1232,7 +1393,9 @@ return function (Handler $handler) {
                     break;
                 }
                 if ($type === 'user') {
-                    $delete_user_id = $owner_id === $logged_user['id'] ? $logged_user : $owner_id;
+                    $delete_user_id = $ownerId === $logged_user['id']
+                        ? $logged_user
+                        : $ownerId;
                     $delete_user = User::getSingle($delete_user_id, 'id');
                     if ($delete_user === []) {
                         throw new Exception(_s('%s not found', _n('User', 'Users', 1)), 100);
@@ -1266,6 +1429,7 @@ return function (Handler $handler) {
                         ], [
                             'category_id' => $deleting['id'],
                         ]);
+                        Categories::deleteCache();
                     } else {
                         throw new Exception('Error deleting category', 400);
                     }
@@ -1738,7 +1902,7 @@ return function (Handler $handler) {
 
                 break;
             case 'paletteSet':
-                if ($logged_user === []) {
+                if ($logged_user === [] || ! getSetting('theme_palette_user_select')) {
                     throw new Exception('Invalid request', 403);
                 }
                 $palette_id = (int) $REQUEST['palette_id'];

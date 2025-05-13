@@ -20,7 +20,10 @@ use Chevere\xrDebug\PHP\Xr;
 use Chevere\xrDebug\PHP\XrInstance;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\AssetStorage;
+use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\KeyValue;
+use Chevereto\Legacy\Classes\KeyValueNull;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Mailer;
@@ -34,6 +37,7 @@ use Chevereto\Vars\EnvVar;
 use Chevereto\Vars\FilesVar;
 use Chevereto\Vars\GetVar;
 use Chevereto\Vars\PostVar;
+use Chevereto\Vars\RequestHeadersVar;
 use Chevereto\Vars\RequestVar;
 use Chevereto\Vars\ServerVar;
 use Chevereto\Vars\SessionVar;
@@ -45,6 +49,7 @@ use OutOfBoundsException;
 use OverflowException;
 use PDO;
 use PHPMailer\PHPMailer\SMTP;
+use Redis;
 use RuntimeException;
 use Throwable;
 use function Chevere\Filesystem\filePhpForPath;
@@ -64,7 +69,7 @@ use function Chevereto\Legacy\G\get_bytes;
 use function Chevereto\Legacy\G\get_client_ip;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_file_extension;
-use function Chevereto\Legacy\G\get_image_fileinfo as GGet_image_fileinfo;
+use function Chevereto\Legacy\G\get_image_fileinfo;
 use function Chevereto\Legacy\G\get_ini_bytes;
 use function Chevereto\Legacy\G\get_public_url;
 use function Chevereto\Legacy\G\hasEnvDbInfo;
@@ -264,28 +269,28 @@ function get_chv_default_setting(string $value = '', bool $safe = false): mixed
     return $safe ? safe_html($return) : $return;
 }
 
-function getStorages(): array|bool
+function getStoragesFormList(): array
 {
-    $where = [];
     if (version_compare(cheveretoVersionInstalled(), '4.2.0', '>=')) {
-        $where = [
-            'deleted_at' => null,
-        ];
-    }
-    $storages = DB::get(
-        table: 'storages',
-        where: $where,
-    );
-    if ($storages) {
-        foreach ($storages as $k => $v) {
-            $storages[$k] = DB::formatRow($v);
-        }
-        $return = $storages;
+        $where = 'WHERE storage_deleted_at IS NULL';
     } else {
-        $return = false;
+        $where = '';
+    }
+    $db = DB::getInstance();
+    $tableStorages = DB::getTable('storages');
+    $db->query(
+        <<<MySQL
+        SELECT storage_id `id`, storage_name `name`
+        FROM {$tableStorages}
+        {$where};
+        MySQL
+    );
+    $rows = $db->fetchAll() ?: [];
+    foreach ($rows as &$v) {
+        $v = DB::formatRow($v);
     }
 
-    return $return;
+    return $rows;
 }
 
 function get_banner_code(string $banner, bool $safe_html = true): string
@@ -376,6 +381,10 @@ function getSystemNotices(): array
     }
     if (preg_match('/@chevereto\.example/', getSetting('email_from_email'))
         || preg_match('/@chevereto\.example/', getSetting('email_incoming_email'))
+        || (
+            env()['CHEVERETO_SERVICING'] !== 'server'
+            && empty(getSetting('email_smtp_server'))
+        )
     ) {
         $system_notices[] = _s(
             "You haven't changed the default email settings. Go to %emailSettings% to fix this.",
@@ -395,9 +404,9 @@ function getSystemNotices(): array
             [
                 // '%c' => $minActiveStorages,
                 '%s' => '<a href="'
-                        . get_base_url('dashboard/settings/external-storage')
+                        . get_base_url('dashboard/settings/upload-storage')
                         . '"><i class="fas fa-hdd margin-right-035em"></i>'
-                        . _s('External storage')
+                        . _s('Upload storage')
                         . '</a>',
             ]
         );
@@ -413,9 +422,9 @@ function getSystemNotices(): array
         $system_notices[] = _s(
             'You need to configure %s to upload website assets.',
             '<a href="'
-            . get_base_url('dashboard/settings/asset-storage')
+            . get_base_url('dashboard/settings/site-storage')
             . '"><i class="fas fa-hdd margin-right-035em"></i>'
-            . _s('Asset storage')
+            . _s('Site storage')
             . '</a>'
         );
     }
@@ -457,21 +466,33 @@ function captcha_check(): object
 {
     if (getSetting('captcha_api') == '3') {
         return (object) [
-            'is_valid' => sessionVar()->hasKey('isHuman')
+            'is_valid' => sessionVar()->has('isHuman')
                 ? (bool) session()['isHuman']
                 : false,
         ];
     }
-    $endpoint = match (getSetting('captcha_api')) {
-        '2' => 'https://www.recaptcha.net/recaptcha/api/siteverify',
-        'hcaptcha' => 'https://hcaptcha.com/siteverify',
-        default => throw new LogicException(message('Invalid captcha API')),
-    };
+    switch (getSetting('captcha_api')) {
+        case '2':
+            $endpoint = 'https://www.recaptcha.net/recaptcha/api/siteverify';
+            $response = post()['g-recaptcha-response'] ?? '';
+
+            break;
+        case 'hcaptcha':
+            $endpoint = 'https://hcaptcha.com/siteverify';
+            $response = post()['h-captcha-response'] ?? '';
+
+            break;
+        case 'turnstile':
+            $endpoint = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+            $response = post()['cf-turnstile-response'] ?? '';
+
+            break;
+        default:
+            throw new LogicException(message('Invalid captcha API'));
+    }
     $params = [
         'secret' => getSetting('captcha_secret'),
-        'response' => post()['g-recaptcha-response']
-            ?? post()['h-captcha-response']
-            ?? '',
+        'response' => $response,
         'remoteip' => get_client_ip(),
     ];
     $fetch = fetch_url(
@@ -674,7 +695,7 @@ function sessionCrypt(string $string, bool $encrypt = true): string|bool
      * @var string $iv
      */
     $fn = 'openssl_' . ($encrypt ? 'encrypt' : 'decrypt');
-    $secret = md5(
+    $secret = hashString(
         getVariable('crypt_salt')->nullString() ?? ''
     );
 
@@ -798,7 +819,7 @@ function upload_to_content_images(array $source, string $what): void
     }
     $name = $typeArr[$what]['name'];
     if ($typeArr[$what]['type'] === 'image') {
-        $fileinfo = GGet_image_fileinfo($source['tmp_name']);
+        $fileinfo = get_image_fileinfo($source['tmp_name']);
         switch ($what) {
             case 'favicon_image':
                 if (! $fileinfo['ratio']) {
@@ -920,7 +941,7 @@ function upload_to_content_images(array $source, string $what): void
             'key' => $what,
         ]);
         $dbArray = [
-            'md5' => md5_file($uploaded['file']),
+            'checksum' => hashFile($uploaded['file']),
             'filename' => $filename,
             'file_path' => $storagePath,
             'blob' => $fp,
@@ -1091,7 +1112,6 @@ function loaderHandler(
     $envVar['CHEVERETO_ID_HANDLE'] = '';
         $envVar = array_merge($envVar, array (
       'CHEVERETO_EDITION' => 'free',
-      'CHEVERETO_ENABLE_API_GUEST' => '0',
       'CHEVERETO_ENABLE_BANNERS' => '0',
       'CHEVERETO_ENABLE_CAPTCHA' => '0',
       'CHEVERETO_ENABLE_CONSENT_SCREEN' => '0',
@@ -1135,10 +1155,13 @@ function loaderHandler(
         'post_max_size' => 'CHEVERETO_MAX_POST_SIZE',
         'session.save_handler' => 'CHEVERETO_SESSION_SAVE_HANDLER',
         'session.save_path' => 'CHEVERETO_SESSION_SAVE_PATH',
-        // 'upload_max_filesize' => 'CHEVERETO_MAX_UPLOAD_SIZE', // INI_PERDIR
+        // 'upload_max_filesize' => 'CHEVERETO_MAX_UPLOAD_FILE_SIZE', // INI_PERDIR
     ];
+    $isCLI = PHP_SAPI === 'cli';
     $iniToSkip = [
-        'max_execution_time' => PHP_SAPI === 'cli',
+        'max_execution_time' => $isCLI,
+        'session.save_handler' => $isCLI,
+        'session.save_path' => $isCLI,
     ];
     foreach ($iniToChevereto as $iniOption => $envName) {
         if (($iniToSkip[$iniOption] ?? false) === true) {
@@ -1185,6 +1208,9 @@ function loaderHandler(
             $envVar['CHEVERETO_XRDEBUG_HOST'] = 'host.docker.internal';
         }
     }
+    if ($envVar['CHEVERETO_MAX_LISTING_ITEMS_PER_PAGE'] === '0') {
+        $envVar['CHEVERETO_MAX_LISTING_ITEMS_PER_PAGE'] = '';
+    }
     foreach ($envVar as $envName => &$envValue) {
         if (! is_string($envValue)) {
             try {
@@ -1205,8 +1231,35 @@ function loaderHandler(
     new PostVar($_post);
     new GetVar($_get);
     new FilesVar($_files);
+    new RequestHeadersVar($_server);
     require_once PATH_APP . 'configurator.php';
-    if ($_session === []) {
+    if (env()['CHEVERETO_CACHE_DRIVER'] === 'redis'
+        && env()['CHEVERETO_CACHE_HOST'] !== ''
+        && env()['CHEVERETO_CACHE_PORT'] !== ''
+    ) {
+        if (! class_exists('Redis')) {
+            throw new RuntimeException('Redis extension not loaded', 600);
+        }
+        $redis = new Redis();
+        $redis->connect(env()['CHEVERETO_CACHE_HOST'], (int) env()['CHEVERETO_CACHE_PORT']);
+        if (env()['CHEVERETO_CACHE_PASSWORD'] !== '') {
+            $redis->auth(env()['CHEVERETO_CACHE_PASSWORD']);
+        }
+        $keyValue = new KeyValue(
+            $redis,
+            env()['CHEVERETO_CACHE_KEY_PREFIX'],
+            (int) env()['CHEVERETO_MAX_CACHE_TTL'],
+        );
+    } else {
+        $keyValue = new KeyValueNull(
+            env()['CHEVERETO_CACHE_KEY_PREFIX']
+        );
+    }
+    new Cache($keyValue);
+    if ($_session === []
+        && session_status() === PHP_SESSION_NONE
+        && ACCESS === 'web'
+    ) {
         $session_start = false;
         $session_options = [
             'save_handler' => Config::system()->sessionSaveHandler(),
@@ -1262,6 +1315,20 @@ function loaderHandler(
         : '';
     define('URL_APP_PUBLIC', HTTP_APP_PROTOCOL . '://' . Config::host()->hostname() . $httpPort . Config::host()->hostnamePath());
     phpCheck(Config::system());
+
+    try {
+        $xrArguments = [
+            'isEnabled' => (bool) (env()['CHEVERETO_ENABLE_XRDEBUG']),
+            'isHttps' => (bool) (env()['CHEVERETO_XRDEBUG_HTTPS']),
+            'host' => (string) (env()['CHEVERETO_XRDEBUG_HOST']),
+            'port' => (int) (env()['CHEVERETO_XRDEBUG_PORT']),
+            'key' => (string) (env()['CHEVERETO_XRDEBUG_KEY']),
+        ];
+
+        new XrInstance(new Xr(...$xrArguments));
+    } catch (Throwable) {
+        // Silent failover
+    }
     if (hasEnvDbInfo()) {
         DB::fromEnv();
     }
@@ -1290,20 +1357,6 @@ function loaderHandler(
             }
         }
     }
-
-    try {
-        $xrArguments = [
-            'isEnabled' => (bool) (env()['CHEVERETO_ENABLE_XRDEBUG']),
-            'isHttps' => (bool) (env()['CHEVERETO_XRDEBUG_HTTPS']),
-            'host' => (string) (env()['CHEVERETO_XRDEBUG_HOST']),
-            'port' => (int) (env()['CHEVERETO_XRDEBUG_PORT']),
-            'key' => (string) (env()['CHEVERETO_XRDEBUG_KEY']),
-        ];
-
-        new XrInstance(new Xr(...$xrArguments));
-    } catch (Throwable) {
-        // Silent failover
-    }
     $uploadImageFolder = cheveretoVersionInstalled() !== ''
             ? Settings::get('upload_image_path')
             : 'images';
@@ -1325,22 +1378,38 @@ function loaderHandler(
         if (is_valid_timezone(Settings::get('default_timezone'))) {
             date_default_timezone_set(Settings::get('default_timezone'));
         }
-        if (ACCESS === 'web') {
-            $upload_max_filesize_mb_db = Settings::get('upload_max_filesize_mb');
-            $upload_max_filesize_mb_bytes = get_bytes($upload_max_filesize_mb_db . 'MB');
-            $ini_upload_max_filesize = get_ini_bytes(ini_get('upload_max_filesize'));
-            $ini_post_max_size = ((int) ini_get('post_max_size')) === 0
-                ? $ini_upload_max_filesize
-                : get_ini_bytes(
-                    ini_get('post_max_size')
-                );
-            Settings::setValue(
-                'true_upload_max_filesize',
-                min($ini_upload_max_filesize, $ini_post_max_size)
+        $ini_upload_max_filesize = get_ini_bytes(ini_get('upload_max_filesize'));
+        $ini_post_max_size = ((int) ini_get('post_max_size')) === 0
+            ? $ini_upload_max_filesize
+            : get_ini_bytes(
+                ini_get('post_max_size')
             );
-            if (Settings::get('true_upload_max_filesize') < $upload_max_filesize_mb_bytes) {
+        Settings::setValue(
+            'true_upload_max_filesize',
+            min($ini_upload_max_filesize, $ini_post_max_size)
+        );
+        $chunk_size = get_ini_bytes(env()['CHEVERETO_MAX_CHUNK_UPLOAD_SIZE']);
+        Settings::setValue(
+            'chunk_upload_size',
+            min($chunk_size, Settings::get('true_upload_max_filesize'))
+        );
+        $maxUploadSize = get_ini_bytes(env()['CHEVERETO_MAX_UPLOAD_SIZE']);
+        if ($maxUploadSize > 0) {
+            $maxUploadSizeMb = bytes_to_mb($maxUploadSize);
+            $upload_max_filesize_mb = (float) Settings::get('upload_max_filesize_mb');
+            if ($upload_max_filesize_mb == 0
+                || $upload_max_filesize_mb > $maxUploadSizeMb
+            ) {
                 Settings::update([
-                    'upload_max_filesize_mb' => bytes_to_mb((int) Settings::get('true_upload_max_filesize')),
+                    'upload_max_filesize_mb' => $maxUploadSizeMb,
+                ]);
+            }
+            $upload_max_filesize_mb_guest = (float) Settings::get('upload_max_filesize_mb_guest');
+            if ($upload_max_filesize_mb_guest == 0
+                || $upload_max_filesize_mb_guest > $maxUploadSizeMb
+            ) {
+                Settings::update([
+                    'upload_max_filesize_mb_guest' => $maxUploadSizeMb,
                 ]);
             }
         }
@@ -1669,4 +1738,15 @@ function isPublicHost(string $host): bool
     $typeName = \IPLib\Range\Type::getName($type);
 
     return $typeName === $typePub;
+}
+
+function hashFile(string $file): string
+{
+    // We use xxh64 as xxh128 is not available (web browser) @ 2025-04-28
+    return hash_file('xxh64', $file);
+}
+
+function hashString(string $string): string
+{
+    return hash('xxh128', $string);
 }

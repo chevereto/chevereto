@@ -69,7 +69,7 @@ if (!defined('ACCESS') || !ACCESS) {
         </div>
     <?php
                         } ?>
-    <?php if (Handler::var('settings')['key'] == 'external-storage') { ?>
+    <?php if (Handler::var('settings')['key'] == 'upload-storage') { ?>
         <div class="header-content-right">
             <div class="header--height header--centering">
                 <a class="btn btn-small default" data-modal="form" data-target="modal-add-storage"><i class="fas fa-hdd"></i><span class="margin-left-5 phone-hide"><?php _se('Add %s', _s('storage')); ?></span></a>

@@ -40,7 +40,7 @@ use function Chevereto\Vars\post;
 
 if (PHP_SAPI !== 'cli') {
     /** @var Handler $handler */
-    $context = $handler->request_array()[0] ?? false;
+    $context = $handler->requestArray()[0] ?? false;
     if (! $context) {
         throw new LogicException(
             message('Missing context')
@@ -99,7 +99,7 @@ $settings_updates = [
         'email_from_email' => 'from@chevereto.internal',
         'email_from_name' => 'Chevereto',
         'email_incoming_email' => 'incoming@chevereto.internal',
-        'email_mode' => 'mail',
+        'email_mode' => env()['CHEVERETO_SERVICING'] === 'server' ? 'mail' : 'smtp',
         'email_smtp_server' => '',
         'email_smtp_server_password' => '',
         'email_smtp_server_port' => '',
@@ -626,7 +626,6 @@ $settings_updates = [
         'route_video' => 'video',
         'route_audio' => 'audio',
         'cache_ttl' => '0',
-        'upload_max_filesize_mb' => (string) min(100, bytes_to_mb(get_ini_bytes(ini_get('upload_max_filesize')))),
         'image_load_max_filesize_mb' => '5',
         'upload_max_filesize_mb_guest' => '10',
         'arachnid_api_username' => '',
@@ -637,6 +636,18 @@ $settings_updates = [
     '4.2.3' => null,
     '4.2.4' => null,
     '4.2.5' => null,
+    '4.3.0' => [
+        'semantics_video' => '',
+        'semantics_videos' => '',
+        'semantics_tag' => '',
+        'semantics_tags' => '',
+        'semantics_file' => '',
+        'semantics_files' => '',
+        'theme_palette_user_select' => 1,
+        'upload_max_filesize_mb' => (string) bytes_to_mb(get_ini_bytes(env()['CHEVERETO_MAX_UPLOAD_SIZE'])),
+        'enable_api_user' => 1,
+        'enable_api_guest' => 0,
+    ],
 ];
 
 /**
@@ -1031,12 +1042,33 @@ if ($installed_version !== '' && empty($paramsCheck)) {
         }
         $isUtf8mb4 = $installed_version === ''
             || version_compare($installed_version, '3.12.10', '>');
+        $modifyIntUnsignedNotNullAutoIncrement = [
+            'op' => 'MODIFY',
+            'type' => 'INT UNSIGNED',
+            'prop' => 'NOT NULL AUTO_INCREMENT',
+        ];
+        $modifyIntUnsignedNotNull = [
+            'op' => 'MODIFY',
+            'type' => 'INT UNSIGNED',
+            'prop' => 'NOT NULL',
+        ];
+        $modifyBigIntUnsignedNotNull = array_merge(
+            $modifyIntUnsignedNotNull,
+            [
+                'type' => 'BIGINT UNSIGNED',
+            ]
+        );
+        $modifyIntUnsignedDefaultNull = [
+            'op' => 'MODIFY',
+            'type' => 'INT UNSIGNED',
+            'prop' => 'DEFAULT NULL',
+        ];
         $update_table = [
             '3.1.0' => [
                 'logins' => [
                     'login_resource_id' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'login_secret' => [
@@ -1048,7 +1080,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_name' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1069,7 +1101,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_privacy' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('public','password','private','private_but_link','custom')",
+                        'type' => "ENUM('public','password','private','private_but_link','custom')",
                         'prop' => "DEFAULT 'public'",
                     ],
                 ],
@@ -1078,7 +1110,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_category_id' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1101,12 +1133,12 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                     'image_storage' => [
                         'op' => 'CHANGE',
                         'to' => 'image_storage_mode',
-                        'type' => "enum('datefolder','direct','old')",
+                        'type' => "ENUM('datefolder','direct','old')",
                         'prop' => "NOT NULL DEFAULT 'datefolder'",
                     ],
                     'image_chain' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(128)',
+                        'type' => 'TINYINT',
                         'prop' => 'NOT NULL',
                         'tail' => <<<SQL
                         UPDATE `%table_prefix%images` set `image_chain` = 7;
@@ -1120,7 +1152,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_region' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1130,17 +1162,17 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_server' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'storage_capacity' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'BIGINT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'storage_space_used' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'BIGINT UNSIGNED',
                         'prop' => "DEFAULT '0'",
                         'tail' => <<<SQL
                         UPDATE `%table_prefix%storages` SET storage_space_used = (SELECT SUM(image_size) AS count
@@ -1152,12 +1184,12 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_thumb_size' => [
                         'op' => 'ADD',
-                        'type' => 'int(11)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'NOT NULL',
                     ],
                     'image_medium_size' => [
                         'op' => 'ADD',
-                        'type' => 'int(11)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1166,7 +1198,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'queues' => [
                     'queue_type' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('storage-delete')",
+                        'type' => "ENUM('storage-delete')",
                         'prop' => 'NOT NULL',
                         'tail' => <<<SQL
                         UPDATE `%table_prefix%queues` SET queue_type='storage-delete';
@@ -1176,7 +1208,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_server' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1199,7 +1231,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_title' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(100)', // 3.6.5
+                        'type' => 'VARCHAR(100)', // 3.6.5
                         'prop' => 'DEFAULT NULL',
                         'tail' => <<<SQL
                         DROP INDEX searchindex ON `%table_prefix%images`;
@@ -1212,7 +1244,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_name' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(100)', // 3.6.5
+                        'type' => 'VARCHAR(100)', // 3.6.5
                         'prop' => 'NOT NULL',
                     ],
                 ],
@@ -1221,12 +1253,12 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'queues' => [
                     'queue_attempts' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT 0',
                     ],
                     'queue_status' => [
                         'op' => 'ADD',
-                        'type' => "enum('pending','failed')",
+                        'type' => "ENUM('pending','failed')",
                         'prop' => "NOT NULL DEFAULT 'pending'",
                     ],
                 ],
@@ -1244,17 +1276,17 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_newsletter_subscribe' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '1'",
                     ],
                     'user_show_nsfw_listings' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'user_bio' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1277,12 +1309,12 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_account_id' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'storage_account_name' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1303,14 +1335,14 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_title' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(100)',
+                        'type' => 'VARCHAR(100)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
                 'albums' => [
                     'album_name' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(100)',
+                        'type' => 'VARCHAR(100)',
                         'prop' => 'NOT NULL',
                     ],
                 ],
@@ -1322,12 +1354,12 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_image_keep_exif' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '1'",
                     ],
                     'user_image_expiration' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1348,56 +1380,56 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_creation_ip' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                     'album_likes' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'images' => [
                     'image_likes' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'users' => [
                     'user_registration_ip' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                     'user_likes' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0' COMMENT 'Likes made to content owned by this user'",
                     ],
                     'user_liked' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0' COMMENT 'Likes made by this user'",
                     ],
                     'user_following' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'user_followers' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'user_content_views' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'user_notifications_unread' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1407,14 +1439,14 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_is_private' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'storages' => [
                     'storage_service' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1423,7 +1455,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_is_animated' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1438,7 +1470,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                     //'request_type' => [], void in 4.0.0-beta.10
                     'request_content_id' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1447,39 +1479,39 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_views' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'likes' => [
                     'like_content_type' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('image','album')",
+                        'type' => "ENUM('image','album')",
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
                 'notifications' => [
                     'notification_content_type' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('user','image','album')",
+                        'type' => "ENUM('user','image','album')",
                         'prop' => 'NOT NULL',
                     ],
                 ],
                 'stats' => [
                     'stat_album_views' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'stat_album_likes' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'stat_likes' => [
                         'op' => 'CHANGE',
                         'to' => 'stat_image_likes',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1488,7 +1520,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_source_md5' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(32)',
+                        'type' => 'VARCHAR(32)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1504,26 +1536,27 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_storage_mode' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('datefolder','direct','old','path')",
+                        'type' => "ENUM('datefolder','direct','old','path')",
                         'prop' => "NOT NULL DEFAULT 'datefolder'",
                     ],
                     'image_path' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(4096)',
+                        'type' => 'VARCHAR(4096)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
-                'albums' => [
-                    'album_user_id' => [
-                        'op' => 'MODIFY',
-                        'type' => 'bigint(32)',
-                        'prop' => 'DEFAULT NULL',
-                    ],
-                ],
+                // 4.3.0
+                // 'albums' => [
+                //     'album_user_id' => [
+                //         'op' => 'MODIFY',
+                //         'type' => 'INT UNSIGNED',
+                //         'prop' => 'DEFAULT NULL',
+                //     ],
+                // ],
                 'users' => [
                     'user_is_manager' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1541,7 +1574,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'pages' => [
                     'page_internal' => [
                         'op' => 'ADD',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
@@ -1555,21 +1588,21 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'settings' => [
                     'setting_name' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'CHARACTER SET utf8 COLLATE utf8_bin NOT NULL',
                     ],
                 ],
                 'deletions' => [
                     'deleted_content_ip' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                 ],
                 'ip_bans' => [
                     'ip_ban_ip' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                     'ip_ban_message' => [
@@ -1581,29 +1614,29 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'pages' => [
                     'page_internal' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
                 'users' => [
                     'user_username' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                     'user_email' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'user_image_expiration' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'user_registration_ip' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'NOT NULL',
                     ],
                 ],
@@ -1693,14 +1726,14 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'deletions' => [
                     'deleted_content_original_filename' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(255)',
+                        'type' => 'VARCHAR(255)',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
                 'logins' => [
                     'login_type' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('password','session','cookie','facebook','twitter','google','vk','cookie_facebook','cookie_twitter','cookie_google','cookie_vk')",
+                        'type' => "ENUM('password','session','cookie','facebook','twitter','google','vk','cookie_facebook','cookie_twitter','cookie_google','cookie_vk')",
                         'prop' => 'NOT NULL',
                     ],
                 ],
@@ -1709,7 +1742,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'imports' => [
                     'import_continuous' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1730,7 +1763,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_is_approved' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '1'",
                     ],
                 ],
@@ -1739,19 +1772,19 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_cover_id' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                     'album_parent_id' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
                 'images' => [
                     'image_is_360' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1810,7 +1843,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_palette_id' => [
                         'op' => 'ADD',
-                        'type' => 'int(11)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -1827,7 +1860,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'requests' => [
                     'request_type' => [
                         'op' => 'MODIFY',
-                        'type' => "enum('upload','signup','account-edit','account-password-forgot','account-password-reset','account-resend-activation','account-email-needed','account-change-email','account-activate','login','content-password','account-two-factor')",
+                        'type' => "ENUM('upload','signup','account-edit','account-password-forgot','account-password-reset','account-resend-activation','account-email-needed','account-change-email','account-activate','login','content-password','account-two-factor')",
                         'prop' => 'NOT NULL',
                     ],
                 ],
@@ -1885,7 +1918,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'albums' => [
                     'album_cta_enable' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'album_cta' => [
@@ -1899,29 +1932,25 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_type_chain' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(3) UNSIGNED',
+                        'type' => 'TINYINT UNSIGNED',
                         'prop' => 'NOT NULL DEFAULT "1"',
                     ],
                 ],
                 'images' => [
-                    'image_size' => [
-                        'op' => 'MODIFY',
-                        'type' => 'bigint(11) UNSIGNED',
-                        'prop' => 'NOT NULL',
-                    ],
+                    'image_size' => $modifyBigIntUnsignedNotNull,
                     'image_frame_size' => [
                         'op' => 'ADD',
-                        'type' => 'int(11)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'image_duration' => [
                         'op' => 'ADD',
-                        'type' => 'int(11)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'image_type' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(3) UNSIGNED',
+                        'type' => 'TINYINT UNSIGNED',
                         'prop' => "as (case
                         when `image_extension` in ('pdf','doc','md') then 4
                         when `image_extension` in ('mp3','m4a','wav') then 3
@@ -1935,14 +1964,14 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'users' => [
                     'user_file_meta_tag_camera_model' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1)',
+                        'type' => 'TINYINT',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
                 'categories' => [
                     'category_url_key' => [
                         'op' => 'MODIFY',
-                        'type' => 'varchar(32)',
+                        'type' => 'VARCHAR(32)',
                         'collation' => 'utf8mb4_bin',
                         'prop' => 'NOT NULL',
                     ],
@@ -1950,7 +1979,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'storages' => [
                     'storage_use_path_style_endpoint' => [
                         'op' => 'ADD',
-                        'type' => 'tinyint(1) UNSIGNED',
+                        'type' => 'TINYINT UNSIGNED',
                         'prop' => 'NOT NULL DEFAULT "0"',
                     ],
                     'storage_deleted_at' => [
@@ -1962,7 +1991,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'images' => [
                     'image_type' => [
                         'op' => 'MODIFY',
-                        'type' => 'tinyint(3) UNSIGNED',
+                        'type' => 'TINYINT UNSIGNED',
                         'prop' => "as (case
                         when `image_extension` in ('pdf','doc','md') then 4
                         when `image_extension` in ('mp3','m4a','wav') then 3
@@ -1974,17 +2003,17 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'stats' => [
                     'stat_tags' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32) UNSIGNED',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'stat_cron_runs' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32) UNSIGNED',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                     'stat_cron_time' => [
                         'op' => 'ADD',
-                        'type' => 'bigint(32) UNSIGNED',
+                        'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
@@ -2025,10 +2054,158 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 'importing' => [
                     'importing_content_id' => [
                         'op' => 'MODIFY',
-                        'type' => 'bigint(32)',
+                        'type' => 'INT UNSIGNED',
                         'prop' => 'DEFAULT NULL',
                     ],
                 ],
+            ],
+            '4.3.0' => [
+                'query.1' => $db->getSqlDropForeignKey('tags_albums', 'tags_albums_ibfk_1')
+                    . $db->getSqlDropForeignKey('tags_albums', 'tags_albums_ibfk_2')
+                    . $db->getSqlDropForeignKey('tags_albums', 'tags_albums_ibfk_3')
+                    . $db->getSqlDropForeignKey('tags_users', 'tags_users_ibfk_1')
+                    . $db->getSqlDropForeignKey('tags_users', 'tags_users_ibfk_2')
+                    . $db->getSqlDropForeignKey('tags_files', 'tags_files_ibfk_1')
+                    . $db->getSqlDropForeignKey('tags_files', 'tags_files_ibfk_2')
+                    . $db->getSqlDropIndex('images', 'image_md5')
+                    . $db->getSqlDropIndex('images', 'image_source_md5')
+                    . $db->getSqlDropIndex('deletions', 'deleted_content_md5'),
+                'assets' => [
+                    'asset_md5' => [
+                        'op' => 'CHANGE',
+                        'to' => 'asset_checksum',
+                        'type' => 'VARCHAR(32)',
+                        'prop' => 'NOT NULL',
+                    ],
+                ],
+                'albums' => [
+                    'album_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'album_user_id' => $modifyIntUnsignedDefaultNull,
+                    'album_cover_id' => $modifyIntUnsignedDefaultNull,
+                    'album_parent_id' => $modifyIntUnsignedDefaultNull,
+                ],
+                'api_keys' => [
+                    'api_key_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'api_key_user_id' => $modifyIntUnsignedDefaultNull,
+                ],
+                'confirmations' => [
+                    'confirmation_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'confirmation_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'deletions' => [
+                    'deleted_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'deleted_content_id' => $modifyIntUnsignedNotNull,
+                    'deleted_content_user_id' => $modifyIntUnsignedDefaultNull,
+                    'deleted_content_md5' => [
+                        'op' => 'CHANGE',
+                        'to' => 'deleted_content_checksum',
+                        'type' => 'VARCHAR(32)',
+                        'prop' => 'DEFAULT NULL',
+                    ],
+                ],
+                'follows' => [
+                    'follow_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'follow_user_id' => $modifyIntUnsignedNotNull,
+                    'follow_followed_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'images' => [
+                    'image_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'image_user_id' => $modifyIntUnsignedDefaultNull,
+                    'image_album_id' => $modifyIntUnsignedDefaultNull,
+                    'image_storage_id' => $modifyIntUnsignedDefaultNull,
+                    'image_category_id' => $modifyIntUnsignedDefaultNull,
+                    'image_md5' => [
+                        'op' => 'CHANGE',
+                        'to' => 'image_checksum',
+                        'type' => 'VARCHAR(32)',
+                        'prop' => 'NOT NULL',
+                    ],
+                    'image_source_md5' => [
+                        'op' => 'CHANGE',
+                        'to' => 'image_source_checksum',
+                        'type' => 'VARCHAR(32)',
+                        'prop' => 'DEFAULT NULL',
+                    ],
+                ],
+                'logins' => [
+                    'login_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'login_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'login_passwords' => [
+                    'login_password_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'login_password_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'login_cookies' => [
+                    'login_cookie_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'login_cookie_user_id' => $modifyIntUnsignedNotNull,
+                    'login_cookie_connection_id' => [
+                        'op' => 'MODIFY',
+                        'type' => 'INT UNSIGNED',
+                        'prop' => 'DEFAULT 0',
+                    ],
+                ],
+                'login_connections' => [
+                    'login_connection_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'login_connection_user_id' => $modifyIntUnsignedNotNull,
+                    'login_connection_provider_id' => $modifyIntUnsignedNotNull,
+                ],
+                'likes' => [
+                    'like_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'like_user_id' => $modifyIntUnsignedDefaultNull,
+                    'like_content_id' => $modifyIntUnsignedNotNull,
+                    'like_content_user_id' => $modifyIntUnsignedDefaultNull,
+                ],
+                'notifications' => [
+                    'notification_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'notification_user_id' => $modifyIntUnsignedNotNull,
+                    'notification_trigger_user_id' => $modifyIntUnsignedDefaultNull,
+                    'notification_type_id' => $modifyIntUnsignedNotNull,
+                ],
+                'tags_albums' => [
+                    'tag_album_tag_id' => $modifyIntUnsignedNotNull,
+                    'tag_album_user_id' => $modifyIntUnsignedNotNull,
+                    'tag_album_album_id' => $modifyIntUnsignedNotNull,
+                ],
+                'tags_files' => [
+                    'tag_file_tag_id' => $modifyIntUnsignedNotNull,
+                    'tag_file_file_id' => $modifyIntUnsignedNotNull,
+                ],
+                'tags_users' => [
+                    'tag_user_tag_id' => $modifyIntUnsignedNotNull,
+                    'tag_user_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'tags' => [
+                    'tag_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'tag_user_id' => $modifyIntUnsignedNotNull,
+                ],
+                'two_factors' => [
+                    'two_factor_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'two_factor_user_id' => $modifyIntUnsignedDefaultNull,
+                ],
+                'requests' => [
+                    'request_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'request_user_id' => $modifyIntUnsignedDefaultNull,
+                    'request_content_id' => $modifyIntUnsignedDefaultNull,
+                ],
+                'users' => [
+                    'user_id' => $modifyIntUnsignedNotNullAutoIncrement,
+                    'user_palette_id' => [
+                        'op' => 'MODIFY',
+                        'type' => 'INT UNSIGNED',
+                        'prop' => "NOT NULL DEFAULT '0'",
+                    ],
+                ],
+                'uploads' => [],
+                'uploads_chunks' => [],
+                'query.2' => <<<SQL
+                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_1` FOREIGN KEY (tag_album_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_2` FOREIGN KEY (tag_album_album_id) REFERENCES `%table_prefix%albums` (album_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_3` FOREIGN KEY (tag_album_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_1` FOREIGN KEY (tag_user_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_2` FOREIGN KEY (tag_user_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_1` FOREIGN KEY (tag_file_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_2` FOREIGN KEY (tag_file_file_id) REFERENCES `%table_prefix%images` (image_id) ON DELETE CASCADE;
+                SQL,
             ],
         ];
         $sql_update = [];
@@ -2037,8 +2214,15 @@ if ($installed_version !== '' && empty($paramsCheck)) {
         }
         $required_sql_files = [];
         foreach ($update_table as $version => $changes) {
+            if (version_compare($version, $installed_version, '<=')) {
+                continue;
+            }
             foreach ($changes as $table => $columns) {
-                if ($table === 'query') {
+                if ($table === 'query' || str_starts_with($table, 'query.')) {
+                    if (version_compare($version, $installed_version, '>')) {
+                        $sql_update[] = (string) $columns;
+                    }
+
                     continue;
                 }
                 $schema_table = $schema[$table] ?? [];
@@ -2101,11 +2285,16 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                             $columnCollation = mb_strtolower($column_meta['collation'] ?? '');
                             $collationUpdated = $columnCollation !== ''
                                 && $schemaCollation !== $columnCollation;
+                            $dataType = mb_strtoupper($schema_column['DATA_TYPE']);
+                            $columnMetaType = mb_strtoupper($column_meta['type']);
+                            $schemaColumn = mb_strtoupper($schema_column['COLUMN_TYPE']);
+                            if (in_array($dataType, ['INT', 'TINYINT', 'BIGINT'])) {
+                                $schemaColumn = preg_replace('/\(\d+\)/', '', $schemaColumn);
+                            }
                             if (
                                 array_key_exists($column, $schema[$table])
                                 && (
-                                    mb_strtolower($schema_column['COLUMN_TYPE']) !== mb_strtolower($column_meta['type'])
-                                    || ($isGenerated && $schemaExpression !== $columnExpression)
+                                    $schemaColumn !== $columnMetaType
                                     || $collationUpdated
                                     || preg_match('/DEFAULT NULL/i', $column_meta['prop'] ?? '')
                                     && $schema_column['IS_NULLABLE'] === 'NO'
@@ -2119,7 +2308,9 @@ if ($installed_version !== '' && empty($paramsCheck)) {
 
                             break;
                         case 'CHANGE':
-                            if (array_key_exists($column, $schema[$table])) {
+                            if (array_key_exists($column, $schema[$table])
+                                && ! array_key_exists($column_meta['to'], $schema[$table])
+                            ) {
                                 $query = '`%column` `%to` %type';
                             }
 
@@ -2145,9 +2336,6 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                         );
                     }
                 }
-            }
-            if (isset($changes['query']) && version_compare($version, $installed_version, '>')) {
-                $sql_update[] = (string) $changes['query'];
             }
         }
         foreach ($CHV_indexes as $table => $indexes) {
@@ -2210,11 +2398,11 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             }
         }
         $APP_VERSION = APP_VERSION;
-        $sql_update[] = <<<MySQL
+        $sql_update[] = <<<SQL
         INSERT INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
         VALUES ("chevereto_version_installed", "{$APP_VERSION}", "string")
         ON DUPLICATE KEY UPDATE variable_value = "{$APP_VERSION}", variable_type = "string";
-        MySQL;
+        SQL;
         if (! $maintenance) {
             $sql_update[] = 'UPDATE `%table_prefix%settings` SET `setting_value` = 0 WHERE `setting_name` = "maintenance";';
         }
@@ -2263,11 +2451,22 @@ if ($installed_version !== '' && empty($paramsCheck)) {
         $db = DB::getInstance();
         $db->query($sql_update);
         xr($sql_update);
+        $updated = false;
 
         try {
             logger("[STATUS] Updating Chevereto database (this may take a while)...\n");
             logger("[SQL]\n{$sql_update}\n");
             $updated = $db->exec();
+            $versionDatabase = $db::get(
+                table: 'variables',
+                where: [
+                    'variable_name' => 'chevereto_version_installed',
+                ],
+                limit: 1,
+            )['variable_value'] ?? '';
+            if ($versionDatabase !== APP_VERSION) {
+                throw new LogicException();
+            }
         } catch (Throwable $e) {
             throw new LogicException(
                 (string) message(
@@ -2283,6 +2482,8 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             );
         }
         if ($updated) {
+            new Settings(reCache: true);
+            new Variable(reCache: true);
             $itWasUpdated = true;
         }
         $doing = 'updated';
@@ -2412,32 +2613,32 @@ EOT;
                         <<<SQL
                         SET time_zone = '" . {$offset} . "';
                         ALTER TABLE `chv_images`
-                        MODIFY `image_id` bigint(32) NOT NULL AUTO_INCREMENT,
-                        MODIFY `image_name` varchar(255),
+                        MODIFY `image_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                        MODIFY `image_name` VARCHAR(255),
                         MODIFY `image_date` DATETIME,
-                        CHANGE `image_type` `image_extension` varchar(255),
-                        CHANGE `uploader_ip` `image_uploader_ip` varchar(255),
-                        CHANGE `storage_id` `image_storage_id` bigint(32),
+                        CHANGE `image_type` `image_extension` VARCHAR(255),
+                        CHANGE `uploader_ip` `image_uploader_ip` VARCHAR(255),
+                        CHANGE `storage_id` `image_storage_id` INT UNSIGNED,
                         DROP `image_delete_hash`,
-                        ADD `image_date_gmt` datetime NOT NULL AFTER `image_date`,
-                        ADD `image_title` varchar(100) NOT NULL,
-                        ADD `image_description` text,
-                        ADD `image_nsfw` tinyint(1) NOT NULL DEFAULT '0',
-                        ADD `image_user_id` bigint(32) DEFAULT NULL,
-                        ADD `image_album_id` bigint(32) DEFAULT NULL,
-                        ADD `image_md5` varchar(32) NOT NULL,
-                        ADD `image_source_md5` varchar(32) DEFAULT NULL,
-                        ADD `image_storage_mode` enum('datefolder','direct','old') NOT NULL DEFAULT 'datefolder',
-                        ADD `image_original_filename` text NOT NULL,
-                        ADD `image_original_exifdata` mediumtext,
-                        ADD `image_views` bigint(32) NOT NULL DEFAULT '0',
-                        ADD `image_category_id` bigint(32) DEFAULT NULL,
-                        ADD `image_chain` tinyint(128) NOT NULL,
-                        ADD `image_thumb_size` int(11) NOT NULL,
-                        ADD `image_medium_size` int(11) NOT NULL DEFAULT '0',
-                        ADD `image_expiration_date_gmt` datetime DEFAULT NULL,
-                        ADD `image_likes` bigint(32) NOT NULL DEFAULT '0',
-                        ADD `image_is_animated` tinyint(1) NOT NULL DEFAULT '0',
+                        ADD `image_date_gmt` DATETIME NOT NULL AFTER `image_date`,
+                        ADD `image_title` VARCHAR(100) NOT NULL,
+                        ADD `image_description` TEXT,
+                        ADD `image_nsfw` TINYINT UNSIGNED NOT NULL DEFAULT '0',
+                        ADD `image_user_id` INT UNSIGNED DEFAULT NULL,
+                        ADD `image_album_id` INT UNSIGNED DEFAULT NULL,
+                        ADD `image_checksum` VARCHAR(32) NOT NULL,
+                        ADD `image_source_checksum` VARCHAR(32) DEFAULT NULL,
+                        ADD `image_storage_mode` ENUM('datefolder','direct','old') NOT NULL DEFAULT 'datefolder',
+                        ADD `image_original_filename` TEXT NOT NULL,
+                        ADD `image_original_exifdata` MEDIUMTEXT,
+                        ADD `image_views` INT UNSIGNED NOT NULL DEFAULT '0',
+                        ADD `image_category_id` INT UNSIGNED DEFAULT NULL,
+                        ADD `image_chain` TINYINT UNSIGNED NOT NULL,
+                        ADD `image_thumb_size` INT UNSIGNED NOT NULL,
+                        ADD `image_medium_size` INT UNSIGNED NOT NULL DEFAULT '0',
+                        ADD `image_expiration_date_gmt` DATETIME DEFAULT NULL,
+                        ADD `image_likes` INT UNSIGNED NOT NULL DEFAULT '0',
+                        ADD `image_is_animated` TINYINT UNSIGNED NOT NULL DEFAULT '0',
                         ADD INDEX `image_name` (`image_name`),
                         ADD INDEX `image_size` (`image_size`),
                         ADD INDEX `image_width` (`image_width`),
@@ -2447,8 +2648,8 @@ EOT;
                         ADD INDEX `image_user_id` (`image_user_id`),
                         ADD INDEX `image_album_id` (`image_album_id`),
                         ADD INDEX `image_storage_id` (`image_storage_id`),
-                        ADD INDEX `image_md5` (`image_md5`),
-                        ADD INDEX `image_source_md5` (`image_source_md5`),
+                        ADD INDEX `image_checksum` (`image_checksum`),
+                        ADD INDEX `image_source_checksum` (`image_source_checksum`),
                         ADD INDEX `image_likes` (`image_views`),
                         ADD INDEX `image_views` (`image_views`),
                         ADD INDEX `image_category_id` (`image_category_id`),

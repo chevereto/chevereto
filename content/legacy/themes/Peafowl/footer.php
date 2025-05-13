@@ -38,7 +38,7 @@ echo $tag('%name%', '');
 </template>
 <?php if (Handler::cond('show_powered_by_footer')) { ?>
 <div class="footer">
-    <div class="content-width"><a href="https://chevereto.com" rel="generator" target="_blank"><?php _se('Powered by %s media sharing platform', '<img src="'.get_static_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg').'" alt="Chevereto">'); ?></a></div>
+    <div class="content-width"><a href="https://chevereto.com" rel="generator" target="_blank"><?php _se('Powered by %s media sharing software', '<img src="'.get_static_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg').'" alt="Chevereto">'); ?></a></div>
 </div>
 <?php } ?>
 </body>

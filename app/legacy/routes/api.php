@@ -44,6 +44,12 @@ use function Chevereto\Vars\request;
 use function Chevereto\Vars\server;
 
 return function (Handler $handler) {
+    if (! $handler::cond('api_enabled')) {
+        $handler->issueError(404);
+
+        return;
+    }
+
     try {
         $user = [];
         $REQUEST = request();

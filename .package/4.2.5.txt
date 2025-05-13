@@ -1,9 +1,0 @@
-Chevereto 4.2.5 (2025-01-31)
-
-- Added `putenv` to integrity-check
-- Fixed "Twitter" branding assets to "X"
-- Fixed bug in account confirmation process
-- Fixed bug in guest owned content editing
-- Fixed bug in search functionality
-- Fixed bug in tags per file limitation
-- Fixed bug with not working local storage in Chevereto Lite

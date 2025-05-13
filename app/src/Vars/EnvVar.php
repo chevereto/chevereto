@@ -12,9 +12,6 @@
 namespace Chevereto\Vars;
 
 use Chevereto\Vars\Traits\ImmutableMapTrait;
-use Ds\Map;
-use function Chevere\Parameter\iterable;
-use function Chevere\Parameter\string;
 
 final class EnvVar
 {
@@ -40,10 +37,6 @@ final class EnvVar
             }
             unset($array[$key]);
         }
-        iterable(
-            V: string(),
-            K: string(self::REGEX_KEY)
-        )($array);
         $this->assertNoInstance();
         foreach (self::PUTENV as $putenv) {
             if (array_key_exists($putenv, $array)) {
@@ -51,6 +44,5 @@ final class EnvVar
             }
         }
         static::$array = $array;
-        static::$map = new Map($array);
     }
 }

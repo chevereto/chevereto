@@ -45,7 +45,7 @@ if (! file_exists(LOGGER)) {
     directoryForPath($loggerDir)->createIfNotExists();
     touch(LOGGER);
 }
-ob_start('ob_gzhandler');
+ob_start();
 ob_implicit_flush(true);
 $rootDir = __DIR__ . '/..';
 $workingDir = __DIR__ . '/.upgrading';
@@ -213,7 +213,7 @@ if ($singleStep || $action === 'extract') {
     $safeResult = false;
     if (passthruEnabled()) {
         logger('Update command passthru');
-        $command = $rootDir . '/app/bin/legacy -C update';
+        $command = $rootDir . '/app/bin/cli -C update';
         $safeResult = passthru($command);
     }
     if ($safeResult === false) {

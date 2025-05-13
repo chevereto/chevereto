@@ -253,6 +253,9 @@ document.querySelector('#one_year').addEventListener('click', function(e) {
     <div class="card-wrapper margin-bottom-40">
         <div class="card-slider">
             <?php foreach (array_slice(Handler::var('chevereto_news'), 0, 10) as $k => $v) {
+                if(!is_object($v)) {
+                    continue;
+                }
     echo strtr('<article class="card-container">
                 <div class="card">
                     <a class="card-header-image" href="%url%" target="_blank" style="background-image: url(%image%);">

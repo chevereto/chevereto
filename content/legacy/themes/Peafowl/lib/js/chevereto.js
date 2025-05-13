@@ -797,7 +797,7 @@ CHV.fn.uploader = {
 
     reset: function () {
         $.extend(this, $.extend(true, {}, CHV.obj.uploaderReset));
-
+        $("[data-text=queue-progress]", this.selectors.root).text("0");
         $("li", this.selectors.queue).remove();
         $(this.selectors.root).height("").css({
             "overflow-y": "",
@@ -837,7 +837,7 @@ CHV.fn.uploader = {
         });
 
         $(this.selectors.root)
-            .removeClass("queueCompleted queueReady queueHasResults")
+            .removeClass("queueCompleted queueReady queueUploading queueHasResults")
             .addClass("queueEmpty")
             .attr("data-queue-size", 0);
 
@@ -978,9 +978,7 @@ CHV.fn.uploader = {
     },
 
     add: function (e, urls) {
-        var md5;
 
-        // Prevent add items ?
         if (!this.canAdd) {
             var e = e.originalEvent;
             e.preventDefault();
@@ -1047,7 +1045,6 @@ CHV.fn.uploader = {
                 files = Array.isArray(data.files)
                     ? data.files.slice()
                     : $.makeArray(data.files);
-
                 files = files.filter(function (o) {
                     return (directories.indexOf(o.name) < 0);
                 });
@@ -1066,9 +1063,20 @@ CHV.fn.uploader = {
             var failed_files = [];
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
+                file.checksum = null;
+                file.fromClipboard = e.clipboard == true;
+                file.uid = i;
                 if (directories.includes(file.name)) {
                     continue;
                 }
+                ((currentFile) => {
+                    hashFile(currentFile).then(hash => {
+                        console.log("Checksum:", hash);
+                        currentFile.checksum = hash;
+                    }).catch(error => {
+                        console.error("Error hashing file:", error);
+                    });
+                })(file);
                 var image_type_str;
                 if (typeof file.type == "undefined" || file.type == "") {
                     // Some browsers (Android) don't set the correct file.type
@@ -1103,15 +1111,12 @@ CHV.fn.uploader = {
                     });
                     continue;
                 }
-                if (md5) {
-                    file.md5 = md5;
-                }
-                file.fromClipboard = e.clipboard == true;
-                file.uid = i;
             }
             for (var i = 0; i < failed_files.length; i++) {
                 var failed_file = failed_files[i];
-                files.splice(failed_file.id, 1);
+                files = files.filter(function(file) {
+                    return file.uid !== failed_file.uid;
+                });
             }
             if (failed_files.length > 0 && files.length == 0) {
                 var failed_message = "";
@@ -1125,7 +1130,6 @@ CHV.fn.uploader = {
                 });
                 return;
             }
-
             if (files.length == 0) {
                 return;
             }
@@ -1199,12 +1203,174 @@ CHV.fn.uploader = {
                 maxWidth: 610,
             };
 
+        function getQueueItem(uid) {
+            return $(
+                CHV.fn.uploader.selectors.queue_item +
+                "[data-id=" + uid +"]",
+                CHV.fn.uploader.selectors.queue
+            );
+        }
+
+        function displayQueueIfNotVisible() {
+            if (!$(
+                "[data-group=upload-queue]",
+                CHV.fn.uploader.selectors.root
+            ).is(":visible")) {
+                $(
+                    "[data-group=upload-queue]",
+                    CHV.fn.uploader.selectors.root
+                ).css("display", "block");
+            }
+        }
+
+        function getTitle(file) {
+            var title = null;
+            if (typeof file.name !== typeof undefined) {
+                var basename = PF.fn.baseName(file.name);
+                title = $.trim(
+                    basename
+                        .substring(0, 100)
+                        .capitalizeFirstLetter()
+                );
+            }
+            return title;
+        }
+
+        async function loadVideo(url, callback) {
+            const video = document.createElement("video");
+            video.onerror = (e) => {
+                const videoError = {
+                    1: "MEDIA_ERR_ABORTED",
+                    2: "MEDIA_ERR_NETWORK",
+                    3: "MEDIA_ERR_DECODE",
+                    4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
+                }
+                var error = videoError[video.error.code];
+                callback({ type: "error", error: error })
+                console.error("Error loading video", error)
+            }
+            video.addEventListener("loadedmetadata", function () {
+                const seek = parseInt(video.duration / 4);
+                setTimeout(() => {
+                    video.currentTime = seek;
+                    video.pause();
+                }, 200);
+                video.addEventListener("seeked", () => {
+                    const canvas = document.createElement("canvas");
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    ctx.canvas.toBlob(
+                        blob => {
+                            callback(video, canvas)
+                        },
+                        "image/jpeg",
+                        0.90
+                    );
+                    video.remove();
+                }, false);
+            });
+            if (get_browser() === "safari") {
+                video.autoplay = true;
+                video.playsInline = true;
+                video.muted = true;
+            }
+            video.preload = "metadata";
+            video.src = url;
+        }
+
+        function setQueueReady($queue_item, img) {
+            $queue_item.show();
+            $(CHV.fn.uploader.selectors.root)
+                .addClass("queueReady")
+                .removeClass("queueEmpty");
+            $("[data-group=upload-queue-ready]", CHV.fn.uploader.selectors.root).show();
+            $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
+            $queue_item.find(".load-url").remove();
+            $queue_item
+                .find(".preview")
+                .removeClass("soft-hidden")
+                .show()
+                .append(img);
+            $img = $queue_item.find(".preview").find("img,canvas");
+            $img.attr("class", "canvas");
+            queue_item_h = $queue_item.height();
+            queue_item_w = $queue_item.width();
+            var img_w = parseInt($img.attr("width")) || $img.width();
+            var img_h = parseInt($img.attr("height")) || $img.height();
+            var img_r = img_w / img_h;
+            $img.hide();
+            if (img_w > img_h || img_w == img_h) {
+                // Landscape
+                var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
+                if (img_w > img_h) {
+                    $img.height(queue_img_h).width(queue_img_h * img_r);
+                }
+            }
+            if (img_w < img_h || img_w == img_h) {
+                // Portrait
+                var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
+                if (img_w < img_h) {
+                    $img.width(queue_img_w).height(queue_img_w / img_r);
+                }
+            }
+            if (img_w == img_h) {
+                $img.height(queue_img_h).width(queue_img_w);
+            }
+            $img
+                .css({
+                    marginTop: -$img.height() / 2,
+                    marginLeft: -$img.width() / 2,
+                })
+                .show();
+            displayQueueIfNotVisible();
+            CHV.fn.uploader.boxSizer();
+        }
+
+        function someFilesFailed(j, files, failed_files) {
+            if (j !== files.length) {
+                return;
+            }
+            if (typeof failed_before !== "undefined") {
+                failed_files = failed_files.concat(failed_before);
+            }
+            PF.fn.loading.destroy("fullscreen");
+            if (failed_files.length > 0) {
+                var failed_message = "";
+                for (var i = 0; i < failed_files.length; i++) {
+                    failed_message +=
+                        "<li>" +
+                        PF.fn.htmlEncode(failed_files[i].name) +
+                        " - " +
+                        PF.fn.htmlEncode(failed_files[i].error) +
+                        "</li>";
+                    delete CHV.fn.uploader.files[failed_files[i].uid];
+                    $(
+                        "li[data-id=" + failed_files[i].uid + "]",
+                        CHV.fn.uploader.selectors.queue
+                    )
+                        .find("[data-action=cancel]")
+                        .click();
+                }
+                PF.fn.modal.simple({
+                    title: PF.fn._s("Some files couldn't be loaded"),
+                    message: "<ul>" + failed_message + "</ul>",
+                });
+            } else {
+                CHV.fn.uploader.focus();
+            }
+            CHV.fn.uploader.boxSizer();
+        }
+
         function CHVLoadImage(i) {
             if (typeof i == typeof undefined) {
                 var i = 0;
             }
             if (!(i in files)) {
-                PF.fn.loading.destroy("fullscreen");
+                if (i === files.length - 1) {
+                    PF.fn.loading.destroy("fullscreen");
+                }
                 return;
             }
             var file = files[i];
@@ -1215,9 +1381,7 @@ CHV.fn.uploader = {
                 CHV.fn.uploader.selectors.queue_item + ":not([data-id]) .load-url",
                 CHV.fn.uploader.selectors.queue
             )[typeof file.url !== "undefined" ? "show" : "remove"]();
-
             loadImage.parseMetaData(file.url ? file.url : file, function (data) {
-                // Set the queue item placeholder ids
                 $(
                     CHV.fn.uploader.selectors.queue_item +
                     ":not([data-id]) .preview:empty",
@@ -1227,166 +1391,6 @@ CHV.fn.uploader = {
                     .closest("li")
                     .attr("data-id", file.uid);
 
-                function getQueueItem(uid) {
-                    return $(
-                        CHV.fn.uploader.selectors.queue_item +
-                        "[data-id=" + uid +"]",
-                        CHV.fn.uploader.selectors.queue
-                    );
-                }
-
-                function displayQueueIfNotVisible() {
-                    if (!$(
-                        "[data-group=upload-queue]",
-                        CHV.fn.uploader.selectors.root
-                    ).is(":visible")) {
-                        $(
-                            "[data-group=upload-queue]",
-                            CHV.fn.uploader.selectors.root
-                        ).css("display", "block");
-                    }
-                }
-
-                function getTitle(file) {
-                    var title = null;
-                    if (typeof file.name !== typeof undefined) {
-                        var basename = PF.fn.baseName(file.name);
-                        title = $.trim(
-                            basename
-                                .substring(0, 100)
-                                .capitalizeFirstLetter()
-                        );
-                    }
-                    return title;
-                }
-
-                function loadVideo(url, callback) {
-                    const video = document.createElement("video");
-                    video.onerror = (e) => {
-                        const videoError = {
-                            1: "MEDIA_ERR_ABORTED",
-                            2: "MEDIA_ERR_NETWORK",
-                            3: "MEDIA_ERR_DECODE",
-                            4: "MEDIA_ERR_SRC_NOT_SUPPORTED",
-                        }
-                        var error = videoError[video.error.code];
-                        callback({ type: "error", error: error })
-                        console.error("Error loading video", error)
-                    }
-                    video.addEventListener("loadedmetadata", function () {
-                        const seek = parseInt(video.duration / 4);
-                        setTimeout(() => {
-                            video.currentTime = seek;
-                            video.pause();
-                        }, 200);
-                        video.addEventListener("seeked", () => {
-                            const canvas = document.createElement("canvas");
-                            canvas.width = video.videoWidth;
-                            canvas.height = video.videoHeight;
-                            const ctx = canvas.getContext("2d");
-                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            ctx.canvas.toBlob(
-                                blob => {
-                                    callback(video, canvas)
-                                },
-                                "image/jpeg",
-                                0.90
-                            );
-                        }, false);
-                    });
-                    if (get_browser() === "safari") {
-                        video.autoplay = true;
-                        video.playsInline = true;
-                        video.muted = true;
-                    }
-                    video.preload = "metadata";
-                    video.src = url;
-                }
-
-                function setQueueReady($queue_item, img) {
-                    $queue_item.show();
-                    $(CHV.fn.uploader.selectors.root)
-                        .addClass("queueReady")
-                        .removeClass("queueEmpty");
-                    $("[data-group=upload-queue-ready]", CHV.fn.uploader.selectors.root).show();
-                    $("[data-group=upload]", CHV.fn.uploader.selectors.root).hide();
-                    $queue_item.find(".load-url").remove();
-                    $queue_item
-                        .find(".preview")
-                        .removeClass("soft-hidden")
-                        .show()
-                        .append(img);
-                    $img = $queue_item.find(".preview").find("img,canvas");
-                    $img.attr("class", "canvas");
-                    queue_item_h = $queue_item.height();
-                    queue_item_w = $queue_item.width();
-                    var img_w = parseInt($img.attr("width")) || $img.width();
-                    var img_h = parseInt($img.attr("height")) || $img.height();
-                    var img_r = img_w / img_h;
-                    $img.hide();
-                    if (img_w > img_h || img_w == img_h) {
-                        // Landscape
-                        var queue_img_h = img_h < queue_item_h ? img_h : queue_item_h;
-                        if (img_w > img_h) {
-                            $img.height(queue_img_h).width(queue_img_h * img_r);
-                        }
-                    }
-                    if (img_w < img_h || img_w == img_h) {
-                        // Portrait
-                        var queue_img_w = img_w < queue_item_w ? img_w : queue_item_w;
-                        if (img_w < img_h) {
-                            $img.width(queue_img_w).height(queue_img_w / img_r);
-                        }
-                    }
-                    if (img_w == img_h) {
-                        $img.height(queue_img_h).width(queue_img_w);
-                    }
-                    $img
-                        .css({
-                            marginTop: -$img.height() / 2,
-                            marginLeft: -$img.width() / 2,
-                        })
-                        .show();
-                    displayQueueIfNotVisible();
-                    CHV.fn.uploader.boxSizer();
-                }
-
-                function someFilesFailed(j, files, failed_files) {
-                    if (j !== files.length) {
-                        return;
-                    }
-                    if (typeof failed_before !== "undefined") {
-                        failed_files = failed_files.concat(failed_before);
-                    }
-                    PF.fn.loading.destroy("fullscreen");
-                    if (failed_files.length > 0) {
-                        var failed_message = "";
-                        for (var i = 0; i < failed_files.length; i++) {
-                            failed_message +=
-                                "<li>" +
-                                PF.fn.htmlEncode(failed_files[i].name) +
-                                " - " +
-                                PF.fn.htmlEncode(failed_files[i].error) +
-                                "</li>";
-                            delete CHV.fn.uploader.files[failed_files[i].uid];
-                            $(
-                                "li[data-id=" + failed_files[i].uid + "]",
-                                CHV.fn.uploader.selectors.queue
-                            )
-                                .find("[data-action=cancel]")
-                                .click();
-                        }
-                        PF.fn.modal.simple({
-                            title: PF.fn._s("Some files couldn't be loaded"),
-                            message: "<ul>" + failed_message + "</ul>",
-                        });
-                    } else {
-                        CHV.fn.uploader.focus();
-                    }
-                    CHV.fn.uploader.boxSizer();
-                }
-
-                // Load the image (async)
                 if(typeof file.type !== "undefined" && file.type.startsWith('video/')) {
                     var $queue_item = getQueueItem(file.uid);
                     var title = getTitle(file);
@@ -1395,7 +1399,6 @@ CHV.fn.uploader = {
                         videoUrl,
                         function(video, canvas) {
                             ++j;
-                            // var $queue_item = getQueueItem(file.uid);
                             if (video.type === "error") {
                                 failed_files.push({
                                     uid: file.uid,
@@ -1460,7 +1463,6 @@ CHV.fn.uploader = {
                                     height: imgData.originalHeight,
                                     mimetype: mimetype,
                                 };
-
                                 setQueueReady($queue_item, img);
                             }
                             someFilesFailed(j, files, failed_files);
@@ -1470,8 +1472,6 @@ CHV.fn.uploader = {
                         })
                     );
                 }
-
-                // Next one
                 setTimeout(function () {
                     CHVLoadImage(i + 1);
                 }, 25);
@@ -1505,12 +1505,15 @@ CHV.fn.uploader = {
                 continue;
             progress += this.files[i].progress;
         }
-        $("[data-text=queue-progress]", this.selectors.root).text(
-            parseInt((100 * progress) / queue_size)
-        );
+        var value = parseInt((100 * progress) / queue_size);
+        var current = parseInt($("[data-text=queue-progress]", this.selectors.root).text());
+        if(value > current) {
+            $("[data-text=queue-progress]", this.selectors.root).text(value);
+        }
     },
 
-    upload: function ($queue_item) {
+    upload: async function ($queue_item) {
+        console.log("Uploading...", $queue_item.data("id"));
         var id = $queue_item.data("id");
         var nextId = $queue_item.next().exists() ?
             $queue_item.next().data("id") :
@@ -1532,7 +1535,18 @@ CHV.fn.uploader = {
         if (typeof f == typeof undefined) {
             return;
         }
+
         var queue_is_url = typeof f.url !== typeof undefined;
+        if(!queue_is_url) {
+            const waitForChecksum = async (id) => {
+                console.log("Waiting for checksum...");
+                while (CHV.fn.uploader.files[id].checksum === null) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            };
+            await waitForChecksum(id);
+        }
+
         var source = queue_is_url ? f.url : f;
         var hasForm = typeof f.formValues !== typeof undefined;
 
@@ -1568,7 +1582,6 @@ CHV.fn.uploader = {
             mimetype: f.type,
         };
 
-        // Append URL BLOB source
         if (queue_is_url) {
             formData.source = source;
         } else {
@@ -1590,6 +1603,7 @@ CHV.fn.uploader = {
             if (v === null) return true;
             form.append(i, v);
         });
+        form.append("checksum", f.checksum);
 
         this.files[id].xhr = new XMLHttpRequest();
 
@@ -1604,7 +1618,6 @@ CHV.fn.uploader = {
                     $(CHV.fn.uploader.selectors.item_progress_bar, $queue_item).width(
                         100 - percentComplete + "%"
                     );
-
                     if (percentComplete == 100) {
                         CHV.fn.uploader.itemLoading($queue_item);
                     }
@@ -1622,8 +1635,10 @@ CHV.fn.uploader = {
         }
 
         this.files[id].xhr.onreadystatechange = function () {
+            if(this.readyState !== 4) {
+                return;
+            }
             var is_error = false;
-
             if (
                 this.readyState == 4 &&
                 typeof CHV.fn.uploader.files[id].xhr !== "undefined" &&
@@ -1654,8 +1669,6 @@ CHV.fn.uploader = {
                             " - " +
                             JSONresponse.error.message;
                     }
-
-                    // Save the server response (keeping indexing for results)
                     CHV.fn.uploader.results[this.status == 200 ? "success" : "error"][
                         id
                     ] = JSONresponse;
@@ -1725,7 +1738,204 @@ CHV.fn.uploader = {
 
         this.files[id].xhr.open("POST", PF.obj.config.json_api, true);
         this.files[id].xhr.setRequestHeader("Accept", "application/json");
-        this.files[id].xhr.send(form);
+
+        const chunkSize = CHV.obj.config.upload.chunkSize;
+        if (!queue_is_url && source.size >= chunkSize) {
+            CHV.fn.uploader.files[id].chunksXHRs = [];
+            let chunkedUpload = {
+                type: "chunked",
+                source: source.name,
+                action: "chunked-upload",
+                checksum: source.checksum,
+                size: source.size,
+                auth_token: PF.obj.config.auth_token,
+            };
+            const xhrInit = new XMLHttpRequest();
+            xhrInit.open("POST", PF.obj.config.json_api, true);
+            xhrInit.setRequestHeader("Accept", "application/json");
+            xhrInit.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhrInit.onreadystatechange = function () {
+                if (xhrInit.readyState !== 4) return;
+                if (xhrInit.status === 200) {
+                    let response;
+                    try {
+                        response = JSON.parse(xhrInit.responseText);
+                    } catch (e) {
+                        response = {};
+                    }
+                    if (!response.success) {
+                        if (CHV.fn.uploader.files[id]) {
+                            CHV.fn.uploader.files[id].xhr.status = xhrInit.status;
+                            CHV.fn.uploader.files[id].xhr.responseText = xhrInit.responseText;
+                            CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                        }
+                        return;
+                    }
+                    const upload_id = response.success.upload_id;
+                    const token = response.success.token;
+                    const hash = response.success.hash;
+                    const totalChunks = Math.ceil(source.size / chunkSize);
+                    const chunkBlobs = [];
+                    let offset = 0;
+                    while (offset < source.size) {
+                        const end = Math.min(offset + chunkSize, source.size);
+                        chunkBlobs.push(source.slice(offset, end));
+                        offset = end;
+                    }
+                    let uploadedChunks = 0;
+                    let uploadingError = false;
+                    let isFinalizing = false;
+                    const maxParallel = 2;
+                    let chunkResults = new Array(totalChunks);
+                    function uploadChunk(blob, index) {
+                        return new Promise((resolve, reject) => {
+                            const chunkXHR = new XMLHttpRequest();
+                            chunkXHR.open("POST", PF.obj.config.json_api, true);
+                            chunkXHR.setRequestHeader("X-Action", "upload-chunk");
+                            chunkXHR.setRequestHeader("X-Upload-Id", upload_id);
+                            chunkXHR.setRequestHeader("X-Token", token);
+                            chunkXHR.setRequestHeader("X-Hash", hash);
+                            chunkXHR.setRequestHeader("X-Index", index + 1);
+                            chunkXHR.setRequestHeader("X-Auth-Token", PF.obj.config.auth_token);
+                            chunkXHR.setRequestHeader("X-Type", "file");
+                            chunkXHR.setRequestHeader("Accept", "application/json");
+                            chunkXHR.upload.onprogress = function (e) {
+                                if (!e.lengthComputable) return;
+                                const loaded = (index * chunkSize) + e.loaded;
+                                const overallProgress = {
+                                    loaded: loaded,
+                                    total: source.size
+                                };
+                                CHV.fn.uploader.queueProgress(overallProgress, id);
+                                var $el = $(CHV.fn.uploader.selectors.item_progress_bar, $queue_item);
+                                const percentComplete = parseInt((overallProgress.loaded / overallProgress.total) * 100);
+                                if (percentComplete > parseInt($el.data("completed") || 0)) {
+                                    $el
+                                        .data("completed", percentComplete)
+                                        .width(100 - percentComplete + "%");
+                                }
+                            };
+                            chunkXHR.onreadystatechange = function () {
+                                if (chunkXHR.readyState !== 4) return;
+                                if (chunkXHR.status === 200) {
+                                    chunkResults[index] = true;
+                                    uploadedChunks++;
+                                    resolve();
+                                } else {
+                                    uploadingError = true;
+                                    if (CHV.fn.uploader.files[id]) {
+                                        CHV.fn.uploader.files[id].xhr.status = 400;
+                                        CHV.fn.uploader.files[id].xhr.responseText = JSON.stringify({
+                                            status_code: 400,
+                                            error: {
+                                                message: "Failed to upload chunk " + (index + 1)
+                                            }
+                                        });
+                                        CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                                    }
+                                    reject();
+                                }
+                            };
+                            chunkXHR.onerror = function () {
+                                uploadingError = true;
+                                if (CHV.fn.uploader.files[id]) {
+                                    CHV.fn.uploader.files[id].xhr.status = 400;
+                                    CHV.fn.uploader.files[id].xhr.responseText = JSON.stringify({
+                                        status_code: 400,
+                                        error: {
+                                            message: "Failed to upload chunk " + (index + 1)
+                                        }
+                                    });
+                                    CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                                }
+                                reject();
+                            };
+                            chunkXHR.send(blob);
+                            CHV.fn.uploader.files[id].chunksXHRs.push(chunkXHR);
+                        });
+                    }
+
+                    async function runParallelUploads() {
+                        let nextChunk = 0;
+                        let running = 0;
+                        return new Promise((resolve, reject) => {
+                            function launchNext() {
+                                if (uploadingError || isFinalizing) return;
+                                while (running < maxParallel && nextChunk < totalChunks) {
+                                    const idx = nextChunk++;
+                                    running++;
+                                    uploadChunk(chunkBlobs[idx], idx)
+                                        .then(() => {
+                                            running--;
+                                            if (uploadingError || isFinalizing) return;
+                                            if (uploadedChunks === totalChunks && !isFinalizing) {
+                                                isFinalizing = true;
+                                                CHV.fn.uploader.itemLoading($queue_item);
+                                                const finalForm = new FormData();
+                                                for (let key in formData) {
+                                                    if (formData[key] !== null) {
+                                                        finalForm.append(key, formData[key]);
+                                                    }
+                                                }
+                                                finalForm.append("source", `CHUNKED_${upload_id}_${token}_${hash}`);
+                                                finalForm.append("type", "chunked");
+                                                CHV.fn.uploader.files[id].xhr.open("POST", PF.obj.config.json_api, true);
+                                                CHV.fn.uploader.files[id].xhr.setRequestHeader("Accept", "application/json");
+                                                CHV.fn.uploader.files[id].xhr.send(finalForm);
+                                                resolve();
+                                            } else {
+                                                launchNext();
+                                            }
+                                        })
+                                        .catch(() => {
+                                            running--;
+                                            reject();
+                                        });
+                                }
+                            }
+                            launchNext();
+                        });
+                    }
+
+                    runParallelUploads();
+                } else {
+                    const handler = CHV.fn.uploader.files[id].xhr.onreadystatechange;
+                    let responseJSON;
+                    try {
+                        responseJSON = JSON.parse(xhrInit.responseText);
+                    } catch (e) {
+                        responseJSON = {
+                            error: {
+                                message: 'Error',
+                                type: 'Error',
+                            }
+                        };
+                    }
+                    const mockXHR = {
+                        status: xhrInit.status || 400,
+                        readyState: 4,
+                        responseText: xhrInit.responseText,
+                        response: JSON.stringify(responseJSON),
+                        onreadystatechange: function () {
+                            if (typeof handler === "function") {
+                                handler.call(this);
+                            }
+                        }
+                    };
+                    CHV.fn.uploader.files[id].xhr = mockXHR;
+                    CHV.fn.uploader.files[id].xhr.onreadystatechange();
+                }
+            };
+            // Serialize chunkedUpload object to x-www-form-urlencoded
+            const params = Object.keys(chunkedUpload)
+                .map(k => encodeURIComponent(k) + "=" + encodeURIComponent(chunkedUpload[k]))
+                .join("&");
+            xhrInit.send(params);
+        } else {
+            this.files[id].xhr.open("POST", PF.obj.config.json_api, true);
+            this.files[id].xhr.setRequestHeader("Accept", "application/json");
+            this.files[id].xhr.send(form);
+        }
     },
 
     itemLoading: function ($queue_item) {
@@ -2825,7 +3035,7 @@ CHV.fn.storage = {
             storage_capacity = $storage_capacity.val(),
             capacity_error_msg;
 
-        if ($storage_capacity.is(":visible") && storage_capacity !== "") {
+        if ($storage_capacity.is(":visible") && (storage_capacity !== "" || storage_capacity != "0")) {
             if (
                 /^[\d\.]+\s*[A-Za-z]{2}$/.test(storage_capacity) == false ||
                 typeof storage_capacity.getBytes() == "undefined"
@@ -3582,7 +3792,6 @@ CHV.fn.list_editor = {
     },
 
     updateItem: function ($target, response, action, growl) {
-        console.log('que mierda')
         var album_name;
         if ($target instanceof jQuery == false) {
             var $target = $($target);
@@ -3598,7 +3807,6 @@ CHV.fn.list_editor = {
         }
         if (action == "edit" || action == "move") {
             if (action == "move" && CHV.obj.resource.type == "album") {
-                console.log("Moving from album", $target, growl);
                 CHV.fn.list_editor.moveFromList($target, growl);
                 return;
             }
@@ -4596,20 +4804,30 @@ $(function () {
                 ).css("display", "");
             }
 
-            if (
-                CHV.fn.uploader.files[id] &&
-                typeof CHV.fn.uploader.files[id].xhr !== "undefined"
-            ) {
-                CHV.fn.uploader.files[id].xhr.abort();
-                item_xhr_cancel = true;
+            if (CHV.fn.uploader.files[id]) {
+                if(typeof CHV.fn.uploader.files[id].xhr !== "undefined") {
+                    CHV.fn.uploader.files[id].xhr.abort();
+                    item_xhr_cancel = true;
+                }
+                if (typeof CHV.fn.uploader.files[id].chunksXHRs !== "undefined") {
+                    CHV.fn.uploader.files[id].chunksXHRs.forEach(xhr => {
+                        if (xhr && xhr.readyState !== 4) {
+                            xhr.abort();
+                            if (xhr.upload) {
+                                xhr.upload.onprogress = null;
+                            }
+                        }
+                    });
+                    item_xhr_cancel = true;
+                }
             }
 
             if (
                 typeof CHV.fn.uploader.files[id] !== typeof undefined &&
                 typeof CHV.fn.uploader.files[id].fromClipboard !== typeof undefined
             ) {
-                var c_md5 = CHV.fn.uploader.files[id].md5;
-                var c_index = CHV.fn.uploader.clipboardImages.indexOf(c_md5);
+                var c_checksum = CHV.fn.uploader.files[id].checksum;
+                var c_index = CHV.fn.uploader.clipboardImages.indexOf(c_checksum);
                 if (c_index > -1) {
                     CHV.fn.uploader.clipboardImages.splice(c_index, 1);
                 }
@@ -4620,8 +4838,6 @@ $(function () {
             CHV.fn.uploader.queueSize();
 
             if (Object.size(CHV.fn.uploader.files) == 0) {
-                // No queue left
-                // Null result ?
                 if (!("success" in CHV.fn.uploader) ||
                     !("results" in CHV.fn.uploader) ||
                     (Object.size(CHV.fn.uploader.results.success) == 0 &&
@@ -4630,7 +4846,6 @@ $(function () {
                     CHV.fn.uploader.reset();
                 }
             } else {
-                // Do we need to process the next item?
                 if (item_xhr_cancel && $("li.waiting", $queue).first().length !== 0) {
                     CHV.fn.uploader.upload($("li.waiting", $queue).first());
                 }
@@ -5044,7 +5259,6 @@ $(function () {
                         url: PF.obj.config.json_api,
                         deferred: {
                             success: function (XHR) {
-                                console.log('UPDATE ITEM')
                                 CHV.fn.list_editor.updateItem(
                                     "[data-type=" + dealing_with + "][data-id=" + id + "]",
                                     XHR.responseJSON[dealing_with],
@@ -6874,3 +7088,19 @@ $(function () {
         }, 150);
     });
 });
+
+async function hashFile(file) {
+    const { create64 } = await xxhash();
+    const hasher = create64();
+    const start = performance.now();
+    console.log('hashing file...');
+    const reader = file.stream().getReader();
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        hasher.update(value);
+    }
+    const end = performance.now();
+    console.log("hashFile took", (end - start).toFixed(2), "ms");
+    return hasher.digest().toString(16);
+}
