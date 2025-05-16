@@ -25,10 +25,12 @@ trait BinaryTrait
         if ($binary === '') {
             throw new RuntimeException("{$name} binary not provided", 1);
         }
-        $finder = new ExecutableFinder();
-        $binary = $finder->find($binary);
-        if ($binary === null) {
-            throw new RuntimeException("{$name} binary not found", 2);
+        if (! file_exists($binary)) {
+            $finder = new ExecutableFinder();
+            $binary = $finder->find($binary);
+            if ($binary === null) {
+                throw new RuntimeException("{$name} binary not found", 2);
+            }
         }
         if (! is_executable($binary)) {
             throw new RuntimeException("{$name} binary is not executable", 3);

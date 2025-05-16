@@ -1,0 +1,7 @@
+Chevereto 4.3.1 (2025-05-16)
+
+- Downgraded AWS SDK to 3.336.15 for improved compatibility
+- Fixed bug affecting PHP page routing and editing
+- Fixed bug with ExifTool and ExifTran binary detection
+- Fixed bug with S3 Compatible storage integration
+- Improved FFmpeg binary detection in /dashboard

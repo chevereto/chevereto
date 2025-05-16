@@ -44,6 +44,7 @@ return function (Handler $handler) {
         }
         $pathinfo = pathinfo($page['file_path_absolute']);
         $handler->setPathTheme(add_ending_slash($pathinfo['dirname']));
+        $handler->setTemplate($pathinfo['filename']);
     } else {
         if ($page['code'] === null) {
             $file = str_replace_last('.php', '.html', $page['file_path_absolute']);

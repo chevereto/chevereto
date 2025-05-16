@@ -543,7 +543,7 @@ return function (Handler $handler) {
                         $ffmpeg = FFMpeg::create(
                             [
                                 'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
-                                // 'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                                'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
                             ]
                         );
                     } catch (Throwable $e) {
