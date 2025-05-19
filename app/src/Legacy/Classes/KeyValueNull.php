@@ -38,7 +38,7 @@ class KeyValueNull implements KeyValueInterface
 
     public function get(string $key, &$token = null): mixed
     {
-        return null;
+        return false;
     }
 
     public function delete(string $key): bool

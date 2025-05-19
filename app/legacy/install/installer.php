@@ -649,6 +649,7 @@ $settings_updates = [
         'enable_api_guest' => 0,
     ],
     '4.3.1' => null,
+    '4.3.2' => null,
 ];
 
 /**

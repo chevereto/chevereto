@@ -118,8 +118,8 @@ class User
     {
         $id = is_array($var) ? $var['id'] : $var;
         $cacheKey = static::getCacheKey($id, 'albums');
-        $cached = Cache::instance()->get($cacheKey) ?: [];
-        if ($cached) {
+        $cached = Cache::instance()->get($cacheKey);
+        if (is_array($cached) && count($cached) === 3) {
             [$userAlbums, $children, $map] = $cached;
         } else {
             $userAlbums = [];
