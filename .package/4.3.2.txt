@@ -1,4 +1,0 @@
-Chevereto 4.3.2 (2025-05-19)
-
-- Fixed bug affecting PHP pages functionality
-- Fixed bug affecting album dropdown selection

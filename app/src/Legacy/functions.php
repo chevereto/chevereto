@@ -1249,6 +1249,7 @@ function loaderHandler(
             $redis,
             env()['CHEVERETO_CACHE_KEY_PREFIX'],
             (int) env()['CHEVERETO_MAX_CACHE_TTL'],
+            (int) env()['CHEVERETO_CACHE_STAMPEDE_SLA']
         );
     } else {
         $keyValue = new KeyValueNull(

@@ -9,5 +9,16 @@
  * file that was distributed with this source code.
  */
 
-const APP_VERSION = '4.3.3';
-const APP_VERSION_AKA = 'entrador';
+namespace Chevereto\Legacy\Classes;
+
+use Chevereto\Legacy\Classes\Traits\BinaryTrait;
+
+final class ExecutableBinary
+{
+    use BinaryTrait;
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+}

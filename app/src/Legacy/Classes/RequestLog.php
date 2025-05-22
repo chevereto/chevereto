@@ -57,7 +57,7 @@ class RequestLog
             $hash = Cache::hash(serialize($type) . $result . $ip);
             $cacheKey = "rl:{$hash}";
             $cached = Cache::instance()->get($cacheKey);
-            if ($cached) {
+            if ($cached !== false) {
                 return $cached;
             }
         }

@@ -762,11 +762,10 @@ $(function () {
                         }
                     },
                     cancel: function () {
-                        if (typeof cancel_fn == "function") cancel_fn = cancel_fn();
-                        if (typeof cancel_fn !== "undefined" && cancel_fn == false) {
+                        if (typeof cancel_function == "function") cancel_function = cancel_function();
+                        if (typeof cancel_function !== "undefined" && cancel_function == false) {
                             return false;
                         }
-                        // nota: falta template aca
                         if (
                             $target.data("prompt") != "skip" &&
                             PF.fn.form_modal_has_changed()

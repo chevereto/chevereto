@@ -470,7 +470,7 @@ class Settings
         } else {
             $cached = Cache::instance()->get('settings');
         }
-        if ($cached) {
+        if ($cached !== false) {
             self::$settings = $cached['settings'];
             self::$defaults = $cached['defaults'];
             self::$typeset = $cached['typeset'];

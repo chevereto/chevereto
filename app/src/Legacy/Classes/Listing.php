@@ -1032,7 +1032,7 @@ class Listing
             $listingPageHash = Cache::hash($query . serialize($listingPageBinds));
             $cacheKeyListingPage = "l:{$listingPageHash}";
             $cached = Cache::instance()->get($cacheKeyListingPage);
-            if ($cached) {
+            if ($cached !== false) {
                 $this->count = $cached['count'];
                 $this->has_page_next = $cached['has_page_next'];
                 $this->has_page_prev = $cached['has_page_prev'];

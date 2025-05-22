@@ -51,7 +51,7 @@ class Variable
         } else {
             $cached = Cache::instance()->get('variables');
         }
-        if ($cached) {
+        if ($cached !== false) {
             static::$variables = $cached;
             static::$instance = $this;
 

@@ -14,6 +14,7 @@ use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\AssetStorage;
 use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\ExecutableBinary;
 use Chevereto\Legacy\Classes\ExifTool;
 use Chevereto\Legacy\Classes\ExifTran;
 use Chevereto\Legacy\Classes\Image;
@@ -521,7 +522,37 @@ return function (Handler $handler) {
                 ]);
             }
             if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
-                $ffmpegContent = '<i class="fas fa-video"></i> ';
+                $isFFmpegError = false;
+                $ffmpegContent = '<i class="fas fa-video"></i> FFmpeg bin: ';
+                $ffmpegBinary = env()['CHEVERETO_BINARY_FFMPEG'] ?? '';
+                if ($ffmpegBinary !== '') {
+                    $ffmpegContent .= $ffmpegBinary;
+
+                    try {
+                        new ExecutableBinary($ffmpegBinary, 'FFmpeg');
+                    } catch (RuntimeException $e) {
+                        $isFFmpegError = true;
+                        $ffmpegContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                    }
+                } else {
+                    $isFFmpegError = true;
+                    $ffmpegContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not configured') . '</span>';
+                }
+                $ffmpegContent .= '<br><i class="fas fa-video"></i> FFprobe bin: ';
+                $ffprobeBinary = env()['CHEVERETO_BINARY_FFPROBE'] ?? '';
+                if ($ffprobeBinary !== '') {
+                    $ffmpegContent .= $ffprobeBinary;
+
+                    try {
+                        new ExecutableBinary($ffprobeBinary, 'FFprobe');
+                    } catch (RuntimeException $e) {
+                        $isFFmpegError = true;
+                        $ffmpegContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                    }
+                } else {
+                    $isFFmpegError = true;
+                    $ffmpegContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not configured') . '</span>';
+                }
 
                 try {
                     $missing = [
@@ -537,44 +568,39 @@ return function (Handler $handler) {
                             )
                         );
                     }
-                    $ffmpegErrors = [];
+                    if (! $isFFmpegError) {
+                        $ffmpegErrors = [];
 
-                    try {
-                        $ffmpeg = FFMpeg::create(
-                            [
-                                'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
-                                'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
-                            ]
-                        );
-                    } catch (Throwable $e) {
-                        $ffmpegErrors[] = get_ffmpeg_error($e);
-                    }
+                        try {
+                            $ffmpeg = FFMpeg::create(
+                                [
+                                    'ffmpeg.binaries' => env()['CHEVERETO_BINARY_FFMPEG'],
+                                    'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                                ]
+                            );
+                        } catch (Throwable $e) {
+                            $ffmpegErrors[] = get_ffmpeg_error($e);
+                        }
 
-                    try {
-                        $ffprobe = FFProbe::create(
-                            [
-                                'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
-                            ]
-                        );
-                        $ffprobe->getFFProbeDriver()->getName();
-                    } catch (Throwable $e) {
-                        $ffmpegErrors[] = get_ffmpeg_error($e);
-                    }
-                    if ($ffmpegErrors !== []) {
-                        throw new Exception(implode('<br>', $ffmpegErrors));
-                    }
-                    $ffmpegContent .= 'FFmpeg';
-                    if (isset($ffmpeg) && env()['CHEVERETO_CONTEXT'] !== 'saas') {
-                        $ffmpegContent .= ' bin: '
-                            . env()['CHEVERETO_BINARY_FFMPEG']
-                            . ' version '
-                            . $ffmpeg->getFFMpegDriver()->getVersion()
-                            . '<br>'
-                            . '<i class="fas fa-circle-check"></i> FFprobe bin: '
-                            . env()['CHEVERETO_BINARY_FFPROBE'];
+                        try {
+                            $ffprobe = FFProbe::create(
+                                [
+                                    'ffprobe.binaries' => env()['CHEVERETO_BINARY_FFPROBE'],
+                                ]
+                            );
+                            $ffprobe->getFFProbeDriver()->getName();
+                        } catch (Throwable $e) {
+                            $ffmpegErrors[] = get_ffmpeg_error($e);
+                        }
+                        if ($ffmpegErrors !== []) {
+                            throw new Exception(implode('<br>', $ffmpegErrors));
+                        }
+                        if (isset($ffmpeg)) {
+                            $ffmpegContent .= '<br>version ' . $ffmpeg->getFFMpegDriver()->getVersion();
+                        }
                     }
                 } catch (Throwable $e) {
-                    $ffmpegContent = '<span class="color-fail"><i class="fas fa-warning"></i> Error: '
+                    $ffmpegContent .= '<span class="color-fail"><br><br>'
                         . get_ffmpeg_error($e)
                         . '</span>';
                 }
@@ -593,31 +619,31 @@ return function (Handler $handler) {
                         . ' XBM:' . gd_info()['XBM Support'];
                 }
                 $exifToolBinary = env()['CHEVERETO_BINARY_EXIFTOOL'] ?? '';
-                $exifToolContent = '<i class="fas fa-camera"></i> ExifTool';
+                $exifToolContent = '<i class="fas fa-camera"></i> ExifTool bin:';
                 if ($exifToolBinary !== '') {
-                    $exifToolContent .= ' bin: ' . $exifToolBinary;
+                    $exifToolContent .= $exifToolBinary;
 
                     try {
                         $exifTool = new ExifTool(env()['CHEVERETO_BINARY_EXIFTOOL']);
-                        $exifToolContent .= ' version ' . $exifTool->version();
+                        $exifToolContent .= '<br>version ' . $exifTool->version();
                     } catch (RuntimeException $e) {
-                        $exifToolContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                        $exifToolContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
                     }
                 } else {
-                    $exifToolContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not available') . '</span>';
+                    $exifToolContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not configured') . '</span>';
                 }
                 $exifTranBinary = env()['CHEVERETO_BINARY_EXIFTRAN'] ?? '';
-                $exifTranContent = '<i class="fas fa-camera"></i> ExifTran';
+                $exifTranContent = '<i class="fas fa-camera"></i> ExifTran bin: ';
                 if ($exifTranBinary !== '') {
-                    $exifTranContent .= ' bin: ' . $exifTranBinary;
+                    $exifTranContent .= $exifTranBinary;
 
                     try {
                         new ExifTran($exifTranBinary);
                     } catch (RuntimeException $e) {
-                        $exifTranContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
+                        $exifTranContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
                     }
                 } else {
-                    $exifTranContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not available') . '</span>';
+                    $exifTranContent .= ' <span class="color-fail"><i class="fas fa-warning"></i> ' . _s('Not configured') . '</span>';
                 }
                 $mysqlVersion = $db->getAttr(PDO::ATTR_SERVER_VERSION);
                 $db->closeCursor();
@@ -715,11 +741,20 @@ return function (Handler $handler) {
                         'label' => 'ExifTran',
                         'content' => $exifTranContent,
                     ],
-                    'video' => [
-                        'label' => _s('Video processing'),
+                    'ffmpeg' => [
+                        'label' => 'FFmpeg',
                         'content' => $ffmpegContent,
                     ],
                 ];
+                $openBasedir = ini_get('open_basedir');
+                if ($openBasedir) {
+                    $system_values_more['open_basedir'] = [
+                        'label' => 'open_basedir',
+                        'content' => '<span class="color-fail"><i class="fas fa-warning"></i> '
+                            . $openBasedir
+                            . '</span> <a href="https://www.php.net/manual/en/ini.core.php#ini.open-basedir" target="_blank">open_basedir</a>',
+                    ];
+                }
                 $pos = array_search('upload_max_filesize', array_keys($system_values), true);
                 array_splice($system_values, $pos, 0, $system_values_more);
             }

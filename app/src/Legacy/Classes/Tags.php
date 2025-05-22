@@ -21,7 +21,7 @@ final class Tags
     {
         $tagsTop = [];
         $cached = Cache::instance()->get(self::CACHE_KEY);
-        if ($cached) {
+        if ($cached !== false) {
             return $cached;
         }
 

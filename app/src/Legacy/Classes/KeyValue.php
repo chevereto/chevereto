@@ -24,10 +24,13 @@ class KeyValue implements KeyValueInterface
         private Redis $redis,
         private string $prefix = '',
         private int $maxTtl = 0,
+        int $stampedeSla = 0
     ) {
-        $this->keyValueStore = new StampedeProtector(
-            new RedisAdapter($redis)
-        );
+        $redisAdapter = new RedisAdapter($redis);
+        $this->keyValueStore = $redisAdapter;
+        if ($stampedeSla > 0) {
+            $this->keyValueStore = new StampedeProtector($redisAdapter, $stampedeSla);
+        }
     }
 
     public function redis(): Redis

@@ -78,7 +78,6 @@ class Handler
 
     public function __construct(bool $loadTemplate, ?Closure $before = null, ?Closure $after = null)
     {
-        // @ini_set('open_basedir', PATH_PUBLIC);
         $this->relative_root = Config::host()->hostnamePath();
         $this->base_url = URL_APP_PUBLIC;
         $this->path_theme = PATH_PUBLIC_LEGACY_THEME;
