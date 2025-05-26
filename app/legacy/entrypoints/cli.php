@@ -54,8 +54,8 @@ require_once __DIR__ . '/../load/php-boot.php';
 set_error_handler(ThrowableHandler::ERROR_AS_EXCEPTION);
 set_exception_handler(ThrowableHandler::CONSOLE);
 require_once loaderHandler(
-    $_COOKIE,
     getCheveretoEnv(),
+    $_COOKIE,
     $_FILES,
     $_GET,
     $_POST,

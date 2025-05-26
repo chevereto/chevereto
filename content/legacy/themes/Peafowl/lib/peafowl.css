@@ -4490,14 +4490,16 @@ a.top-user-avatar {
 }
 
 .phone .top-user,
+.laptop .top-user:not(.no-background),
 .desktop .top-user:not(.no-background),
-.laptop .top-user:not(.no-background) {
+.largescreen .top-user:not(.no-background) {
     -webkit-padding-start: 0;
     padding-inline-start: 0;
 }
 
 .desktop .top-user:not(.no-background) .top-user-avatar,
-.laptop .top-user:not(.no-background) .top-user-avatar {
+.laptop .top-user:not(.no-background) .top-user-avatar,
+.largescreen .top-user:not(.no-background) .top-user-avatar {
     position: absolute;
     left: 50%;
     -webkit-margin-start: calc(-0.5em - 10px);

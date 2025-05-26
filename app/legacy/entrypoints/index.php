@@ -35,8 +35,8 @@ if (in_array($urlPath, ['/upgrading', '/upgrading/'], true)
     exit;
 }
 require_once loaderHandler(
-    $_COOKIE,
     getCheveretoEnv(),
+    $_COOKIE,
     $_FILES,
     $_GET,
     $_POST,

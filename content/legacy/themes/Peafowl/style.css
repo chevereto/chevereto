@@ -1587,7 +1587,8 @@ body#maintenance, body#consent-screen {
 
 .tablet .footer,
 .laptop .footer,
-.desktop .footer {
+.desktop .footer,
+.largescreen .footer {
     text-align: right;
 }
 

@@ -16,8 +16,8 @@ define('ACCESS', 'web');
 define('REPL', true);
 require __DIR__ . '/legacy/load/loader.php';
 include loaderHandler(
-    _cookie: [],
     _env: getCheveretoEnv(),
+    _cookie: [],
     _files: [],
     _get: [],
     _post: [],

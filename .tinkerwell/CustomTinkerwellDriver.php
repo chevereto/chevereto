@@ -25,8 +25,8 @@ class CustomTinkerwellDriver extends TinkerwellDriver
         define('REPL', true);
         require $projectPath . '/app/legacy/load/loader.php';
         include loaderHandler(
-            _cookie: [],
             _env: getCheveretoEnv(),
+            _cookie: [],
             _files: [],
             _get: [],
             _post: [],

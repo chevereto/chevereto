@@ -1040,36 +1040,18 @@ function isShowEmbedContent(): bool
 
 function getCheveretoEnv(): array
 {
-    $env = getenv();
-
-    return array_filter($env, function ($key) {
+    return array_filter(getenv(), function ($key) {
         return strpos($key, 'CHEVERETO_') === 0;
     }, ARRAY_FILTER_USE_KEY);
 }
 
 /**
- * Process the server context and returns the handler file to load.
+ * Preload the application environment.
+ *
+ * @throws RuntimeException
  */
-function loaderHandler(
-    array $_cookie,
-    array $_env,
-    array $_files,
-    array $_get,
-    array $_post,
-    array $_request,
-    array $_server,
-    array $_session,
-): string {
-    $isHttps = strtolower($_server['HTTPS'] ?? '') === 'on'
-        || ($_server['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
-        || preg_match('#https#i', $_server['HTTP_CF_VISITOR'] ?? '');
-    $imageLibrary = '';
-    if (extension_loaded('gd') && function_exists('gd_info')) {
-        $imageLibrary = 'gd';
-    }
-    if (extension_loaded('imagick')) {
-        $imageLibrary = 'imagick';
-    }
+function preload(): void
+{
     setlocale(LC_ALL, 'en_US.UTF8');
     define('APP_NAME', 'Chevereto');
     define('PATH_PUBLIC', dirname(__DIR__, 3) . '/');
@@ -1091,22 +1073,49 @@ function loaderHandler(
     define('PATH_PUBLIC_CONTENT_PAGES', PATH_PUBLIC_CONTENT . 'pages/');
     define('PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB', PATH_PUBLIC_CONTENT . 'legacy/themes/Peafowl/lib/');
     define('PATH_PUBLIC_CONTENT_LEGACY_THEMES', PATH_PUBLIC_CONTENT . 'legacy/themes/');
-    /** @var array $envDefault */
-    $envDefault = require PATH_APP . 'env-default.php';
-    $envDefault = array_merge($envDefault, [
-        'CHEVERETO_HOSTNAME' => $_server['SERVER_NAME'] ?? gethostname(),
-        'CHEVERETO_HTTPS' => (string) (int) $isHttps,
-        'CHEVERETO_IMAGE_LIBRARY' => $imageLibrary,
-    ]);
+    define('ENV_DEFAULT', require PATH_APP . 'env-default.php');
     $env = [];
     $envFile = filePhpForPath(PATH_APP . 'env.php');
     if ($envFile->file()->exists()) {
         $filePhpReturn = new FilePhpReturn($envFile);
         $env = $filePhpReturn->cast()->array();
     }
-    $envVar = array_merge($envDefault, $env, $_env);
+    define('ENV', $env);
+    $imageLibrary = '';
+    if (extension_loaded('gd') && function_exists('gd_info')) {
+        $imageLibrary = 'gd';
+    }
+    if (extension_loaded('imagick')) {
+        $imageLibrary = 'imagick';
+    }
+    define('IMAGE_LIBRARY', $imageLibrary);
+}
+
+/**
+ * @return string The file to require.
+ */
+function loaderHandler(
+    array $_env,
+    array $_cookie,
+    array $_files,
+    array $_get,
+    array $_post,
+    array $_request,
+    array $_server,
+    array $_session,
+): string {
+    preload();
+    $isHttps = strtolower($_server['HTTPS'] ?? '') === 'on'
+        || ($_server['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
+        || preg_match('#https#i', $_server['HTTP_CF_VISITOR'] ?? '');
+    $envDefault = array_merge(ENV_DEFAULT, [
+        'CHEVERETO_HOSTNAME' => $_server['SERVER_NAME'] ?? gethostname(),
+        'CHEVERETO_HTTPS' => (string) (int) $isHttps,
+        'CHEVERETO_IMAGE_LIBRARY' => IMAGE_LIBRARY,
+    ]);
+    $envVar = array_merge($envDefault, ENV, $_env);
     $envVar['CHEVERETO_ID'] = $_env['CHEVERETO_ID']
-        ?? $env['CHEVERETO_ID']
+        ?? ENV['CHEVERETO_ID']
         ?? $_server['CHEVERETO_ID']
         ?? '';
     $envVar['CHEVERETO_ID_HANDLE'] = '';
@@ -1150,23 +1159,14 @@ function loaderHandler(
     ));
     $iniToChevereto = [
         'error_log' => 'CHEVERETO_ERROR_LOG',
-        'max_execution_time' => 'CHEVERETO_MAX_EXECUTION_TIME_SECONDS',
         'memory_limit' => 'CHEVERETO_MAX_MEMORY_SIZE',
         'post_max_size' => 'CHEVERETO_MAX_POST_SIZE',
-        'session.save_handler' => 'CHEVERETO_SESSION_SAVE_HANDLER',
-        'session.save_path' => 'CHEVERETO_SESSION_SAVE_PATH',
+        // 'max_execution_time' => 'CHEVERETO_MAX_EXECUTION_TIME_SECONDS',
+        // 'session.save_handler' => 'CHEVERETO_SESSION_SAVE_HANDLER',
+        // 'session.save_path' => 'CHEVERETO_SESSION_SAVE_PATH',
         // 'upload_max_filesize' => 'CHEVERETO_MAX_UPLOAD_FILE_SIZE', // INI_PERDIR
     ];
-    $isCLI = PHP_SAPI === 'cli';
-    $iniToSkip = [
-        'max_execution_time' => $isCLI,
-        'session.save_handler' => $isCLI,
-        'session.save_path' => $isCLI,
-    ];
     foreach ($iniToChevereto as $iniOption => $envName) {
-        if (($iniToSkip[$iniOption] ?? false) === true) {
-            continue;
-        }
         if (! function_exists('ini_get')
             || ! function_exists('ini_set')
         ) {
@@ -1225,7 +1225,7 @@ function loaderHandler(
         }
     }
     new EnvVar($envVar);
-    new ServerVar(array_merge($envDefault, $env, $_server));
+    new ServerVar(array_merge($envDefault, ENV, $_server));
     new CookieVar($_cookie);
     new RequestVar($_request);
     new PostVar($_post);

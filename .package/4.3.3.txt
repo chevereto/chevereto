@@ -1,7 +1,0 @@
-Chevereto 4.3.3 (2025-05-22)
-
-- Added configurable cache stampede protection
-- Added open_basedir section to /dashboard
-- Fixed bug affecting binary conflicts with open_basedir restrictions
-- Fixed bug affecting close button on modal boxes
-- Improved binary detection display at /dashboard

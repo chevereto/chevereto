@@ -555,19 +555,6 @@ return function (Handler $handler) {
                 }
 
                 try {
-                    $missing = [
-                        'proc_open' => ! function_exists('proc_open'),
-                        'proc_close' => ! function_exists('proc_close'),
-                    ];
-                    $missing = array_filter($missing);
-                    if ($missing) {
-                        throw new Exception(
-                            _s(
-                                'PHP function [%s] not available in this PHP installation',
-                                implode(', ', array_keys($missing))
-                            )
-                        );
-                    }
                     if (! $isFFmpegError) {
                         $ffmpegErrors = [];
 
@@ -600,7 +587,7 @@ return function (Handler $handler) {
                         }
                     }
                 } catch (Throwable $e) {
-                    $ffmpegContent .= '<span class="color-fail"><br><br>'
+                    $ffmpegContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> '
                         . get_ffmpeg_error($e)
                         . '</span>';
                 }
@@ -626,7 +613,7 @@ return function (Handler $handler) {
                     try {
                         $exifTool = new ExifTool(env()['CHEVERETO_BINARY_EXIFTOOL']);
                         $exifToolContent .= '<br>version ' . $exifTool->version();
-                    } catch (RuntimeException $e) {
+                    } catch (Throwable $e) {
                         $exifToolContent .= '<br><span class="color-fail"><i class="fas fa-warning"></i> ' . $e->getMessage() . '</span>';
                     }
                 } else {
@@ -753,6 +740,19 @@ return function (Handler $handler) {
                         'content' => '<span class="color-fail"><i class="fas fa-warning"></i> '
                             . $openBasedir
                             . '</span> <a href="https://www.php.net/manual/en/ini.core.php#ini.open-basedir" target="_blank">open_basedir</a>',
+                    ];
+                }
+                $missingFunctions = [
+                    'proc_open' => ! function_exists('proc_open'),
+                    'proc_close' => ! function_exists('proc_close'),
+                ];
+                $missingFunctions = array_filter($missingFunctions);
+                if ($missingFunctions) {
+                    $system_values_more['disable_functions'] = [
+                        'label' => 'disable_functions',
+                        'content' => '<span class="color-fail"><i class="fas fa-warning"></i> '
+                            . implode(', ', array_keys($missingFunctions))
+                            . '</span> <a href="https://www.php.net/manual/en/ini.core.php#ini.disable-functions" target="_blank">disable_functions</a>',
                     ];
                 }
                 $pos = array_search('upload_max_filesize', array_keys($system_values), true);

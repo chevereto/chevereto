@@ -1,0 +1,5 @@
+Chevereto 4.3.4 (2025-05-26)
+
+- Added disable_functions detection at /dashboard
+- Fixed layout issue on user profile pages when viewed on large screens
+- Fixed incorrect alignment of the "powered by" footer on large screens
