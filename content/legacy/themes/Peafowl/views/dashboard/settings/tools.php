@@ -39,18 +39,18 @@ echo read_the_docs_settings('tools', _s('Tools')); ?>
 </div>
 <hr class="line-separator">
 <div class="input-label">
-    <?php echo badgePaid('pro'); ?><label for="storageId"><?php _se('Regenerate external storage stats'); ?></label>
+    <label for="storageId"><?php _se('Regenerate upload storage stats'); ?></label>
     <div class="phablet-c1">
-        <input <?php echo inputDisabledPaid('pro'); ?> type="number" data-dashboard-tool="regenStorageStats" min="0" step="1" name="storageId" id="storageId" class="c4 text-input" placeholder="<?php _se('Storage id'); ?>"> <a class="btn btn-input default" data-action="dashboardTool" data-tool="regenStorageStats" data-data='{"storageId":"#storageId"}'><span class="loading display-inline-block"></span>
+        <input type="number" data-dashboard-tool="regenStorageStats" min="0" step="1" name="storageId" id="storageId" class="c4 text-input" placeholder="<?php _se('Storage id'); ?>"> <a class="btn btn-input default" data-action="dashboardTool" data-tool="regenStorageStats" data-data='{"storageId":"#storageId"}'><span class="loading display-inline-block"></span>
         <span class="text"><?php _se('Regenerate'); ?></span></a>
     </div>
-    <div class="input-below"><?php _se('This will re-calculate the sum of all the image records associated to the target external storage.'); ?></div>
+    <div class="input-below"><?php _se('This will re-calculate the sum of all the files associated to the target storage.'); ?></div>
 </div>
 <div class="input-label">
-    <?php echo badgePaid('pro'); ?><label for="sourceStorageId"><?php _se('Migrate external storage records'); ?></label>
+    <label for="sourceStorageId"><?php _se('Migrate upload storage records'); ?></label>
     <div class="phablet-c1">
-        <input <?php echo inputDisabledPaid('pro'); ?> type="number" data-dashboard-tool="migrateStorage" min="0" step="1" name="sourceStorageId" id="sourceStorageId" class="c5 text-input" placeholder="<?php _se('Source storage id'); ?>">
-        <input <?php echo inputDisabledPaid('pro'); ?> type="number" data-dashboard-tool="migrateStorage" min="0" step="1" name="targetStorageId" id="targetStorageId" class="c5 text-input" placeholder="<?php _se('Target storage id'); ?>">
+        <input type="number" data-dashboard-tool="migrateStorage" min="0" step="1" name="sourceStorageId" id="sourceStorageId" class="c5 text-input" placeholder="<?php _se('Source storage id'); ?>">
+        <input type="number" data-dashboard-tool="migrateStorage" min="0" step="1" name="targetStorageId" id="targetStorageId" class="c5 text-input" placeholder="<?php _se('Target storage id'); ?>">
         <a class="btn btn-input default" data-action="dashboardTool" data-tool="migrateStorage" data-data='{"sourceStorageId":"#sourceStorageId", "targetStorageId":"#targetStorageId"}'>
             <span class="loading display-inline-block"></span>
             <span class="text"><?php _se('Migrate'); ?></span>

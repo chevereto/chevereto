@@ -962,11 +962,13 @@ class Image
                         hash: $matches[3],
                     );
                     $source = $uploadParams['source'];
-                } elseif (! getSetting('enable_uploads_url')) {
-                    throw new Exception(
-                        message('URL uploading is disabled'),
-                        403
-                    );
+                } else {
+                    if (! getSetting('enable_uploads_url')) {
+                        throw new Exception(
+                            message('URL uploading is disabled'),
+                            403
+                        );
+                    }
                     $tempName = Upload::getTempNam($uploadPath);
                     fetch_url($source, $tempName);
                 }

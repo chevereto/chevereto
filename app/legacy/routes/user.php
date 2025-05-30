@@ -465,9 +465,9 @@ return function (Handler $handler) {
                 $where = $type === 'images'
                     ? 'WHERE image_user_id=:user_id'
                     : 'WHERE album_user_id=:user_id';
-                // if ($type === 'albums' && $tags_active === []) {
-                //     $where .= ' AND album_parent_id IS NULL';
-                // }
+                if ($type === 'albums' && $tags_active === []) {
+                    $where .= ' AND album_parent_id IS NULL';
+                }
 
                 break;
         }

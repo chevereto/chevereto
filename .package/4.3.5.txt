@@ -1,0 +1,12 @@
+Chevereto 4.3.5 (2025-05-30)
+
+- Added favicon customization for Chevereto Lite edition
+- Added image watermark feature to Chevereto Lite edition
+- Added storage tools as baseline feature
+- Added support for floating point numbers in maximum upload size configuration
+- Fixed bug affecting URL upload functionality
+- Fixed bug in anywhere upload not populating album list
+- Fixed bug in Chevereto Lite missing Queue class
+- Fixed bug in installer when reading existing database
+- Fixed bug in root album list showing nested albums
+- Fixed bug with missing cache invalidation on album editing

@@ -791,6 +791,7 @@ return function (Handler $handler) {
                                     $editing['album_id'] = null;
                                 }
                             }
+                            // Note: Includes move album to album
                             Album::moveContents($id, $editing['album_id']);
                         } else {
                             unset($editing['album_privacy'], $editing['new_album'], $editing['album_name']);

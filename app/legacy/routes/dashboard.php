@@ -267,7 +267,7 @@ return function (Handler $handler) {
         'pages' => ['lite', 'CHEVERETO_ENABLE_PAGES'],
         'routing' => ['pro', 'CHEVERETO_ENABLE_ROUTING'],
         'users' => ['lite', 'CHEVERETO_ENABLE_USERS'],
-        'watermarks' => ['pro', 'CHEVERETO_ENABLE_UPLOAD_WATERMARK'],
+        'watermarks' => ['lite', 'CHEVERETO_ENABLE_UPLOAD_WATERMARK'],
     ];
     $paidSettings = [];
     $default_route = 'stats';

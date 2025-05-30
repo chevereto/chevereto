@@ -652,6 +652,7 @@ $settings_updates = [
     '4.3.2' => null,
     '4.3.3' => null,
     '4.3.4' => null,
+    '4.3.5' => null,
 ];
 
 /**
@@ -2289,9 +2290,9 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                             $columnCollation = mb_strtolower($column_meta['collation'] ?? '');
                             $collationUpdated = $columnCollation !== ''
                                 && $schemaCollation !== $columnCollation;
-                            $dataType = mb_strtoupper($schema_column['DATA_TYPE']);
+                            $dataType = mb_strtoupper($schema_column['DATA_TYPE'] ?? '');
                             $columnMetaType = mb_strtoupper($column_meta['type']);
-                            $schemaColumn = mb_strtoupper($schema_column['COLUMN_TYPE']);
+                            $schemaColumn = mb_strtoupper($schema_column['COLUMN_TYPE'] ?? '');
                             if (in_array($dataType, ['INT', 'TINYINT', 'BIGINT'])) {
                                 $schemaColumn = preg_replace('/\(\d+\)/', '', $schemaColumn);
                             }
@@ -2301,7 +2302,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                                     $schemaColumn !== $columnMetaType
                                     || $collationUpdated
                                     || preg_match('/DEFAULT NULL/i', $column_meta['prop'] ?? '')
-                                    && $schema_column['IS_NULLABLE'] === 'NO'
+                                    && ($schema_column['IS_NULLABLE'] ?? '') === 'NO'
                                 )
                             ) {
                                 $query = '`%column` %type';

@@ -79,8 +79,8 @@ class Album
         // 'user_palette_id',
         // 'user_newsletter_subscribe',
         // 'user_show_nsfw_listings',
-        // 'user_image_count',
-        // 'user_album_count',
+        'user_image_count',
+        'user_album_count',
         // 'user_image_keep_exif',
         // 'user_file_meta_tag_camera_model',
         // 'user_image_expiration',
@@ -403,16 +403,26 @@ class Album
             static::assertCanBecomeParent($to, ...$ids);
         }
         $db = DB::getInstance();
+        $albumsTable = DB::getTable('albums');
+        $IdsString = implode(',', $ids);
         $db->query(
-            'UPDATE '
-            . DB::getTable('albums')
-            . ' SET album_parent_id=:album_parent_id WHERE album_id IN ('
-            . implode(',', $ids)
-            . ')'
+            <<<SQL
+            UPDATE {$albumsTable}
+            SET album_parent_id=:album_parent_id
+            WHERE album_id IN ({$IdsString});
+
+            SQL
         );
         $db->bind(':album_parent_id', $to);
+        $return = $db->exec();
+        if ($return) {
+            $userId = self::getUser((int) $ids[0]);
+            if ($userId) {
+                User::deleteAlbumsCache($userId);
+            }
+        }
 
-        return $db->exec();
+        return $return;
     }
 
     public static function addImage(int $album_id, int $id)
@@ -481,24 +491,12 @@ class Album
         if (($values['name'] ?? null) === '') {
             throw new Exception('Invalid album name', 140);
         }
-
         $return = DB::update('albums', $values, [
             'id' => $id,
         ]);
         if ($return) {
-            $db = DB::getInstance();
-            $tableAlbums = DB::getTable('albums');
-            $db->query(
-                <<<MySQL
-                SELECT album_user_id
-                FROM {$tableAlbums}
-                WHERE album_id = :album_id;
-                MySQL
-            );
-            $db->bind(':album_id', $id);
-            $fetchSingle = $db->fetchSingle();
-            if ($fetchSingle) {
-                $userId = $fetchSingle['album_user_id'];
+            $userId = self::getUser($id);
+            if ($userId) {
                 User::deleteAlbumsCache($userId);
             }
         }
@@ -915,5 +913,25 @@ class Album
         }
 
         return [];
+    }
+
+    private static function getUser(int $id): ?int
+    {
+        $db = DB::getInstance();
+        $tableAlbums = DB::getTable('albums');
+        $db->query(
+            <<<MySQL
+            SELECT album_user_id
+            FROM {$tableAlbums}
+            WHERE album_id = :album_id;
+            MySQL
+        );
+        $db->bind(':album_id', $id);
+        $fetchSingle = $db->fetchSingle();
+        if ($fetchSingle) {
+            return $fetchSingle['album_user_id'];
+        }
+
+        return null;
     }
 }

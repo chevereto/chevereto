@@ -288,7 +288,7 @@ $maxValue = $maxUploadSize > 0 ? bytes_to_mb($maxUploadSize) : '';
 ?>
 <div class="input-label">
     <label for="upload_max_filesize_mb"><?php _se('Maximum upload file size'); ?> (MB)</label>
-    <div class="c3"><input type="number" min="1" pattern="\d+" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb" id="upload_max_filesize_mb" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb'] ?? Settings::get('upload_max_filesize_mb'); ?>" placeholder="MB" required></div>
+    <div class="c3"><input type="number" min="0.1" step="0.1" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb" id="upload_max_filesize_mb" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb'] ?? Settings::get('upload_max_filesize_mb'); ?>" placeholder="MB" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_max_filesize_mb'] ?? ''; ?></div>
     <div class="input-below"><?php
         _se('Maximum upload file size allowed for users.');
@@ -303,7 +303,7 @@ $maxValue = $maxUploadSize > 0 ? bytes_to_mb($maxUploadSize) : '';
 </div>
 <div class="input-label">
     <label for="upload_max_filesize_mb_guest"><?php _se('Maximum upload file size'); ?> (<?php _se('guests'); ?>)</label>
-    <div class="c3"><input type="number" min="1" pattern="\d+" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb_guest" id="upload_max_filesize_mb_guest" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb_guest'] ?? Settings::get('upload_max_filesize_mb_guest'); ?>" placeholder="MB" required></div>
+    <div class="c3"><input type="number" min="0.1" step="0.1" max="<?php echo $maxValue; ?>" name="upload_max_filesize_mb_guest" id="upload_max_filesize_mb_guest" class="text-input" value="<?php echo Handler::var('safe_post')['upload_max_filesize_mb_guest'] ?? Settings::get('upload_max_filesize_mb_guest'); ?>" placeholder="MB" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['upload_max_filesize_mb_guest'] ?? ''; ?></div>
     <div class="input-below"><?php _se('Same as "%s" but for guests.', _s('Maximum upload file size')); ?></div>
 </div>
