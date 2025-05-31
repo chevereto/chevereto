@@ -1245,6 +1245,9 @@ function loaderHandler(
         if (env()['CHEVERETO_CACHE_PASSWORD'] !== '') {
             $redis->auth(env()['CHEVERETO_CACHE_PASSWORD']);
         }
+        if (env()['CHEVERETO_CACHE_DATABASE'] !== '') {
+            $redis->select(env()['CHEVERETO_CACHE_DATABASE']);
+        }
         $keyValue = new KeyValue(
             $redis,
             env()['CHEVERETO_CACHE_KEY_PREFIX'],
