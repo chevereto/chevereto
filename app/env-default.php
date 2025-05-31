@@ -14,6 +14,7 @@ return [
     'CHEVERETO_BINARY_EXIFTRAN' => 'exiftran',
     'CHEVERETO_BINARY_FFMPEG' => 'ffmpeg',
     'CHEVERETO_BINARY_FFPROBE' => 'ffprobe',
+    'CHEVERETO_CACHE_DATABASE' => '',
     'CHEVERETO_CACHE_DRIVER' => 'redis',
     'CHEVERETO_CACHE_HOST' => '',
     'CHEVERETO_CACHE_KEY_PREFIX' => 'chv:',
