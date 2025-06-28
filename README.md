@@ -102,7 +102,7 @@ The commercial license allows you to use Chevereto in commercial products and ap
 
 ### Compare licenses
 
-Chevereto Free edition is licensed under the AGPLv3 free software license, allowing use as long as you comply with its terms. If you modify and distribute the software, you are required to provide the source code to your end users. Please note that uUnder the AGPLv3, **making the software available over a network is considered distribution**, and you **must provide the source code** to users who interact with it remotely.
+Chevereto Free edition is licensed under the AGPLv3 free software license, allowing use as long as you comply with its terms. If you modify and distribute the software, you are required to provide the source code to your end users. Please note that under the AGPLv3, **making the software available over a network is considered distribution**, and you **must provide the source code** to users who interact with it remotely.
 
 Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which is not subject to the restrictions imposed by the AGPLv3 license.
 

@@ -5,4 +5,4 @@ if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
 ?>
-<?php /* Code you add in this file will be added after </head>. See: app/themes/Peafowl/head.php */ ?>
+<?php /* Code you add in this file will be added after </head>. See: content/legacy/themes/Peafowl/head.php */ ?>

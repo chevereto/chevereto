@@ -6266,7 +6266,7 @@ $(function () {
                         PF.fn._s("Check %s for a complete changelog since you last upgrade.", '<a href="https://releases.chevereto.com/' + majorVersion + '.X/' + minorVersion + '/' + CHV.obj.system_info.version + '" target="_blank">' + CHV.obj.system_info.version + '<span class="btn-icon fas fas fa-code-branch"></span></a>') +
                         '</p>' +
                         '<textarea class="r4 resize-vertical">' +
-                        data.release_notes.trim() +
+                        (typeof data.release_notes === "string" ? data.release_notes.trim() : "") +
                         "</textarea>" +
                         '<p>' +
                         PF.fn._s("Check the %s for alternative update methods.", '<a href="https://chevereto.com/go/v4update" target="_blank">' + PF.fn._s('documentation') + '</a>') +

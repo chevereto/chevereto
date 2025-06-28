@@ -653,6 +653,7 @@ $settings_updates = [
     '4.3.3' => null,
     '4.3.4' => null,
     '4.3.5' => null,
+    '4.3.6' => null,
 ];
 
 /**
@@ -1967,6 +1968,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             ],
             '4.2.0' => [
                 'users' => [
+                    'user_id' => $modifyIntUnsignedNotNullAutoIncrement,
                     'user_file_meta_tag_camera_model' => [
                         'op' => 'ADD',
                         'type' => 'TINYINT',
@@ -1994,6 +1996,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                     ],
                 ],
                 'images' => [
+                    'image_id' => $modifyIntUnsignedNotNullAutoIncrement,
                     'image_type' => [
                         'op' => 'MODIFY',
                         'type' => 'TINYINT UNSIGNED',
@@ -2021,6 +2024,9 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                         'type' => 'INT UNSIGNED',
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
+                ],
+                'albums' => [
+                    'album_id' => $modifyIntUnsignedNotNullAutoIncrement,
                 ],
                 'tags' => [],
                 'tags_files' => [],
