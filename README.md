@@ -16,7 +16,13 @@
 
 Chevereto is a robust, self-hosted media-sharing platform that prioritizes flexibility and control. It enables you to build and manage a media-sharing website on your own server, granting you complete autonomy over your hosting environment and policies. With Chevereto, you eliminate the risk of platform restrictions and shutdowns, ensuring your site operates entirely on your terms.
 
-![screen](.github/screen/user-listing-selected.webp)
+![screen_1](.github/screen/uploader-queue.webp)
+
+![screen_2](.github/screen/user-listing-selected.webp)
+
+![screen_3](.github/screen/user-profile.jpeg)
+
+![screen_4](.github/screen/dashboard.jpg)
 
 ## Features
 
@@ -107,3 +113,9 @@ Chevereto Free edition is licensed under the AGPLv3 free software license, allow
 Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which is not subject to the restrictions imposed by the AGPLv3 license.
 
 *Note: Proprietary licensing does not mean closed source; the source code is accessible, but its use is governed by the specific terms of the Chevereto License.*
+
+## Chevere
+
+The "Chevereto" project is the parent upstream project of [Chevere](https://chevere.dev). All the software made on Chevere is derived, inspired, or based on the Chevereto project.
+
+![Chevere](chevere.svg)
