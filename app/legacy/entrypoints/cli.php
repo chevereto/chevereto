@@ -41,6 +41,7 @@ $options = [
     'setting-update',
     'update',
     'version',
+    'metrics',
 ];
 if (! in_array($access, $options, true)) {
     echo 'Invalid command' . PHP_EOL;

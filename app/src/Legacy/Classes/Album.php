@@ -337,6 +337,9 @@ class Album
 
     public static function assertCanBecomeParent(int $id, int ...$children): void
     {
+        if ($id === 0) {
+            throw new LogicException('Invalid parent album', 600);
+        }
         if ($children === []) {
             return;
         }
@@ -473,6 +476,7 @@ class Album
         $db->exec();
         $album = self::getSingle((int) $album_id);
         if (! isset($album['cover_id']) && is_int($album_id)) {
+            xr('populate album cover', $album_id);
             self::populateCover($album_id);
         }
 
@@ -507,9 +511,17 @@ class Album
     public static function populateCover(int $id)
     {
         $db = DB::getInstance();
-        $db->query('UPDATE `' . DB::getTable('albums') . '`
-                SET album_cover_id = (SELECT image_id FROM `' . DB::getTable('images') . '` WHERE image_album_id = album_id AND image_is_approved = 1 ORDER BY image_id DESC LIMIT 1)
-                WHERE album_id = :album_id;');
+        $table_albums = DB::getTable('albums');
+        $table_images = DB::getTable('images');
+        $db->query(<<<SQL
+        UPDATE `{$table_albums}`
+        SET album_cover_id = COALESCE(
+            album_cover_id,
+            (SELECT image_id FROM `{$table_images}` WHERE image_album_id = album_id AND image_is_approved = 1 ORDER BY image_id DESC LIMIT 1),
+            NULL
+        )
+        WHERE album_id = :album_id AND album_cover_id IS NULL;
+        SQL);
         $db->bind(':album_id', $id);
         $db->exec();
     }
@@ -666,7 +678,9 @@ class Album
             $album['name'] = User::getStreamName($user['username']);
         }
         if (! isset($album['id'])) {
-            $album['url'] = $user !== [] ? User::getUrl($user['username']) : null;
+            $album['url'] = $user !== []
+                ? User::getUrl($user['username'])
+                : null;
             $album['url_short'] = $album['url'];
         } else {
             $album['url'] = self::getUrl($album['id_encoded'], getSetting('seo_album_urls') ? $album['name'] : '');

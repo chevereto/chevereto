@@ -1461,7 +1461,7 @@ class Listing
             }
             if (isset($args['params'])
                 && is_array($args['params'])
-                && array_key_exists('q', $args['params'])
+                && array_intersect_key(array_flip(Search::OPERATORS), $args['params'])
                 && $args['listing'] === 'search'
             ) {
                 $args['params_hidden']['list'] = $content;

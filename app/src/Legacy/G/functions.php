@@ -2939,7 +2939,7 @@ function redirect(string $to = '', int $status = 302): void
     if (! is_url_web($to)) {
         $to = get_base_url($to, true);
     }
-    $to = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%!]|i', '', $to);
+    $to = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%!@]|i', '', $to);
     if (PHP_SAPI === 'cli') {
         echo sprintf("> Redirection to {$to} (%s)", (string) $status) . "\n";
         if (! defined('PHPUNIT_CHEVERETO_TESTSUITE')) {

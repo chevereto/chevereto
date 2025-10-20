@@ -16,6 +16,17 @@ use function Chevereto\Legacy\G\str_replace_first;
 
 class Search
 {
+    public const OPERATORS = [
+        'q',
+        'as_q',
+        'as_epq',
+        'as_oq',
+        'as_eq',
+        'as_cat',
+        'as_stor',
+        'as_ip',
+    ];
+
     public array $display;
 
     public static array $excluded = ['storage', 'ip'];
@@ -58,9 +69,15 @@ class Search
         $this->q = str_replace('@', '', $this->q);
         foreach ($as_handle as $k => $v) {
             if (isset($this->request[$k]) && $this->request[$k] !== '') {
-                $this->q .= ' '
-                    . (isset($v) ? ($v . ':') : '')
-                    . $this->request[$k];
+                if ($k === 'as_epq') {
+                    $this->q .= ' "'
+                        . $this->request[$k]
+                        . '"';
+                } else {
+                    $this->q .= ' '
+                        . (isset($v) ? ($v . ':') : '')
+                        . $this->request[$k];
+                }
             }
         }
         $this->q = trim(
@@ -70,6 +87,13 @@ class Search
                 $this->q ?? '' // @phpstan-ignore-line
             )
         );
+        $exact_phrase = null;
+        if (($this->request['as_epq'] ?? '') !== '') {
+            $exact_phrase = $this->request['as_epq'];
+            if (preg_match('/^"(.*?)"$/', $exact_phrase, $matches)) {
+                $exact_phrase = $matches[1];
+            }
+        }
         $search_op = $this->handleSearchOperators($this->q, $this->requester['is_content_manager'] ?? false);
         $this->q = '';
         foreach ($search_op as $operator) {
@@ -148,6 +172,14 @@ class Search
                 case 'albums':
                 case 'users':
                     if ($op[0] === 'ip') {
+                        $search_op_wheres[] = match ($this->type) {
+                            'albums' => <<<SQL
+                            album_creation_ip LIKE REPLACE(:ip, "*", "%")
+                            SQL,
+                            'users' => <<<SQL
+                            user_registration_ip LIKE REPLACE(:ip, "*", "%")
+                            SQL
+                        };
                         $search_binds[] = [
                             'param' => ':ip',
                             'value' => str_replace_first('ip:', '', $this->q),
@@ -157,7 +189,7 @@ class Search
                     break;
             }
         }
-        if ($q_match !== '') {
+        if ($q_match !== '' && $exact_phrase === null) {
             $q_value = $q_match;
             if ($this->DBEngine === 'InnoDB') {
                 $q_value = trim($q_value, '><');
@@ -177,7 +209,20 @@ class Search
         $wheres = '';
         switch ($this->type) {
             case 'images':
-                if ($q_match !== '') {
+                if ($exact_phrase !== null) {
+                    $this->binds[] = [
+                        'param' => ':phrase',
+                        'value' => '%' . $exact_phrase . '%',
+                    ];
+                    $wheres = <<<SQL
+                    WHERE (
+                        image_name LIKE :phrase
+                        OR image_title LIKE :phrase
+                        OR image_description LIKE :phrase
+                        OR image_original_filename LIKE :phrase
+                    )
+                    SQL;
+                } elseif ($q_match !== '') {
                     $wheres = <<<SQL
                     WHERE (
                         MATCH(`image_name`,`image_title`,`image_description`,`image_original_filename`) AGAINST (:q IN BOOLEAN MODE)
@@ -188,37 +233,54 @@ class Search
                     )
                     SQL;
                 }
-                if ($search_op_wheres !== []) {
-                    $wheres .= ($wheres === '' ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
-                }
 
                 break;
             case 'albums':
-                if (empty($search_binds)) {
-                    $wheres = 'WHERE album_id < 0';
-                } else {
-                    $wheres = ($op[0] ?? null) === 'ip'
-                        ? <<<SQL
-                        album_creation_ip LIKE REPLACE(:ip, "*", "%")
-                        SQL
-                        : <<<SQL
-                        WHERE (
-                            MATCH(`album_name`,`album_description`) AGAINST (:q)
-                            OR BINARY album_name LIKE BINARY :like_q
-                            OR BINARY album_description LIKE BINARY :like_q
-                        )
-                        SQL;
+                if ($exact_phrase !== null) {
+                    $this->binds[] = [
+                        'param' => ':phrase',
+                        'value' => '%' . $exact_phrase . '%',
+                    ];
+                    $wheres = <<<SQL
+                    WHERE album_name LIKE :phrase
+                    SQL;
+                } elseif ($q_match !== '') {
+                    $wheres = <<<SQL
+                    WHERE (
+                        MATCH(`album_name`,`album_description`) AGAINST (:q)
+                        OR album_name LIKE :like_q
+                        OR album_description LIKE :like_q
+                    )
+                    SQL;
                 }
 
                 break;
+
             case 'users':
-                if (empty($search_binds)) {
-                    $wheres = 'WHERE user_id < 0';
-                } elseif (($op[0] ?? null) === 'ip') {
+                if ($exact_phrase !== null) {
+                    $this->binds[] = [
+                        'param' => ':phrase',
+                        'value' => '%' . $exact_phrase . '%',
+                    ];
                     $wheres = <<<SQL
-                    user_registration_ip LIKE REPLACE(:ip, "*", "%")
+                    WHERE (
+                        user_name LIKE :phrase
+                        OR user_username LIKE :phrase
+                        OR user_email LIKE :phrase
+                    )
                     SQL;
-                } else {
+                    $clauses = [
+                        'name_username' => <<<SQL
+                        WHERE (
+                            user_name LIKE :phrase
+                            OR user_username LIKE :phrase
+                        )
+                        SQL,
+                        'email' => <<<SQL
+                        `user_email` LIKE :phrase
+                        SQL,
+                    ];
+                } elseif ($q_match !== '') {
                     $clauses = [
                         'name_username' => <<<SQL
                         WHERE (
@@ -231,6 +293,8 @@ class Search
                         `user_email` LIKE CONCAT("%", :q, "%")
                         SQL,
                     ];
+                }
+                if (isset($clauses)) {
                     if ($this->requester['is_content_manager'] ?? false) {
                         $pos = strpos($this->q, '@');
                         if ($pos !== false) {
@@ -249,6 +313,9 @@ class Search
                 }
 
                 break;
+        }
+        if ($search_op_wheres !== []) {
+            $wheres .= ($wheres === '' ? 'WHERE ' : ' AND ') . implode(' AND ', $search_op_wheres);
         }
         $this->wheres = $wheres ?? '';
         $this->display = [

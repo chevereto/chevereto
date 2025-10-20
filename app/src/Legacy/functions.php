@@ -612,6 +612,9 @@ function cheveretoID(string|int $in, string $action = 'encode'): string|int
         }
         if ($id_padding > 0) {
             $out = $out / $id_padding;
+            if (! is_int($out)) {
+                $out = 0;
+            }
         }
         $out = (int) sprintf('%s', $out);
     } else {
@@ -1638,6 +1641,41 @@ function strip_tags_content(string $text, string $tags = '')
     return strip_tags($return);
 }
 
+/**
+ * Get the count of rows in a table.
+ */
+function getCount(string $table): int
+{
+    return getCounts($table)[$table];
+}
+
+/**
+ * Get the counts of rows in multiple tables.
+ *
+ * @return array<string, int> Associative array with table names as keys and their counts as values.
+ */
+function getCounts(string ...$table): array
+{
+    $items = [];
+    foreach ($table as $subject) {
+        $table = DB::getTable($subject);
+        $items[] = match ($subject) {
+            'storage' => <<<SQL
+            (SELECT COUNT(*) FROM `{$table}` WHERE storage_deleted_at IS NULL) AS {$subject}
+            SQL,
+            default => <<<SQL
+            (SELECT COUNT(*) FROM `{$table}`) AS {$subject}
+            SQL
+        };
+    }
+    $queries = implode(', ', $items);
+    $query = <<<SQL
+    SELECT {$queries};
+    SQL;
+
+    return DB::queryFetchSingle($query);
+}
+
 function assertMaxCount(string $table): void
 {
     $tablesToEnv = [
@@ -1658,15 +1696,7 @@ function assertMaxCount(string $table): void
     if ($maxLimit === 0) {
         return;
     }
-    $query = sprintf(
-        'SELECT COUNT(*) AS total FROM `%s`',
-        DB::getTable($table)
-    );
-    if ($table === 'storages') {
-        $query .= ' WHERE storage_deleted_at IS NULL';
-    }
-    $fetch = DB::queryFetchSingle($query);
-    $count = $fetch['total'] ?? 0;
+    $count = getCount($table);
     if (($count + 1) > $maxLimit) {
         throw new OverflowException(
             message(

@@ -87,7 +87,7 @@ function follow_sub_header(): bool
 <?php if (Handler::cond('error')) { ?>
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-    PF.fn.growl.call("<?php echo Handler::var('error_message') ?? _s('Check the errors to proceed.'); ?>");
+    PF.fn.growl.call(<?php echo json_encode(Handler::var('error_message') ?? _s('Check the errors to proceed.')); ?>);
 });
 </script>
 <?php }

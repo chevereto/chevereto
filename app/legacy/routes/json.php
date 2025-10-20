@@ -671,11 +671,14 @@ return function (Handler $handler) {
                 ) {
                     $editing[$type === 'album' ? 'privacy' : 'album_privacy'] = getSetting('website_content_privacy_mode');
                 }
-                if (count($editing) === 0) {
-                    throw new Exception('Invalid edit request', 403);
-                }
                 if (isset($editing['album_id']) && $editing['album_id'] !== '') {
                     $editing['album_id'] = decodeID($editing['album_id']);
+                    if ($editing['album_id'] === 0) {
+                        unset($editing['album_id']);
+                    }
+                }
+                if (count($editing) === 0) {
+                    throw new Exception('Invalid edit request', 403);
                 }
                 switch ($type) {
                     case 'image':

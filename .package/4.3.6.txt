@@ -1,6 +1,0 @@
-Chevereto 4.3.6 (2025-06-28)
-
-- Fixed bug affecting upgrades from 4.1.*
-- Resolved issue with release notes display
-- Updated README for the free edition
-- Corrected typos in custom_hooks sample files

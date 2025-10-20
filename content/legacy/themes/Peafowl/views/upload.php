@@ -12,7 +12,7 @@ if (!defined('ACCESS') || !ACCESS) {
 <?php if (Handler::var('post') and Handler::cond('error')) { ?>
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-	PF.fn.growl.call("<?php echo Handler::var('error'); ?>");
+	PF.fn.growl.call(<?php echo json_encode(Handler::var('error')); ?>);
 });
 </script>
 <?php } ?>

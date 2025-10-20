@@ -35,7 +35,6 @@ use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_available_languages;
 use function Chevereto\Legacy\getIpButtonsArray;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\send_mail;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\post;
@@ -347,7 +346,7 @@ return function (Handler $handler) {
                     require_once PATH_PUBLIC_LEGACY_THEME . 'mails/account-change-email.php';
                     $mail_body = ob_get_contents();
                     ob_end_clean();
-                    $mail['subject'] = _s('Confirmation required at %s', getSettings('website_name'));
+                    $mail['subject'] = _s('Confirmation required at %s', getSetting('website_name'));
                     $mail['message'] = $mail_body;
                     send_mail($POST['email'], $mail['subject'], $mail['message']);
                     unset($POST['email']);

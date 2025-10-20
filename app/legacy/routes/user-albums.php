@@ -13,7 +13,7 @@ use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
-use function Chevereto\Legacy\getSettings;
+use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\json_output;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\get;
@@ -74,7 +74,7 @@ return function (Handler $handler) {
         return;
     }
     if (! (bool) env()['CHEVERETO_ENABLE_USERS']
-        && $user['id'] !== getSettings('website_mode_personal_uid')
+        && $user['id'] !== getSetting('website_mode_personal_uid')
     ) {
         json_output(404);
 

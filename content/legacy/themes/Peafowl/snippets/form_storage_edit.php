@@ -98,7 +98,7 @@ foreach (StorageApis::getEnabled() as $k => $v) {
 	<div data-combo-value="2" class="switch-combo soft-hidden">
 		<div class="input-label c15">
 			<label for="form-storage-secret"><?php _se('Private key'); ?></label>
-			<textarea id="form-storage-secret" name="form-storage-secret" class="text-input" placeholder="<?php _se('Google Cloud JSON key'); ?>" required></textarea>
+			<textarea id="form-storage-secret" class="resize-vertical" name="form-storage-secret" class="text-input" placeholder="<?php _se('Google Cloud JSON key'); ?>" required></textarea>
 			<div class="input-below"><?php _se('You will need a <a %s>service account</a> for this.', 'href="https://cloud.google.com/storage/docs/authentication#service_accounts" target="_blank"'); ?></div>
 		</div>
 	</div>
@@ -224,7 +224,8 @@ document.addEventListener("DOMContentLoaded", function() {
 				$("option:selected", this).prop("value")
 			);
 		CHV.fn.storage.prepareForm(
-			$(this).data("value")
+			$(this).data("value"),
+			false
 		);
 	});
 });

@@ -1368,7 +1368,7 @@ CHV.fn.uploader = {
                 var i = 0;
             }
             if (!(i in files)) {
-                if (i === files.length - 1) {
+                if (i === Math.max(0, files.length - 1)) {
                     PF.fn.loading.destroy("fullscreen");
                 }
                 return;
@@ -3380,19 +3380,26 @@ CHV.fn.storage = {
     prepareForm: function(api_id, trigger) {
         var combo = "[data-combo-value~=" + api_id + "]";
         var trigger = typeof trigger !== "undefined" ? trigger : false;
-        $(":input", "[data-combo-value]:hidden").each(function() {
+        $(":input", "[data-combo-value]").each(function() {
             if($(this).attr("disabled") && !$(this).is("[data-hide-disabled]")) {
                 return;
             }
+            const name = $(this).attr("data-name")
+                ? $(this).attr("data-name")
+                : $(this).attr("name");
             $(this).prop("disabled", true);
             $(this).attr("data-hide-disabled", 1);
+            $(this).attr("data-name", name);
+            $(this).removeAttr("name");
         });
         $(":input", combo).each(function() {
             if(!$(this).is("[data-hide-disabled]")) {
                 return;
             }
+            const name = $(this).attr("data-name");
             $(this).prop("disabled", false);
             $(this).removeAttr("data-hide-disabled");
+            $(this).attr("name", name);
         });
         if(trigger) {
             setTimeout(function() {
@@ -7093,7 +7100,7 @@ async function hashFile(file) {
     const { create64 } = await xxhash();
     const hasher = create64();
     const start = performance.now();
-    console.log('hashing file...');
+    console.log('hashing file...', file.name);
     const reader = file.stream().getReader();
     while (true) {
         const { done, value } = await reader.read();

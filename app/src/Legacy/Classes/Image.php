@@ -1586,8 +1586,19 @@ class Image
             if ($return && $old_album !== $values['album_id']) {
                 if ($old_album != null) { // Update the old album
                     Album::updateImageCount((int) $old_album, 1, '-');
+                    DB::update(
+                        'albums',
+                        [
+                            'cover_id' => null,
+                        ],
+                        [
+                            'id' => $old_album,
+                            'cover_id' => $id,
+                        ]
+                    );
                 }
                 Album::updateImageCount((int) $values['album_id'], 1);
+                Album::populateCover((int) $values['album_id']);
             }
         }
         if ($user_id) {
@@ -1718,9 +1729,6 @@ class Image
         if (isset($image['album']['id']) && $image['album']['id'] > 0) {
             Album::updateImageCount((int) $image['album']['id'], 1, '-');
         }
-        if (isset($image['album']['cover_id']) && $image['album']['cover_id'] === $image['id']) {
-            Album::populateCover((int) $image['album']['id']);
-        }
         Stat::track([
             'action' => 'delete',
             'table' => 'images',
@@ -1786,6 +1794,9 @@ class Image
             'id' => $id,
         ]);
         if ($result) {
+            if (isset($image['album']['cover_id']) && $image['album']['cover_id'] === $image['id']) {
+                Album::populateCover((int) $image['album']['id']);
+            }
             DB::delete('images_hash', [
                 'image_id' => $id,
             ]);

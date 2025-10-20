@@ -90,10 +90,17 @@ return function (Handler $handler) {
     $tabs = Listing::getTabs([
         'listing' => 'search',
         'basename' => 'search',
-        'params' => [
-            'q' => $safe_html_search['q'],
+        'params' => array_filter([
+            'q' => request()['q'] ?? null,
+            'as_q' => request()['as_q'] ?? null,
+            'as_epq' => request()['as_epq'] ?? null,
+            'as_oq' => request()['as_oq'] ?? null,
+            'as_eq' => request()['as_eq'] ?? null,
+            'as_cat' => request()['as_cat'] ?? null,
+            'as_stor' => request()['as_stor'] ?? null,
+            'as_ip' => request()['as_ip'] ?? null,
             'page' => '1',
-        ],
+        ]),
         'params_remove_keys' => ['sort'],
     ], $getParams);
     foreach ($tabs as &$v) {

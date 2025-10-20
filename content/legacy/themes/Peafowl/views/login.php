@@ -56,7 +56,7 @@ try {
         ?>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-	PF.fn.growl.call("<?php echo Handler::var('error'); ?>");
+	PF.fn.growl.call(<?php echo json_encode(Handler::var('error')); ?>);
 });
 </script>
 <?php

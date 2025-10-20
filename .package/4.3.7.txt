@@ -1,0 +1,16 @@
+Chevereto 4.3.7 (2025-10-20)
+
+- Added metrics command to CLI
+- Fixed id encode bug
+- Fixed "Confirmation required at %s" bug
+- Fixed "email-changed" view bug
+- Fixed uploader duplicate file handling
+- Fixed Google Cloud storage bug
+- Fixed Site storage form bug
+- Fixed page editing bug with broken HTML
+- Fixed album parent editing bug
+- Fixed advanced search tab navigation bug
+- Fixed YouTube profile links bug
+- Fixed album cover image removal bug
+- Fixed album cover image move bug
+- Fixed advanced search "exact query phrase" bug

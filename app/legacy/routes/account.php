@@ -29,7 +29,6 @@ use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\get_email_body_str;
 use function Chevereto\Legacy\getSetting;
-use function Chevereto\Legacy\getSettings;
 use function Chevereto\Legacy\hashed_token_info;
 use function Chevereto\Legacy\must_use_captcha;
 use function Chevereto\Legacy\send_mail;
@@ -504,7 +503,7 @@ return function (Handler $handler) {
                         'user' => $logged_user,
                         'link' => $activation_link,
                     ];
-                    $mail['subject'] = _s('Confirmation required at %s', getSettings('website_name'));
+                    $mail['subject'] = _s('Confirmation required at %s', getSetting('website_name'));
                     $mail['message'] = get_email_body_str('mails/account-confirm');
                     if (send_mail($POST['email'], $mail['subject'], $mail['message'])) {
                         $is_process_done = true;

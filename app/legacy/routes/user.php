@@ -330,7 +330,7 @@ return function (Handler $handler) {
             foreach ($tabs as $k => $v) {
                 $params = [
                     'list' => $v['type'],
-                    'q' => $safe_html_user['search']['q'],
+                    'q' => $user['search']['q'],
                     'sort' => 'date_desc',
                     'page' => '1',
                 ];
