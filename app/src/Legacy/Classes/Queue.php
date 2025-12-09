@@ -11,6 +11,7 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use Aws\S3\S3Client;
 use Exception;
 use Throwable;
 use function Chevereto\Encryption\decryptValues;
@@ -91,12 +92,17 @@ class Queue
                     'id' => $v['id'],
                 ]);
                 switch ($storage['api_type']) {
+                    case 's3':
+                    case 's3compatible':
+                        $storage_keys[] = [
+                            'Key' => $v['args']['key'],
+                        ];
+
+                        break;
                     case 'local':
                         $storage_keys[] = $v['args']['key'];
 
                         break;
-                    default:
-                        throw new Exception('Unsupported storage API type: ' . $storage['api_type']);
                 }
                 unset($files[$k]);
                 $disk_space_used += $v['args']['size'];
@@ -112,6 +118,34 @@ class Queue
                 break;
             }
             switch ($storage['api_type']) {
+                case 's3':
+                case 's3compatible':
+                    /** @var S3Client $StorageAPI */
+                    try {
+                        $deleteFromStorage = $StorageAPI->deleteObjects(
+                            [
+                                'Bucket' => $storage['bucket'],
+                                'Delete' => [
+                                    'Objects' => $storage_keys,
+                                ],
+                            ]
+                        );
+                    } catch (Throwable $e) {
+                        $error = $e;
+
+                        break;
+                    }
+                    $deleted_queue_ids = [];
+                    $deleted = array_filter($deleteFromStorage['Deleted'] ?? []);
+                    foreach ($deleted ?? [] as $k => $v) {
+                        $disk_space_freed += $files[$v['Key']]['size'] ?? 0;
+                        $deleted_queue_ids[] = $files[$v['Key']]['id'];
+                    }
+
+                    break;
+
+                    // AKA single object APIs (no multiple or batch delete
+
                 case 'local':
                     $StorageAPI->deleteMultiple($storage_keys);
                     $deleted_queue_ids = []; // All over again
@@ -121,8 +155,6 @@ class Queue
                     }
 
                     break;
-                default:
-                    throw new Exception('Unsupported storage API type: ' . $storage['api_type']);
             }
             self::logAttempt($deleted_queue_ids);
             if (isset($error) && $error instanceof Exception) {

@@ -16,5 +16,7 @@ namespace Chevereto\Encryption\Interfaces;
  */
 interface EncodeInterface
 {
-    public function encrypt(string $text): string;
+    public function base64(string $plainText): string;
+
+    public function binary(string $plainText): string;
 }

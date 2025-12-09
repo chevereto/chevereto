@@ -114,7 +114,7 @@ return function (Handler $handler) {
         'api' => 'API',
         'connections' => _s('Connections'),
         'homepage' => _s('Homepage'),
-        'powered' => _s('Powered by'),
+        'powered-by' => _s('Powered by'),
     ];
     $icons = [
         'account' => 'fas fa-user',
@@ -124,7 +124,7 @@ return function (Handler $handler) {
         'security' => 'fas fa-shield-alt',
         'connections' => 'fas fa-plug',
         'homepage' => 'fas fa-home',
-        'powered' => 'fas fa-power-off',
+        'powered-by' => 'fas fa-power-off',
     ];
     $default_route = 'account';
     $route_homepage = false;
@@ -334,7 +334,7 @@ return function (Handler $handler) {
                     ]);
                     $email_confirm_link = get_public_url(
                         'account/change-email-confirm/?token='
-                        . $hashed_token['public_token_format']
+                        . base64_encode($hashed_token['public_token_format'])
                     );
                     $changed_email_message = _s('An email has been sent to %s with instructions to activate this email', $SAFE_POST['email']);
                     global $theme_mail;
@@ -432,7 +432,7 @@ return function (Handler $handler) {
                         $db->bind(':value', $v);
                         $db->exec();
                     }
-                    if ($db->endTransaction()) {
+                    if ($db->commitTransaction()) {
                         $is_changed = true;
                         foreach ($update_settings as $k => $v) {
                             Settings::setValue($k, $v);

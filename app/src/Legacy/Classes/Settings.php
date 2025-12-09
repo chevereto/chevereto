@@ -307,6 +307,11 @@ class Settings
                 'enable_api_guest' => false,
             ],
         ],
+        'CHEVERETO_ENABLE_LOCAL_STORAGE' => ['0',
+            [
+                'upload_image_path' => 'images',
+            ],
+        ],
     ];
 
     public const STOCK = [

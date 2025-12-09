@@ -1,0 +1,611 @@
+#!/usr/bin/env php
+<?php
+
+/*
+ * This file is part of Chevereto.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use Chevere\ThrowableHandler\ThrowableHandler;
+use Chevere\Writer\StreamWriter;
+use Chevereto\Encryption\Encryption;
+use Chevereto\Encryption\EncryptionInstance;
+use Chevereto\Encryption\Key;
+use Chevereto\Legacy\Classes\DB;
+use Chevereto\Tenants\Tenants;
+use Chevereto\Tenants\TenantsApiKey;
+use Chevereto\Vars\EnvVar;
+
+use function Chevere\Standard\arrayPrefixValues;
+use function Chevere\Writer\streamFor;
+use function Chevereto\Encryption\decodeDecrypt;
+use function Chevereto\Encryption\encryption;
+use function Chevereto\Legacy\G\datetimegmt;
+use function Chevereto\Legacy\getCheveretoEnv;
+use function Chevereto\Legacy\preload;
+use function Chevereto\Legacy\printTable;
+use function Chevereto\Legacy\runAppCommand;
+use function Chevereto\Vars\env;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+preload();
+set_error_handler(ThrowableHandler::ERROR_AS_EXCEPTION);
+set_exception_handler(ThrowableHandler::CONSOLE);
+register_shutdown_function(ThrowableHandler::SHUTDOWN_ERROR_AS_EXCEPTION);
+$logger = new StreamWriter(streamFor('php://stdout', 'w'));
+$commands = [
+    'init' => 'Initialize tenants system',
+    // 'migrate' => 'Migrate tenants systems to new version',
+    'create' => 'Create new tenant [id:, hostname:, is_enabled, plan_id, limits, env]',
+    'get' => 'Get tenant [id:]',
+    'list' => 'List all tenants',
+    'edit' => 'Edit tenant [id:, hostname:, is_enabled, plan_id, limits, env]',
+    'delete' => 'Delete tenant [id:, drop-tables]',
+    'cache' => 'Cache tenants data',
+    'plan:create' => 'Create a tenant plan [id:, limits:, env:]',
+    'plan:get' => 'Get tenant plan [id:]',
+    'plan:edit' => 'Edit a tenant plan [id:, limits:, env:]',
+    'plan:list' => 'List all plans',
+    'plan:delete' => 'Delete a plan [id:]',
+    'database:migrate' => 'Run tenants database migrate [id:, verbose]',
+    'stats:refresh' => 'Refresh tenants stats [id:]',
+    'jobs:worker' => 'Start the tenants jobs worker [id:, verbose]',
+    'api:key:create' => 'Create Tenants API key [name:, expires:]',
+    'api:key:verify' => 'Verify Tenants API key [key:]',
+    'api:key:delete' => 'Delete Tenants API key [id:, name:]',
+    'help' => 'Display this help message'
+];
+$opts = getopt('C:') ?: [];
+if ($opts === []) {
+    echo <<<PLAIN
+    Missing -C [command]
+
+    PLAIN;
+    die(255);
+}
+$command = $opts['C'] ?? '';
+if (!array_key_exists($command, $commands)) {
+    echo <<<PLAIN
+    Invalid -C command
+
+    PLAIN;
+    die(255);
+}
+if($command === 'help') {
+    echo <<<PLAIN
+
+    Usage: app/bin/tenants -C [command] [--options]
+
+    Commands:
+
+    PLAIN;
+    printTable($commands, '  ');
+    exit(0);
+}
+$requiredOptions = [];
+if($command === 'create') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'hostname:',
+            'plan_id:',
+            'limits:',
+            'env:',
+            'is_enabled:'
+        ]
+    ) ?: [];
+    $requiredOptions = ['id', 'hostname'];
+}
+if($command === 'edit') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'hostname:',
+            'plan_id:',
+            'limits:',
+            'env:',
+            'is_enabled:'
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if(in_array($command, ['get', 'delete'])) {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'drop-tables'
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if($command === 'plan:create') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'limits:',
+            'env:',
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if($command === 'plan:get') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if($command === 'plan:edit') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'limits:',
+            'env:',
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if($command === 'plan:delete') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+        ]
+    ) ?: [];
+    $requiredOptions = ['id'];
+}
+if($command === 'update') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'verbose'
+        ]
+    ) ?: [];
+}
+if($command === 'stats:refresh') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+        ]
+    ) ?: [];
+}
+if($command === 'jobs:worker') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'verbose',
+        ]
+    ) ?: [];
+}
+if($command === 'api:key:create') {
+    $opts = getopt(
+        'C:',
+        [
+            'name:',
+            'expires:'
+        ]
+    ) ?: [];
+}
+if($command === 'api:key:delete') {
+    $opts = getopt(
+        'C:',
+        [
+            'id:',
+            'name:'
+        ]
+    ) ?: [];
+    if (($opts['id'] ?? null) === null && ($opts['name'] ?? null) === null) {
+        echo <<<PLAIN
+        Must provide at least --id or --name to delete an API key
+
+        PLAIN;
+        die(255);
+    }
+}
+if($command === 'api:key:verify') {
+    $opts = getopt(
+        'C:',
+        [
+            'key:'
+        ]
+    ) ?: [];
+    $requiredOptions = ['key'];
+}
+$missingOptions = [];
+foreach ($requiredOptions as $requiredOption) {
+    if (!isset($opts[$requiredOption])) {
+        $missingOptions[] = $requiredOption;
+    }
+}
+if($missingOptions ?? false) {
+    foreach ($missingOptions as $missingOption) {
+        $logger->write(
+            <<<PLAIN
+            Missing --{$missingOption} option
+
+            PLAIN
+        );
+    }
+    die(255);
+}
+$envDefault = require dirname(__DIR__, 1) . '/env-default.php';
+$envVar = array_merge($envDefault, ENV, getCheveretoEnv());
+$envVar['CHEVERETO_DB_TABLE_ROOT_PREFIX'] = $envVar['CHEVERETO_DB_TABLE_PREFIX'];
+$envVar['CHEVERETO_DB_TABLE_PREFIX'] .= '_'; // chv__
+$envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= '_:'; // chv:_:
+new EnvVar($envVar);
+if(env()['CHEVERETO_ENABLE_TENANTS'] !== '1') {
+    $logger->write(
+        <<<PLAIN
+        Tenants system is not enabled (CHEVERETO_ENABLE_TENANTS != 1)
+
+        PLAIN
+    );
+    die(255);
+
+}
+if(env()['CHEVERETO_ENCRYPTION_KEY'] === '') {
+    $logger->write(
+        <<<PLAIN
+        CHEVERETO_ENCRYPTION_KEY is not set in environment
+
+        PLAIN
+    );
+    die(255);
+}
+$redis = new Redis();
+$redis->connect(env()['CHEVERETO_CACHE_HOST'], (int) env()['CHEVERETO_CACHE_PORT']);
+if (env()['CHEVERETO_CACHE_PASSWORD'] !== '') {
+    $redis->auth(env()['CHEVERETO_CACHE_PASSWORD']);
+}
+new EncryptionInstance(
+    new Encryption(
+        new Key(env()['CHEVERETO_ENCRYPTION_KEY'])
+    )
+);
+DB::fromEnv();
+$db = DB::getInstance();
+$tenants = new Tenants(
+    db: $db,
+    redis: $redis,
+    encryption: encryption(),
+    logger: $logger
+);
+$tenantsApiKeys = new TenantsApiKey(
+    db: $db,
+    logger: $logger
+);
+function versionInstalled(DB $db): string
+{
+    $prefixedTables = arrayPrefixValues(
+        Tenants::TABLES,
+        env()['CHEVERETO_DB_TABLE_PREFIX'],
+    );
+    $tableCount = count($prefixedTables);
+    $tableNameIn = implode("', '", $prefixedTables);
+    $queryExists = <<<SQL
+        SELECT COUNT(*) = {$tableCount} AS these_exist
+        FROM information_schema.tables
+        WHERE table_schema = DATABASE()
+          AND table_name IN ('{$tableNameIn}')
+        SQL;
+    $exists = $db->queryFetch($queryExists)['these_exist'];
+    if(!$exists) {
+        return '';
+    }
+    $schemaVersion = $db->queryFetch(
+        strtr(
+            <<<SQL
+            SELECT `value`
+            FROM `%table_root_prefix%tenants_variables`
+            WHERE `name` = 'schema_version'
+            SQL,
+            [
+                '%table_root_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX'],
+            ]
+        )
+    )['value'] ?? '';
+    return $schemaVersion;
+}
+$init = function() use ($db, $logger): void {
+    $version = versionInstalled($db);
+    if($version !== '') {
+        $logger->write(
+            <<<PLAIN
+            Tenants already initiated ({$version})
+
+            PLAIN
+        );
+        exit(255);
+    }
+    $sqlPath = dirname(__DIR__, 1) . '/schemas/mysql-8/_/';
+    $query = '';
+    foreach(Tenants::TABLES as $table) {
+        $query .= file_get_contents("{$sqlPath}/{$table}.sql");
+    }
+    $initSql = strtr(
+        <<<SQL
+        SET FOREIGN_KEY_CHECKS=0;
+        {$query}
+        SET FOREIGN_KEY_CHECKS=1;
+        INSERT INTO `%table_root_prefix%tenants_variables`
+            (`name`, `value`)
+            VALUES
+            ('schema_version', '%version%');
+        SQL,
+        [
+            '%table_root_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX'],
+            '%table_engine%' => 'InnoDB',
+            '%version%' => APP_VERSION,
+        ]
+    );
+    $db->query($initSql);
+    $db->exec();
+    $version = versionInstalled($db);
+    if($version === '') {
+        $logger->write(
+            <<<PLAIN
+            Failed to initialize tenants
+
+            PLAIN
+        );
+        exit(255);
+    }
+    $logger->write(
+        <<<PLAIN
+        Tenants initialized successfully (v{$version})
+
+        PLAIN
+
+    );
+};
+$cache = function() use($tenants): void {
+    $tenants->cache();
+};
+$create = function() use ($tenants, $opts): void {
+    if($opts['limits'] ?? null) {
+        $opts['limits'] = json_decode($opts['limits'], true, flags: JSON_THROW_ON_ERROR);
+    }
+    if($opts['env'] ?? null) {
+        $opts['env'] = json_decode($opts['env'], true, flags: JSON_THROW_ON_ERROR);
+    }
+    $tenants->createTenant(
+        tenantId: $opts['id'],
+        hostname: $opts['hostname'],
+        isEnabled: (bool) ($opts['is_enabled'] ?? 0),
+        planId: $opts['plan_id'] ?? null,
+        limits: $opts['limits'] ?? null,
+        env: $opts['env'] ?? null,
+    );
+};
+$get = function() use ($tenants, $opts): void {
+    $tenant = $tenants->getTenant($opts['id']);
+    printTable($tenant->toArray());
+};
+$list = function() use ($tenants): void {
+    foreach($tenants->getTenants() as $tenant) {
+        printTable($tenant->toArray());
+        echo <<<PLAIN
+        -----------------------
+
+        PLAIN;
+    }
+};
+$edit = function() use ($tenants, $opts): void {
+    if(($opts['limits'] ?? null) === 'null') {
+        $opts['limits'] = '{}';
+    }
+    if(($opts['env'] ?? null) === 'null') {
+        $opts['env'] = '{}';
+    }
+    $tenants->editTenant(
+        tenantId: $opts['id'],
+        hostname: $opts['hostname'] ?? null,
+        planId: $opts['plan_id'] ?? null,
+        limits: isset($opts['limits'])
+            ? json_decode($opts['limits'], true, flags: JSON_THROW_ON_ERROR)
+            : null,
+        env: isset($opts['env'])
+            ? json_decode($opts['env'], true, flags: JSON_THROW_ON_ERROR)
+            : null,
+        isEnabled: isset($opts['is_enabled'])
+            ? (bool) $opts['is_enabled']
+            : null,
+    );
+};
+$delete = function() use ($tenants, $opts): void {
+    $tenants->deleteTenant($opts['id'], ($opts['drop-tables'] ?? null) === false);
+};
+$planCreate = function() use ($tenants, $opts): void {
+    if($opts['limits'] ?? null) {
+        $opts['limits'] = json_decode($opts['limits'], true, flags: JSON_THROW_ON_ERROR);
+    }
+    if($opts['env'] ?? null) {
+        $opts['env'] = json_decode($opts['env'], true, flags: JSON_THROW_ON_ERROR);
+    }
+    $tenants->createPlan(
+        planId: $opts['id'],
+        limits: $opts['limits'] ?? null,
+        env: $opts['env'] ?? null,
+    );
+};
+$planGet = function() use ($tenants, $opts): void {
+    $plan = $tenants->getPlan($opts['id']);
+    printTable($plan->toArray());
+};
+$planEdit = function() use ($tenants, $opts): void {
+    if(($opts['limits'] ?? null) === 'null') {
+        $opts['limits'] = '{}';
+    }
+    if(($opts['env'] ?? null) === 'null') {
+        $opts['env'] = '{}';
+    }
+    $tenants->editPlan(
+        planId: $opts['id'],
+        limits: isset($opts['limits'])
+            ? json_decode($opts['limits'], true, flags: JSON_THROW_ON_ERROR)
+            : null,
+        env: isset($opts['env'])
+            ? json_decode($opts['env'], true, flags: JSON_THROW_ON_ERROR)
+            : null,
+    );
+};
+$planDelete = function() use ($tenants, $opts): void {
+    $tenants->deletePlan($opts['id']);
+};
+$planList = function() use ($tenants): void {
+    $callback = function(array $plan): void {
+        printTable($plan);
+        echo <<<PLAIN
+        --
+
+        PLAIN;
+    };
+    $tenants->getPlans($callback);
+};
+$databaseMigrate = function() use ($tenants, $opts, $logger): void {
+    $logger->write(
+        <<<PLAIN
+        Starting tenants database update
+        ***********************
+
+        PLAIN
+    );
+    $tenantsUpdate = [];
+    if($opts['id'] ?? null) {
+        $tenantsUpdate[] = $tenants->getTenantRow($opts['id']);
+    } else {
+        $tenantsUpdate = $tenants->getTenantsRows();
+    }
+    foreach ($tenantsUpdate as $tenant) {
+        runAppCommand(
+            command: ['-C', 'database-update'],
+            env: array_merge($_ENV, [
+                'CHEVERETO_TENANT' => $tenant['id'],
+            ]),
+            isVerbose: ($opts['verbose'] ?? null) !== null,
+            logger: $logger
+        );
+    }
+};
+$statsRefresh = function() use($tenants, $opts): void {
+    $targets = [];
+    $id = $opts['id'] ?? null;
+    if($id) {
+        $targets[] = $id;
+    } else {
+        $targets = $tenants->getTenantsIds();
+    }
+    foreach ($targets as $tenantId) {
+        $tenants->refreshTenantStats($tenantId);
+    }
+};
+$jobsWorker = function() use ($tenants, $opts, $logger): void {
+    $isVerbose = ($opts['verbose'] ?? null) !== null;
+    $logger->write(
+        <<<PLAIN
+        Starting tenants jobs worker
+        ***********************
+
+        PLAIN
+    );
+    while (true) {
+        $now = time();
+        if($opts['id'] ?? null) {
+            $tenantsId = $opts['id'];
+        } else {
+            $tenantsId = $tenants->getTenantsIds(
+                ['is_enabled' => true],
+                [
+                    'field' => 'last_job_at',
+                    'order' => 'ASC'
+                ]
+            );
+        }
+        foreach ($tenantsId as $tenantId) {
+            $tenant = $tenants->getTenant($tenantId);
+            $intervalSec = (int) ($tenant->env['CHEVERETO_JOBS_WORKER_INTERVAL'] ?? 300);
+            $mustRun = $tenant->lastJobAt === null
+                || (strtotime($tenant->lastJobAt) + $intervalSec) <= $now;
+            if ($mustRun) {
+                $tenants->editTenant(
+                    tenantId: $tenantId,
+                    lastJobAt: datetimegmt()
+                );
+                runAppCommand(
+                    command: ['-C', 'cron'],
+                    env: array_merge($_ENV, [
+                        'CHEVERETO_TENANT' => $tenantId,
+                    ]),
+                    isVerbose: $isVerbose,
+                    logger: $logger
+                );
+                $tenants->refreshTenantStats($tenantId);
+            }
+        }
+        $logger->write(
+            <<<PLAIN
+            Waiting 5s
+
+            PLAIN
+        );
+        sleep(5);
+    }
+};
+$apiKeyCreate = function() use ($tenantsApiKeys, $opts): void {
+    $name = $opts['name'] ?? null;
+    $expiresAt = ($opts['expires'] ?? null)
+        ? gmdate('Y-m-d H:i:s', strtotime($opts['expires']))
+        : null;
+    $apiKey = $tenantsApiKeys->insert($name, $expiresAt);
+    printTable(
+        [
+            'key' => $apiKey,
+            'name' => $name,
+            'expires_at' => $expiresAt
+        ]
+    );
+};
+$apiKeyDelete = function() use ($tenantsApiKeys, $opts): void {
+    $id = $opts['id'] ?? null;
+    $name = $opts['name'] ?? null;
+    $tenantsApiKeys->remove($id, $name);
+};
+$apiKeyVerify = function() use ($tenantsApiKeys, $opts): void {
+    $key = $opts['key'] ?? null;
+    $keyData = $tenantsApiKeys->assert($key);
+    printTable($keyData);
+};
+$command = preg_replace_callback('/:([a-zA-Z0-9])/', function ($m) {
+    return strtoupper($m[1]);
+}, $command);
+$command = preg_replace('/[^a-zA-Z0-9_]/', '', $command);
+try{
+    ${$command}();
+} catch (Throwable $e) {
+    $doDebug = in_array((int) env()['CHEVERETO_DEBUG_LEVEL'], [2, 3], true)
+        || env()['CHEVERETO_ENVIRONMENT'] === 'dev';
+    if ($doDebug) {
+        throw $e;
+    }
+    echo <<<PLAIN
+    {$e->getMessage()}
+
+    PLAIN;
+    die(255);
+}

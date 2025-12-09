@@ -30,10 +30,16 @@ $edition = ucfirst(env()['CHEVERETO_EDITION'] ?? '');
 	<div>
         <div class="p input-label">
             <label for="username">Admin username</label>
-            <input type="text" name="username" id="username" class="width-100p" value="<?php echo $safe_post['username'] ?? ''; ?>" placeholder="Admin username" pattern="<?php echo Settings::USERNAME_PATTERN; ?>" title='<?php echo strtr('%i to %f characters<br>Letters, numbers and "_"', [
-                '%i' => Settings::USERNAME_MIN_LENGTH,
-                '%f' => Settings::USERNAME_MAX_LENGTH,
-            ]); ?>' maxlength="<?php echo Settings::USERNAME_MAX_LENGTH; ?>" required>
+            <input type="text" name="username" id="username" class="width-100p" value="<?php echo $safe_post['username'] ?? ''; ?>" placeholder="Admin username" pattern="<?php echo Settings::USERNAME_PATTERN; ?>"
+            title="<?php echo strtr(
+                <<<PLAIN
+                %i to %f characters
+                Letters, numbers and "_"
+                PLAIN,
+                [
+                    '%i' => Settings::USERNAME_MIN_LENGTH,
+                    '%f' => Settings::USERNAME_MAX_LENGTH,
+                ]); ?>" maxlength="<?php echo Settings::USERNAME_MAX_LENGTH; ?>" required>
             <span class="input-warning red-warning"><?php echo $input_errors['username'] ?? ''; ?></span>
         </div>
         <div class="p input-label">

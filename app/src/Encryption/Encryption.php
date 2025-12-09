@@ -14,7 +14,6 @@ namespace Chevereto\Encryption;
 use Chevereto\Encryption\Interfaces\EncryptionInterface;
 use Chevereto\Encryption\Interfaces\KeyInterface;
 use phpseclib3\Crypt\ChaCha20;
-use function Chevere\VarSupport\deepCopy;
 
 final class Encryption implements EncryptionInterface
 {
@@ -28,11 +27,6 @@ final class Encryption implements EncryptionInterface
         $this->cipher = new ChaCha20();
         $this->cipher->setNonce($this->nonce);
         $this->cipher->setKey((string) $key);
-    }
-
-    public function __clone()
-    {
-        $this->cipher = deepCopy($this->cipher);
     }
 
     public function nonce(): string
@@ -67,5 +61,26 @@ final class Encryption implements EncryptionInterface
     public function decrypt(string $cipherText): string
     {
         return $this->cipher->decrypt($cipherText);
+    }
+
+    public function encryptEncode(string $plainText): string
+    {
+        return (new Encode($this->withRandomNonce()))
+            ->binary($plainText);
+    }
+
+    public function encryptEncodeBase64(string $plainText): string
+    {
+        return (new Encode($this->withRandomNonce()))
+            ->base64($plainText);
+    }
+
+    public function decodeDecrypt(string $nonceCipherText): string
+    {
+        $decode = new Decode($nonceCipherText);
+
+        return $this
+            ->withNonce($decode->nonce())
+            ->decrypt($decode->cipherText());
     }
 }

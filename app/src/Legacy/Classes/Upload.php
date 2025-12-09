@@ -413,7 +413,7 @@ class Upload
             $failoverDir = sys_get_temp_dir();
         }
         $chvIdPrefix = 'chv'
-            . env()['CHEVERETO_ID']
+            . env()['CHEVERETO_TENANT']
             . '_upload_'
             . $suffix;
         $tempNam = @tempnam(sys_get_temp_dir(), $chvIdPrefix);

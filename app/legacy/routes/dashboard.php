@@ -166,10 +166,10 @@ return function (Handler $handler) {
     $paidRoutesEnv = [
         // 'bulk-importer' => ['pro', 'CHEVERETO_ENABLE_BULK_IMPORTER'],
     ];
-    $removeSaaSContextRoutes = [
+    $removeDisabledRoutes = [
         'bulk-importer' => ! ((bool) env()['CHEVERETO_ENABLE_BULK_IMPORTER']),
     ];
-    $removeSaaSContextRoutes = array_filter($removeSaaSContextRoutes);
+    $removeDisabledRoutes = array_filter($removeDisabledRoutes);
     foreach ($paidRoutesEnv as $k => $v) {
         $isEnabled = in_array($v[0], editionCombo()[env()['CHEVERETO_EDITION']], true);
         if ($isEnabled) {
@@ -177,10 +177,8 @@ return function (Handler $handler) {
         }
         unset($routes[$k]);
     }
-    if (env()['CHEVERETO_CONTEXT'] === 'saas') {
-        foreach ($removeSaaSContextRoutes as $k => $v) {
-            unset($routes[$k]);
-        }
+    foreach ($removeDisabledRoutes as $k => $v) {
+        unset($routes[$k]);
     }
     $icons = [
         'albums' => 'fas fa-images',
@@ -261,12 +259,10 @@ return function (Handler $handler) {
         'cookie-compliance' => ['pro', 'CHEVERETO_ENABLE_COOKIE_COMPLIANCE'],
         'external-services' => ['pro', 'CHEVERETO_ENABLE_EXTERNAL_SERVICES'],
         'flood-protection' => ['pro', 'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION'],
-        'homepage' => ['lite', 'CHEVERETO_ENABLE_USERS'],
         'ip-bans' => ['pro', 'CHEVERETO_ENABLE_IP_BANS'],
         'login-providers' => ['lite', 'CHEVERETO_ENABLE_LOGIN_PROVIDERS'],
         'pages' => ['lite', 'CHEVERETO_ENABLE_PAGES'],
         'routing' => ['pro', 'CHEVERETO_ENABLE_ROUTING'],
-        'users' => ['lite', 'CHEVERETO_ENABLE_USERS'],
         'watermarks' => ['lite', 'CHEVERETO_ENABLE_UPLOAD_WATERMARK'],
     ];
     $paidSettings = [];
@@ -405,9 +401,9 @@ return function (Handler $handler) {
             if (env()['CHEVERETO_CONTEXT'] === 'saas') {
                 $links = array_merge($links, [
                     [
-                        'label' => _s('Support'),
+                        'label' => env()['CHEVERETO_PROVIDER_NAME'],
                         'icon' => 'fas fa-medkit',
-                        'href' => 'https://chevereto.cloud/support',
+                        'href' => env()['CHEVERETO_PROVIDER_URL'],
                     ],
                 ]);
             }
@@ -1447,7 +1443,9 @@ return function (Handler $handler) {
                         }
                     }
                 }
-                if (isset($POST['upload_image_path'])) {
+                if (env()['CHEVERETO_ENABLE_LOCAL_STORAGE'] === '1'
+                    && isset($POST['upload_image_path'])
+                ) {
                     $image_path = PATH_PUBLIC . $POST['upload_image_path'];
                     if (! file_exists($image_path)) {
                         $validations['upload_image_path'] = [

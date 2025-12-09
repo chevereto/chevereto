@@ -29,7 +29,7 @@ final class Uploads
         $calcHash = hash_hmac(
             'sha256',
             $uploadId . $token,
-            getVariable('crypt_salt')->string()
+            getVariable('hmac_secret_upload')->string()
         );
         if (! hash_equals($calcHash, $hash)) {
             throw new Exception('Invalid hash', 100);

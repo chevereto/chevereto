@@ -14,11 +14,16 @@ namespace Chevereto\Legacy;
 use Chevere\Filesystem\FilePhpReturn;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Regex\Regex;
+use Chevere\Writer\Interfaces\WriterInterface;
+use Chevere\Writer\NullWriter;
 use Chevere\Writer\StreamWriter;
 use Chevere\Writer\WritersInstance;
 use Chevere\xrDebug\PHP\Xr;
 use Chevere\xrDebug\PHP\XrInstance;
 use Chevereto\Config\Config;
+use Chevereto\Encryption\Decode;
+use Chevereto\Encryption\Encryption;
+use Chevereto\Encryption\Key;
 use Chevereto\Legacy\Classes\AssetStorage;
 use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\DB;
@@ -44,6 +49,9 @@ use Chevereto\Vars\SessionVar;
 use ErrorException;
 use Exception;
 use Intervention\Image\ImageManagerStatic;
+use InvalidArgumentException;
+use IPLib\Factory;
+use JsonException;
 use LogicException;
 use OutOfBoundsException;
 use OverflowException;
@@ -51,6 +59,7 @@ use PDO;
 use PHPMailer\PHPMailer\SMTP;
 use Redis;
 use RuntimeException;
+use Symfony\Component\Process\Process;
 use Throwable;
 use function Chevere\Filesystem\filePhpForPath;
 use function Chevere\Message\message;
@@ -232,7 +241,7 @@ function send_mail($to, $subject, $body): bool
         . str_replace('-', '<', $mailerWrap);
     writers()->error()
         ->write($error);
-    xr(mailer: $error);
+    xr(mailer: $error, to: $to, subject: $subject, body: $body);
 
     throw new Exception($mail->ErrorInfo, 606);
 }
@@ -379,8 +388,8 @@ function getSystemNotices(): array
                 . '</a>'
             );
     }
-    if (preg_match('/@chevereto\.example/', getSetting('email_from_email'))
-        || preg_match('/@chevereto\.example/', getSetting('email_incoming_email'))
+    if (preg_match('/@chevereto\.internal/', getSetting('email_from_email'))
+        || preg_match('/@chevereto\.internal/', getSetting('email_incoming_email'))
         || (
             env()['CHEVERETO_SERVICING'] !== 'server'
             && empty(getSetting('email_smtp_server'))
@@ -432,32 +441,80 @@ function getSystemNotices(): array
     return $system_notices;
 }
 
+function hash_hmac_token(string $token): string
+{
+    return hash_hmac(
+        'sha256',
+        $token,
+        getVariable('hmac_secret_token')->string()
+    );
+}
+
 function hashed_token_info(string $public_token_format): array
 {
+    // legacy <idEncoded>:<token>:<timestamp>
+    // v4.4.0 <idEncoded>:<token>:<timestamp>:<signature> (signs previous parts)
     $explode = explode(':', $public_token_format);
+    $count = count($explode);
+    if (! in_array($count, [3, 4])) {
+        throw new InvalidArgumentException('Invalid public token format');
+    }
+    $idEncoded = $explode[0];
+    $token = $explode[1];
+    $timestamp = $explode[2];
+    if ($count === 3) {
+        $signature = null;
+        if (version_compare(cheveretoVersionInstalled(), '4.4.0', '>=')) {
+            throw new InvalidArgumentException('Invalid public token format');
+        }
+    } else {
+        $signature = $explode[3];
+    }
 
     return [
-        'id' => decodeID($explode[0]),
-        'id_encoded' => $explode[0],
-        'token' => $explode[1],
+        'id' => decodeID($idEncoded),
+        'id_encoded' => $idEncoded,
+        'token' => $token,
+        'signature' => $signature,
+        'timestamp' => $timestamp,
     ];
 }
 
-function generate_hashed_token(int $id, string $token = ''): array
+/**
+ * @return string id_encoded:token:timestamp:signature (signs concatenation of previous parts)
+ */
+function generate_hashed_token(int $id): array
 {
+    $id_encoded = encodeID((int) $id);
     $token = random_string(random_int(128, 256));
-    $hash = password_hash($token, PASSWORD_BCRYPT);
+    $timestamp = time();
+    $pubToken = [$id_encoded, $token, $timestamp];
+    if (version_compare(cheveretoVersionInstalled(), '4.4.0', '>=')) {
+        $pubToken[] = hash_hmac_token($id_encoded . $token . $timestamp);
+    }
 
     return [
         'token' => $token,
-        'hash' => $hash,
-        'public_token_format' => encodeID((int) $id) . ':' . $token,
+        'hash' => passwordHash($token),
+        'timestamp' => $timestamp,
+        'public_token_format' => implode(':', $pubToken),
     ];
 }
 
 function check_hashed_token(string $hash, string $public_token_format): bool
 {
     $public_token = hashed_token_info($public_token_format);
+    if ($public_token['signature'] === null) {
+        return false;
+    }
+    $generated = hash_hmac_token(
+        $public_token['id_encoded']
+        . $public_token['token']
+        . $public_token['timestamp']
+    );
+    if (! hash_equals($generated, $public_token['signature'])) {
+        throw new Exception('Invalid token signature');
+    }
 
     return password_verify($public_token['token'], $hash);
 }
@@ -1117,12 +1174,135 @@ function loaderHandler(
         'CHEVERETO_IMAGE_LIBRARY' => IMAGE_LIBRARY,
     ]);
     $envVar = array_merge($envDefault, ENV, $_env);
-    $envVar['CHEVERETO_ID'] = $_env['CHEVERETO_ID']
-        ?? ENV['CHEVERETO_ID']
-        ?? $_server['CHEVERETO_ID']
+    $envVar['CHEVERETO_TENANT'] = $_env['CHEVERETO_TENANT']
+        ?? ENV['CHEVERETO_TENANT']
         ?? '';
-    $envVar['CHEVERETO_ID_HANDLE'] = '';
-        $envVar = array_merge($envVar, array (
+    $envVar['CHEVERETO_TENANT_HANDLE'] = '';
+    $envVar['CHEVERETO_DB_TABLE_ROOT_PREFIX'] = $envVar['CHEVERETO_DB_TABLE_PREFIX'];
+    if ($envVar['CHEVERETO_ENABLE_TENANTS'] === '1') {
+        $redis = new Redis();
+        $redis->connect($envVar['CHEVERETO_CACHE_HOST'], (int) $envVar['CHEVERETO_CACHE_PORT']);
+        if ($envVar['CHEVERETO_CACHE_PASSWORD'] !== '') {
+            $redis->auth($envVar['CHEVERETO_CACHE_PASSWORD']);
+        }
+        $lookupNamespace = $envVar['CHEVERETO_CACHE_KEY_PREFIX'] . '_:';
+        if (PHP_SAPI === 'cli') {
+            $websiteId = $envVar['CHEVERETO_TENANT'];
+            if ($websiteId === '') {
+                echo <<<PLAIN
+                Missing CHEVERETO_TENANT context
+
+                PLAIN;
+                exit(255);
+            }
+            $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId);
+            $websiteOptions = unserialize($websiteOptions);
+            $hostname = $websiteOptions['hostname'];
+        } else {
+            $hostname = $_server['SERVER_NAME'];
+            $isRootHostname = hash_equals($envVar['CHEVERETO_HOSTNAME'], $hostname);
+            $isTenantsApi = $isRootHostname
+                && str_starts_with(
+                    $_server['REQUEST_URI'],
+                    $envVar['CHEVERETO_HOSTNAME_PATH']
+                        . '_/api/4/',
+                );
+            // CHEVERETO_HOSTNAME_PATH /
+            // REQUEST_URI */_/api/4/
+            if ($isTenantsApi) {
+                $websiteId = '';
+                $websiteOptions = [
+                    'is_enabled' => true,
+                    'env' => null,
+                    'limits' => [],
+                    'hostname' => 'chevereto',
+                ];
+            } else {
+                $websiteId = $redis->get($lookupNamespace . 'hostname:' . $hostname);
+                if ($websiteId === false) {
+                    if ($isRootHostname) {
+                        redirect($envVar['CHEVERETO_PROVIDER'] ?? 'https://chevereto.com');
+                    }
+                    echo <<<PLAIN
+                    No website defined
+
+                    PLAIN;
+                    exit(255);
+                }
+                $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId);
+                $websiteOptions = unserialize($websiteOptions);
+            }
+        }
+        if ($websiteOptions === []) {
+            http_response_code(404);
+            echo <<<PLAIN
+            No website data
+
+            PLAIN;
+            exit(255);
+        }
+        if (! $websiteOptions['is_enabled']) {
+            http_response_code(403);
+            echo <<<PLAIN
+            Website disabled
+
+            PLAIN;
+            exit(255);
+        }
+        $encryption = new Encryption(
+            new Key($envVar['CHEVERETO_ENCRYPTION_KEY'])
+        );
+        if ($websiteOptions['env'] !== null) {
+            $decode = new Decode($websiteOptions['env']);
+            $websiteOptions['env'] = $encryption
+                ->withNonce($decode->nonce())
+                ->decrypt($decode->cipherText());
+            $websiteOptions['env'] = unserialize($websiteOptions['env']);
+        }
+        $envVar = array_merge(
+            $envVar,
+            $websiteOptions['limits'] ?? [],
+            $websiteOptions['env'] ?? []
+        );
+        $envVar['CHEVERETO_TENANT'] = $websiteId;
+        $envVar['CHEVERETO_TENANT_HANDLE'] = "{$websiteId}_";
+        $envVar['CHEVERETO_HOSTNAME'] = $hostname;
+        if ($websiteId !== '') {
+            $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= "{$websiteId}:"; // chv:ABC:
+            $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= "{$websiteId}_"; // chv_ABC_
+        } else {
+            $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= '_:'; // chv:_: (global)
+            $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= '_'; // chv__ (global)
+        }
+        if ($envVar['CHEVERETO_SESSION_SAVE_HANDLER'] === 'redis') {
+            // tcp://....prefix=chv:SESSION:
+            $envVar['CHEVERETO_SESSION_SAVE_PATH'] = str_replace(
+                'prefix=chv:',
+                'prefix=' . $envVar['CHEVERETO_CACHE_KEY_PREFIX'],
+                $envVar['CHEVERETO_SESSION_SAVE_PATH']
+            );
+        }
+
+        try {
+            $enforced = json_decode($envVar['CHEVERETO_TENANT_ENFORCED'], true, flags: JSON_THROW_ON_ERROR);
+            if (! is_array($enforced)) {
+                throw new LogicException();
+            }
+        } catch (JsonException) {
+            throw new RuntimeException('Invalid CHEVERETO_TENANT_ENFORCED JSON', 600);
+        }
+        $reEnforced = $isTenantsApi
+            ? []
+            : [
+                'CHEVERETO_TENANTS_API_KEY_SECRET' => '',
+                'CHEVERETO_TENANTS_API_REQUEST_SECRET' => '',
+                'CHEVERETO_TENANTS_API_ALLOW_LIST' => '',
+            ];
+        $envVar = array_merge($envVar, $enforced, $reEnforced, [
+            'CHEVERETO_ENABLE_TENANTS' => '0',
+        ]);
+    }
+    $envVar = array_merge($envVar, array (
       'CHEVERETO_EDITION' => 'free',
       'CHEVERETO_ENABLE_BANNERS' => '0',
       'CHEVERETO_ENABLE_CAPTCHA' => '0',
@@ -1130,7 +1310,6 @@ function loaderHandler(
       'CHEVERETO_ENABLE_COOKIE_COMPLIANCE' => '0',
       'CHEVERETO_ENABLE_EXPOSE_PAID_FEATURES' => '1',
       'CHEVERETO_ENABLE_EXTERNAL_SERVICES' => '0',
-      'CHEVERETO_ENABLE_EXTERNAL_STORAGE_PROVIDERS' => '0',
       'CHEVERETO_ENABLE_FAVICON' => '0',
       'CHEVERETO_ENABLE_FOLLOWERS' => '0',
       'CHEVERETO_ENABLE_FORCE_POWERED_BY_FOOTER' => '1',
@@ -1154,17 +1333,13 @@ function loaderHandler(
       'CHEVERETO_ENABLE_UPLOAD_FLOOD_PROTECTION' => '0',
       'CHEVERETO_ENABLE_UPLOAD_PLUGIN' => '1',
       'CHEVERETO_ENABLE_UPLOAD_WATERMARK' => '0',
-      'CHEVERETO_ENABLE_USERS' => '0',
-      'CHEVERETO_MAX_ADMINS' => '1',
-      'CHEVERETO_MAX_MANAGERS' => '1',
       'CHEVERETO_MAX_PAGES' => '-1',
-      'CHEVERETO_MAX_USERS' => '1',
     ));
     $iniToChevereto = [
         'error_log' => 'CHEVERETO_ERROR_LOG',
         'memory_limit' => 'CHEVERETO_MAX_MEMORY_SIZE',
         'post_max_size' => 'CHEVERETO_MAX_POST_SIZE',
-        // 'max_execution_time' => 'CHEVERETO_MAX_EXECUTION_TIME_SECONDS',
+        // 'max_execution_time' => 'CHEVERETO_MAX_EXECUTION_TIME',
         // 'session.save_handler' => 'CHEVERETO_SESSION_SAVE_HANDLER',
         // 'session.save_path' => 'CHEVERETO_SESSION_SAVE_PATH',
         // 'upload_max_filesize' => 'CHEVERETO_MAX_UPLOAD_FILE_SIZE', // INI_PERDIR
@@ -1660,7 +1835,7 @@ function getCounts(string ...$table): array
     foreach ($table as $subject) {
         $table = DB::getTable($subject);
         $items[] = match ($subject) {
-            'storage' => <<<SQL
+            'storages' => <<<SQL
             (SELECT COUNT(*) FROM `{$table}` WHERE storage_deleted_at IS NULL) AS {$subject}
             SQL,
             default => <<<SQL
@@ -1780,4 +1955,148 @@ function hashFile(string $file): string
 function hashString(string $string): string
 {
     return hash('xxh128', $string);
+}
+
+function getPoweredByRemarks(): array
+{
+    $termsLink = '<a href="'
+        . get_base_url(Handler::var('page_tos')['url'] ?? '')
+        . '">Terms of Service</a>';
+    $softwareLicenseLink = '<a href="https://chevereto.com/license">Chevereto License</a>';
+    if (env()['CHEVERETO_EDITION'] === 'free') {
+        $softwareLicenseLink = '<a href="https://www.gnu.org/licenses/agpl-3.0.en.html#license-text">AGPL-3.0 license</a>';
+    }
+    $providerLink = '<a href="' . env()['CHEVERETO_PROVIDER_URL'] . '">' . env()['CHEVERETO_PROVIDER_NAME'] . '</a>';
+    $about = _s('This service is based on Chevereto %edition edition software licensed under the %license.', [
+        '%edition' => ucfirst(env()['CHEVERETO_EDITION']),
+        '%license' => $softwareLicenseLink,
+    ]);
+    $liability = _s("This website is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this website and it won't be responsible for this service neither the damages that this service may cause.");
+    $content = _s('File uploads are stored and served from storage facilities provided by %s and managed by The Service Operator.', $providerLink);
+    if (env()['CHEVERETO_CONTEXT'] === 'saas') {
+        $about = _s('This service operates using Chevereto %edition edition software licensed under the %license.', [
+            '%edition' => ucfirst(env()['CHEVERETO_EDITION']),
+            '%license' => $softwareLicenseLink,
+        ])
+            . ' '
+            . _s(
+                'Use of this service must comply with (1) The %providerLink provider policies, and (2) The terms indicated at the %termsLink page for this instance.',
+                [
+                    '%providerLink' => $providerLink,
+                    '%termsLink' => $termsLink,
+                ]
+            );
+        $liability = _s('This website is hosted on a service layer provided by %s. Chevereto Software is not responsible for the operation of this service, nor for any damages that may result from its use.', $providerLink);
+    }
+    if (env()['CHEVERETO_ENABLE_LOCAL_STORAGE'] === '0') {
+        $content = _s('File uploads are stored and served using external storage providers configured by The Service Operator.')
+            . ' '
+            . _s('%s only hosts the database and application service layer.', $providerLink)
+            . ' '
+            . _s('Neither Chevereto Software nor %s has any control over, or access to, the content stored on these storage providers.', $providerLink);
+    }
+
+    return [
+        $about,
+        $liability,
+        $content,
+    ];
+}
+
+function passwordHash(string $password): string
+{
+    return password_hash($password, PASSWORD_ARGON2ID);
+}
+
+function runAppCommand(
+    string|array $command,
+    array $env,
+    bool $isVerbose = false,
+    WriterInterface $logger = new NullWriter()
+): int {
+    $cliPath = PATH_PUBLIC . 'app/bin/cli';
+    if (is_string($command)) {
+        $command = [$command];
+    }
+    array_unshift($command, $cliPath);
+    $process = new Process($command, null, $env);
+    $exit = $process->run();
+    $commandLine = $process->getCommandLine();
+    if ($env['CHEVERETO_TENANT'] ?? '' !== '') {
+        $commandLine = <<<PLAIN
+        CHEVERETO_TENANT={$env['CHEVERETO_TENANT']} {$commandLine}
+        PLAIN;
+    }
+    $logger->write(
+        <<<PLAIN
+        {$commandLine}
+        {$exit}
+
+        PLAIN
+    );
+    if ($isVerbose) {
+        $logger->write($process->getOutput());
+        $logger->write($process->getErrorOutput());
+    }
+
+    return $exit;
+}
+function printTable(array $table, string $prefix = ''): void
+{
+    if ($table === []) {
+        return;
+    }
+    $maxLen = 0;
+    foreach (array_keys($table) as $c) {
+        $len = strlen((string) $c);
+        if ($len > $maxLen) {
+            $maxLen = $len;
+        }
+    }
+    foreach ($table as $key => $value) {
+        $keyStr = (string) $key;
+        if (is_array($value)) {
+            printf("{$prefix}%-{$maxLen}s  %s\n", $keyStr, '');
+            printTable($value, $prefix . '  ');
+
+            continue;
+        }
+        if (is_bool($value)) {
+            $value = $value ? 'true' : 'false';
+        } elseif ($value === null) {
+            $value = 'null';
+        } elseif (is_object($value)) {
+            $value = json_encode($value, JSON_PRETTY_PRINT);
+        } elseif (is_array($value)) {
+            $value = json_encode($value, JSON_PRETTY_PRINT);
+        }
+        printf("{$prefix}%-{$maxLen}s  %s\n", $keyStr, (string) $value);
+    }
+}
+
+/**
+ * Checks if the remote IP address is contained within the list of allowed IPs/CIDR ranges.
+ *
+ * @param string $ip The IP address to check (e.g., $_SERVER['REMOTE_ADDR']).
+ * @param string $allowedList A comma-separated string of IPs and CIDRs.
+ * @return bool True if the IP is allowed, false otherwise.
+ */
+function isIpAllowed(string $ip, string $allowedList): bool
+{
+    $address = Factory::parseAddressString($ip);
+    if ($address === null) {
+        return false;
+    }
+    $allowed = array_map('trim', explode(',', $allowedList));
+    foreach ($allowed as $allowedEntry) {
+        $range = Factory::parseRangeString($allowedEntry);
+        if ($range === null) {
+            continue;
+        }
+        if ($range->contains($address)) {
+            return true;
+        }
+    }
+
+    return false;
 }

@@ -39,17 +39,37 @@ $options = [
     'password-reset',
     'setting-get',
     'setting-update',
-    'update',
+    'database-migrate',
     'version',
-    'metrics',
+    'stats',
+    'stats-rebuild',
 ];
+$aliases = [
+    'update' => 'database-migrate',
+];
+if (array_key_exists($access, $aliases)) {
+    $originalAccess = $access;
+    $access = $aliases[$access];
+    echo <<<PLAIN
+    Note: The "{$originalAccess}" command is now aliased to "{$access}"
+
+    PLAIN;
+}
 if (! in_array($access, $options, true)) {
-    echo 'Invalid command' . PHP_EOL;
+    echo <<<PLAIN
+    Invalid command
+
+    PLAIN;
     exit(255);
 }
 if (defined('APP_BIN_LEGACY')) {
-    echo 'Note: This CLI is migrating to app/bin/cli' . PHP_EOL . PHP_EOL;
+    echo <<<PLAIN
+    Note: This CLI is migrating to app/bin/cli
+
+
+    PLAIN;
 }
+$access = $aliases[$access] ?? $access;
 define('ACCESS', $access);
 require_once __DIR__ . '/../load/php-boot.php';
 set_error_handler(ThrowableHandler::ERROR_AS_EXCEPTION);

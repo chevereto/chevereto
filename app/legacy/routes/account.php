@@ -51,7 +51,7 @@ return function (Handler $handler) {
         return;
     }
     if (! Settings::get('enable_signups')
-        && in_array($doing, ['awaiting-confirmation', 'activate', 'email-changed'], true)
+        && in_array($doing, ['awaiting-confirmation', 'activate'], true)
     ) {
         $handler->issueError(403);
 
@@ -248,7 +248,12 @@ return function (Handler $handler) {
                             $confirmation_db_query = Confirmation::update($user['confirmation_id'], $array_values);
                         }
                         if ($confirmation_db_query) {
-                            $recovery_link = get_public_url('account/' . ($doing === 'password-forgot' ? 'password-reset' : 'activate') . '/?token=' . $hashed_token['public_token_format']);
+                            $recovery_link = get_public_url(
+                                'account/'
+                                . ($doing === 'password-forgot' ? 'password-reset' : 'activate')
+                                . '/?token='
+                                . base64_encode($hashed_token['public_token_format'])
+                            );
                             global $theme_mail;
                             $theme_mail = [
                                 'user' => $user,
@@ -321,6 +326,7 @@ return function (Handler $handler) {
         case 'activate':
         case 'change-email-confirm':
             $token = get()['token'] ?? '';
+            $token = base64_decode($token, true) ?: '';
             $get_token_array = $token !== ''
                 ? explode(':', $token)
                 : [];
@@ -328,7 +334,8 @@ return function (Handler $handler) {
                 && $request_log['day'] > Config::limit()->invalidRequestsPerDay()) {
                 $get_token_array = [];
             }
-            if ($get_token_array === [] || count($get_token_array) !== 2) {
+
+            if ($get_token_array === [] || count($get_token_array) !== 4) {
                 RequestLog::insert([
                     'type' => $request_db_field,
                     'result' => 'fail',
@@ -339,9 +346,9 @@ return function (Handler $handler) {
                 return;
             }
             $user_id = decodeID($get_token_array[0]);
-            $get_token = hashed_token_info(get()['token']);
+            $token_info = hashed_token_info($token);
             $confirmation_db = Confirmation::get([
-                'user_id' => $get_token['id'],
+                'user_id' => $token_info['id'],
                 'type' => $request_db_field,
             ]);
             if ($confirmation_db === false) {
@@ -349,7 +356,7 @@ return function (Handler $handler) {
 
                 return;
             }
-            $hash_match = check_hashed_token($confirmation_db['confirmation_token_hash'], get()['token']);
+            $hash_match = check_hashed_token($confirmation_db['confirmation_token_hash'], $token);
             if (datetime_diff($confirmation_db['confirmation_date_gmt'], null, 'h') > 48) {
                 Confirmation::delete([
                     'id' => $confirmation_db['confirmation_id'],
@@ -497,7 +504,10 @@ return function (Handler $handler) {
                     ];
                     $array_values['user_id'] = $logged_user['id'];
                     $confirmation_db_query = Confirmation::insert($array_values);
-                    $activation_link = get_public_url('account/activate/?token=' . $hashed_token['public_token_format']);
+                    $activation_link = get_public_url(
+                        'account/activate/?token='
+                        . base64_encode($hashed_token['public_token_format'])
+                    );
                     global $theme_mail;
                     $theme_mail = [
                         'user' => $logged_user,

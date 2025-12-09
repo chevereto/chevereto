@@ -24,6 +24,7 @@
         "intervention/image": "^2.6",
         "jeroendesloovere/xmp-metadata-extractor": "^2.0",
         "guzzlehttp/psr7": "^1.7||^2",
+        "aws/aws-sdk-php": "3.336.15",
         "phpmailer/phpmailer": "^6.5",
         "psr/cache": "^1",
         "psr/log": "^1||^2||^3",
@@ -32,7 +33,6 @@
         "mlocati/ip-lib": "^1.17",
         "composer/ca-bundle": "^1.2",
         "chevere/throwable-handler": "^1.0.2",
-        "chevere/workflow": "^0.9.0",
         "pragmarx/google2fa": "^8.0",
         "pragmarx/google2fa-qrcode": "^3.0",
         "phpseclib/bcmath_compat": "^2.0",
@@ -43,11 +43,14 @@
         "php-ffmpeg/php-ffmpeg": "^1.2",
         "psy/psysh": "^0.11.8",
         "chevere/cache": "^0.5.0",
-        "chevere/var-dump": "^2.0.x-dev",
+        "chevere/var-dump": "^2.0.7",
         "chevere/var-support": "^1.0",
         "matthiasmullie/scrapbook": "^1.0",
         "xrdebug/php": "^3.0",
-        "xrdebug/xrdebug": "^2.0"
+        "donatj/phpuseragentparser": "^1.11",
+        "chevere/router": "^0.9.1",
+        "chevere/http": "^0.7.1",
+        "laminas/laminas-httphandlerrunner": "^2.13"
     },
     "autoload": {
         "files": [

@@ -11,6 +11,9 @@
 
 namespace Chevereto\Legacy\Classes;
 
+use Aws\Exception\AwsException;
+use Aws\S3\S3Client;
+use Composer\CaBundle\CaBundle;
 use Exception;
 use LogicException;
 use PDO;
@@ -102,7 +105,8 @@ class Storage
         if (! is_array($storage)) {
             $storage = self::getSingle($storage);
         } else {
-            foreach (self::requiredByApi((int) $storage['api_id']) as $k) {
+            $required = self::requiredByApi((int) ($storage['api_id'] ?? 0));
+            foreach ($required as $k) {
                 if (! isset($storage[$k])) {
                     throw new Exception('Missing ' . $k . ' value', 600);
                 }
@@ -128,7 +132,38 @@ class Storage
         $urn = '';
         foreach ($files as $k => $v) {
             $source_file = $v['file'];
+            if (in_array($storage['api_type'], ['s3', 's3compatible'], true)) {
+                $source_file = @fopen($v['file'], 'r');
+                if ($source_file === false) {
+                    throw new Exception('Failed to open file stream', 600);
+                }
+                $urn = $pathPrefix . $v['filename'];
+            }
             switch ($storage['api_type']) {
+                case 's3':
+                case 's3compatible':
+                    $array = [
+                        'Bucket' => $storage['bucket'],
+                        'Key' => $urn,
+                        'Body' => $source_file,
+                        'CacheControl' => $cache_control,
+                        'ContentType' => $v['mime'],
+                    ];
+                    if ($storage['api_type'] === 's3compatible') {
+                        $array['ACL'] = 'public-read';
+                    }
+                    if ($storage['server'] ?? false) {
+                        $host = parse_url($storage['server'], PHP_URL_HOST) ?? '';
+                        if (str_ends_with($host, '.r2.cloudflarestorage.com')) {
+                            unset($array['ACL']);
+                        }
+                    }
+
+                    /** @var S3Client $API */
+                    $API->putObject($array);
+
+                    break;
+
                 case 'local':
                     $target_path = $API instanceof LocalStorage
                         ? $API->realPath()
@@ -147,8 +182,6 @@ class Storage
                     }
 
                     break;
-                default:
-                    throw new LogicException('Unsupported storage API', 600);
             }
 
             $filesize = @filesize($v['file']);
@@ -250,22 +283,26 @@ class Storage
     {
         $API = self::requireAPI($storage);
         switch (StorageApis::getApiType((int) $storage['api_id'])) {
+            case 's3':
+            case 's3compatible':
+                /** @var S3Client $API */
+                $API->deleteObject([
+                    'Bucket' => $storage['bucket'],
+                    'Key' => $key,
+                ]);
+
+                break;
+
             case 'local':
                 $API->delete($key);
 
                 break;
-            default:
-                throw new LogicException('Unsupported storage API', 600);
         }
     }
 
     public static function test(array|int $storage): void
     {
-        $datetime = preg_replace(
-            '/(.*)_(\d{2}):(\d{2}):(\d{2})/',
-            '$1_$2h$3m$4s',
-            datetimegmt('Y-m-d_h:i:s')
-        );
+        $datetime = preg_replace('/(.*)_(\d{2}):(\d{2}):(\d{2})/', '$1_$2h$3m$4s', datetimegmt('Y-m-d_h:i:s'));
         $filename = 'Chevereto_test_' . $datetime . '.png';
         $file = PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'favicon.png';
         self::uploadFiles(
@@ -293,12 +330,21 @@ class Storage
             throw new Exception('Empty values provided', 600);
         }
         $required = ['name', 'api_id', 'key', 'secret', 'bucket', 'url']; // Global
+        $required_by_api = [
+            's3' => ['region', 'use_path_style_endpoint'],
+            's3compatible' => ['region', 'server', 'use_path_style_endpoint'],
+        ];
         $storage_api = StorageApis::getApiType((int) $values['api_id']);
         if ($storage_api === 'local' && ! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
             throw new Exception('Local storage API is forbidden', 403);
         }
         if ($storage_api === 'local') {
             unset($required[2], $required[3]); //  key, secret
+        }
+        if (isset($values['api_id']) && array_key_exists(StorageApis::getApiType((int) $values['api_id']), $required_by_api)) {
+            foreach ($required_by_api[$storage_api] as $v) {
+                $required[] = $v;
+            }
         }
         foreach ($required as $v) {
             if (! check_value($values[$v])) {
@@ -379,7 +425,6 @@ class Storage
         if (hasEncryption()) {
             $values = encryptValues(self::ENCRYPTED_NAMES, $values);
         }
-
         $return = DB::update('storages', $values, [
             'id' => $id,
         ]);
@@ -394,10 +439,34 @@ class Storage
     {
         $api_type = StorageApis::getApiType((int) $storage['api_id']);
         switch ($api_type) {
+            case 's3':
+            case 's3compatible':
+                $clientConfig = [
+                    'version' => '2006-03-01',
+                    'region' => $storage['region'],
+                    'command.params' => [
+                        'PathStyle' => true,
+                    ],
+                    'credentials' => [
+                        'key' => $storage['key'],
+                        'secret' => $storage['secret'],
+                    ],
+                    'http' => [
+                        'verify' => CaBundle::getBundledCaBundlePath(),
+                    ],
+                    'use_aws_shared_config_files' => false,
+                    'use_path_style_endpoint' => ((bool) $storage['use_path_style_endpoint']) ?? false,
+                ];
+                if ($api_type === 's3compatible') {
+                    $clientConfig['endpoint'] = $storage['server'];
+                    $clientConfig['request_checksum_calculation'] = 'WHEN_REQUIRED';
+                    $clientConfig['response_checksum_validation'] = 'WHEN_REQUIRED';
+                }
+
+                return new S3Client($clientConfig);
+
             case 'local':
                 return new LocalStorage($storage);
-            default:
-                throw new LogicException('Unsupported storage API', 600);
         }
 
         throw new LogicException();
@@ -428,7 +497,7 @@ class Storage
                 'sa-east-1' => 'South America (Sao Paulo)',
             ],
         ];
-        foreach ($regions['s3'] as $k => &$v) {
+        foreach ($regions['s3'] as &$v) {
             $v = [
                 'name' => $v,
                 'url' => '',
@@ -510,11 +579,7 @@ class Storage
         if ($storage === []) {
             throw new Exception(sprintf("Error: Storage id %s doesn't exists", $storageId), 100);
         }
-        $query = 'UPDATE '
-            . DB::getTable('storages')
-            . ' SET storage_space_used = (SELECT IFNULL(SUM(image_size) + SUM(image_thumb_size) + SUM(image_medium_size),0) FROM '
-            . DB::getTable('images')
-            . ' WHERE image_storage_id = :storageId) WHERE storage_id = :storageId';
+        $query = 'UPDATE ' . DB::getTable('storages') . ' SET storage_space_used = (SELECT IFNULL(SUM(image_size) + SUM(image_thumb_size) + SUM(image_medium_size),0) FROM ' . DB::getTable('images') . ' WHERE image_storage_id = :storageId) WHERE storage_id = :storageId';
         $db = DB::getInstance();
         $db->query($query);
         if ($storageId !== 0) {
@@ -631,7 +696,16 @@ class Storage
 
     public static function getThrowableMessage(Throwable $throwable): string
     {
-        return $throwable->getMessage();
+        $message = $throwable->getMessage();
+        if ($throwable instanceof AwsException
+            && ($throwable->getAwsErrorMessage() ?? '') !== ''
+        ) {
+            $message = $throwable->getAwsErrorCode()
+                . ': '
+                . $throwable->getAwsErrorMessage();
+        }
+
+        return $message;
     }
 
     protected static function updateStorageVariables(): void

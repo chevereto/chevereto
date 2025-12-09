@@ -82,7 +82,7 @@ return function (Handler $handler) {
     if ($handler->isRequestLevel(3)) {
         if ($request_handle[1] === 'delete') {
             $password = $request_handle[2] ?? '';
-            if (Image::verifyPassword($id, $password)) {
+            if (Image::verifyPassword($image['delete_hash'], $password)) {
                 Image::delete($id);
                 redirect($image['path_viewer'] . '?deleted', 301);
             }

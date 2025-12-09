@@ -12,8 +12,11 @@
 use function Chevereto\Legacy\cheveretoVersionInstalled;
 
 if (cheveretoVersionInstalled() !== '') {
-    echo "[ERROR] Chevereto is already installed, try with the update command\n";
-    exit(255);
+    echo <<<PLAIN
+    [ERROR] Chevereto is already installed
+
+    PLAIN;
+    exit(5);
 }
 
 require_once PATH_APP_LEGACY_INSTALL . 'installer.php';

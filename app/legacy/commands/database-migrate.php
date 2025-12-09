@@ -12,7 +12,10 @@
 use function Chevereto\Legacy\cheveretoVersionInstalled;
 
 if (cheveretoVersionInstalled() === '') {
-    echo "[ERROR] Chevereto is not installed, try with the install command.\n";
+    echo <<<PLAIN
+    [ERROR] Chevereto is not installed, try with the install command.
+
+    PLAIN;
     exit(255);
 }
 

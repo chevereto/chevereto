@@ -96,7 +96,7 @@ if ($continuous = Import::getContinuous()) {
     }
 } ?>
 </div>
-<?php if (env()['CHEVERETO_CONTEXT'] !== 'saas') { ?>
+<?php if (env()['CHEVERETO_ENABLE_BULK_IMPORTER'] === '1') { ?>
 <div>
     <p><?php _se('Run the following command to import content to Chevereto:'); ?></p>
     <?php

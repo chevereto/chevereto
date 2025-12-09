@@ -11,22 +11,30 @@
 
 namespace Chevereto\Legacy\Classes;
 
-use Chevere\VarSupport\StorableVariable;
 use LogicException;
 use PDOException;
 use Throwable;
 use function Chevere\Message\message;
 use function Chevere\Parameter\getType;
+use function Chevereto\Encryption\decodeDecrypt;
+use function Chevereto\Encryption\encodeEncrypt;
+use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\getSetting;
 
 class Variable
 {
+    public const ENCRYPTED_NAMES = [
+        'hmac_secret_token',
+        'hmac_secret_upload',
+        'hmac_secret_api_key',
+    ];
+
     public const LEGACY_VARIABLES = [
         'chevereto_news' => 'array',
         'chevereto_version_installed' => 'string',
         'cron_last_ran' => 'string',
-        'crypt_salt' => 'string',
-        'id_padding' => 'int',
+        'crypt_salt' => 'string', // public ids
+        'id_padding' => 'int', // public ids
         'last_used_storage' => 'int',
         'news_check_datetimegmt' => 'string',
         'update_check_datetimegmt' => 'string',
@@ -38,6 +46,9 @@ class Variable
             'storages_all' => 'int',
             'storages_active' => 'int',
             'login_providers_active' => 'int',
+            'hmac_secret_token' => 'string',
+            'hmac_secret_upload' => 'string',
+            'hmac_secret_api_key' => 'string',
         ];
 
     protected static ?self $instance;
@@ -83,6 +94,9 @@ class Variable
         }
         foreach ($rows as &$row) {
             $row = DB::formatRow($row);
+            if (hasEncryption() && in_array($row['name'], static::ENCRYPTED_NAMES)) {
+                $row['value'] = decodeDecrypt($row['value']);
+            }
             static::populate(
                 name: $row['name'],
                 value: $row['value'],
@@ -109,6 +123,9 @@ class Variable
     {
         $type = getType($value);
         $value = static::getValueAsString($type, $value);
+        if (hasEncryption() && in_array($name, static::ENCRYPTED_NAMES)) {
+            $value = encodeEncrypt($value);
+        }
         $db = DB::getInstance();
         $table = DB::getTable('variables');
         $prefix = DB::getFieldPrefix('variables');
@@ -211,33 +228,10 @@ class Variable
     public static function getValueAsString(string $type, mixed $value): string
     {
         if (in_array($type, ['array', 'object'])) {
-            // $value = (new StorableVariable($value))->toSerialize();
             $value = serialize($value);
         }
 
         return (string) $value;
-    }
-
-    protected static function insert(string $name, mixed $value, string $type): int
-    {
-        $value = static::getValueAsString($type, $value);
-        $return = DB::insert(
-            table: 'variables',
-            values: [
-                'name' => $name,
-                'value' => $value,
-                'type' => $type,
-            ]
-        ) ?: 0;
-        if ($return > 0) {
-            static::populate(
-                name: $name,
-                value: $value,
-                type: $type,
-            );
-        }
-
-        return $return;
     }
 
     protected static function populate(string $name, mixed $value, string $type): void
@@ -288,6 +282,9 @@ class Variable
             return false;
         }
         $return = DB::formatRow($return);
+        if (hasEncryption() && in_array($name, static::ENCRYPTED_NAMES)) {
+            $return['value'] = decodeDecrypt($return['value']);
+        }
         static::populate(
             name: $name,
             value: $return['value'],

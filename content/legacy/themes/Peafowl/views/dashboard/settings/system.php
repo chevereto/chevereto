@@ -96,7 +96,7 @@ echo read_the_docs_settings('system', _s('System')); ?>
     </select></div>
     <div class="input-below"><?php _se('Enable this if you want to debug errors.'); ?> <?php _se('This feature is available only for administrators.'); ?></div>
 </div>
-<?php if(env()['CHEVERETO_CONTEXT'] !== 'saas') { ?>
+<?php if(env()['CHEVERETO_ENABLE_DEBUG'] === '1') { ?>
 <div class="input-label">
     <label for="debug_level"><?php _se('Debug level'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="debug_level" id="debug_level" class="text-input" disabled>

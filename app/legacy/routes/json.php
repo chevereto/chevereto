@@ -121,7 +121,7 @@ return function (Handler $handler) {
                 $checksum = $REQUEST['checksum'] ?? '';
                 $size = (int) ($REQUEST['size'] ?? 0);
                 if (! preg_match('/^[a-f0-9]{16,}$/', $checksum)) {
-                    throw new Exception('Invalid file checksum', 100);
+                    throw new Exception('Invalid file checksum' . $checksum, 100);
                 }
                 if ($size === 0) {
                     throw new Exception('Invalid file size', 100);
@@ -163,7 +163,7 @@ return function (Handler $handler) {
                     'hash' => hash_hmac(
                         'sha256',
                         $uploadId . $token,
-                        getVariable('crypt_salt')->string()
+                        getVariable('hmac_secret_upload')->string()
                     ),
                 ];
 
@@ -188,7 +188,7 @@ return function (Handler $handler) {
                 $calcHash = hash_hmac(
                     'sha256',
                     $uploadId . $token,
-                    getVariable('crypt_salt')->string()
+                    getVariable('hmac_secret_upload')->string()
                 );
                 if (! hash_equals($calcHash, $hash)) {
                     throw new Exception('Invalid hash', 100);

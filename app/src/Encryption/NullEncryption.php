@@ -39,4 +39,19 @@ final class NullEncryption implements EncryptionInterface
     {
         return $cipherText;
     }
+
+    public function encryptEncode(string $plainText): string
+    {
+        return $plainText;
+    }
+
+    public function encryptEncodeBase64(string $plainText): string
+    {
+        return base64_encode($plainText);
+    }
+
+    public function decodeDecrypt(string $nonceCipherText): string
+    {
+        return base64_decode($nonceCipherText);
+    }
 }

@@ -12,8 +12,6 @@
 namespace Chevereto\Legacy\Classes;
 
 use Chevereto\Config\Config;
-use DateTime;
-use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 use LogicException;
@@ -34,6 +32,8 @@ use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\str_replace_first;
 use function Chevereto\Legacy\generate_hashed_token;
 use function Chevereto\Legacy\getSetting;
+use function Chevereto\Legacy\hash_hmac_token;
+use function Chevereto\Legacy\passwordHash;
 use function Chevereto\Vars\cookie;
 use function Chevereto\Vars\cookieVar;
 use function Chevereto\Vars\server;
@@ -582,31 +582,28 @@ class Login
         }
         /**
          * $fetchCookie = [
-         *  'raw' => 'asdf',
+         *  'raw' => 'idEncoded:token:signature:timestamp',
+         *  'token' => 'token',
          *  'user_id' => $user_id,
          *  'type' => $type,
          *  'date_gmt' => $date_gmt,]
          */
-        $login_arr = $fetchCookie;
-        unset($login_arr['raw'], $login_arr['type']);
-        /**
-         * $login_arr = [
-         *  'user_id' => $user_id,
-         *  'date_gmt' => $date_gmt,]
-         */
         $getCookie = self::getCookie(
             type: $fetchCookie['type'],
-            values: $login_arr,
+            values: [
+                'user_id' => $fetchCookie['user_id'],
+                'date_gmt' => $fetchCookie['date_gmt'],
+            ],
         );
-        $is_valid = check_hashed_token(
-            $getCookie['hash'] ?? '',
-            $fetchCookie['raw']
+        $is_valid = password_verify(
+            $fetchCookie['token'],
+            $getCookie['hash'] ?? ''
         );
 
         return [
             'valid' => $is_valid,
             'cookie' => $fetchCookie,
-            'id' => $getCookie['id'] ?? null,
+            'id' => $getCookie['id'],
             'user_id' => $fetchCookie['user_id'],
         ];
     }
@@ -791,7 +788,11 @@ class Login
             $table = 'logins';
             $values['type'] = $type;
         }
+        // TODO: Reserve the ID row first, then proceed to generate the token with it
+        // This way we can get a one-to-many relation between user and cookies
         $tokenize = generate_hashed_token((int) $values['user_id']);
+        $timestamp = $tokenize['timestamp'];
+        $values['date_gmt'] = gmdate('Y-m-d H:i:s', (int) $timestamp);
         $values[$hashColumn] = $tokenize['hash'];
         $cookieName = self::COOKIE;
         $provider = self::getProviderFromCookieType($type);
@@ -828,14 +829,7 @@ class Login
             $insert = DB::insert($table, $values);
         }
         if ($insert !== 0) {
-            $dateTime = DateTime::createFromFormat(
-                'Y-m-d H:i:s',
-                $values['date_gmt'],
-                new DateTimeZone('UTC')
-            );
-            $cookie = $tokenize['public_token_format']
-                . ':'
-                . $dateTime->getTimestamp();
+            $cookie = $tokenize['public_token_format'];
             static::setCookie($cookieName, $cookie);
         }
 
@@ -954,7 +948,14 @@ class Login
             if (! array_key_exists($cookieName, cookie())) {
                 continue;
             }
-            $loginCookie = self::loginCookie($cookieName);
+
+            try {
+                $loginCookie = self::loginCookie($cookieName);
+            } catch (Throwable) {
+                $login = false;
+
+                break;
+            }
             if ($loginCookie !== []) {
                 $login = $loginCookie;
 
@@ -978,6 +979,15 @@ class Login
             self::login($validate['user_id'], $validate['cookie']['type']);
             self::$session['id'] = $validate['id'];
             self::$session['login_cookies'][] = $validate['id'];
+            DB::update(
+                'login_cookies',
+                [
+                    'last_seen_gmt' => datetimegmt(),
+                ],
+                [
+                    'id' => $validate['id'],
+                ]
+            );
 
             return self::$logged_user;
         }
@@ -1102,15 +1112,32 @@ class Login
         $explode = array_filter(
             explode(':', $rawCookie)
         );
-        if (count($explode) !== 3) {
+        $count = count($explode);
+        if (! in_array($count, [3, 4], true)) {
             return [];
+        }
+        $idEncoded = $explode[0];
+        $token = $explode[1];
+        $timestamp = $explode[2];
+        $signature = null; // Since v4.4.0
+        if ($count === 3) {
+            if (version_compare(cheveretoVersionInstalled(), '4.4.0', '>=')) {
+                throw new Exception('Invalid cookie format');
+            }
+        } else {
+            $signature = $explode[3];
+            $generated = hash_hmac_token($idEncoded . $token . $timestamp);
+            if (! hash_equals($generated, $signature)) {
+                throw new Exception('Invalid cookie signature');
+            }
         }
 
         return [
             'raw' => $rawCookie,
-            'user_id' => decodeID($explode[0]),
+            'token' => $token,
+            'user_id' => decodeID($idEncoded), // TODO: Use cookie id
             'type' => self::$cookies[$cookieName],
-            'date_gmt' => gmdate('Y-m-d H:i:s', (int) $explode[2]),
+            'date_gmt' => gmdate('Y-m-d H:i:s', (int) $timestamp),
         ];
     }
 
@@ -1124,7 +1151,7 @@ class Login
         if (! in_array($action, ['UPDATE', 'INSERT'], true)) {
             throw new Exception('Expecting UPDATE or INSERT statements');
         }
-        $hash = password_hash($password, PASSWORD_BCRYPT);
+        $hash = passwordHash($password);
         $wheres = [
             'user_id' => $userId,
         ];

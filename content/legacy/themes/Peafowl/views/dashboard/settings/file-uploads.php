@@ -308,12 +308,14 @@ $maxValue = $maxUploadSize > 0 ? bytes_to_mb($maxUploadSize) : '';
     <div class="input-below"><?php _se('Same as "%s" but for guests.', _s('Maximum upload file size')); ?></div>
 </div>
 <hr class="line-separator">
-<div class="input-label">
-    <label for="upload_image_path"><?php _se('File path'); ?></label>
-    <div class="c9 phablet-c1"><input type="text" name="upload_image_path" id="upload_image_path" class="text-input" value="<?php echo Handler::var('safe_post')['upload_image_path'] ?? Settings::get('upload_image_path'); ?>" placeholder="<?php _se('Relative to Chevereto root'); ?>" required></div>
-    <span class="input-warning red-warning"><?php echo Handler::var('input_errors')['upload_image_path'] ?? ''; ?></span>
-    <div class="input-below"><?php _se('Where to store the uploaded files? Relative to Chevereto root.'); ?></div>
-</div>
+<?php if (env()['CHEVERETO_ENABLE_LOCAL_STORAGE'] === '1') { ?>
+    <div class="input-label">
+        <label for="upload_image_path"><?php _se('File path'); ?></label>
+        <div class="c9 phablet-c1"><input type="text" name="upload_image_path" id="upload_image_path" class="text-input" value="<?php echo Handler::var('safe_post')['upload_image_path'] ?? Settings::get('upload_image_path'); ?>" placeholder="<?php _se('Relative to Chevereto root'); ?>" required></div>
+        <span class="input-warning red-warning"><?php echo Handler::var('input_errors')['upload_image_path'] ?? ''; ?></span>
+        <div class="input-below"><?php _se('Where to store the uploaded files? Relative to Chevereto root.'); ?></div>
+    </div>
+<?php } ?>
 <div class="input-label">
     <label for="upload_storage_mode"><?php _se('Storage mode'); ?></label>
     <div class="c5 phablet-c1"><select type="text" name="upload_storage_mode" id="upload_storage_mode" class="text-input">

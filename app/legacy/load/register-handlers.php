@@ -68,7 +68,7 @@ register_shutdown_function(ThrowableHandler::SHUTDOWN_ERROR_AS_EXCEPTION);
 set_exception_handler(function (Throwable $throwable) {
     $extra = '';
     $publicHandler = throwableHandler($throwable);
-    $namespace = env()['CHEVERETO_ID_HANDLE']
+    $namespace = env()['CHEVERETO_TENANT_HANDLE']
         ?? false;
     if ($namespace) {
         $publicHandler = $publicHandler

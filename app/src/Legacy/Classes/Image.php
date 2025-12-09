@@ -22,7 +22,7 @@ use PHPExif\Exif;
 use Throwable;
 use function Chevere\Message\message;
 use function Chevere\Standard\randomString;
-use function Chevereto\Encryption\decrypt;
+use function Chevereto\Encryption\decodeDecrypt;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\assertNotStopWords;
 use function Chevereto\Legacy\cheveretoVersionInstalled;
@@ -59,11 +59,11 @@ use function Chevereto\Legacy\G\url_to_relative;
 use function Chevereto\Legacy\get_fileinfo;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\hashFile;
+use function Chevereto\Legacy\passwordHash;
 use function Chevereto\Legacy\time_elapsed_string;
 use function Chevereto\Vars\env;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
-use function Safe\password_hash;
 
 class Image
 {
@@ -238,6 +238,7 @@ class Image
         'duration',
         'type',
         'tags',
+        'delete_hash',
     ];
 
     public static array $types = [
@@ -662,7 +663,7 @@ class Image
         return
             sys_get_temp_dir()
             . '/chv'
-            . env()['CHEVERETO_ID']
+            . env()['CHEVERETO_TENANT']
             . '_image_'
             . getSetting('watermark_image');
     }
@@ -1286,6 +1287,8 @@ class Image
                     $storage = $active_storages[$storage_id];
                 }
             }
+            $deletePassword = randomString(48);
+            $deleteHash = passwordHash($deletePassword);
             $image_insert_values = [
                 'storage_mode' => $storage_mode,
                 'storage_id' => $storage_id ?? null,
@@ -1304,6 +1307,7 @@ class Image
                 'source_checksum' => $sourceChecksum ?? null,
                 'is_360' => $is_360,
                 'duration' => $image_upload['uploaded']['fileinfo']['duration'] ?? 0,
+                'delete_hash' => $deleteHash,
             ];
             if (isset($datefolder_stock)) {
                 foreach ($datefolder_stock as $k => $v) {
@@ -1433,12 +1437,6 @@ class Image
                 $image_insert_values['uploader_ip'] = $ip;
             }
             $uploaded_id = self::insert($image_upload, $user, $image_insert_values);
-            $deletePassword = randomString(48);
-            $deleteHash = password_hash($deletePassword, PASSWORD_BCRYPT);
-            DB::insert('images_hash', [
-                'image_id' => $uploaded_id,
-                'hash' => $deleteHash,
-            ]);
             if (isset($toStorage)) {
                 foreach ($toStorage as $k => $v) {
                     unlinkIfExists($v['file']); // Remove files from local when doing external storage
@@ -1797,9 +1795,6 @@ class Image
             if (isset($image['album']['cover_id']) && $image['album']['cover_id'] === $image['id']) {
                 Album::populateCover((int) $image['album']['id']);
             }
-            DB::delete('images_hash', [
-                'image_id' => $id,
-            ]);
             Listing::deleteTypeIdCache('i', $id);
         }
 
@@ -1842,17 +1837,13 @@ class Image
         }
     }
 
-    public static function verifyPassword(int $id, string $password): bool
+    public static function verifyPassword(?string $hash, string $password): bool
     {
-        $get = DB::get('images_hash', [
-            'image_id' => $id,
-        ])[0] ?? [];
-        if ($get === []) {
+        if ($hash === null || $hash === '') {
             return false;
         }
-        $get = DB::formatRow($get, 'image_hash');
 
-        return password_verify($password, $get['hash']);
+        return password_verify($password, $hash);
     }
 
     public static function fill(array &$image): void
@@ -1979,7 +1970,7 @@ class Image
             $output['user'] = $output['user'] ?? [];
             if (isset($output['album']['password']) && hasEncryption()) {
                 try {
-                    $output['album']['password'] = decrypt($output['album']['password']);
+                    $output['album']['password'] = decodeDecrypt($output['album']['password']);
                 } catch (Throwable) {
                     $output['album']['password'] = $output['album']['password'];
                 }

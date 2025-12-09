@@ -26,4 +26,19 @@ interface EncryptionInterface
     public function encrypt(string $plainText): string;
 
     public function decrypt(string $cipherText): string;
+
+    /**
+     * @return string A binary encoded encrypted string with a nonce.
+     */
+    public function encryptEncode(string $plainText): string;
+
+    /**
+     * @return string A base64 encoded encrypted string with a nonce.
+     */
+    public function encryptEncodeBase64(string $plainText): string;
+
+    /**
+     * @param string $nonceCipherText A encoded encrypted string with a nonce.
+     */
+    public function decodeDecrypt(string $nonceCipherText): string;
 }

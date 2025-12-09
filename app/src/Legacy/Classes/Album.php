@@ -14,8 +14,8 @@ namespace Chevereto\Legacy\Classes;
 use Exception;
 use LogicException;
 use Throwable;
-use function Chevereto\Encryption\decrypt;
-use function Chevereto\Encryption\encrypt;
+use function Chevereto\Encryption\decodeDecrypt;
+use function Chevereto\Encryption\encodeEncrypt;
 use function Chevereto\Encryption\encryptValues;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\assertNotStopWords;
@@ -185,7 +185,7 @@ class Album
             foreach ($db_rows as &$row) {
                 if (isset($row['album_password'])) {
                     try {
-                        $row['album_password'] = decrypt($row['album_password']);
+                        $row['album_password'] = decodeDecrypt($row['album_password']);
                     } catch (Throwable) {
                         $row['album_password'] = $row['album_password'];
                     }
@@ -726,7 +726,7 @@ class Album
     {
         if (isset($row['album_password']) && hasEncryption()) {
             try {
-                $row['album_password'] = decrypt($row['album_password']);
+                $row['album_password'] = decodeDecrypt($row['album_password']);
             } catch (Throwable) {
                 $row['album_password'] = $row['album_password'];
             }
@@ -768,7 +768,7 @@ class Album
     {
         $addValue = session()['password'];
         if (hasEncryption()) {
-            $user_password = encrypt($user_password);
+            $user_password = encodeEncrypt($user_password);
         }
         $addValue['album'][$album_id] = $user_password;
         sessionVar()->put('password', $addValue);
@@ -778,7 +778,7 @@ class Album
     {
         $session_password = session()['password']['album'][$album['id']] ?? null;
         if (isset($session_password) && hasEncryption()) {
-            $session_password = decrypt($session_password);
+            $session_password = decodeDecrypt($session_password);
         }
         if (! isset($session_password) || ! hash_equals($album['password'], $session_password)) {
             $removeValue = session()['password'] ?? null;

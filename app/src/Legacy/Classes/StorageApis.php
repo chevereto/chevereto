@@ -16,6 +16,16 @@ use function Chevereto\Vars\env;
 
 final class StorageApis
 {
+    /**
+     * Allowed storage APIs per edition.
+     * Use empty array for "no restrictions" (e.g. pro).
+     */
+    public const EDITION_ALLOWED = [
+        'free' => [8, 1, 9],
+        'lite' => [8, 1, 9],
+        'pro' => [],
+    ];
+
     private static array $apis = [
         8 => [
             'name' => 'Local',
@@ -99,6 +109,15 @@ final class StorageApis
         }
         if (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
             unset($apis[8]);
+        }
+        $allowed = self::EDITION_ALLOWED[env()['CHEVERETO_EDITION']] ?? [];
+        if ($allowed !== []) {
+            foreach ($apis as $id => &$api) {
+                if (! in_array($id, $allowed, true)) {
+                    $api['disabled'] = true;
+                }
+            }
+            unset($api);
         }
 
         return $apis;

@@ -11,12 +11,17 @@
 
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\cheveretoVersionInstalled;
+use function Chevereto\Vars\env;
 
 return function (Handler $handler) {
-    if (cheveretoVersionInstalled() !== '') {
+    $isService = env()['CHEVERETO_ENABLE_TENANTS'] === '1'
+        || env()['CHEVERETO_TENANT'] !== ''
+        || env()['CHEVERETO_CONTEXT'] === 'saas';
+    if (cheveretoVersionInstalled() !== '' || $isService) {
         $handler->issueError(404);
 
         return;
     }
+
     require_once PATH_APP_LEGACY_INSTALL . 'installer.php';
 };

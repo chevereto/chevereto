@@ -9,9 +9,15 @@
  * file that was distributed with this source code.
  */
 
+use Chevere\Http\Exceptions\ControllerException;
+use Chevere\Parameter\Interfaces\TypeInterface;
+use Chevere\Parameter\Type;
+use Chevere\Router\Container;
+use Chevere\Writer\NullWriter;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\Categories;
+use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Fonts;
 use Chevereto\Legacy\Classes\IpBan;
 use Chevereto\Legacy\Classes\L10n;
@@ -23,9 +29,15 @@ use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\Tags;
 use Chevereto\Legacy\Classes\User;
 use Chevereto\Legacy\G\Handler;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use function Chevere\Parameter\getType;
+use function Chevere\Router\router;
+use function Chevereto\Encryption\encryption;
 use function Chevereto\Legacy\badgePaid;
 use function Chevereto\Legacy\cheveretoVersionInstalled;
 use function Chevereto\Legacy\editionCombo;
+use function Chevereto\Legacy\G\absolute_to_url;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\get_current_url;
 use function Chevereto\Legacy\G\get_public_url;
@@ -35,6 +47,9 @@ use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\set_status_header;
 use function Chevereto\Legacy\get_enabled_languages;
+use function Chevereto\Legacy\get_static_url;
+use function Chevereto\Legacy\get_theme_file_url;
+use function Chevereto\Legacy\getPoweredByRemarks;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getSystemNotices;
 use function Chevereto\Legacy\getVariable;
@@ -43,14 +58,170 @@ use function Chevereto\Legacy\headersResetCache;
 use function Chevereto\Legacy\is_max_invalid_request;
 use function Chevereto\Vars\cookie;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\files;
 use function Chevereto\Vars\get;
+use function Chevereto\Vars\post;
 use function Chevereto\Vars\server;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 
+$isService = env()['CHEVERETO_ENABLE_TENANTS'] === '1'
+    || env()['CHEVERETO_TENANT'] !== ''
+    || env()['CHEVERETO_CONTEXT'] === 'saas';
+$tenantsApiRouting = [
+    '/_/',
+];
+$isTenantsApiRouting = false;
+foreach ($tenantsApiRouting as $route) {
+    if (str_starts_with(server()['REQUEST_URI'] ?? '', $route)) {
+        $isTenantsApiRouting = true;
+
+        break;
+    }
+}
+if ($isTenantsApiRouting) {
+    $container = new Container(
+        db: DB::getInstance(),
+        redis: Cache::instance()->redis(),
+        encryption: encryption(),
+        logger: new NullWriter(),
+        cachePrefix: env()['CHEVERETO_CACHE_KEY_PREFIX'],
+    );
+    $psr17Factory = new Psr17Factory();
+    $method = server()['REQUEST_METHOD']
+        ?? throw new RuntimeException('Cannot determine request method.');
+    $scheme = server()['REQUEST_SCHEME']
+        ?? throw new RuntimeException('Cannot determine request scheme.');
+    $host = server()['HTTP_HOST']
+        ?? throw new RuntimeException('Cannot determine request host.');
+    $uri = server()['REQUEST_URI']
+        ?? '/';
+    $serverRequest = $psr17Factory
+        ->createServerRequest(
+            method: $method,
+            uri: $scheme
+                . '://'
+                . $host
+                . $uri,
+            serverParams: server(),
+        )
+        ->withCookieParams(
+            cookies: cookie()
+        )
+        ->withQueryParams(
+            query: get()
+        )
+        ->withUploadedFiles(
+            uploadedFiles: files()
+        )
+        ->withParsedBody(
+            data: post()
+        )
+        ->withBody(
+            body: $psr17Factory->createStream(
+                content: file_get_contents('php://input')
+            )
+        );
+    $headers = getallheaders();
+    foreach ($headers as $name => $value) {
+        $serverRequest = $serverRequest->withHeader($name, $value);
+    }
+    $router = router(require dirname(__DIR__, 2) . '/routes/tenants-api-v4.php');
+    $container = $container->withAutoInject(
+        $router->dependencies(),
+    );
+    $routed = $router->getRouted($serverRequest, $psr17Factory, container: $container);
+    if ($routed->hasThrowable()
+        && ! ($routed->throwable() instanceof ControllerException)
+    ) {
+        throw $routed->throwable();
+    }
+    $returnType = new Type(getType($routed->return()));
+    $response = $routed->response();
+    $statusCode = $response->getStatusCode();
+    $controllerName = $routed->bind()->controllerName();
+    if ($response->hasHeader('Location')) {
+        (new SapiEmitter())->emit($response);
+        exit();
+    }
+    $context = [];
+    $view = $routed->bind()->view();
+    if ($routed->hasThrowable()) {
+        $throwable = $routed->throwable();
+        $errorMessage = $throwable->getMessage();
+        $errorMessage = $errorMessage === '' ? null : $errorMessage;
+        $errorCode = $throwable->getCode();
+        $context['error'] = [
+            'code' => $errorCode,
+            'message' => $errorMessage,
+            'list' => $errorMessage ? explode("\n", $errorMessage) : null,
+        ];
+    } elseif ($statusCode >= 400 && $statusCode < 500) { // Middleware short-circuit
+        $error = $response->getHeaderLine('X-Error');
+        $errorMessage = $response->getReasonPhrase();
+        $errorMessage = $errorMessage === '' ? null : $errorMessage;
+        $context['error'] = [
+            'code' => $statusCode,
+            'message' => $errorMessage,
+            'list' => $errorMessage ? explode("\n", $errorMessage) : null,
+        ];
+        if ($error !== '' && $response->getHeaderLine('X-Error') === '') {
+            $response = $response
+                ->withHeader('X-Error', $error);
+        }
+    }
+    $content = '';
+    if ($routed->bind()->view() === ''
+        || $response->getBody()->getSize() > 0
+    ) {
+        $view = '';
+        $content = $response->getBody()->getContents();
+        if ($content === '' && isset($errorMessage)) {
+            $status = [
+                'status' => [
+                    'code' => $statusCode,
+                    'message' => $errorMessage,
+                ],
+                'error' => [
+                    'code' => $errorCode ?? null,
+                    'list' => $context['error']['list'] ?? null,
+                ],
+            ];
+            $content = json_encode($status, JSON_PRETTY_PRINT);
+        }
+        $content .= match (true) {
+            $returnType->primitive() === 'null' => '',
+            $returnType->isScalar() => (string) $routed->return(),
+            $returnType->primitive() !== TypeInterface::RESOURCE => json_encode(
+                $routed->return(),
+                JSON_PRETTY_PRINT
+            ),
+            default => '',
+        };
+    }
+    $response = $response->withBody(
+        $psr17Factory->createStream($content)
+    );
+    if (! $response->hasHeader('Content-Type')
+        && isset($content[0])
+        && (
+            ($content[0] === '{' && $content[-1] === '}') ||
+            ($content[0] === '[' && $content[-1] === ']')
+        )
+    ) {
+        $response = $response->withHeader('Content-Type', 'application/json');
+    }
+    (new SapiEmitter())->emit($response);
+    exit();
+}
 if (cheveretoVersionInstalled() === '') {
+    if ($isService) {
+        set_status_header(503);
+        echo 'Chevereto is being provisioned. Please check back later.';
+        exit();
+    }
     new Handler(
-        loadTemplate: ! REPL, // @phpstan-ignore-line
+        loadTemplate: ! REPL,
         before: function ($handler) {
             headersNoCache();
             if ($handler->requestArray()[0] !== 'install') {
@@ -60,9 +231,6 @@ if (cheveretoVersionInstalled() === '') {
     );
 }
 $hook_before = function (Handler $handler) {
-    header('Permissions-Policy: unload=()');
-    header('Permissions-Policy: interest-cohort=()');
-    header("Content-Security-Policy: frame-ancestors 'none'");
     $dayCacheRoutes = [
         'webmanifest',
     ];
@@ -88,6 +256,9 @@ $hook_before = function (Handler $handler) {
     $doNotCheckBanRoutes = [
         'webmanifest',
     ];
+    header('Permissions-Policy: unload=()');
+    header('Permissions-Policy: interest-cohort=()');
+    header("Content-Security-Policy: frame-ancestors 'none'");
     if (! in_array($handler->requestArray()[0], $doNotCheckBanRoutes, true)) {
         $bannedIp = IpBan::getSingle();
         if ($bannedIp !== []) {
@@ -287,6 +458,108 @@ $hook_before = function (Handler $handler) {
             $handler::setCond('captcha_needed', true);
         }
     }
+    $versionInstalled = cheveretoVersionInstalled();
+    $pages_link_visible = [];
+    if (version_compare($versionInstalled, '3.6.7', '>=')) {
+        $cachedPagesVisibleRows = Cache::instance()->get('pages_visible');
+        if ($cachedPagesVisibleRows === false) {
+            $pagesVisibleRows = Page::getAll(
+                args: [
+                    'is_active' => '1',
+                    'is_link_visible' => '1',
+                ],
+                sort: [
+                    'field' => 'sort_display',
+                    'order' => 'ASC',
+                ]
+            );
+            $posPageTos = array_search('tos', array_column($pagesVisibleRows, 'internal'));
+            $posPagePrivacy = array_search('privacy', array_column($pagesVisibleRows, 'internal'));
+            Cache::instance()->set(
+                'pages_visible',
+                [
+                    'rows' => $pagesVisibleRows,
+                    'pos_page_tos' => $posPageTos,
+                    'pos_page_privacy' => $posPagePrivacy,
+                ],
+                3600
+            );
+        } else {
+            $pagesVisibleRows = $cachedPagesVisibleRows['rows'] ?? [];
+            $posPageTos = $cachedPagesVisibleRows['pos_page_tos'] ?? false;
+            $posPagePrivacy = $cachedPagesVisibleRows['pos_page_privacy'] ?? false;
+        }
+        $pageTos = $posPageTos === false ? null : $pagesVisibleRows[$posPageTos];
+        $pagePrivacy = $posPagePrivacy === false ? null : $pagesVisibleRows[$posPagePrivacy];
+        $handler::setVar('page_tos', $pageTos);
+        $handler::setVar('page_privacy', $pagePrivacy);
+    }
+    if ((bool) env()['CHEVERETO_ENABLE_PAGES']) {
+        foreach ($pagesVisibleRows ?? [] as $k => $v) {
+            if (! ($v['is_active'] ?? false) && ! ($v['is_link_visible'] ?? false)) {
+                continue;
+            }
+            $pages_link_visible[$v['id']] = $v;
+        }
+    }
+    if ($handler::getRoutePath() === 'powered-by') {
+        header('Content-Type: text/html; charset=utf-8');
+        header('X-Powered-By: Chevereto 4');
+        [$about, $liability, $content] = getPoweredByRemarks($handler);
+        $logo = absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg');
+        $peafowl_css = get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'peafowl.min.css');
+        $font_css = get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'font-awesome-6/css/all.min.css');
+        $style_css = get_theme_file_url('style.min.css');
+        $website_name = safe_html(getSetting('website_name') ?: 'Chevereto');
+        echo <<<PLAIN
+        <!DOCTYPE HTML>
+        <html>
+        <head>
+            <link rel="stylesheet" href="{$peafowl_css}">
+            <link rel="stylesheet" href="{$style_css}">
+            <link rel="stylesheet" href="{$font_css}">
+            <title>{$website_name} - Powered by Chevereto</title>
+            <meta name="generator" content="Chevereto 4">
+        </head>
+        <style>
+        .powered-by p {
+            margin: 10px 0;
+            line-height: 1.4;
+        }
+        .powered-by--vendor {
+            font-size: 1em;
+        }
+        .powered-by--vendor a {
+            color: inherit;
+        }
+        .powered-by--vendor img {
+            width: 212px;
+        }
+        .powered-by--fine-print {
+            font-size: 75% !important;
+            text-align: justify;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+        .powered-by--fine-print a {
+            text-decoration: underline;
+        }
+        </style>
+        <body class="padding-20">
+            <div class="powered-by powered-by--vendor c12">
+                <div class="display-inline-block margin-left-auto margin-right-auto text-center"><a href="https://chevereto.com/" target="_blank" rel="nofollow"><img src="{$logo}" alt="Chevereto"></a></div>
+                <p><a href="https://chevereto.com/" target="_blank" class="btn btn-small default text-transform-uppercase"><span class="fas fa-power-off"></span> chevereto.com</a></p>
+                <div class="powered-by--fine-print phone-c1 phablet-c1">
+                    <p>{$about}</p>
+                    <p>{$liability}</p>
+                    <p>{$content}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        PLAIN;
+        exit();
+    }
     if (getSetting('website_mode') === 'personal') {
         $userMapPaths = ['search'];
         $userMapPaths[] = getSetting('user_profile_view') === 'files'
@@ -485,50 +758,7 @@ $hook_before = function (Handler $handler) {
     unset($v);
     $handler::setVar('explore_discovery', $explore_discovery);
     $handler::setVar('explore_content', $explore_content);
-    $versionInstalled = cheveretoVersionInstalled();
-    $pages_link_visible = [];
-    if (version_compare($versionInstalled, '3.6.7', '>=')) {
-        $cachedPagesVisibleRows = Cache::instance()->get('pages_visible');
-        if ($cachedPagesVisibleRows === false) {
-            $pagesVisibleRows = Page::getAll(
-                args: [
-                    'is_active' => '1',
-                    'is_link_visible' => '1',
-                ],
-                sort: [
-                    'field' => 'sort_display',
-                    'order' => 'ASC',
-                ]
-            );
-            $posPageTos = array_search('tos', array_column($pagesVisibleRows, 'internal'));
-            $posPagePrivacy = array_search('privacy', array_column($pagesVisibleRows, 'internal'));
-            Cache::instance()->set(
-                'pages_visible',
-                [
-                    'rows' => $pagesVisibleRows,
-                    'pos_page_tos' => $posPageTos,
-                    'pos_page_privacy' => $posPagePrivacy,
-                ],
-                3600
-            );
-        } else {
-            $pagesVisibleRows = $cachedPagesVisibleRows['rows'] ?? [];
-            $posPageTos = $cachedPagesVisibleRows['pos_page_tos'] ?? false;
-            $posPagePrivacy = $cachedPagesVisibleRows['pos_page_privacy'] ?? false;
-        }
-        $pageTos = $posPageTos === false ? null : $pagesVisibleRows[$posPageTos];
-        $pagePrivacy = $posPagePrivacy === false ? null : $pagesVisibleRows[$posPagePrivacy];
-        $handler::setVar('page_tos', $pageTos);
-        $handler::setVar('page_privacy', $pagePrivacy);
-    }
-    if ((bool) env()['CHEVERETO_ENABLE_PAGES']) {
-        foreach ($pagesVisibleRows ?? [] as $k => $v) {
-            if (! ($v['is_active'] ?? false) && ! ($v['is_link_visible'] ?? false)) {
-                continue;
-            }
-            $pages_link_visible[$v['id']] = $v;
-        }
-    }
+
     $apiEnabled = ((bool) env()['CHEVERETO_ENABLE_API_USER'] || (bool) env()['CHEVERETO_ENABLE_API_GUEST'])
         && (getSetting('enable_api_user') || getSetting('enable_api_guest'));
     $handler::setCond('api_enabled', $apiEnabled);
@@ -664,5 +894,4 @@ $hook_after = function (Handler $handler) {
     sessionVar()->put('REQUEST_REFERER', get_current_url());
     header('X-Powered-By: Chevereto 4');
 };
-// @phpstan-ignore-next-line
 new Handler(loadTemplate: ! REPL, before: $hook_before, after: $hook_after);

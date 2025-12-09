@@ -167,7 +167,7 @@ foreach ($links as $rel => $href) {
         'title' => str_replace_last(
             ' - ' . Handler::var('safe_html_website_name'),
             '',
-            Handler::var('safe_html_doctitle')
+            Handler::var('safe_html_doctitle') ?? ''
         ),
         'site' => getSetting('twitter_account') ? ('@' . getSetting('twitter_account')) : null,
     ];
@@ -236,7 +236,7 @@ foreach ($links as $rel => $href) {
                 <link rel="stylesheet" href="<?php echo get_theme_file_url('custom_hooks/style.css'); ?>">
             <?php
             }
-            foreach (Handler::var('langLinks') as $k => $v) {
+            foreach (Handler::var('langLinks') ?? [] as $k => $v) {
                 if($k === getSetting('default_language')) {
                     $v['url'] = Handler::var('langLinks')['x-default']['url'];
                 }

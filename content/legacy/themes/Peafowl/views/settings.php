@@ -40,8 +40,8 @@ if (Handler::cond('settings_account')
             if (Handler::cond('settings_account')) {
                 require 'settings/account.php';
             }
-            if (Handler::cond('settings_powered')) {
-                require 'settings/powered.php';
+            if (Handler::cond('settings_powered-by')) {
+                require 'settings/powered-by.php';
             }
             if (Handler::cond('settings_api')) {
                 require 'settings/api.php';
@@ -70,7 +70,7 @@ if (Handler::cond('settings_account')
             <?php
             }
             if (!Handler::cond('settings_connections')
-                && !Handler::cond('settings_powered')
+                && !Handler::cond('settings_powered-by')
                 && !Handler::cond('settings_api')
                 && !Handler::cond('settings_security')
             ) {

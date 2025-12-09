@@ -85,6 +85,7 @@ return function (Handler $handler) {
         $isAdmin = boolval(($user['is_admin'] ?? false));
         $upload_enabled = $isAdmin ?: getSetting('enable_uploads');
         $upload_allowed = $upload_enabled;
+        // vdd(allowed: $upload_allowed, enabled: $upload_enabled);
         if ($user === []) {
             if (! getSetting('guest_uploads')
                 || getSetting('website_privacy_mode') === 'private'
@@ -117,7 +118,7 @@ return function (Handler $handler) {
             Settings::setValue('enable_uploads_url', 0);
         }
         if (! $handler::cond('upload_allowed')) {
-            throw new Exception(_s('Request denied'), 401);
+            throw new Exception(_s('Forbidden'), 403);
         }
         $version_to_actions = [
             '1' => ['upload'],
@@ -237,7 +238,6 @@ return function (Handler $handler) {
             'code' => 200,
         ];
         $json_array[$isImgBBSpec ? 'data' : 'image'] = $image;
-
         if ($version === '1') {
             switch ($format) {
                 default:

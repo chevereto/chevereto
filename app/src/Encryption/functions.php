@@ -74,8 +74,8 @@ function assertEncryption(): void
     if (! hasEncryption()) {
         throw new LogicException(
             (string) message(
-                'Encryption is not enabled, set the **%s** environment variable to use encryption.',
-                s: 'CHEVERETO_ENCRYPTION_KEY'
+                'Encryption is not enabled, set the **{{s}}** environment variable to use encryption.',
+                s: 'CHEVERETO_ENCRYPTION_KEY',
             )
         );
     }
@@ -89,15 +89,15 @@ function hasEncryption(): bool
 /**
  * @return string A base64 encoded encrypted string with a nonce.
  */
-function encrypt(string $plainText): string
+function encodeEncrypt(string $plainText): string
 {
     assertEncryption();
     $encode = new Encode(encryption()->withRandomNonce());
 
-    return $encode->encrypt($plainText);
+    return $encode->base64($plainText);
 }
 
-function decrypt(string $base64NonceCipherText): string
+function decodeDecrypt(string $base64NonceCipherText): string
 {
     assertEncryption();
     $decode = new Decode($base64NonceCipherText);
@@ -111,7 +111,7 @@ function decryptValues(array $encryptedKeys, array $keyValues): array
 {
     return mb_convert_encoding(
         cipherValues($encryptedKeys, $keyValues, function (string $text) {
-            return decrypt($text);
+            return decodeDecrypt($text);
         }),
         'UTF-8'
     ) ?: [];
@@ -120,7 +120,7 @@ function decryptValues(array $encryptedKeys, array $keyValues): array
 function encryptValues(array $encryptedKeys, array $keyValues): array
 {
     return cipherValues($encryptedKeys, $keyValues, function (string $text) {
-        return encrypt($text);
+        return encodeEncrypt($text);
     });
 }
 

@@ -21,10 +21,15 @@ final class Encode implements EncodeInterface
     ) {
     }
 
-    public function encrypt(string $text): string
+    public function base64(string $plainText): string
     {
         return base64_encode(
-            $this->encryption->nonce() . $this->encryption->encrypt($text)
+            $this->binary($plainText)
         );
+    }
+
+    public function binary(string $plainText): string
+    {
+        return $this->encryption->nonce() . $this->encryption->encrypt($plainText);
     }
 }

@@ -10,24 +10,14 @@
  */
 
 use function Chevereto\Legacy\G\absolute_to_url;
+use function Chevereto\Legacy\getPoweredByRemarks;
 use function Chevereto\Vars\env;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-if (env()['CHEVERETO_CONTEXT'] === 'saas') {
-    $about = _s('This service is based on Chevereto cloud edition.')
-        . ' '
-        . _s('Usage of this service must be in compliance with the Chevereto Software Terms of Service.');
-    $liability = _s("This instance is hosted in a service layer provided by Chevereto Software, which hereby declare not being responsible for the use of this service neither the damages that this service may cause.");
-} else {
-    $about = _s('This service is based on Chevereto self-hosted %s edition.', ucfirst(env()['CHEVERETO_EDITION'] ?? ''))
-        . ' '
-        . _s('Usage of Chevereto Software must be in compliance with the software license terms known as "The Chevereto License".');
-    $liability = _s("This instance is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this instance and it won't be responsible for this service neither the damages that this service may cause.");
-}
-
+[$about, $liability, $content] = getPoweredByRemarks();
 ?>
 <style>
 .powered-by p {
@@ -44,18 +34,22 @@ if (env()['CHEVERETO_CONTEXT'] === 'saas') {
 .powered-by--vendor a {
     color: inherit;
 }
-.powered-by--fineprint {
+.powered-by--fine-print {
     font-size: 75% !important;
     text-align: justify;
     opacity: 0.7;
     text-transform: uppercase;
 }
+.powered-by--fine-print a {
+    text-decoration: underline;
+}
 </style>
 <div class="powered-by powered-by--vendor">
     <div class="display-inline-block margin-left-auto margin-right-auto"><a href="https://chevereto.com" target="_blank" rel="nofollow"><img src="<?php echo absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg'); ?>" alt="" width="212"></a></div>
     <p><a href="https://chevereto.com/" target="_blank" class="btn btn-small default text-transform-uppercase"><span class="fas fa-power-off"></span> chevereto.com</a></p>
-    <div class="powered-by--fineprint c12 phone-c1 phablet-c1">
+    <div class="powered-by--fine-print c12 phone-c1 phablet-c1">
         <p><?php echo $about; ?></p>
         <p><?php echo $liability ?></p>
+        <p><?php echo $content; ?></p>
     </div>
 </div>

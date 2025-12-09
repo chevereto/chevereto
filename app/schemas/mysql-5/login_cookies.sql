@@ -4,6 +4,7 @@ CREATE TABLE `%table_prefix%login_cookies` (
   `login_cookie_user_id` INT UNSIGNED NOT NULL,
   `login_cookie_connection_id` INT UNSIGNED DEFAULT 0,
   `login_cookie_date_gmt` DATETIME NOT NULL,
+  `login_cookie_last_seen_gmt` DATETIME NULL,
   `login_cookie_ip` VARCHAR(255) DEFAULT NULL,
   `login_cookie_user_agent` TEXT NOT NULL,
   `login_cookie_hash` TEXT NOT NULL,
@@ -13,5 +14,7 @@ CREATE TABLE `%table_prefix%login_cookies` (
   KEY `login_cookie_user_id` (`login_cookie_user_id`),
   KEY `login_cookie_ip` (`login_cookie_ip`),
   KEY `login_cookie_connection_id` (`login_cookie_connection_id`),
-  KEY `login_cookie_user_id_date_gmt_connection_id` (`login_cookie_user_id`, `login_cookie_date_gmt`, `login_cookie_connection_id`)
+  KEY `login_cookie_user_id_date_gmt_connection_id` (`login_cookie_user_id`, `login_cookie_date_gmt`, `login_cookie_connection_id`),
+  KEY `login_cookie_last_seen_gmt` (`login_cookie_last_seen_gmt` DESC),
+  KEY `login_cookie_user_last_seen_gmt` (`login_cookie_user_id`, `login_cookie_last_seen_gmt` DESC)
 ) ENGINE=%table_engine% DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;

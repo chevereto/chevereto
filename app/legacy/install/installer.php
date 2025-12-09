@@ -19,6 +19,8 @@ use function Chevere\Filesystem\filePhpForPath;
 use function Chevere\Message\message;
 use function Chevere\Parameter\getType;
 use function Chevere\Standard\randomString;
+use function Chevereto\Encryption\encodeEncrypt;
+use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Encryption\randomKey;
 use function Chevereto\Legacy\chevereto_die;
 use function Chevereto\Legacy\cheveretoVersionInstalled;
@@ -655,6 +657,7 @@ $settings_updates = [
     '4.3.5' => null,
     '4.3.6' => null,
     '4.3.7' => null,
+    '4.4.0' => null,
 ];
 
 /**
@@ -698,6 +701,11 @@ $variables_updates = [
         'storages_all' => 0,
         'storages_active' => 0,
         'login_providers_active' => 0,
+    ],
+    '4.4.0' => [
+        'hmac_secret_token' => randomKey()->base64(),
+        'hmac_secret_upload' => randomKey()->base64(),
+        'hmac_secret_api_key' => randomKey()->base64(),
     ],
 ];
 $cheveretoFreeMap = [
@@ -767,13 +775,13 @@ $settings_rename = [
 $initial_settings = [];
 $initial_variables = [];
 foreach ($settings_updates as $k => $v) {
+    if (array_key_exists($k, $variables_updates)) {
+        $initial_variables += $variables_updates[$k];
+    }
     if ($v === null) {
         continue;
     }
     $initial_settings += $v;
-    if (array_key_exists($k, $variables_updates)) {
-        $initial_variables += $variables_updates[$k];
-    }
 }
 
 try {
@@ -1860,7 +1868,8 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             ],
             '4.0.0.beta.7' => [
                 'api_keys' => [],
-                'images_hash' => [],
+                // 4.4.0
+                // 'images_hash' => []
             ],
             '4.0.0-beta.10' => [
                 'two_factors' => [],
@@ -2219,6 +2228,30 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_2` FOREIGN KEY (tag_file_file_id) REFERENCES `%table_prefix%images` (image_id) ON DELETE CASCADE;
                 SQL,
             ],
+            '4.4.0' => [
+                'login_cookies' => [
+                    'login_cookie_last_seen_gmt' => [
+                        'op' => 'ADD',
+                        'type' => 'DATETIME',
+                        'prop' => 'NULL',
+                    ],
+                ],
+                'images' => [
+                    'image_delete_hash' => [
+                        'op' => 'ADD',
+                        'type' => 'VARCHAR(255)',
+                        'prop' => 'NULL',
+                    ],
+                ],
+                'query' => version_compare($installed_version, '4.0.0.beta.7', '>=')
+                    ?
+                    <<<SQL
+                    UPDATE `%table_prefix%images` i
+                        JOIN `%table_prefix%images_hash` h ON h.image_hash_image_id = i.image_id
+                        SET i.image_delete_hash = h.image_hash_hash;
+                    SQL
+                    : '',
+            ],
         ];
         $sql_update = [];
         if (! $maintenance) {
@@ -2381,6 +2414,9 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 }
                 $variableType = getType($variableValue);
                 $variableValue = Variable::getValueAsString($variableType, $variableValue);
+                if (hasEncryption() && in_array($variableKey, Variable::ENCRYPTED_NAMES, true)) {
+                    $variableValue = encodeEncrypt($variableValue);
+                }
                 $sql .= <<<SQL
                 INSERT IGNORE INTO `%table_prefix%variables` (variable_name, variable_value, variable_type)
                 VALUES ('{$variableKey}', '{$variableValue}', '{$variableType}');
@@ -2422,6 +2458,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
         $sql_update = strtr($sql_update, [
             '%rootPath%' => PATH_PUBLIC,
             '%table_prefix%' => env()['CHEVERETO_DB_TABLE_PREFIX'],
+            '%table_root_prefix%' => env()['CHEVERETO_DB_TABLE_ROOT_PREFIX'],
             '%table_engine%' => $fulltext_engine,
         ]);
         $sql_update = preg_replace('/[ \t]+/', ' ', preg_replace('/\s*$^\s*/m', "\n", $sql_update));
@@ -2462,7 +2499,6 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             : getPreCodeHtml('>>> %error%');
         $db = DB::getInstance();
         $db->query($sql_update);
-        xr($sql_update);
         $updated = false;
 
         try {
@@ -2472,7 +2508,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             $versionDatabase = $db::get(
                 table: 'variables',
                 where: [
-                    'variable_name' => 'chevereto_version_installed',
+                    'name' => 'chevereto_version_installed',
                 ],
                 limit: 1,
             )['variable_value'] ?? '';
@@ -2599,7 +2635,9 @@ EOT;
             } else {
                 $create_table = [];
                 foreach (new DirectoryIterator(PATH_APP . 'schemas/' . $dbSchemaVer) as $fileInfo) {
-                    if ($fileInfo->isDot() || $fileInfo->isDir()) {
+                    if ($fileInfo->isDot()
+                        || $fileInfo->isDir()
+                    ) {
                         continue;
                     }
                     $create_table[$fileInfo->getBasename('.sql')] = realpath($fileInfo->getPathname());
@@ -2701,6 +2739,7 @@ EOT;
                     $install_sql .= strtr(file_get_contents($v), [
                         '%rootPath%' => PATH_PUBLIC,
                         '%table_prefix%' => $table_prefix,
+                        '%table_root_prefix%' => env()['CHEVERETO_DB_TABLE_ROOT_PREFIX'],
                         '%table_engine%' => $fulltext_engine,
                     ]) . "\n\n";
                 }
@@ -2708,9 +2747,10 @@ EOT;
                 $install_sql .= strtr($query_populate_stats, [
                     '%rootPath%' => PATH_PUBLIC,
                     '%table_prefix%' => $table_prefix,
+                    '%table_root_prefix%' => env()['CHEVERETO_DB_TABLE_ROOT_PREFIX'],
                     '%table_engine%' => $fulltext_engine,
                 ]);
-                // $params['dump'] = true;
+                //$params['dump'] = true;
                 if (($params['dump'] ?? false) === true) {
                     debug($install_sql);
                     logger("\n");

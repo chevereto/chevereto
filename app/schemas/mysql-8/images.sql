@@ -39,6 +39,7 @@ CREATE TABLE `%table_prefix%images` (
     when `image_extension` in ('mp4','webm','mov') then 2
     when `image_extension` in ('avif','jpg','jpeg','gif','png','webp') then 1
     else 0 end) stored,
+  `image_delete_hash` VARCHAR(255) NULL,
   PRIMARY KEY (`image_id`),
   KEY `image_name` (`image_name`),
   KEY `image_extension` (`image_extension`),

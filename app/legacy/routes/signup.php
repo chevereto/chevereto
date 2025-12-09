@@ -194,7 +194,7 @@ return function (Handler $handler) {
                         ]);
                         $activation_link = get_public_url(
                             'account/activate/?token='
-                            . $hashed_token['public_token_format']
+                            . base64_encode($hashed_token['public_token_format'])
                         );
                         global $theme_mail;
                         $theme_mail = [

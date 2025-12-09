@@ -35,6 +35,10 @@ use function Chevereto\Legacy\isSafeToExecute;
 use function Chevereto\Legacy\updateCheveretoNews;
 use function Chevereto\Vars\env;
 
+if (cheveretoVersionInstalled() === '') {
+    echo "[!] Chevereto is not installed.\n";
+    exit(255);
+}
 if (getSetting('maintenance')) {
     echo "[!] Chevereto is in maintenance mode.\n";
     exit(255);
@@ -58,7 +62,7 @@ if (Config::enabled()->htaccessCheck()) {
 shuffle($jobs);
 $time_start = microtime(true);
 $errors = [];
-$namespace = env()['CHEVERETO_ID_HANDLE'] ?? false;
+$namespace = env()['CHEVERETO_TENANT_HANDLE'] ?? false;
 foreach ($jobs as $job) {
     if (! isSafeToExecute()) {
         echo "[OK] Exit - (time is up)\n";
@@ -110,8 +114,13 @@ function writeLastRan(float $time_start): void
     $time_taken = microtime(true) - $time_start;
     $ceil = ceil($time_taken);
     $round = round($time_taken, 2);
-    echo "--\n[DONE] Cron tasks ran @ {$datetimegmt}";
-    echo "\n{$round}s\n--";
+    echo <<<PLAIN
+    --
+    [DONE] Jobs @ {$datetimegmt} UTC
+    {$round}s
+    --
+
+    PLAIN;
     if (version_compare(cheveretoVersionInstalled(), '4.2.0', '>=')) {
         $sql = <<<MySQL
         INSERT `%table_stats%` (stat_type, stat_date_gmt, stat_cron_time, stat_cron_runs)

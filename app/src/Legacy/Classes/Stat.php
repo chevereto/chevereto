@@ -419,4 +419,80 @@ class Stat
         ]);
         DB::queryExecute($sql);
     }
+
+    public static function getStatQuery(?string $tablePrefix = null): string
+    {
+        return static::buildStatQuery(
+            $tablePrefix ?? env()['CHEVERETO_DB_TABLE_PREFIX'],
+            false
+        );
+    }
+
+    public static function getStatJsonQuery(?string $tablePrefix = null): string
+    {
+        return static::buildStatQuery(
+            $tablePrefix ?? env()['CHEVERETO_DB_TABLE_PREFIX'],
+            true
+        );
+    }
+
+    private static function buildStatQuery(string $tablePrefix, bool $asJsonColumn): string
+    {
+        $aliases = [
+            'users' => 's.stat_users',
+            'files' => 's.stat_images',
+            'albums' => 's.stat_albums',
+            'tags' => 's.stat_tags',
+            'cron_time' => 's.stat_cron_time',
+            'file_views' => 's.stat_image_views',
+            'album_views' => 's.stat_album_views',
+            'file_likes' => 's.stat_image_likes',
+            'album_likes' => 's.stat_album_likes',
+            'storage_used' => 's.stat_disk_used',
+            'admins' => 'u.admins',
+            'managers' => 'u.managers',
+            'pages' => 'u.pages',
+            'storages' => 'u.storages',
+            'categories' => 'u.categories',
+        ];
+        $pairs = [];
+        $replaceTpl = match ($asJsonColumn) {
+            true => '"%alias", %column',
+            false => '%column %alias',
+        };
+        foreach ($aliases as $alias => $column) {
+            $pairs[] = strtr($replaceTpl, [
+                '%alias' => $alias,
+                '%column' => $column,
+            ]);
+        }
+        $selectColumns = implode(',', $pairs);
+        $select = match ($asJsonColumn) {
+            true => <<<SQL
+            SELECT JSON_OBJECT(
+                {$selectColumns}
+            ) AS stats
+            SQL,
+            false => <<<SQL
+            SELECT {$selectColumns}
+            SQL,
+        };
+
+        return <<<SQL
+        {$select}
+        FROM `{$tablePrefix}stats` s
+        CROSS JOIN (
+            SELECT
+                SUM(CASE WHEN `user_is_admin` = 1 THEN 1 ELSE 0 END) AS admins,
+                SUM(CASE WHEN `user_is_manager` = 1 THEN 1 ELSE 0 END) AS managers,
+                (SELECT COUNT(*) FROM `{$tablePrefix}pages`) AS pages,
+                (SELECT COUNT(*) FROM `{$tablePrefix}storages` WHERE storage_deleted_at IS NULL) AS storages,
+                (SELECT COUNT(*) FROM `{$tablePrefix}categories`) AS categories
+            FROM `{$tablePrefix}users`
+        ) u
+        WHERE s.stat_type = "total"
+        LIMIT 1
+
+        SQL;
+    }
 }

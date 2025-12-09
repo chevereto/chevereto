@@ -7109,5 +7109,5 @@ async function hashFile(file) {
     }
     const end = performance.now();
     console.log("hashFile took", (end - start).toFixed(2), "ms");
-    return hasher.digest().toString(16);
+    return hasher.digest().toString(16).padStart(16, '0');
 }

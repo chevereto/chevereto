@@ -7,7 +7,9 @@ body {
     margin: 0;
     background: #3498db;
     background: linear-gradient(to bottom, #3498db 0%, #8e44ad 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db", endColorstr="#8e44ad", GradientType=0)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db", endColorstr="#8e44ad", GradientType=0);
+    background-size: cover;
+    background-position: center;
 }
 
 html#error body {
@@ -35,7 +37,7 @@ html {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    user-select: none
+    user-select: none;
 }
 
 .force-select {

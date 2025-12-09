@@ -145,7 +145,7 @@ if (PHP_SAPI === 'cli') {
         abort('[!] Invalid token', 403);
     }
     if (($env['CHEVERETO_CONTEXT'] ?? null) === 'saas') {
-        abort('[!] Upgrade is not needed on SaaS context', 403);
+        abort('[!] Self-upgrade is not allowed on SaaS context', 403);
     }
     if (! in_array($action, $actions, true)) {
         abort('[!] Provide action=download or action=extract', 400);

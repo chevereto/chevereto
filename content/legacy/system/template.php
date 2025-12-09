@@ -24,7 +24,6 @@ if (! defined('ACCESS') || ! ACCESS) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
       body {
-          background-size: cover;
           background-image: url(<?php echo get_system_image_url('default/home_cover.jpg'); ?>);
       }
   </style>

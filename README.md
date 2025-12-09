@@ -33,6 +33,9 @@ Chevereto offers a comprehensive suite of features that make it the ultimate ima
 * **Privacy Controls**: Granular content privacy settings and user management
 * **Performance**: Optimized for speed with CDN support, caching, and image optimization
 * **Customization**: Turnkey options, language, and extensive API for integration
+* **Multi-language**: Full i18n support with over 30 languages available
+* **Multi-user**: Full-featured user accounts with registration, profiles, 2FA, and roles
+* **Multi-tenant**: Host multiple independent sites from a single installation
 
 You can check the complete list of features in our [Features page](https://chevereto.com/features) and you can also [compare Chevereto editions](https://v4-docs.chevereto.com/introduction/editions/compare.html).
 
@@ -92,6 +95,8 @@ Chevereto is an open-source project, and while contributions are welcomed, they 
 
 ## License
 
+Chevereto is available under two different licensing options: the open-source AGPLv3 license and a commercial proprietary license.
+
 ### Open Source license
 
 Copyright [Rodolfo Berríos Arce](http://rodolfoberrios.com) - [AGPLv3](LICENSE).
@@ -104,7 +109,7 @@ You should have received a copy of the GNU Affero General Public License along w
 
 ### Commercial license
 
-The commercial license allows you to use Chevereto in commercial products and applications without the obligations imposed by the AGPLv3. The commercial license ensures that your code remains proprietary and exclusive to you. For more details, please refer to the Chevereto Commercial License at [Chevereto License](https://chevereto.com/license).
+The commercial license allows you to use Chevereto in commercial products and applications without the obligations imposed by the AGPLv3. The commercial license ensures that your code remains proprietary and exclusive to you. For more details, please refer to the license text at [The Chevereto License](https://chevereto.com/license).
 
 ### Compare licenses
 
@@ -112,7 +117,7 @@ Chevereto Free edition is licensed under the AGPLv3 free software license, allow
 
 Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which is not subject to the restrictions imposed by the AGPLv3 license.
 
-*Note: Proprietary licensing does not mean closed source; the source code is accessible, but its use is governed by the specific terms of the Chevereto License.*
+*Note: Proprietary licensing does not mean closed source; the source code is accessible, but its use is governed by the specific terms of The Chevereto License.*
 
 ## Chevere
 

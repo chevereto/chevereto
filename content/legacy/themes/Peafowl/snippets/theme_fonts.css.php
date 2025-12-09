@@ -1,12 +1,13 @@
 <?php
 
+use Chevereto\Legacy\Classes\Fonts;
 use Chevereto\Legacy\G\Handler;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
-$fonts = Handler::var('fonts') ?? [];
+$fonts = Handler::var('fonts') ?? new Fonts();
 ?>
 <style>
 <?php
