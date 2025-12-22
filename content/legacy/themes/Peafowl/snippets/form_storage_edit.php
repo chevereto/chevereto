@@ -41,7 +41,7 @@ foreach (StorageApis::getEnabled() as $k => $v) {
 </div>
 <div id="storage-combo">
 	<div data-combo-value="11" class="red-warning input-label switch-combo soft-hidden"><i class="fas fa-exclamation-triangle"></i> <?php _se('This is for the old deprecated B2 API. For new buckets you have to use S3 Compatible API.'); ?></div>
-	<div data-combo-value="1 9" class="input-label c8 switch-combo">
+	<div data-combo-value="1 9" class="input-label switch-combo">
 		<label for="form-storage-use_path_style_endpoint"><input type="checkbox" name="form-storage-use_path_style_endpoint" id="form-storage-use_path_style_endpoint" value="1" data-checked="0"> <?php _se('Use path style endpoint'); ?></label>
 	</div>
 	<div data-combo-value="1" class="input-label c8 switch-combo">
@@ -137,7 +137,7 @@ foreach (StorageApis::getEnabled() as $k => $v) {
 		</div>
 	</div>
 	<div data-combo-value="9" class="switch-combo soft-hidden">
-		<div class="input-label c8">
+		<div class="input-label">
 			<label for="form-storage-server">Endpoint</label>
 			<input type="url" id="form-storage-server" name="form-storage-server" class="text-input" placeholder="Endpoint" pattern="https?://.+" required rel="template-tooltip" data-tiptip="right" data-title="<?php _se('Storage endpoint'); ?>">
 		</div>

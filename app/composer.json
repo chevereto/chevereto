@@ -24,7 +24,7 @@
         "intervention/image": "^2.6",
         "jeroendesloovere/xmp-metadata-extractor": "^2.0",
         "guzzlehttp/psr7": "^1.7||^2",
-        "aws/aws-sdk-php": "3.336.15",
+        "aws/aws-sdk-php": "^3.336.15",
         "phpmailer/phpmailer": "^6.5",
         "psr/cache": "^1",
         "psr/log": "^1||^2||^3",

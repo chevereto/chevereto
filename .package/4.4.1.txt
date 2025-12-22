@@ -1,0 +1,6 @@
+Chevereto 4.4.1 (2025-12-22)
+
+- Improved support for CloudFlare R2
+- Updated AWS SDK (security advisory)
+- Fixed bug (Undefined variable $cacheKey)
+- Fixed mobile display on /powered-by page

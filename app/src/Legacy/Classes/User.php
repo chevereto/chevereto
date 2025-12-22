@@ -116,12 +116,19 @@ class User
 
     public static function getAlbums(int|array $var): array
     {
-        $id = is_array($var) ? $var['id'] : $var;
-        $cached = null;
-        if (is_int($id)) {
-            $cacheKey = static::getCacheKey($id, 'albums');
-            $cached = Cache::instance()->get($cacheKey);
+        if (is_int($var)) {
+            $id = $var;
+        } else {
+            $id = $var['id'] !== null
+                ? (int) $var['id']
+                : null;
         }
+        if ($id === null) {
+            return [];
+        }
+        $cached = null;
+        $cacheKey = static::getCacheKey($id, 'albums');
+        $cached = Cache::instance()->get($cacheKey);
         if (is_array($cached) && count($cached) === 3) {
             [$userAlbums, $children, $map] = $cached;
         } else {

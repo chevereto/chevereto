@@ -658,6 +658,7 @@ $settings_updates = [
     '4.3.6' => null,
     '4.3.7' => null,
     '4.4.0' => null,
+    '4.4.1' => null,
 ];
 
 /**

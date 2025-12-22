@@ -47,14 +47,13 @@ use function Chevereto\Legacy\G\redirect;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Legacy\G\set_status_header;
 use function Chevereto\Legacy\get_enabled_languages;
-use function Chevereto\Legacy\get_static_url;
-use function Chevereto\Legacy\get_theme_file_url;
 use function Chevereto\Legacy\getPoweredByRemarks;
 use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getSystemNotices;
 use function Chevereto\Legacy\getVariable;
 use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Legacy\headersResetCache;
+use function Chevereto\Legacy\include_peafowl_head;
 use function Chevereto\Legacy\is_max_invalid_request;
 use function Chevereto\Vars\cookie;
 use function Chevereto\Vars\env;
@@ -507,21 +506,26 @@ $hook_before = function (Handler $handler) {
         header('X-Powered-By: Chevereto 4');
         [$about, $liability, $content] = getPoweredByRemarks($handler);
         $logo = absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg');
-        $peafowl_css = get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'peafowl.min.css');
-        $font_css = get_static_url(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB . 'font-awesome-6/css/all.min.css');
-        $style_css = get_theme_file_url('style.min.css');
         $website_name = safe_html(getSetting('website_name') ?: 'Chevereto');
         echo <<<PLAIN
         <!DOCTYPE HTML>
         <html>
         <head>
-            <link rel="stylesheet" href="{$peafowl_css}">
-            <link rel="stylesheet" href="{$style_css}">
-            <link rel="stylesheet" href="{$font_css}">
+        PLAIN;
+        include_peafowl_head();
+        echo <<<PLAIN
+            <meta charset="utf-8">
             <title>{$website_name} - Powered by Chevereto</title>
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+            <meta name="apple-mobile-web-app-title" content="{$website_name}">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="generator" content="Chevereto 4">
         </head>
         <style>
+        body {
+            min-width: 320px;
+        }
         .powered-by p {
             margin: 10px 0;
             line-height: 1.4;
@@ -533,7 +537,9 @@ $hook_before = function (Handler $handler) {
             color: inherit;
         }
         .powered-by--vendor img {
-            width: 212px;
+            width: 100%;
+            max-width: 212px;
+            height: auto;
         }
         .powered-by--fine-print {
             font-size: 75% !important;

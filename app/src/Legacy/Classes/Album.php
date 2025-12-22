@@ -476,7 +476,6 @@ class Album
         $db->exec();
         $album = self::getSingle((int) $album_id);
         if (! isset($album['cover_id']) && is_int($album_id)) {
-            xr('populate album cover', $album_id);
             self::populateCover($album_id);
         }
 
