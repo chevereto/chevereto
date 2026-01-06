@@ -324,6 +324,7 @@ class Image
         $storageApiColumns[] = DB::getTable('storages') . '.' . 'storage_api_id';
         $columns = array_merge(
             self::COLUMNS['images'],
+            ['image_delete_hash'],
             self::COLUMNS['storages'],
             $storageApiColumns,
             self::COLUMNS['users'],

@@ -46,7 +46,7 @@ echo read_the_docs_settings('api', 'API'); ?>
     <div class="margin-bottom-10 margin-top-10">
         <code class="code code--command display-inline-block" data-click="select-all"><?php echo $code; ?></code>
     </div>
-    <p><?php _se('Check the %s documentation to learn more.', '<a rel="external" href="https://v4-docs.chevereto.com/developer/api/api-v1.html" target="_blank">API V1</a>'); ?></p>
+    <p><?php _se('Check the %s documentation to learn more.', '<a rel="external" href="https://v4-docs.chevereto.com/api/1/file-upload.html" target="_blank">API V1</a>'); ?></p>
 </div>
 <div class="input-label">
     <label for="api_v1_key"><?php _se('Public API key'); ?></label>

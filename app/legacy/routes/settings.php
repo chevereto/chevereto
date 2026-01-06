@@ -116,6 +116,9 @@ return function (Handler $handler) {
         'homepage' => _s('Homepage'),
         'powered-by' => _s('Powered by'),
     ];
+    if (! Settings::get('enable_api_user')) {
+        unset($routes['api']);
+    }
     $icons = [
         'account' => 'fas fa-user',
         'profile' => 'fas fa-id-card',
@@ -562,6 +565,11 @@ return function (Handler $handler) {
         $handler::setVar('providers_enabled', $providersEnabled);
     }
     if ($doing === 'api') {
+        if (! Settings::get('enable_api_user')) {
+            $handler->issueError(404);
+
+            return;
+        }
         if (! ApiKey::has(intval($user['id']))) {
             $apiCreated = ApiKey::insert(intval($user['id']));
             $handler::setVar('api_v1_key', $apiCreated);

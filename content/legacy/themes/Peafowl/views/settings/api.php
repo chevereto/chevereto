@@ -18,7 +18,7 @@ $api_date = Handler::var('api_v1_date_created'); ?>
     [
                 '%t' => 'Chevereto',
                 '%s' => '<b><i class="fas fa-project-diagram"></i> API</b>',
-                '%d' => '<a rel="external" href="https://v4-docs.chevereto.com/developer/api/api-v1.html" target="_blank">' . _s('documentation') . '</a>',
+                '%d' => '<a rel="external" href="https://v4-docs.chevereto.com/api/1/file-upload.html" target="_blank">' . _s('documentation') . '</a>',
             ]
 ); ?></div>
 <div class="input-label"><i class="fas fa-info-circle"></i> <?php _se('The API enables to programmatically interact with %s.', 'Chevereto'); ?></div>
@@ -37,7 +37,7 @@ $api_date = Handler::var('api_v1_date_created'); ?>
     <div class="margin-bottom-10 margin-top-10">
         <code class="code code--command display-inline-block" data-click="select-all"><?php echo $code; ?></code>
     </div>
-    <p><?php _se('Check the %s documentation to learn more.', '<a rel="external" href="https://v4-docs.chevereto.com/developer/api/api-v1.html" target="_blank">API V1</a>'); ?></p>
+    <p><?php _se('Check the %s documentation to learn more.', '<a rel="external" href="https://v4-docs.chevereto.com/api/1/file-upload.html" target="_blank">API V1</a>'); ?></p>
 </div>
 <div class="input-label">
     <label for="api_v1_key"><?php _se('%s key', _s('API')); ?></label>

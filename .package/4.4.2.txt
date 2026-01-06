@@ -1,0 +1,7 @@
+Chevereto 4.4.2 (2026-01-06)
+
+- Fixed bug with "Upgrade now" button display
+- Fixed bug in /settings/api route display
+- Fixed bug in delete URL not working
+- Fixed bug in Free edition missing Follow class
+- Fixed API documentation links
