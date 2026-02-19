@@ -95,7 +95,9 @@ class Variable
         foreach ($rows as &$row) {
             $row = DB::formatRow($row);
             if (hasEncryption() && in_array($row['name'], static::ENCRYPTED_NAMES)) {
-                $row['value'] = decodeDecrypt($row['value']);
+                $row['value'] = is_string($row['value']) && $row['value'] !== ''
+                    ? decodeDecrypt($row['value'])
+                    : $row['value'];
             }
             static::populate(
                 name: $row['name'],
@@ -283,7 +285,9 @@ class Variable
         }
         $return = DB::formatRow($return);
         if (hasEncryption() && in_array($name, static::ENCRYPTED_NAMES)) {
-            $return['value'] = decodeDecrypt($return['value']);
+            $return['value'] = is_string($return['value']) && $return['value'] !== ''
+                ? decodeDecrypt($return['value'])
+                : $return['value'];
         }
         static::populate(
             name: $name,

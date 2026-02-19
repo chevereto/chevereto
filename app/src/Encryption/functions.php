@@ -109,12 +109,11 @@ function decodeDecrypt(string $base64NonceCipherText): string
 
 function decryptValues(array $encryptedKeys, array $keyValues): array
 {
-    return mb_convert_encoding(
-        cipherValues($encryptedKeys, $keyValues, function (string $text) {
-            return decodeDecrypt($text);
-        }),
-        'UTF-8'
-    ) ?: [];
+    $result = cipherValues($encryptedKeys, $keyValues, function (string $text) {
+        return decodeDecrypt($text);
+    });
+
+    return $result ?: [];
 }
 
 function encryptValues(array $encryptedKeys, array $keyValues): array
