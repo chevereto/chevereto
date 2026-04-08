@@ -246,6 +246,7 @@ if($missingOptions ?? false) {
 $envDefault = require dirname(__DIR__, 1) . '/env-default.php';
 $envVar = array_merge($envDefault, ENV, getCheveretoEnv());
 $envVar['CHEVERETO_DB_TABLE_ROOT_PREFIX'] = $envVar['CHEVERETO_DB_TABLE_PREFIX'];
+$envVar['CHEVERETO_CACHE_KEY_ROOT_PREFIX'] = $envVar['CHEVERETO_CACHE_KEY_PREFIX'];
 $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= '_'; // chv__
 $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= '_:'; // chv:_:
 new EnvVar($envVar);
@@ -273,6 +274,7 @@ $redis->connect(env()['CHEVERETO_CACHE_HOST'], (int) env()['CHEVERETO_CACHE_PORT
 if (env()['CHEVERETO_CACHE_PASSWORD'] !== '') {
     $redis->auth(env()['CHEVERETO_CACHE_PASSWORD']);
 }
+$redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
 new EncryptionInstance(
     new Encryption(
         new Key(env()['CHEVERETO_ENCRYPTION_KEY'])
@@ -494,7 +496,7 @@ $databaseMigrate = function() use ($tenants, $opts, $logger): void {
     }
     foreach ($tenantsUpdate as $tenant) {
         runAppCommand(
-            command: ['-C', 'database-update'],
+            command: ['-C', 'database-migrate'],
             env: array_merge($_ENV, [
                 'CHEVERETO_TENANT' => $tenant['id'],
             ]),
@@ -527,7 +529,7 @@ $jobsWorker = function() use ($tenants, $opts, $logger): void {
     while (true) {
         $now = time();
         if($opts['id'] ?? null) {
-            $tenantsId = $opts['id'];
+            $tenantsId = [$opts['id']];
         } else {
             $tenantsId = $tenants->getTenantsIds(
                 ['is_enabled' => true],
@@ -539,7 +541,7 @@ $jobsWorker = function() use ($tenants, $opts, $logger): void {
         }
         foreach ($tenantsId as $tenantId) {
             $tenant = $tenants->getTenant($tenantId);
-            $intervalSec = (int) ($tenant->env['CHEVERETO_JOBS_WORKER_INTERVAL'] ?? 300);
+            $intervalSec = (int) ($tenant->env['CHEVERETO_SCHEDULER_INTERVAL'] ?? 300);
             $mustRun = $tenant->lastJobAt === null
                 || (strtotime($tenant->lastJobAt) + $intervalSec) <= $now;
             if ($mustRun) {
@@ -547,11 +549,27 @@ $jobsWorker = function() use ($tenants, $opts, $logger): void {
                     tenantId: $tenantId,
                     lastJobAt: datetimegmt()
                 );
+                $commandEnv = array_merge($_ENV, [
+                    'CHEVERETO_TENANT' => $tenantId,
+                ]);
+                $commandExit = runAppCommand(
+                    command: ['-C', 'version-installed'],
+                    env: $commandEnv,
+                    isVerbose: $isVerbose,
+                    logger: $logger
+                );
+                if($commandExit === 255) {
+                    $logger->write(
+                        <<<PLAIN
+                        Tenant {$tenantId} app is not installed, skipping
+
+                        PLAIN
+                    );
+                    continue;
+                }
                 runAppCommand(
                     command: ['-C', 'cron'],
-                    env: array_merge($_ENV, [
-                        'CHEVERETO_TENANT' => $tenantId,
-                    ]),
+                    env: $commandEnv,
                     isVerbose: $isVerbose,
                     logger: $logger
                 );

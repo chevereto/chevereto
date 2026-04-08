@@ -3353,6 +3353,11 @@ body.landing .top-btn-text {
     padding: 10px 0;
 }
 
+.panel-thumb-list a {
+    display: block;
+    line-height: 0;
+}
+
 .panel-thumb-list img {
     display: block;
     width: 47px;
@@ -4527,6 +4532,7 @@ a.top-user-avatar {
 .header-content .user-image img,
 .header .user-image img {
     border-radius: 50%;
+    -o-object-fit: cover;
     object-fit: cover;
 }
 

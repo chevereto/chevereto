@@ -37,7 +37,9 @@ use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Legacy\linkify_redirector;
 use function Chevereto\Legacy\system_notification_email;
+use function Chevereto\Legacy\trialAwareLabel;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\envTrialAware;
 
 class User
 {
@@ -134,37 +136,40 @@ class User
         } else {
             $userAlbums = [];
             $user_stream = self::getStreamAlbum($var);
-            if ($user_stream === null || $user_stream['user_album_count'] === 0) {
+            if ($user_stream === null) {
                 return [];
             }
+            $userAlbumsCount = $user_stream['user_album_count'];
             unset($user_stream['user_album_count']);
             $userAlbums['stream'] = $user_stream;
             $map = [];
             $children = [];
-            $columns = [
-                'album_id',
-                'album_name',
-                'album_privacy',
-                'album_parent_id',
-                'album_image_count',
-                'album_cover_id',
-            ];
-            $columnsString = implode(', ', $columns);
-            $tableAlbums = DB::getTable('albums');
-            $db = DB::getInstance();
-            $db->query(
-                <<<MySQL
-                SELECT {$columnsString}
-                FROM {$tableAlbums}
-                WHERE album_user_id=:image_user_id
-                ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit
-                MySQL
-            );
-            $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST']));
-            $db->bind(':image_user_id', $id);
-            $user_albums_db = $db->fetchAll();
-            if ($user_albums_db) {
-                $userAlbums += $user_albums_db;
+            if ($userAlbumsCount > 0) {
+                $columns = [
+                    'album_id',
+                    'album_name',
+                    'album_privacy',
+                    'album_parent_id',
+                    'album_image_count',
+                    'album_cover_id',
+                ];
+                $columnsString = implode(', ', $columns);
+                $tableAlbums = DB::getTable('albums');
+                $db = DB::getInstance();
+                $db->query(
+                    <<<MySQL
+                    SELECT {$columnsString}
+                    FROM {$tableAlbums}
+                    WHERE album_user_id=:image_user_id
+                    ORDER BY album_parent_id ASC, album_name ASC LIMIT :limit
+                    MySQL
+                );
+                $db->bind(':limit', intval(env()['CHEVERETO_MAX_USER_ALBUMS_LIST']));
+                $db->bind(':image_user_id', $id);
+                $user_albums_db = $db->fetchAll();
+                if ($user_albums_db) {
+                    $userAlbums += $user_albums_db;
+                }
             }
             foreach ($userAlbums as $k => &$v) {
                 $album_id = isset($v['album_id'])
@@ -343,7 +348,7 @@ class User
         if (! array_key_exists($role, $roles)) {
             throw new Exception('Invalid role', 600);
         }
-        $maxLimit = (int) env()[$roleHandle] ?? 0;
+        $maxLimit = (int) envTrialAware()[$roleHandle] ?? 0;
         if ($maxLimit === 0) {
             return;
         }
@@ -358,7 +363,7 @@ class User
         if (($count + 1) > $maxLimit) {
             throw new OverflowException(
                 message(
-                    'Maximum %u% for role %r% reached (limit %c%)',
+                    'Maximum %u% for role %r% reached (limit %c%)' . trialAwareLabel(),
                     u: _n('user', 'users', 20),
                     c: strval($maxLimit),
                     r: mb_strtolower($roleLabel),

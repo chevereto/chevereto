@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Legacy\Classes;
+use function Chevereto\Legacy\cheveretoVersionInstalled;
 
-use PHPMailer\PHPMailer\PHPMailer;
-
-class Mailer extends PHPMailer
-{
-    public $XMailer = ' ';
+$version = cheveretoVersionInstalled();
+if ($version === '') {
+    echo 'Chevereto is not installed' . PHP_EOL;
+    exit(255);
 }
+echo $version . PHP_EOL;

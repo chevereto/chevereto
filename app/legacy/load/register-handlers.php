@@ -93,21 +93,49 @@ set_exception_handler(function (Throwable $throwable) {
         $internalHandler = $publicHandler->withIsDebug(true);
         $doDebug = in_array($debugLevel, [2, 3], true) || isDebug();
         if ($doDebug === false) {
-            $publicHandler = $publicHandler
-                ->withIsDebug($doDebug)
-                ->withPutExtra(
-                    'Why am I seeing this?',
+            $incidentId = $publicHandler->id();
+            $providerName = getenv('CHEVERETO_PROVIDER_NAME') ?: '<provider name>';
+            $providerUrl = getenv('CHEVERETO_PROVIDER_URL') ?: '#';
+            if (getenv('CHEVERETO_CONTEXT') === 'saas') {
+                $title = 'Service temporarily unavailable';
+                $message = "We're already on it! Our team has been automatically notified and is working to resolve this issue.";
+                $ownerGuide = strtr(
                     <<<HTML
-                    For security reasons, detailed error information is not shown. This incident has been logged and will be reviewed by the system administrator.
+                    <p>Our team is already investigating this incident. For immediate assistance, contact %providerLink% support with incident ID %id%.</p>
+                    HTML,
+                    [
+                        '%providerLink%' => <<<HTML
+                        <a href="{$providerUrl}" target="_blank">{$providerName}</a>
+                        HTML,
+                        '%id%' => $incidentId,
+                    ]
+                );
+            } else {
+                $title = 'Something went wrong';
+                $message = 'Please try again later. If the error persists you may need to contact the website owner.';
+                $ownerGuide = <<<HTML
+                <p>This error has been logged with ID {$incidentId}. To diagnose the issue:</p>
+                <ol>
+                    <li>Check your server error logs for this ID</li>
+                    <li>Review the <a href="https://v4-docs.chevereto.com/developer/how-to/debug" target="_blank">debugging guide</a> in the documentation</li>
+                    <li>Need help? Check our <a href="https://chevereto.com/support" target="_blank">support</a> alternatives</li>
+                </ol>
+                HTML;
+            }
+            $publicHandler = $publicHandler
+                ->withTitle($title)
+                ->withIsDebug($doDebug)
+                ->withMessage($message)
+                ->withPutExtra(
+                    'What happened?',
+                    <<<HTML
+                    <p>A technical error has occurred. The incident has been logged for investigation.</p>
                     HTML
                 )
                 ->withPutExtra(
-                    'Administrator guide',
+                    'Are you the owner of this website?',
                     <<<HTML
-                    <ul>
-                        <li>Refer to the <a href="https://v4-docs.chevereto.com/developer/how-to/debug" target="_blank">Chevereto documentation</a> to understand how to debug this error.</li>
-                        <li>Need help? Visit <a href="https://chevereto.com/support" target="_blank">Chevereto support</a> to open a ticket.</li>
-                    </ul>
+                    {$ownerGuide}
                     <style>.administrator-guide ul{margin:0;padding-left:1.5em}</style>
                     HTML
                 );

@@ -16,10 +16,12 @@ use Chevereto\Http\Controllers\Api\V4\TenantPatch;
 use Chevereto\Http\Controllers\Api\V4\TenantPlanDelete;
 use Chevereto\Http\Controllers\Api\V4\TenantPlanGet;
 use Chevereto\Http\Controllers\Api\V4\TenantPlanPatch;
+use Chevereto\Http\Controllers\Api\V4\TenantsAuthVerifyPost;
 use Chevereto\Http\Controllers\Api\V4\TenantsGet;
 use Chevereto\Http\Controllers\Api\V4\TenantsPlansGet;
 use Chevereto\Http\Controllers\Api\V4\TenantsPlansPost;
 use Chevereto\Http\Controllers\Api\V4\TenantsPost;
+use Chevereto\Http\Controllers\Api\V4\TenantUserPasswordResetPatch;
 use Chevereto\Http\Middlewares\RestrictIpAccess;
 use Chevereto\Http\Middlewares\SignedRequest;
 use Chevereto\Http\Middlewares\TenantsApiKeyAuthorization;
@@ -28,6 +30,10 @@ use function Chevere\Router\routes;
 use function Chevereto\Vars\env;
 
 return routes(
+    route(
+        '/_/api/4/auth/verify',
+        POST: TenantsAuthVerifyPost::class,
+    ),
     route(
         '/_/api/4/tenants',
         POST: TenantsPost::class,
@@ -42,6 +48,10 @@ return routes(
     route(
         '/_/api/4/tenants/{id}/install',
         POST: TenantInstallPost::class,
+    ),
+    route(
+        '/_/api/4/tenants/{id}/user-password-reset',
+        PATCH: TenantUserPasswordResetPatch::class,
     ),
     route(
         '/_/api/4/tenants-plans',

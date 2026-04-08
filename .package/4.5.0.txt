@@ -1,0 +1,28 @@
+Chevereto 4.5.0 (2026-04-08)
+
+- Added /_/api/4/auth/verify route
+- Added /_/api/4/config/traefik internal HTTP provider route
+- Added /_/api/4/tenants/{id}/user-password-reset route
+- Added CHEVERETO_ENABLE_GUESTS env for controlling guest interactions
+- Added CHEVERETO_SERVICE_NAME env for specifying the service name
+- Added CHEVERETO_TRIAL_ENABLE_* keys support for controlling features enabled during trial
+- Added CHEVERETO_TRIAL_MAX_* keys support for controlling max limits during trial
+- Added CHEVERETO_TRIAL env for controlling trial mode
+- Added envTrialAware helper function for accessing trial-aware env variables
+- Added version-installed command
+- Added login_providers tenant stats
+- Added password parameter for password-reset command
+- Added port 8080 to the list of allowed ports
+- Added support for more email providers: AhaSend, Amazon SES, Azure, Brevo, Infobip, MailerSend, Mailgun, Mailjet, Mailomat, MailPace, Mailtrap, Mandrill, Microsoft Graph, Postal, Postmark, Resend, Scaleway, SendGrid and Sweego
+- Bumped minimum PHP version to 8.2
+- Fixed "Powered by" message
+- Fixed bug affecting homepage (free edition)
+- Fixed bug on /_/api/4/* routes missing error responses
+- Fixed bug on Tenants jobs:worker command when passing tenant id
+- Fixed bug on Tenants caching system
+- Fixed bug on tenants CLI database-migrate command
+- Fixed bug preventing Tenant installation
+- Fixed missing custom semantics parsing for image route description
+- Improved "Something went wrong" error page for both SaaS and self-hosted contexts
+- Improved album dropdown options on uploader
+- Renamed env variable CHEVERETO_JOBS_WORKER_INTERVAL to CHEVERETO_SCHEDULER_INTERVAL

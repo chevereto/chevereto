@@ -17,6 +17,7 @@ use Chevereto\Encryption\Encryption;
 use Chevereto\Exceptions\NotFoundException;
 use Chevereto\Legacy\Classes\DB;
 use Chevereto\Legacy\Classes\Stat;
+use ErrorException;
 use PDO;
 use Redis;
 use function Chevereto\Legacy\G\datetimegmt;
@@ -32,6 +33,8 @@ class Tenants
         'tenants_variables',
     ];
 
+    private string $cacheRootPrefix;
+
     private string $cachePrefix;
 
     private string $tableRootPrefix;
@@ -42,6 +45,7 @@ class Tenants
         private Encryption $encryption,
         private WriterInterface $logger = new NullWriter(),
     ) {
+        $this->cacheRootPrefix = env()['CHEVERETO_CACHE_KEY_ROOT_PREFIX']; // chv:
         $this->cachePrefix = env()['CHEVERETO_CACHE_KEY_PREFIX']; // chv:<websiteId>:
         $this->tableRootPrefix = env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']; // chv_<websiteId>_
     }
@@ -226,7 +230,7 @@ class Tenants
         $tenantKey = $this->getCacheKey('tenant', $tenantId);
         $tenantCache = $this->redis->get($tenantKey);
         if ($tenantCache && $tenant === null) {
-            $tenant = unserialize($tenantCache);
+            $tenant = $tenantCache;
         }
         $hostname = $tenant['hostname'] ?? null;
         if ($hostname !== null) {
@@ -249,6 +253,24 @@ class Tenants
 
                 PLAIN
             );
+        }
+        $tenantCachePattern = $this->cacheRootPrefix . $tenantId . ':*';
+        $iterator = null;
+        while ($iterator !== 0) {
+            $scan = $this->redis->scan($iterator, "{$tenantCachePattern}");
+            foreach ($scan as $key) {
+                $result = (bool) $this->redis->del($key);
+                $status = 'DELETE';
+                if ($result === false && ! $this->redis->get($key)) {
+                    $status = '   404';
+                }
+                $this->logger->write(
+                    <<<PLAIN
+                    * {$status} > {$key}
+
+                    PLAIN
+                );
+            }
         }
         if ($dropTables) {
             $likePattern = "{$this->tableRootPrefix}{$tenantId}_%";
@@ -371,7 +393,8 @@ class Tenants
                             'managers', s.managers,
                             'pages', s.pages,
                             'storages', s.storages,
-                            'categories', s.categories
+                            'categories', s.categories,
+                            'login_providers', s.login_providers
                         ) AS stats
                     FROM `{$tableTenantsStats}` AS s
                     WHERE s.tenant_id = t.id
@@ -464,12 +487,14 @@ class Tenants
             $this->mergeTenantCacheable($tenant);
             $cached = $this->redis->get($tenantKey);
             if ($cached) {
-                /** @var array $current */
-                $current = unserialize($cached);
-                $currentHostname = $current['hostname'];
-                if ($currentHostname !== $tenant['hostname']) {
-                    $currentKey = $this->getCacheKey('hostname', $tenant['hostname']);
-                    $this->redis->del($currentKey);
+                try {
+                    /** @var array $cached */
+                    $cachedHostname = $cached['hostname'];
+                    if ($cachedHostname !== $tenant['hostname']) {
+                        $cachedKey = $this->getCacheKey('hostname', $cachedHostname);
+                        $this->redis->del($cachedKey);
+                    }
+                } catch (ErrorException) {
                 }
             }
             $this->cacheTenantArray($tenant);
@@ -700,8 +725,6 @@ class Tenants
         $tableTenants = $this->db::getTable('tenants');
         $tableTenantsPlans = $this->db::getTable('tenants_plans');
         $tableTenantsStats = $this->db::getTable('tenants_stats');
-        $tablePrefixTenant = $this->tableRootPrefix . $tenantId . '_';
-        $statQuery = Stat::getStatQuery($tablePrefixTenant);
         $this->db->query(
             <<<SQL
             SELECT
@@ -737,7 +760,8 @@ class Tenants
                         'managers', s.managers,
                         'pages', s.pages,
                         'storages', s.storages,
-                        'categories', s.categories
+                        'categories', s.categories,
+                        'login_providers', s.login_providers
                     ) AS stats
                     FROM `{$tableTenantsStats}` AS s
                     WHERE s.tenant_id = t.id
@@ -767,7 +791,7 @@ class Tenants
         $this->redis->mset(
             [
                 $hostnameKey => $tenant['id'],
-                $tenantKey => serialize($tenant),
+                $tenantKey => $tenant,
             ]
         );
     }

@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ["8.1"]
+        php-versions: ["8.2"]
     env:
       tools: composer
       ini-values: default_charset='UTF-8'

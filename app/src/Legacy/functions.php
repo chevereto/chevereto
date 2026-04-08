@@ -31,7 +31,6 @@ use Chevereto\Legacy\Classes\KeyValue;
 use Chevereto\Legacy\Classes\KeyValueNull;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Login;
-use Chevereto\Legacy\Classes\Mailer;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\StorageApis;
 use Chevereto\Legacy\Classes\Upload;
@@ -56,9 +55,12 @@ use LogicException;
 use OutOfBoundsException;
 use OverflowException;
 use PDO;
-use PHPMailer\PHPMailer\SMTP;
 use Redis;
 use RuntimeException;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Process\Process;
 use Throwable;
 use function Chevere\Filesystem\filePhpForPath;
@@ -94,6 +96,7 @@ use function Chevereto\Legacy\G\starts_with;
 use function Chevereto\Legacy\G\unlinkIfExists;
 use function Chevereto\Vars\cookie;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\envTrialAware;
 use function Chevereto\Vars\post;
 use function Chevereto\Vars\server;
 use function Chevereto\Vars\session;
@@ -195,55 +198,76 @@ function send_mail($to, $subject, $body): bool
     if (! filter_var($to, FILTER_VALIDATE_EMAIL)) {
         throw new Exception('Invalid to email', 100);
     }
-    $writer = new StreamWriter(streamFor('php://temp', 'r+'));
     $body = trim($body);
-    $mail = new Mailer();
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-    $mail->Debugoutput = function ($str, $level) use ($writer) {
-        $writer->write("{$str} \n");
-    };
-    $alt_body = $mail->html2text($body);
-    $mail->CharSet = 'UTF-8';
-    if (getSetting('email_mode') === 'smtp') {
-        $mail->isSMTP();
-        $mail->Username = getSetting('email_smtp_server_username') ?? '';
-        $mail->Password = getSetting('email_smtp_server_password') ?? '';
-        $mail->SMTPAuth = $mail->Username !== '' || $mail->Password !== '';
-        $mail->SMTPSecure = in_array(getSetting('email_smtp_server_security'), ['ssl', 'tls'], true)
-            ? getSetting('email_smtp_server_security')
-            : '';
-        $mail->SMTPAutoTLS = in_array(getSetting('email_smtp_server_security'), ['ssl', 'tls'], true);
-        $mail->Port = getSetting('email_smtp_server_port');
-        $mail->Host = getSetting('email_smtp_server');
-    }
-    $mail->Timeout = 30;
-    $mail->Subject = $subject;
-    if ($body !== $alt_body) {
-        $mail->IsHTML(true);
-        $mail->Body = $mail->normalizeBreaks($body);
-        $mail->AltBody = $mail->normalizeBreaks($alt_body);
-    } else {
-        $mail->Body = $body;
-    }
-    $mail->addAddress($to);
+    $alt_body = strip_tags($body);
+    $email = new Email();
+    $email->subject($subject);
+    $email->to($to);
+    $email->from(new Address($from[0], $from[1]));
     if ($reply_to && is_array($reply_to)) {
         foreach ($reply_to as $v) {
-            $mail->addReplyTo($v);
+            $email->addReplyTo($v);
         }
     }
-    $mail->setFrom($from[0], $from[1]);
-    if ($mail->Send()) {
-        return true;
+    if ($body !== $alt_body) {
+        $email->html($body);
+        $email->text($alt_body);
+    } else {
+        $email->text($body);
     }
-    $mailerWrap = "\n----------- MAILER DEBUG -----------\n\n";
-    $error = str_replace('-', '>', $mailerWrap)
-        . $writer->__toString()
-        . str_replace('-', '<', $mailerWrap);
-    writers()->error()
-        ->write($error);
-    xr(mailer: $error, to: $to, subject: $subject, body: $body);
+    $emailMode = getSetting('email_mode') ?? 'mail';
+    $dsn = match ($emailMode) {
+        'smtp' => (function (): string {
+            $username = urlencode(getSetting('email_smtp_server_username') ?? '');
+            $password = urlencode(getSetting('email_smtp_server_password') ?? '');
+            $host = getSetting('email_smtp_server') ?? 'localhost';
+            $port = getSetting('email_smtp_server_port') ?? 25;
+            $security = getSetting('email_smtp_server_security');
+            $scheme = $security === 'ssl' ? 'smtps' : 'smtp';
+            $auth = ($username !== '' || $password !== '') ? "{$username}:{$password}@" : '';
+            $dsn = "{$scheme}://{$auth}{$host}:{$port}";
+            if ($security === 'tls') {
+                $dsn .= '?encryption=tls';
+            } elseif (! in_array($security, ['ssl', 'tls'], true)) {
+                $dsn .= '?verify_peer=false';
+            }
 
-    throw new Exception($mail->ErrorInfo, 606);
+            return $dsn;
+        })(),
+        'ahasend' => 'ahasend+api://' . urlencode(getSetting('email_ahasend_api_key') ?? '') . '@default',
+        'ses' => 'ses+api://' . urlencode(getSetting('email_ses_access_key') ?? '') . ':' . urlencode(getSetting('email_ses_secret_key') ?? '') . '@default',
+        'azure' => 'azure+api://' . urlencode(getSetting('email_azure_resource_name') ?? '') . ':' . urlencode(getSetting('email_azure_key') ?? '') . '@default',
+        'brevo' => 'brevo+api://' . urlencode(getSetting('email_brevo_api_key') ?? '') . '@default',
+        'infobip' => 'infobip+api://' . urlencode(getSetting('email_infobip_api_key') ?? '') . '@' . urlencode(getSetting('email_infobip_base_url') ?? 'default'),
+        'mailgun' => 'mailgun+api://' . urlencode(getSetting('email_mailgun_api_key') ?? '') . ':' . urlencode(getSetting('email_mailgun_domain') ?? '') . '@default',
+        'mailjet' => 'mailjet+api://' . urlencode(getSetting('email_mailjet_access_key') ?? '') . ':' . urlencode(getSetting('email_mailjet_secret_key') ?? '') . '@default',
+        'mailomat' => 'mailomat+api://' . urlencode(getSetting('email_mailomat_api_key') ?? '') . '@default',
+        'mailpace' => 'mailpace+api://' . urlencode(getSetting('email_mailpace_api_token') ?? '') . '@default',
+        'mailersend' => 'mailersend+api://' . urlencode(getSetting('email_mailersend_api_key') ?? '') . '@default',
+        'mailtrap' => 'mailtrap+api://' . urlencode(getSetting('email_mailtrap_api_token') ?? '') . '@default',
+        'mandrill' => 'mandrill+api://' . urlencode(getSetting('email_mandrill_api_key') ?? '') . '@default',
+        'microsoftgraph' => 'microsoftgraph+api://' . urlencode(getSetting('email_microsoftgraph_client_id') ?? '') . ':' . urlencode(getSetting('email_microsoftgraph_client_secret') ?? '') . '@default?tenantId=' . urlencode(getSetting('email_microsoftgraph_tenant_id') ?? ''),
+        'postal' => 'postal+api://' . urlencode(getSetting('email_postal_api_key') ?? '') . '@' . urlencode(getSetting('email_postal_base_url') ?? 'default'),
+        'postmark' => 'postmark+api://' . urlencode(getSetting('email_postmark_api_token') ?? '') . '@default',
+        'resend' => 'resend+api://' . urlencode(getSetting('email_resend_api_key') ?? '') . '@default',
+        'scaleway' => 'scaleway+api://' . urlencode(getSetting('email_scaleway_project_id') ?? '') . ':' . urlencode(getSetting('email_scaleway_api_key') ?? '') . '@default',
+        'sendgrid' => 'sendgrid+api://' . urlencode(getSetting('email_sendgrid_api_key') ?? '') . '@default',
+        'sweego' => 'sweego+api://' . urlencode(getSetting('email_sweego_api_key') ?? '') . '@default',
+        default => 'sendmail://default',
+    };
+
+    try {
+        $transport = Transport::fromDsn($dsn);
+        $mailer = new Mailer($transport);
+        $mailer->send($email);
+    } catch (\Throwable $e) {
+        writers()->error()->write($e->getMessage());
+        xr(mailer: $e->getMessage(), to: $to, subject: $subject, body: $body);
+
+        throw new Exception($e->getMessage(), 606);
+    }
+
+    return true;
 }
 
 function get_chevereto_version(bool $full = true): string
@@ -1179,12 +1203,27 @@ function loaderHandler(
         ?? '';
     $envVar['CHEVERETO_TENANT_HANDLE'] = '';
     $envVar['CHEVERETO_DB_TABLE_ROOT_PREFIX'] = $envVar['CHEVERETO_DB_TABLE_PREFIX'];
-    if ($envVar['CHEVERETO_ENABLE_TENANTS'] === '1') {
+    $envVar['CHEVERETO_CACHE_KEY_ROOT_PREFIX'] = $envVar['CHEVERETO_CACHE_KEY_PREFIX'];
+    // try {
+    //     $xrArguments = [
+    //         'isEnabled' => true,
+    //         'isHttps' => false,
+    //         'host' => 'host.docker.internal',
+    //         'port' => 27420,
+    //     ];
+
+    //     new XrInstance(new Xr(...$xrArguments));
+    // } catch (Throwable) {
+    //     // Silent failover
+    // }
+    $isTenantsApi = false;
+    if ($envVar['CHEVERETO_ENABLE_TENANTS'] === '1' || $envVar['CHEVERETO_TENANT'] !== '') {
         $redis = new Redis();
         $redis->connect($envVar['CHEVERETO_CACHE_HOST'], (int) $envVar['CHEVERETO_CACHE_PORT']);
         if ($envVar['CHEVERETO_CACHE_PASSWORD'] !== '') {
             $redis->auth($envVar['CHEVERETO_CACHE_PASSWORD']);
         }
+        $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
         $lookupNamespace = $envVar['CHEVERETO_CACHE_KEY_PREFIX'] . '_:';
         if (PHP_SAPI === 'cli') {
             $websiteId = $envVar['CHEVERETO_TENANT'];
@@ -1195,13 +1234,19 @@ function loaderHandler(
                 PLAIN;
                 exit(255);
             }
-            $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId);
-            $websiteOptions = unserialize($websiteOptions);
-            $hostname = $websiteOptions['hostname'];
+            /** @var array $websiteOptions */
+            $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId) ?: [];
+            $hostname = $websiteOptions['hostname'] ?? '';
         } else {
             $hostname = $_server['SERVER_NAME'];
+            if (($envVar['CHEVERETO_SERVICING'] ?? '') === 'docker'
+                && $hostname === 'host.docker.internal'
+            ) {
+                $hostname = $envVar['CHEVERETO_HOSTNAME'];
+            }
             $isRootHostname = hash_equals($envVar['CHEVERETO_HOSTNAME'], $hostname);
-            $isTenantsApi = $isRootHostname
+            $isLocalhost = in_array($hostname, ['localhost', '127.0.0.1', '::1', $envVar['CHEVERETO_SERVICE_NAME']], true);
+            $isTenantsApi = ($isRootHostname || $isLocalhost)
                 && str_starts_with(
                     $_server['REQUEST_URI'],
                     $envVar['CHEVERETO_HOSTNAME_PATH']
@@ -1220,17 +1265,15 @@ function loaderHandler(
             } else {
                 $websiteId = $redis->get($lookupNamespace . 'hostname:' . $hostname);
                 if ($websiteId === false) {
-                    if ($isRootHostname) {
-                        redirect($envVar['CHEVERETO_PROVIDER'] ?? 'https://chevereto.com');
-                    }
+                    http_response_code(404);
                     echo <<<PLAIN
                     No website defined
 
                     PLAIN;
                     exit(255);
                 }
-                $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId);
-                $websiteOptions = unserialize($websiteOptions);
+                /** @var array $websiteOptions */
+                $websiteOptions = $redis->get($lookupNamespace . 'tenant:' . $websiteId) ?: [];
             }
         }
         if ($websiteOptions === []) {
@@ -1268,8 +1311,8 @@ function loaderHandler(
         $envVar['CHEVERETO_TENANT_HANDLE'] = "{$websiteId}_";
         $envVar['CHEVERETO_HOSTNAME'] = $hostname;
         if ($websiteId !== '') {
-            $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= "{$websiteId}:"; // chv:ABC:
-            $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= "{$websiteId}_"; // chv_ABC_
+            $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= "{$websiteId}:"; // chv:ABC: (tenant)
+            $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= "{$websiteId}_"; // chv_ABC_ (tenant)
         } else {
             $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= '_:'; // chv:_: (global)
             $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= '_'; // chv__ (global)
@@ -1423,6 +1466,7 @@ function loaderHandler(
         if (env()['CHEVERETO_CACHE_PASSWORD'] !== '') {
             $redis->auth(env()['CHEVERETO_CACHE_PASSWORD']);
         }
+        $redis->setOption(Redis::OPT_SERIALIZER, Redis::SERIALIZER_PHP);
         $keyValue = new KeyValue(
             $redis,
             env()['CHEVERETO_CACHE_KEY_PREFIX'],
@@ -1435,7 +1479,13 @@ function loaderHandler(
         );
     }
     new Cache($keyValue);
-    if ($_session === []
+    $isAPI = str_starts_with(
+        server()['REQUEST_URI'] ?? '',
+        env()['CHEVERETO_HOSTNAME_PATH']
+            . '/api/',
+    );
+    if (! ($isAPI || $isTenantsApi)
+        && $_session === []
         && session_status() === PHP_SESSION_NONE
         && ACCESS === 'web'
     ) {
@@ -1489,7 +1539,8 @@ function loaderHandler(
         );
     }
     define('HTTP_APP_PROTOCOL', Config::host()->isHttps() ? 'https' : 'http');
-    $httpPort = ! in_array(server()['SERVER_PORT'] ?? '80', ['80', '443'], false)
+    // TODO: Enable ENV to force using the port?
+    $httpPort = ! in_array(server()['SERVER_PORT'] ?? '80', ['80', '8080', '443'], false)
         ? ':' . server()['SERVER_PORT']
         : '';
     define('URL_APP_PUBLIC', HTTP_APP_PROTOCOL . '://' . Config::host()->hostname() . $httpPort . Config::host()->hostnamePath());
@@ -1851,6 +1902,14 @@ function getCounts(string ...$table): array
     return DB::queryFetchSingle($query);
 }
 
+function trialAwareLabel(): string
+{
+    return match ('1') {
+        env()['CHEVERETO_TRIAL'] => ' [trial]',
+        default => '',
+    };
+}
+
 function assertMaxCount(string $table): void
 {
     $tablesToEnv = [
@@ -1867,7 +1926,7 @@ function assertMaxCount(string $table): void
             code: 400
         );
     }
-    $maxLimit = (int) (env()[$tablesToEnv[$table]] ?? 0);
+    $maxLimit = (int) (envTrialAware()[$tablesToEnv[$table]] ?? 0);
     if ($maxLimit === 0) {
         return;
     }
@@ -1875,7 +1934,7 @@ function assertMaxCount(string $table): void
     if (($count + 1) > $maxLimit) {
         throw new OverflowException(
             message(
-                'Maximum number of %t% reached (limit %s%).',
+                'Maximum number of %t% reached (limit %s%).' . trialAwareLabel(),
                 t: $table,
                 s: strval($maxLimit),
             ),
@@ -1959,20 +2018,41 @@ function hashString(string $string): string
 
 function getPoweredByRemarks(): array
 {
+    $responsible = match (env()['CHEVERETO_CONTEXT']) {
+        'saas' => _s('operator'),
+        default => _s('owner'),
+    };
     $termsLink = '<a href="'
         . get_base_url(Handler::var('page_tos')['url'] ?? '')
         . '">Terms of Service</a>';
-    $softwareLicenseLink = '<a href="https://chevereto.com/license">Chevereto License</a>';
-    if (env()['CHEVERETO_EDITION'] === 'free') {
-        $softwareLicenseLink = '<a href="https://www.gnu.org/licenses/agpl-3.0.en.html#license-text">AGPL-3.0 license</a>';
+    $softwareLicenseLink = match (env()['CHEVERETO_EDITION']) {
+        'free' => '<a href="https://www.gnu.org/licenses/agpl-3.0.en.html#license-text">AGPL-3.0 license</a>',
+        default => '<a href="https://chevereto.com/license">Chevereto License</a>',
+    };
+    $websiteName = getSetting('website_name');
+    if (strtolower($websiteName) === 'chevereto') {
+        $websiteName = 'This website';
     }
-    $providerLink = '<a href="' . env()['CHEVERETO_PROVIDER_URL'] . '">' . env()['CHEVERETO_PROVIDER_NAME'] . '</a>';
+    $provider = match (env()['CHEVERETO_CONTEXT']) {
+        'saas' => [
+            'url' => env()['CHEVERETO_PROVIDER_URL'],
+            'label' => env()['CHEVERETO_PROVIDER_NAME'],
+        ],
+        default => [
+            'url' => get_public_url(),
+            'label' => $websiteName,
+        ],
+    };
+    $providerLink = message(
+        '<a href="{{ url }}">{{ label }}</a>',
+        ...$provider
+    );
     $about = _s('This service is based on Chevereto %edition edition software licensed under the %license.', [
         '%edition' => ucfirst(env()['CHEVERETO_EDITION']),
         '%license' => $softwareLicenseLink,
     ]);
     $liability = _s("This website is hosted in a service layer not provided by Chevereto Software, which hereby declare to do not have any control nor access to the management layer of this website and it won't be responsible for this service neither the damages that this service may cause.");
-    $content = _s('File uploads are stored and served from storage facilities provided by %s and managed by The Service Operator.', $providerLink);
+    $content = _s('File uploads are stored and served from storage facilities provided and managed by the %s of this website.', $responsible);
     if (env()['CHEVERETO_CONTEXT'] === 'saas') {
         $about = _s('This service operates using Chevereto %edition edition software licensed under the %license.', [
             '%edition' => ucfirst(env()['CHEVERETO_EDITION']),
@@ -1989,7 +2069,7 @@ function getPoweredByRemarks(): array
         $liability = _s('This website is hosted on a service layer provided by %s. Chevereto Software is not responsible for the operation of this service, nor for any damages that may result from its use.', $providerLink);
     }
     if (env()['CHEVERETO_ENABLE_LOCAL_STORAGE'] === '0') {
-        $content = _s('File uploads are stored and served using external storage providers configured by The Service Operator.')
+        $content = _s('File uploads are stored and served using external storage providers configured by the %s of this website.', $responsible)
             . ' '
             . _s('%s only hosts the database and application service layer.', $providerLink)
             . ' '
@@ -2029,8 +2109,7 @@ function runAppCommand(
     }
     $logger->write(
         <<<PLAIN
-        {$commandLine}
-        {$exit}
+        {$exit}: {$commandLine}
 
         PLAIN
     );

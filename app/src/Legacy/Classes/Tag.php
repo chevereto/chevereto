@@ -18,6 +18,7 @@ use function Chevereto\Legacy\assertNotStopWords;
 use function Chevereto\Legacy\G\get_base_url;
 use function Chevereto\Legacy\G\safe_html;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\envTrialAware;
 
 /**
  * Tags on the database are "as is" without any encoding
@@ -176,7 +177,7 @@ final class Tag
         if ($tag === []) {
             return;
         }
-        $maxTags = (int) env()['CHEVERETO_MAX_TAGS'];
+        $maxTags = (int) envTrialAware()['CHEVERETO_MAX_TAGS'];
         if ($maxTags > 0) {
             $currentTotalTags = Stat::getTotals()['tags'] ?? 0;
             if ($currentTotalTags >= $maxTags) {

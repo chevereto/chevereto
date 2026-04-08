@@ -10,9 +10,11 @@
  */
 
 use Chevere\Http\Exceptions\ControllerException;
+use Chevere\Http\Exceptions\MethodNotAllowedException;
 use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Type;
 use Chevere\Router\Container;
+use Chevere\Router\Exceptions\NotFoundException;
 use Chevere\Writer\NullWriter;
 use Chevereto\Config\Config;
 use Chevereto\Legacy\Classes\Cache;
@@ -125,11 +127,32 @@ if ($isTenantsApiRouting) {
     foreach ($headers as $name => $value) {
         $serverRequest = $serverRequest->withHeader($name, $value);
     }
-    $router = router(require dirname(__DIR__, 2) . '/routes/tenants-api-v4.php');
+    $routerPath = dirname(__DIR__, 2) . '/routes/';
+    $routes = [
+        require $routerPath . 'tenants-api-v4.php',
+    ];
+    if (in_array(server()['SERVER_NAME'], ['localhost', '127.0.0.1', '::1', 'app'])) {
+        $routes[] = require $routerPath . 'tenants-internal-api-v4.php';
+    }
+    $router = router(...$routes);
     $container = $container->withAutoInject(
         $router->dependencies(),
     );
-    $routed = $router->getRouted($serverRequest, $psr17Factory, container: $container);
+
+    try {
+        $routed = $router->getRouted($serverRequest, $psr17Factory, container: $container);
+    } catch (NotFoundException|MethodNotAllowedException $e) {
+        http_response_code($e->getCode());
+        header('Content-Type: application/json');
+        echo json_encode([
+            'error' => [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'list' => explode("\n", $e->getMessage()),
+            ],
+        ], JSON_PRETTY_PRINT);
+        exit();
+    }
     if ($routed->hasThrowable()
         && ! ($routed->throwable() instanceof ControllerException)
     ) {

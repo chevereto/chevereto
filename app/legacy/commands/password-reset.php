@@ -10,16 +10,22 @@
  */
 
 use Chevereto\Legacy\Classes\Login;
+use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\User;
 use function Chevere\Standard\randomString;
 
-$opts = getopt('C:u:') ?: [];
+$opts = getopt('C:u:x:') ?: [];
 $missing = [];
 if (! isset($opts['u'])) {
     echo '[Error] Missing username' . "\n";
     exit(255);
 }
-$password = randomString(24);
+$password = $opts['x'] ?? randomString(24);
+if (! preg_match('/' . Settings::USER_PASSWORD_PATTERN . '/', $password)) {
+    echo '[Error] Invalid password' . "\n";
+    exit(255);
+}
+
 $user = User::getSingle($opts['u'], 'username');
 if ($user === []) {
     echo '[Error] User not found' . "\n";

@@ -59,6 +59,16 @@ if (cheveretoVersionInstalled() !== ''
 
     throw new LogicException(message('Request denied. You must be an admin to be here.'), 403);
 }
+if ((env()['CHEVERETO_TENANT'] ?? '') !== '') {
+    if (env()['CHEVERETO_DB_TABLE_PREFIX'] === env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']
+        || env()['CHEVERETO_CACHE_KEY_PREFIX'] === env()['CHEVERETO_CACHE_KEY_ROOT_PREFIX']
+    ) {
+        throw new LogicException(
+            'Tenant namespace collision detected. Refusing install/update with root prefixes.',
+            600
+        );
+    }
+}
 if (function_exists('opcache_reset')) {
     try {
         opcache_reset();
@@ -121,7 +131,7 @@ $settings_updates = [
         // 'google' => 0, // Deprecated in 4.0.0-beta.11
         // 'google_client_id' => '',
         // 'google_client_secret' => '',
-        'guest_uploads' => 1,
+        'guest_uploads' => intval(env()['CHEVERETO_CONTEXT'] !== 'saas'),
         'listing_items_per_page' => '24',
         'maintenance' => 0,
         'captcha' => 0, //recaptcha
@@ -660,6 +670,36 @@ $settings_updates = [
     '4.4.0' => null,
     '4.4.1' => null,
     '4.4.2' => null,
+    '4.5.0' => [
+        'email_ahasend_api_key' => '',
+        'email_ses_access_key' => '',
+        'email_ses_secret_key' => '',
+        'email_azure_resource_name' => '',
+        'email_azure_key' => '',
+        'email_brevo_api_key' => '',
+        'email_infobip_api_key' => '',
+        'email_infobip_base_url' => '',
+        'email_mailgun_api_key' => '',
+        'email_mailgun_domain' => '',
+        'email_mailjet_access_key' => '',
+        'email_mailjet_secret_key' => '',
+        'email_mailomat_api_key' => '',
+        'email_mailpace_api_token' => '',
+        'email_mailersend_api_key' => '',
+        'email_mailtrap_api_token' => '',
+        'email_mandrill_api_key' => '',
+        'email_microsoftgraph_client_id' => '',
+        'email_microsoftgraph_client_secret' => '',
+        'email_microsoftgraph_tenant_id' => '',
+        'email_postal_api_key' => '',
+        'email_postal_base_url' => '',
+        'email_postmark_api_token' => '',
+        'email_resend_api_key' => '',
+        'email_scaleway_project_id' => '',
+        'email_scaleway_api_key' => '',
+        'email_sendgrid_api_key' => '',
+        'email_sweego_api_key' => '',
+    ],
 ];
 
 /**

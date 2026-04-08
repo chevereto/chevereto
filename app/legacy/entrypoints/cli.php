@@ -41,6 +41,7 @@ $options = [
     'setting-update',
     'database-migrate',
     'version',
+    'version-installed',
     'stats',
     'stats-rebuild',
 ];

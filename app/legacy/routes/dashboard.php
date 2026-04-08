@@ -21,7 +21,6 @@ use Chevereto\Legacy\Classes\Image;
 use Chevereto\Legacy\Classes\L10n;
 use Chevereto\Legacy\Classes\Listing;
 use Chevereto\Legacy\Classes\Login;
-use Chevereto\Legacy\Classes\Mailer;
 use Chevereto\Legacy\Classes\Page;
 use Chevereto\Legacy\Classes\ProjectArachnid;
 use Chevereto\Legacy\Classes\Settings;
@@ -34,7 +33,8 @@ use Chevereto\Legacy\G\Handler;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use Intervention\Image\ImageManagerStatic;
-use PHPMailer\PHPMailer\SMTP;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mailer\Transport\Smtp\SmtpTransport;
 use function Chevere\Standard\randomString;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\badgePaid;
@@ -73,9 +73,11 @@ use function Chevereto\Legacy\getSystemNotices;
 use function Chevereto\Legacy\getVariable;
 use function Chevereto\Legacy\headersNoCache;
 use function Chevereto\Legacy\strip_tags_content;
+use function Chevereto\Legacy\trialAwareLabel;
 use function Chevereto\Legacy\updateCheveretoNews;
 use function Chevereto\Legacy\upload_to_content_images;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\envTrialAware;
 use function Chevereto\Vars\files;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\post;
@@ -916,13 +918,13 @@ return function (Handler $handler) {
                                     $settings_pages['title'] = _s('Add page');
                                     $settings_pages['doing'] = 'add';
                                     $pagesCount = Page::countAll();
-                                    $maxPages = (int) env()['CHEVERETO_MAX_PAGES'];
+                                    $maxPages = (int) envTrialAware()['CHEVERETO_MAX_PAGES'];
                                     if ($maxPages !== 0) {
                                         if ($pagesCount >= $maxPages) {
                                             $is_error = true;
                                             $error_title = _s('Quota limit reached');
                                             $error_message = _s(
-                                                'Maximum number of pages allowed reached (limit %s).',
+                                                'Maximum number of pages allowed reached (limit %s).' . trialAwareLabel(),
                                                 $maxPages
                                             );
                                             $handler::setVar('error_title', $error_title);
@@ -1168,7 +1170,28 @@ return function (Handler $handler) {
                         // 'page_file_path_absolute' => $POST['page_file_path_absolute'],
                     ]);
                 }
-                $mailApis = ['smtp'];
+                $mailApis = [
+                    'smtp',
+                    'ahasend',
+                    'ses',
+                    'azure',
+                    'brevo',
+                    'infobip',
+                    'mailgun',
+                    'mailjet',
+                    'mailomat',
+                    'mailpace',
+                    'mailersend',
+                    'mailtrap',
+                    'mandrill',
+                    'microsoftgraph',
+                    'postal',
+                    'postmark',
+                    'resend',
+                    'scaleway',
+                    'sendgrid',
+                    'sweego',
+                ];
                 if (env()['CHEVERETO_SERVICING'] !== 'docker') {
                     $mailApis[] = 'mail';
                 }
@@ -1261,14 +1284,6 @@ return function (Handler $handler) {
                     'email_mode' => [
                         'validate' => isset($POST['email_mode']) && in_array($POST['email_mode'], $mailApis, true),
                         'error_msg' => _s('Invalid email mode'),
-                    ],
-                    'email_smtp_server_port' => [
-                        'validate' => isset($POST['email_smtp_server_port']) && $POST['email_smtp_server_port'] > 0 && $POST['email_smtp_server_port'] < 65536,
-                        'error_msg' => _s('Invalid SMTP port'),
-                    ],
-                    'email_smtp_server_security' => [
-                        'validate' => isset($POST['email_smtp_server_security']) && in_array($POST['email_smtp_server_security'], ['tls', 'ssl', 'unsecured'], true),
-                        'error_msg' => _s('Invalid SMTP security'),
                     ],
                     'website_mode' => [
                         'validate' => isset($POST['website_mode']) && in_array($POST['website_mode'], ['community', 'personal'], true),
@@ -1635,52 +1650,116 @@ return function (Handler $handler) {
                     }
                 }
 
-                if (isset($POST['email_mode']) && $POST['email_mode'] === 'smtp') {
-                    $email_smtp_validate = [
-                        'email_smtp_server' => _s('Invalid SMTP server'),
-                        // 'email_smtp_server_username' => _s('Invalid SMTP username'),
+                $emailMode = $POST['email_mode'] ?? '';
+                $emailApiRequiredFields = [
+                    'smtp' => ['email_smtp_server', 'email_smtp_server_port', 'email_smtp_server_security'],
+                    'ahasend' => ['email_ahasend_api_key'],
+                    'ses' => ['email_ses_access_key', 'email_ses_secret_key'],
+                    'azure' => ['email_azure_resource_name', 'email_azure_key'],
+                    'brevo' => ['email_brevo_api_key'],
+                    'infobip' => ['email_infobip_api_key', 'email_infobip_base_url'],
+                    'mailersend' => ['email_mailersend_api_key'],
+                    'mailgun' => ['email_mailgun_api_key', 'email_mailgun_domain'],
+                    'mailjet' => ['email_mailjet_access_key', 'email_mailjet_secret_key'],
+                    'mailomat' => ['email_mailomat_api_key'],
+                    'mailpace' => ['email_mailpace_api_token'],
+                    'mailtrap' => ['email_mailtrap_api_token'],
+                    'mandrill' => ['email_mandrill_api_key'],
+                    'microsoftgraph' => ['email_microsoftgraph_client_id', 'email_microsoftgraph_client_secret', 'email_microsoftgraph_tenant_id'],
+                    'postal' => ['email_postal_api_key', 'email_postal_base_url'],
+                    'postmark' => ['email_postmark_api_token'],
+                    'resend' => ['email_resend_api_key'],
+                    'scaleway' => ['email_scaleway_project_id', 'email_scaleway_api_key'],
+                    'sendgrid' => ['email_sendgrid_api_key'],
+                    'sweego' => ['email_sweego_api_key'],
+                ];
+                if ((env()['CHEVERETO_SERVICING'] !== 'server' && $emailMode === 'mail')
+                        || (env()['CHEVERETO_CONTEXT'] === 'saas' && in_array($emailMode, ['smtp', 'mail'], true))
+                ) {
+                    $validations['email_mode'] = [
+                        'validate' => false,
+                        'error_msg' => _s('The %s API is not available in this context', $emailMode),
                     ];
-                    foreach ($email_smtp_validate as $k => $v) {
-                        $validations[$k] = [
-                            'validate' => (bool) $POST[$k],
-                            'error_msg' => $v,
+                }
+                if ($validations === [] && isset($emailApiRequiredFields[$emailMode])) {
+                    foreach ($emailApiRequiredFields[$emailMode] as $field) {
+                        $validations[$field] = [
+                            'validate' => ! empty($POST[$field]),
+                            'error_msg' => _s('Invalid value'),
                         ];
                     }
-
-                    $email_validate = [
-                        'email_smtp_server',
-                        'email_smtp_server_port',
-                        // 'email_smtp_server_username',
-                        // 'email_smtp_server_password',
-                        'email_smtp_server_security',
-                    ];
-                    $email_error = false;
-                    foreach ($email_validate as $k) {
-                        if (! $validations[$k]['validate']) {
-                            $email_error = true;
-                        }
+                    $emailFieldsValid = array_reduce(
+                        $emailApiRequiredFields[$emailMode],
+                        fn (bool $carry, string $field) => $carry && ($validations[$field]['validate'] ?? false),
+                        true
+                    );
+                    if ($emailMode === 'smtp') {
+                        $validations['email_smtp_server'] = [
+                            'validate' => (bool) ($POST['email_smtp_server'] ?? ''),
+                            'error_msg' => _s('Invalid SMTP server'),
+                        ];
+                        $validations['email_smtp_server_port'] = [
+                            'validate' => isset($POST['email_smtp_server_port']) && $POST['email_smtp_server_port'] > 0 && $POST['email_smtp_server_port'] < 65536,
+                            'error_msg' => _s('Invalid SMTP port'),
+                        ];
+                        $validations['email_smtp_server_security'] = [
+                            'validate' => isset($POST['email_smtp_server_security']) && in_array($POST['email_smtp_server_security'], ['tls', 'ssl', 'unsecured'], true),
+                            'error_msg' => _s('Invalid SMTP security'),
+                        ];
+                        $emailFieldsValid = $validations['email_smtp_server']['validate']
+                            && $validations['email_smtp_server_port']['validate']
+                            && $validations['email_smtp_server_security']['validate'];
                     }
-                    if (! $email_error) {
+                    if ($emailFieldsValid) {
                         try {
-                            $mail = new Mailer(true);
-                            $mail->Username = $POST['email_smtp_server_username'] ?? '';
-                            $mail->Password = $POST['email_smtp_server_password'] ?? '';
-                            $mail->SMTPAuth = $mail->Username !== '' || $mail->Password !== '';
-                            $mail->SMTPSecure = in_array($POST['email_smtp_server_security'], ['ssl', 'tls'])
-                                ? $POST['email_smtp_server_security']
-                                : '';
-                            $mail->SMTPAutoTLS = in_array($POST['email_smtp_server_security'], ['ssl', 'tls']);
-                            $mail->Host = (string) $POST['email_smtp_server'];
-                            $mail->Port = (int) $POST['email_smtp_server_port'];
-                            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-                            $GLOBALS['SMTPDebug'] = '';
-                            $mail->Debugoutput = function ($str) {
-                                $GLOBALS['SMTPDebug'] .= "{$str}\n";
+                            $dsn = match ($emailMode) {
+                                'smtp' => (function () use ($POST): string {
+                                    $username = urlencode($POST['email_smtp_server_username'] ?? '');
+                                    $password = urlencode($POST['email_smtp_server_password'] ?? '');
+                                    $host = (string) $POST['email_smtp_server'];
+                                    $port = (int) $POST['email_smtp_server_port'];
+                                    $security = $POST['email_smtp_server_security'];
+                                    $scheme = $security === 'ssl' ? 'smtps' : 'smtp';
+                                    $auth = ($username !== '' || $password !== '') ? "{$username}:{$password}@" : '';
+                                    $dsn = "{$scheme}://{$auth}{$host}:{$port}";
+                                    if ($security === 'tls') {
+                                        $dsn .= '?encryption=tls';
+                                    } elseif (! in_array($security, ['ssl', 'tls'], true)) {
+                                        $dsn .= '?verify_peer=false';
+                                    }
+
+                                    return $dsn;
+                                })(),
+                                'ahasend' => 'ahasend+api://' . urlencode($POST['email_ahasend_api_key']) . '@default',
+                                'ses' => 'ses+api://' . urlencode($POST['email_ses_access_key']) . ':' . urlencode($POST['email_ses_secret_key']) . '@default',
+                                'azure' => 'azure+api://' . urlencode($POST['email_azure_resource_name']) . ':' . urlencode($POST['email_azure_key']) . '@default',
+                                'brevo' => 'brevo+api://' . urlencode($POST['email_brevo_api_key']) . '@default',
+                                'infobip' => 'infobip+api://' . urlencode($POST['email_infobip_api_key']) . '@' . urlencode($POST['email_infobip_base_url']),
+                                'mailersend' => 'mailersend+api://' . urlencode($POST['email_mailersend_api_key']) . '@default',
+                                'mailgun' => 'mailgun+api://' . urlencode($POST['email_mailgun_api_key']) . ':' . urlencode($POST['email_mailgun_domain']) . '@default',
+                                'mailjet' => 'mailjet+api://' . urlencode($POST['email_mailjet_access_key']) . ':' . urlencode($POST['email_mailjet_secret_key']) . '@default',
+                                'mailomat' => 'mailomat+api://' . urlencode($POST['email_mailomat_api_key']) . '@default',
+                                'mailpace' => 'mailpace+api://' . urlencode($POST['email_mailpace_api_token']) . '@default',
+                                'mailtrap' => 'mailtrap+api://' . urlencode($POST['email_mailtrap_api_token']) . '@default',
+                                'mandrill' => 'mandrill+api://' . urlencode($POST['email_mandrill_api_key']) . '@default',
+                                'microsoftgraph' => 'microsoftgraph+api://' . urlencode($POST['email_microsoftgraph_client_id']) . ':' . urlencode($POST['email_microsoftgraph_client_secret']) . '@default?tenantId=' . urlencode($POST['email_microsoftgraph_tenant_id']),
+                                'postal' => 'postal+api://' . urlencode($POST['email_postal_api_key']) . '@' . urlencode($POST['email_postal_base_url']),
+                                'postmark' => 'postmark+api://' . urlencode($POST['email_postmark_api_token']) . '@default',
+                                'resend' => 'resend+api://' . urlencode($POST['email_resend_api_key']) . '@default',
+                                'scaleway' => 'scaleway+api://' . urlencode($POST['email_scaleway_project_id']) . ':' . urlencode($POST['email_scaleway_api_key']) . '@default',
+                                'sendgrid' => 'sendgrid+api://' . urlencode($POST['email_sendgrid_api_key']) . '@default',
+                                'sweego' => 'sweego+api://' . urlencode($POST['email_sweego_api_key']) . '@default',
                             };
-                            $GLOBALS['SMTPDebug'] = "SMTP Debug>>\n" . $GLOBALS['SMTPDebug'];
-                            $mail->SmtpConnect();
-                        } catch (Exception $e) {
-                            $GLOBALS['SMTPDebug'] = "SMTP Exception>>\n" . ($mail->ErrorInfo ?: $e->getMessage());
+                            $transport = Transport::fromDsn($dsn);
+                            if ($transport instanceof SmtpTransport) {
+                                $GLOBALS['SMTPDebug'] = '';
+                                $transport->start();
+                                $GLOBALS['SMTPDebug'] = "SMTP Debug>>\nConnected successfully";
+                            } else {
+                                $GLOBALS['SMTPDebug'] = "Transport configured: {$emailMode}";
+                            }
+                        } catch (Throwable $e) {
+                            $GLOBALS['SMTPDebug'] = "Error>>\n" . $e->getMessage();
                         }
                     }
                 }

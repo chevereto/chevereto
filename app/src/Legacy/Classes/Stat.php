@@ -17,7 +17,9 @@ use LogicException;
 use OverflowException;
 use function Chevere\Message\message;
 use function Chevereto\Legacy\G\datetimegmt;
+use function Chevereto\Legacy\trialAwareLabel;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\envTrialAware;
 
 class Stat
 {
@@ -127,7 +129,7 @@ class Stat
                 600
             );
         }
-        $maxLimit = (int) (env()[$env] ?? 0);
+        $maxLimit = (int) (envTrialAware()[$env] ?? 0);
         if ($maxLimit === 0) {
             return;
         }
@@ -135,7 +137,7 @@ class Stat
         if (($count + $add) > $maxLimit) {
             throw new OverflowException(
                 message(
-                    'Maximum %t% reached (limit %s%).',
+                    'Maximum %t% reached (limit %s%).' . trialAwareLabel(),
                     t: $env,
                     s: strval($maxLimit),
                 ),
@@ -449,6 +451,7 @@ class Stat
             'file_likes' => 's.stat_image_likes',
             'album_likes' => 's.stat_album_likes',
             'storage_used' => 's.stat_disk_used',
+            'login_providers' => 'u.login_providers',
             'admins' => 'u.admins',
             'managers' => 'u.managers',
             'pages' => 'u.pages',
@@ -469,9 +472,7 @@ class Stat
         $selectColumns = implode(',', $pairs);
         $select = match ($asJsonColumn) {
             true => <<<SQL
-            SELECT JSON_OBJECT(
-                {$selectColumns}
-            ) AS stats
+            SELECT JSON_OBJECT({$selectColumns}) AS stats
             SQL,
             false => <<<SQL
             SELECT {$selectColumns}
@@ -487,7 +488,8 @@ class Stat
                 SUM(CASE WHEN `user_is_manager` = 1 THEN 1 ELSE 0 END) AS managers,
                 (SELECT COUNT(*) FROM `{$tablePrefix}pages`) AS pages,
                 (SELECT COUNT(*) FROM `{$tablePrefix}storages` WHERE storage_deleted_at IS NULL) AS storages,
-                (SELECT COUNT(*) FROM `{$tablePrefix}categories`) AS categories
+                (SELECT COUNT(*) FROM `{$tablePrefix}categories`) AS categories,
+                (SELECT COUNT(*) FROM `{$tablePrefix}login_providers` WHERE login_provider_is_enabled = 1) AS login_providers
             FROM `{$tablePrefix}users`
         ) u
         WHERE s.stat_type = "total"

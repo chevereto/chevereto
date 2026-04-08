@@ -33,6 +33,7 @@ class TenantPlanPatch extends Controller
     public function __invoke(string $id): void
     {
         try {
+            $this->tenants->getPlan($id);
             $this->tenants->editPlan(
                 planId: $id,
                 limits: $this->bodyParsed()->optional('limits')?->array(),

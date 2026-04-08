@@ -292,6 +292,7 @@ return function (Handler $handler) {
         $meta_description = $image['description'];
     } else {
         $image_tr = [
+            '%s' => _s(mb_ucfirst($image['type'])),
             '%i' => $image[$image['title'] === null ? 'filename' : 'title'],
             '%a' => $image['album']['name'] ?? '',
             '%w' => getSetting('website_name'),
@@ -301,11 +302,11 @@ return function (Handler $handler) {
             || (
                 ! ((bool) ($image['user']['is_private'] ?? false)) && isset($image['album']['name'])
             )) {
-            $meta_description = _s('Image %i in %a album', $image_tr);
+            $meta_description = _s('%s %i in %a album', $image_tr);
         } elseif (isset($image['category']['id'])) {
-            $meta_description = _s('Image %i in %c category', $image_tr);
+            $meta_description = _s('%s %i in %c category', $image_tr);
         } else {
-            $meta_description = _s('Image %i hosted in %w', $image_tr);
+            $meta_description = _s('%s %i hosted in %w', $image_tr);
         }
     }
     $handler::setVar('meta_description', $meta_description ?? '');

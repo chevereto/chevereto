@@ -19,13 +19,11 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 if (Login::isLoggedUser()) {
     $user_albums = [];
-    if (Login::getUser()['album_count'] > 0) {
-        $user_albums = Handler::cond('owner')
-            && Handler::var('user_items_editor') !== null
-            && isset(Handler::var('user_items_editor')['user_albums'])
-            ? Handler::var('user_items_editor')['user_albums']
-            : User::getAlbums(Login::getUser());
-    }
+    $user_albums = Handler::cond('owner')
+		&& Handler::var('user_items_editor') !== null
+		&& isset(Handler::var('user_items_editor')['user_albums'])
+		? Handler::var('user_items_editor')['user_albums']
+		: User::getAlbums(Login::getUser());
 }
 ?>
 <div id="anywhere-upload" class="no-select upload-box upload-box--fixed upload-box--hidden queueEmpty" data-queue-size="0">
@@ -164,16 +162,23 @@ if (Login::isLoggedUser()) {
 					</div>
 <?php
 						}
-                        if (Login::isLoggedUser() && Login::getUser()['album_count'] > 0) {
+                        if (Login::isLoggedUser()) {
+							$isSelectedAlbum = Handler::var('album') !== [] && isset(Handler::var('album')['id_encoded']);
 ?>
 					<div class="input-label upload-input-col center-box text-align-left">
 						<label for="upload-album-id"><?php _ne('Album', 'Albums', 1); ?></label>
 						<select name="upload-album-id" id="upload-album-id" class="text-input">
+							<option value="_" disabled<?php echo !$isSelectedAlbum ? ' selected' : ''; ?>><?php _se('Select %s', _s('album')); ?></option>
+							<option value><?php _se('Create or move to %s after upload', _s('album')); ?></option>
 						<?php
+
                             $user_album_options_html = [];
                             foreach ($user_albums as $album) {
+								if(!$album['id_encoded']) {
+									continue;
+								}
                                 $user_album_options_html[] = strtr('<option value="%id"%selected>%name</option>', [
-                                            '%selected' => (Handler::var('album') !== [] && isset(Handler::var('album')['id_encoded']) && Handler::var('album')['id_encoded'] == $album['id_encoded']) ? ' selected' : '',
+                                            '%selected' => ($isSelectedAlbum && isset(Handler::var('album')['id_encoded']) && Handler::var('album')['id_encoded'] == $album['id_encoded']) ? ' selected' : '',
                                             '%id' => $album['id_encoded'],
                                             '%name' => $album['indent_string'] . $album['name_with_privacy_readable_html']
                                         ]);

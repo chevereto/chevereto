@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ubuntu-22.04]
-        php-versions: ["8.0", "8.1"]
+        php-versions: ["8.2"]
     env:
       extensions: pcov, imagick
       tools: composer

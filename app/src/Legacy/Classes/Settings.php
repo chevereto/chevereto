@@ -32,6 +32,34 @@ class Settings
         'email_smtp_server_password',
         'email_smtp_server_port',
         'email_smtp_server_username',
+        'email_ahasend_api_key',
+        'email_ses_access_key',
+        'email_ses_secret_key',
+        'email_azure_resource_name',
+        'email_azure_key',
+        'email_brevo_api_key',
+        'email_infobip_api_key',
+        'email_infobip_base_url',
+        'email_mailgun_api_key',
+        'email_mailgun_domain',
+        'email_mailjet_access_key',
+        'email_mailjet_secret_key',
+        'email_mailomat_api_key',
+        'email_mailpace_api_token',
+        'email_mailersend_api_key',
+        'email_mailtrap_api_token',
+        'email_mandrill_api_key',
+        'email_microsoftgraph_client_id',
+        'email_microsoftgraph_client_secret',
+        'email_microsoftgraph_tenant_id',
+        'email_postal_api_key',
+        'email_postal_base_url',
+        'email_postmark_api_token',
+        'email_resend_api_key',
+        'email_scaleway_project_id',
+        'email_scaleway_api_key',
+        'email_sendgrid_api_key',
+        'email_sweego_api_key',
         'captcha_secret',
         'disqus_secret_key',
         'akismet_api_key',
@@ -312,6 +340,13 @@ class Settings
                 'upload_image_path' => 'images',
             ],
         ],
+        'CHEVERETO_ENABLE_GUESTS' => ['0',
+            [
+                'enable_api_guest' => false,
+                'guest_uploads' => false,
+                'guest_albums' => false,
+            ],
+        ],
     ];
 
     public const STOCK = [
@@ -421,6 +456,34 @@ class Settings
         'theme_palette_user_select' => true,
         'enable_api_user' => true,
         'enable_api_guest' => false,
+        'email_ahasend_api_key' => '',
+        'email_ses_access_key' => '',
+        'email_ses_secret_key' => '',
+        'email_azure_resource_name' => '',
+        'email_azure_key' => '',
+        'email_brevo_api_key' => '',
+        'email_infobip_api_key' => '',
+        'email_infobip_base_url' => '',
+        'email_mailgun_api_key' => '',
+        'email_mailgun_domain' => '',
+        'email_mailjet_access_key' => '',
+        'email_mailjet_secret_key' => '',
+        'email_mailomat_api_key' => '',
+        'email_mailpace_api_token' => '',
+        'email_mailersend_api_key' => '',
+        'email_mailtrap_api_token' => '',
+        'email_mandrill_api_key' => '',
+        'email_microsoftgraph_client_id' => '',
+        'email_microsoftgraph_client_secret' => '',
+        'email_microsoftgraph_tenant_id' => '',
+        'email_postal_api_key' => '',
+        'email_postal_base_url' => '',
+        'email_postmark_api_token' => '',
+        'email_resend_api_key' => '',
+        'email_scaleway_project_id' => '',
+        'email_scaleway_api_key' => '',
+        'email_sendgrid_api_key' => '',
+        'email_sweego_api_key' => '',
     ];
 
     public const USERNAME_MIN_LENGTH = 3;
@@ -804,7 +867,6 @@ class Settings
         foreach ($binds as $bindK => $bindV) {
             $db->bind($bindK, $bindV);
         }
-
         $return = $db->exec();
         if ($return) {
             self::cache();
