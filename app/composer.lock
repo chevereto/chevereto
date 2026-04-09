@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43b717369b031292cb23399f2243b065",
+    "content-hash": "42e183ca2a1b3f9bda3110062c461f87",
     "packages": [
         {
             "name": "async-aws/core",
@@ -195,16 +195,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.377.0",
+            "version": "3.378.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "573c569d20710a902446688a0439b53fef256e3a"
+                "reference": "7a95e0665ad13c2cb8999d64439cf969c86724dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/573c569d20710a902446688a0439b53fef256e3a",
-                "reference": "573c569d20710a902446688a0439b53fef256e3a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7a95e0665ad13c2cb8999d64439cf969c86724dd",
+                "reference": "7a95e0665ad13c2cb8999d64439cf969c86724dd",
                 "shasum": ""
             },
             "require": {
@@ -286,9 +286,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.377.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.378.0"
             },
-            "time": "2026-04-07T18:14:36+00:00"
+            "time": "2026-04-08T18:13:19+00:00"
         },
         {
             "name": "chevere/action",
@@ -822,6 +822,56 @@
                 "source": "https://github.com/chevere/router/tree/0.9.1"
             },
             "time": "2025-11-27T17:22:51+00:00"
+        },
+        {
+            "name": "chevere/standard",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chevere/standard.git",
+                "reference": "bf2b876149b42a93f3bca5a81671f31caf963528"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chevere/standard/zipball/bf2b876149b42a93f3bca5a81671f31caf963528",
+                "reference": "bf2b876149b42a93f3bca5a81671f31caf963528",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.9",
+                "phpunit/phpunit": "^9.5",
+                "symplify/easy-coding-standard": "^11.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Chevere\\Standard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rodolfo Berrios",
+                    "email": "rodolfo@chevere.org",
+                    "homepage": "https://chevere.org"
+                }
+            ],
+            "description": "A chevere standard package",
+            "homepage": "https://chevere.org",
+            "support": {
+                "issues": "https://github.com/chevere/standard/issues",
+                "source": "https://github.com/chevere/standard/tree/1.0.1"
+            },
+            "time": "2024-06-01T16:48:38+00:00"
         },
         {
             "name": "chevere/throwable-handler",
@@ -7643,6 +7693,73 @@
                 }
             ],
             "time": "2026-02-04T18:08:13+00:00"
+        },
+        {
+            "name": "xrdebug/php",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xrdebug/php.git",
+                "reference": "3d643e2ef4365703995a0afeec174db0e16bfcfa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xrdebug/php/zipball/3d643e2ef4365703995a0afeec174db0e16bfcfa",
+                "reference": "3d643e2ef4365703995a0afeec174db0e16bfcfa",
+                "shasum": ""
+            },
+            "require": {
+                "chevere/message": "^1.0.0",
+                "chevere/parameter": "^1.0|^2.0.0",
+                "chevere/standard": "^1.0.1",
+                "chevere/throwable-handler": "^1.0.7",
+                "chevere/trace": "^2.0.2",
+                "chevere/var-dump": "^2.0.9",
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": "^8.1",
+                "phpseclib/phpseclib": "~3.0"
+            },
+            "require-dev": {
+                "dg/bypass-finals": "^1.4",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^9.5",
+                "symplify/easy-coding-standard": "^11.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions.php"
+                ],
+                "psr-4": {
+                    "Chevere\\xrDebug\\PHP\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Rodolfo Berrios",
+                    "email": "rodolfo@chevere.org",
+                    "homepage": "https://rodolfoberrios.com"
+                }
+            ],
+            "description": "PHP client library for xrDebug",
+            "homepage": "https://github.com/xrdebug/php",
+            "keywords": [
+                "chevere",
+                "debug",
+                "debugging",
+                "dump",
+                "xrdebug"
+            ],
+            "support": {
+                "issues": "https://github.com/xrdebug/php/issues",
+                "source": "https://github.com/xrdebug/php/tree/3.0.4"
+            },
+            "time": "2026-03-18T16:49:22+00:00"
         }
     ],
     "packages-dev": [

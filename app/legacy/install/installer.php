@@ -700,6 +700,7 @@ $settings_updates = [
         'email_sendgrid_api_key' => '',
         'email_sweego_api_key' => '',
     ],
+    '4.5.1' => null,
 ];
 
 /**

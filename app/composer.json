@@ -69,7 +69,9 @@
         "symfony/resend-mailer": "^7.4",
         "symfony/scaleway-mailer": "^7.4",
         "symfony/sendgrid-mailer": "^7.4",
-        "symfony/sweego-mailer": "^7.4"
+        "symfony/sweego-mailer": "^7.4",
+        "chevere/standard": "^1.0",
+        "xrdebug/php": "^3.0"
     },
     "autoload": {
         "files": [
