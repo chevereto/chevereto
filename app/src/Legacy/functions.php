@@ -412,22 +412,27 @@ function getSystemNotices(): array
                 . '</a>'
             );
     }
+    $gotoEmailSettings = _s('Go to %emailSettings% to fix this.', [
+        '%emailSettings%' => '<a href="'
+            . get_base_url('dashboard/settings/email')
+            . '"><i class="fas fa-at margin-right-035em"></i>'
+            . _s('%s settings', _s('Email')) . '</a>',
+    ]);
     if (preg_match('/@chevereto\.internal/', getSetting('email_from_email'))
         || preg_match('/@chevereto\.internal/', getSetting('email_incoming_email'))
-        || (
-            env()['CHEVERETO_SERVICING'] !== 'server'
-            && empty(getSetting('email_smtp_server'))
-        )
     ) {
         $system_notices[] = _s(
-            "You haven't changed the default email settings. Go to %emailSettings% to fix this.",
-            [
-                '%emailSettings%' => '<a href="'
-                    . get_base_url('dashboard/settings/email')
-                    . '"><i class="fas fa-at margin-right-035em"></i>'
-                    . _s('%s settings', _s('Email')) . '</a>',
-            ]
-        );
+            'You need to change the default email addresses.',
+        )
+        . ' '
+        . $gotoEmailSettings;
+    }
+    if (empty(getSetting('email_mode'))) {
+        $system_notices[] = _s(
+            "There's no email provider configured.",
+        )
+        . ' '
+        . $gotoEmailSettings;
     }
     $minActiveStorages = (int) env()['CHEVERETO_MIN_STORAGES_ACTIVE'];
     $storagesActive = getVariable('storages_active')->nullInt() ?? 0;
@@ -456,7 +461,7 @@ function getSystemNotices(): array
             'You need to configure %s to upload website assets.',
             '<a href="'
             . get_base_url('dashboard/settings/site-storage')
-            . '"><i class="fas fa-hdd margin-right-035em"></i>'
+            . '"><i class="fas fa-warehouse margin-right-035em"></i>'
             . _s('Site storage')
             . '</a>'
         );
@@ -1192,6 +1197,16 @@ function loaderHandler(
     $isHttps = strtolower($_server['HTTPS'] ?? '') === 'on'
         || ($_server['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https'
         || preg_match('#https#i', $_server['HTTP_CF_VISITOR'] ?? '');
+    $forwardedHostHeader = $_env['CHEVERETO_HEADER_FORWARDED_HOST'] ?? ENV_DEFAULT['CHEVERETO_HEADER_FORWARDED_HOST'];
+    $forwardedSecretHeader = $_env['CHEVERETO_HEADER_ROUTER_SECRET'] ?? ENV_DEFAULT['CHEVERETO_HEADER_ROUTER_SECRET'];
+    $knownRouterSecret = $_env['CHEVERETO_ROUTER_SECRET'] ?? ENV_DEFAULT['CHEVERETO_ROUTER_SECRET'];
+    $userRouterSecret = $_server[$forwardedSecretHeader] ?? '';
+    if ($knownRouterSecret !== ''
+        && hash_equals($knownRouterSecret, $userRouterSecret)
+    ) {
+        $_server['HTTP_HOST'] = $_server[$forwardedHostHeader] ?? $_server['HTTP_HOST'];
+        $_server['SERVER_NAME'] = $_server[$forwardedHostHeader] ?? $_server['SERVER_NAME'];
+    }
     $envDefault = array_merge(ENV_DEFAULT, [
         'CHEVERETO_HOSTNAME' => $_server['SERVER_NAME'] ?? gethostname(),
         'CHEVERETO_HTTPS' => (string) (int) $isHttps,
@@ -1204,18 +1219,6 @@ function loaderHandler(
     $envVar['CHEVERETO_TENANT_HANDLE'] = '';
     $envVar['CHEVERETO_DB_TABLE_ROOT_PREFIX'] = $envVar['CHEVERETO_DB_TABLE_PREFIX'];
     $envVar['CHEVERETO_CACHE_KEY_ROOT_PREFIX'] = $envVar['CHEVERETO_CACHE_KEY_PREFIX'];
-    // try {
-    //     $xrArguments = [
-    //         'isEnabled' => true,
-    //         'isHttps' => false,
-    //         'host' => 'host.docker.internal',
-    //         'port' => 27420,
-    //     ];
-
-    //     new XrInstance(new Xr(...$xrArguments));
-    // } catch (Throwable) {
-    //     // Silent failover
-    // }
     $isTenantsApi = false;
     if ($envVar['CHEVERETO_ENABLE_TENANTS'] === '1' || $envVar['CHEVERETO_TENANT'] !== '') {
         $redis = new Redis();
@@ -1239,13 +1242,27 @@ function loaderHandler(
             $hostname = $websiteOptions['hostname'] ?? '';
         } else {
             $hostname = $_server['SERVER_NAME'];
+            $internalHostname = $envVar['CHEVERETO_INTERNAL_HOSTNAME'] ?? '';
             if (($envVar['CHEVERETO_SERVICING'] ?? '') === 'docker'
-                && $hostname === 'host.docker.internal'
+                && (
+                    $hostname === 'host.docker.internal'
+                    || ($internalHostname !== '' && $hostname === $internalHostname)
+                )
             ) {
                 $hostname = $envVar['CHEVERETO_HOSTNAME'];
             }
-            $isRootHostname = hash_equals($envVar['CHEVERETO_HOSTNAME'], $hostname);
-            $isLocalhost = in_array($hostname, ['localhost', '127.0.0.1', '::1', $envVar['CHEVERETO_SERVICE_NAME']], true);
+            $isRootHostname = hash_equals($envVar['CHEVERETO_HOSTNAME'], $hostname)
+                || hash_equals($envVar['CHEVERETO_INTERNAL_HOSTNAME'], $hostname);
+            $isLocalhost = in_array(
+                $hostname,
+                [
+                    'localhost',
+                    '127.0.0.1',
+                    '::1',
+                    $envVar['CHEVERETO_INTERNAL_HOSTNAME'],
+                ],
+                true
+            );
             $isTenantsApi = ($isRootHostname || $isLocalhost)
                 && str_starts_with(
                     $_server['REQUEST_URI'],
@@ -1339,7 +1356,7 @@ function loaderHandler(
             : [
                 'CHEVERETO_TENANTS_API_KEY_SECRET' => '',
                 'CHEVERETO_TENANTS_API_REQUEST_SECRET' => '',
-                'CHEVERETO_TENANTS_API_ALLOW_LIST' => '',
+                'CHEVERETO_TENANTS_API_IP_ALLOW_LIST' => '',
             ];
         $envVar = array_merge($envVar, $enforced, $reEnforced, [
             'CHEVERETO_ENABLE_TENANTS' => '0',
@@ -1539,7 +1556,6 @@ function loaderHandler(
         );
     }
     define('HTTP_APP_PROTOCOL', Config::host()->isHttps() ? 'https' : 'http');
-    // TODO: Enable ENV to force using the port?
     $httpPort = ! in_array(server()['SERVER_PORT'] ?? '80', ['80', '8080', '443'], false)
         ? ':' . server()['SERVER_PORT']
         : '';

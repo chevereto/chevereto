@@ -23,7 +23,7 @@ return routes(
 )
     ->withAppendMiddleware(
         RestrictIpAccess::with(
-            allowList: '127.0.0.1,::1,172.16.0.0/12,192.168.65.0/24',
+            allowList: '127.0.0.1,::1,172.16.0.0/12',
         ),
         TenantsApiKeyAuthorization::class,
     );

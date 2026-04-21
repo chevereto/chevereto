@@ -13,6 +13,8 @@ use Chevere\VarDump\VarDumpInstance;
 use Chevere\Writer\StreamWriter;
 use Chevere\Writer\Writers;
 use Chevere\Writer\WritersInstance;
+use Chevere\xrDebug\PHP\Xr;
+use Chevere\xrDebug\PHP\XrInstance;
 use function Chevere\VarDump\varDumpHtml;
 use function Chevere\Writer\streamFor;
 
@@ -36,6 +38,20 @@ try {
     );
     if (PHP_SAPI !== 'cli') {
         new VarDumpInstance(varDumpHtml());
+    }
+
+    try {
+        $xrArguments = [
+            'isEnabled' => (bool) (getenv('CHEVERETO_ENABLE_XRDEBUG') ?: 0),
+            'isHttps' => (bool) (getenv('CHEVERETO_XRDEBUG_HTTPS') ?: 0),
+            'host' => (string) (getenv('CHEVERETO_XRDEBUG_HOST') ?: 'localhost'),
+            'port' => (int) (getenv('CHEVERETO_XRDEBUG_PORT') ?: 27420),
+            'key' => (string) (getenv('CHEVERETO_XRDEBUG_KEY') ?: ''),
+        ];
+
+        new XrInstance(new Xr(...$xrArguments));
+    } catch (Throwable) {
+        // Silent failover
     }
     require_once __DIR__ . '/register-handlers.php';
     $posix_getuid = function_exists('posix_getuid')

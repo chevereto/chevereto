@@ -12,7 +12,6 @@
 namespace Chevereto\Tenants;
 
 use Redis;
-use stdClass;
 use Throwable;
 
 /**
@@ -51,31 +50,47 @@ final class TenantsConfig
     }
 
     public function getConfig(
+        string $rootHostname,
         Tenants $tenants,
         string $service,
         int $port,
-        array $middleware
+        string $entryPoint,
+        string $allowedIPs = '',
     ): array {
-        $middlewares = [];
-        if (in_array('cf-only', $middleware)) {
-            $middlewares['cf-only'] = [
-                'ipAllowList' => [
-                    'sourceRange' => $this->getCFRanges(),
-                ],
-            ];
+        $allowedIPs = explode(',', $allowedIPs);
+        $cloudflarePos = array_search('cloudflare', $allowedIPs);
+        if ($cloudflarePos !== false) {
+            unset($allowedIPs[$cloudflarePos]);
+            $allowedIPs = array_merge($allowedIPs, $this->getCFRanges());
         }
+        $middlewares = [
+            'allow-range' => [
+                'ipAllowList' => [
+                    'sourceRange' => $allowedIPs,
+                ],
+            ],
+        ];
+        $middlewareNames = array_keys($middlewares);
+        $routers = [
+            '*' => $this->getRouter(
+                $rootHostname,
+                $service,
+                $middlewareNames,
+                $entryPoint
+            ),
+        ];
         $rows = $tenants->getTenantsRows();
-        $routers = [];
         foreach ($rows as $row) {
             $row = array_merge($row, [
                 'limits' => [],
                 'env' => [],
             ]);
             $tenant = Tenant::fromRow($row);
-            $routers[$tenant->id] = $this->getTenantRouter(
-                $tenant,
+            $routers[$tenant->id] = $this->getRouter(
+                $tenant->hostname,
                 $service,
-                array_keys($middlewares)
+                $middlewareNames,
+                $entryPoint
             );
         }
 
@@ -87,11 +102,7 @@ final class TenantsConfig
                         'loadBalancer' => [
                             'servers' => [
                                 [
-                                    'url' => sprintf(
-                                        'http://%s:%d',
-                                        $service,
-                                        $port
-                                    ),
+                                    'url' => sprintf('http://%s:%d', $service, $port),
                                 ],
                             ],
                             'passHostHeader' => true,
@@ -103,13 +114,16 @@ final class TenantsConfig
         ];
     }
 
-    public function getTenantRouter(Tenant $tenant, string $service, array $middlewares): array
-    {
+    public function getRouter(
+        string $hostname,
+        string $service,
+        array $middlewares,
+        string $entryPoint
+    ): array {
         return [
-            'rule' => "Host(`{$tenant->hostname}`)",
+            'rule' => "Host(`{$hostname}`)",
             'service' => $service,
-            'entryPoints' => ['websecure'],
-            'tls' => new stdClass(),
+            'entryPoints' => [$entryPoint],
             'middlewares' => $middlewares,
         ];
     }

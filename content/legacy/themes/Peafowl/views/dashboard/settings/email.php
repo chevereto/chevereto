@@ -37,6 +37,7 @@ echo read_the_docs_settings('email', _s('Email')); ?>
 </div>
 <?php
 $mailOptions = [
+    '' => _s('Select email API'),
     'smtp' => _s('SMTP'),
     'mail' => _s('PHP mail() func.'),
     'ahasend' => 'AhaSend',
@@ -67,7 +68,7 @@ if (env()['CHEVERETO_CONTEXT'] === 'saas') {
 }
 $currentEmailMode = Handler::var('safe_post') ? Handler::var('safe_post')['email_mode'] : Settings::get('email_mode');
 if(!array_key_exists($currentEmailMode, $mailOptions)) {
-    $currentEmailMode = array_key_first($mailOptions);
+    $currentEmailMode = '';
 }
 ?>
 <div class="input-label">

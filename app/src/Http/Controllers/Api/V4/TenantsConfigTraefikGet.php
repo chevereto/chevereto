@@ -31,13 +31,17 @@ class TenantsConfigTraefikGet extends Controller
     ) {
     }
 
-    public function __invoke(): array
+    public function __invoke(): string
     {
-        return $this->tenantsConfig->getConfig(
+        $return = $this->tenantsConfig->getConfig(
+            rootHostname: env()['CHEVERETO_HOSTNAME'],
             tenants: $this->tenants,
             service: env()['CHEVERETO_SERVICE_NAME'],
-            port: 80,
-            middleware: ['cf-only']
+            port: env()['CHEVERETO_SERVICE_PORT'],
+            entryPoint: env()['CHEVERETO_PROXY_ENTRYPOINT'],
+            allowedIPs: env()['CHEVERETO_PROXY_IP_ALLOW_LIST'],
         );
+
+        return json_encode($return, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 }

@@ -1171,6 +1171,7 @@ return function (Handler $handler) {
                     ]);
                 }
                 $mailApis = [
+                    '',
                     'smtp',
                     'ahasend',
                     'ses',

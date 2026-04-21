@@ -111,7 +111,7 @@ $settings_updates = [
         'email_from_email' => 'from@chevereto.internal',
         'email_from_name' => 'Chevereto',
         'email_incoming_email' => 'incoming@chevereto.internal',
-        'email_mode' => env()['CHEVERETO_SERVICING'] === 'server' ? 'mail' : 'smtp',
+        'email_mode' => env()['CHEVERETO_SERVICING'] === 'server' ? 'mail' : '',
         'email_smtp_server' => '',
         'email_smtp_server_password' => '',
         'email_smtp_server_port' => '',
@@ -701,6 +701,7 @@ $settings_updates = [
         'email_sweego_api_key' => '',
     ],
     '4.5.1' => null,
+    '4.5.2' => null,
 ];
 
 /**

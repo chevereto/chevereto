@@ -93,7 +93,7 @@ if ($isTenantsApiRouting) {
         ?? throw new RuntimeException('Cannot determine request method.');
     $scheme = server()['REQUEST_SCHEME']
         ?? throw new RuntimeException('Cannot determine request scheme.');
-    $host = server()['HTTP_HOST']
+    $host = env()['CHEVERETO_HOSTNAME']
         ?? throw new RuntimeException('Cannot determine request host.');
     $uri = server()['REQUEST_URI']
         ?? '/';
@@ -123,7 +123,8 @@ if ($isTenantsApiRouting) {
                 content: file_get_contents('php://input')
             )
         );
-    $headers = getallheaders();
+    $headers = array_change_key_case(getallheaders(), CASE_LOWER);
+    $headers['host'] = $host;
     foreach ($headers as $name => $value) {
         $serverRequest = $serverRequest->withHeader($name, $value);
     }
@@ -131,7 +132,7 @@ if ($isTenantsApiRouting) {
     $routes = [
         require $routerPath . 'tenants-api-v4.php',
     ];
-    if (in_array(server()['SERVER_NAME'], ['localhost', '127.0.0.1', '::1', 'app'])) {
+    if (in_array(server()['SERVER_NAME'], ['localhost', '127.0.0.1', '::1', env()['CHEVERETO_INTERNAL_HOSTNAME']])) {
         $routes[] = require $routerPath . 'tenants-internal-api-v4.php';
     }
     $router = router(...$routes);

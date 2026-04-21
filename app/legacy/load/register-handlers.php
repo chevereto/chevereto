@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-use Chevere\ThrowableHandler\Documents\ConsoleDocument;
 use Chevere\ThrowableHandler\Documents\HtmlDocument;
 use Chevere\ThrowableHandler\Documents\PlainDocument;
 use Chevere\ThrowableHandler\ThrowableHandler;
@@ -24,7 +23,6 @@ use function Chevere\ThrowableHandler\throwableHandler;
 use function Chevere\Writer\writers;
 use function Chevere\xrDebug\PHP\throwableHandler as XrDebugThrowableHandler;
 use function Chevereto\Legacy\isDebug;
-use function Chevereto\Vars\env;
 use function Chevereto\Vars\files;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\post;
@@ -68,14 +66,12 @@ register_shutdown_function(ThrowableHandler::SHUTDOWN_ERROR_AS_EXCEPTION);
 set_exception_handler(function (Throwable $throwable) {
     $extra = '';
     $publicHandler = throwableHandler($throwable);
-    $namespace = env()['CHEVERETO_TENANT_HANDLE']
-        ?? false;
+    $namespace = getenv('CHEVERETO_TENANT_HANDLE') ?: false;
     if ($namespace) {
         $publicHandler = $publicHandler
             ->withId($namespace . $publicHandler->id());
     }
     if (PHP_SAPI === 'cli') {
-        $docInternal = new ConsoleDocument($publicHandler);
         $parameters = [];
     } else {
         if (! headers_sent()) {
@@ -170,7 +166,7 @@ set_exception_handler(function (Throwable $throwable) {
         writers()->output()
             ->write($docPublic->__toString() . "\n");
     }
-    $internalHandler = $internalHandler ?? $publicHandler;
+    $internalHandler ??= $publicHandler;
     if ($parameters !== []) {
         $parametersPlain = (new VarDump(
             new PlainFormat(),
