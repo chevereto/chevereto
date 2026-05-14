@@ -13022,6 +13022,9 @@ CHV.fn.user = {
         complete: {
             success: function (XHR) {
                 var response = XHR.responseJSON;
+                PF.fn.growl.call(
+                    PF.fn._s(response.success.message)
+                );
             },
             error: function (XHR) {
                 var response = XHR.responseJSON;

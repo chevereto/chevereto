@@ -1,0 +1,13 @@
+Chevereto 4.5.3 (2026-05-14)
+
+- Added CHEVERETO_ENVIRONMENT default value
+- Added CSRF protection to POST /account/* endpoints
+- Added CSRF protection to POST /album endpoint (password protected albums)
+- Added Variables support to the encrypt-secrets and decrypt-secrets commands
+- Fixed bug affecting PHP page creation/editing
+- Fixed bug breaking TenantsConfig
+- Fixed bug causing missing support for theme library overrides
+- Fixed bug with FTP storage API not creating date folder structure
+- Fixed bug with missing login-providers.php file in Lite edition
+- Fixed missing success message after creating a new user from dashboard
+- Removed support for FTP/SFTP storage APIs in SaaS context

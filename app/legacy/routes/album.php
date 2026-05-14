@@ -121,6 +121,7 @@ return function (Handler $handler) {
         }
     }
     if (! $handler::cond('content_manager') && ! $is_owner && $album['privacy'] == 'password' && isset($album['password'])) {
+        $POST = post();
         $is_error = false;
         $error_message = null;
         $failed_access_requests = RequestLog::getCounts('content-password', 'fail');
@@ -129,8 +130,13 @@ return function (Handler $handler) {
 
             return;
         }
+        if ($POST !== [] && ! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
+            $handler->issueError(403);
+
+            return;
+        }
         $captcha_needed = $handler::cond('captcha_needed');
-        if ($captcha_needed && (post()['content-password'] ?? false)) {
+        if ($captcha_needed && ($POST['content-password'] ?? false)) {
             $captcha = captcha_check();
             if (! $captcha->is_valid) {
                 $is_error = true;
@@ -138,11 +144,11 @@ return function (Handler $handler) {
             }
         }
         if (! $is_error) {
-            if (isset(post()['content-password']) && hash_equals($album['password'], post()['content-password'])) {
-                Album::storeUserPassword($album['id'], post()['content-password']);
+            if (isset($POST['content-password']) && hash_equals($album['password'], $POST['content-password'])) {
+                Album::storeUserPassword($album['id'], $POST['content-password']);
             } elseif (! Album::checkSessionPassword($album)) {
                 $is_error = true;
-                if (isset(post()['content-password'])) {
+                if (isset($POST['content-password'])) {
                     RequestLog::insert([
                         'type' => 'content-password',
                         'user_id' => ($logged_user['id'] ?? null),

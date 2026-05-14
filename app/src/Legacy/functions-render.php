@@ -78,6 +78,13 @@ function get_static_url($filepath, $options = [])
         'versionize' => true,
     ], $options);
     $url = getLocalUrl();
+    if (str_starts_with($filepath, PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB)) {
+        $relative = substr($filepath, strlen(PATH_PUBLIC_CONTENT_LEGACY_THEMES_PEAFOWL_LIB));
+        $override = PATH_PUBLIC_LEGACY_THEME . 'overrides/lib/' . $relative;
+        if (file_exists($override)) {
+            $filepath = $override;
+        }
+    }
     $return = absolute_to_url($filepath, $url);
     if ($options['versionize']) {
         $return = versionize_src($return);

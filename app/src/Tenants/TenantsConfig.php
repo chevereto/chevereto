@@ -82,6 +82,7 @@ final class TenantsConfig
         $rows = $tenants->getTenantsRows();
         foreach ($rows as $row) {
             $row = array_merge($row, [
+                'stats' => [],
                 'limits' => [],
                 'env' => [],
             ]);

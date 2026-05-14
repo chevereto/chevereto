@@ -26,6 +26,13 @@ final class StorageApis
         'pro' => [],
     ];
 
+    /**
+     * Context-based API restrictions. The key is the context (e.g. "saas") and the value is an array of API types that are restricted in that context.
+     */
+    public const CONTEXT_RESTRICTED = [
+        'saas' => [8, 6, 5],
+    ];
+
     private static array $apis = [
         8 => [
             'name' => 'Local',
@@ -109,6 +116,10 @@ final class StorageApis
         }
         if (! (bool) env()['CHEVERETO_ENABLE_LOCAL_STORAGE']) {
             unset($apis[8]);
+        }
+        $restricted = self::CONTEXT_RESTRICTED[env()['CHEVERETO_CONTEXT']] ?? [];
+        foreach ($restricted as $id) {
+            unset($apis[$id]);
         }
         $allowed = self::EDITION_ALLOWED[env()['CHEVERETO_EDITION']] ?? [];
         if ($allowed !== []) {

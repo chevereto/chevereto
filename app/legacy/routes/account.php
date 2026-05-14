@@ -34,6 +34,7 @@ use function Chevereto\Legacy\must_use_captcha;
 use function Chevereto\Legacy\send_mail;
 use function Chevereto\Vars\get;
 use function Chevereto\Vars\post;
+use function Chevereto\Vars\request;
 use function Chevereto\Vars\session;
 use function Chevereto\Vars\sessionVar;
 
@@ -127,6 +128,11 @@ return function (Handler $handler) {
     $is_error = false;
     $error_message = null;
     $input_errors = [];
+    if ($POST !== [] && ! $handler::checkAuthToken(request()['auth_token'] ?? '')) {
+        $handler->issueError(403);
+
+        return;
+    }
     if ($captcha_needed && ! empty($POST)) {
         $captcha = captcha_check();
         if (! $captcha->is_valid) {

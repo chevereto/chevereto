@@ -108,6 +108,12 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           provenance: false
+          cache-from: |
+            type=gha,scope=chevereto-docker-${{ matrix.php }}
+            type=registry,ref=${{ env.GHCR_SLUG }}:buildcache
+          cache-to: |
+            type=gha,scope=chevereto-docker-${{ matrix.php }},mode=max
+            type=registry,ref=${{ env.GHCR_SLUG }}:buildcache,mode=max
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Check manifest

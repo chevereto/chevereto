@@ -174,6 +174,8 @@ function system_notification_email(array $args = []): void
 
 function send_mail($to, $subject, $body): bool
 {
+    $emailMode = getSetting('email_mode')
+        ?? throw new RuntimeException('Email API not configured', 600);
     $email_from_email = getSetting('email_from_email') ?? 'from@chevereto.internal';
     $email_from_name = getSetting('email_from_name') ?? 'Chevereto';
     $args = ['to', 'subject', 'body'];
@@ -215,7 +217,6 @@ function send_mail($to, $subject, $body): bool
     } else {
         $email->text($body);
     }
-    $emailMode = getSetting('email_mode') ?? 'mail';
     $dsn = match ($emailMode) {
         'smtp' => (function (): string {
             $username = urlencode(getSetting('email_smtp_server_username') ?? '');

@@ -73,11 +73,13 @@ $tenantsApiRouting = [
     '/_/',
 ];
 $isTenantsApiRouting = false;
-foreach ($tenantsApiRouting as $route) {
-    if (str_starts_with(server()['REQUEST_URI'] ?? '', $route)) {
-        $isTenantsApiRouting = true;
+if ($isService) {
+    foreach ($tenantsApiRouting as $route) {
+        if (str_starts_with(server()['REQUEST_URI'] ?? '', $route)) {
+            $isTenantsApiRouting = true;
 
-        break;
+            break;
+        }
     }
 }
 if ($isTenantsApiRouting) {

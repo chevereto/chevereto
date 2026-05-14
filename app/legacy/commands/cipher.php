@@ -17,6 +17,7 @@ use Chevereto\Legacy\Classes\Login;
 use Chevereto\Legacy\Classes\Settings;
 use Chevereto\Legacy\Classes\Storage;
 use Chevereto\Legacy\Classes\TwoFactor;
+use Chevereto\Legacy\Classes\Variable;
 use function Chevereto\Legacy\feedback;
 use function Chevereto\Legacy\feedbackAlert;
 use function Chevereto\Legacy\feedbackSeparator;
@@ -39,6 +40,19 @@ foreach (Settings::ENCRYPTED_NAMES as $key) {
     Settings::update([
         $key => $value,
     ]);
+}
+feedbackSeparator();
+feedbackStep($doing, 'variables');
+new EncryptionInstance($fromEncryption);
+new Variable(reCache: true);
+$variables = [];
+foreach (Variable::ENCRYPTED_NAMES as $key) {
+    $variables[$key] = (string) (Variable::get($key) ?? '');
+}
+new EncryptionInstance($toEncryption);
+foreach ($variables as $key => $value) {
+    feedback("- {$key}: {$value}");
+    Variable::set($key, $value);
 }
 feedbackSeparator();
 feedbackStep($doing, 'storages');
