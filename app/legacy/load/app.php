@@ -9,5 +9,5 @@
  * file that was distributed with this source code.
  */
 
-const APP_VERSION = '4.5.3';
+const APP_VERSION = '4.5.4';
 const APP_VERSION_AKA = 'elevado';

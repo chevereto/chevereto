@@ -11,4 +11,5 @@
 		%tpl_list_item/item_image_play_gif%
 	</div>
 	%tpl_list_item/image_description_owner%
+	%tpl_list_item/image_description_private%
 </div>

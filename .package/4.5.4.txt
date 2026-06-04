@@ -1,0 +1,4 @@
+Chevereto 4.5.4 (2026-06-04)
+
+- Redesigned default Contact page (HTML)
+- [Security] Fix private account setting leaking username on /json endpoint

@@ -180,6 +180,7 @@ set_exception_handler(function (Throwable $throwable) {
             $extra .= xrDebugExtraSection('Parameters', $parametersPlain);
         }
     }
+    // TODO: Investigate why `docker log-error` doesn't show the log with the ID and extra sections. It shows generic handling.
     $docLogs = new PlainDocument($internalHandler);
     $logMessage = '[' . $publicHandler->id() . '] '
         . $docLogs->__toString()

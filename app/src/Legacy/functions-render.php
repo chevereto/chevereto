@@ -500,6 +500,7 @@ function get_peafowl_item_list($item, $template, $tools, $tpl = 'image', array $
     ) {
         unset($item['user']);
         $item['user'] = User::getPrivate();
+        $conditional_replaces['tpl_list_item/image_description_owner'] = null;
         $conditional_replaces['tpl_list_item/image_description_user'] = null;
         $conditional_replaces['tpl_list_item/image_description_guest'] = null;
     } else {

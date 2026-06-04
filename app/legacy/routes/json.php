@@ -568,7 +568,16 @@ return function (Handler $handler) {
                 }
                 $listing->setWhere($where);
                 if (isset($ownerId)) {
-                    $listing->setOwner((int) $ownerId);
+                    $ownerId = (int) $ownerId;
+                    $listing->setOwner($ownerId);
+                    $user = User::getSingle($ownerId);
+                    $is_owner = false;
+                    if (isset($user['id'], $logged_user['id'])) {
+                        $is_owner = $user['id'] === $logged_user['id'];
+                    }
+                    if (! $is_owner && ! $handler::cond('content_manager') && (bool) $user['is_private']) {
+                        throw new Exception(_s('Invalid content owner request'), 116);
+                    }
                 }
                 $listing->setRequester($logged_user);
                 if (in_array($list_request, ['images', 'albums'], true)
