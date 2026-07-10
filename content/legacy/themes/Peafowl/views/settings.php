@@ -38,28 +38,28 @@ if (Handler::cond('settings_account')
             <?php echo get_input_auth_token(); ?>
             <?php
             if (Handler::cond('settings_account')) {
-                require 'settings/account.php';
+                require_theme_file('views/settings/account.php');
             }
             if (Handler::cond('settings_powered-by')) {
-                require 'settings/powered-by.php';
+                require_theme_file('views/settings/powered-by.php');
             }
             if (Handler::cond('settings_api')) {
-                require 'settings/api.php';
+                require_theme_file('views/settings/api.php');
             }
             if (Handler::cond('settings_password')) {
-                require 'settings/password.php';
+                require_theme_file('views/settings/password.php');
             }
             if (Handler::cond('settings_profile')) {
-                require 'settings/profile.php';
+                require_theme_file('views/settings/profile.php');
             }
             if (Handler::cond('settings_connections')) {
-                require 'settings/connections.php';
+                require_theme_file('views/settings/connections.php');
             }
             if (Handler::cond('settings_security')) {
-                require 'settings/security.php';
+                require_theme_file('views/settings/security.php');
             }
             if (Handler::cond('settings_homepage')) {
-                require 'settings/homepage.php';
+                require_theme_file('views/settings/homepage.php');
             } ?>
             <?php if (Handler::cond('captcha_needed') && Handler::var('captcha_html') !== null) {
                 ?>

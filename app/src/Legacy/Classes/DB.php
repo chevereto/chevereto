@@ -427,6 +427,21 @@ class DB
             : false;
     }
 
+    public static function create(
+        string $database,
+    ): bool {
+        $db = self::getInstance();
+        $db->query(
+            <<<SQL
+            CREATE DATABASE IF NOT EXISTS `{$database}`
+            CHARACTER SET utf8mb4
+            COLLATE utf8mb4_unicode_ci;
+            SQL
+        );
+
+        return $db->exec();
+    }
+
     public static function insert(string $table, array $values): int|false
     {
         $prefix = self::getFieldPrefix($table);

@@ -14,6 +14,7 @@ use Chevereto\Legacy\Classes\Akismet;
 use Chevereto\Legacy\Classes\AssetStorage;
 use Chevereto\Legacy\Classes\Cache;
 use Chevereto\Legacy\Classes\DB;
+use Chevereto\Legacy\Classes\EmailApis;
 use Chevereto\Legacy\Classes\ExecutableBinary;
 use Chevereto\Legacy\Classes\ExifTool;
 use Chevereto\Legacy\Classes\ExifTran;
@@ -401,15 +402,6 @@ return function (Handler $handler) {
                 ]);
             }
             $handler::setVar('licenseKey', $licenseKey);
-            if (env()['CHEVERETO_CONTEXT'] === 'saas') {
-                $links = array_merge($links, [
-                    [
-                        'label' => env()['CHEVERETO_PROVIDER_NAME'],
-                        'icon' => 'fas fa-medkit',
-                        'href' => env()['CHEVERETO_PROVIDER_URL'],
-                    ],
-                ]);
-            }
             foreach ($links as $link) {
                 $attr = $link['attr'] ?? 'href="%href%" target="_blank"';
                 $class = $link['class'] ?? 'default';
@@ -445,6 +437,112 @@ return function (Handler $handler) {
             $chv_versioning = explode('.', APP_VERSION);
             $chv_version_major = $chv_versioning[0] . '.X';
             $chv_version_minor = $chv_versioning[0] . '.' . $chv_versioning[1];
+            $cheveretoLinks = [
+                [
+                    'label' => _s('Support'),
+                    'icon' => 'fas fa-medkit',
+                    'href' => 'https://chevereto.com/support',
+                ],
+                [
+                    'label' => _s('Docs'),
+                    'icon' => 'fas fa-book',
+                    'href' => $handler::var('docsBaseUrl'),
+                ],
+                [
+                    'label' => _s('User manual'),
+                    'icon' => 'fas fa-book',
+                    'href' => $handler::var('userDocsBaseUrl'),
+                ],
+                [
+                    'label' => _s('Admin manual'),
+                    'icon' => 'fas fa-book',
+                    'href' => $handler::var('adminDocsBaseUrl'),
+                ],
+                [
+                    'label' => _s('Releases'),
+                    'icon' => 'fas fa-rocket',
+                    'href' => 'https://releases.chevereto.com',
+                ],
+                [
+                    'label' => 'Chevereto Cloud',
+                    'icon' => 'fas fa-cloud',
+                    'href' => 'https://cloud.chevereto.com',
+                ],
+                [
+                    'label' => _s('Community'),
+                    'icon' => 'fas fa-users',
+                    'href' => 'https://chevereto.com/go/community',
+                ],
+                [
+                    'label' => _s('Blog'),
+                    'icon' => 'fas fa-blog',
+                    'href' => 'https://blog.chevereto.com',
+                ],
+                [
+                    'label' => _s('Chat'),
+                    'icon' => 'fas fa-comments',
+                    'href' => 'https://chevereto.com/go/discord',
+                ],
+            ];
+            if (env()['CHEVERETO_CONTEXT'] === 'saas') {
+                $cheveretoLinks = [
+                    [
+                        'label' => env()['CHEVERETO_PROVIDER_NAME'],
+                        'icon' => 'fas fa-cloud',
+                        'href' => env()['CHEVERETO_PROVIDER_URL'],
+                    ],
+                    [
+                        'label' => _s('Support'),
+                        'icon' => 'fas fa-medkit',
+                        'href' => env()['CHEVERETO_PROVIDER_SUPPORT_URL'],
+                    ],
+                    [
+                        'label' => _s('Docs'),
+                        'icon' => 'fas fa-book',
+                        'href' => env()['CHEVERETO_PROVIDER_DOCS_URL'],
+                    ],
+                    [
+                        'label' => _s('User manual'),
+                        'icon' => 'fas fa-book',
+                        'href' => $handler::var('userDocsBaseUrl'),
+                    ],
+                    [
+                        'label' => _s('Admin manual'),
+                        'icon' => 'fas fa-book',
+                        'href' => $handler::var('adminDocsBaseUrl'),
+                    ],
+                    [
+                        'label' => _s('Releases'),
+                        'icon' => 'fas fa-rocket',
+                        'href' => 'https://releases.chevereto.com',
+                    ],
+                    [
+                        'label' => _s('Community'),
+                        'icon' => 'fas fa-users',
+                        'href' => 'https://chevereto.com/go/community',
+                    ],
+                    [
+                        'label' => _s('Blog'),
+                        'icon' => 'fas fa-blog',
+                        'href' => 'https://blog.chevereto.com',
+                    ],
+                    [
+                        'label' => _s('Chat'),
+                        'icon' => 'fas fa-comments',
+                        'href' => 'https://chevereto.com/go/discord',
+                    ],
+                ];
+            }
+            $cheveretoLinksButtons = '';
+            foreach ($cheveretoLinks as $link) {
+                $attr = $link['attr'] // @phpstan-ignore-line
+                    ?? 'href="%href%" target="_blank"';
+                $cheveretoLinksButtons .= strtr('<a ' . $attr . ' class="btn default btn-small margin-right-5 margin-bottom-5"><span class="%icon%"></span><span class="btn-text">%label%</span></a>', [
+                    '%href%' => $link['href'] ?? '',
+                    '%icon%' => $link['icon'],
+                    '%label%' => $link['label'],
+                ]);
+            }
             $system_values = [
                 'chv_version' => [
                     'label' => '<div class="text-align-center"><a href="https://chevereto.com" target="_blank"><img src="' . absolute_to_url(PATH_PUBLIC_CONTENT_LEGACY_SYSTEM . 'chevereto-blue.svg') . '" alt="" width="80%"></a></div>',
@@ -455,6 +553,10 @@ return function (Handler $handler) {
                         . $install_update_button
                         . '<div class="margin-bottom-20">' . $version_check . $linksButtons . '</div>
                         </div>',
+                ],
+                'links' => [
+                    'label' => _s('Links'),
+                    'content' => $cheveretoLinksButtons,
                 ],
                 'upload_max_filesize' => [
                     'label' => _s('Max. upload file size'),
@@ -474,52 +576,11 @@ return function (Handler $handler) {
                 ],
                 'meta' => [
                     'label' => _s('Meta'),
-                    'content' => '<a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://rodolfoberrios.com" target="_blank" rel="author"><span class="fas fa-address-card margin-right-5"></span>Rodolfo Berrios</a><a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://chevere.org" target="_blank"><span class="fas fa-sitemap margin-right-5"></span>Chevere</a><a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://xrdebug.com" target="_blank"><span class="fas fa-bug margin-right-5"></span>xrDebug</a>',
+                    'content' => '<a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://rodolfoberrios.com" target="_blank" rel="author"><span class="fas fa-address-card margin-right-5"></span>Rodolfo Berrios</a>'
+                        . '<a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://chevere.org" target="_blank"><span class="fas fa-microchip margin-right-5"></span>Chevere</a>'
+                        . '<a class="btn default btn-small margin-right-5 margin-bottom-5" href="https://xrdebug.com" target="_blank"><span class="fas fa-bug margin-right-5"></span>xrDebug</a>',
                 ],
             ];
-
-            $cheveretoLinks = [
-                [
-                    'label' => _s('Blog'),
-                    'icon' => 'fas fa-blog',
-                    'href' => 'https://blog.chevereto.com',
-                ],
-                [
-                    'label' => _s('Docs'),
-                    'icon' => 'fas fa-book',
-                    'href' => $handler::var('docsBaseUrl'),
-                ],
-                [
-                    'label' => _s('Releases'),
-                    'icon' => 'fas fa-rocket',
-                    'href' => 'https://releases.chevereto.com',
-                ],
-                [
-                    'label' => _s('Support'),
-                    'icon' => 'fas fa-medkit',
-                    'href' => 'https://chevereto.com/support',
-                ],
-                [
-                    'label' => _s('Chat'),
-                    'icon' => 'fas fa-comments',
-                    'href' => 'https://chevereto.com/go/discord',
-                ],
-                [
-                    'label' => _s('Community'),
-                    'icon' => 'fas fa-users',
-                    'href' => 'https://chevereto.com/community',
-                ],
-            ];
-            $cheveretoLinksButtons = '';
-            foreach ($cheveretoLinks as $link) {
-                $attr = $link['attr'] // @phpstan-ignore-line
-                    ?? 'href="%href%" target="_blank"';
-                $cheveretoLinksButtons .= strtr('<a ' . $attr . ' class="btn default btn-small margin-right-5 margin-bottom-5"><span class="%icon%"></span><span class="btn-text">%label%</span></a>', [
-                    '%href%' => $link['href'] ?? '',
-                    '%icon%' => $link['icon'],
-                    '%label%' => $link['label'],
-                ]);
-            }
             if (env()['CHEVERETO_CONTEXT'] !== 'saas') {
                 $isFFmpegError = false;
                 $ffmpegContent = '<i class="fas fa-video"></i> FFmpeg bin: ';
@@ -650,10 +711,6 @@ return function (Handler $handler) {
                 }, $phpIniFiles);
                 $phpIniFiles = implode('', $phpIniFiles);
                 $system_values_more = [
-                    'links' => [
-                        'label' => _s('Links'),
-                        'content' => $cheveretoLinksButtons,
-                    ],
                     'cli' => [
                         'label' => 'CLI',
                         'content' => '<i class="fas fa-terminal"></i> <span data-click="select-all">' . PATH_PUBLIC . 'app/bin/cli</span>',
@@ -1652,28 +1709,7 @@ return function (Handler $handler) {
                 }
 
                 $emailMode = $POST['email_mode'] ?? '';
-                $emailApiRequiredFields = [
-                    'smtp' => ['email_smtp_server', 'email_smtp_server_port', 'email_smtp_server_security'],
-                    'ahasend' => ['email_ahasend_api_key'],
-                    'ses' => ['email_ses_access_key', 'email_ses_secret_key'],
-                    'azure' => ['email_azure_resource_name', 'email_azure_key'],
-                    'brevo' => ['email_brevo_api_key'],
-                    'infobip' => ['email_infobip_api_key', 'email_infobip_base_url'],
-                    'mailersend' => ['email_mailersend_api_key'],
-                    'mailgun' => ['email_mailgun_api_key', 'email_mailgun_domain'],
-                    'mailjet' => ['email_mailjet_access_key', 'email_mailjet_secret_key'],
-                    'mailomat' => ['email_mailomat_api_key'],
-                    'mailpace' => ['email_mailpace_api_token'],
-                    'mailtrap' => ['email_mailtrap_api_token'],
-                    'mandrill' => ['email_mandrill_api_key'],
-                    'microsoftgraph' => ['email_microsoftgraph_client_id', 'email_microsoftgraph_client_secret', 'email_microsoftgraph_tenant_id'],
-                    'postal' => ['email_postal_api_key', 'email_postal_base_url'],
-                    'postmark' => ['email_postmark_api_token'],
-                    'resend' => ['email_resend_api_key'],
-                    'scaleway' => ['email_scaleway_project_id', 'email_scaleway_api_key'],
-                    'sendgrid' => ['email_sendgrid_api_key'],
-                    'sweego' => ['email_sweego_api_key'],
-                ];
+                $emailApiRequiredFields = EmailApis::getRequiredFields($emailMode);
                 if ((env()['CHEVERETO_SERVICING'] !== 'server' && $emailMode === 'mail')
                         || (env()['CHEVERETO_CONTEXT'] === 'saas' && in_array($emailMode, ['smtp', 'mail'], true))
                 ) {
@@ -1682,15 +1718,15 @@ return function (Handler $handler) {
                         'error_msg' => _s('The %s API is not available in this context', $emailMode),
                     ];
                 }
-                if ($validations === [] && isset($emailApiRequiredFields[$emailMode])) {
-                    foreach ($emailApiRequiredFields[$emailMode] as $field) {
+                if ($emailApiRequiredFields !== []) {
+                    foreach ($emailApiRequiredFields as $field) {
                         $validations[$field] = [
                             'validate' => ! empty($POST[$field]),
                             'error_msg' => _s('Invalid value'),
                         ];
                     }
                     $emailFieldsValid = array_reduce(
-                        $emailApiRequiredFields[$emailMode],
+                        $emailApiRequiredFields,
                         fn (bool $carry, string $field) => $carry && ($validations[$field]['validate'] ?? false),
                         true
                     );

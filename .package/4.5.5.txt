@@ -1,0 +1,16 @@
+Chevereto 4.5.5 (2026-07-10)
+
+- Added CHEVERETO_TENANTS_DB_ISOLATION_MODE
+- Added configurable system notices display
+- Added links to user manual and admin manual on dashboard
+- Added warning to account resend activation when email delivery isn't configured
+- Added warning to password forgot when email delivery isn't configured
+- Added warning to signup when email delivery isn't configured
+- Disabled email-dependent settings when no email provider is configured
+- Disabled guest uploads by default
+- Disabled user self-signup by default
+- Fixed bug with wrong user URL when website mode personal is enabled
+- Fixed bug with missing album options when editing upload item
+- Fixed bug with theme overrides not working for overrides/views/dashboard/*
+- Fixed bug with theme overrides not working for overrides/views/settings/*
+- Improved email settings validation and error handling

@@ -13,6 +13,15 @@ if (!defined('ACCESS') || !ACCESS) {
 }
 echo read_the_docs_settings('system', _s('System')); ?>
 <div class="input-label">
+    <label for="enable_silent_notices"><?php _se('Silent notices'); ?></label>
+    <div class="c5 phablet-c1"><select type="text" name="enable_silent_notices" id="enable_silent_notices" class="text-input">
+        <?php echo get_select_options_html([1 => _s('Enabled'), 0 => _s('Disabled')], Settings::get('enable_silent_notices')); ?>
+    </select></div>
+    <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['enable_silent_notices'] ?? ''; ?></div>
+    <div class="input-below"><?php _se("When enabled, system notices won't be shown automatically."); ?></div>
+</div>
+<hr class="line-separator">
+<div class="input-label">
     <label for="cache_ttl"><?php _se('Cache time'); ?> <span class="optional"><?php _se('seconds'); ?></span></label>
     <div class="c2"><input type="number" min="0" step="1" pattern="\d+" name="cache_ttl" id="cache_ttl" class="text-input" value="<?php echo Handler::var('safe_post')['cache_ttl'] ?? Settings::get('cache_ttl'); ?>" placeholder="60" required></div>
     <div class="input-below input-warning red-warning"><?php echo Handler::var('input_errors')['cache_ttl'] ?? ''; ?></div>

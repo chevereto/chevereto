@@ -678,7 +678,7 @@ class Album
         }
         if (! isset($album['id'])) {
             $album['url'] = $user !== []
-                ? User::getUrl($user['username'])
+                ? User::getUrl($user)
                 : null;
             $album['url_short'] = $album['url'];
         } else {

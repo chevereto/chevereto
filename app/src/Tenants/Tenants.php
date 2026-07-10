@@ -20,6 +20,7 @@ use Chevereto\Legacy\Classes\Stat;
 use ErrorException;
 use PDO;
 use Redis;
+use RuntimeException;
 use function Chevereto\Legacy\G\datetimegmt;
 use function Chevereto\Vars\env;
 
@@ -39,6 +40,8 @@ class Tenants
 
     private string $tableRootPrefix;
 
+    private string $isolationMode;
+
     public function __construct(
         private DB $db,
         public readonly Redis $redis,
@@ -48,6 +51,10 @@ class Tenants
         $this->cacheRootPrefix = env()['CHEVERETO_CACHE_KEY_ROOT_PREFIX']; // chv:
         $this->cachePrefix = env()['CHEVERETO_CACHE_KEY_PREFIX']; // chv:<websiteId>:
         $this->tableRootPrefix = env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']; // chv_<websiteId>_
+        $this->isolationMode = env()['CHEVERETO_TENANTS_DB_ISOLATION_MODE'] ?? '';
+        if (! in_array($this->isolationMode, ['table', 'database'], true)) {
+            throw new RuntimeException('Missing or invalid CHEVERETO_TENANTS_DB_ISOLATION_MODE', 600);
+        }
     }
 
     public function getCacheKey(string $type, string $value): string
@@ -63,6 +70,11 @@ class Tenants
         ?array $limits = null,
         ?array $env = null,
     ): void {
+        if ($this->isolationMode === 'database') {
+            $this->db->create(
+                env()['CHEVERETO_DB_NAME'] . '_' . $tenantId
+            );
+        }
         $this->db::insert(
             table: 'tenants',
             values: [
@@ -207,7 +219,7 @@ class Tenants
     /**
      * - -2: Tenant doesn't exists in the database
      * - -1: Tenant deleted but tables were not dropped ($dropTables is false)
-     * -  N: the count of dropped tables (chv_tenant_*) if $dropTables is true
+     * -  N: the count of dropped database/tables (chv_tenant_*) if $dropTables is true
      */
     public function deleteTenant(string $tenantId, bool $dropTables): int
     {
@@ -273,36 +285,48 @@ class Tenants
             }
         }
         if ($dropTables) {
-            $likePattern = "{$this->tableRootPrefix}{$tenantId}_%";
-            $this->db->query(
-                <<<SQL
-                SELECT table_name
-                FROM information_schema.tables
-                WHERE table_schema = DATABASE()
-                AND table_name LIKE :like_pattern;
-                SQL
-            );
-            $this->db->bind(':like_pattern', $likePattern);
-            $tables = $this->db->fetchAll(PDO::FETCH_COLUMN);
-            $dropSql = '';
-            foreach ($tables as $table) {
-                $dropSql .= <<<SQL
-                DROP TABLE IF EXISTS `{$table}`;
+            if ($this->isolationMode === 'database') {
+                $dbName = env()['CHEVERETO_DB_NAME'] . '_' . $tenantId;
+                $this->db->query(
+                    <<<SQL
+                    DROP DATABASE IF EXISTS `{$dbName}`;
 
-                SQL;
-            }
-            if ($dropSql === '') {
-                return $deleted ?? 0;
-            }
-            $dropSql = <<<SQL
-            SET FOREIGN_KEY_CHECKS=0;
-            {$dropSql}
-            SET FOREIGN_KEY_CHECKS=1;
+                    SQL
+                );
 
-            SQL;
-            $this->db->query($dropSql);
-            if ($this->db->exec()) {
-                return count($tables);
+                $deleted = $this->db->exec() ? 1 : 0;
+            } else {
+                $likePattern = "{$this->tableRootPrefix}{$tenantId}_%";
+                $this->db->query(
+                    <<<SQL
+                        SELECT table_name
+                        FROM information_schema.tables
+                        WHERE table_schema = DATABASE()
+                        AND table_name LIKE :like_pattern;
+                        SQL
+                );
+                $this->db->bind(':like_pattern', $likePattern);
+                $tables = $this->db->fetchAll(PDO::FETCH_COLUMN);
+                $dropSql = '';
+                foreach ($tables as $table) {
+                    $dropSql .= <<<SQL
+                        DROP TABLE IF EXISTS `{$table}`;
+
+                        SQL;
+                }
+                if ($dropSql === '') {
+                    return $deleted ?? 0;
+                }
+                $dropSql = <<<SQL
+                    SET FOREIGN_KEY_CHECKS=0;
+                    {$dropSql}
+                    SET FOREIGN_KEY_CHECKS=1;
+
+                    SQL;
+                $this->db->query($dropSql);
+                if ($this->db->exec()) {
+                    $deleted = count($tables);
+                }
             }
         }
         $deleted ??= -1;
@@ -316,7 +340,8 @@ class Tenants
 
             PLAIN,
             $deleted >= 0 => <<<PLAIN
-            Tenant deleted, tables dropped: {$deleted}
+            Tenant deleted
+            {$this->isolationMode}(s) dropped: {$deleted}
 
             PLAIN,
             default => null,

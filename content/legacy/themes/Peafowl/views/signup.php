@@ -19,6 +19,7 @@ try {
 	require_theme_file('custom_hooks/body_open');
 } catch (Throwable $e) {
 }
+$allowForm = !getSetting('require_user_email_confirmation') || !empty(getSetting('email_mode'));
 ?>
 	<div class="display-flex height-min-full">
 		<?php require_theme_file('snippets/quickty/background_cover'); ?>
@@ -34,7 +35,14 @@ try {
 					<?php
                         }
                     ?>
-					<form class="content-section" method="post" autocomplete="off" data-action="validate">
+					<?php if (!$allowForm) {?>
+						<div class="content-section">
+							<div class="growl static inline font-size-small">
+								<?php _se('Account creation is disabled because email confirmation is required but email sending is not configured.'); ?> <?php _se('Please contact the site administrator.'); ?>
+							</div>
+						</div>
+					<?php }?>
+					<form class="content-section" method="post" autocomplete="off" data-action="validate"<?php if (! $allowForm) { ?> inert<?php } ?>>
 						<fieldset class="fancy-fieldset">
 							<div class="position-relative">
 								<input autofocus autocomplete="email" name="email" tabindex="1" autocomplete="off" autocorrect="off" autocapitalize="off" type="email" placeholder="<?php _se('Email address'); ?>" class="input" required value="<?php echo Handler::var('safe_post')['email'] ?? ''; ?>">

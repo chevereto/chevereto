@@ -72,6 +72,12 @@ return function (Handler $handler) {
         }
     }
     $handler::setCond('show_resend_activation', false);
+    $allowSignup = ! getSetting('require_user_email_confirmation') || ! empty(getSetting('email_mode'));
+    if ($POST !== [] && ! $allowSignup) {
+        $handler->issueError(503);
+
+        return;
+    }
     if ($POST !== [] && ! $is_error && ! Login::hasSignup()) {
         $__post = [];
         $__safe_post = [];

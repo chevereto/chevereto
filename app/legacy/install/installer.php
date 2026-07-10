@@ -60,7 +60,15 @@ if (cheveretoVersionInstalled() !== ''
     throw new LogicException(message('Request denied. You must be an admin to be here.'), 403);
 }
 if ((env()['CHEVERETO_TENANT'] ?? '') !== '') {
-    if (env()['CHEVERETO_DB_TABLE_PREFIX'] === env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']
+    $isolationMode = env()['CHEVERETO_TENANTS_DB_ISOLATION_MODE'] ?? '';
+    if (! in_array($isolationMode, ['table', 'database'], true)) {
+        throw new RuntimeException('Missing or invalid CHEVERETO_TENANTS_DB_ISOLATION_MODE', 600);
+    }
+    if (
+        (
+            $isolationMode === 'table'
+            && env()['CHEVERETO_DB_TABLE_PREFIX'] === env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']
+        )
         || env()['CHEVERETO_CACHE_KEY_PREFIX'] === env()['CHEVERETO_CACHE_KEY_ROOT_PREFIX']
     ) {
         throw new LogicException(
@@ -131,7 +139,7 @@ $settings_updates = [
         // 'google' => 0, // Deprecated in 4.0.0-beta.11
         // 'google_client_id' => '',
         // 'google_client_secret' => '',
-        'guest_uploads' => intval(env()['CHEVERETO_CONTEXT'] !== 'saas'),
+        'guest_uploads' => 0, // Since @4.5.5
         'listing_items_per_page' => '24',
         'maintenance' => 0,
         'captcha' => 0, //recaptcha
@@ -169,7 +177,7 @@ $settings_updates = [
     '3.2.0' => [
         // 'twitter_account' => 'chevereto',
         //'theme_peafowl_download_button' => 1,
-        'enable_signups' => 1,
+        'enable_signups' => 0, // since @4.5.5
     ],
     '3.2.1' => null,
     '3.2.2' => [
@@ -704,6 +712,9 @@ $settings_updates = [
     '4.5.2' => null,
     '4.5.3' => null,
     '4.5.4' => null,
+    '4.5.5' => [
+        'enable_silent_notices' => 0,
+    ],
 ];
 
 /**

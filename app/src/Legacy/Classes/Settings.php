@@ -160,6 +160,16 @@ class Settings
 
     public const SEMANTICS_REGEX = '^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$';
 
+    public const SETTINGS_TO_SETTINGS = [
+        'email_mode' => ['',
+            [
+                'require_user_email_confirmation' => false,
+                'require_user_email_social_signup' => false,
+                'notify_user_signups' => false,
+            ],
+        ],
+    ];
+
     public const ENV_TO_SETTINGS = [
         'CHEVERETO_ENABLE_CONSENT_SCREEN' => ['0',
             [
@@ -521,6 +531,11 @@ class Settings
     /**
      * @var array<string>
      */
+    protected static array $settingRestricted = [];
+
+    /**
+     * @var array<string>
+     */
     protected static array $envRestricted = [];
 
     protected static ?self $instance;
@@ -618,6 +633,19 @@ class Settings
         $settings['listing_device_to_columns']['largescreen'] = $settings['listing_columns_desktop'];
         if (! array_key_exists('active_storage', $settings)) {
             $settings['active_storage'] = null;
+        }
+        foreach (static::SETTINGS_TO_SETTINGS as $settingKey => $settingValues) {
+            if (! array_key_exists($settingKey, $settings)) {
+                continue;
+            }
+            if ($settings[$settingKey] === $settingValues[0]) {
+                foreach ($settingValues[1] as $k => $v) {
+                    $settings[$k] = $v;
+                    if (! in_array($k, static::$settingRestricted, true)) {
+                        static::$settingRestricted[] = $k;
+                    }
+                }
+            }
         }
         foreach (static::ENV_TO_SETTINGS as $envKey => $settingValues) {
             if (! array_key_exists($envKey, env())) {
@@ -826,7 +854,7 @@ class Settings
         $i = 0;
         $restricted = [];
         foreach ($keyValues as $k => $v) {
-            if (static::isEnvRestricted($k)) {
+            if (static::isEnvRestricted($k) || static::isSettingRestricted($k)) {
                 $restricted[] = $k;
 
                 continue;
@@ -897,6 +925,11 @@ class Settings
                 ],
             ],
         ];
+    }
+
+    public static function isSettingRestricted(string $key): bool
+    {
+        return in_array($key, self::$settingRestricted, true);
     }
 
     public static function isEnvRestricted(string $key): bool

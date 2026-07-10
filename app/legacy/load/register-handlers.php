@@ -90,8 +90,8 @@ set_exception_handler(function (Throwable $throwable) {
         $doDebug = in_array($debugLevel, [2, 3], true) || isDebug();
         if ($doDebug === false) {
             $incidentId = $publicHandler->id();
-            $providerName = getenv('CHEVERETO_PROVIDER_NAME') ?: '<provider name>';
-            $providerUrl = getenv('CHEVERETO_PROVIDER_URL') ?: '#';
+            $providerName = getenv('CHEVERETO_PROVIDER_NAME');
+            $providerUrl = getenv('CHEVERETO_PROVIDER_URL');
             if (getenv('CHEVERETO_CONTEXT') === 'saas') {
                 $title = 'Service temporarily unavailable';
                 $message = "We're already on it! Our team has been automatically notified and is working to resolve this issue.";

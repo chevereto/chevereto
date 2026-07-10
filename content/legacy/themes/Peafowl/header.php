@@ -416,14 +416,23 @@ foreach($tags_top as $k => $v) {
         </div>
     </header>
     <?php if (Handler::var('system_notices') !== []) { ?>
-    <div id="modal-notices" class="hidden">
-        <span class="modal-box-title"><i class="fas fa-exclamation-triangle"></i> <?php _se('Notices (%s)', count(Handler::var('system_notices'))); ?></span>
-        <ul class="list-style-type-decimal list-style-position-inside">
-        <?php foreach (Handler::var('system_notices') as $notice) { ?>
-            <li class="margin-top-10 margin-bottom-10"><?php echo $notice; ?></li>
+        <div id="modal-notices" class="hidden">
+            <span class="modal-box-title"><i class="fas fa-exclamation-triangle"></i> <?php _se('Notices (%s)', count(Handler::var('system_notices'))); ?></span>
+            <ul class="list-style-type-decimal list-style-position-inside">
+            <?php foreach (Handler::var('system_notices') as $notice) { ?>
+                <li class="margin-top-10 margin-bottom-10"><?php echo $notice; ?></li>
+            <?php } ?>
+            </ul>
+        </div>
+        <?php if (!getSetting('enable_silent_notices')) { ?>
+            <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                PF.fn.modal.simple({
+                    template: $("#modal-notices").html(),
+                });
+            });
+            </script>
         <?php } ?>
-        </ul>
-    </div>
     <?php } ?>
 <?php
 }

@@ -1330,7 +1330,16 @@ function loaderHandler(
         $envVar['CHEVERETO_HOSTNAME'] = $hostname;
         if ($websiteId !== '') {
             $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= "{$websiteId}:"; // chv:ABC: (tenant)
-            $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= "{$websiteId}_"; // chv_ABC_ (tenant)
+            $isolationMode = $envVar['CHEVERETO_TENANTS_DB_ISOLATION_MODE'] ?? '';
+            if (! in_array($isolationMode, ['table', 'database'], true)) {
+                throw new RuntimeException('Missing or invalid CHEVERETO_TENANTS_DB_ISOLATION_MODE', 600);
+            }
+            if ($isolationMode === 'table') {
+                $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= "{$websiteId}_"; // chv_ABC_ (tenant)
+            }
+            if ($isolationMode === 'database') {
+                $envVar['CHEVERETO_DB_NAME'] .= "_{$websiteId}"; // chv_ABC (tenant)
+            }
         } else {
             $envVar['CHEVERETO_CACHE_KEY_PREFIX'] .= '_:'; // chv:_: (global)
             $envVar['CHEVERETO_DB_TABLE_PREFIX'] .= '_'; // chv__ (global)

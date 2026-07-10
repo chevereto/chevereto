@@ -168,11 +168,11 @@ if (Login::isLoggedUser()) {
 					<div class="input-label upload-input-col center-box text-align-left">
 						<label for="upload-album-id"><?php _ne('Album', 'Albums', 1); ?></label>
 						<select name="upload-album-id" id="upload-album-id" class="text-input">
-							<option value="_" disabled<?php echo !$isSelectedAlbum ? ' selected' : ''; ?>><?php _se('Select %s', _s('album')); ?></option>
-							<option value><?php _se('Create or move to %s after upload', _s('album')); ?></option>
 						<?php
-
-                            $user_album_options_html = [];
+                            $user_album_options_html = [
+								'<option value="_" disabled' . (!$isSelectedAlbum ? ' selected' : '').'>'. _s('Select %s', _s('album')) . '</option>',
+								'<option value>' . _s('Create or move to %s after upload', _s('album')) . '</option>'
+							];
                             foreach ($user_albums as $album) {
 								if(!$album['id_encoded']) {
 									continue;

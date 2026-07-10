@@ -6,13 +6,15 @@ use function Chevereto\Legacy\G\get_base_url;
 use Chevereto\Legacy\G\Handler;
 use function Chevereto\Legacy\G\require_theme_file;
 use function Chevereto\Legacy\G\require_theme_footer;
+use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\obfuscate;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
-} ?>
-<?php require_theme_file('head'); ?>
+}
+require_theme_file('head');
+$allowForm = !empty(getSetting('email_mode')); ?>
 <body id="login" class="full--wh">
 <?php
 try {
@@ -46,7 +48,14 @@ try {
                     } else {
                         ?>
 				<div class="content-section"><?php _se('Enter your username or email address to continue. You may need to check your spam folder or whitelist %s', obfuscate(Settings::get('email_from_email'))); ?></div>
-				<form method="post" autocomplete="off" data-action="validate">
+				<?php if (!$allowForm) { ?>
+					<div class="content-section">
+						<div class="growl static inline font-size-small">
+							<?php _se('This functionality is disabled because email sending is not configured.'); ?> <?php _se('Please contact the site administrator.'); ?>
+						</div>
+					</div>
+				<?php } ?>
+				<form method="post" autocomplete="off" data-action="validate"<?php if (! $allowForm) { ?> inert<?php } ?>>
 					<fieldset class="fancy-fieldset">
 						<div>
 							<input autofocus autocomplete="username" type="text" name="user-subject" id="form-user-subject" class="input" value="<?php echo Handler::var('safe_post')['user-subject'] ?? ''; ?>" placeholder="<?php _se('Username or Email address'); ?>" required>

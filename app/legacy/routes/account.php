@@ -148,6 +148,11 @@ return function (Handler $handler) {
                 $POST['user-subject'] = $logged_user['username'];
                 $is_error = false;
             }
+            if ($POST !== [] && empty(getSetting('email_mode'))) {
+                $handler->issueError(503);
+
+                return;
+            }
             if ($POST !== [] && ! $is_error) {
                 $subject_type = filter_var($POST['user-subject'] ?? '', FILTER_VALIDATE_EMAIL)
                     ? 'email'

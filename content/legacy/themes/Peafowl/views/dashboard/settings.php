@@ -8,10 +8,16 @@ use function Chevereto\Legacy\getSetting;
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
 }
+function email_mode_warning()
+{
+    if (empty(getSetting('email_mode'))) {
+        echo '<div class="input-below"><span class="icon fas fa-info-circle color-fail"></span> ' . _s('This setting remains disabled until the email provider is configured.') . '</div>';
+    }
+}
 function personal_mode_warning()
 {
-    if (getSetting('website_mode') === 'personal') {
-        echo '<div class="input-below"><span class="icon fas fa-info-circle color-fail"></span> ' . _s('This setting is always disabled when using %s website mode.', _s('Single profile')) . '</div>';
+    if (getSetting('website_mode') == 'personal') {
+        echo '<div class="input-below"><span class="icon fas fa-info-circle color-fail"></span> ' . _s('This setting remains disabled when using single profile website mode.') . '</div>';
     }
 }
 ?>

@@ -73,7 +73,6 @@ class TenantUserPasswordResetPatch extends Controller
             isVerbose: true,
             logger: $logger
         );
-        xr($exit);
         if ($exit === 0) {
             return $password;
         }

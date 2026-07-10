@@ -43,14 +43,14 @@ function follow_sub_header(): bool
         <?php
         switch (Handler::var('dashboard')) {
             case 'settings':
-                require 'dashboard/top-sub-bar/settings.php';
+                require_theme_file('views/dashboard/top-sub-bar/settings.php');
 
                 break;
             case 'files':
             case 'albums':
             case 'tags':
             case 'users':
-                require 'dashboard/top-sub-bar/images-albums-users.php';
+                require_theme_file('views/dashboard/top-sub-bar/images-albums-users.php');
 
                 break;
         } ?>
@@ -62,22 +62,22 @@ function follow_sub_header(): bool
 		<?php
         switch (Handler::var('dashboard')) {
             case 'stats':
-                require 'dashboard/stats.php';
+                require_theme_file('views/dashboard/stats.php');
 
                 break;
             case 'bulk-importer':
-                require 'dashboard/bulk-importer.php';
+                require_theme_file('views/dashboard/bulk-importer.php');
 
                 break;
             case 'files':
             case 'albums':
             case 'tags':
             case 'users':
-                require 'dashboard/images-albums-users.php';
+                require_theme_file('views/dashboard/images-albums-users.php');
 
                 break;
             case 'settings':
-                require 'dashboard/settings.php';
+                require_theme_file('views/dashboard/settings.php');
 
                 break;
         }
