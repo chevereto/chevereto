@@ -17,6 +17,7 @@ use function Chevereto\Legacy\getSetting;
 use function Chevereto\Legacy\getThemeLogo;
 use function Chevereto\Legacy\linkPaid;
 use function Chevereto\Vars\env;
+use function Chevereto\Vars\get;
 
 require_theme_file('head');
 try {
@@ -423,8 +424,24 @@ foreach($tags_top as $k => $v) {
                 <li class="margin-top-10 margin-bottom-10"><?php echo $notice; ?></li>
             <?php } ?>
             </ul>
+            <hr class="line-separator margin-top-10 margin-bottom-10">
+            <p class="font-size-small margin-0"><?php
+                $gotoSystemSettings = '<a href="'
+                    . get_base_url('dashboard/settings/system')
+                    . '"><i class="fas fa-server margin-right-035em"></i>'
+                    . _s('%s settings', _s('System')) . '</a>';
+                _se('To stop showing system notices automatically, go to %go and enable %s.',
+                [
+                    '%go' => $gotoSystemSettings,
+                    '%s' => '<b>'._s('Silent notices').'</b>'
+                ]);
+            ?></p>
         </div>
-        <?php if (!getSetting('enable_silent_notices')) { ?>
+        <?php
+            $showSystemNotices = !getSetting('enable_silent_notices')
+                && (!is_route('dashboard') || !isset(get()['welcome']));
+            if ($showSystemNotices) {
+        ?>
             <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 PF.fn.modal.simple({

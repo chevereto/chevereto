@@ -715,6 +715,8 @@ $settings_updates = [
     '4.5.5' => [
         'enable_silent_notices' => 0,
     ],
+    '4.5.6' => null,
+    // '5.0.0' => null,
 ];
 
 /**
@@ -1083,14 +1085,14 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             }
             $DB_indexes[$TABLE][$INDEX_NAME] = $v;
         }
-        $CHV_indexes = [];
+        $CHV_keys = [];
         foreach (new DirectoryIterator(PATH_APP . 'schemas/' . $dbSchemaVer) as $fileInfo) {
             if ($fileInfo->isDot() || $fileInfo->isDir() || ! array_key_exists($fileInfo->getBasename('.sql'), $schema)) {
                 continue;
             }
             $crate_table = file_get_contents(realpath($fileInfo->getPathname()));
             if (preg_match_all('/(?:(?:FULLTEXT|UNIQUE)\s*)?KEY `(\w+)` \(.*\)/', $crate_table, $matches)) {
-                $CHV_indexes[$fileInfo->getBasename('.sql')] = array_combine($matches[1], $matches[0]);
+                $CHV_keys[$fileInfo->getBasename('.sql')] = array_combine($matches[1], $matches[0]);
             }
         }
         $engines = [];
@@ -2304,10 +2306,23 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                     ?
                     <<<SQL
                     UPDATE `%table_prefix%images` i
-                        JOIN `%table_prefix%images_hash` h ON h.image_hash_image_id = i.image_id
-                        SET i.image_delete_hash = h.image_hash_hash;
+                    JOIN `%table_prefix%images_hash` h ON h.image_hash_image_id = i.image_id
+                    SET i.image_delete_hash = h.image_hash_hash;
                     SQL
                     : '',
+            ],
+            '4.5.6' => [
+                'query' => <<<SQL
+                ALTER TABLE `%table_prefix%tags_albums`
+                DROP INDEX tag_album_UNIQUE,
+                ADD PRIMARY KEY (tag_album_tag_id, tag_album_album_id, tag_album_user_id);
+                ALTER TABLE `%table_prefix%tags_files`
+                DROP INDEX tag_file_UNIQUE,
+                ADD PRIMARY KEY (tag_file_tag_id, tag_file_file_id);
+                ALTER TABLE `%table_prefix%tags_users`
+                DROP INDEX tag_user_UNIQUE,
+                ADD PRIMARY KEY (tag_user_tag_id, tag_user_user_id);
+                SQL
             ],
         ];
         $sql_update = [];
@@ -2440,7 +2455,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 }
             }
         }
-        foreach ($CHV_indexes as $table => $indexes) {
+        foreach ($CHV_keys as $table => $indexes) {
             $field_prefix = DB::getFieldPrefix($table);
             foreach ($indexes as $index => $indexProp) {
                 if ($index === 'searchindex' || $index === $field_prefix . '_id' || ! starts_with($field_prefix . '_', $index)) {

@@ -203,7 +203,7 @@ if (Handler::cond('content_manager') || Handler::cond('owner')) {
 <?php if (Handler::cond('content_manager') and isset(request()["deleted"])) { ?>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    PF.fn.growl.call("<?php _se('The %s has been deleted.', _s('album')); ?>");
+    PF.fn.growl.call("<?php _se('The %s has been deleted.', _n('album', 'albums', 1)); ?>");
 });
 </script>
 <?php } ?>

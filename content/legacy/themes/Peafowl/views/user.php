@@ -154,7 +154,7 @@ if (Handler::cond('owner') || Handler::cond('content_manager')) {
 			<?php
                 if (Handler::cond('owner') || Handler::cond('content_manager')) {
                     ?>
-				<button data-action="create-album" title="<?php _se('Create new %s', _n('album', 'albums', 1)); ?> (A)" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span></button>
+				<button data-action="create-album" title="<?php _se('Create new %s', _n('album', 'albums', 1)); ?> (A)" class="btn btn-small default" data-modal="edit" data-target="new-album"><span class="btn-icon fas fa-images"></span><span class="btn-text"><?php _se('Create %s', _n('album', 'albums', 1)); ?></span></button>
 				<?php require_theme_file('snippets/modal_create_album.php'); ?>
                 <?php
                     }

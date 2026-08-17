@@ -170,8 +170,8 @@ if (Login::isLoggedUser()) {
 						<select name="upload-album-id" id="upload-album-id" class="text-input">
 						<?php
                             $user_album_options_html = [
-								'<option value="_" disabled' . (!$isSelectedAlbum ? ' selected' : '').'>'. _s('Select %s', _s('album')) . '</option>',
-								'<option value>' . _s('Create or move to %s after upload', _s('album')) . '</option>'
+								'<option value="_" disabled' . (!$isSelectedAlbum ? ' selected' : '').'>'. _s('Select %s', _n('album', 'albums', 1)) . '</option>',
+								'<option value>' . _s('Create or move to %s after upload', _n('album', 'albums', 1)) . '</option>'
 							];
                             foreach ($user_albums as $album) {
 								if(!$album['id_encoded']) {
