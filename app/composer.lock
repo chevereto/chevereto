@@ -196,16 +196,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.393.0",
+            "version": "3.393.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "acabde13e4eed20b948cae517c24d772a7beaa27"
+                "reference": "0a46ff5138d21adbb312729f564a1c14f54909c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/acabde13e4eed20b948cae517c24d772a7beaa27",
-                "reference": "acabde13e4eed20b948cae517c24d772a7beaa27",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0a46ff5138d21adbb312729f564a1c14f54909c9",
+                "reference": "0a46ff5138d21adbb312729f564a1c14f54909c9",
                 "shasum": ""
             },
             "require": {
@@ -287,9 +287,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.393.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.393.2"
             },
-            "time": "2026-08-17T19:27:01+00:00"
+            "time": "2026-08-19T18:38:54+00:00"
         },
         {
             "name": "chevere/action",
@@ -2335,16 +2335,16 @@
         },
         {
             "name": "lychee-org/php-exif",
-            "version": "1.3.1",
+            "version": "1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/LycheeOrg/php-exif.git",
-                "reference": "7d8d3eb091c54e510d18c8834e9dc806bb2159cf"
+                "reference": "de75ab589f0f2d075106f576d9c93e09eebba47b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LycheeOrg/php-exif/zipball/7d8d3eb091c54e510d18c8834e9dc806bb2159cf",
-                "reference": "7d8d3eb091c54e510d18c8834e9dc806bb2159cf",
+                "url": "https://api.github.com/repos/LycheeOrg/php-exif/zipball/de75ab589f0f2d075106f576d9c93e09eebba47b",
+                "reference": "de75ab589f0f2d075106f576d9c93e09eebba47b",
                 "shasum": ""
             },
             "require": {
@@ -2406,9 +2406,9 @@
             ],
             "support": {
                 "issues": "https://github.com/LycheeOrg/php-exif/issues",
-                "source": "https://github.com/LycheeOrg/php-exif/tree/1.3.1"
+                "source": "https://github.com/LycheeOrg/php-exif/tree/1.3.2"
             },
-            "time": "2026-04-23T22:13:01+00:00"
+            "time": "2026-08-18T09:52:35+00:00"
         },
         {
             "name": "matthiasmullie/scrapbook",

@@ -3,6 +3,7 @@
 use function Chevereto\Legacy\G\require_theme_file;
 
 use Chevereto\Legacy\Classes\AssetStorage;
+use Chevereto\Legacy\G\Handler;
 
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
@@ -31,7 +32,29 @@ document.addEventListener("DOMContentLoaded",
             $(v).closest('.input-label').remove();
         });
         CHV.obj.storages = <?php echo json_encode($storages) ?: []; ?>;
+        <?php if (Handler::var('input_errors')) { ?>
+        var postData = <?php echo json_encode(Handler::var('safe_post') ?? []); ?>;
+        if (postData && postData['form-storage-api_id']) {
+            $('#form-storage-api_id').val(postData['form-storage-api_id']);
+            CHV.fn.storage.prepareForm(postData['form-storage-api_id'], false);
+            $.each(postData, function(key, value) {
+                if (key.indexOf('form-storage-') === 0) {
+                    var $field = $('[name="' + key + '"]');
+                    if ($field.is(':checkbox')) {
+                        $field.prop('checked', value == 1).attr('checked', value == 1);
+                    } else if ($field.is('select')) {
+                        $field.val(value);
+                        $('option', $field).removeAttr('selected');
+                        $('option[value="' + value + '"]', $field).attr('selected', 'selected');
+                    } else {
+                        $field.val(value).attr('value', value);
+                    }
+                }
+            });
+        }
+        <?php } else { ?>
         CHV.fn.storage.edit.before("assets");
+        <?php } ?>
         setTimeout(function() {
             $("#form-storage-api_id").trigger("change");
         }, 1);

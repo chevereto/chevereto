@@ -19,13 +19,20 @@ if (!defined('ACCESS') || !ACCESS) {
 			medium: {
 				url: "<?php echo Handler::var('image')["medium"]["url"] ?? ''; ?>"
 			},
-            display_url: "<?php echo Handler::var('image')["display_url"]; ?>",
-            url_viewer: "<?php echo Handler::var('image')["url_viewer"]; ?>",
-            path_viewer: "<?php echo Handler::var('image')["path_viewer"]; ?>",
-            is_360: <?php echo Handler::var('image')["is_360"] ? 'true' : 'false'; ?>,
+			display_url: "<?php echo Handler::var('image')["display_url"]; ?>",
+			url_viewer: "<?php echo Handler::var('image')["url_viewer"]; ?>",
+			path_viewer: "<?php echo Handler::var('image')["path_viewer"]; ?>",
+			is_360: <?php echo Handler::var('image')["is_360"] ? 'true' : 'false'; ?>,
 		};
 		CHV.obj.image_viewer.album = {
 			id_encoded: "<?php echo Handler::var('image')["album"]["id_encoded"] ?? ''; ?>"
 		};
+		if (
+			typeof CHV.obj.image_viewerReady !== "undefined" &&
+			typeof CHV.obj.image_viewerReady.resolve === "function"
+		) {
+			CHV.obj.image_viewerReady.resolve(CHV.obj.image_viewer.image);
+			CHV.obj.image_viewerReady.resolve = null;
+		}
 	});
 </script>

@@ -161,8 +161,6 @@ if (Login::isLoggedUser()) {
 						<div class="input-below font-size-small"></div>
 					</div>
 <?php
-						}
-                        if (Login::isLoggedUser()) {
 							$isSelectedAlbum = Handler::var('album') !== [] && isset(Handler::var('album')['id_encoded']);
 ?>
 					<div class="input-label upload-input-col center-box text-align-left">
@@ -326,11 +324,13 @@ if (Login::isLoggedUser()) {
 					<label for="form-title"><?php _se('Title'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
 					<input type="text" id="form-title" name="form-title" class="text-input" value="" placeholder="<?php _se('Untitled %s', _n('image', 'images', 1)); ?>" maxlength="<?php echo Settings::IMAGE_TITLE_MAX_LENGTH; ?>">
 				</div>
+<?php if (Login::isLoggedUser()) { ?>
 				<div class="input-label">
 					<label for="form-tags"><?php _se('Tags'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
 					<input autocomplete="off" data-autocomplete="tags" data-target="#form-tags-autocomplete" type="text" id="form-tags" name="form-tags" class="text-input" value="" placeholder="<?php _se('Multiple tags may be separated by commas'); ?>" maxlength="">
 					<ul id="form-tags-autocomplete" class="content-tags content-tags-autocomplete hide-empty"></ul>
 				</div>
+<?php } ?>
 				<?php
                     if (Login::isLoggedUser() && Login::getUser()['album_count'] > 0) {
                         ?>

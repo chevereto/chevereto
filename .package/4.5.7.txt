@@ -1,0 +1,10 @@
+Chevereto 4.5.7 (2026-08-20)
+
+- Improved mobile display for Upload storage settings page
+- Fixed error message display for test email action
+- Fixed error message display for upload/site storage form
+- Fixed form POST display for site storage form when an error occurs
+- Fixed stats collection for tenants when using database isolation mode
+- Fixed verbosity behavior for tenants CLI jobs:worker
+- Fixed wrong tag input display for guest users
+- Fixed race condition bug on JavaScript image load

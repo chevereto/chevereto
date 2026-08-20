@@ -422,24 +422,13 @@ class Stat
         DB::queryExecute($sql);
     }
 
-    public static function getStatQuery(?string $tablePrefix = null): string
-    {
-        return static::buildStatQuery(
-            $tablePrefix ?? env()['CHEVERETO_DB_TABLE_PREFIX'],
-            false
-        );
-    }
-
-    public static function getStatJsonQuery(?string $tablePrefix = null): string
-    {
-        return static::buildStatQuery(
-            $tablePrefix ?? env()['CHEVERETO_DB_TABLE_PREFIX'],
-            true
-        );
-    }
-
-    private static function buildStatQuery(string $tablePrefix, bool $asJsonColumn): string
-    {
+    public static function getStatQuery(
+        ?string $tablePrefix = null,
+        ?string $database = null,
+        bool $asJsonColumn = false
+    ): string {
+        $tablePrefix ??= env()['CHEVERETO_DB_TABLE_PREFIX'];
+        $database ??= env()['CHEVERETO_DB_NAME'];
         $aliases = [
             'users' => 's.stat_users',
             'files' => 's.stat_images',
@@ -481,16 +470,16 @@ class Stat
 
         return <<<SQL
         {$select}
-        FROM `{$tablePrefix}stats` s
+        FROM `{$database}`.`{$tablePrefix}stats` s
         CROSS JOIN (
             SELECT
                 SUM(CASE WHEN `user_is_admin` = 1 THEN 1 ELSE 0 END) AS admins,
                 SUM(CASE WHEN `user_is_manager` = 1 THEN 1 ELSE 0 END) AS managers,
-                (SELECT COUNT(*) FROM `{$tablePrefix}pages`) AS pages,
-                (SELECT COUNT(*) FROM `{$tablePrefix}storages` WHERE storage_deleted_at IS NULL) AS storages,
-                (SELECT COUNT(*) FROM `{$tablePrefix}categories`) AS categories,
-                (SELECT COUNT(*) FROM `{$tablePrefix}login_providers` WHERE login_provider_is_enabled = 1) AS login_providers
-            FROM `{$tablePrefix}users`
+                (SELECT COUNT(*) FROM `{$database}`.`{$tablePrefix}pages`) AS pages,
+                (SELECT COUNT(*) FROM `{$database}`.`{$tablePrefix}storages` WHERE storage_deleted_at IS NULL) AS storages,
+                (SELECT COUNT(*) FROM `{$database}`.`{$tablePrefix}categories`) AS categories,
+                (SELECT COUNT(*) FROM `{$database}`.`{$tablePrefix}login_providers` WHERE login_provider_is_enabled = 1) AS login_providers
+            FROM `{$database}`.`{$tablePrefix}users`
         ) u
         WHERE s.stat_type = "total"
         LIMIT 1

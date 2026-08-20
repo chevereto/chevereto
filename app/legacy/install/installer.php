@@ -716,6 +716,7 @@ $settings_updates = [
         'enable_silent_notices' => 0,
     ],
     '4.5.6' => null,
+    '4.5.7' => null,
     // '5.0.0' => null,
 ];
 

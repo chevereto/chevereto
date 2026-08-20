@@ -519,13 +519,15 @@ $statsRefresh = function() use($tenants, $opts): void {
 };
 $jobsWorker = function() use ($tenants, $opts, $logger): void {
     $isVerbose = ($opts['verbose'] ?? null) !== null;
-    $logger->write(
-        <<<PLAIN
-        Starting tenants jobs worker
-        ***********************
+    if ($isVerbose) {
+        $logger->write(
+            <<<PLAIN
+            Starting tenants jobs worker
+            ***********************
 
-        PLAIN
-    );
+            PLAIN
+        );
+    }
     while (true) {
         $now = time();
         if($opts['id'] ?? null) {
@@ -576,12 +578,14 @@ $jobsWorker = function() use ($tenants, $opts, $logger): void {
                 $tenants->refreshTenantStats($tenantId);
             }
         }
-        $logger->write(
-            <<<PLAIN
-            Waiting 5s
+        if ($isVerbose) {
+            $logger->write(
+                <<<PLAIN
+                Waiting 5s
 
-            PLAIN
-        );
+                PLAIN
+            );
+        }
         sleep(5);
     }
 };

@@ -957,7 +957,22 @@ return function (Handler $handler) {
                             throw new Exception('Invalid content owner request', 109);
                         }
                         $id = (int) $REQUEST['editing']['id'];
-                        Storage::update($id, $editing);
+
+                        try {
+                            Storage::update($id, $editing);
+                        } catch (Throwable $throwable) {
+                            $message = Storage::getThrowableMessage($throwable);
+                            $json_array = [
+                                'status_code' => 500,
+                                'error' => [
+                                    'message' => $message,
+                                    'code' => $throwable->getCode(),
+                                ],
+                            ];
+
+                            break;
+                        }
+
                         $storage = Storage::getSingle($id);
                         $json_array['status_code'] = 200;
                         $json_array['success'] = [
@@ -1127,7 +1142,20 @@ return function (Handler $handler) {
                     throw new Exception(_s('Request denied'), 403);
                 }
                 $storage = $REQUEST['storage'];
-                $add_storage = Storage::insert($storage);
+
+                try {
+                    $add_storage = Storage::insert($storage);
+                } catch (Throwable $throwable) {
+                    $json_array = [
+                        'status_code' => 500,
+                        'error' => [
+                            'message' => Storage::getThrowableMessage($throwable),
+                            'code' => $throwable->getCode(),
+                        ],
+                    ];
+
+                    break;
+                }
                 $storage = Storage::getSingle($add_storage);
                 $json_array['status_code'] = 200;
                 $json_array['success'] = [
@@ -1641,18 +1669,27 @@ return function (Handler $handler) {
                 if (! Login::isAdmin()) {
                     throw new Exception('Invalid request', 403);
                 }
-                $send_email = send_mail($REQUEST['email'], _s('Test email from %s @ %t', [
-                    '%s' => getSetting('website_name'),
-                    '%t' => datetime(),
-                ]), '<p>' . _s('This is just a test') . '</p>');
-                if ($send_email) {
+
+                try {
+                    send_mail(
+                        $REQUEST['email'],
+                        _s('Test email from %s @ %t', [
+                            '%s' => getSetting('website_name'),
+                            '%t' => datetime(),
+                        ]),
+                        '<p>' . _s('This is just a test') . '</p>'
+                    );
                     $json_array['success'] = [
                         'message' => _s('Test email sent to %s.', $REQUEST['email']),
                         'code' => 200,
                     ];
-                } else {
-                    $json_array['error'] = [
-                        'code' => 500,
+                } catch (Throwable $e) {
+                    $json_array = [
+                        'status_code' => 500,
+                        'error' => [
+                            'code' => 500,
+                            'message' => $e->getMessage(),
+                        ],
                     ];
                 }
 
@@ -2094,9 +2131,6 @@ return function (Handler $handler) {
             );
         }
         $message = Storage::getThrowableMessage($throwable);
-        if ($throwable->getCode() !== 0 && $throwable->getCode() !== 999) {
-            $message .= ' [Code: ' . $throwable->getCode() . ']';
-        }
         $debugLevel = Config::system()->debugLevel();
         $errorCanSurface = $throwable->getCode() === 999
             || ($throwable->getCode() > 99 && $throwable->getCode() < 600);

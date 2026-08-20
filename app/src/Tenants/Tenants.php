@@ -34,6 +34,8 @@ class Tenants
         'tenants_variables',
     ];
 
+    private string $dbRootName;
+
     private string $cacheRootPrefix;
 
     private string $cachePrefix;
@@ -48,13 +50,32 @@ class Tenants
         private Encryption $encryption,
         private WriterInterface $logger = new NullWriter(),
     ) {
+        $this->dbRootName = env()['CHEVERETO_DB_NAME']; // chevereto
         $this->cacheRootPrefix = env()['CHEVERETO_CACHE_KEY_ROOT_PREFIX']; // chv:
-        $this->cachePrefix = env()['CHEVERETO_CACHE_KEY_PREFIX']; // chv:<websiteId>:
-        $this->tableRootPrefix = env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']; // chv_<websiteId>_
+        $this->cachePrefix = env()['CHEVERETO_CACHE_KEY_PREFIX']; // chv:_:
+        $this->tableRootPrefix = env()['CHEVERETO_DB_TABLE_ROOT_PREFIX']; // chv_
         $this->isolationMode = env()['CHEVERETO_TENANTS_DB_ISOLATION_MODE'] ?? '';
         if (! in_array($this->isolationMode, ['table', 'database'], true)) {
             throw new RuntimeException('Missing or invalid CHEVERETO_TENANTS_DB_ISOLATION_MODE', 600);
         }
+    }
+
+    public function getDbName(string $tenantId): string
+    {
+        if ($this->isolationMode === 'table') {
+            return $this->dbRootName;
+        }
+
+        return $this->dbRootName . '_' . $tenantId;
+    }
+
+    public function getTablePrefix(string $tenantId): string
+    {
+        if ($this->isolationMode === 'table') {
+            return $this->tableRootPrefix . $tenantId . '_';
+        }
+
+        return $this->tableRootPrefix;
     }
 
     public function getCacheKey(string $type, string $value): string
@@ -71,9 +92,8 @@ class Tenants
         ?array $env = null,
     ): void {
         if ($this->isolationMode === 'database') {
-            $this->db->create(
-                env()['CHEVERETO_DB_NAME'] . '_' . $tenantId
-            );
+            $dbName = $this->getDbName($tenantId);
+            $this->db->create($dbName);
         }
         $this->db::insert(
             table: 'tenants',
@@ -286,7 +306,7 @@ class Tenants
         }
         if ($dropTables) {
             if ($this->isolationMode === 'database') {
-                $dbName = env()['CHEVERETO_DB_NAME'] . '_' . $tenantId;
+                $dbName = $this->getDbName($tenantId);
                 $this->db->query(
                     <<<SQL
                     DROP DATABASE IF EXISTS `{$dbName}`;
@@ -296,7 +316,7 @@ class Tenants
 
                 $deleted = $this->db->exec() ? 1 : 0;
             } else {
-                $likePattern = "{$this->tableRootPrefix}{$tenantId}_%";
+                $likePattern = $this->getTablePrefix($tenantId) . '%';
                 $this->db->query(
                     <<<SQL
                         SELECT table_name
@@ -434,7 +454,8 @@ class Tenants
     public function getTenantStats(string $tenantId): ?array
     {
         $statQuery = Stat::getStatQuery(
-            $this->tableRootPrefix . $tenantId . '_'
+            tablePrefix: $this->getTablePrefix($tenantId),
+            database: $this->getDbName($tenantId),
         );
         $this->db->query($statQuery);
         $this->db->exec();
@@ -484,6 +505,9 @@ class Tenants
             `{$col}` = VALUES(`{$col}`)
             SQL;
         }
+        $updateParts[] = <<<SQL
+        `updated_at` = NOW()
+        SQL;
         $updateSql = implode(', ', $updateParts);
         $sql = <<<SQL
         INSERT INTO `{$tableTenantsStats}` ({$colsSql})

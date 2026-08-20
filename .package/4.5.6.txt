@@ -1,7 +1,0 @@
-Chevereto 4.5.6 (2026-08-17)
-
-- Added guide to disable automatic system notices display
-- Fixed primary key indexes for tags_albums/files/users
-- Fixed translation placeholders for "album"
-- Improved "Create album" button
-- Updated vendor dependencies

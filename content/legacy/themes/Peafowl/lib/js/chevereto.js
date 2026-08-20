@@ -513,6 +513,12 @@ CHV.obj.image_viewer = {
 CHV.obj.image_viewer.$container = $(CHV.obj.image_viewer.container);
 CHV.obj.image_viewer.$navigation = $(CHV.obj.image_viewer.navigation);
 CHV.obj.image_viewer.$loading = $(CHV.obj.image_viewer.loading);
+CHV.obj.image_viewerReady = CHV.obj.image_viewerReady || {};
+if (!CHV.obj.image_viewerReady.promise) {
+    CHV.obj.image_viewerReady.promise = new Promise(function (resolve) {
+        CHV.obj.image_viewerReady.resolve = resolve;
+    });
+}
 
 CHV.fn.system = {
     checkUpdates: function (callback) {
@@ -566,7 +572,13 @@ CHV.fn.isCachedImage = function (src) {
     return image.complete || image.width + image.height > 0;
 };
 
-CHV.fn.viewerLoadImage = function () {
+CHV.fn.viewerLoadImage = async function () {
+    if (typeof CHV.obj.image_viewer.image === "undefined") {
+        await CHV.obj.image_viewerReady.promise;
+    }
+    if (typeof CHV.obj.image_viewer.image === "undefined") {
+            return;
+    }
     if (CHV.obj.image_viewer.$loading.exists()) {
         CHV.obj.image_viewer.$loading.removeClass("soft-hidden").css({
             zIndex: 2,

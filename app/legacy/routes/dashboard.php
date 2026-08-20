@@ -1929,9 +1929,7 @@ return function (Handler $handler) {
                     } catch (Throwable $throwable) {
                         $is_error = true;
                         $error_message = Storage::getThrowableMessage($throwable);
-                        $input_errors = [
-                            'form-storage-api_id' => $error_message,
-                        ];
+                        $handler::updateVar('safe_post', $POST);
                     }
                 }
 

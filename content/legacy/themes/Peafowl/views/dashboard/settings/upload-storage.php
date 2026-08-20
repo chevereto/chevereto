@@ -31,7 +31,7 @@ $storage_messages = [
     'is_https' => _s('Toggle this to enable or disable HTTPS'),
     'is_active' => _s('Toggle this to enable or disable this storage'),
 ];
-$icon_template = '<span rel="toolTip" data-tipTip="right" title="%TITLE%" class="cursor-pointer icon %ICON%" data-checked-icon="' . $checkbox_icons[1] . '" data-unchecked-icon="' . $checkbox_icons[0] . '" data-action="toggle-storage-%PROP%" data-checkbox></span>'; ?>
+$icon_template = '<span data-action="toggle-storage-%PROP%" rel="toolTip" data-tipTip="right" title="%TITLE%"><span class="cursor-pointer icon %ICON%" data-checked-icon="' . $checkbox_icons[1] . '" data-unchecked-icon="' . $checkbox_icons[0] . '"  data-checkbox></span><span class="hidden phone-display-inline margin-left-5">' . _s('Active') . '</span></span>'; ?>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     CHV.obj.storages = <?php echo json_encode($storages) ?: []; ?>;
@@ -48,34 +48,40 @@ document.addEventListener("DOMContentLoaded", function() {
         <span class="c7 display-table-cell padding-right-10"></span>
     </li>
     <?php
-                $li_template = '<li data-content="storage" data-storage-id="%ID%">
-        <span class="c1 display-table-cell padding-right-10" data-content="storage-id">%ID%</span>
-        <span class="c4 display-table-cell padding-right-10"><a data-modal="edit" data-target="form-modal" data-storage-id="%ID%" data-content="storage-name">%NAME%</a></span>
-        <span class="c4 display-table-cell padding-right-10" data-content="storage-api_name">%API_NAME%</span>
-        <span class="c6 display-table-cell padding-right-10" data-content="storage-usage_label">%USAGE_LABEL%</span>
-        <span class="c2 display-table-cell padding-right-10" data-content="storage-active">%IS_ACTIVE%</span>
-        <span class="c7 display-table-cell padding-right-10"><a class="btn btn-small default" href="'
+        $li_template = '<li data-content="storage" data-storage-id="%ID%">
+        <span class="c1 display-table-cell padding-right-10" data-content="storage-id">
+            <span class="hidden phone-display-inline">ID: </span>
+            %ID%
+        </span>
+        <span class="c4 display-table-cell padding-right-10 phone-display-block"><a data-modal="edit" data-target="form-modal" data-storage-id="%ID%" data-content="storage-name">%NAME%</a></span>
+        <span class="c4 display-table-cell padding-right-10 phone-display-block" data-content="storage-api_name">%API_NAME%</span>
+        <span class="c6 display-table-cell padding-right-10 phone-display-block" data-content="storage-usage_label">%USAGE_LABEL%</span>
+        <span class="c2 display-table-cell padding-right-10 phone-display-block" data-content="storage-active">
+            %IS_ACTIVE%
+        </span>
+        <span class="c7 display-table-cell padding-right-10 phone-display-block phone-margin-top-10"><a class="btn btn-small default" href="'
         . get_base_url('search/images/?q=storage:%ID%')
-        . '" target="_blank"><i class="fas fa-search margin-right-5"></i>'
-        . _s('Search')
+        . '" target="_blank"><i class="fas fa-search"></i>'
+        . '<span class="phone-hide margin-left-5">' . _s('Search') . '</span>'
         . '</a> <a class="btn btn-small default" data-storage-id="%ID%" data-args="%ID%" data-confirm="'
         . _s("Do you really want to delete the External Storage %s and all the content stored there?")
         . ' '
         . _s("This can't be undone.")
-        . '" data-submit-fn="CHV.fn.storage.delete.submit" data-before-fn="CHV.fn.storage.delete.before" data-ajax-deferred="CHV.fn.storage.delete.complete"><i class="fas fa-trash-alt margin-right-5"></i>' . _s('Delete') . '</a></span>
-    </li>';
-                if ($storages) {
-                    foreach ($storages as $storage) {
-                        $replaces = [];
-                        foreach ($storage as $k => $v) {
-                            if (in_array($k, ['is_https', 'is_active'])) {
-                                $v = strtr($icon_template, ['%TITLE%' => $storage_messages[$k], '%ICON%' => $checkbox_icons[(int) $v], '%PROP%' => str_replace('is_', '', $k)]);
-                            }
-                            $replaces['%' . strtoupper($k) . '%'] = $v;
-                        }
-                        echo strtr($li_template, $replaces);
+        . '" data-submit-fn="CHV.fn.storage.delete.submit" data-before-fn="CHV.fn.storage.delete.before" data-ajax-deferred="CHV.fn.storage.delete.complete"><i class="fas fa-trash-alt"></i><span class="phone-hide margin-left-5">'
+        . _s('Delete') . '</span></a></span>
+        </li>';
+        if ($storages) {
+            foreach ($storages as $storage) {
+                $replaces = [];
+                foreach ($storage as $k => $v) {
+                    if (in_array($k, ['is_https', 'is_active'])) {
+                        $v = strtr($icon_template, ['%TITLE%' => $storage_messages[$k], '%ICON%' => $checkbox_icons[(int) $v], '%PROP%' => str_replace('is_', '', $k)]);
                     }
-                } ?>
+                    $replaces['%' . strtoupper($k) . '%'] = $v;
+                }
+                echo strtr($li_template, $replaces);
+            }
+        } ?>
 </ul>
 <div data-modal="form-modal" class="hidden" data-submit-fn="CHV.fn.storage.edit.submit" data-before-fn="CHV.fn.storage.edit.before" data-ajax-deferred="CHV.fn.storage.edit.complete" data-ajax-url="<?php echo get_base_url('json'); ?>">
     <span class="modal-box-title"><i class="fas fa-edit"></i> <?php _se('Edit %s', _s('storage')); ?></span>

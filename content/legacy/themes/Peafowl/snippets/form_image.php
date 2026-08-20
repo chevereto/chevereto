@@ -9,21 +9,23 @@ use function Chevereto\Legacy\G\require_theme_file;
 // @phpstan-ignore-next-line
 if (!defined('ACCESS') || !ACCESS) {
     die('This file cannot be directly accessed.');
-} ?>
+}
+$user_items_editor = get_global('user_items_editor') ?: Handler::var('user_items_editor');
+$user_albums = $user_items_editor['user_albums'] ?? [];
+$is_user = $user_albums !== []; ?>
 <div class="input-label">
 	<label for="form-image-title"><?php _se('Title'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
 	<input type="text" id="form-image-title" name="form-image-title" class="text-input" value="<?php echo Handler::var('image_safe_html')["title"] ?? ''; ?>" placeholder="<?php _se('Untitled %s', _n('image', 'images', 1)); ?>" maxlength="<?php echo Settings::IMAGE_TITLE_MAX_LENGTH; ?>">
 </div>
+<?php if ($is_user) { ?>
 <div class="input-label">
 	<label for="form-image-tags"><?php _se('Tags'); ?> <span class="optional"><?php _se('optional'); ?></span></label>
 	<input autocomplete="off" data-autocomplete="tags" data-target="#form-image-tags-autocomplete" type="text" id="form-image-tags" name="form-image-tags" class="text-input" value="<?php echo Handler::var('image_safe_html')["tags_string"] ?? ''; ?>" placeholder="<?php _se('Multiple tags may be separated by commas'); ?>" maxlength="">
     <ul id="form-image-tags-autocomplete" class="content-tags content-tags-autocomplete hide-empty"></ul>
     <div class="input-below font-size-small"></div>
 </div>
-<?php
-$user_items_editor = get_global('user_items_editor') ?: Handler::var('user_items_editor');
-$user_albums = $user_items_editor['user_albums'] ?? [];
-if ($user_albums !== []) { ?>
+<?php } ?>
+<?php if ($user_albums !== []) { ?>
 <div id="move-existing-album" data-view="switchable" class="c8 input-label">
     <?php require_theme_file("snippets/form_move_existing_album"); ?>
 </div>

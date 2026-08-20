@@ -704,6 +704,9 @@ class Storage
                 . ': '
                 . $throwable->getAwsErrorMessage();
         }
+        if (! in_array($throwable->getCode(), [0, 999], true)) {
+            $message .= ' [Code: ' . $throwable->getCode() . ']';
+        }
 
         return $message;
     }
