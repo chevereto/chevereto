@@ -1,18 +1,21 @@
 # Chevereto: Ultimate image and video sharing software
 
 <p align="center">
-    <a href="https://chevereto.com"><img alt="Chevereto" src="chevereto.svg" width="80%"></a>
+    <a href="https://chevereto.com"><img alt="Chevereto" src="chevereto.svg" width="60%"></a>
 </p>
 
 [![Chevereto](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
-[![Chevereto Docs](https://img.shields.io/badge/chevereto-docs-50C878?style=flat-square)](https://v4-docs.chevereto.com/)
-[![Chevereto Community](https://img.shields.io/badge/chevereto-community-blue?style=flat-square)](https://chevereto.com/community)
-[![Chevereto Demo](https://img.shields.io/badge/chevereto-demo-d4af37?style=flat-square&color=red)](https://demo.chevereto.com)
-[![Chevereto Free](https://img.shields.io/badge/chevereto-editions-gold?style=flat-square)](https://v4-docs.chevereto.com/introduction/editions/compare.html)
+[![Docs](https://img.shields.io/badge/docs-50C878?style=flat-square)](https://docs.chevereto.com/)
+[![Blog](https://img.shields.io/badge/blog-coral?style=flat-square)](https://blog.chevereto.com/)
+[![Community](https://img.shields.io/badge/community-dodgerblue?style=flat-square)](https://chevereto.com/community)
+[![Demo](https://img.shields.io/badge/demo-hotpink?style=flat-square)](https://demo.chevereto.com)
+[![Editions](https://img.shields.io/badge/editions-goldenrod?style=flat-square)](https://docs.chevereto.com/introduction/editions/compare.html)
+[![Chevereto Cloud](https://img.shields.io/badge/cloud-deepskyblue?style=flat-square)](https://cloud.chevereto.com)
+[![Youtube](https://img.shields.io/badge/YouTube-red?style=flat-square)](https://www.youtube.com/@cheveretocms)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
-> 🔔 [Subscribe](https://chevereto.com/go/newsletter) to don't miss any update regarding Chevereto.
+> 🔔 [Stay updated](https://chevereto.com/go/newsletter) with the latest news from Chevereto.
 
 Chevereto is a robust, self-hosted media-sharing platform that prioritizes flexibility and control. It enables you to build and manage a media-sharing website on your own server, granting you complete autonomy over your hosting environment and policies. With Chevereto, you eliminate the risk of platform restrictions and shutdowns, ensuring your site operates entirely on your terms.
 
@@ -38,6 +41,12 @@ Chevereto offers a comprehensive suite of features that make it the ultimate ima
 * **Multi-tenant**: Host multiple independent sites from a single installation
 
 You can check the complete list of features in our [Features page](https://chevereto.com/features) and you can also [compare Chevereto editions](https://v4-docs.chevereto.com/introduction/editions/compare.html).
+
+## Chevereto Cloud
+
+Don't want to manage servers? [Chevereto Cloud](https://cloud.chevereto.com) handles the infrastructure for you, so you can enjoy Chevereto without any technical overhead.
+
+[<img src="https://github.com/user-attachments/assets/6969e9db-a817-4937-a597-6a49a4cb4e47" width="419px" />](https://cloud.chevereto.com)
 
 ## Requirements
 
