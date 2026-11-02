@@ -153,10 +153,13 @@ function storageDelete(): void
     $job = 'storage-delete';
     $lock = new Lock($job);
     if ($lock->create()) {
-        Queue::process([
-            'type' => $job,
-        ]);
-        $lock->destroy();
+        try {
+            Queue::process([
+                'type' => $job,
+            ]);
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -167,8 +170,11 @@ function deleteExpiredFiles(): void
     $job = 'delete-expired-files';
     $lock = new Lock($job);
     if ($lock->create()) {
-        Image::deleteExpired(50);
-        $lock->destroy();
+        try {
+            Image::deleteExpired(50);
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -179,8 +185,11 @@ function cleanUnconfirmedUsers(): void
     $job = 'clean-unconfirmed-users';
     $lock = new Lock($job);
     if ($lock->create()) {
-        User::cleanUnconfirmed(5);
-        $lock->destroy();
+        try {
+            User::cleanUnconfirmed(5);
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -191,11 +200,14 @@ function removeDeleteLog(): void
     $job = 'remove-delete-log';
     $lock = new Lock($job);
     if ($lock->create()) {
-        $db = DB::getInstance();
-        $db->query('DELETE FROM ' . DB::getTable('deletions') . ' WHERE deleted_date_gmt <= :time;');
-        $db->bind(':time', datetime_sub(datetimegmt(), 'P3M'));
-        $db->exec();
-        $lock->destroy();
+        try {
+            $db = DB::getInstance();
+            $db->query('DELETE FROM ' . DB::getTable('deletions') . ' WHERE deleted_date_gmt <= :time;');
+            $db->bind(':time', datetime_sub(datetimegmt(), 'P3M'));
+            $db->exec();
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -212,8 +224,11 @@ function checkForNews(): void
     $job = 'check-news';
     $lock = new Lock($job);
     if ($lock->create()) {
-        updateCheveretoNews();
-        $lock->destroy();
+        try {
+            updateCheveretoNews();
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -230,8 +245,11 @@ function checkForUpdates(): void
     $job = 'check-updates';
     $lock = new Lock($job);
     if ($lock->create()) {
-        checkUpdates();
-        $lock->destroy();
+        try {
+            checkUpdates();
+        } finally {
+            $lock->destroy();
+        }
 
         return;
     }
@@ -239,13 +257,10 @@ function checkForUpdates(): void
 }
 function checkoutUpdate(string $datetimeSetting, string $past): bool
 {
-    $get = Variable::fetch($datetimeSetting);
+    $get = Variable::fetch($datetimeSetting) ?? '';
 
-    return $get === null
-        || datetime_add(
-            $get,
-            $past
-        ) < datetimegmt();
+    return $get === ''
+        || datetime_add($get, $past) < datetimegmt();
 }
 function checkHtaccess()
 {
@@ -256,39 +271,40 @@ function deleteExpiredUploads(): void
     $job = 'delete-expired-uploads';
     $lock = new Lock($job);
     if ($lock->create()) {
-        $uploadsTable = DB::getTable('uploads');
-        $uploadsChunksTable = DB::getTable('uploads_chunks');
-        $db = DB::getInstance();
-        $db->query(
-            <<<MySQL
-            SELECT `upload_chunk_upload_id` `id`, `upload_chunk_index` `index`, `upload_chunk_path` path
-            FROM `{$uploadsChunksTable}` WHERE `upload_chunk_date_gmt` <= :time;
-            MySQL
-        );
-        $db->bind(':time', datetime_sub(datetimegmt(), 'P1D'));
-        $chunks = $db->fetchAll();
-        if (! $chunks) {
-            $lock->destroy();
-
-            return;
-        }
-        $ids = [];
-        foreach ($chunks as $chunk) {
-            $ids[] = (int) $chunk['id'];
-            $chunkPath = $chunk['path'];
-            if (file_exists($chunkPath)) {
-                unlink($chunkPath);
+        try {
+            $uploadsTable = DB::getTable('uploads');
+            $uploadsChunksTable = DB::getTable('uploads_chunks');
+            $db = DB::getInstance();
+            $db->query(
+                <<<MySQL
+                SELECT `upload_chunk_upload_id` `id`, `upload_chunk_index` `index`, `upload_chunk_path` path
+                FROM `{$uploadsChunksTable}` WHERE `upload_chunk_date_gmt` <= :time;
+                MySQL
+            );
+            $db->bind(':time', datetime_sub(datetimegmt(), 'P1D'));
+            $chunks = $db->fetchAll();
+            if (! $chunks) {
+                return;
             }
+            $ids = [];
+            foreach ($chunks as $chunk) {
+                $ids[] = (int) $chunk['id'];
+                $chunkPath = $chunk['path'];
+                if (file_exists($chunkPath)) {
+                    unlink($chunkPath);
+                }
+            }
+            $ids = array_unique($ids);
+            $idsString = implode(',', $ids);
+            $db->query(
+                <<<MySQL
+                DELETE FROM `{$uploadsTable}`  WHERE `upload_id` IN ({$idsString});
+                MySQL
+            );
+            $db->exec();
+        } finally {
+            $lock->destroy();
         }
-        $ids = array_unique($ids);
-        $idsString = implode(',', $ids);
-        $db->query(
-            <<<MySQL
-            DELETE FROM `{$uploadsTable}`  WHERE `upload_id` IN ({$idsString});
-            MySQL
-        );
-        $db->exec();
-        $lock->destroy();
 
         return;
     }

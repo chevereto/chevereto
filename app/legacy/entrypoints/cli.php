@@ -45,6 +45,7 @@ $options = [
     'version-installed',
     'stats',
     'stats-rebuild',
+    'update-check',
 ];
 $aliases = [
     'update' => 'database-migrate',

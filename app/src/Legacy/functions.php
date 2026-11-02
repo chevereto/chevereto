@@ -1076,12 +1076,14 @@ function isSafeToExecute(?int $max_execution_time = null, array $options = []): 
     return false;
 }
 
-function checkUpdates(): void
+function checkUpdates(): bool
 {
+    Variable::set('update_check_datetimegmt', datetimegmt());
     $CHEVERETO = Settings::getChevereto();
     $update = fetch_url(
         $CHEVERETO['api']['get']['info'],
         options: [
+            CURLOPT_TIMEOUT => 15,
             CURLOPT_POSTFIELDS => http_build_query(
                 [
                     'version_filesystem' => APP_VERSION,
@@ -1094,34 +1096,41 @@ function checkUpdates(): void
             ),
         ]
     );
-    if ($update) {
-        $json = json_decode($update);
-        if ($json === null) {
-            return;
-        }
-        $release_notes = $json->software->release_notes;
-        $pos = (int) strpos($release_notes, 'Affected files and folders');
-        $release_notes = trim(substr($release_notes, 0, $pos));
-        $latest_release = $json->software->current_version;
-        $notified = getVariable('update_check_notified_release')->nullString();
-        if ($notified === null
-            || (version_compare($latest_release, APP_VERSION, '>')
-            && version_compare($latest_release, $notified, '>'))
-        ) {
-            Variable::set('update_check_notified_release', $latest_release);
-            Variable::set('update_check_latest_release', $latest_release);
-        }
-        Variable::set('update_check_datetimegmt', datetimegmt());
+    if (! $update) {
+        return false;
     }
+    $json = json_decode($update);
+    if ($json === null) {
+        return false;
+    }
+    $release_notes = $json->software->release_notes;
+    $pos = (int) strpos($release_notes, 'Affected files and folders');
+    $release_notes = trim(substr($release_notes, 0, $pos));
+    $latest_release = $json->software->current_version;
+    $notified = getVariable('update_check_notified_release')->nullString();
+    if ($notified === null
+        || (version_compare($latest_release, APP_VERSION, '>')
+        && version_compare($latest_release, $notified, '>'))
+    ) {
+        Variable::set('update_check_notified_release', $latest_release);
+    }
+
+    return true;
 }
 
 function updateCheveretoNews()
 {
+    Variable::set('news_check_datetimegmt', datetimegmt());
+
     try {
-        $cheveretoNews = G\fetch_url('https://blog.chevereto.com/feed.json');
+        $cheveretoNews = G\fetch_url(
+            'https://blog.chevereto.com/feed.json',
+            options: [
+                CURLOPT_TIMEOUT => 15,
+            ]
+        );
         $cheveretoNews = (array) json_decode($cheveretoNews)->items;
         Variable::set('chevereto_news', $cheveretoNews);
-        Variable::set('news_check_datetimegmt', datetimegmt());
     } catch (Throwable) {
         $cheveretoNews = [];
     }
@@ -2036,7 +2045,10 @@ function cheveretoVersionInstalled(): string
         if ($variable !== '') {
             return $variable;
         }
+    } catch (Throwable) {
+    }
 
+    try {
         return getSetting('chevereto_version_installed') ?? '';
     } catch (Throwable) {
         return '';

@@ -14,6 +14,7 @@ namespace Chevereto\Legacy\Classes;
 use Aws\S3\S3Client;
 use Exception;
 use Throwable;
+use function Chevere\Writer\writers;
 use function Chevereto\Encryption\decryptValues;
 use function Chevereto\Encryption\hasEncryption;
 use function Chevereto\Legacy\G\array_filter_array;
@@ -86,7 +87,6 @@ class Queue
             $storage_keys = [];
             $deleted_queue_ids = [];
             $disk_space_freed = 0;
-            $disk_space_used = 0;
             foreach ($storage_files as $k => $v) {
                 $files[$v['args']['key']] = array_merge($v['args'], [
                     'id' => $v['id'],
@@ -105,17 +105,15 @@ class Queue
                         break;
                 }
                 unset($files[$k]);
-                $disk_space_used += $v['args']['size'];
                 $deleted_queue_ids[] = $v['id']; // Generate the queue_id stock
             }
 
             try {
                 $StorageAPI = Storage::requireAPI($storage);
             } catch (Throwable $e) {
-                self::logAttempt($deleted_queue_ids);
-                $error = $e;
+                self::logAttempt($deleted_queue_ids, $e);
 
-                break;
+                continue;
             }
             switch ($storage['api_type']) {
                 case 's3':
@@ -135,29 +133,48 @@ class Queue
 
                         break;
                     }
+                    $queue_ids = $deleted_queue_ids;
                     $deleted_queue_ids = [];
                     $deleted = array_filter($deleteFromStorage['Deleted'] ?? []);
-                    foreach ($deleted ?? [] as $k => $v) {
-                        $disk_space_freed += $files[$v['Key']]['size'] ?? 0;
-                        $deleted_queue_ids[] = $files[$v['Key']]['id'];
+                    foreach ($deleted ?? [] as $v) {
+                        $file = $files[$v['Key'] ?? ''] ?? null;
+                        if ($file === null) {
+                            continue;
+                        }
+                        $disk_space_freed += $file['size'] ?? 0;
+                        $deleted_queue_ids[] = $file['id'];
                     }
+                    $errors = $deleteFromStorage['Errors'] ?? [];
+                    self::logAttempt(
+                        array_values(array_diff($queue_ids, $deleted_queue_ids)),
+                        $errors === []
+                            ? null
+                            : new Exception(sprintf(
+                                'S3 failed to delete %d object(s), first: [%s] %s (%s)',
+                                count($errors),
+                                $errors[0]['Code'] ?? '',
+                                $errors[0]['Message'] ?? '',
+                                $errors[0]['Key'] ?? ''
+                            ))
+                    );
 
                     break;
 
-                    // AKA single object APIs (no multiple or batch delete
-
                 case 'local':
-                    $StorageAPI->deleteMultiple($storage_keys);
-                    $deleted_queue_ids = []; // All over again
-                    foreach ($StorageAPI->deleted() as $k => $v) {
-                        $disk_space_freed += $files[$v]['size'];
-                        $deleted_queue_ids[] = $files[$v]['id'];
+                    /** @var \Chevereto\Legacy\Classes\LocalStorage $StorageAPI */
+                    $deleteFromStorage = $StorageAPI->deleteMultiple($storage_keys);
+                    $queue_ids = $deleted_queue_ids;
+                    $deleted_queue_ids = [];
+                    foreach ($deleteFromStorage as $deleteKey) {
+                        $disk_space_freed += $files[$deleteKey]['size'];
+                        $deleted_queue_ids[] = $files[$deleteKey]['id'];
                     }
+                    self::logAttempt(array_values(array_diff($queue_ids, $deleted_queue_ids)));
 
                     break;
             }
             self::logAttempt($deleted_queue_ids);
-            if (isset($error) && $error instanceof Exception) {
+            if (isset($error)) {
                 throw $error;
             }
             if ($storage['id'] !== 0) {
@@ -186,7 +203,7 @@ class Queue
         return $db->exec() ? $db->rowCount() : 0;
     }
 
-    public static function logAttempt(array $ids): void
+    public static function logAttempt(array $ids, ?Throwable $error = null): void
     {
         if ($ids === []) {
             return;
@@ -194,6 +211,9 @@ class Queue
         $db = DB::getInstance();
         $db->query('UPDATE ' . DB::getTable('queues') . ' SET queue_attempts = queue_attempts + 1, queue_status = IF(queue_attempts > 3, "failed", "pending") WHERE queue_id IN (' . implode(',', $ids) . ')');
         $db->exec();
+        if ($error !== null) {
+            writers()->error()->write($error->getMessage() . "\n");
+        }
     }
 
     public static function canKeepGoing(): bool

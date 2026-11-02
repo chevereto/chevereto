@@ -1,0 +1,17 @@
+Chevereto 4.5.9 (2026-11-02)
+
+- Added update-check command
+- Fixed bug with album privacy filtering for liked images
+- Fixed bug with cron job locks not being released on errors
+- Fixed bug with database update failing on older installations
+- Fixed bug with failed S3 deletes retrying forever
+- Fixed bug with FTP storage not creating date folders
+- Fixed bug with installed version detection
+- Fixed bug with local storage delete queue stopping on errors
+- Fixed bug with OSS storage delete queue handling
+- Fixed bug with single failed deletes stopping the storage delete queue
+- Fixed bug with storage delete queue stopping when a storage is unreachable
+- Fixed bug with update check and news check
+- Fixed bug with variable handling null cipher values
+- Improved FTP storage error handling
+- Improved storage delete queue error logging

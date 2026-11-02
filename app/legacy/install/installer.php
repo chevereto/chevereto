@@ -557,6 +557,10 @@ $settings_updates = [
     '3.20.14' => null,
     '3.20.15' => null,
     '3.20.16' => null,
+    '3.20.17' => null,
+    '3.20.18' => null,
+    '3.20.19' => null,
+    '3.20.20' => null, // EOL
     '4.0.0.beta.1' => null,
     '4.0.0.beta.2' => null,
     '4.0.0.beta.3' => null,
@@ -719,6 +723,7 @@ $settings_updates = [
     '4.5.6' => null,
     '4.5.7' => null,
     '4.5.8' => null,
+    '4.5.9' => null,
 ];
 
 /**
@@ -1139,6 +1144,9 @@ if ($installed_version !== '' && empty($paramsCheck)) {
             'type' => 'INT UNSIGNED',
             'prop' => 'DEFAULT NULL',
         ];
+        $hasTagTables = array_key_exists('tags_albums', $schema)
+            && array_key_exists('tags_files', $schema)
+            && array_key_exists('tags_users', $schema);
         $update_table = [
             '3.1.0' => [
                 'logins' => [
@@ -1923,7 +1931,7 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                         'prop' => "NOT NULL DEFAULT '0'",
                     ],
                 ],
-                'query' => version_compare($installed_version, '3.15.0', '>=')
+                'query' => array_key_exists('user_is_dark_mode', $schema['users'] ?? [])
                     ? 'ALTER TABLE `%table_prefix%users` DROP COLUMN `user_is_dark_mode`;'
                     : '',
             ],
@@ -2279,15 +2287,18 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                 ],
                 'uploads' => [],
                 'uploads_chunks' => [],
-                'query.2' => <<<SQL
-                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_1` FOREIGN KEY (tag_album_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_2` FOREIGN KEY (tag_album_album_id) REFERENCES `%table_prefix%albums` (album_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_3` FOREIGN KEY (tag_album_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_1` FOREIGN KEY (tag_user_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_2` FOREIGN KEY (tag_user_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_1` FOREIGN KEY (tag_file_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
-                ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_2` FOREIGN KEY (tag_file_file_id) REFERENCES `%table_prefix%images` (image_id) ON DELETE CASCADE;
-                SQL,
+                'query.2' => $hasTagTables
+                    ?
+                    <<<SQL
+                    ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_1` FOREIGN KEY (tag_album_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_2` FOREIGN KEY (tag_album_album_id) REFERENCES `%table_prefix%albums` (album_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_albums` ADD CONSTRAINT `%table_prefix%tags_albums_ibfk_3` FOREIGN KEY (tag_album_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_1` FOREIGN KEY (tag_user_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_users` ADD CONSTRAINT `%table_prefix%tags_users_ibfk_2` FOREIGN KEY (tag_user_user_id) REFERENCES `%table_prefix%users` (user_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_1` FOREIGN KEY (tag_file_tag_id) REFERENCES `%table_prefix%tags` (tag_id) ON DELETE CASCADE;
+                    ALTER TABLE `%table_prefix%tags_files` ADD CONSTRAINT `%table_prefix%tags_files_ibfk_2` FOREIGN KEY (tag_file_file_id) REFERENCES `%table_prefix%images` (image_id) ON DELETE CASCADE;
+                    SQL
+                    : '',
             ],
             '4.4.0' => [
                 'login_cookies' => [
@@ -2314,17 +2325,30 @@ if ($installed_version !== '' && empty($paramsCheck)) {
                     : '',
             ],
             '4.5.6' => [
-                'query' => <<<SQL
-                ALTER TABLE `%table_prefix%tags_albums`
-                DROP INDEX tag_album_UNIQUE,
-                ADD PRIMARY KEY (tag_album_tag_id, tag_album_album_id, tag_album_user_id);
-                ALTER TABLE `%table_prefix%tags_files`
-                DROP INDEX tag_file_UNIQUE,
-                ADD PRIMARY KEY (tag_file_tag_id, tag_file_file_id);
-                ALTER TABLE `%table_prefix%tags_users`
-                DROP INDEX tag_user_UNIQUE,
-                ADD PRIMARY KEY (tag_user_tag_id, tag_user_user_id);
-                SQL
+                'query.1' => isset($DB_indexes['tags_albums']['tag_album_UNIQUE'])
+                    ?
+                    <<<SQL
+                    ALTER TABLE `%table_prefix%tags_albums`
+                    DROP INDEX tag_album_UNIQUE,
+                    ADD PRIMARY KEY (tag_album_tag_id, tag_album_album_id, tag_album_user_id);
+                    SQL
+                    : '',
+                'query.2' => isset($DB_indexes['tags_files']['tag_file_UNIQUE'])
+                    ?
+                    <<<SQL
+                    ALTER TABLE `%table_prefix%tags_files`
+                    DROP INDEX tag_file_UNIQUE,
+                    ADD PRIMARY KEY (tag_file_tag_id, tag_file_file_id);
+                    SQL
+                    : '',
+                'query.3' => isset($DB_indexes['tags_users']['tag_user_UNIQUE'])
+                    ?
+                    <<<SQL
+                    ALTER TABLE `%table_prefix%tags_users`
+                    DROP INDEX tag_user_UNIQUE,
+                    ADD PRIMARY KEY (tag_user_tag_id, tag_user_user_id);
+                    SQL
+                    : '',
             ],
         ];
         $sql_update = [];

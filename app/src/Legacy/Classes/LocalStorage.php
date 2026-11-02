@@ -22,8 +22,6 @@ class LocalStorage
 
     private string $realPath;
 
-    private array $deleted = [];
-
     public function __construct(array $args = [])
     {
         $this->path = rtrim($args['bucket'], '/') . '/';
@@ -94,18 +92,19 @@ class LocalStorage
         clearstatcache();
     }
 
-    public function deleteMultiple(array $filenames = []): void
+    public function deleteMultiple(array $filenames = []): array
     {
-        $this->deleted = [];
+        $deleted = [];
         foreach ($filenames as $v) {
-            $this->delete($v);
-            $this->deleted[] = $v;
+            try {
+                $this->delete($v);
+            } catch (Exception $e) {
+                continue;
+            }
+            $deleted[] = $v;
         }
-    }
 
-    public function deleted(): array
-    {
-        return $this->deleted;
+        return $deleted;
     }
 
     public function mkdirRecursive(string $dirname): void

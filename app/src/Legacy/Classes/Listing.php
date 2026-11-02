@@ -728,15 +728,15 @@ class Listing
                     $forcedPrivacy = (int) (getSetting('website_privacy_mode') === 'private'
                         && getSetting('website_content_privacy_mode') === 'private');
                     if ($this->type === 'images') {
-                        $likes_join .= <<<SQL
-                        LEFT JOIN {$tables['albums']} AS filter_albums ON filter_albums.album_id = {$tables['images']}.image_album_id
-                        SQL;
                         $this->appendWhere(
                             <<<SQL
-                            (
-                            filter_albums.album_id IS NULL
-                            OR filter_albums.album_user_id = {$likeUser}
+                            NOT EXISTS (
+                            SELECT 1 FROM {$tables['albums']} AS filter_albums
+                            WHERE filter_albums.album_id = {$tables['images']}.image_album_id
+                            AND (
+                            filter_albums.album_user_id = {$likeUser}
                             OR (:forced_privacy = 0 AND filter_albums.album_privacy NOT IN ('private', 'password'))
+                            ) IS NOT TRUE
                             )
                             SQL
                         );

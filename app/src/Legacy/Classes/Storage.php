@@ -465,7 +465,7 @@ class Storage
                         'verify' => CaBundle::getBundledCaBundlePath(),
                     ],
                     'use_aws_shared_config_files' => false,
-                    'use_path_style_endpoint' => ((bool) $storage['use_path_style_endpoint']) ?? false,
+                    'use_path_style_endpoint' => (bool) ($storage['use_path_style_endpoint'] ?? false),
                 ];
                 if ($api_type === 's3compatible') {
                     $clientConfig['endpoint'] = $storage['server'];
@@ -842,7 +842,7 @@ class Storage
             : null;
         $capacity = format_bytes($values['capacity'], 2);
         $used = format_bytes($values['space_used'], 2);
-        $values['usage_label'] = ($values['capacity'] === 0 ? _s('Unlimited') : $capacity)
+        $values['usage_label'] = (empty($values['capacity']) ? _s('Unlimited') : $capacity)
             . ' / '
             . $used
             . ' '

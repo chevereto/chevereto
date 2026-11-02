@@ -6,10 +6,13 @@
 
 [![Chevereto](.github/banner/chevereto-ultimate-remix.png)](https://chevereto.com)
 
-[![Chevereto Docs](https://img.shields.io/badge/chevereto-docs-50C878?style=flat-square)](https://v4-docs.chevereto.com/)
-[![Chevereto Community](https://img.shields.io/badge/chevereto-community-blue?style=flat-square)](https://chevereto.com/community)
-[![Chevereto Demo](https://img.shields.io/badge/chevereto-demo-d4af37?style=flat-square&color=red)](https://demo.chevereto.com)
-[![Chevereto Free](https://img.shields.io/badge/chevereto-editions-gold?style=flat-square)](https://v4-docs.chevereto.com/introduction/editions/compare.html)
+[![Docs](https://img.shields.io/badge/docs-50C878?style=flat-square)](https://v4-docs.chevereto.com/)
+[![Blog](https://img.shields.io/badge/blog-coral?style=flat-square)](https://blog.chevereto.com/)
+[![Community](https://img.shields.io/badge/community-dodgerblue?style=flat-square)](https://chevereto.com/community)
+[![Demo](https://img.shields.io/badge/demo-hotpink?style=flat-square)](https://demo.chevereto.com)
+[![Editions](https://img.shields.io/badge/editions-goldenrod?style=flat-square)](https://v4-docs.chevereto.com/introduction/editions/compare.html)
+[![Chevereto Cloud](https://img.shields.io/badge/cloud-deepskyblue?style=flat-square)](https://cloud.chevereto.com)
+[![Youtube](https://img.shields.io/badge/YouTube-red?style=flat-square)](https://chevereto.com/go/youtube)
 [![Awesome F/OSS](https://img.shields.io/badge/Awesome_F%2FOSS-Certified-black?colorA=&colorB=874efe&style=flat-square)](https://awsmfoss.com/chevereto/)
 
 > 🔔 [Subscribe](https://chevereto.com/go/newsletter) to don't miss any update regarding Chevereto.
@@ -37,7 +40,7 @@ Chevereto offers a comprehensive suite of features that make it the ultimate ima
 * **Multi-user**: Full-featured user accounts with registration, profiles, 2FA, and roles
 * **Multi-tenant**: Host multiple independent sites from a single installation
 
-You can check the complete list of features in our [Features page](https://chevereto.com/features) and you can also [compare Chevereto editions](https://v4-docs.chevereto.com/introduction/editions/compare.html).
+Check the complete list of features in our [Features page](https://chevereto.com/features) and you can also [compare Chevereto editions](https://v4-docs.chevereto.com/introduction/editions/compare.html).
 
 ## Requirements
 
@@ -50,7 +53,7 @@ You can check the complete list of features in our [Features page](https://cheve
 
 Get Chevereto in one of these ways:
 
-* Direct download: Visit https://chevereto.com/api/download/latest
+* Direct download: https://chevereto.com/api/download/latest
 * GitHub releases: Download the latest `4.x.x.zip` file from our [Releases page](https://github.com/chevereto/chevereto/releases)
 
 ## Install
@@ -115,12 +118,12 @@ The commercial license allows you to use Chevereto in commercial products and ap
 
 Chevereto Free edition is licensed under the AGPLv3 free software license, allowing use as long as you comply with its terms. If you modify and distribute the software, you are required to provide the source code to your end users. Please note that under the AGPLv3, **making the software available over a network is considered distribution**, and you **must provide the source code** to users who interact with it remotely.
 
-Both **Chevereto Lite** and **Chevereto Pro** are distributed under the proprietary **Chevereto License**, which is not subject to the restrictions imposed by the AGPLv3 license.
+Both **Chevereto Lite** and **Chevereto Pro** are distributed under the **Chevereto License**, which is not subject to the restrictions imposed by the AGPLv3 license.
 
-*Note: Proprietary licensing does not mean closed source; the source code is accessible, but its use is governed by the specific terms of The Chevereto License.*
+*Note: The Chevereto License is proprietary, but does not mean closed source; the source code is accessible, but its use is governed by the specific terms of The Chevereto License.*
 
 ## Chevere
 
-The "Chevereto" project is the parent upstream project of [Chevere](https://chevere.dev). All the software made on Chevere is derived, inspired, or based on the Chevereto project.
+The "Chevereto" project is the parent upstream project of [Chevere](https://chevere.org). All the software made on Chevere is derived, inspired, or based on the Chevereto project.
 
 ![Chevere](chevere.svg)
